@@ -120,8 +120,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     private boolean displayingSearchResults = true;
 
-    private String docbookXSL;
-
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
     }
@@ -214,25 +212,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         /*topicBugsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicRenderedPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicXMLErrorsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId); */
-
-        /*
-            Load the XSL, and then reinitialize the displays that rely on it when it is available.
-         */
-        final BaseRestCallback<RESTStringConstantV1, Display> xslCallback = new BaseRestCallback<RESTStringConstantV1, Display>(getDisplay(),
-                new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTStringConstantV1 string, final Display display) {
-                        docbookXSL = string.getValue();
-
-                        /*
-                            If we have loaded the string after we loaded the original topic, refresh the view.
-                         */
-                        if (getDisplayedTopic() != null) {
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicRenderedPresenter.getDisplay(), topicSplitPanelRenderedDisplay}));
-                        }
-                    }
-                });
-        RESTCalls.getStringConstant(xslCallback, ServiceConstants.XSL_STRING_CONSTANT);
 
         bindSplitPanelResize();
 
@@ -766,13 +745,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We display the rendered view with images */
             if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor(), docbookXSL);
+                topicRenderedPresenter.getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
                 topicRenderedPresenter.getDisplay().stop();
             }
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor(), docbookXSL);
+                topicSplitPanelRenderedDisplay.displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
                 topicSplitPanelRenderedDisplay.stop();
             }
 
@@ -959,12 +938,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     public TopicRenderedPresenter getTopicRenderedPresenter() {
         return topicRenderedPresenter;
     }
-
-    @Nullable
-    public String getDocbookXSL() {
-        return docbookXSL;
-    }
-
 
     /**
      * The interface that defines the top level topic list and edit view

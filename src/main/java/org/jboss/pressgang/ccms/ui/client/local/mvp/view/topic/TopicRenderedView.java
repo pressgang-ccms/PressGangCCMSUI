@@ -64,11 +64,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 				}
 
 				if (worker.running) {
-					worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()()});
+					worker.postMessage(editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()());
 				};
 			}}(this));
         worker.running = true;
-		worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()()});
+		worker.postMessage(editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()());
     }-*/;
 
 
@@ -99,32 +99,23 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     /**
      * Starts a loop that will render the contents of the ACE editor in a background thread.
      * @param editor The editor that has the source XML
-     * @param xsl The XSL to transform the XML against
      */
     @Override
-    public native void displayEditorRendered(@Nullable final AceEditor editor, @NotNull final String xsl) /*-{
+    public native void displayEditorRendered(@Nullable final AceEditor editor) /*-{
 
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::stop()();
 
         var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
-        if (xsl == null) {
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
-                "<html><head></head><body>" +
-					pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::LoadingXSL() +
-                 "</body></html>");
-        } else {
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::createWorker(Ledu/ycp/cs/dh/acegwt/client/ace/AceEditor;Ljava/lang/String;)(editor, xsl);
-        }
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::createWorker(Ledu/ycp/cs/dh/acegwt/client/ace/AceEditor;Ljava/lang/String;)(editor, xsl);
     }-*/;
 
     /**
      * Renders the supplied xml once
      * @param xml The source XML
-     * @param xsl The XSL to transform the XML against
      */
     @Override
-    public native void displayStringRendered(@NotNull final String xml, @NotNull final String xsl) /*-{
+    public native void displayStringRendered(@NotNull final String xml) /*-{
 		var worker = new Worker("javascript/xsltproc/xsltproc.js");
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
@@ -149,7 +140,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
 		});
 
-		worker.postMessage({xml: xml});
+		worker.postMessage(xml);
 	}-*/;
 
     @Override

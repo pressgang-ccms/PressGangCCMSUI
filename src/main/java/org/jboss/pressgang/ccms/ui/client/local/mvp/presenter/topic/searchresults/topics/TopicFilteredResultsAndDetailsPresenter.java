@@ -801,7 +801,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /* While editing the XML, we need to setup a refresh of the rendered view */
             if (displayedView == this.getTopicXMLComponent().getDisplay()) {
                 if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-                    getTopicSplitPanelRenderedDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor(), getDocbookXSL());
+                    getTopicSplitPanelRenderedDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
                 }
 
                 /* This should always be false */
@@ -832,7 +832,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
-                getTopicRenderedPresenter().getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor(), getDocbookXSL());
+                getTopicRenderedPresenter().getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
                 getTopicRenderedPresenter().getDisplay().stop();
             }
         } finally {

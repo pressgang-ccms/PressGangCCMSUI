@@ -30,8 +30,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
-        void displayEditorRendered(@Nullable final AceEditor editor, @NotNull final String xsl);
-        void displayStringRendered(@NotNull final String xml, @NotNull final String xsl);
+        void displayEditorRendered(@Nullable final AceEditor editor);
+        void displayStringRendered(@NotNull final String xml);
         IFrameElement getFrame();
         void stop();
     }
@@ -71,15 +71,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
             final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                 @Override
                 public void doSuccessAction(@NotNull final RESTTopicV1 topic, @NotNull final Display display) {
-
-                    final BaseRestCallback<RESTStringConstantV1, Display> xslCallback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
-                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
-                                @Override
-                                public void doSuccessAction(final RESTStringConstantV1 string, final Display display) {
-                                    display.displayStringRendered(topic.getXml(), string.getValue());
-                                }
-                        });
-                    RESTCalls.getStringConstant(xslCallback, ServiceConstants.XSL_STRING_CONSTANT);
+                    display.displayStringRendered(topic.getXml());
 
                 }
             });
