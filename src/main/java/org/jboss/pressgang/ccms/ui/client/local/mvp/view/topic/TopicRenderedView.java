@@ -1,5 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.IFrameElement;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
@@ -18,31 +22,19 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
 
-    private final HTML div = new HTML();
+    private final IFrameElement frame = Document.get().createIFrameElement();
 
     // Any number of processors can be created, they will behave
     // independently. Every stylesheet have to have its own processor.
     final XsltProcessor processor = new XsltProcessor();
-    /**
-     * true if the XSL was imported successfully, and false otherwise
-     */
-    boolean importSuccessful;
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.RenderedView());
+        frame.setFrameBorder(0);
+        frame.addClassName(CSSConstants.TopicRenderedView.RENDERED_IFRAME);
+        this.getPanel().getElement().appendChild(frame);
 
-        LOGGER.info("ENTER TopicRenderedView()");
-
-        getDiv().addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
-        try {
-            // Setting the stylesheet to transform with
-            processor.importStyleSheet(DocbookToHTML.XSL);
-            importSuccessful = true;
-        } catch (XsltProcessingException e) {
-            importSuccessful = false;
-            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
-        }
     }
 
     @Override
@@ -51,31 +43,62 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
+    public final void displayTopicRendered(@Nullable final String topicXML, @Nullable final String xsl, final boolean readOnly, final boolean showImages) {
 
-        if (!importSuccessful) {
-            return;
-        }
+        if (xsl == null) {
+            fillIframe(frame, "<html><head></head><body>" + PressGangCCMSUI.INSTANCE.LoadingXSL() + "</body></html>");
+        } else {
+            try {
+                processor.importStyleSheet(xsl);
 
-        try {
-            // define how the images are handled
-            processor.setParameter("externalImages", showImages + "");
+                // define how the images are handled
+                processor.setParameter("externalImages", showImages + "");
 
-            // Setting the document to be transformed
-            processor.importSource(topicXML == null ? "" : topicXML);
+                processor.setParameter("class.prefix", "");
 
-            // Getting the result
-            final String resultString = processor.transform();
-            getDiv().setHTML(resultString);
+                // Setting the document to be transformed
+                processor.importSource(topicXML == null ? "" : topicXML);
 
-            this.getPanel().setWidget(getDiv());
-        } catch (@NotNull final XsltProcessingException ex) {
-            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
+                // Getting the result
+                final String resultString = processor.transform();
+                fillIframe(frame,
+                        "<html>" +
+                            "<head>" +
+                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
+                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
+                            "</head>" +
+                            "<body>" +
+                                resultString +
+                            "</body>" +
+                        "</html>");
+
+            } catch (@NotNull final XsltProcessingException ex) {
+                fillIframe(frame, "<html><head></head><body>" + PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered() + "</body></html>");
+            }
         }
     }
 
+    private native void fillIframe(final IFrameElement iframe, final String content) /*-{
+        var doc = iframe.document;
+        if (iframe.contentDocument) {
+			// For NS6
+            doc = iframe.contentDocument;
+        } else if (iframe.contentWindow) {
+			// For IE5.5 and IE6
+            doc = iframe.contentWindow.document;
+        }
+        if (doc) {
+            // Put the content in the iframe
+            doc.open();
+            doc.writeln(content);
+            doc.close();
+        }
+    }-*/;
+
+
+    @Override
     @NotNull
-    public HTML getDiv() {
-        return div;
+    public IFrameElement getFrame() {
+        return frame;
     }
 }

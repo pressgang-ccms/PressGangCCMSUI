@@ -1,8 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.dom.client.IFrameElement;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -12,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -24,8 +29,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
-        void displayTopicRendered(final String topicXML, final boolean readOnly, final boolean showImages);
-        HTML getDiv();
+        void displayTopicRendered(@Nullable final String topicXML, @Nullable final String xsl, final boolean readOnly, final boolean showImages);
+        IFrameElement getFrame();
     }
 
     /**
@@ -62,8 +67,17 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
             final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                    display.displayTopicRendered(retValue.getXml(), true, true);
+                public void doSuccessAction(@NotNull final RESTTopicV1 topic, @NotNull final Display display) {
+
+                    final BaseRestCallback<RESTStringConstantV1, Display> xslCallback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
+                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
+                                @Override
+                                public void doSuccessAction(final RESTStringConstantV1 string, final Display display) {
+                                    display.displayTopicRendered(topic.getXml(), string.getValue(), true, true);
+                                }
+                        });
+                    RESTCalls.getStringConstant(xslCallback, ServiceConstants.XSL_STRING_CONSTANT);
+
                 }
             });
 

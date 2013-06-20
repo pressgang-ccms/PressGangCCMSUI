@@ -270,6 +270,9 @@ public interface PressGangCCMSUI extends Constants {
     String TopicCouldNotBeRendered();
 
     @NotNull
+    String LoadingXSL();
+
+    @NotNull
     String TagAlreadyExists();
 
     @NotNull

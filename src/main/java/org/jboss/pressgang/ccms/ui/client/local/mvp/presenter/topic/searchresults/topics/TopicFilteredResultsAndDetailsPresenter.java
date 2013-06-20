@@ -345,7 +345,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void bindRenderedViewClicks() {
-        getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
+        /*getTopicSplitPanelRenderedDisplay().getFrame().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -372,7 +372,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
                 }
             }
-        });
+        });*/
     }
 
     private void bindTagButtons() {
@@ -1690,7 +1690,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
+                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), getDocbookXSL(), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();
@@ -1701,7 +1701,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void refreshRenderedView() {
-        getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
+        getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), getDocbookXSL(), isReadOnlyMode(), true);
     }
 
     /**

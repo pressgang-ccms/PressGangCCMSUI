@@ -743,6 +743,16 @@ public final class RESTCalls {
         });
     }
 
+    public static void getBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, final Integer id) {
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTBlobConstantV1.VALUE_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONBlobConstant(id, expand);
+            }
+        });
+    }
+
     public static void createBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override

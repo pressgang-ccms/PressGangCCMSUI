@@ -12,6 +12,8 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -32,6 +34,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsVi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -120,7 +124,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     private boolean displayingSearchResults = true;
 
-
+    private String docbookXSL;
 
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
@@ -214,6 +218,25 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         /*topicBugsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicRenderedPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicXMLErrorsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId); */
+
+        /*
+            Load the XSL, and then reinitialize the displays that rely on it when it is available.
+         */
+        final BaseRestCallback<RESTStringConstantV1, Display> xslCallback = new BaseRestCallback<RESTStringConstantV1, Display>(getDisplay(),
+                new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 string, final Display display) {
+                        docbookXSL = string.getValue();
+
+                        /*
+                            If we have loaded the string after we loaded the original topic, refresh the view.
+                         */
+                        if (getDisplayedTopic() != null) {
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicRenderedPresenter.getDisplay(), topicSplitPanelRenderedDisplay}));
+                        }
+                    }
+                });
+        RESTCalls.getStringConstant(xslCallback, ServiceConstants.XSL_STRING_CONSTANT);
 
         bindSplitPanelResize();
 
@@ -747,12 +770,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We display the rendered view with images */
             if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.getDisplay().displayTopicRendered(topicToDisplay.getXml(), isReadOnlyMode(), true);
+                topicRenderedPresenter.getDisplay().displayTopicRendered(topicToDisplay.getXml(), docbookXSL, isReadOnlyMode(), true);
             }
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), true);
+                topicSplitPanelRenderedDisplay.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), docbookXSL, isReadOnlyMode(), true);
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */
@@ -937,6 +960,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     public TopicRenderedPresenter getTopicRenderedPresenter() {
         return topicRenderedPresenter;
+    }
+
+    @Nullable
+    public String getDocbookXSL() {
+        return docbookXSL;
     }
 
 

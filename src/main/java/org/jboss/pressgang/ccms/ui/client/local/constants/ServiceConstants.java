@@ -13,6 +13,11 @@ public final class ServiceConstants {
     public static final int ORIGINAL_FILE_NAME_PROPERTY_TAG = 28;
 
     /**
+     * The XSL blob constant
+     */
+    public static final int XSL_STRING_CONSTANT = 68;
+
+    /**
      * Used to indicate a minor change to an entity.
      */
     public static final byte MINOR_CHANGE = 0x01;

@@ -84,6 +84,10 @@ public interface CSSConstants {
         String FILTERED_RESULTS_TAB_MENU_TABLE = "FilteredResultsTabMenu";
     }
 
+    interface TopicRenderedView {
+        String RENDERED_IFRAME = "RenderedIFrame";
+    }
+
     interface BulkImageUploadDialog {
         String DESCRIPTION_FIELD = "BulkImageUploadDescriptionField";
     }

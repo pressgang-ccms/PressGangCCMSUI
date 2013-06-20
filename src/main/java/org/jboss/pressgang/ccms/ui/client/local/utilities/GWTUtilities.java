@@ -219,7 +219,8 @@ final public class GWTUtilities {
     }
 
     /**
-     * A GWT friendly way to turn a byte[] into a String.
+     * A GWT friendly way to turn a byte[] into a String. This only works for encodings that use consistent
+     * bytes per character. UTF8 uses variable bytes per character, and may not decode properly.
      *
      * @param bytes        The source byte[]
      * @param bytesPerChar The number of bytes per character
