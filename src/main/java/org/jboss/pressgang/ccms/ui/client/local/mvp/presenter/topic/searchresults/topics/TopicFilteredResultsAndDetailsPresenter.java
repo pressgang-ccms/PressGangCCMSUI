@@ -832,8 +832,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
-                getTopicRenderedPresenter().getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
-                getTopicRenderedPresenter().getDisplay().stop();
+                getTopicRenderedPresenter().getDisplay().displayStringRendered(getTopicXMLComponent().getDisplay().getEditor().getText());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");

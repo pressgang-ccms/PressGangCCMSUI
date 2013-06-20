@@ -745,14 +745,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We display the rendered view with images */
             if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.getDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
-                topicRenderedPresenter.getDisplay().stop();
+                topicRenderedPresenter.getDisplay().displayStringRendered(getTopicXMLComponent().getDisplay().getEditor().getText());
             }
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
-                topicSplitPanelRenderedDisplay.stop();
+                topicSplitPanelRenderedDisplay.displayStringRendered(getTopicXMLComponent().getDisplay().getEditor().getText());
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */

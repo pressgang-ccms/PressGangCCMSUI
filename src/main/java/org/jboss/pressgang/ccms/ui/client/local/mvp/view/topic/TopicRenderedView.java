@@ -116,31 +116,21 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      */
     @Override
     public native void displayStringRendered(@NotNull final String xml) /*-{
-		var worker = new Worker("javascript/xsltproc/xsltproc.js");
+
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
-		worker.addEventListener('message', function(data) {
-			if (data != null) {
-				this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
-					"<html>" +
-						"<head>" +
-						"<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
-						"<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
-						"</head>" +
-						"<body>" +
-						data +
-						"</body>" +
-						"</html>");
-			} else {
-				this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
-					"<html><head></head><body>" +
-						pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::TopicCouldNotBeRendered() +
-                    "</body></html>");
-			}
+		var html = convertDocbookToHTML(xml);
 
-		});
-
-		worker.postMessage(xml);
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+            "<html>" +
+                "<head>" +
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
+                "</head>" +
+                "<body>" +
+                html +
+                "</body>" +
+            "</html>");
 	}-*/;
 
     @Override
