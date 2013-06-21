@@ -43,10 +43,22 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker;
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
+        function checkForUpdate() {
+			if (worker.running) {
+                var newText = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                if (newText != worker.xmlText) {
+                    worker.xmlText = newText;
+                    worker.postMessage(newText);
+                } else {
+                    $wnd.setTimeout(checkForUpdate, 1000);
+                }
+            }
+        }
+
         worker.addEventListener('message', function(me) {
             return function(e) {
 				if (e.data != null) {
-					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
 						"<html>" +
 							"<head>" +
                                 "<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
@@ -63,12 +75,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 						"</body></html>");
 				}
 
-				if (worker.running) {
-					worker.postMessage(editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()());
-				};
+				checkForUpdate();
 			}}(this));
+
         worker.running = true;
-		worker.postMessage(editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()());
+		checkForUpdate();
     }-*/;
 
 
