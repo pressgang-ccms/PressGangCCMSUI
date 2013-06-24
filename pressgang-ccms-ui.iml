@@ -117,7 +117,7 @@
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:gozirra-pressgang:0.5-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.8" level="project" />
+    <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-zanata:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.zanata:zanata-rest-client:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.zanata:zanata-common-api:2.0.0" level="project" />

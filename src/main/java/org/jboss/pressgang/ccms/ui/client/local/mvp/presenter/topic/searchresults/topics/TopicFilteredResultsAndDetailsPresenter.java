@@ -341,6 +341,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     public void close() {
         timer.cancel();
+        stopCheckingXML();
         GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
     }
 
@@ -830,7 +831,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             } else {
                 timer.cancel();
                 refreshSplitRenderedView(true);
-                checkingXML = false;
+                stopCheckingXML();
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
@@ -1435,6 +1436,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    /**
+     * The worker that continuously checks the XML will stop when checkingXML is set to false.
+     */
+    private void stopCheckingXML() {
+        checkingXML = false;
+    }
+
     private native void checkXML(@NotNull final String dtd) /*-{
 		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
 		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
@@ -1486,7 +1494,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
 				};}(this),
 				false);
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
+
+            if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
+			    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
+            }
 		}
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
