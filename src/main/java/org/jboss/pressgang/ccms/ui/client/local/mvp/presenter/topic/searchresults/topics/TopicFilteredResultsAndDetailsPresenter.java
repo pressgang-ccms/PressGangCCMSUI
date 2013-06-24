@@ -139,13 +139,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private Display display;
 
     /**
-     * true while there is a thread checking the XML
-     */
-    private boolean checkingXML = false;
-    /**
      * The xmllint worker
       */
-    private JavaScriptObject worker = null;
+    private static JavaScriptObject worker = null;
 
     /**
      * The global event bus.
@@ -806,27 +802,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     timer.scheduleRepeating(Constants.REFRESH_RATE);
                 }
 
-                /* This should always be false */
-                if (!checkingXML) {
-                    checkingXML = true;
+                /*
+                    Load the DTD and start checking the XML
+                 */
+                try {
+                    new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
+                        @Override
+                        public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
+                            startCheckingXML(resp.getText());
+                        }
 
-                    /*
-                        Load the DTD and start checking the XML
-                     */
-                    try {
-                        new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
-                            @Override
-                            public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
-                                checkXML(resp.getText());
-                            }
-
-                            @Override
-                            public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-                            }
-                        });
-                    } catch (@NotNull final RequestException e) {
-                        // do nothing
-                    }
+                        @Override
+                        public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
+                        }
+                    });
+                } catch (@NotNull final RequestException e) {
+                    // do nothing
                 }
             } else {
                 timer.cancel();
@@ -1437,42 +1428,61 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * The worker that continuously checks the XML will stop when checkingXML is set to false.
+     * The worker that continuously checks the XML will stop when its working property is set to false
      */
-    private void stopCheckingXML() {
-        checkingXML = false;
-    }
+    private native void stopCheckingXML() /*-{
+        var worker = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
+        if (worker != null) {
+            worker.working = false;
+        }
+    }-*/;
+
+    /**
+     * The worker that continuously checks the XML will start when its working property is set to true
+     */
+    private native void startCheckingXML(@NotNull final String dtd) /*-{
+        var worker = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
+        if (worker != null) {
+            worker.working = true;
+        }
+
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+    }-*/;
 
     private native void checkXML(@NotNull final String dtd) /*-{
-		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
-		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
-		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+		var worker = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
 
 		if (worker == null) {
 			worker = new Worker('javascript/xmllint/xmllint.js');
-			worker.addEventListener('message', function(me) {
-				return function(e) {
-					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+            worker.presenter = this;
+            worker.working = true;
+            worker.addEventListener('message',
+                function(e) {
+                    var displayComponent = this.presenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+                    var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+                    var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+                    var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+
                     var theseErrors = e.data;
-					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
-					if (oldErrors != theseErrors) {
-						// "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
+                    var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+                    if (oldErrors != theseErrors) {
+                        // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
                         // message, and is removed before being displayed.
                         var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
                         if (errorMessage.length == 0) {
-							var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+                            var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
                             var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
                             errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
                         } else {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
+                            errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
                         }
 
-						var errorLineRegex = /topic.xml:(\d+):/g;
+                        var errorLineRegex = /topic.xml:(\d+):/g;
                         var match = null;
                         var lineNumbers = [];
                         while (match = errorLineRegex.exec(theseErrors)) {
                             if (match.length >= 1) {
-								var line = parseInt(match[1]) - 1;
+                                var line = parseInt(match[1]) - 1;
                                 var found = false;
                                 for (var i = 0, lineNumbersLength = lineNumbers.length; i < lineNumbersLength; ++i) {
                                     if (lineNumbers[i] == line) {
@@ -1486,29 +1496,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         }
 
-						if (editor != null) {
+                        if (editor != null) {
                             editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)(lineNumbers, "xmlerror");
-						}
-					}
-				    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd)
+                        }
+                    }
 
-				};}(this),
-				false);
+                    this.presenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 
-            if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
-			    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
-            }
-		}
+                },
+                false);
 
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
-			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+            @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
+		} else {
+            worker.presenter = this;
+        }
+
+        if (worker.working) {
+            var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+            var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+            var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
             if (editor != null) {
-				var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
-				var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+                worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()(), schema: dtd});
+            }
+        }
 
-				worker.postMessage({xml: xml, schema: dtd});
-			}
-		}
 	}-*/;
 
     @Override
