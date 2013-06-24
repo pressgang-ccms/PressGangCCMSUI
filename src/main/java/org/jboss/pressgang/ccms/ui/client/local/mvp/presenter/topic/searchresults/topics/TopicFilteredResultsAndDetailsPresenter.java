@@ -6,6 +6,7 @@ import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -15,6 +16,7 @@ import com.google.gwt.http.client.*;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -171,14 +173,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * Setup automatic flushing and rendering.
      */
-    /*final Timer timer = new Timer() {
+    final Timer timer = new Timer() {
         @Override
         public void run() {
             if (lastDisplayedView == getTopicXMLComponent().getDisplay()) {
                 refreshSplitRenderedView(false);
             }
         }
-    };*/
+    };
 
     /**
      * Setup automatic xml validation
@@ -338,13 +340,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     public void close() {
-        getTopicSplitPanelRenderedDisplay().stop();
-        getTopicRenderedPresenter().getDisplay().stop();
+        timer.cancel();
+        stopCheckingXML();
         GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
     }
 
     private void bindRenderedViewClicks() {
-        /*getTopicSplitPanelRenderedDisplay().getFrame().addClickHandler(new ClickHandler() {
+        getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -371,7 +373,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
                 }
             }
-        });*/
+        });
     }
 
     private void bindTagButtons() {
@@ -798,10 +800,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 loadPropertyTags();
             }
 
-            /* While editing the XML, we need to setup a refresh of the rendered view */
+                /* While editing the XML, we need to setup a refresh of the rendered view */
             if (displayedView == this.getTopicXMLComponent().getDisplay()) {
                 if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-                    getTopicSplitPanelRenderedDisplay().displayEditorRendered(getTopicXMLComponent().getDisplay().getEditor());
+                    timer.scheduleRepeating(Constants.REFRESH_RATE);
                 }
 
                 /* This should always be false */
@@ -827,12 +829,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 }
             } else {
-                getTopicSplitPanelRenderedDisplay().stop();
-                checkingXML = false;
+                timer.cancel();
+                refreshSplitRenderedView(true);
+                stopCheckingXML();
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
-                getTopicRenderedPresenter().getDisplay().displayStringRendered(getTopicXMLComponent().getDisplay().getEditor().getText());
+                refreshRenderedView();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
@@ -1433,6 +1436,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    private void stopCheckingXML() {
+        checkingXML = false;
+    };
+
     private native void checkXML(@NotNull final String dtd) /*-{
 		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
 		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
@@ -1480,8 +1487,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)(lineNumbers, "xmlerror");
 						}
 					}
-
-					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+                    if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
+					    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+                    }
 				};}(this),
 				false);
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
@@ -1659,6 +1667,47 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.displayNewTopic()");
         }
+    }
+
+    /**
+     * Refresh the split panel rendered view
+     *
+     * @param forceExternalImages true if external images should be displayed, false if they should only be displayed
+     *                            after the topics has not been edited after a period of time
+     */
+    private void refreshSplitRenderedView(final boolean forceExternalImages) {
+        try {
+            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
+
+            try {
+                getTopicXMLComponent().getDisplay().getDriver().flush();
+            } catch (@NotNull final IllegalStateException ex) {
+                LOGGER.log(Level.WARNING, "getTopicXMLComponent().getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened because the rendered view was refreshed before the XML editor was bound.");
+            }
+
+            if (this.getDisplayedTopic() != null) {
+                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml());
+
+                if (xmlHasChanges) {
+                    lastXMLChange = System.currentTimeMillis();
+                }
+
+                final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                    isDisplayingImage = timeToDisplayImage;
+                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
+                }
+
+                lastXML = this.getDisplayedTopic().getXml();
+            }
+        } finally {
+            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
+        }
+    }
+
+    private void refreshRenderedView() {
+        getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
     }
 
     /**
