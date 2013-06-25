@@ -346,7 +346,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void bindRenderedViewClicks() {
-        getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
+        /*getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -373,7 +373,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
                 }
             }
-        });
+        }); */
     }
 
     private void bindTagButtons() {

@@ -1,10 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -18,15 +20,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
 
-    private final HTML div = new HTML();
+    private final Frame iframe = new Frame();
 
-    // Any number of processors can be created, they will behave
-    // independently. Every stylesheet have to have its own processor.
-    final XsltProcessor processor = new XsltProcessor();
-    /**
-     * true if the XSL was imported successfully, and false otherwise
-     */
-    boolean importSuccessful;
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
@@ -34,15 +29,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         LOGGER.info("ENTER TopicRenderedView()");
 
-        getDiv().addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
-        try {
-            // Setting the stylesheet to transform with
-            processor.importStyleSheet(DocbookToHTML.XSL);
-            importSuccessful = true;
-        } catch (XsltProcessingException e) {
-            importSuccessful = false;
-            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
-        }
+        iframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+        this.getPanel().setWidget(iframe);
     }
 
     @Override
@@ -52,30 +40,13 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     @Override
     public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
-
-        if (!importSuccessful) {
-            return;
-        }
-
-        try {
-            // define how the images are handled
-            processor.setParameter("externalImages", showImages + "");
-
-            // Setting the document to be transformed
-            processor.importSource(topicXML == null ? "" : topicXML);
-
-            // Getting the result
-            final String resultString = processor.transform();
-            getDiv().setHTML(resultString);
-
-            this.getPanel().setWidget(getDiv());
-        } catch (@NotNull final XsltProcessingException ex) {
-            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
-        }
+        //iframe.setUrl("rest/1/echoxml?id=" + 1);
+        iframe.setUrl("test.xml");
     }
 
+    @Override
     @NotNull
-    public HTML getDiv() {
-        return div;
+    public Frame getFrame() {
+        return iframe;
     }
 }
