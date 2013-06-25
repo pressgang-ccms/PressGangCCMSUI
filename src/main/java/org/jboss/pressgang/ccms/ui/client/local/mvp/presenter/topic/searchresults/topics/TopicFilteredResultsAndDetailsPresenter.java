@@ -1470,8 +1470,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			worker = new Worker('javascript/xmllint/xmllint.js');
 			worker.addEventListener('message',  function(me) {
                 return function(e) {
-                    var editor = getDisplay().@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-                    var errors = getDisplay().@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+                    var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+                    var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
 
                     var theseErrors = e.data;
                     var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
