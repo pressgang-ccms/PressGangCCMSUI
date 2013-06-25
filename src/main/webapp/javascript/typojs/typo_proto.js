@@ -538,6 +538,11 @@ typoPrototype = {
                         return;
                     }
                 }
+
+                for (var i = 0; i < numWorkers; ++i) {
+                    workers[i].terminate();
+                }
+
                 callback(rv);
             }
 
