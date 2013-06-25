@@ -253,6 +253,30 @@ public final class RESTCalls {
         }
     }
 
+    /**
+     * POST some XML that will be held for a short period and made available to be repeated back.
+     */
+    public static void holdXml(@NotNull final RESTCallback<Integer> callback, @NotNull final String xml) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).holdXML(xml);
+            }
+        });
+    }
+
+    /**
+     * POST some XML that will be held for a short period and made available to be repeated back.
+     */
+    public static void echoXml(@NotNull final RESTCallback<String> callback, @NotNull final Integer holdId) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).echoXML(holdId);
+            }
+        });
+    }
+
     public static void saveTag(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
