@@ -114,11 +114,11 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
             return null;
         }
 
-        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,  new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
+                final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,  new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
                         try
