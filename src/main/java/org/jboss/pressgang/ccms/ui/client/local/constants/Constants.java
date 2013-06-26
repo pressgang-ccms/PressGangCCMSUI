@@ -202,7 +202,7 @@ public final class Constants {
     /**
      * The reference to the XSL file, to be added to any XML being rendered by the browser
      */
-    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='docbook/html/docbook.xsl'?>";
+    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/docbook/html/docbook.xsl'?>";
 
     /**
      * The base URL to Bugzilla.

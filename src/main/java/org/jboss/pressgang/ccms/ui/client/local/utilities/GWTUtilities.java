@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -29,6 +30,10 @@ final public class GWTUtilities {
     private static final String COMMA = ",";
 
     private GWTUtilities() {
+    }
+
+    public static String getLocalUrl() {
+        return Window.Location.getProtocol() + "//" + Window.Location.getHost() + Window.Location.getPath();
     }
 
     /**

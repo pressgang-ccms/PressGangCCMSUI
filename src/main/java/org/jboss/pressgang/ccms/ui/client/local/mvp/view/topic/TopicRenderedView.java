@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +52,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRenderedView>() {
             @Override
             public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRenderedView display) {
-                iframe.setUrl("/pressgang-ccms/rest/1/echoxml?id=" + retValue.value);
+                iframe.setUrl(Constants.REST_SERVER + "/1/echoxml?id=" + retValue.value);
             }
         });
 
