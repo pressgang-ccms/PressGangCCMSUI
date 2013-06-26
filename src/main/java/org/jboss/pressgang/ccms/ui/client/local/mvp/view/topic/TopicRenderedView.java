@@ -33,14 +33,26 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
     private final FlexTable flexTable = new FlexTable();
+    private int displayingRow = 0;
 
     private Frame loadingiframe;
     final Timer timer = new Timer() {
         @Override
         public void run() {
             if (loadingiframe != null) {
-                flexTable.setWidget(1, 0, loadingiframe);
+                final int next = displayingRow == 0 ? 1 : 0;
+
+                /*
+                    Clear all styles
+                 */
+                flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+                flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+
+                flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+                flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+
                 loadingiframe = null;
+                displayingRow = next;
             }
         }
     };
@@ -51,7 +63,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         this.getPanel().setWidget(flexTable);
         flexTable.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
         flexTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        flexTable.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+        flexTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
         LOGGER.info("ENTER TopicRenderedView()");
     }
 
@@ -73,7 +85,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                     loadingiframe = new Frame();
                     loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
                     loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-                    flexTable.setWidget(0, 0, loadingiframe);
+                    flexTable.setWidget(displayingRow, 0, loadingiframe);
 
                     timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
                 }
