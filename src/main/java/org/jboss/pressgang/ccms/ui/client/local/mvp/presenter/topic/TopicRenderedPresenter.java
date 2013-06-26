@@ -26,7 +26,6 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
         void displayTopicRendered(final String topicXML, final boolean readOnly, final boolean showImages);
-        Frame getFrame();
     }
 
     /**

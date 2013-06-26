@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201306261429";
+    public static final String VERSION = "201306261456";
 
     /**
      * XML Mime type
@@ -45,7 +45,7 @@ public final class Constants {
     /**
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
-    public static final int REFRESH_RATE = 1000;
+    public static final int REFRESH_RATE = 2000;
     /**
      * How long to wait before refreshing the rendered view with images (in milliseconds).
      */

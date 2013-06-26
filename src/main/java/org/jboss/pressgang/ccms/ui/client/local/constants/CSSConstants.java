@@ -367,6 +367,9 @@ public interface CSSConstants {
         String TOPIC_VIEW_DESCRIPTION_DETAIL = "TopicViewDescriptionDetail";
         String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
         String TOPIC_RENDERED_VIEW_IFRAME = "TopicRenderedViewIFrame";
+        String TOPIC_RENDERED_VIEW_IFRAME_TABLE = "TopicRenderedViewIFrameTable";
+        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL =  "TopicRenderedViewIFrameTableLoadingCell";
+        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL  =  "TopicRenderedViewIFrameTableDisplayingCell";
 
         String TOPIC_XML_VIEW_PANEL = "TopicXMLViewPanel";
         String TOPIC_XML_ERRORS = "TopicXMLErrors";

@@ -1,5 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
@@ -27,18 +32,27 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
+    private final FlexTable flexTable = new FlexTable();
 
-    private final Frame iframe = new Frame();
-
+    private Frame loadingiframe;
+    final Timer timer = new Timer() {
+        @Override
+        public void run() {
+            if (loadingiframe != null) {
+                flexTable.setWidget(1, 0, loadingiframe);
+                loadingiframe = null;
+            }
+        }
+    };
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.RenderedView());
-
+        this.getPanel().setWidget(flexTable);
+        flexTable.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
+        flexTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        flexTable.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
         LOGGER.info("ENTER TopicRenderedView()");
-
-        iframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-        this.getPanel().setWidget(iframe);
     }
 
     @Override
@@ -52,16 +66,20 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRenderedView>() {
             @Override
             public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRenderedView display) {
-                iframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
+                /*
+                    Create a new iframe, and add it to the panel when it is loaded.
+                 */
+                if (loadingiframe == null) {
+                    loadingiframe = new Frame();
+                    loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
+                    loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+                    flexTable.setWidget(0, 0, loadingiframe);
+
+                    timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
+                }
             }
         });
 
         RESTCalls.holdXml(callback, Constants.DOCBOOK_XSL_REFERENCE + "\n" + topicXML);
-    }
-
-    @Override
-    @NotNull
-    public Frame getFrame() {
-        return iframe;
     }
 }
