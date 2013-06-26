@@ -105,7 +105,11 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
                 LOGGER.log(Level.SEVERE, message.toString());
             }
             if (throwable != null) {
-                LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + throwable.toString());
+                LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation:");
+                LOGGER.log(Level.SEVERE, throwable.toString());
+                if (message != null) {
+                    LOGGER.log(Level.SEVERE, message.toString());
+                }
                 LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(throwable));
             }
 

@@ -6,6 +6,7 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -46,11 +47,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     @Override
     public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
-        final BaseRestCallback<Integer, TopicRenderedView> callback = new BaseRestCallback<Integer, TopicRenderedView>(this,
-                new BaseRestCallback.SuccessAction<Integer, TopicRenderedView>() {
+        final BaseRestCallback<IntegerWrapper, TopicRenderedView> callback = new BaseRestCallback<IntegerWrapper, TopicRenderedView>(this,
+                new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRenderedView>() {
             @Override
-            public void doSuccessAction(@NotNull final Integer retValue, @NotNull final TopicRenderedView display) {
-                iframe.setUrl("/pressgang-ccms-server/rest/1/echoxml?id=" + retValue);
+            public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRenderedView display) {
+                iframe.setUrl("/pressgang-ccms/rest/1/echoxml?id=" + retValue.value);
             }
         });
 

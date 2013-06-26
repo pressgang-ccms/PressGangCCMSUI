@@ -12,35 +12,35 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.16/log4j-1.2.16.jar" output-file-name="log4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.0.Beta1/jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar" output-file-name="jboss-interceptors-api_1.1_spec-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar" output-file-name="jsr250-api-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-bus/2.2.0.Final/errai-bus-2.2.0.Final.jar" output-file-name="errai-bus-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-common/2.2.0.Final/errai-common-2.2.0.Final.jar" output-file-name="errai-common-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/reflections/reflections/2.2.0.Final/reflections-2.2.0.Final.jar" output-file-name="reflections-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-bus/2.3.2.Final/errai-bus-2.3.2.Final.jar" output-file-name="errai-bus-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-common/2.3.2.Final/errai-common-2.3.2.Final.jar" output-file-name="errai-common-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/reflections/reflections/2.3.2.Final/reflections-2.3.2.Final.jar" output-file-name="reflections-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava/12.0/guava-12.0.jar" output-file-name="guava-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar" output-file-name="jsr305-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/javassist/javassist/3.15.0-GA/javassist-3.15.0-GA.jar" output-file-name="javassist-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar" output-file-name="slf4j-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" output-file-name="dom4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" output-file-name="xml-apis-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-config/2.2.0.Final/errai-config-2.2.0.Final.jar" output-file-name="errai-config-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-marshalling/2.2.0.Final/errai-marshalling-2.2.0.Final.jar" output-file-name="errai-marshalling-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-codegen/2.2.0.Final/errai-codegen-2.2.0.Final.jar" output-file-name="errai-codegen-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-config/2.3.2.Final/errai-config-2.3.2.Final.jar" output-file-name="errai-config-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-marshalling/2.3.2.Final/errai-marshalling-2.3.2.Final.jar" output-file-name="errai-marshalling-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-codegen/2.3.2.Final/errai-codegen-2.3.2.Final.jar" output-file-name="errai-codegen-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mvel/mvel2/2.1.Beta8/mvel2-2.1.Beta8.jar" output-file-name="mvel2-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-codegen-gwt/2.2.0.Final/errai-codegen-gwt-2.2.0.Final.jar" output-file-name="errai-codegen-gwt-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-codegen-gwt/2.3.2.Final/errai-codegen-gwt-2.3.2.Final.jar" output-file-name="errai-codegen-gwt-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar" output-file-name="validation-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar" output-file-name="validation-api--sources.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/inject/guice/3.0/guice-3.0.jar" output-file-name="guice-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" output-file-name="aopalliance-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/io/netty/netty/4.0.0.Alpha1.errai.r1/netty-4.0.0.Alpha1.errai.r1.jar" output-file-name="netty-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-ioc/2.2.0.Final/errai-ioc-2.2.0.Final.jar" output-file-name="errai-ioc-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-tools/2.2.0.Final/errai-tools-2.2.0.Final.jar" output-file-name="errai-tools-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-ioc/2.3.2.Final/errai-ioc-2.3.2.Final.jar" output-file-name="errai-ioc-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-tools/2.3.2.Final/errai-tools-2.3.2.Final.jar" output-file-name="errai-tools-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/hsqldb/hsqldb/1.8.0.7/hsqldb-1.8.0.7.jar" output-file-name="hsqldb-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-cdi-client/2.2.0.Final/errai-cdi-client-2.2.0.Final.jar" output-file-name="errai-cdi-client-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-weld-integration/2.2.0.Final/errai-weld-integration-2.2.0.Final.jar" output-file-name="errai-weld-integration-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-cdi-jetty/2.2.0.Final/errai-cdi-jetty-2.2.0.Final.jar" output-file-name="errai-cdi-jetty-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-cdi-client/2.3.2.Final/errai-cdi-client-2.3.2.Final.jar" output-file-name="errai-cdi-client-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-weld-integration/2.3.2.Final/errai-weld-integration-2.3.2.Final.jar" output-file-name="errai-weld-integration-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-cdi-jetty/2.3.2.Final/errai-cdi-jetty-2.3.2.Final.jar" output-file-name="errai-cdi-jetty-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/servlet/weld-servlet-core/1.1.6.Final/weld-servlet-core-1.1.6.Final.jar" output-file-name="weld-servlet-core-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/weld-spi/1.1.Final/weld-spi-1.1.Final.jar" output-file-name="weld-spi-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/weld-api/1.1.Final/weld-api-1.1.Final.jar" output-file-name="weld-api-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-data-binding/2.2.0.Final/errai-data-binding-2.2.0.Final.jar" output-file-name="errai-data-binding-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-data-binding/2.3.2.Final/errai-data-binding-2.3.2.Final.jar" output-file-name="errai-data-binding-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava-gwt/13.0/guava-gwt-13.0.jar" output-file-name="guava-gwt-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty/6.1.25/jetty-6.1.25.jar" output-file-name="jetty-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/mortbay/jetty/jetty-util/6.1.25/jetty-util-6.1.25.jar" output-file-name="jetty-util-.jar" />
@@ -58,7 +58,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/servlet/weld-servlet/1.1.6.Final/weld-servlet-1.1.6.Final.jar" output-file-name="weld-servlet-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.0.0.Beta4/jboss-logging-3.0.0.Beta4.jar" output-file-name="jboss-logging-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/jaxrs-api/2.3.5.Final/jaxrs-api-2.3.5.Final.jar" output-file-name="jaxrs-api-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-jaxrs-provider/2.2.0.Final/errai-jaxrs-provider-2.2.0.Final.jar" output-file-name="errai-jaxrs-provider-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-jaxrs-provider/2.3.2.Final/errai-jaxrs-provider-2.3.2.Final.jar" output-file-name="errai-jaxrs-provider-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-jaxrs/2.2.3.GA/resteasy-jaxrs-2.2.3.GA.jar" output-file-name="resteasy-jaxrs-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/scannotation/scannotation/1.0.3/scannotation-1.0.3.jar" output-file-name="scannotation-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javassist/javassist/3.12.1.GA/javassist-3.12.1.GA.jar" output-file-name="javassist-.jar" />
@@ -68,7 +68,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" output-file-name="httpclient-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" output-file-name="httpcore-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" output-file-name="jcip-annotations-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130625.044916-45.jar" output-file-name="pressgang-ccms-restv1-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-SNAPSHOT.jar" output-file-name="pressgang-ccms-restv1-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130617.112933-38.jar" output-file-name="pressgang-ccms-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" output-file-name="commons-lang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" output-file-name="xalan-.jar" />
@@ -100,7 +100,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-jaxrs/1.8.5/jackson-jaxrs-1.8.5.jar" output-file-name="jackson-jaxrs-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.1/joda-time-2.1.jar" output-file-name="joda-time-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/acegwt-client/1.0-SNAPSHOT/acegwt-client-1.0-20130625.004918-78.jar" output-file-name="acegwt-client-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/mergelygwt-client/1.0-SNAPSHOT/mergelygwt-client-1.0-20130612.230535-3.jar" output-file-name="mergelygwt-client-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/mergelygwt-client/1.0-SNAPSHOT/mergelygwt-client-1.0-SNAPSHOT.jar" output-file-name="mergelygwt-client-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/vectomatic/lib-gwt-file/0.3.1/lib-gwt-file-0.3.1.jar" output-file-name="lib-gwt-file-.jar" />
         </element>
       </element>

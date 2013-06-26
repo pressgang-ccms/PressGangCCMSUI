@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.*;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 //import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -256,11 +257,29 @@ public final class RESTCalls {
     /**
      * POST some XML that will be held for a short period and made available to be repeated back.
      */
-    public static void holdXml(@NotNull final RESTCallback<Integer> callback, @NotNull final String xml) {
+    public static void holdXml(@NotNull final RESTCallback<IntegerWrapper> callback, @NotNull final String xml) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).holdXML(xml);
+            }
+        });
+    }
+
+    public static void echoXml(@NotNull final RESTCallback<String> callback, @NotNull final Integer id) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).echoXML(id);
+            }
+        });
+    }
+
+    public static void echoXml(@NotNull final RESTCallback<String> callback, @NotNull final String xml) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).echoXML(xml);
             }
         });
     }
