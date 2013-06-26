@@ -45,7 +45,7 @@ public final class Constants {
     /**
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
-    public static final int REFRESH_RATE = 5000;
+    public static final int REFRESH_RATE = 1000;
     /**
      * How long to wait before refreshing the rendered view with images (in milliseconds).
      */
