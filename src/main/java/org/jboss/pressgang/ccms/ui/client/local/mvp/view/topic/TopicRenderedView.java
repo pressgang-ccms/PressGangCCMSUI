@@ -52,7 +52,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRenderedView>() {
             @Override
             public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRenderedView display) {
-                iframe.setUrl(Constants.REST_SERVER + "/1/echoxml?id=" + retValue.value);
+                iframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
             }
         });
 

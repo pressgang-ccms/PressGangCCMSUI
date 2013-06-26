@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201306261249";
+    public static final String VERSION = "201306261429";
 
     /**
      * XML Mime type
@@ -202,7 +202,11 @@ public final class Constants {
     /**
      * The reference to the XSL file, to be added to any XML being rendered by the browser
      */
-    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/docbook/html/docbook.xsl'?>";
+    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/docbook/html/docbook.xsl'?>";
+    /**
+     * The REST endpoint that echos previously submitted xml
+      */
+    public static final String ECHO_ENDPOINT = "/1/echoxml";
 
     /**
      * The base URL to Bugzilla.
