@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.regexp.shared.MatchResult;
@@ -63,8 +65,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 Maintain the scroll position. This will fail if the iframe is not in the same domain.
              */
             if (loadediframe != null) {
-                loadingiframe.getElement().setScrollTop(loadediframe.getElement().getScrollTop());
-                loadingiframe.getElement().setScrollLeft(loadediframe.getElement().getScrollLeft());
+                final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
+                final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
+
+                loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
+                loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
             }
 
             loadediframe = loadingiframe;
