@@ -105,6 +105,6 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             }
         }, true);
 
-        RESTCalls.holdXml(callback, showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE + "\n" + topicXML);
+        RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML);
     }
 }
