@@ -66,10 +66,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
              */
             if (loadediframe != null) {
                 final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
-                final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
 
-                loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
-                loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                // This might happen if downloading the XSL for the first time, because the document may not
+                // be created in time.
+                if (loadingiframeDocument != null) {
+                    final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
+
+                    loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
+                    loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                }
             }
 
             loadediframe = loadingiframe;
