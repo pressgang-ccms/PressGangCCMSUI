@@ -176,7 +176,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
             flexTable.setWidget(displayingRow, 0, loadingiframe);
 
-            timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
+            timer.schedule(Constants.XSL_BACKGROUND_PROCESSING_TIME);
 
             return true;
         }
