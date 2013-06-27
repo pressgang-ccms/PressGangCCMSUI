@@ -66,24 +66,22 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             /*
                 Maintain the scroll position. This will fail if the iframe is not in the same domain.
              */
-            try {
-                if (loadediframe != null) {
-                    final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
 
-                    // This might happen if downloading the XSL for the first time, because the document may not
-                    // be created in time.
-                    if (loadingiframeDocument != null) {
-                        final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
+            if (loadediframe != null) {
+                final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
 
-                        // It is unlikely that this will be null, but it is possible
-                        if (loadediframeDocument != null) {
-                            setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
-                        }
+                // This might happen if downloading the XSL for the first time, because the document may not
+                // be created in time.
+                if (loadingiframeDocument != null) {
+                    final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
+
+                    // It is unlikely that this will be null, but it is possible
+                    if (loadediframeDocument != null) {
+                        setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
                     }
                 }
-            } catch (@NotNull final Exception ex) {
-                // This is probably a cross domain security violation. Do nothing.
             }
+
 
             loadediframe = loadingiframe;
             loadingiframe = null;
@@ -100,13 +98,17 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * @return The current horizontal scroll position
      */
     private native int getScrollX(@NotNull final String id)  /*-{
-		var iframe = $doc.getElementById(id);
-		if (iframe != null &&
-			iframe.contentWindow != null &&
-			iframe.contentWindow.document != null &&
-			iframe.contentWindow.document.defaultView != null) {
-			    return iframe.contentWindow.document.defaultView.pageXOffset;
-		}
+		try {
+            var iframe = $doc.getElementById(id);
+            if (iframe != null &&
+                iframe.contentWindow != null &&
+                iframe.contentWindow.document != null &&
+                iframe.contentWindow.document.defaultView != null) {
+                    return iframe.contentWindow.document.defaultView.pageXOffset;
+            }
+        } catch (exception) {
+            // probably a cross domain violation
+        }
         return 0;
 	}-*/;
 
@@ -119,13 +121,17 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * @return The current vertical scroll position
      */
     private native int getScrollY(@NotNull final String id)  /*-{
-		var iframe = $doc.getElementById(id);
-		if (iframe != null &&
-			iframe.contentWindow != null &&
-			iframe.contentWindow.document != null &&
-			iframe.contentWindow.document.defaultView != null) {
-			return iframe.contentWindow.document.defaultView.pageYOffset;
-		}
+       try {
+            var iframe = $doc.getElementById(id);
+            if (iframe != null &&
+                iframe.contentWindow != null &&
+                iframe.contentWindow.document != null &&
+                iframe.contentWindow.document.defaultView != null) {
+                return iframe.contentWindow.document.defaultView.pageYOffset;
+            }
+        } catch (exception) {
+            // probably a cross domain violation
+        }
 		return 0;
 	}-*/;
 
@@ -139,12 +145,16 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * @param scrollTop The vertical scroll position
      */
     private native void setScroll(@NotNull final String id, final int scrollLeft, final int scrollTop) /*-{
-        var iframe = $doc.getElementById(id);
-        if (iframe != null &&
-            iframe.contentWindow != null &&
-            iframe.contentWindow.document != null &&
-			iframe.contentWindow.document.defaultView != null) {
-			iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
+        try{
+            var iframe = $doc.getElementById(id);
+            if (iframe != null &&
+                iframe.contentWindow != null &&
+                iframe.contentWindow.document != null &&
+                iframe.contentWindow.document.defaultView != null) {
+                iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
+            }
+        } catch (exception) {
+            // probably a cross domain violation
         }
     }-*/;
 
