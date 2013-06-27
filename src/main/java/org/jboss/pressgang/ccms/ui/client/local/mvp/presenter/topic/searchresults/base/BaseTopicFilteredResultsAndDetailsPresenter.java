@@ -88,7 +88,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * The rendered topic view display in a split panel
      */
     @Inject
-    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
+    private TopicRenderedPresenter topicSplitPanelRenderedPresenter;
 
     /**
      * The presenter used to display the topic tags.
@@ -162,8 +162,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
 
     @NotNull
-    protected final TopicRenderedPresenter.Display getTopicSplitPanelRenderedDisplay() {
-        return topicSplitPanelRenderedDisplay;
+    protected final TopicRenderedPresenter getTopicSplitPanelRenderedPresenter() {
+        return topicSplitPanelRenderedPresenter;
     }
 
     /**
@@ -300,7 +300,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final int searchResultsWidth = Preferences.INSTANCE.getInt(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedDisplay.getPanel(), searchResultsWidth, renderedPanelSize);
+            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedPresenter.getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
         } finally {
@@ -350,10 +350,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                      */
                     if (split == SplitType.HORIZONTAL) {
                         Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, getDisplay()
-                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent()) + "");
                     } else if (split == SplitType.VERTICAL) {
                         Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, getDisplay()
-                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent()) + "");
                     }
                 }
             });
@@ -747,12 +747,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We display the rendered view with images */
             if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.getDisplay().displayTopicRendered(topicToDisplay.getXml(), isReadOnlyMode(), true);
+                topicRenderedPresenter.displayTopicRendered(topicToDisplay.getXml(), isReadOnlyMode(), true);
             }
 
             /* We initially display the split pane rendered view without images */
-            if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), true);
+            if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
+                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), true);
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */

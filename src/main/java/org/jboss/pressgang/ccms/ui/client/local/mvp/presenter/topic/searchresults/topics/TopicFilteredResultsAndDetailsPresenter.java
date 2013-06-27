@@ -1718,7 +1718,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
+                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();
@@ -1729,7 +1729,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void refreshRenderedView() {
-        getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
+        getTopicRenderedPresenter().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
     }
 
     /**

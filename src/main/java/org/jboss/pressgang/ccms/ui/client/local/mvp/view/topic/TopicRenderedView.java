@@ -1,8 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Frame;
@@ -86,25 +89,14 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
-        final BaseRestCallback<IntegerWrapper, TopicRenderedView> callback = new BaseRestCallback<IntegerWrapper, TopicRenderedView>(this,
-                new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRenderedView>() {
-            @Override
-            public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRenderedView display) {
-                /*
-                    Create a new iframe, and add it to the panel when it is loaded.
-                 */
-                if (loadingiframe == null) {
-                    loadingiframe = new Frame();
-                    loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
-                    loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-                    flexTable.setWidget(displayingRow, 0, loadingiframe);
+    public final void displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
+        if (loadingiframe == null) {
+            loadingiframe = new Frame();
+            loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
+            loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+            flexTable.setWidget(displayingRow, 0, loadingiframe);
 
-                    timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
-                }
-            }
-        }, true);
-
-        RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML);
+            timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
+        }
     }
 }
