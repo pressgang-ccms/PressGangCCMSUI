@@ -64,21 +64,25 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             /*
                 Maintain the scroll position. This will fail if the iframe is not in the same domain.
              */
-            if (loadediframe != null) {
-                final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
+            try {
+                if (loadediframe != null) {
+                    final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
 
-                // This might happen if downloading the XSL for the first time, because the document may not
-                // be created in time.
-                if (loadingiframeDocument != null) {
-                    final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
+                    // This might happen if downloading the XSL for the first time, because the document may not
+                    // be created in time.
+                    if (loadingiframeDocument != null) {
+                        final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
 
-                    // It is unlikely that this will be null, but it is possible
-                    if (loadediframeDocument != null) {
+                        // It is unlikely that this will be null, but it is possible
+                        if (loadediframeDocument != null) {
 
-                        loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
-                        loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                            loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
+                            loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                        }
                     }
                 }
+            } catch (@NotNull final Exception ex) {
+                // This is probably a cross domain security violation. Do nothing.
             }
 
             loadediframe = loadingiframe;
