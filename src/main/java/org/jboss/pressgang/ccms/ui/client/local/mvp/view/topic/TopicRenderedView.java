@@ -64,7 +64,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             final int scrollY = getScrollY(LOADED_IFRAME);
 
             /*
-                Clear all styles
+                Hide the outgoing iframe, and display the incoming one.
             */
             flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
             flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
