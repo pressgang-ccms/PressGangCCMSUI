@@ -43,6 +43,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
     private static final String LOADING_IFRAME = "LoadingIFrame";
     private static final String LOADED_IFRAME = "LoadedIFrame";
+    private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable flexTable = new FlexTable();
     private int displayingRow = 0;
 
@@ -55,19 +56,27 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             final int next = displayingRow == 0 ? 1 : 0;
 
             /*
-                Clear all styles
+                Maintain the scroll position. This will fail if the iframe is not in the same domain.
+                We have to get these values before the iframe is hidden, otherwise Firefox will
+                lose the scroll position.
              */
+            final int scrollX = getScrollX(LOADED_IFRAME);
+            final int scrollY = getScrollY(LOADED_IFRAME);
+
+            /*
+                Clear all styles
+            */
             flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
             flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
             flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
             flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
 
-            /*
-                Maintain the scroll position. This will fail if the iframe is not in the same domain.
-             */
+            setScroll(LOADING_IFRAME, scrollX, scrollY);
 
-            setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
+            if (loadediframe != null) {
+                loadediframe.getElement().setId(HIDDEN_IFRAME);
+            }
 
             loadediframe = loadingiframe;
             loadediframe.getElement().setId(LOADED_IFRAME);
@@ -88,10 +97,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 		try {
             var iframe = $doc.getElementById(id);
             if (iframe != null &&
-                iframe.contentWindow != null &&
-                iframe.contentWindow.document != null &&
-                iframe.contentWindow.document.defaultView != null) {
-                    return iframe.contentWindow.document.defaultView.pageXOffset;
+                iframe.contentWindow != null) {
+                    return iframe.contentWindow.pageXOffset;
             }
         } catch (exception) {
             // probably a cross domain violation
@@ -111,9 +118,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
        try {
             var iframe = $doc.getElementById(id);
             if (iframe != null &&
-                iframe.contentWindow != null &&
-                iframe.contentWindow.document != null &&
-                iframe.contentWindow.document.defaultView != null) {
+                iframe.contentWindow != null) {
                 return iframe.contentWindow.document.defaultView.pageYOffset;
             }
         } catch (exception) {
@@ -135,9 +140,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         try{
             var iframe = $doc.getElementById(id);
             if (iframe != null &&
-                iframe.contentWindow != null &&
-                iframe.contentWindow.document != null &&
-                iframe.contentWindow.document.defaultView != null) {
+                iframe.contentWindow != null) {
                 iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
             }
         } catch (exception) {
