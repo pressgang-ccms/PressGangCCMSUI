@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201306261523";
+    public static final String VERSION = "201306270848";
 
     /**
      * XML Mime type
@@ -202,7 +202,12 @@ public final class Constants {
     /**
      * The reference to the XSL file, to be added to any XML being rendered by the browser
      */
-    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/docbook/html/docbook.xsl'?>";
+    public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single.xsl'?>";
+
+    /**
+     * The reference to the XSL file with placeholder images, to be added to any XML being rendered by the browser
+     */
+    public static final String DOCBOOK_PLACEHOLDER_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-placeholder.xsl'?>";
     /**
      * The REST endpoint that echos previously submitted xml
       */

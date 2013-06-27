@@ -29,8 +29,24 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     @Nullable
     private final FailureAction<D> failureAction;
 
+    /**
+     * if true, don't display an alert for invalid data responses.
+     */
+    private final boolean disableDefaultFailureAction;
+
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
+    /**
+     *
+     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param successAction The action to perform if the rest call was successful
+     */
+    public BaseRestCallback(@Nullable final D display, @NotNull final SuccessAction<C, D> successAction, final boolean disableDefaultFailureAction) {
+        this.display = display;
+        this.successAction = successAction;
+        this.failureAction = null;
+        this.disableDefaultFailureAction = disableDefaultFailureAction;
+    }
     /**
      *
      * @param display The display used to show some kind of waiting screen. This can be null.
@@ -40,7 +56,9 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
         this.display = display;
         this.successAction = successAction;
         this.failureAction = null;
+        this.disableDefaultFailureAction = false;
     }
+
 
     /**
      *
@@ -52,6 +70,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
         this.display = display;
         this.successAction = successAction;
         this.failureAction = failureAction;
+        this.disableDefaultFailureAction = false;
     }
 
     @Override
@@ -113,16 +132,18 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
                 LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(throwable));
             }
 
-            if (throwable instanceof ResponseException) {
-                final ResponseException ex = (ResponseException) throwable;
-                /* A bad request means invalid input, like a duplicated name */
-                if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + ex.getResponse().getText());
+            if (!disableDefaultFailureAction) {
+                if (throwable instanceof ResponseException) {
+                    final ResponseException ex = (ResponseException) throwable;
+                    /* A bad request means invalid input, like a duplicated name */
+                    if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + ex.getResponse().getText());
 
+                    }
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n" + (message != null ? message.toString() : "")
+                            + "\n" + (throwable != null ? throwable.toString() : ""));
                 }
-            } else {
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n" + (message != null ? message.toString() : "")
-                        + "\n" + (throwable != null ? throwable.toString() : ""));
             }
 
         } finally {

@@ -29,6 +29,10 @@ import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+/**
+ * This view maintains a kind of double buffer. IFrames are loaded into hidden table cells, and then
+ * "flipped" out after a period of time to give a seamless appearance of a panel being updated.
+ */
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
@@ -36,24 +40,33 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private int displayingRow = 0;
 
     private Frame loadingiframe;
+    private Frame loadediframe;
+
     final Timer timer = new Timer() {
         @Override
         public void run() {
-            if (loadingiframe != null) {
-                final int next = displayingRow == 0 ? 1 : 0;
+            final int next = displayingRow == 0 ? 1 : 0;
 
-                /*
-                    Clear all styles
-                 */
-                flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-                flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            /*
+                Clear all styles
+             */
+            flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
-                flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-                flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
 
-                loadingiframe = null;
-                displayingRow = next;
+            /*
+                Maintain the scroll position. This will fail if the iframe is not in the same domain.
+             */
+            if (loadediframe != null) {
+                loadingiframe.getElement().setScrollTop(loadediframe.getElement().getScrollTop());
+                loadingiframe.getElement().setScrollLeft(loadediframe.getElement().getScrollLeft());
             }
+
+            loadediframe = loadingiframe;
+            loadingiframe = null;
+            displayingRow = next;
         }
     };
 
@@ -90,8 +103,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                     timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
                 }
             }
-        });
+        }, true);
 
-        RESTCalls.holdXml(callback, Constants.DOCBOOK_XSL_REFERENCE + "\n" + topicXML);
+        RESTCalls.holdXml(callback, showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE + "\n" + topicXML);
     }
 }
