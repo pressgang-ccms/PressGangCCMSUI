@@ -1719,9 +1719,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
                     getTopicSplitPanelRenderedPresenter().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
+                } else {
+                    lastXML = this.getDisplayedTopic().getXml();
                 }
-
-                lastXML = this.getDisplayedTopic().getXml();
             }
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");

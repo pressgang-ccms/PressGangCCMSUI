@@ -103,7 +103,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
+    public final boolean displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
         if (loadingiframe == null) {
             loadingiframe = new Frame();
             loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
@@ -111,6 +111,10 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             flexTable.setWidget(displayingRow, 0, loadingiframe);
 
             timer.schedule(Constants.REFRESH_RATE - (Constants.REFRESH_RATE / 10));
+
+            return true;
         }
+
+        return false;
     }
 }
