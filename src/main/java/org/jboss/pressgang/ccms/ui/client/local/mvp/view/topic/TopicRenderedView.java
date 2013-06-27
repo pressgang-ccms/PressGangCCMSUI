@@ -72,8 +72,12 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 if (loadingiframeDocument != null) {
                     final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
 
-                    loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
-                    loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                    // It is unlikely that this will be null, but it is possible
+                    if (loadediframeDocument != null) {
+
+                        loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
+                        loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                    }
                 }
             }
 
