@@ -41,6 +41,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
     private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
+    private static final String LOADING_IFRAME = "LoadingIFrame";
+    private static final String LOADED_IFRAME = "LoadedIFrame";
     private final FlexTable flexTable = new FlexTable();
     private int displayingRow = 0;
 
@@ -75,9 +77,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
                         // It is unlikely that this will be null, but it is possible
                         if (loadediframeDocument != null) {
-
-                            loadingiframeDocument.setScrollTop(loadediframeDocument.getScrollTop());
-                            loadingiframeDocument.setScrollLeft(loadediframeDocument.getScrollLeft());
+                            setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
                         }
                     }
                 }
@@ -91,6 +91,63 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         }
     };
 
+    /**
+     * The GWT scrolling functions don't work in Firefox in a window that contains
+     * XSL transformed into HTML. So we use native code to get access to the scroll
+     * position of the default view. Tested in Chrome and Firefox.
+     *
+     * @param id The iframe id
+     * @return The current horizontal scroll position
+     */
+    private native int getScrollX(@NotNull final String id)  /*-{
+		var iframe = $doc.getElementById(id);
+		if (iframe != null &&
+			iframe.contentWindow != null &&
+			iframe.contentWindow.document != null &&
+			iframe.contentWindow.document.defaultView != null) {
+			    return iframe.contentWindow.document.defaultView.pageXOffset;
+		}
+        return 0;
+	}-*/;
+
+    /**
+     * The GWT scrolling functions don't work in Firefox in a window that contains
+     * XSL transformed into HTML. So we use native code to get access to the scroll
+     * position of the default view. Tested in Chrome and Firefox.
+     *
+     * @param id The iframe id
+     * @return The current vertical scroll position
+     */
+    private native int getScrollY(@NotNull final String id)  /*-{
+		var iframe = $doc.getElementById(id);
+		if (iframe != null &&
+			iframe.contentWindow != null &&
+			iframe.contentWindow.document != null &&
+			iframe.contentWindow.document.defaultView != null) {
+			return iframe.contentWindow.document.defaultView.pageYOffset;
+		}
+		return 0;
+	}-*/;
+
+    /**
+     * The GWT scrolling functions don't work in Firefox in a window that contains
+     * XSL transformed into HTML. So we use native code to get access to the scroll
+     * position of the default view. Tested in Chrome and Firefox.
+     *
+     * @param id  The iframe id
+     * @param scrollLeft The horizontal scroll position
+     * @param scrollTop The vertical scroll position
+     */
+    private native void setScroll(@NotNull final String id, final int scrollLeft, final int scrollTop) /*-{
+        var iframe = $doc.getElementById(id);
+        if (iframe != null &&
+            iframe.contentWindow != null &&
+            iframe.contentWindow.document != null &&
+			iframe.contentWindow.document.defaultView != null) {
+			iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
+        }
+    }-*/;
+
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.RenderedView());
@@ -98,6 +155,10 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         flexTable.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
         flexTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
         flexTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+
+        loadingiframe.getElement().setId(LOADING_IFRAME);
+        loadediframe.getElement().setId(LOADED_IFRAME);
+
         LOGGER.info("ENTER TopicRenderedView()");
     }
 
