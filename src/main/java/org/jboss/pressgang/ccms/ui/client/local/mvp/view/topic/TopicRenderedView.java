@@ -67,23 +67,10 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 Maintain the scroll position. This will fail if the iframe is not in the same domain.
              */
 
-            if (loadediframe != null) {
-                final Document loadingiframeDocument = IFrameElement.as(loadingiframe.getElement()).getContentDocument();
-
-                // This might happen if downloading the XSL for the first time, because the document may not
-                // be created in time.
-                if (loadingiframeDocument != null) {
-                    final Document loadediframeDocument = IFrameElement.as(loadediframe.getElement()).getContentDocument();
-
-                    // It is unlikely that this will be null, but it is possible
-                    if (loadediframeDocument != null) {
-                        setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
-                    }
-                }
-            }
-
+            setScroll(LOADING_IFRAME, getScrollX(LOADED_IFRAME), getScrollY(LOADED_IFRAME));
 
             loadediframe = loadingiframe;
+            loadediframe.getElement().setId(LOADED_IFRAME);
             loadingiframe = null;
             displayingRow = next;
         }
@@ -166,8 +153,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         flexTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
         flexTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
-        loadingiframe.getElement().setId(LOADING_IFRAME);
-        loadediframe.getElement().setId(LOADED_IFRAME);
+
+        ;
 
         LOGGER.info("ENTER TopicRenderedView()");
     }
@@ -181,6 +168,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     public final boolean displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
         if (loadingiframe == null) {
             loadingiframe = new Frame();
+            loadingiframe.getElement().setId(LOADING_IFRAME);
             loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
             loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
             flexTable.setWidget(displayingRow, 0, loadingiframe);

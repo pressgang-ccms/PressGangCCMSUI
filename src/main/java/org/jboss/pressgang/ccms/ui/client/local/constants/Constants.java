@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201306271300";
+    public static final String VERSION = "201306271304";
 
     /**
      * XML Mime type
