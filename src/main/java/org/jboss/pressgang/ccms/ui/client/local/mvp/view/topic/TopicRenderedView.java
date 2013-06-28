@@ -145,35 +145,37 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }-*/;
 
     private void displayRendered() {
-        final int next = displayingRow == 0 ? 1 : 0;
+        if (loadingiframe != null) {
+            final int next = displayingRow == 0 ? 1 : 0;
 
-        /*
-            Maintain the scroll position. This will fail if the iframe is not in the same domain.
-            We have to get these values before the iframe is hidden, otherwise Firefox will
-            lose the scroll position.
-         */
-        final int scrollX = getScrollX(LOADED_IFRAME);
-        final int scrollY = getScrollY(LOADED_IFRAME);
+            /*
+                Maintain the scroll position. This will fail if the iframe is not in the same domain.
+                We have to get these values before the iframe is hidden, otherwise Firefox will
+                lose the scroll position.
+             */
+            final int scrollX = getScrollX(LOADED_IFRAME);
+            final int scrollY = getScrollY(LOADED_IFRAME);
 
-        /*
-            Hide the outgoing iframe, and display the incoming one.
-        */
-        flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            /*
+                Hide the outgoing iframe, and display the incoming one.
+            */
+            flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
-        flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-        flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
 
-        setScroll(LOADING_IFRAME, scrollX, scrollY);
+            setScroll(LOADING_IFRAME, scrollX, scrollY);
 
-        if (loadediframe != null) {
-            loadediframe.getElement().setId(HIDDEN_IFRAME);
+            if (loadediframe != null) {
+                loadediframe.getElement().setId(HIDDEN_IFRAME);
+            }
+
+            loadediframe = loadingiframe;
+            loadediframe.getElement().setId(LOADED_IFRAME);
+            loadingiframe = null;
+            displayingRow = next;
         }
-
-        loadediframe = loadingiframe;
-        loadediframe.getElement().setId(LOADED_IFRAME);
-        loadingiframe = null;
-        displayingRow = next;
     }
 
     @Override
