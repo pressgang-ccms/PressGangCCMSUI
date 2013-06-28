@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.IFrameElement;
@@ -46,44 +47,10 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable flexTable = new FlexTable();
     private int displayingRow = 0;
+    private JavaScriptObject listener;
 
     private Frame loadingiframe;
     private Frame loadediframe;
-
-    final Timer timer = new Timer() {
-        @Override
-        public void run() {
-            final int next = displayingRow == 0 ? 1 : 0;
-
-            /*
-                Maintain the scroll position. This will fail if the iframe is not in the same domain.
-                We have to get these values before the iframe is hidden, otherwise Firefox will
-                lose the scroll position.
-             */
-            final int scrollX = getScrollX(LOADED_IFRAME);
-            final int scrollY = getScrollY(LOADED_IFRAME);
-
-            /*
-                Hide the outgoing iframe, and display the incoming one.
-            */
-            flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-            flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-
-            flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-            flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-
-            setScroll(LOADING_IFRAME, scrollX, scrollY);
-
-            if (loadediframe != null) {
-                loadediframe.getElement().setId(HIDDEN_IFRAME);
-            }
-
-            loadediframe = loadingiframe;
-            loadediframe.getElement().setId(LOADED_IFRAME);
-            loadingiframe = null;
-            displayingRow = next;
-        }
-    };
 
     /**
      * The GWT scrolling functions don't work in Firefox in a window that contains
@@ -156,10 +123,57 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         flexTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
         flexTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
-
-        ;
+        createEventListener();
+        addEventListener();
 
         LOGGER.info("ENTER TopicRenderedView()");
+    }
+
+    private native void createEventListener() /*-{
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener =
+			function(me) {
+				return function displayAfterLoaded(event) {
+					if (event.data == 'loaded') {
+						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
+					}
+				};
+			}(this);
+	}-*/;
+
+    private native void addEventListener() /*-{
+        $wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
+    }-*/;
+
+    private void displayRendered() {
+        final int next = displayingRow == 0 ? 1 : 0;
+
+        /*
+            Maintain the scroll position. This will fail if the iframe is not in the same domain.
+            We have to get these values before the iframe is hidden, otherwise Firefox will
+            lose the scroll position.
+         */
+        final int scrollX = getScrollX(LOADED_IFRAME);
+        final int scrollY = getScrollY(LOADED_IFRAME);
+
+        /*
+            Hide the outgoing iframe, and display the incoming one.
+        */
+        flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+
+        flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+        flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+
+        setScroll(LOADING_IFRAME, scrollX, scrollY);
+
+        if (loadediframe != null) {
+            loadediframe.getElement().setId(HIDDEN_IFRAME);
+        }
+
+        loadediframe = loadingiframe;
+        loadediframe.getElement().setId(LOADED_IFRAME);
+        loadingiframe = null;
+        displayingRow = next;
     }
 
     @Override
@@ -175,8 +189,6 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
             loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
             flexTable.setWidget(displayingRow, 0, loadingiframe);
-
-            timer.schedule(Constants.XSL_BACKGROUND_PROCESSING_TIME);
 
             return true;
         }
