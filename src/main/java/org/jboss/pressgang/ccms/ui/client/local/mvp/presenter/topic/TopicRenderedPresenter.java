@@ -71,10 +71,10 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         String fixedXML =  topicXML;
 
-        final RegExp imageRegex = RegExp.compile("imagedata(.*?)fileref=(\"|')(images/)?(\\d+)\\.\\w+(\"|')(.*?)>", "g");
+        /*final RegExp imageRegex = RegExp.compile("imagedata(.*?)fileref=(\"|')(images/)?(\\d+)\\.\\w+(\"|')(.*?)>", "g");
         for (MatchResult matcher = imageRegex.exec(topicXML); matcher != null; matcher = imageRegex.exec(topicXML)) {
             fixedXML = fixedXML.replaceFirst(matcher.getGroup(0), "imagedata " + matcher.getGroup(1) + " fileref=\"" + Constants.REST_SERVER + "/1/image/get/raw/" + matcher.getGroup(4) + "\" " + matcher.getGroup(6) + ">");
-        }
+        }*/
 
         RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + fixedXML);
     }
