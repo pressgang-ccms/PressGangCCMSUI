@@ -186,6 +186,14 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @Override
     public final boolean displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
 
+        /*
+            There is the potential for a race condition here. If a XML file takes longer to render than the next refresh
+            (maybe a large XML file was rendered, followed by a small one) then when the large one finished it will
+            trigger the small one to be displayed prematurely.
+
+            All this means in this situation is that the user will see blank screen or a half rendered HTML page.
+         */
+
         loadingiframe = new Frame();
         loadingiframe.getElement().setId(LOADING_IFRAME);
         loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
