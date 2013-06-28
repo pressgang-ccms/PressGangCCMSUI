@@ -183,16 +183,13 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     @Override
     public final boolean displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
-        if (loadingiframe == null) {
-            loadingiframe = new Frame();
-            loadingiframe.getElement().setId(LOADING_IFRAME);
-            loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
-            loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-            flexTable.setWidget(displayingRow, 0, loadingiframe);
 
-            return true;
-        }
+        loadingiframe = new Frame();
+        loadingiframe.getElement().setId(LOADING_IFRAME);
+        loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
+        loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+        flexTable.setWidget(displayingRow, 0, loadingiframe);
 
-        return false;
+        return true;
     }
 }
