@@ -30,7 +30,7 @@ public interface BaseTemplateViewInterface {
          * @return The element that displays the help topic
          */
         @NotNull
-        HTML getContents();
+        Frame getContents();
 
         /**
          *

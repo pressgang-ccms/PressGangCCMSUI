@@ -90,13 +90,13 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
      * @return The view that displays the source urls
      */
     @NotNull
-    public final Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 
     @Override
     @NotNull
-    public final EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1> generatePossibleChildrenProvider(@Nullable final RESTBaseTopicV1<?, ?, ?> parent) {
+    public EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1> generatePossibleChildrenProvider(@Nullable final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicSourceUrlCollectionItemV1> data) {
@@ -114,12 +114,12 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
     }
 
     @Override
-    public final void parseToken(@NotNull final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 
     @Override
-    public final void go(@NotNull final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, HISTORY_TOKEN);
     }
@@ -130,12 +130,12 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
     }
 
     @Override
-    public final void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
+    public void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bindChildren(helpTopicId, pageId, display);
     }
 
     @Override
-    public final void displayChildrenExtended(@NotNull final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
+    public void displayChildrenExtended(@NotNull final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
         super.displayChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }

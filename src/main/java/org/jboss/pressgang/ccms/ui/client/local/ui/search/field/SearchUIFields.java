@@ -52,171 +52,171 @@ public class SearchUIFields implements SearchViewBase {
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
     @Nullable
-    public final Date getCreatedAfter() {
+    public Date getCreatedAfter() {
         return GWTUtilities.createDateCopy(this.createdAfter);
     }
 
-    public final void setCreatedAfter(@Nullable final Date createdAfter) {
+    public void setCreatedAfter(@Nullable final Date createdAfter) {
         this.createdAfter = GWTUtilities.createDateCopy(createdAfter);
     }
 
     @Nullable
-    public final Date getCreatedBefore() {
+    public Date getCreatedBefore() {
         return GWTUtilities.createDateCopy(this.createdBefore);
     }
 
-    public final void setCreatedBefore(@Nullable final Date createdBefore) {
+    public void setCreatedBefore(@Nullable final Date createdBefore) {
         this.createdBefore = GWTUtilities.createDateCopy(createdBefore);
     }
 
     @Nullable
-    public final Date getEditedAfter() {
+    public Date getEditedAfter() {
         return GWTUtilities.createDateCopy(this.editedAfter);
     }
 
-    public final void setEditedAfter(@Nullable final Date editedAfter) {
+    public void setEditedAfter(@Nullable final Date editedAfter) {
         this.editedAfter = GWTUtilities.createDateCopy(editedAfter);
     }
 
     @Nullable
-    public final Date getEditedBefore() {
+    public Date getEditedBefore() {
         return GWTUtilities.createDateCopy(this.editedBefore);
     }
 
-    public final void setEditedBefore(@Nullable final Date editedBefore) {
+    public void setEditedBefore(@Nullable final Date editedBefore) {
         this.editedBefore = GWTUtilities.createDateCopy(editedBefore);
     }
 
     @Nullable
-    public final Integer getEditedInLastXDays() {
+    public Integer getEditedInLastXDays() {
         return this.editedInLastXDays;
     }
 
-    public final void setEditedInLastXDays(@Nullable final Integer editedInLastXDays) {
+    public void setEditedInLastXDays(@Nullable final Integer editedInLastXDays) {
         this.editedInLastXDays = editedInLastXDays;
     }
 
     @Nullable
-    public final String getIds() {
+    public String getIds() {
         return this.ids;
     }
 
-    public final void setIds(@Nullable final String ids) {
+    public void setIds(@Nullable final String ids) {
         this.ids = ids;
     }
 
     @Nullable
-    public final String getNotIds() {
+    public String getNotIds() {
         return this.notIds;
     }
 
-    public final void setNotIds(@Nullable final String notIds) {
+    public void setNotIds(@Nullable final String notIds) {
         this.notIds = notIds;
     }
 
     @Nullable
-    public final String getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
-    public final void setTitle(@Nullable final String title) {
+    public void setTitle(@Nullable final String title) {
         this.title = title;
     }
 
     @Nullable
-    public final String getNotTitle() {
+    public String getNotTitle() {
         return this.notTitle;
     }
 
-    public final void setNotTitle(@Nullable final String notTitle) {
+    public void setNotTitle(@Nullable final String notTitle) {
         this.notTitle = notTitle;
     }
 
     @Nullable
-    public final String getDescription() {
+    public String getDescription() {
         return this.description;
     }
 
-    public final void setDescription(@Nullable final String description) {
+    public void setDescription(@Nullable final String description) {
         this.description = description;
     }
 
     @Nullable
-    public final String getNotDescription() {
+    public String getNotDescription() {
         return this.notDescription;
     }
 
-    public final void setNotDescription(@Nullable final String notDescription) {
+    public void setNotDescription(@Nullable final String notDescription) {
         this.notDescription = notDescription;
     }
 
     @Nullable
-    public final String getIncludedInContentSpecs() {
+    public String getIncludedInContentSpecs() {
         return this.includedInContentSpecs;
     }
 
-    public final void setIncludedInContentSpecs(@Nullable final String includedInContentSpecs) {
+    public void setIncludedInContentSpecs(@Nullable final String includedInContentSpecs) {
         this.includedInContentSpecs = includedInContentSpecs;
     }
 
     @Nullable
-    public final String getNotIncludedInContentSpecs() {
+    public String getNotIncludedInContentSpecs() {
         return this.notIncludedInContentSpecs;
     }
 
-    public final void setNotIncludedInContentSpecs(@Nullable final String notIncludedInContentSpecs) {
+    public void setNotIncludedInContentSpecs(@Nullable final String notIncludedInContentSpecs) {
         this.notIncludedInContentSpecs = notIncludedInContentSpecs;
     }
 
     @Nullable
-    public final String getFreeTextSearch() {
+    public String getFreeTextSearch() {
         return this.freeTextSearch;
     }
 
-    public final void setFreeTextSearch(@Nullable final String freeTextSearch) {
+    public void setFreeTextSearch(@Nullable final String freeTextSearch) {
         this.freeTextSearch = freeTextSearch;
     }
 
     @Nullable
-    public final String getContents() {
+    public String getContents() {
         return this.contents;
     }
 
-    public final void setContents(@Nullable final String contents) {
+    public void setContents(@Nullable final String contents) {
         this.contents = contents;
     }
 
     @Nullable
-    public final Integer getNotEditedInLastXDays() {
+    public Integer getNotEditedInLastXDays() {
         return this.notEditedInLastXDays;
     }
 
-    public final void setNotEditedInLastXDays(@Nullable final Integer notEditedInLastXDays) {
+    public void setNotEditedInLastXDays(@Nullable final Integer notEditedInLastXDays) {
         this.notEditedInLastXDays = notEditedInLastXDays;
     }
 
     @Nullable
-    public final String getNotContents() {
+    public String getNotContents() {
         return this.notContents;
     }
 
-    public final void setNotContents(@Nullable final String notContents) {
+    public void setNotContents(@Nullable final String notContents) {
         this.notContents = notContents;
     }
 
-    public final TriStateSelectionState getHasBugzillaBugs() {
+    public TriStateSelectionState getHasBugzillaBugs() {
         return this.hasBugzillaBugs;
     }
 
-    public final void setHasBugzillaBugs(final TriStateSelectionState hasBugzillaBugs) {
+    public void setHasBugzillaBugs(final TriStateSelectionState hasBugzillaBugs) {
         this.hasBugzillaBugs = hasBugzillaBugs;
     }
 
-    public final TriStateSelectionState getHasOpenBugzillaBugs() {
+    public TriStateSelectionState getHasOpenBugzillaBugs() {
         return this.hasOpenBugzillaBugs;
     }
 
-    public final void setHasOpenBugzillaBugs(final TriStateSelectionState hasOpenBugzillaBugs) {
+    public void setHasOpenBugzillaBugs(final TriStateSelectionState hasOpenBugzillaBugs) {
         this.hasOpenBugzillaBugs = hasOpenBugzillaBugs;
     }
 
@@ -224,7 +224,7 @@ public class SearchUIFields implements SearchViewBase {
         return this.matchAll;
     }
 
-    public final void setMatchAll(final boolean matchAll) {
+    public void setMatchAll(final boolean matchAll) {
         this.matchAll = matchAll;
     }
 
@@ -368,7 +368,7 @@ public class SearchUIFields implements SearchViewBase {
         }
     }
 
-    public final void initialize(@Nullable final RESTFilterV1 filter) {
+    public void initialize(@Nullable final RESTFilterV1 filter) {
         if (filter != null) {
 
             createdAfter = null;
@@ -450,7 +450,7 @@ public class SearchUIFields implements SearchViewBase {
 
     @NotNull
     @Override
-    public final String getSearchQuery(final boolean includeQueryPrefix) {
+    public String getSearchQuery(final boolean includeQueryPrefix) {
 
         @NotNull final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 

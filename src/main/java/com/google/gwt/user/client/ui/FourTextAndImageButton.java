@@ -32,7 +32,7 @@ public class FourTextAndImageButton extends TextAndImageButton {
     /**
      * @param text The text to appear on the second line of the button
      */
-    public final void setText2(final String text) {
+    public void setText2(final String text) {
         this.text2 = text;
         div2.setInnerText(text);
     }
@@ -40,14 +40,14 @@ public class FourTextAndImageButton extends TextAndImageButton {
     /**
      * @return The text that appears on the second line of the button
      */
-    public final String getText2() {
+    public String getText2() {
         return this.text2;
     }
 
     /**
      * @param text The text to appear on the third line of the button
      */
-    public final void setText3(final String text) {
+    public void setText3(final String text) {
         this.text3 = text;
         div3.setInnerText(text);
     }
@@ -55,21 +55,21 @@ public class FourTextAndImageButton extends TextAndImageButton {
     /**
      * @return The text that appears on the third line of the button
      */
-    public final String getText3() {
+    public String getText3() {
         return this.text3;
     }
 
     /**
      * @return The text that appears on the fourth line of the button
      */
-    public final String getText4() {
+    public String getText4() {
         return text4;
     }
 
     /**
      * @param text The text to appear on the fourth line of the button
      */
-    public final void setText4(final String text) {
+    public void setText4(final String text) {
         this.text4 = text;
         div4.setInnerText(text4);
     }

@@ -61,7 +61,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
      * @return The display
      */
     @NotNull
-    public final Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 
@@ -69,17 +69,17 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
      * @return The display
      */
     @NotNull
-    public final SearchFilterFilteredResultsPresenter.Display getFilteredResultsDisplay() {
+    public SearchFilterFilteredResultsPresenter.Display getFilteredResultsDisplay() {
         return searchFilterFilteredResultsPresenter.getDisplay();
     }
 
     @Override
-    public final void parseToken(@NotNull final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.parseToken()");
     }
 
     @Override
-    public final void go(@NotNull final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go()");
@@ -155,17 +155,17 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     }
 
     @Override
-    protected final void bindActionButtons() {
+    protected void bindActionButtons() {
 
     }
 
     @Override
-    protected final void bindFilteredResultsButtons() {
+    protected void bindFilteredResultsButtons() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    protected final void loadAdditionalDisplayedItemData() {
+    protected void loadAdditionalDisplayedItemData() {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.loadAdditionalDisplayedItemData()");
 
@@ -182,7 +182,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     }
 
     @Override
-    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.initializeViews()");
 

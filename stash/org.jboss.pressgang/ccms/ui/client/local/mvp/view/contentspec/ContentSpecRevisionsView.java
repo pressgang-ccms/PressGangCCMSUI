@@ -235,51 +235,51 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
 
     @NotNull
     @Override
-    public final Column<RESTContentSpecCollectionItemV1, String> getDiffButton() {
+    public Column<RESTContentSpecCollectionItemV1, String> getDiffButton() {
         return diffButton;
     }
 
     @Override
     @Nullable
-    public final RESTContentSpecV1 getRevisionContentSpec() {
+    public RESTContentSpecV1 getRevisionContentSpec() {
         return revisionContentSpec;
     }
 
     @Override
-    public final void setRevisionContentSpec(@Nullable final RESTContentSpecV1 revisionTopic) {
+    public void setRevisionContentSpec(@Nullable final RESTContentSpecV1 revisionTopic) {
         this.revisionContentSpec = revisionTopic;
     }
 
     @NotNull
     @Override
-    public final Column<RESTContentSpecCollectionItemV1, String> getViewButton() {
+    public Column<RESTContentSpecCollectionItemV1, String> getViewButton() {
         return viewButton;
     }
 
     @Override
-    public final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public final void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider) {
+    public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @NotNull
     @Override
-    public final CellTable<RESTContentSpecCollectionItemV1> getResults() {
+    public CellTable<RESTContentSpecCollectionItemV1> getResults() {
         return results;
     }
 
     @Override
-    public final SimplePager getPager() {
+    public SimplePager getPager() {
         return pager;
     }
 
     @Override
-    public final void display(@NotNull final RESTContentSpecV1 topic, final boolean readOnly) {
+    public void display(@NotNull final RESTContentSpecV1 topic, final boolean readOnly) {
         this.mainContentSpec = topic;
     }
 

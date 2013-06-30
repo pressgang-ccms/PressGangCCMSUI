@@ -36,25 +36,25 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
 
     @NotNull
     @Override
-    public final DialogBox getDialog() {
+    public DialogBox getDialog() {
         return this;
     }
 
     @NotNull
     @Override
-    public final FileUploadExt getFiles() {
+    public FileUploadExt getFiles() {
         return fileUploadExt;
     }
 
     @NotNull
     @Override
-    public final PushButton getOK() {
+    public PushButton getOK() {
         return ok;
     }
 
     @NotNull
     @Override
-    public final PushButton getCancel() {
+    public PushButton getCancel() {
         return cancel;
     }
 

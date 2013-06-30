@@ -69,7 +69,7 @@ public class SearchUIProjects implements SearchViewBase {
      * @return The list of projects
      */
     @NotNull
-    public final List<SearchUIProject> getProjects() {
+    public List<SearchUIProject> getProjects() {
         return this.projects;
     }
 
@@ -77,7 +77,7 @@ public class SearchUIProjects implements SearchViewBase {
      * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
      * @param filter The filter that defines the state of the tags
      */
-    public final void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
+    public void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProjects.initialize()");
 
@@ -203,7 +203,7 @@ public class SearchUIProjects implements SearchViewBase {
 
     @NotNull
     @Override
-    public final String getSearchQuery(final boolean includeQueryPrefix) {
+    public String getSearchQuery(final boolean includeQueryPrefix) {
 
         final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 

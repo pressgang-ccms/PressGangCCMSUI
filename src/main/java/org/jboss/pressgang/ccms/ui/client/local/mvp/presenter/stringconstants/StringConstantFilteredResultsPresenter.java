@@ -46,7 +46,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     private String queryString;
 
     @Override
-    protected final void displayQueryElements(@NotNull final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
@@ -65,7 +65,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
 
     @NotNull
     @Override
-    protected final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTStringConstantCollectionItemV1> list) {

@@ -81,7 +81,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      * @return The display.
      */
     @Override
-    protected final Display getDisplay() {
+    protected Display getDisplay() {
         return display;
     }
 

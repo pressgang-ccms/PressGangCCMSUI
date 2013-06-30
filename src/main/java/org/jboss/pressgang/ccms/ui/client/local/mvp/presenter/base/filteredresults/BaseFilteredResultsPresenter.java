@@ -48,7 +48,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
 
     @Override
     @NotNull
-    public final ProviderUpdateData<V> getProviderData() {
+    public ProviderUpdateData<V> getProviderData() {
         return providerData;
     }
 
@@ -56,7 +56,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * Adds an event handler to listen for the entity list loaded event.
      * @param handler The event handler
      */
-    public final void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
+    public void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
             handlerManager.addHandler(EntityListReceived.getType(), handler);
@@ -71,7 +71,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * @param queryString The query that defines the results to be displayed
      * @param display     The filtered results view
      */
-    protected final void bindFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
+    protected void bindFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
         super.bind(topicId, pageId, display);
         displayQueryElements(queryString);
     }
@@ -79,7 +79,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     /**
      * An empty implementation. Extending classes should use bindExtendedFilteredResults.
      */
-    public final void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindFilteredResults() instead.");
     }
 
@@ -88,7 +88,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * and the collection being displayed by the filtered results. This methods will go through and set the selected item to the
      * item in the filtered results list (if it exists).
      */
-    protected final void relinkSelectedItem() {
+    protected void relinkSelectedItem() {
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
             for (@NotNull final V filteredResultEntity : this.providerData.getItems()) {
 

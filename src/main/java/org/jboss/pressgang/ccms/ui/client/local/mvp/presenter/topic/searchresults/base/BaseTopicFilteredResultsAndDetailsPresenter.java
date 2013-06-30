@@ -143,7 +143,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract Display getDisplay();
 
     @NotNull
-    protected final TopicXMLPresenter getTopicXMLComponent() {
+    protected TopicXMLPresenter getTopicXMLComponent() {
         return topicXMLComponent;
     }
 
@@ -151,18 +151,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract BaseFilteredResultsPresenter<V> getSearchResultsComponent();
 
     @NotNull
-    protected final TopicTagsPresenter getTopicTagsPresenter() {
+    protected TopicTagsPresenter getTopicTagsPresenter() {
         return topicTagsPresenter;
     }
 
     @NotNull
-    protected final CommonExtendedPropertiesPresenter getTopicPropertyTagPresenter() {
+    protected CommonExtendedPropertiesPresenter getTopicPropertyTagPresenter() {
         return topicPropertyTagPresenter;
     }
 
 
     @NotNull
-    protected final TopicRenderedPresenter getTopicSplitPanelRenderedPresenter() {
+    protected TopicRenderedPresenter getTopicSplitPanelRenderedPresenter() {
         return topicSplitPanelRenderedPresenter;
     }
 
@@ -170,7 +170,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * @return The parsed query string
      */
     @Nullable
-    protected final String getQueryString() {
+    protected String getQueryString() {
         return queryString;
     }
 
@@ -179,7 +179,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      *
      * @param queryString The parsed query string
      */
-    protected final void setQueryString(@Nullable final String queryString) {
+    protected void setQueryString(@Nullable final String queryString) {
         this.queryString = queryString;
     }
 
@@ -363,7 +363,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @Override
-    protected final void loadAdditionalDisplayedItemData() {
+    protected void loadAdditionalDisplayedItemData() {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
@@ -488,7 +488,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @Override
-    protected final void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.afterSwitchView()");
 
@@ -712,7 +712,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract void postBindActionButtons();
 
     @Override
-    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.initializeViews()");

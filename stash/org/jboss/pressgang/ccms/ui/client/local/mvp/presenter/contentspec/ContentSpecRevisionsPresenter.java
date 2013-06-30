@@ -72,7 +72,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
     private final ProviderUpdateData<RESTContentSpecCollectionItemV1> providerData = new ProviderUpdateData<RESTContentSpecCollectionItemV1>();
 
     @NotNull
-    public final ProviderUpdateData<RESTContentSpecCollectionItemV1> getProviderData() {
+    public ProviderUpdateData<RESTContentSpecCollectionItemV1> getProviderData() {
         return providerData;
     }
 

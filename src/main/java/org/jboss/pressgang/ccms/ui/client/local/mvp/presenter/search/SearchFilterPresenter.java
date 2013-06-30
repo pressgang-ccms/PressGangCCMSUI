@@ -39,22 +39,22 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
      * @return The display.
      */
     @NotNull
-    public final Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 
     @Override
-    public final void parseToken(@NotNull final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 
     @Override
-    public final void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }
 
     @Override
-    public final void go(@NotNull final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 

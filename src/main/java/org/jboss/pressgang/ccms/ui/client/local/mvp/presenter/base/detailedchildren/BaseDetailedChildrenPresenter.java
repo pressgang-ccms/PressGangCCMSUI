@@ -52,7 +52,7 @@ abstract public class BaseDetailedChildrenPresenter<
      */
     @Override
     @NotNull
-    public final ProviderUpdateData<F> getExistingProviderData() {
+    public ProviderUpdateData<F> getExistingProviderData() {
         return this.existingProviderData;
     }
 
@@ -63,7 +63,7 @@ abstract public class BaseDetailedChildrenPresenter<
      * @param topicId The help topic for the view
      * @param pageId  The history token of the page
      */
-    public final void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
+    public void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
     }
 
@@ -74,7 +74,7 @@ abstract public class BaseDetailedChildrenPresenter<
      * @param preferencesKey The key that saves the width of the split panel which separates the childen and their details.
      * @param display The view to display the wait dialog.
      */
-    protected final void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
+    protected void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
@@ -84,11 +84,11 @@ abstract public class BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public final void displayChildrenExtended(@NotNull final T parent, final boolean readOnly) {
+    public  void displayChildrenExtended(@NotNull final T parent, final boolean readOnly) {
         throw new UnsupportedOperationException("displayChildrenExtended() is not supported. Use displayDetailedChildren() instead.");
     }
 
-    protected final void displayDetailedChildren(@NotNull final T parent, final boolean readOnly) {
+    protected void displayDetailedChildren(@NotNull final T parent, final boolean readOnly) {
         super.displayChildren(parent, readOnly);
     }
 
@@ -130,7 +130,7 @@ abstract public class BaseDetailedChildrenPresenter<
      * @inheritDoc
      */
     @Override
-    public final void refreshExistingChildList(@NotNull final W parent) {
+    public void refreshExistingChildList(@NotNull final W parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenPresenter.refreshExistingChildList()");
 

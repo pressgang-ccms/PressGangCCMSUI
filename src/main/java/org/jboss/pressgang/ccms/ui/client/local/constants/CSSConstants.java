@@ -84,6 +84,7 @@ public interface CSSConstants {
         String FILTERED_RESULTS_TAB_MENU_TABLE = "FilteredResultsTabMenu";
     }
 
+
     interface BulkImageUploadDialog {
         String DESCRIPTION_FIELD = "BulkImageUploadDescriptionField";
     }
@@ -95,6 +96,10 @@ public interface CSSConstants {
     interface ImportDialogs {
         String IMPORT_DIALOG_MESSAGE = "ImportDialogMessage";
         String IMPORT_DIALOG_MESSAGE_PANEL = "ImportDialogMessagePanel";
+    }
+
+    interface WelcomeView {
+        String WELCOME_VIEW_IFRAME = "WelcomeViewIFrame";
     }
 
     /**

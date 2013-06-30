@@ -118,30 +118,30 @@ public class TopicSourceURLsView extends BaseChildrenView<
 
     @Nullable
     @Override
-    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getPossibleChildrenButtonColumn() {
+    public Column<RESTTopicSourceUrlCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return removeSourceUrlColumn;
     }
 
     @Override
-    public final void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
     }
 
     @NotNull
     @Override
-    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getURLValueColumn() {
+    public Column<RESTTopicSourceUrlCollectionItemV1, String> getURLValueColumn() {
         return urlValueColumn;
     }
 
     @NotNull
     @Override
-    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getNameValueColumn() {
+    public Column<RESTTopicSourceUrlCollectionItemV1, String> getNameValueColumn() {
         return nameValueColumn;
     }
 
     @NotNull
     @Override
-    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlColumn() {
+    public Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlColumn() {
         return openSourceUrlColumn;
     }
 

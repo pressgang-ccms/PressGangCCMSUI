@@ -308,50 +308,50 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
     @NotNull
     @Override
-    public final Column<RESTTopicCollectionItemV1, String> getDiffButton() {
+    public Column<RESTTopicCollectionItemV1, String> getDiffButton() {
         return diffButton;
     }
 
     @Override
-    public final RESTTopicV1 getRevisionTopic() {
+    public RESTTopicV1 getRevisionTopic() {
         return revisionTopic;
     }
 
     @Override
-    public final void setRevisionTopic(final RESTTopicV1 revisionTopic) {
+    public void setRevisionTopic(final RESTTopicV1 revisionTopic) {
         this.revisionTopic = revisionTopic;
     }
 
     @NotNull
     @Override
-    public final Column<RESTTopicCollectionItemV1, String> getViewButton() {
+    public Column<RESTTopicCollectionItemV1, String> getViewButton() {
         return viewButton;
     }
 
     @Override
-    public final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public final void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
+    public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @NotNull
     @Override
-    public final CellTable<RESTTopicCollectionItemV1> getResults() {
+    public CellTable<RESTTopicCollectionItemV1> getResults() {
         return results;
     }
 
     @Override
-    public final SimplePager getPager() {
+    public SimplePager getPager() {
         return pager;
     }
 
     @Override
-    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
         this.mainTopic = topic;
     }
 

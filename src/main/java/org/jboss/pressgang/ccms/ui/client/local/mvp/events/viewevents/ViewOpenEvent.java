@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class ViewOpenEvent<T extends ViewOpenEventHandler> extends GwtEvent<T> {
     @Override
-    protected final void dispatch(@NotNull final T handler) {
+    protected void dispatch(@NotNull final T handler) {
         handler.onViewOpen(this);
     }
 }

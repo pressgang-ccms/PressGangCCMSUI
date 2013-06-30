@@ -33,12 +33,12 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     }
 
     @Override
-    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
         throw new UnsupportedOperationException("TopicView.display() is not supported. Use TopicView.displayTopicDetails() instead.");
     }
 
     @Override
-    public final void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<String> locales) {
+    public void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<String> locales) {
         /* SearchUIProjectsEditor is a grid */
         @NotNull final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly, locales);
         /* Initialize the driver with the top-level editor */

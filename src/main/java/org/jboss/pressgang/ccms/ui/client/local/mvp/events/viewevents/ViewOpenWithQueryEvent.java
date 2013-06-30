@@ -23,7 +23,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
     /**
      * @return true if the event should trigger a new window, false otherwise
      */
-    public final boolean isNewWindow() {
+    public boolean isNewWindow() {
         return newWindow;
     }
 
@@ -40,12 +40,12 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
      * @return The query to be passed in the URL history token, and then ultimately onto the REST service
      */
     @NotNull
-    public final String getQuery() {
+    public String getQuery() {
         return query;
     }
 
     @Override
-    protected final void dispatch(@NotNull final T handler) {
+    protected void dispatch(@NotNull final T handler) {
         handler.onViewOpen(this);
     }
 }

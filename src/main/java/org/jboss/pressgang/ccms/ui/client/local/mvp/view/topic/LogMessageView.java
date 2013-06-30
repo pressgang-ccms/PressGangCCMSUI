@@ -102,13 +102,13 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
     }
 
     @Override
-    public final void reset() {
+    public void reset() {
         this.message.setText("");
         this.minorChange.setValue(true);
     }
 
     @Override
-    public final void show() {
+    public void show() {
         super.show();
         message.setFocus(true);
     }

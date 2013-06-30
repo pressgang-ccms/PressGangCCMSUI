@@ -32,6 +32,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
+        void clear();
+        void removeListener();
     }
 
     /**
@@ -53,14 +55,14 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     @Override
     public void close() {
-
+        display.removeListener();
     }
 
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }
 
-    public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
+    public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
         final BaseRestCallback<IntegerWrapper, Display> callback = new BaseRestCallback<IntegerWrapper, Display>(display,
                 new BaseRestCallback.SuccessAction<IntegerWrapper, Display>() {
                     @Override
@@ -69,14 +71,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                     }
                 }, true);
 
-        String fixedXML =  topicXML;
-
-        /*final RegExp imageRegex = RegExp.compile("imagedata(.*?)fileref=(\"|')(images/)?(\\d+)\\.\\w+(\"|')(.*?)>", "g");
-        for (MatchResult matcher = imageRegex.exec(topicXML); matcher != null; matcher = imageRegex.exec(topicXML)) {
-            fixedXML = fixedXML.replaceFirst(matcher.getGroup(0), "imagedata " + matcher.getGroup(1) + " fileref=\"" + Constants.REST_SERVER + "/1/image/get/raw/" + matcher.getGroup(4) + "\" " + matcher.getGroup(6) + ">");
-        }*/
-
-        RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + fixedXML);
+        RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML);
     }
 
     @Override

@@ -81,42 +81,42 @@ abstract public class BaseSearchAndEditView<
 
     @NotNull
     @Override
-    public final DockLayoutPanel getResultsViewLayoutPanel() {
+    public DockLayoutPanel getResultsViewLayoutPanel() {
         return resultsViewLayoutPanel;
     }
 
     @NotNull
-    public final DockLayoutPanel getViewLayoutPanel() {
+    public DockLayoutPanel getViewLayoutPanel() {
         return viewLayoutPanel;
     }
 
     @NotNull
     @Override
-    public final HandlerSplitLayoutPanel getSplitPanel() {
+    public HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
 
     @NotNull
     @Override
-    public final FlexTable getResultsActionButtonsParentPanel() {
+    public FlexTable getResultsActionButtonsParentPanel() {
         return resultsActionButtonsParentPanel;
     }
 
     @NotNull
     @Override
-    public final SimpleLayoutPanel getResultsPanel() {
+    public SimpleLayoutPanel getResultsPanel() {
         return resultsPanel;
     }
 
     @NotNull
     @Override
-    public final SimpleLayoutPanel getViewPanel() {
+    public SimpleLayoutPanel getViewPanel() {
         return viewPanel;
     }
 
     @NotNull
     @Override
-    public final FlexTable getViewActionButtonsParentPanel() {
+    public FlexTable getViewActionButtonsParentPanel() {
         return viewActionButtonsParentPanel;
     }
 
@@ -165,11 +165,11 @@ abstract public class BaseSearchAndEditView<
         this.getPanel().add(splitPanel);
     }
 
-    protected final void initialize(final boolean displaySearchResults) {
+    protected void initialize(final boolean displaySearchResults) {
         initialize(displaySearchResults, Constants.SPLIT_PANEL_SIZE, null);
     }
 
-    protected final void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
+    protected void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
 
         final int fixedSearchResultsWidth =  searchResultsWidth < 0 ? 0 : searchResultsWidth;
 
@@ -185,13 +185,13 @@ abstract public class BaseSearchAndEditView<
 
 
     @Override
-    protected final void showWaiting() {
+    protected void showWaiting() {
         waiting.center();
         waiting.show();
     }
 
     @Override
-    protected final void hideWaiting() {
+    protected void hideWaiting() {
         waiting.hide();
     }
 
@@ -202,7 +202,7 @@ abstract public class BaseSearchAndEditView<
      * @param displayedView The view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public final void displayChildView(@Nullable final BaseTemplateViewInterface displayedView) {
+    public void displayChildView(@Nullable final BaseTemplateViewInterface displayedView) {
         this.getViewPanel().clear();
         this.viewActionButtonsParentPanel.clear();
         this.viewActionButtonsPanel.clear();
@@ -234,7 +234,7 @@ abstract public class BaseSearchAndEditView<
      * @param filteredResultsView The filtered view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public final void displaySearchResultsView(@Nullable final BaseFilteredResultsViewInterface<V> filteredResultsView) {
+    public void displaySearchResultsView(@Nullable final BaseFilteredResultsViewInterface<V> filteredResultsView) {
         this.getResultsPanel().clear();
         this.resultsActionButtonsParentPanel.clear();
         this.resultsActionButtonsPanel.clear();

@@ -42,41 +42,41 @@ abstract public class BaseChildrenView<
 
     @Nullable
     @Override
-    public final T getOriginalEntity() {
+    public T getOriginalEntity() {
         return this.originalEntity;
     }
 
     @Override
-    public final void setOriginalEntity(@NotNull final T originalEntity) {
+    public void setOriginalEntity(@NotNull final T originalEntity) {
         this.originalEntity = originalEntity;
     }
 
     @NotNull
     @Override
-    public final VerticalPanel getPossibleChildrenResultsPanel() {
+    public VerticalPanel getPossibleChildrenResultsPanel() {
         return this.possibleChildrenResultsPanel;
     }
 
     @NotNull
     @Override
-    public final SimplePager getPossibleChildrenPager() {
+    public SimplePager getPossibleChildrenPager() {
         return this.possibleChildrenPager;
     }
 
     @NotNull
     @Override
-    public final CellTable<C> getPossibleChildrenResults() {
+    public CellTable<C> getPossibleChildrenResults() {
         return this.possibleChildrenResults;
     }
 
     @Nullable
     @Override
-    public final EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
         return this.possibleChildrenProvider;
     }
 
     @Override
-    public final void setPossibleChildrenProvider(@NotNull final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
+    public void setPossibleChildrenProvider(@NotNull final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
 
         if (this.possibleChildrenProvider != null) {
             this.possibleChildrenProvider.removeDataDisplay(this.possibleChildrenResults);
@@ -101,7 +101,7 @@ abstract public class BaseChildrenView<
         this.getPanel().setWidget(this.possibleChildrenResultsPanel);
     }
 
-    public final void displayChildren(@NotNull final T originalEntity, final boolean readOnly) {
+    public void displayChildren(@NotNull final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
         this.readOnly = readOnly;
     }

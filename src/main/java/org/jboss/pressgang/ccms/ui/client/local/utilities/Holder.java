@@ -7,7 +7,7 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
  * @param <T> The type held by the wrapper.
  * @author Matthew Casperson
  */
-public class Holder<T> {
+public final class Holder<T> {
     private T value;
 
     /**
@@ -30,7 +30,7 @@ public class Holder<T> {
      *
      * @return the value being held by the wrapper
      */
-    public final T getValue() {
+    public T getValue() {
         return this.value;
     }
 
@@ -39,7 +39,7 @@ public class Holder<T> {
      *
      * @param newValue the value being held by the wrapper
      */
-    public final void setValue(final T newValue) {
+    public void setValue(final T newValue) {
         this.value = newValue;
     }
 }

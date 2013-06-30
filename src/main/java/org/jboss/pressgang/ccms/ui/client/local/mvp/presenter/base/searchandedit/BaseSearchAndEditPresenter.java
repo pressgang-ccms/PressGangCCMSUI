@@ -93,7 +93,7 @@ abstract public class BaseSearchAndEditPresenter<
      * @param display                    The view that this component adds logic to
      * @param waitDisplay                The view that displays the wait dialog
      */
-    protected final void bindSearchAndEdit(
+    protected void bindSearchAndEdit(
             final int topicId,
             @NotNull final String pageId,
             @NotNull final String mainSplitSizePreferenceKey,
@@ -167,14 +167,14 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * When a new entity is selected or saved, this method will update the views and the filtered results list.
      */
-    public final void updateDisplayWithNewEntityData(final boolean wasNewEntity) {
+    public void updateDisplayWithNewEntityData(final boolean wasNewEntity) {
         updateDisplayWithNewEntityData(wasNewEntity, true);
     }
 
     /**
      * When a new entity is created, this method will update the views without updating the filtered results list.
      */
-    protected final void updateViewsAfterNewEntityLoaded() {
+    protected void updateViewsAfterNewEntityLoaded() {
         /*  wasNewEntity has no meaning because refreshList is false */
         updateDisplayWithNewEntityData(false, false);
     }
@@ -226,7 +226,7 @@ abstract public class BaseSearchAndEditPresenter<
      * @param getNewEntityCallback The callback used to load a fresh entity
      * @param selectedItem         The item that was selected from a collection of entities
      */
-    protected final void loadNewEntity(@NotNull final GetNewEntityCallback<T> getNewEntityCallback, @NotNull final V selectedItem) {
+    protected void loadNewEntity(@NotNull final GetNewEntityCallback<T> getNewEntityCallback, @NotNull final V selectedItem) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadNewEntity()");
 
@@ -277,7 +277,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Binds logic to the search results list row click event
      */
-    protected final void bindResultsListRowClicks(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
+    protected void bindResultsListRowClicks(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<V>() {
             @Override
             public void onCellPreview(@NotNull final CellPreviewEvent<V> event) {
@@ -370,7 +370,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Restores the size of the main split screen
      */
-    protected final void loadMainSplitResize(@NotNull final String mainSplitSizePreferenceKey) {
+    protected void loadMainSplitResize(@NotNull final String mainSplitSizePreferenceKey) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadMainSplitResize()");
 
@@ -389,7 +389,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called when a new entity is selected
      */
-    protected final void initializeViews() {
+    protected void initializeViews() {
         initializeViews(null);
     }
 
@@ -401,7 +401,7 @@ abstract public class BaseSearchAndEditPresenter<
      * @param view   The view to test against the filter
      * @return true if the filter is null or if it contains the view, and false otherwise
      */
-    protected final boolean viewIsInFilter(@Nullable final List<BaseTemplateViewInterface> filter, @NotNull final BaseTemplateViewInterface view) {
+    protected boolean viewIsInFilter(@Nullable final List<BaseTemplateViewInterface> filter, @NotNull final BaseTemplateViewInterface view) {
         if (filter == null) {
             return true;
         }
@@ -412,7 +412,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected final void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.switchView(final W displayedView)");

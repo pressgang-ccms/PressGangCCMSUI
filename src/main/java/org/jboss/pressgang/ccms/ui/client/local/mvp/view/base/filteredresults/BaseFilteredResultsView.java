@@ -76,7 +76,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The provider used to populate the cell table
      */
     @Override
-    public final EnhancedAsyncDataProvider<V> getProvider() {
+    public EnhancedAsyncDataProvider<V> getProvider() {
         return provider;
     }
 
@@ -84,7 +84,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @param provider The provider used to populate the cell table
      */
     @Override
-    public final void setProvider(@NotNull final EnhancedAsyncDataProvider<V> provider) {
+    public void setProvider(@NotNull final EnhancedAsyncDataProvider<V> provider) {
         if (this.provider != null) {
             this.provider.removeDataDisplay(getResults());
         }
@@ -97,7 +97,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The panel that holds the filter fields and the search results
      */
     @NotNull
-    public final FlexTable getFilterTable() {
+    public FlexTable getFilterTable() {
         return filterTable;
     }
 
@@ -105,7 +105,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The table that holds the filter fields
      */
     @NotNull
-    public final VerticalPanel getSearchResultsPanel() {
+    public VerticalPanel getSearchResultsPanel() {
         return searchResultsPanel;
     }
 
@@ -113,7 +113,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The cell table that displays the results
      */
     @Override
-    public final CellTable<V> getResults() {
+    public CellTable<V> getResults() {
         return results;
     }
 
@@ -121,7 +121,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The pager used to move over the results
      */
     @Override
-    public final SimplePager getPager() {
+    public SimplePager getPager() {
         return pager;
     }
 
@@ -129,7 +129,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The button that initiates a new search
      */
     @Override
-    public final PushButton getCreate() {
+    public PushButton getCreate() {
         return create;
     }
 
@@ -137,7 +137,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The button that creates a new entity
      */
     @Override
-    public final PushButton getEntitySearch() {
+    public PushButton getEntitySearch() {
         return entitySearch;
     }
 
@@ -147,7 +147,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @param label The label to apply to the field
      * @param field The field itself
      */
-    protected final void addFilterField(final String label, final Widget field) {
+    protected void addFilterField(final String label, final Widget field) {
         final int rowCount = filterTable.getRowCount();
         filterTable.setWidget(rowCount, 0, new Label(label));
         filterTable.setWidget(rowCount, 1, field);

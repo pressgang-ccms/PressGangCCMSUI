@@ -35,7 +35,7 @@ public class SearchLocalePresenter  extends BaseTemplatePresenter implements Bas
     /**
      * @return The display
      */
-    public final Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 

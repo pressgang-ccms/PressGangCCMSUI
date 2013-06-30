@@ -56,7 +56,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @return The topic of the ID to be used for the help dialog
      */
     @Override
-    public final int getHelpTopicId() {
+    public int getHelpTopicId() {
         return helpTopicId;
     }
 
@@ -64,12 +64,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @param helpTopicId The topic of the ID to be used for the help dialog
      */
     @Override
-    public final void setHelpTopicId(final int helpTopicId) {
+    public void setHelpTopicId(final int helpTopicId) {
         this.helpTopicId = helpTopicId;
     }
 
     @Override
-    public final boolean isOKToProceed() {
+    public boolean isOKToProceed() {
         return !hasUnsavedChanges() || Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
     }
 
@@ -334,7 +334,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @param pageId The id of the view
      * @param display The view that this presenter is associated with
      */
-    protected final void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
+    protected void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
         this.display = display;
         this.helpTopicId = topicId;
 
@@ -388,7 +388,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      *
      * @param pageId The id of the page
      */
-    protected final void setFeedbackLink(@NotNull final String pageId) {
+    protected void setFeedbackLink(@NotNull final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

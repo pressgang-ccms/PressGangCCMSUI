@@ -240,7 +240,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public final void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();

@@ -53,13 +53,13 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
      * @return The display.
      */
     @NotNull
-    public final Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 
     @NotNull
     @Override
-    protected final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider()");
 
@@ -105,12 +105,12 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
 
     @NotNull
     @Override
-    public final String getQuery() {
+    public String getQuery() {
         return Constants.QUERY_PATH_SEGMENT_PREFIX;
     }
 
     @Override
-    public final void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
 
         try {
@@ -123,7 +123,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
-    public final void go(@NotNull final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
     }
 
@@ -133,12 +133,12 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
-    public final void parseToken(@NotNull final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 
     @Override
-    protected final void displayQueryElements(@NotNull final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
 
     }
 }

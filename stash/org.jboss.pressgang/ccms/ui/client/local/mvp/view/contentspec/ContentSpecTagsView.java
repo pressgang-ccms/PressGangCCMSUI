@@ -238,7 +238,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     }
 
     @Override
-    public final void display(@NotNull final RESTContentSpecV1 contentSpec, final boolean readOnly) {
+    public void display(@NotNull final RESTContentSpecV1 contentSpec, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();

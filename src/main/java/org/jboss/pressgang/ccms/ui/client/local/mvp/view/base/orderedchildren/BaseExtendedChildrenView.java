@@ -38,34 +38,34 @@ abstract public class BaseExtendedChildrenView<
     private EnhancedAsyncDataProvider<F> existingChildrenProvider;
 
     @Override
-    public final CellTable<F> getExistingChildrenResults() {
+    public CellTable<F> getExistingChildrenResults() {
         return this.existingChildrenResults;
     }
 
     @Override
-    public final SimplePager getExistingChildrenPager() {
+    public SimplePager getExistingChildrenPager() {
         return this.existingChildrenPager;
     }
 
     @NotNull
     @Override
-    public final VerticalPanel getExistingChildrenResultsPanel() {
+    public VerticalPanel getExistingChildrenResultsPanel() {
         return this.existingChildrenResultsPanel;
     }
 
     @NotNull
     @Override
-    public final HandlerSplitLayoutPanel getSplit() {
+    public HandlerSplitLayoutPanel getSplit() {
         return this.split;
     }
 
     @Override
-    public final EnhancedAsyncDataProvider<F> getExistingChildrenProvider() {
+    public EnhancedAsyncDataProvider<F> getExistingChildrenProvider() {
         return this.existingChildrenProvider;
     }
 
     @Override
-    public final void setExistingChildrenProvider(@NotNull final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
+    public void setExistingChildrenProvider(@NotNull final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
         if (this.existingChildrenProvider != null) {
             this.existingChildrenProvider.removeDataDisplay(this.existingChildrenResults);
         }
@@ -104,7 +104,7 @@ abstract public class BaseExtendedChildrenView<
      * This method will add the existing results panel to the view. This might be called when the view is constructed, or left
      * if the existing children panel should not be shown straight away.
      */
-    protected final void addExistingChildrenPanel() {
+    protected void addExistingChildrenPanel() {
         this.split.add(this.existingChildrenResultsPanel);
     }
 }

@@ -146,12 +146,12 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
     }
 
     @Override
-    public final void display(final RESTImageV1 image, final boolean readOnly) {
+    public void display(final RESTImageV1 image, final boolean readOnly) {
 
     }
 
     @Override
-    public final void displayExtended(@Nullable final RESTImageV1 image, final boolean readOnly, @Nullable final String[] locales) {
+    public void displayExtended(@Nullable final RESTImageV1 image, final boolean readOnly, @Nullable final String[] locales) {
         if (image == null) {
             throw new IllegalArgumentException("image cannot be null");
         }

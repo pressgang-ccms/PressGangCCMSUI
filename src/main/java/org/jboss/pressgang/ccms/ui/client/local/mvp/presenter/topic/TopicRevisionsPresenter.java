@@ -91,7 +91,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     private final ProviderUpdateData<RESTTopicCollectionItemV1> providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
 
     @NotNull
-    public final ProviderUpdateData<RESTTopicCollectionItemV1> getProviderData() {
+    public ProviderUpdateData<RESTTopicCollectionItemV1> getProviderData() {
         return providerData;
     }
 

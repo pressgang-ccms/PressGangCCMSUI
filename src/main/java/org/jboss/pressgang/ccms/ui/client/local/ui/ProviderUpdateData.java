@@ -38,29 +38,29 @@ public class ProviderUpdateData<T> {
     private Integer size;
 
     @Nullable
-    public final T getSelectedItem() {
+    public T getSelectedItem() {
         return this.selectedItem;
     }
 
-    public final void setSelectedItem(@Nullable final T selectedItem) {
+    public void setSelectedItem(@Nullable final T selectedItem) {
         this.selectedItem = selectedItem;
     }
 
     @Nullable
-    public final Integer getStartRow() {
+    public Integer getStartRow() {
         return this.startRow;
     }
 
-    public final void setStartRow(@Nullable final Integer startRow) {
+    public void setStartRow(@Nullable final Integer startRow) {
         this.startRow = startRow;
     }
 
     @Nullable
-    public final List<T> getItems() {
+    public List<T> getItems() {
         return this.items;
     }
 
-    public final void setItems(@Nullable final List<T> items) {
+    public void setItems(@Nullable final List<T> items) {
         this.items = items;
     }
 
@@ -86,21 +86,21 @@ public class ProviderUpdateData<T> {
     }
 
     @Nullable
-    public final T getDisplayedItem() {
+    public T getDisplayedItem() {
         return this.displayedItem;
     }
 
-    public final void setDisplayedItem(@Nullable final T displayedItem) {
+    public void setDisplayedItem(@Nullable final T displayedItem) {
         this.displayedItem = displayedItem;
     }
 
-    public final void reset() {
+    public void reset() {
         this.items = null;
         this.startRow = null;
         this.size = null;
     }
 
-    public final void resetToEmpty() {
+    public void resetToEmpty() {
         this.items = new ArrayList<T>();
         this.startRow = 0;
         this.size = 0;
@@ -108,11 +108,11 @@ public class ProviderUpdateData<T> {
 
 
     @Nullable
-    public final Integer getSize() {
+    public Integer getSize() {
         return this.size;
     }
 
-    public final void setSize(@Nullable final Integer size) {
+    public void setSize(@Nullable final Integer size) {
         this.size = size;
     }
 

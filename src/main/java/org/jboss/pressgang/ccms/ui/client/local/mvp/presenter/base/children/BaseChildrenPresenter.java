@@ -39,7 +39,7 @@ public abstract class BaseChildrenPresenter<
      */
     @Override
     @NotNull
-    public final ProviderUpdateData<C> getPossibleChildrenProviderData() {
+    public ProviderUpdateData<C> getPossibleChildrenProviderData() {
         return this.providerData;
     }
 
@@ -50,7 +50,7 @@ public abstract class BaseChildrenPresenter<
      * @param topicId the help topic for the page
      * @param pageId  The history token of the page
      */
-    public final void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindChildren() instead.");
     }
 
@@ -60,7 +60,7 @@ public abstract class BaseChildrenPresenter<
      * @param parent   The object that holds the data we want to display
      * @param readOnly true if the view is readonly, false otherwise
      */
-    protected final void displayChildren(@NotNull final T parent, final boolean readOnly) {
+    protected void displayChildren(@NotNull final T parent, final boolean readOnly) {
         this.readOnly = readOnly;
         redisplayPossibleChildList(parent);
     }
@@ -71,7 +71,7 @@ public abstract class BaseChildrenPresenter<
      * @param pageId The id for this page, used for the survey link.
      * @param display The view to display the wait dialog.
      */
-    protected final void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
+    protected void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;
         super.bind(topicId, pageId, display);
     }
@@ -80,7 +80,7 @@ public abstract class BaseChildrenPresenter<
      * @inheritDoc
      */
     @Override
-    public final void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
+    public void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
                                                            @NotNull final AddPossibleChildCallback<C> addChildCallback,
                                                            @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified) {
         checkState(display != null, "The display variable should have been set.");
@@ -130,7 +130,7 @@ public abstract class BaseChildrenPresenter<
     /**
      * @inheritDoc
      */
-    public final void redisplayPossibleChildList(@NotNull final T parent) {
+    public void redisplayPossibleChildList(@NotNull final T parent) {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
     }
 

@@ -343,6 +343,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         timer.cancel();
         stopCheckingXMLAndCloseThread();
         GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
+
+        /*
+            Allow the child components to close.
+         */
+        getTopicRenderedPresenter().close();
+        getTopicSplitPanelRenderedPresenter().close();
+        getSearchResultsComponent().close();
+        getTopicPropertyTagPresenter().close();
+        getTopicTagsPresenter().close();
+        getTopicXMLComponent().close();
     }
 
     private void bindRenderedViewClicks() {
@@ -644,6 +654,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     protected void postLoadAdditionalDisplayedItemData() {
         loadTopicRevision();
+        getTopicRenderedPresenter().getDisplay().clear();
+        getTopicSplitPanelRenderedPresenter().getDisplay().clear();
     }
 
     /**

@@ -17,11 +17,11 @@ public class SearchUIBase {
      */
     private final Integer id;
 
-    public final Integer getId() {
+    public Integer getId() {
         return id;
     }
 
-    public final String getName() {
+    public String getName() {
         return name;
     }
 

@@ -31,7 +31,7 @@ abstract public class BaseOrderedChildrenPresenter<
     private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenPresenter.class.getName());
 
     @Override
-    public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         checkState(getExistingProviderData().isValid(), "The getExistingProviderData() collection needs to be valid");
 
@@ -44,7 +44,7 @@ abstract public class BaseOrderedChildrenPresenter<
     }
 
     @Override
-    public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
+    public boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         checkState(getExistingProviderData().isValid(), "The getExistingProviderData() collection needs to be valid");

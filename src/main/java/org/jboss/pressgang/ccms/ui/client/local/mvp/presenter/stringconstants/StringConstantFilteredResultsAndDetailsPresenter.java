@@ -92,7 +92,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
@@ -100,7 +100,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    protected final void bindActionButtons() {
+    protected void bindActionButtons() {
         /**
          * A click handler used to save any changes to the project
          */
@@ -172,7 +172,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    protected final void bindFilteredResultsButtons() {
+    protected void bindFilteredResultsButtons() {
         stringConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {

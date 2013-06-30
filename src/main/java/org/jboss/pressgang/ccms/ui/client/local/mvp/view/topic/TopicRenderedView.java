@@ -13,8 +13,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
-import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
-import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -129,6 +127,17 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         LOGGER.info("ENTER TopicRenderedView()");
     }
 
+    /**
+     * The listener hold a reference to this, which will prevent it from being reclaimed by the GC.
+     * So here we remove the listener.
+     */
+    public native void removeListener() /*-{
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener != null) {
+			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener = null;
+        }
+    }-*/;
+
     private native void createEventListener() /*-{
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener =
 			function(me) {
@@ -159,11 +168,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
-            flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-            flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            if (CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL.equals(flexTable.getFlexCellFormatter().getStyleName(displayingRow, 0))) {
+                flexTable.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+                flexTable.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            }
 
-            flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-            flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            if (CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL.equals(flexTable.getFlexCellFormatter().getStyleName(next, 0))) {
+                flexTable.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+                flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            }
 
             setScroll(LOADING_IFRAME, scrollX, scrollY);
 
@@ -179,12 +192,18 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         throw new UnsupportedOperationException("TopicRenderedView.display() is not supported. Use TopicRenderedView.displayTopicRendered() instead.");
     }
 
     @Override
-    public final boolean displayTopicRendered(@NotNull Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
+    public void clear() {
+        final int next = displayingRow == 0 ? 1 : 0;
+        flexTable.setWidget(next, 0, null);
+    }
+
+    @Override
+    public boolean displayTopicRendered(@NotNull final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages) {
 
         /*
             There is the potential for a race condition here. If a XML file takes longer to render than the next refresh

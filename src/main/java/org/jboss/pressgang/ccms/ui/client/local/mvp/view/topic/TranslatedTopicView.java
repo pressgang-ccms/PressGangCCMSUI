@@ -34,9 +34,9 @@ public class TranslatedTopicView extends BaseTemplateView implements TranslatedT
     }
 
     @Override
-    public final void display(final RESTTranslatedTopicV1 topic, final boolean readOnly) {
+    public void display(final RESTTranslatedTopicV1 topic, final boolean readOnly) {
                 /* SearchUIProjectsEditor is a grid */
-        @NotNull final RESTTranslatedTopicV1BasicDetailsEditor editor = new RESTTranslatedTopicV1BasicDetailsEditor(readOnly);
+        final RESTTranslatedTopicV1BasicDetailsEditor editor = new RESTTranslatedTopicV1BasicDetailsEditor(readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
