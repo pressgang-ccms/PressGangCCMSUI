@@ -134,7 +134,7 @@ public class TagCategoriesView
         return tagUpButtonColumn;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public Column<RESTCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;

@@ -90,6 +90,8 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * item in the filtered results list (if it exists).
      */
     protected void relinkSelectedItem() {
+        checkState(providerData != null, "The providerData variable should have been set.");
+
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
             for (@NotNull final V filteredResultEntity : this.providerData.getItems()) {
 

@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * Most REST calls have the same responses to starting the call, exceptions during the call, and failure of the call. This class
  * wraps up these generic responses.
@@ -80,8 +82,13 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void generalException(@NotNull final Exception e) {
+
+        checkState(display != null, "display should not return null");
+
         LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + e.toString());
         LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(e));
+
+
         display.removeWaitOperation();
 
         try {
@@ -107,6 +114,8 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void failed(@Nullable final Message message, @Nullable final Throwable throwable) {
+
+        checkState(display != null, "display should not return null");
 
         try {
             if (failureAction != null) {

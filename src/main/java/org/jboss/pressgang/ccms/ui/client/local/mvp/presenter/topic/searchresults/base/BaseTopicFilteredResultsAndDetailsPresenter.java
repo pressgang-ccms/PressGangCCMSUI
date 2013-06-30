@@ -249,6 +249,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
+            checkState(getSearchResultsComponent().getProviderData() != null, "getSearchResultsComponent().getProviderData() should not return null");
+
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultsComponent().getProviderData().getItems() != null &&
                     getSearchResultsComponent().getProviderData().getItems().size() == 1) {
@@ -459,6 +461,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision() != null, "The displayed item needs to have a revision");
 
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
             final StringBuilder id = new StringBuilder(getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());

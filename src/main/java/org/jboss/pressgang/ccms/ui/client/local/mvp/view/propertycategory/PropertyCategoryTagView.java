@@ -75,7 +75,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's add/remove button.
      */
-    @Nullable
+    @NotNull
     private final Column<RESTPropertyTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyTagCollectionItemV1, String>(new ButtonCell()) {
         @NotNull
         @Override

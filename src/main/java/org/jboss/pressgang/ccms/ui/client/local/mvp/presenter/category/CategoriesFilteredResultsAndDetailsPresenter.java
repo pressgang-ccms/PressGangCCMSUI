@@ -535,11 +535,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
         enableAndDisableActionButtons(displayedView);
         setHelpTopicForView(displayedView);
-
-        /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
-        if (displayedView != null) {
-            displayedView.setViewShown(true);
-        }
+        displayedView.setViewShown(true);
     }
 
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {

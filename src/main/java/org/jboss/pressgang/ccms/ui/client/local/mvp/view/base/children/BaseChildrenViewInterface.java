@@ -71,6 +71,6 @@ public interface BaseChildrenViewInterface<
     /**
      * @return The column that holds the buttons used to add or remove the possible children.
      */
-    @Nullable
+    @NotNull
     Column<C, String> getPossibleChildrenButtonColumn();
 }

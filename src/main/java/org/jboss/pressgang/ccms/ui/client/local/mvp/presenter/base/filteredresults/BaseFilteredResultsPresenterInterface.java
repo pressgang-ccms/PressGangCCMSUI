@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the base class that is used for components adding logic to views that list the results of a query.
@@ -39,5 +40,5 @@ public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollect
      * @param pageId      The string that identifies the page
      * @param queryString The query string that is passed to the REST interface
      */
-    void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString);
+    void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
 }

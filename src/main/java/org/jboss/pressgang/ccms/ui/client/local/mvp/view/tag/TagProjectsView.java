@@ -61,7 +61,7 @@ public class TagProjectsView extends
         }
     };
 
-    @Nullable
+    @NotNull
     @Override
     public Column<RESTProjectCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;

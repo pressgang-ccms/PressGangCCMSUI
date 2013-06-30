@@ -189,6 +189,8 @@ abstract public class BaseSearchAndEditPresenter<
 
             if (!wasNewEntity) {
                 /* refresh the list of tags from the existing list that was modified */
+                checkState(filteredResultsComponent != null, "filteredResultsComponent should not return null");
+                checkState(filteredResultsComponent.getProviderData() != null, "filteredResultsComponent.getProviderData() should not return null");
                 checkState(filteredResultsComponent.getProviderData().isValid(), "filteredResultsComponent.getProviderData() should be valid");
 
                 filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
@@ -207,6 +209,8 @@ abstract public class BaseSearchAndEditPresenter<
                  * don't edit the new entity because there is no view open to display it.
                  */
                 if (lastDisplayedView != null) {
+                    checkState(filteredResultsComponent != null, "filteredResultsComponent should not return null");
+                    checkState(filteredResultsComponent.getProviderData() != null, "filteredResultsComponent.getProviderData() should not return null");
                     checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There needs to be a displayed item");
                     checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item needs to reference a valid entity");
 
@@ -437,7 +441,8 @@ abstract public class BaseSearchAndEditPresenter<
                 /* copy any changes from the property view into the underlying object */
                 if (lastDisplayedView == this.entityPropertiesView) {
                     LOGGER.log(Level.INFO, "\tFlushing data from properties view");
-                    this.entityPropertiesView.getDriver().flush();
+                    checkState(entityPropertiesView.getDriver() != null, "entityPropertiesView.getDriver() should not return null");
+                    entityPropertiesView.getDriver().flush();
                 }
 
                 afterSwitchView(displayedView);

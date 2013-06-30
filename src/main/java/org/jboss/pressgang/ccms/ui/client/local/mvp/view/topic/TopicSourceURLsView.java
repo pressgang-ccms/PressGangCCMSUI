@@ -116,7 +116,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
 
     }
 
-    @Nullable
+    @NotNull
     @Override
     public Column<RESTTopicSourceUrlCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return removeSourceUrlColumn;

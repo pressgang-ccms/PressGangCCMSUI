@@ -133,6 +133,8 @@ public abstract class BaseChildrenPresenter<
      * @inheritDoc
      */
     public void redisplayPossibleChildList(@NotNull final T parent) {
+        checkState(display != null, "The display variable should have been set.");
+
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
     }
 

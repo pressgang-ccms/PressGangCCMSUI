@@ -133,6 +133,7 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                                 checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
                                 checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There has to be a selected item");
                                 checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected item need to reference a valid entity");
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().isValid(), "The provider data needs to be valid");
 
                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
