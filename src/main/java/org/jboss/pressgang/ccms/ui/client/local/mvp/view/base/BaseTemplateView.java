@@ -260,6 +260,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                                         @Override
                                         public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final BaseTemplateViewInterface display) {
                                             contents.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
+                                            center();
                                         }
                                     }, true);
 
