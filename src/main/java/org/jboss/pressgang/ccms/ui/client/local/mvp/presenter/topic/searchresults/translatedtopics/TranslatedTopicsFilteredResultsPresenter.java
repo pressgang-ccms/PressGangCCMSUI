@@ -225,7 +225,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     }
 
     /**
-     Break down the query into individual locales
+     * Break down the query into individual locales
      */
     private void breakDownQuery(@NotNull final List<String> locales) {
 
@@ -269,7 +269,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                     }
                 }
 
-                if (!isExcluded)  {
+                if (!isExcluded) {
                     localeQueries.put(locale, CommonFilterConstants.MATCH_LOCALE + "1=" + locale + "1");
                 }
             }

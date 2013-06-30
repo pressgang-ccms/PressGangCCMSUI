@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = true;
-exports.cssClass = "ace-tomorrow-night-bright";
-exports.cssText = "\
+	exports.isDark = true;
+	exports.cssClass = "ace-tomorrow-night-bright";
+	exports.cssText = "\
 .ace-tomorrow-night-bright .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -205,6 +205,6 @@ background-color:#B798BF;\
   color:#B9CA4A;\
 }";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+	var dom = require("../lib/dom");
+	dom.importCssString(exports.cssText, exports.cssClass);
 });

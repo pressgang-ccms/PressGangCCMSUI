@@ -1,15 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
 import com.google.gwt.core.client.GWT;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecDetailsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1BasicDetailsEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -12,7 +12,6 @@ public final class RESTPropertyCategoryCollectionItemNameSort implements Compara
     private final boolean ascending;
 
     /**
-     *
      * @param ascending true if the items should be sorted in ascending order, false otherwise
      */
     public RESTPropertyCategoryCollectionItemNameSort(final boolean ascending) {

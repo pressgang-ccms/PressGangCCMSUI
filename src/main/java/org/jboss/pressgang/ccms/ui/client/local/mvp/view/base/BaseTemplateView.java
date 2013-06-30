@@ -9,7 +9,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -17,27 +16,27 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is used to build the standard page template. All views extend this class.
- *
+ * <p/>
  * The top of the page is a simple header image.
- *
+ * <p/>
  * Next is the page title and quick search box.
- *
+ * <p/>
  * Next is the top action bar. For a single view, this will be housed in the topActionGrandParentPanel container. For
  * compound views the topActionGrandParentPanel will be removed, and replaced with another container that will pull
  * the topActionParentPanel and topViewSpecificActionPanel containers out. The topActionParentPanel container holds the
  * "common" action buttons. These are buttons that are usually navigation related, and will remain in place as the user
  * moves through the various views in the UI. The "local" action buttons are specific to a view, like line wrapping
  * buttons in a text editing view. These are displayed to the right, and disappear as the user moves to another view.
- *
+ * <p/>
  * Next, on the left, is the main navigation column.
- *
+ * <p/>
  * To the right of that is the main view area.
- *
+ * <p/>
  * Finally, at the bottom, there is the footer.
- *
+ * <p/>
  * When a child view is included in a parent view, the parent will usually pull out the action buttons and content panel,
  * displaying them in containers defined by the parent.
- *
+ * <p/>
  * This class defines only the layout, not the logic. The BaseTemplatePresenter class is where logic is applied to
  * the ui elements.
  *
@@ -518,8 +517,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     /**
      * The constructor is used to piece the template together.
+     *
      * @param applicationName The name of the application. This is not actually used any more, and should be removed.
-     * @param pageName The name of the page.
+     * @param pageName        The name of the page.
      */
     public BaseTemplateView(@NotNull final String applicationName, @NotNull final String pageName) {
         this.applicationName = applicationName;
@@ -794,7 +794,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
      * the template action bar, which is removed.
-     *
+     * <p/>
      * The button supplied to this method is placed in the spacer cell.
      */
     protected void addButtonToShortcutPanels(@NotNull final PushButton button) {

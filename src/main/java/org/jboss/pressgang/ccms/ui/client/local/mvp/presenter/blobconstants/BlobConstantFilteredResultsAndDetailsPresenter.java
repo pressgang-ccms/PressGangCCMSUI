@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -9,7 +12,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
@@ -48,11 +50,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class BlobConstantFilteredResultsAndDetailsPresenter extends
         BaseSearchAndEditPresenter<
-                        RESTBlobConstantV1,
-                        RESTBlobConstantCollectionV1,
-                        RESTBlobConstantCollectionItemV1,
-                        RESTBlobConstantV1DetailsEditor>
-implements BaseTemplatePresenterInterface {
+                RESTBlobConstantV1,
+                RESTBlobConstantCollectionV1,
+                RESTBlobConstantCollectionItemV1,
+                RESTBlobConstantV1DetailsEditor>
+        implements BaseTemplatePresenterInterface {
 
     /**
      * The history token used to identify this view
@@ -67,15 +69,18 @@ implements BaseTemplatePresenterInterface {
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
     /**
      * The presenter used to display the filtered results.
      */
-    @Inject private BlobConstantFilteredResultsPresenter blobConstantFilteredResultsPresenter;
+    @Inject
+    private BlobConstantFilteredResultsPresenter blobConstantFilteredResultsPresenter;
     /**
      * The presenter used to display the blob constant details.
      */
-    @Inject private BlobConstantPresenter blobConstantPresenter;
+    @Inject
+    private BlobConstantPresenter blobConstantPresenter;
 
     /**
      * The query string extracted from the history token
@@ -85,7 +90,8 @@ implements BaseTemplatePresenterInterface {
     /**
      * The global event bus.
      */
-    @Inject private HandlerManager eventBus;
+    @Inject
+    private HandlerManager eventBus;
 
 
     @Override
@@ -380,11 +386,10 @@ implements BaseTemplatePresenterInterface {
      * The display that this presenter is associated with.
      */
     public interface Display extends BaseSearchAndEditViewInterface<
-                RESTBlobConstantV1,
-                RESTBlobConstantCollectionV1,
-                RESTBlobConstantCollectionItemV1> {
+            RESTBlobConstantV1,
+            RESTBlobConstantCollectionV1,
+            RESTBlobConstantCollectionItemV1> {
         /**
-         *
          * @return The save button.
          */
         PushButton getSave();

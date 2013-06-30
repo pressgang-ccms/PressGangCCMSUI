@@ -44,6 +44,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the locale to the ui element.
+     *
      * @return The locale ui element
      */
     @NotNull
@@ -53,6 +54,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the topic id to the ui element.
+     *
      * @return The topic id ui element
      */
     @NotNull
@@ -62,6 +64,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the topic revision to the ui element.
+     *
      * @return The revision ui element
      */
     @NotNull
@@ -71,6 +74,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the translated topic id to the ui element.
+     *
      * @return The translated topic id ui element
      */
     @NotNull
@@ -79,7 +83,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     }
 
     /**
-     *
      * @param readOnly true if the ui elements presented by this editor should be readonly
      */
     public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {

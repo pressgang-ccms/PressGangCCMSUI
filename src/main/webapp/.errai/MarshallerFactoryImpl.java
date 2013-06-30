@@ -6720,20 +6720,20 @@ public class MarshallerFactoryImpl implements MarshallerFactory {
     }
 
     private native static Boolean _$227131749_containsFuzzyTranslation(RESTTranslatedTopicV1 instance) /*-{
-        return instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::containsFuzzyTranslation;
-    }-*/;
+		return instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::containsFuzzyTranslation;
+	}-*/;
 
     private native static void _$227131749_containsFuzzyTranslation(RESTTranslatedTopicV1 instance, Boolean value) /*-{
-        instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::containsFuzzyTranslation = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::containsFuzzyTranslation = value;
+	}-*/;
 
     private native static RESTTranslatedTopicStringCollectionV1 _$227131749_translatedTopicStrings(RESTTranslatedTopicV1 instance) /*-{
-        return instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings;
-    }-*/;
+		return instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings;
+	}-*/;
 
     private native static void _$227131749_translatedTopicStrings(RESTTranslatedTopicV1 instance, RESTTranslatedTopicStringCollectionV1 value) /*-{
-        instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings = value;
+	}-*/;
 
     public Marshaller getMarshaller(String a0, String a1) {
         return marshallers.get(a1);

@@ -30,7 +30,7 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     }
 
     @Override
-    public void display(@NotNull final  List<String> entity, final boolean readonly) {
+    public void display(@NotNull final List<String> entity, final boolean readonly) {
         searchUILocales.initialize(entity);
 
         /* SearchUIProjectsEditor is a grid */

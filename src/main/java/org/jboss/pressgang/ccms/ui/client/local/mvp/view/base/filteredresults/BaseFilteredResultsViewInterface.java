@@ -41,11 +41,13 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
      * @return The provider used to populate the cell table
      */
     EnhancedAsyncDataProvider<V> getProvider();
+
     /**
      * @return The panel that holds the buttons used as tabs.
      */
     @NotNull
     FlexTable getTabPanel();
+
     /**
      * @param provider The provider used to populate the cell table
      */

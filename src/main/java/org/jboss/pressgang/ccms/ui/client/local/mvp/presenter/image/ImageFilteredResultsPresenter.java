@@ -36,25 +36,21 @@ public class ImageFilteredResultsPresenter
     public interface Display extends BaseFilteredResultsViewInterface<RESTImageCollectionItemV1> {
 
         /**
-         *
          * @return The image id search filter field
          */
         TextBox getImageIdFilter();
 
         /**
-         *
          * @return The image description search filter field
          */
         TextBox getImageDescriptionFilter();
 
         /**
-         *
          * @return The image original file name search filter field
          */
         TextBox getImageOriginalFileNameFilter();
 
         /**
-         *
          * @return The bulk image upload action button.
          */
         PushButton getBulkUpload();

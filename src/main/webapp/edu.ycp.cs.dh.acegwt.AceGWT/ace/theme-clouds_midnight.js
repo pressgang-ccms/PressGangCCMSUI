@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = true;
-exports.cssClass = "ace-clouds-midnight";
-exports.cssText = "\
+	exports.isDark = true;
+	exports.cssClass = "ace-clouds-midnight";
+	exports.cssText = "\
 .ace-clouds-midnight .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -160,6 +160,6 @@ background-color:#E92E2E;\
     text-decoration:underline;\
 }";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+	var dom = require("../lib/dom");
+	dom.importCssString(exports.cssText, exports.cssClass);
 });

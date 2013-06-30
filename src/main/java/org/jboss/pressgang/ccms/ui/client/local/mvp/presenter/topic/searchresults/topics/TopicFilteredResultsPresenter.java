@@ -30,9 +30,14 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
-        @NotNull PushButton getBulkImport();
-        @NotNull PushButton getBulkOverwrite();
-        @NotNull PushButton getAtomFeed();
+        @NotNull
+        PushButton getBulkImport();
+
+        @NotNull
+        PushButton getBulkOverwrite();
+
+        @NotNull
+        PushButton getAtomFeed();
     }
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
@@ -118,11 +123,10 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,  new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
+                final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
-                        try
-                        {
+                        try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 

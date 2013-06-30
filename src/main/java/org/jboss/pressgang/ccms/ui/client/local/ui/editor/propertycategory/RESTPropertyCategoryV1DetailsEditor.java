@@ -42,6 +42,7 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
 
     /**
      * Builds the UI.
+     *
      * @param readOnly true if the ui elements should be read only, and false otherwise
      */
     public RESTPropertyCategoryV1DetailsEditor(final boolean readOnly) {

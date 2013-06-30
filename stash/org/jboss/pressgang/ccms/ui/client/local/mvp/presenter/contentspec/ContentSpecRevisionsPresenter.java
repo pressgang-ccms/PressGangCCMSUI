@@ -6,9 +6,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -25,7 +23,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -33,22 +30,28 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTContentSpecV1> {
 
-        @NotNull EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> getProvider();
+        @NotNull
+        EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> getProvider();
 
-        void setProvider( @NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider);
+        void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider);
 
-        @NotNull CellTable<RESTContentSpecCollectionItemV1> getResults();
+        @NotNull
+        CellTable<RESTContentSpecCollectionItemV1> getResults();
 
-        @NotNull SimplePager getPager();
+        @NotNull
+        SimplePager getPager();
 
-        @NotNull  Column<RESTContentSpecCollectionItemV1, String> getViewButton();
+        @NotNull
+        Column<RESTContentSpecCollectionItemV1, String> getViewButton();
 
-        @NotNull Column<RESTContentSpecCollectionItemV1, String> getDiffButton();
+        @NotNull
+        Column<RESTContentSpecCollectionItemV1, String> getDiffButton();
 
         /**
          * @return The currently selected revision content spec.
          */
-        @Nullable RESTContentSpecV1 getRevisionContentSpec();
+        @Nullable
+        RESTContentSpecV1 getRevisionContentSpec();
 
         /**
          * @param revisionTopic The currently selected revision content spec.
@@ -121,7 +124,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                                 }
 
                                 /* Fix the text */
-                                for (final RESTContentSpecCollectionItemV1 item : retValue.getRevisions().getItems())  {
+                                for (final RESTContentSpecCollectionItemV1 item : retValue.getRevisions().getItems()) {
                                     ComponentContentSpecV1.fixDisplayedText(item.getItem());
                                 }
 
@@ -129,7 +132,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                                 getProviderData().setSize(retValue.getRevisions().getSize());
                                 displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                             }
-                    });
+                        });
 
                 final int start = list.getVisibleRange().getStart();
                 getProviderData().setStartRow(start);

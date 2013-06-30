@@ -168,7 +168,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         this.getPanel().setWidget(editor);
 
         /* Sort the array */
-       final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
+        final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
         Collections.sort(localesList);
 
         /* populate the locales list box */

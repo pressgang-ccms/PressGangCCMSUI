@@ -43,10 +43,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class CategoryTagPresenter
         extends BaseOrderedChildrenPresenter<
-                RESTCategoryV1,
-                RESTCategoryV1,
-                RESTTagCollectionItemV1,
-                RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        RESTCategoryV1,
+        RESTCategoryV1,
+        RESTTagCollectionItemV1,
+        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -173,9 +173,9 @@ public class CategoryTagPresenter
                             */
                             if (column == display.getPossibleChildrenButtonColumn()) {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent, ascending));
-                            } else if (column == display.getTagsIdColumn())  {
+                            } else if (column == display.getTagsIdColumn()) {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort(ascending));
-                            } else if (column == display.getTagsNameColumn())  {
+                            } else if (column == display.getTagsNameColumn()) {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                             }
                         }

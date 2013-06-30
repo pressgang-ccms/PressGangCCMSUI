@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -51,10 +54,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class PropertyCategoryFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditPresenter<
-                    RESTPropertyCategoryV1,
-                    RESTPropertyCategoryCollectionV1,
-                    RESTPropertyCategoryCollectionItemV1,
-                    RESTPropertyCategoryV1DetailsEditor>
+                RESTPropertyCategoryV1,
+                RESTPropertyCategoryCollectionV1,
+                RESTPropertyCategoryCollectionItemV1,
+                RESTPropertyCategoryV1DetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 
@@ -156,42 +159,42 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
         /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(
-            new GetExistingCollectionCallback<RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>() {
-                @NotNull
-                @Override
-                public RESTPropertyTagInPropertyCategoryCollectionV1 getExistingCollection() {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
+                new GetExistingCollectionCallback<RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>() {
+                    @NotNull
+                    @Override
+                    public RESTPropertyTagInPropertyCategoryCollectionV1 getExistingCollection() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
 
-                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags();
-                }
-            },
-            new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
-                @Override
-                public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
+                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags();
+                    }
+                },
+                new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
+                    @Override
+                    public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
 
-                    @NotNull final RESTPropertyTagInPropertyCategoryV1 newChild = new RESTPropertyTagInPropertyCategoryV1();
-                    newChild.setId(copy.getItem().getId());
-                    newChild.setName(copy.getItem().getName());
-                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().addNewItem(newChild);
-                }
-            },
-            new UpdateAfterChildModifiedCallback() {
-                @Override
-                public void updateAfterChildModified() {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        @NotNull final RESTPropertyTagInPropertyCategoryV1 newChild = new RESTPropertyTagInPropertyCategoryV1();
+                        newChild.setId(copy.getItem().getId());
+                        newChild.setName(copy.getItem().getName());
+                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().addNewItem(newChild);
+                    }
+                },
+                new UpdateAfterChildModifiedCallback() {
+                    @Override
+                    public void updateAfterChildModified() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                     /*
                      * refresh the list of possible tags
                      */
-                    tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                    }
                 }
-            }
         );
     }
 
@@ -321,7 +324,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-               doSearch(GWTUtilities.isEventToOpenNewWindow(event));
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
 

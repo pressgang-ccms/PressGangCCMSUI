@@ -140,7 +140,6 @@ public final class SearchUICategory extends SearchUIBase {
             checkArgument(filter == null || filter.getFilterCategories_OTM() != null, "Filter must be null or have a populated collection of categories.");
 
 
-
             if (filter != null) {
                 for (@NotNull final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
@@ -171,14 +170,14 @@ public final class SearchUICategory extends SearchUIBase {
 
                 final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory =
                         Iterables.tryFind(tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
-                    @Override
-                    public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
-                        if (arg == null) {
-                            return false;
-                        }
-                        return arg.getItem().getId().equals(category.getItem().getId());
-                    }
-                });
+                            @Override
+                            public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
+                                if (arg == null) {
+                                    return false;
+                                }
+                                return arg.getItem().getId().equals(category.getItem().getId());
+                            }
+                        });
 
                 final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind(tag.getItem().getProjects()
                         .getItems(), new Predicate<RESTProjectCollectionItemV1>() {
@@ -213,7 +212,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @param filter   The filter that defines the state of the tags
      */
     public void populateCategoriesWithoutProject(@NotNull final RESTCategoryInTagCollectionItemV1 category,
-                                                 @NotNull  final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
+                                                 @NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategoriesWithoutProject()");
 
@@ -247,14 +246,14 @@ public final class SearchUICategory extends SearchUIBase {
 
                     final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem().getCategories().getItems(),
                             new Predicate<RESTCategoryInTagCollectionItemV1>() {
-                        @Override
-                        public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
-                            if (arg == null) {
-                                return false;
-                            }
-                            return arg.getItem().getId().equals(category.getItem().getId());
-                        }
-                    });
+                                @Override
+                                public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
+                                    if (arg == null) {
+                                        return false;
+                                    }
+                                    return arg.getItem().getId().equals(category.getItem().getId());
+                                }
+                            });
 
                     if (matchingCategory.isPresent()) {
                         @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, this.mutuallyExclusiveCategory, filter);

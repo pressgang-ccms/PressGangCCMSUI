@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -51,10 +54,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class PropertyTagFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditPresenter<
-                    RESTPropertyTagV1,
-                    RESTPropertyTagCollectionV1,
-                    RESTPropertyTagCollectionItemV1,
-                    RESTPropertyTagV1DetailsEditor>
+                RESTPropertyTagV1,
+                RESTPropertyTagCollectionV1,
+                RESTPropertyTagCollectionItemV1,
+                RESTPropertyTagV1DetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 

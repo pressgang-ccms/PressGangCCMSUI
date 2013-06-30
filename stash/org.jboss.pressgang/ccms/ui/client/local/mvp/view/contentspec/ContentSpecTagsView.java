@@ -9,11 +9,9 @@ import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecTagsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -101,18 +99,18 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
             layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
 
             projects = new ValueListBox<SearchUIProject>(
-                new ProxyRenderer<SearchUIProject>(null) {
-                    @Nullable
-                    @Override
-                    public String render(@Nullable final SearchUIProject object) {
-                        return object == null ? null : object.getName();
-                    }
-                }, new ProvidesKey<SearchUIProject>() {
-                    @Override
-                    public Object getKey(@NotNull final SearchUIProject item) {
-                        return item.getId();
-                    }
+                    new ProxyRenderer<SearchUIProject>(null) {
+                        @Nullable
+                        @Override
+                        public String render(@Nullable final SearchUIProject object) {
+                            return object == null ? null : object.getName();
+                        }
+                    }, new ProvidesKey<SearchUIProject>() {
+                @Override
+                public Object getKey(@NotNull final SearchUIProject item) {
+                    return item.getId();
                 }
+            }
             );
             projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
 

@@ -25,7 +25,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    The presenter used to display the list of integer constants.
+ * The presenter used to display the list of integer constants.
  */
 @Dependent
 public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTIntegerConstantCollectionItemV1> {

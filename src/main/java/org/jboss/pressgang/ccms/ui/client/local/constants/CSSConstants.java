@@ -121,7 +121,7 @@ public interface CSSConstants {
         String LOGIC_DETAILS_TABLE = "LogicDetailsTable";
         /**
          * The style applied to the cell that holds the tag's name
-          */
+         */
         String TAG_NAME = "TagName";
         /**
          * The style applied to the cell that holds the tag's search state
@@ -210,7 +210,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the string constant's views.
+     * Holds the styles that are applied to the string constant's views.
      */
     interface StringConstantView {
         String STRING_CONSTANT_VIEW_PANEL = "StringConstantViewPanel";
@@ -220,7 +220,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the property tag's views.
+     * Holds the styles that are applied to the property tag's views.
      */
     interface PropertyTagView {
         String PROPERTY_TAG_VIEW_PANEL = "PropertyTagViewPanel";
@@ -233,7 +233,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the property category's views.
+     * Holds the styles that are applied to the property category's views.
      */
     interface PropertyCategoryView {
         String PROPERTY_CATEGORY_VIEW_PANEL = "PropertyCategoryViewPanel";
@@ -243,7 +243,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the integer constant's views.
+     * Holds the styles that are applied to the integer constant's views.
      */
     interface IntegerConstantView {
         String INTEGER_CONSTANT_VIEW_PANEL = "IntegerConstantViewPanel";
@@ -253,7 +253,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the blob constant's views.
+     * Holds the styles that are applied to the blob constant's views.
      */
     interface BlobConstantView {
         String BLOB_CONSTANT_VIEW_PANEL = "BlobConstantViewPanel";
@@ -262,7 +262,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tag's views.
+     * Holds the styles that are applied to the tag's views.
      */
     interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
@@ -282,7 +282,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the category's views.
+     * Holds the styles that are applied to the category's views.
      */
     interface CategoryView {
         String CATEGORY_VIEW_PANEL = "CategoryViewPanel";
@@ -302,7 +302,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the project's views.
+     * Holds the styles that are applied to the project's views.
      */
     interface ProjectView {
         String PROJECT_VIEW_PANEL = "ProjectViewPanel";
@@ -334,7 +334,7 @@ public interface CSSConstants {
     }
 
     interface TopicRevisionView {
-        String TOPIC_REVISION_NUMBER_COULMN  = "TopicRevisionNumberColumn";
+        String TOPIC_REVISION_NUMBER_COULMN = "TopicRevisionNumberColumn";
         String TOPIC_REVISION_DATE_COULMN = "TopicRevisionDateColumn";
         String TOPIC_REVISION_MINOR_RELEASE_COULMN = "TopicRevisionMinorReleaseColumn";
         String TOPIC_REVISION_MAJOR_RELEASE_COULMN = "TopicRevisionMajorReleaseColumn";
@@ -347,7 +347,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the topic's views.
+     * Holds the styles that are applied to the topic's views.
      */
     interface TopicView {
         String XML_TAGS_LIST = "XmlTagsList";
@@ -373,8 +373,8 @@ public interface CSSConstants {
         String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
         String TOPIC_RENDERED_VIEW_IFRAME = "TopicRenderedViewIFrame";
         String TOPIC_RENDERED_VIEW_IFRAME_TABLE = "TopicRenderedViewIFrameTable";
-        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL =  "TopicRenderedViewIFrameTableLoadingCell";
-        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL  =  "TopicRenderedViewIFrameTableDisplayingCell";
+        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL = "TopicRenderedViewIFrameTableLoadingCell";
+        String TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL = "TopicRenderedViewIFrameTableDisplayingCell";
 
         String TOPIC_XML_VIEW_PANEL = "TopicXMLViewPanel";
         String TOPIC_XML_ERRORS = "TopicXMLErrors";
@@ -459,7 +459,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tag list category list view.
+     * Holds the styles that are applied to the tag list category list view.
      */
     interface TagListCategoryView {
         String CATEGORIES_BUTTONS_LAYOUT = "CategoriesButtonsLayout";
@@ -470,7 +470,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tag list projects list view.
+     * Holds the styles that are applied to the tag list projects list view.
      */
     interface TagListProjectsView {
         String PROJECTS_BUTTONS_LAYOUT = "ProjectsButtonsLayout";
@@ -479,27 +479,27 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tag list tags view.
+     * Holds the styles that are applied to the tag list tags view.
      */
     interface TagListTagView {
         /**
-         *  Assigned to the tag labels.
+         * Assigned to the tag labels.
          */
         String TAG_LABEL = "TagLabel";
     }
 
     /**
-     *  Holds the styles that are applied to the locales view.
+     * Holds the styles that are applied to the locales view.
      */
-    interface LocaleList{
+    interface LocaleList {
         /**
-         *  Assigned to the locale labels.
+         * Assigned to the locale labels.
          */
         String LOCALE_LABEL = "LocaleLabel";
     }
 
     /**
-     *  Holds the styles that are applied to the images view.
+     * Holds the styles that are applied to the images view.
      */
     interface ImageView {
         /**

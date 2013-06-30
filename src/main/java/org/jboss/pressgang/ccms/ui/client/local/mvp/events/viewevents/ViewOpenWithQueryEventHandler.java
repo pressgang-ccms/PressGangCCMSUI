@@ -13,6 +13,7 @@ public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
 
     /**
      * Initialize the event handler.
+     *
      * @param historyToken The history token to be appended to the URL.
      */
     public ViewOpenWithQueryEventHandler(@NotNull final String historyToken) {
@@ -21,6 +22,7 @@ public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
 
     /**
      * Set the url, which in turn will trigger a presenter to be loaded and the view to be displayed.
+     *
      * @param event The event that this handler is responding to
      */
     protected final void onViewOpen(@NotNull final ViewOpenWithQueryEvent<?> event) {

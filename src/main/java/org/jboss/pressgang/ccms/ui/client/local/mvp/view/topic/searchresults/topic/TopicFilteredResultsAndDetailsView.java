@@ -1,22 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base.BaseSearchResultsAndTopicView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
-import org.vectomatic.file.FileUploadExt;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.New;
 import javax.inject.Inject;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -49,12 +45,16 @@ public class TopicFilteredResultsAndDetailsView extends
     /**
      * The bulk import dialog box.
      */
-    private @Inject BulkImportImpl bulkImport;
+    private
+    @Inject
+    BulkImportImpl bulkImport;
 
     /**
      * The bulk overwrite dialog box.
      */
-    private @Inject BulkOverwriteImpl bulkOverwrite;
+    private
+    @Inject
+    BulkOverwriteImpl bulkOverwrite;
 
     @Override
     @NotNull

@@ -79,18 +79,18 @@ public class ProjectFilteredResultsPresenter
             protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> list) {
 
                 @NotNull final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
-                    new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
-                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                        new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
+                                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                            getProviderData().setItems(retValue.getItems());
-                            getProviderData().setSize(retValue.getSize());
-                            relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        }
-                });
+                                getProviderData().setItems(retValue.getItems());
+                                getProviderData().setSize(retValue.getSize());
+                                relinkSelectedItem();
+                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            }
+                        });
 
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();

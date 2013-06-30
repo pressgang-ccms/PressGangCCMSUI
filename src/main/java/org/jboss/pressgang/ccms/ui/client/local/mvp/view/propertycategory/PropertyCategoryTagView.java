@@ -26,7 +26,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         RESTPropertyCategoryV1,                                                                                                                         // The main REST types
         RESTPropertyTagCollectionItemV1,                                                                                                                // The possible children types
         RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>          // The existing children types
-    implements PropertyCategoryTagPresenter.Display {
+        implements PropertyCategoryTagPresenter.Display {
 
     @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {

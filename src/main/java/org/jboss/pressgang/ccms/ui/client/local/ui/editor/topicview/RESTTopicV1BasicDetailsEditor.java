@@ -174,7 +174,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         lastModified.setValue(value.getLastModified());
 
         /* the id will be null for new topics */
-        if (value.getId() != null)  {
+        if (value.getId() != null) {
             final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
             final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 

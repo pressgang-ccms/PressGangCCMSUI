@@ -2,36 +2,17 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.IFrameElement;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * This view maintains a kind of double buffer. IFrames are loaded into hidden table cells, and then
@@ -60,15 +41,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      */
     private native int getScrollX(@NotNull final String id)  /*-{
 		try {
-            var iframe = $doc.getElementById(id);
-            if (iframe != null &&
-                iframe.contentWindow != null) {
-                    return iframe.contentWindow.pageXOffset;
-            }
-        } catch (exception) {
-            // probably a cross domain violation
-        }
-        return 0;
+			var iframe = $doc.getElementById(id);
+			if (iframe != null &&
+				iframe.contentWindow != null) {
+				return iframe.contentWindow.pageXOffset;
+			}
+		} catch (exception) {
+			// probably a cross domain violation
+		}
+		return 0;
 	}-*/;
 
     /**
@@ -80,15 +61,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * @return The current vertical scroll position
      */
     private native int getScrollY(@NotNull final String id)  /*-{
-       try {
-            var iframe = $doc.getElementById(id);
-            if (iframe != null &&
-                iframe.contentWindow != null) {
-                return iframe.contentWindow.document.defaultView.pageYOffset;
-            }
-        } catch (exception) {
-            // probably a cross domain violation
-        }
+		try {
+			var iframe = $doc.getElementById(id);
+			if (iframe != null &&
+				iframe.contentWindow != null) {
+				return iframe.contentWindow.document.defaultView.pageYOffset;
+			}
+		} catch (exception) {
+			// probably a cross domain violation
+		}
 		return 0;
 	}-*/;
 
@@ -97,21 +78,21 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * XSL transformed into HTML. So we use native code to get access to the scroll
      * position of the default view. Tested in Chrome and Firefox.
      *
-     * @param id  The iframe id
+     * @param id         The iframe id
      * @param scrollLeft The horizontal scroll position
-     * @param scrollTop The vertical scroll position
+     * @param scrollTop  The vertical scroll position
      */
     private native void setScroll(@NotNull final String id, final int scrollLeft, final int scrollTop) /*-{
-        try{
-            var iframe = $doc.getElementById(id);
-            if (iframe != null &&
-                iframe.contentWindow != null) {
-                iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
-            }
-        } catch (exception) {
-            // probably a cross domain violation
-        }
-    }-*/;
+		try {
+			var iframe = $doc.getElementById(id);
+			if (iframe != null &&
+				iframe.contentWindow != null) {
+				iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
+			}
+		} catch (exception) {
+			// probably a cross domain violation
+		}
+	}-*/;
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
@@ -132,15 +113,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * So here we remove the listener.
      */
     public native void removeListener() /*-{
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener != null) {
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener != null) {
 			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener = null;
-        }
-    }-*/;
+		}
+	}-*/;
 
     private native void createEventListener() /*-{
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener =
-			function(me) {
+			function (me) {
 				return function displayAfterLoaded(event) {
 					if (event.data == 'loaded') {
 						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
@@ -150,8 +131,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 	}-*/;
 
     private native void addEventListener() /*-{
-        $wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
-    }-*/;
+		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
+	}-*/;
 
     private void displayRendered() {
         if (loadingiframe != null) {

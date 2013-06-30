@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -25,8 +24,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A MVP view for displaying a topic's revision history.

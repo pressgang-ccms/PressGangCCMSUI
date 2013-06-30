@@ -9,7 +9,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollect
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityWithPropertiesV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
@@ -20,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 
 /**
-    The view for the extended properties assigned to an entity.
+ * The view for the extended properties assigned to an entity.
  */
 @Dependent
 public class CommonExtenedPropertyView extends BaseExtendedChildrenView<

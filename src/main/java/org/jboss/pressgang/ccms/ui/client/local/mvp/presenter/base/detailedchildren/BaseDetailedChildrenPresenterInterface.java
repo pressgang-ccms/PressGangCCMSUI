@@ -40,7 +40,7 @@ public interface BaseDetailedChildrenPresenterInterface<
      *               remove the tag from a category that is selected as a potential child, and that selected category's tags are then
      *               presented for ordering. In that case, the entity being edited can be found through the
      *               getPossibleChildrenProviderData().getDisplayedItem() property.
-     *
+     *               <p/>
      *               In other cases, the list of potential children is just used to add and remove children, and the selected potential
      *               child has no significance. This happens when editing a category and assigning tags to it. The list of potential
      *               children is all the tags, while the existing children are the children of the category being edited. In this case,

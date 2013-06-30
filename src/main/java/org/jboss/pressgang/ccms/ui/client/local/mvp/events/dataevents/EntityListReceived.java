@@ -24,6 +24,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
 
     /**
      * The constructor initializes the final variables.
+     *
      * @param entities The collection of entities that this event relates to.
      */
     public EntityListReceived(@NotNull final T entities) {

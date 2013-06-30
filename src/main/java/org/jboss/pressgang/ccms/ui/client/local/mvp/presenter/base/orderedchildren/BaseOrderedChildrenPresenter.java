@@ -45,7 +45,7 @@ abstract public class BaseOrderedChildrenPresenter<
 
     @Override
     public boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
-                                           @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
+                                     @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         checkState(getExistingProviderData().isValid(), "The getExistingProviderData() collection needs to be valid");
 

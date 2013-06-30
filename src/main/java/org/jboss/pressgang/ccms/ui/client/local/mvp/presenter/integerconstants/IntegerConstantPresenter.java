@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
-    The presenter used to display the integer constants details.
+ * The presenter used to display the integer constants details.
  */
 @Dependent
 public class IntegerConstantPresenter extends BaseTemplatePresenter {

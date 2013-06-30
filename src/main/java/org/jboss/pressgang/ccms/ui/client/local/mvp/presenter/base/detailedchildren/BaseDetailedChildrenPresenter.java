@@ -69,10 +69,11 @@ abstract public class BaseDetailedChildrenPresenter<
 
     /**
      * Initialize this presenter.
-     * @param topicId The help topic id for this view.
-     * @param pageId The id for this page, used for the survey link.
+     *
+     * @param topicId        The help topic id for this view.
+     * @param pageId         The id for this page, used for the survey link.
      * @param preferencesKey The key that saves the width of the split panel which separates the childen and their details.
-     * @param display The view to display the wait dialog.
+     * @param display        The view to display the wait dialog.
      */
     protected void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
@@ -84,7 +85,7 @@ abstract public class BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public  void displayChildrenExtended(@NotNull final T parent, final boolean readOnly) {
+    public void displayChildrenExtended(@NotNull final T parent, final boolean readOnly) {
         throw new UnsupportedOperationException("displayChildrenExtended() is not supported. Use displayDetailedChildren() instead.");
     }
 

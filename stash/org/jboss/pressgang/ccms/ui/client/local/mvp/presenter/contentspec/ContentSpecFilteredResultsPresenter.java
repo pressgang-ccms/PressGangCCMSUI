@@ -2,12 +2,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -116,11 +113,10 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
             protected void onRangeChanged(@NotNull final HasData<RESTContentSpecCollectionItemV1> list) {
 
                 final BaseRestCallback<RESTContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTContentSpecCollectionV1, Display>(
-                        display,  new BaseRestCallback.SuccessAction<RESTContentSpecCollectionV1, Display>() {
+                        display, new BaseRestCallback.SuccessAction<RESTContentSpecCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTContentSpecCollectionV1 retValue, @NotNull final Display display) {
-                        try
-                        {
+                        try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
                             checkArgument(retValue.getItems().size() == 0 || retValue.getItems().get(0).getItem().getChildren_OTM() != null, "The items in the returned collection should have a valid children collection");

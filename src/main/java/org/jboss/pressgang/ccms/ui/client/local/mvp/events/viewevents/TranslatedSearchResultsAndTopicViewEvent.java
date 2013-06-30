@@ -11,7 +11,8 @@ public final class TranslatedSearchResultsAndTopicViewEvent extends ViewOpenWith
 
     /**
      * Initialize the event data.
-     * @param query The query to be passed in the URL history token, and then ultimately onto the REST service
+     *
+     * @param query     The query to be passed in the URL history token, and then ultimately onto the REST service
      * @param newWindow true if the view should be opened in a new window
      */
     public TranslatedSearchResultsAndTopicViewEvent(@NotNull final String query, final boolean newWindow) {

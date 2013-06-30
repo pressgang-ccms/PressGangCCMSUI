@@ -31,8 +31,8 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private final boolean showBulkTags;
     private final FlexTable tagsTable = new FlexTable();
     private final RadioButton internalLogicAnd = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
-    private final RadioButton internalLogicOr  = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
-    private final RadioButton externalLogicAnd  = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
+    private final RadioButton internalLogicOr = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
+    private final RadioButton externalLogicAnd = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
     private final RadioButton externalLogicOr = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
 
     final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
@@ -186,7 +186,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             if (showBulkTags) {
                 @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
                 tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 2, tagBulkUpdateState);
-                tagsTable.getFlexCellFormatter().addStyleName(2,  i * TAG_CELLS_PER_COLUMN + 2, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+                tagsTable.getFlexCellFormatter().addStyleName(2, i * TAG_CELLS_PER_COLUMN + 2, CSSConstants.SearchView.LOGIC_HEADER_CELL);
             } else {
                 tagsTable.getFlexCellFormatter().setColSpan(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, 2);
             }

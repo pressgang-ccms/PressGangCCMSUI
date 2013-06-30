@@ -38,11 +38,12 @@ final public class GWTUtilities {
 
     /**
      * Sets the browser's page title
+     *
      * @param newTitle The page title
      */
-    public static void setBrowserWindowTitle (@NotNull final String newTitle) {
+    public static void setBrowserWindowTitle(@NotNull final String newTitle) {
         if (Document.get() != null) {
-            Document.get().setTitle (newTitle);
+            Document.get().setTitle(newTitle);
         }
     }
 
@@ -56,25 +57,25 @@ final public class GWTUtilities {
      */
     native public static void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel, final boolean isXML)
     /*-{
-        var diffTable = $wnd.prettydiff({
-            source: source,
-            sourcelabel: sourceLabel,
-            diff: diff,
-            difflabel: diffLabel,
-            lang: isXML ? "markup" : "text",
-            mode: "diff",
-            diffview: "sidebyside"
-        })[0];
+		var diffTable = $wnd.prettydiff({
+			source: source,
+			sourcelabel: sourceLabel,
+			diff: diff,
+			difflabel: diffLabel,
+			lang: isXML ? "markup" : "text",
+			mode: "diff",
+			diffview: "sidebyside"
+		})[0];
 
-        var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200) + ",scrollbars=yes"); // a window object
-        if (win != null) {
-            win.document.open("text/html", "replace");
-            win.document
-                .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
-                    + diffTable + "</BODY></HTML>");
-            win.document.close();
-        }
-    }-*/;
+		var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200) + ",scrollbars=yes"); // a window object
+		if (win != null) {
+			win.document.open("text/html", "replace");
+			win.document
+				.write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
+					+ diffTable + "</BODY></HTML>");
+			win.document.close();
+		}
+	}-*/;
 
     /**
      * Writes out a stack trace into a string.

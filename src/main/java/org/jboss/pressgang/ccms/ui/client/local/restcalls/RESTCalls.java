@@ -6,10 +6,8 @@ import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.collections.*;
-//import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
-//import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -24,6 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
+//import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 
 /**
  * This class provides a standard way to call the REST server and respond to the various success and failure paths.
@@ -122,7 +123,7 @@ public final class RESTCalls {
     /**
      * The required expansion details for a topic. The revisions are required so we can check to see if
      * the last revision was the one we edited. If not, there was a conflicting save.
-     *
+     * <p/>
      * We only need the last 2 revisions to check for save conflicts.
      */
     private static final String TOPIC_EXPANSION =
@@ -134,10 +135,10 @@ public final class RESTCalls {
     /**
      * The required expansion details for a translated topic. The revisions are required so we can check to see if
      * the last revision was the one we edited. If not, there was a conflicting save.
-     *
+     * <p/>
      * The properties are loaded here, unlike in TOPIC_EXPANSION. This is really just for convenience, as the topic
      * view is much more optimized for fast loading of the topics basic details.
-     *
+     * <p/>
      * We only need the last 2 revisions to check for save conflicts.
      */
     private static final String TRANSLATED_TOPIC_EXPANSION =
@@ -152,25 +153,25 @@ public final class RESTCalls {
      */
     private static final String FILTER_EXPANSION =
             "{\"branches\":[" +
-                "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}, \"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.PROJECT_NAME + "\"}}" +
-                "]}," +
-                "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
-                "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
-                "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
+                    "]}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
-                "]}" +
-            "]}";
+                    "]}" +
+                    "]}";
 
     private static final String TOPIC_TAG_EXPANSION =
             "{\"branches\":[" +
-                "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
+                    "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
                     "]}" +
-                "]}" +
-            "]}";
+                    "]}" +
+                    "]}";
 
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails
@@ -428,13 +429,13 @@ public final class RESTCalls {
     public static void getTopicWithRevisions(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, final int start, final int end) {
         final String revisionExpand =
                 "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
-                    "\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                        "\"branches\":[" +
                         "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
                         "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                         "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-                    "]}" +
-                "]}";
+                        "]}" +
+                        "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -543,7 +544,7 @@ public final class RESTCalls {
 
     public static void getImageWithoutPreview(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images, but don't get the preview */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME+ "\"}}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -1033,6 +1034,7 @@ public final class RESTCalls {
 
     /**
      * Get a collection of property tags from the rest server.
+     *
      * @param callback The callback to process the results from the REST server
      */
     public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback) {
@@ -1047,10 +1049,11 @@ public final class RESTCalls {
 
     /**
      * Get a collection of property tags from the rest server.
-     * @param callback The callback to process the results from the REST server
+     *
+     * @param callback    The callback to process the results from the REST server
      * @param queryString The query passed to the REST endpoint
-     * @param start The start of the range of returned entities
-     * @param end The end of the range of returned entities
+     * @param start       The start of the range of returned entities
+     * @param end         The end of the range of returned entities
      */
     public static void getPropertyTagsFromQuery(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
@@ -1094,10 +1097,11 @@ public final class RESTCalls {
 
     /**
      * Get a collection of property categories from the rest server.
-     * @param callback The callback to process the results from the REST server
+     *
+     * @param callback    The callback to process the results from the REST server
      * @param queryString The query passed to the REST endpoint
-     * @param start The start of the range of returned entities
-     * @param end The end of the range of returned entities
+     * @param start       The start of the range of returned entities
+     * @param end         The end of the range of returned entities
      */
     public static void getPropertyCategoriesFromQuery(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
@@ -1146,27 +1150,27 @@ public final class RESTCalls {
      */
     public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
 
-            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                @Override
-                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+            @Override
+            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                             /* Get the list of locales from the StringConstant */
-                    @NotNull final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                            .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
-                            .replaceAll(" ", "").split(Constants.COMMA)));
+                @NotNull final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                        .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
+                        .replaceAll(" ", "").split(Constants.COMMA)));
 
                             /* Clean the list */
-                    while (locales.contains("")) {
-                        locales.remove("");
-                    }
-
-                    Collections.sort(locales);
-
-                    loadedCallback.stringListLoaded(locales);
+                while (locales.contains("")) {
+                    locales.remove("");
                 }
-            });
 
-            RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
+                Collections.sort(locales);
+
+                loadedCallback.stringListLoaded(locales);
+            }
+        });
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
     public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {

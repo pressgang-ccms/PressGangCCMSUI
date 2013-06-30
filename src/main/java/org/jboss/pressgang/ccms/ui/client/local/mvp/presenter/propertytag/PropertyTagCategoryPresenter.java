@@ -131,9 +131,9 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
                         */
                         if (column == display.getPossibleChildrenButtonColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemParentSort(parent, ascending));
-                        } else if (column == display.getTagsIdColumn())  {
+                        } else if (column == display.getTagsIdColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemIDSort(ascending));
-                        } else if (column == display.getTagsNameColumn())  {
+                        } else if (column == display.getTagsNameColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemNameSort(ascending));
                         }
                     }
@@ -154,15 +154,15 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
             RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>      // The existing children types
     {
         /**
-         *
          * @return The column that holds the child id
          */
         @NotNull
         TextColumn<RESTPropertyCategoryCollectionItemV1> getTagsIdColumn();
+
         /**
-         *
          * @return The column that holds the child name
          */
-        @NotNull TextColumn<RESTPropertyCategoryCollectionItemV1> getTagsNameColumn();
+        @NotNull
+        TextColumn<RESTPropertyCategoryCollectionItemV1> getTagsNameColumn();
     }
 }

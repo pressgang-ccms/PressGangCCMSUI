@@ -16,9 +16,9 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
-  The presenter used to display the locales in a search.
+ * The presenter used to display the locales in a search.
  */
-public class SearchLocalePresenter  extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class SearchLocalePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchLocaleView";
 

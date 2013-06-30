@@ -35,10 +35,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/dreamweaver', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
-exports.isDark = false;
-exports.cssClass = "ace-dreamweaver";
-exports.cssText = ".ace-dreamweaver .ace_editor {\
+define('ace/theme/dreamweaver', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+	exports.isDark = false;
+	exports.cssClass = "ace-dreamweaver";
+	exports.cssText = ".ace-dreamweaver .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -222,6 +222,6 @@ exports.cssText = ".ace-dreamweaver .ace_editor {\
   color: rgb(255, 0, 0)\
 }";
 
-var dom = require("../lib/dom");
-dom.importCssString(exports.cssText, exports.cssClass);
+	var dom = require("../lib/dom");
+	dom.importCssString(exports.cssText, exports.cssClass);
 });

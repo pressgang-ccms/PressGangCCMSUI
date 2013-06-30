@@ -141,7 +141,7 @@ public final class ServiceConstants {
     /**
      * The help topic for the property category view.
      */
-    public static final int PROPERTY_CATEGORY_HELP_TOPIC =  13742;
+    public static final int PROPERTY_CATEGORY_HELP_TOPIC = 13742;
 
     /**
      * The help topic for the property category details view.

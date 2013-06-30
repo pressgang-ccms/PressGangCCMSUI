@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and
  * projects, but the projects and categories don't have any direct relationship.
- *
+ * <p/>
  * When being viewed however tags are displayed in the projects->categories->tags hierarchy. This class defines the top level
  * collection of projects.
  *
@@ -134,11 +134,11 @@ public class SearchUIProjects implements SearchViewBase {
     /**
      * Add the tag and category states to the supplied filter. This is usually so a filter object can be
      * saved.
+     *
      * @param filter The filter to be synced with the tag and category states.
      */
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
-        try
-        {
+        try {
             LOGGER.log(Level.INFO, "ENTER SearchUIProjects.populateFilter()");
 
             checkArgument(filter.getFilterTags_OTM() != null, "The filter must have a collection of tags");

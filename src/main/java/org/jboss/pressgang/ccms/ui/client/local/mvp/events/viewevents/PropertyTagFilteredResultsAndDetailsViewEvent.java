@@ -10,7 +10,8 @@ public final class PropertyTagFilteredResultsAndDetailsViewEvent extends ViewOpe
 
     /**
      * Initialize the event data.
-     * @param query The query to be passed in the URL history token, and then ultimately onto the REST service
+     *
+     * @param query     The query to be passed in the URL history token, and then ultimately onto the REST service
      * @param newWindow true if the view should be opened in a new window
      */
     public PropertyTagFilteredResultsAndDetailsViewEvent(@NotNull final String query, final boolean newWindow) {

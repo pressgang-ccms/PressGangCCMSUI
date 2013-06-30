@@ -34,7 +34,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
-    The presenter used to display the property category tags.
+ * The presenter used to display the property category tags.
  */
 @Dependent
 public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
@@ -137,9 +137,9 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
                         */
                         if (column == display.getPossibleChildrenButtonColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyTagCollectionItemParentSort(parent, ascending));
-                        } else if (column == display.getTagsIdColumn())  {
+                        } else if (column == display.getTagsIdColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyTagCollectionItemIDSort(ascending));
-                        } else if (column == display.getTagsNameColumn())  {
+                        } else if (column == display.getTagsNameColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyTagCollectionItemNameSort(ascending));
                         }
                     }
@@ -163,13 +163,11 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
             RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>          // The existing children types
     {
         /**
-         *
          * @return The column that displays the id field.
          */
         TextColumn<RESTPropertyTagCollectionItemV1> getTagsIdColumn();
 
         /**
-         *
          * @return The column that displays the name field.
          */
         TextColumn<RESTPropertyTagCollectionItemV1> getTagsNameColumn();

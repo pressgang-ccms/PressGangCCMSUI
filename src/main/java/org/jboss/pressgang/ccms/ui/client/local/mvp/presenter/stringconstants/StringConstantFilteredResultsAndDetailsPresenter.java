@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -42,11 +45,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class StringConstantFilteredResultsAndDetailsPresenter extends
         BaseSearchAndEditPresenter<
-                        RESTStringConstantV1,
-                        RESTStringConstantCollectionV1,
-                        RESTStringConstantCollectionItemV1,
-                        RESTStringConstantV1DetailsEditor>
-implements BaseTemplatePresenterInterface {
+                RESTStringConstantV1,
+                RESTStringConstantCollectionV1,
+                RESTStringConstantCollectionItemV1,
+                RESTStringConstantV1DetailsEditor>
+        implements BaseTemplatePresenterInterface {
 
     /**
      * The history token used to identify this view
@@ -67,11 +70,13 @@ implements BaseTemplatePresenterInterface {
     /**
      * The presenter used to display the filtered results.
      */
-    @Inject private StringConstantFilteredResultsPresenter stringConstantFilteredResultsPresenter;
+    @Inject
+    private StringConstantFilteredResultsPresenter stringConstantFilteredResultsPresenter;
     /**
      * The presenter used to display the string constant's details.
      */
-    @Inject private StringConstantPresenter stringConstantPresenter;
+    @Inject
+    private StringConstantPresenter stringConstantPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -176,7 +181,7 @@ implements BaseTemplatePresenterInterface {
         stringConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-             doSearch(GWTUtilities.isEventToOpenNewWindow(event));
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
 
@@ -291,11 +296,10 @@ implements BaseTemplatePresenterInterface {
      * The definition of the view that corresponds to this presenter.
      */
     public interface Display extends BaseSearchAndEditViewInterface<
-                RESTStringConstantV1,
-                RESTStringConstantCollectionV1,
-                RESTStringConstantCollectionItemV1> {
+            RESTStringConstantV1,
+            RESTStringConstantCollectionV1,
+            RESTStringConstantCollectionItemV1> {
         /**
-         *
          * @return The Save button
          */
         PushButton getSave();

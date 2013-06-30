@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = true;
-exports.cssClass = "ace-cobalt";
-exports.cssText = "\
+	exports.isDark = true;
+	exports.cssClass = "ace-cobalt";
+	exports.cssText = "\
 .ace-cobalt .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -186,6 +186,6 @@ background-color:#001221;\
   background-color:#130D26;\
 }";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+	var dom = require("../lib/dom");
+	dom.importCssString(exports.cssText, exports.cssClass);
 });

@@ -18,7 +18,7 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
     public final AceEditor xml;
 
     /**
-     * @param readOnly true if the UI created by this editor should be readonly, and false otherwise
+     * @param readOnly           true if the UI created by this editor should be readonly, and false otherwise
      * @param positiveDictionary a reference to the dictionary used by the ACE editor spell checking
      */
     public RESTTopicV1XMLEditor(final boolean readOnly, final TypoJS positiveDictionary, final TypoJS negativeDictionary, final TypoJS negativePhraseDictionary) {

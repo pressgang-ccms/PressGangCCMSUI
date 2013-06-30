@@ -34,89 +34,89 @@
  */
 
 var Typo = function (dictionary, affData, wordsData, settings) {
-    settings = settings || {};
+	settings = settings || {};
 
-    /** Determines the method used for auto-loading .aff and .dic files. **/
-    this.platform = settings.platform || "chrome";
+	/** Determines the method used for auto-loading .aff and .dic files. **/
+	this.platform = settings.platform || "chrome";
 
-    this.dictionary = null;
+	this.dictionary = null;
 
-    this.rules = {};
-    this.dictionaryTable = {};
+	this.rules = {};
+	this.dictionaryTable = {};
 
-    this.compoundRules = [];
-    this.compoundRuleCodes = {};
+	this.compoundRules = [];
+	this.compoundRuleCodes = {};
 
-    this.replacementTable = [];
+	this.replacementTable = [];
 
-    this.flags = settings.flags || {};
+	this.flags = settings.flags || {};
 
-    if (dictionary) {
-        this.dictionary = dictionary;
+	if (dictionary) {
+		this.dictionary = dictionary;
 
-        if (this.platform == "chrome") {
-            if (!affData) affData = this._readFile(chrome.extension.getURL("lib/typo/dictionaries/" + dictionary + "/" + dictionary + ".aff"));
-            if (!wordsData) wordsData = this._readFile(chrome.extension.getURL("lib/typo/dictionaries/" + dictionary + "/" + dictionary + ".dic"));
-        } else {
-            var path = settings.dictionaryPath || '';
+		if (this.platform == "chrome") {
+			if (!affData) affData = this._readFile(chrome.extension.getURL("lib/typo/dictionaries/" + dictionary + "/" + dictionary + ".aff"));
+			if (!wordsData) wordsData = this._readFile(chrome.extension.getURL("lib/typo/dictionaries/" + dictionary + "/" + dictionary + ".dic"));
+		} else {
+			var path = settings.dictionaryPath || '';
 
-            if (!affData) affData = this._readFile(path + "/" + dictionary + "/" + dictionary + ".aff");
-            if (!wordsData) wordsData = this._readFile(path + "/" + dictionary + "/" + dictionary + ".dic");
-        }
+			if (!affData) affData = this._readFile(path + "/" + dictionary + "/" + dictionary + ".aff");
+			if (!wordsData) wordsData = this._readFile(path + "/" + dictionary + "/" + dictionary + ".dic");
+		}
 
-        this.rules = this._parseAFF(affData);
+		this.rules = this._parseAFF(affData);
 
-        // Save the rule codes that are used in compound rules.
-        this.compoundRuleCodes = {};
+		// Save the rule codes that are used in compound rules.
+		this.compoundRuleCodes = {};
 
-        for (var i = 0, _len = this.compoundRules.length; i < _len; i++) {
-            var rule = this.compoundRules[i];
+		for (var i = 0, _len = this.compoundRules.length; i < _len; i++) {
+			var rule = this.compoundRules[i];
 
-            for (var j = 0, _jlen = rule.length; j < _jlen; j++) {
-                this.compoundRuleCodes[rule[j]] = [];
-            }
-        }
+			for (var j = 0, _jlen = rule.length; j < _jlen; j++) {
+				this.compoundRuleCodes[rule[j]] = [];
+			}
+		}
 
-        // If we add this ONLYINCOMPOUND flag to this.compoundRuleCodes, then _parseDIC
-        // will do the work of saving the list of words that are compound-only.
-        if ("ONLYINCOMPOUND" in this.flags) {
-            this.compoundRuleCodes[this.flags.ONLYINCOMPOUND] = [];
-        }
+		// If we add this ONLYINCOMPOUND flag to this.compoundRuleCodes, then _parseDIC
+		// will do the work of saving the list of words that are compound-only.
+		if ("ONLYINCOMPOUND" in this.flags) {
+			this.compoundRuleCodes[this.flags.ONLYINCOMPOUND] = [];
+		}
 
-        this.dictionaryTable = this._parseDIC(wordsData);
+		this.dictionaryTable = this._parseDIC(wordsData);
 
-        // Get rid of any codes from the compound rule codes that are never used
-        // (or that were special regex characters).  Not especially necessary...
-        for (var i in this.compoundRuleCodes) {
-            if (this.compoundRuleCodes[i].length == 0) {
-                delete this.compoundRuleCodes[i];
-            }
-        }
+		// Get rid of any codes from the compound rule codes that are never used
+		// (or that were special regex characters).  Not especially necessary...
+		for (var i in this.compoundRuleCodes) {
+			if (this.compoundRuleCodes[i].length == 0) {
+				delete this.compoundRuleCodes[i];
+			}
+		}
 
-        // Build the full regular expressions for each compound rule.
-        // I have a feeling (but no confirmation yet) that this method of
-        // testing for compound words is probably slow.
-        for (var i = 0, _len = this.compoundRules.length; i < _len; i++) {
-            var ruleText = this.compoundRules[i];
+		// Build the full regular expressions for each compound rule.
+		// I have a feeling (but no confirmation yet) that this method of
+		// testing for compound words is probably slow.
+		for (var i = 0, _len = this.compoundRules.length; i < _len; i++) {
+			var ruleText = this.compoundRules[i];
 
-            var expressionText = "";
+			var expressionText = "";
 
-            for (var j = 0, _jlen = ruleText.length; j < _jlen; j++) {
-                var character = ruleText[j];
+			for (var j = 0, _jlen = ruleText.length; j < _jlen; j++) {
+				var character = ruleText[j];
 
-                if (character in this.compoundRuleCodes) {
-                    expressionText += "(" + this.compoundRuleCodes[character].join("|") + ")";
-                }
-                else {
-                    expressionText += character;
-                }
-            }
+				if (character in this.compoundRuleCodes) {
+					expressionText += "(" + this.compoundRuleCodes[character].join("|") + ")";
+				}
+				else {
+					expressionText += character;
+				}
+			}
 
-            this.compoundRules[i] = new RegExp(expressionText, "i");
-        }
-    }
+			this.compoundRules[i] = new RegExp(expressionText, "i");
+		}
+	}
 
-    return this;
+	return this;
 };
 
 Typo.prototype = typoPrototype;

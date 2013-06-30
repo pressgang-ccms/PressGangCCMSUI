@@ -29,7 +29,8 @@ public abstract class BaseChildrenPresenter<
     /**
      * The display that shows the children of a given entity.
      */
-    @Nullable private BaseChildrenViewInterface display;
+    @Nullable
+    private BaseChildrenViewInterface display;
 
     @Nullable
     private T parent;
@@ -67,8 +68,9 @@ public abstract class BaseChildrenPresenter<
 
     /**
      * Initialize this presenter.
+     *
      * @param topicId The help topic id for this view.
-     * @param pageId The id for this page, used for the survey link.
+     * @param pageId  The id for this page, used for the survey link.
      * @param display The view to display the wait dialog.
      */
     protected void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
@@ -81,8 +83,8 @@ public abstract class BaseChildrenPresenter<
      */
     @Override
     public void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
-                                                           @NotNull final AddPossibleChildCallback<C> addChildCallback,
-                                                           @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified) {
+                                                     @NotNull final AddPossibleChildCallback<C> addChildCallback,
+                                                     @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified) {
         checkState(display != null, "The display variable should have been set.");
 
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {

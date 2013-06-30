@@ -16,17 +16,20 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     /**
      * @return The panel used to hold the list of tags
      */
-    @NotNull SimpleLayoutPanel getResultsPanel();
+    @NotNull
+    SimpleLayoutPanel getResultsPanel();
 
     /**
      * @return The panel used to hold the views that display the tag details
      */
-    @NotNull SimpleLayoutPanel getViewPanel();
+    @NotNull
+    SimpleLayoutPanel getViewPanel();
 
     /**
      * @return The panel that holds the action buttons for the tag detail views
      */
-    @NotNull FlexTable getViewActionButtonsParentPanel();
+    @NotNull
+    FlexTable getViewActionButtonsParentPanel();
 
     /**
      * @return The panel that holds the action buttons for the list of tags
@@ -37,9 +40,11 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     /**
      * @return The split panel that separates the tag list from the tag details views
      */
-    @NotNull HandlerSplitLayoutPanel getSplitPanel();
+    @NotNull
+    HandlerSplitLayoutPanel getSplitPanel();
 
-    @NotNull DockLayoutPanel getResultsViewLayoutPanel();
+    @NotNull
+    DockLayoutPanel getResultsViewLayoutPanel();
 
 
     /**

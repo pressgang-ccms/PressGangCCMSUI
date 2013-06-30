@@ -31,7 +31,8 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
     private final FileUploadExt fileUploadExt = new FileUploadExt();
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
-    @Inject private TopicTagsPresenter.Display tagsView;
+    @Inject
+    private TopicTagsPresenter.Display tagsView;
     private final TextArea commitMessage = new TextArea();
     private final DockLayoutPanel layout = new DockLayoutPanel(Style.Unit.EM);
 

@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
-    The presenter used to display the blob constants details.
+ * The presenter used to display the blob constants details.
  */
 @Dependent
 public class BlobConstantPresenter extends BaseTemplatePresenter {
@@ -66,7 +66,6 @@ public class BlobConstantPresenter extends BaseTemplatePresenter {
      */
     public interface Display extends BasePopulatedEditorViewInterface<RESTBlobConstantV1, RESTBlobConstantV1, RESTBlobConstantV1DetailsEditor> {
         /**
-         *
          * @return The editor that has bound the REST entity to the UI elements displayed by the view.
          */
         RESTBlobConstantV1DetailsEditor getEditor();

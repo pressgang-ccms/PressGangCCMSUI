@@ -1,7 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -68,10 +71,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TagsFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditPresenter<
-                        RESTTagV1,
-                        RESTTagCollectionV1,
-                        RESTTagCollectionItemV1,
-                        RESTTagV1BasicDetailsEditor>
+                RESTTagV1,
+                RESTTagCollectionV1,
+                RESTTagCollectionItemV1,
+                RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 
@@ -710,8 +713,8 @@ public class TagsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
         checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-        final RESTTagV1 selected =  filteredResultsComponent.getProviderData().getSelectedItem().getItem();
-        final RESTTagV1 displayed =  filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+        final RESTTagV1 selected = filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTTagV1 displayed = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
 
         /*
          * See if any items have been added or removed from the project and category lists
@@ -755,14 +758,14 @@ public class TagsFilteredResultsAndDetailsPresenter
         });
 
         final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
-                @Override
-                public void onKeyPress(@NotNull final KeyPressEvent event) {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
 
-                    if (GWTUtilities.enterKeyWasPressed(event)) {
-                        doSearch(false);
-                    }
-
+                if (GWTUtilities.enterKeyWasPressed(event)) {
+                    doSearch(false);
                 }
+
+            }
         };
 
         filteredResultsComponent.getDisplay().getDescriptionFilter().addKeyPressHandler(searchKeyPressHandler);
@@ -805,7 +808,7 @@ public class TagsFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getTagProjects(), this.display.getTagProjectsDown());
         } else if (displayedView == this.resultComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getTagDetails(), this.display.getTagDetailsDown());
-        }  else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
+        } else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
         }
     }

@@ -25,7 +25,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    The presenter used to display the list of string constants.
+ * The presenter used to display the list of string constants.
  */
 @Dependent
 public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTStringConstantCollectionItemV1> {
@@ -146,19 +146,16 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     public interface Display extends BaseFilteredResultsViewInterface<RESTStringConstantCollectionItemV1> {
 
         /**
-         *
          * @return The text box used to display the filter ids
          */
         TextBox getIdFilter();
 
         /**
-         *
          * @return The text box used to display the filter name
          */
         TextBox getNameFilter();
 
         /**
-         *
          * @return The text box used to display the filter value
          */
         TextBox getValueFilter();

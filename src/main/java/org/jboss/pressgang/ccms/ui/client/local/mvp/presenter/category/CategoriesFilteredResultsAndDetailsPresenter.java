@@ -1,7 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -58,10 +61,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class CategoriesFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditPresenter<
-                        RESTCategoryV1,
-                        RESTCategoryCollectionV1,
-                        RESTCategoryCollectionItemV1,
-                        RESTCategoryV1BasicDetailsEditor>
+                RESTCategoryV1,
+                RESTCategoryCollectionV1,
+                RESTCategoryCollectionItemV1,
+                RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -462,7 +465,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
                     displayedEntity.setId(Constants.NULL_ID);
                     displayedEntity.setTags(new RESTTagInCategoryCollectionV1());
-                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity,RESTBaseCollectionItemV1.ADD_STATE);
+                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                     filteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                     filteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);

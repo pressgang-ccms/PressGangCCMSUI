@@ -117,11 +117,11 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
                         */
                         if (column == display.getPossibleChildrenButtonColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemParentSort(parent, ascending));
-                        } else if (column == display.getIdColumn())  {
+                        } else if (column == display.getIdColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemIDSort(ascending));
-                        } else if (column == display.getNameColumn())  {
+                        } else if (column == display.getNameColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemNameSort(ascending));
-                        } else if (column == display.getDescriptionColumn())  {
+                        } else if (column == display.getDescriptionColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemDescriptionSort(ascending));
                         }
                     }
@@ -160,20 +160,20 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
 
         final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
-            new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
-                @Override
-                public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
-                    checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                    checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                    getPossibleChildrenProviderData().setStartRow(0);
-                    getPossibleChildrenProviderData().setItems(retValue.getItems());
-                    getPossibleChildrenProviderData().setSize(retValue.getItems().size());
+                        getPossibleChildrenProviderData().setStartRow(0);
+                        getPossibleChildrenProviderData().setItems(retValue.getItems());
+                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                     /* Refresh the list */
-                    redisplayPossibleChildList(parent);
-                }
-        });
+                        redisplayPossibleChildList(parent);
+                    }
+                });
 
         getPossibleChildrenProviderData().reset();
 

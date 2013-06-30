@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -50,10 +53,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class ProjectsFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditPresenter<
-                        RESTProjectV1,
-                        RESTProjectCollectionV1,
-                        RESTProjectCollectionItemV1,
-                        RESTProjectV1BasicDetailsEditor>
+                RESTProjectV1,
+                RESTProjectCollectionV1,
+                RESTProjectCollectionItemV1,
+                RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 
@@ -323,7 +326,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-               doSearch(GWTUtilities.isEventToOpenNewWindow(event));
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
 

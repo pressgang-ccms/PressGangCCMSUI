@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 .gwt-PopupPanelGlass {
     background-color: #000;
     opacity: 0.3;
-    filter: alpha(opacity = 30);
+    filter: alpha(opacity=30);
 }
 
 .gwt-DialogBox .Caption {

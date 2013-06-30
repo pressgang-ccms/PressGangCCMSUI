@@ -37,8 +37,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
     /**
-     *
-     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param display       The display used to show some kind of waiting screen. This can be null.
      * @param successAction The action to perform if the rest call was successful
      */
     public BaseRestCallback(@Nullable final D display, @NotNull final SuccessAction<C, D> successAction, final boolean disableDefaultFailureAction) {
@@ -47,9 +46,9 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
         this.failureAction = null;
         this.disableDefaultFailureAction = disableDefaultFailureAction;
     }
+
     /**
-     *
-     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param display       The display used to show some kind of waiting screen. This can be null.
      * @param successAction The action to perform if the rest call was successful
      */
     public BaseRestCallback(@Nullable final D display, @NotNull final SuccessAction<C, D> successAction) {
@@ -61,8 +60,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
 
     /**
-     *
-     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param display       The display used to show some kind of waiting screen. This can be null.
      * @param successAction The action to perform if the rest call was successful
      * @param failureAction The action to perform if the rest call was unsuccessful
      */

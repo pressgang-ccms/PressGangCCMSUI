@@ -12,10 +12,8 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
@@ -32,14 +30,16 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsVi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -121,7 +121,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private boolean displayingSearchResults = true;
 
 
-
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
     }
@@ -137,7 +136,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     /**
-     *
      * @return The view that corresponds to this parent presenter.
      */
     protected abstract Display getDisplay();
@@ -230,8 +228,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     /**
      * Called by bindSearchAndEditExtended(). Overriding classes should perform any additional initialization in this
      * method.
-     * @param topicId The help topic for this view
-     * @param pageId The id for this view
+     *
+     * @param topicId     The help topic for this view
+     * @param pageId      The id for this view
      * @param queryString The query for this view
      */
     abstract protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
@@ -309,7 +308,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     /**
-     *
      * @return The key that saves the width of the split between the search results and the topic details
      */
     @NotNull
@@ -407,7 +405,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract RESTBaseTopicV1<?, ?, ?> getDisplayedTopic();
 
 
-
     /**
      * This method will replace the top action buttons with their disabled labels based on the
      * currently displayed view.
@@ -452,8 +449,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView);
 
     /**
-     *  Update the page name.
-     *  @param displayedView the currently displayed view.
+     * Update the page name.
+     *
+     * @param displayedView the currently displayed view.
      */
     private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
@@ -470,7 +468,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
              */
             if (getDisplayedTopic().getRevision() != null &&
                     !getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
-               id.append("-" + getDisplayedTopic().getRevision());
+                id.append("-" + getDisplayedTopic().getRevision());
             }
 
             String displayTitle = getDisplayedTopic().getTitle() == null ? "" : getDisplayedTopic().getTitle();
@@ -784,6 +782,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * In order to link the rendered view to the line in the editor where the rendered text is coming from,
      * each element has an attribute pressgangeditorlinenumber added to it to reflect the original line number.
      * This can then be read when an element in the rendered view is clicked.
+     *
      * @param topicXML The source XML
      * @return The XML with all the elements having pressgangeditorlinenumber attributes
      */
@@ -1052,6 +1051,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         /**
          * @return The button used to show or hide the search results panel
          */
-        @NotNull PushButton getShowHideSearchResults();
+        @NotNull
+        PushButton getShowHideSearchResults();
     }
 }

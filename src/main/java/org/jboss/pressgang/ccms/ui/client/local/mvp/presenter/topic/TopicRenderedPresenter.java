@@ -1,15 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -32,7 +26,9 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
+
         void clear();
+
         void removeListener();
     }
 
@@ -76,7 +72,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-        final String fixedToken =  removeHistoryToken(historyToken, HISTORY_TOKEN);
+        final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
         try {
             final Integer topicId = Integer.parseInt(fixedToken);
 
@@ -87,7 +83,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                 }
             });
 
-           RESTCalls.getTopic(callback, topicId);
+            RESTCalls.getTopic(callback, topicId);
 
         } catch (@NotNull final NumberFormatException ex) {
 

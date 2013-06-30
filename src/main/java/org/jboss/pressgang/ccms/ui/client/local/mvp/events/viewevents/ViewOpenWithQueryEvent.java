@@ -16,7 +16,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
     @NotNull
     protected final String query;
     /**
-     *  true if the event should trigger a new window, false otherwise
+     * true if the event should trigger a new window, false otherwise
      */
     private final boolean newWindow;
 

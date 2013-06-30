@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307010732";
+    public static final String VERSION = "201307010717";
 
     /**
      * XML Mime type
@@ -106,7 +106,7 @@ public final class Constants {
      * The height of the spacer to add to the shortcut bar to make up for the loss of the action bar.
      * This value is ACTION_BAR_HEIGHT - (border spacing * 2)
      */
-    public static final int SHORTCUT_BAR_SPACER_HEIGHT = ACTION_BAR_HEIGHT - (2*2);
+    public static final int SHORTCUT_BAR_SPACER_HEIGHT = ACTION_BAR_HEIGHT - (2 * 2);
     /**
      * The width of the shortcut bar.
      */
@@ -126,11 +126,11 @@ public final class Constants {
     /**
      * The Dev BIRT URL.
      */
-    public static final String DEV_BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
+    public static final String DEV_BIRT_URL = "http://skynet-dev.usersys.redhat.com:8080/birt/";
     /**
      * The Local BIRT URL.
      */
-    public static final String LOCAL_BIRT_URL =  "http://localhost:8080/birt/";
+    public static final String LOCAL_BIRT_URL = "http://localhost:8080/birt/";
     /**
      * The report that run a report with no other options.
      */
@@ -165,7 +165,7 @@ public final class Constants {
     public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/pressgang-ccms";
     /**
      * The DocBuilder server
-      */
+     */
     public static final String DOCBUILDER_SERVER = "http://docbuilder.usersys.redhat.com";
 
     /**
@@ -210,7 +210,7 @@ public final class Constants {
     public static final String DOCBOOK_PLACEHOLDER_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-placeholder.xsl'?>";
     /**
      * The REST endpoint that echos previously submitted xml
-      */
+     */
     public static final String ECHO_ENDPOINT = "/1/echoxml";
 
     /**

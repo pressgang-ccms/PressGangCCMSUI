@@ -20,7 +20,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.Blob
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
-//import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
@@ -28,6 +27,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants.I
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.PropertyTagFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory.PropertyCategoryFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
@@ -35,10 +38,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredRe
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFieldPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
@@ -49,6 +48,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 
 /**
  * This class watches the event bus for page change requests, and instructs the appropriate presenters
@@ -221,7 +222,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(PropertyTagFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(PropertyCategoryFilteredResultsAndDetailsPresenter.class);
-                }  else if (token.startsWith(TopicRenderedPresenter.HISTORY_TOKEN)) {
+                } else if (token.startsWith(TopicRenderedPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TopicRenderedPresenter.class);
                 }
 

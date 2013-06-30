@@ -52,8 +52,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     public static final String HISTORY_TOKEN = "TranslatedTopicResultsAndTranslatedTopicView";
 
 
-
-
     /**
      * A Logger
      */
@@ -69,7 +67,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     private TranslatedTopicPresenter translatedTopicPresenter;
     @Inject
     private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
-
 
 
     /**
@@ -140,7 +137,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @NotNull
     @Override
-    protected  String getMainResizePreferencesKey() {
+    protected String getMainResizePreferencesKey() {
         return Preferences.TRANSLATED_TOPIC_VIEW_MAIN_SPLIT_WIDTH;
     }
 

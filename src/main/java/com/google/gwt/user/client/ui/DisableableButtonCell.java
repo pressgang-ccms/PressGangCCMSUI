@@ -32,7 +32,6 @@ public final class DisableableButtonCell extends ButtonCell {
     private boolean enabled = true;
 
     /**
-     *
      * @return whether or not the button is enabled
      */
     public boolean isEnabled() {
@@ -40,7 +39,6 @@ public final class DisableableButtonCell extends ButtonCell {
     }
 
     /**
-     *
      * @param enabled whether or not the button is enabled
      */
     public void setEnabled(final boolean enabled) {

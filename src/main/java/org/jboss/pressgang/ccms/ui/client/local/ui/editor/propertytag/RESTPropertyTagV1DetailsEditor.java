@@ -59,6 +59,7 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
 
     /**
      * Builds the UI.
+     *
      * @param readOnly true if the ui elements should be read only, and false otherwise
      */
     public RESTPropertyTagV1DetailsEditor(final boolean readOnly) {

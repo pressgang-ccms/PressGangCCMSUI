@@ -5,12 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.xml.client.DOMException;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.XMLParser;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -19,11 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
-
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,6 +115,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
         /**
          * Build the split panel with the supplied height
+         *
          * @param splitHeight The height of the split panel holding the xml errors
          */
         void initialize(final int splitHeight);
@@ -136,7 +128,6 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     @Inject
     private Display display;
-
 
 
     public TopicXMLPresenter() {
@@ -209,7 +200,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
                     }
 
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_XML_ERRORS_SPLIT_WIDTH, getDisplay()
-                                .getVerticalPanel().getSplitPosition(display.getXmlErrors()) + "");
+                            .getVerticalPanel().getSplitPosition(display.getXmlErrors()) + "");
 
                 }
             });

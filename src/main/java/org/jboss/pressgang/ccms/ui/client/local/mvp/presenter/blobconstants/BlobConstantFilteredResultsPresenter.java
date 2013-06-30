@@ -27,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    The presenter used to display the list of integer constants.
+ * The presenter used to display the list of integer constants.
  */
 @Dependent
 public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTBlobConstantCollectionItemV1> {
@@ -41,7 +41,8 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     /**
      * The view this presenter is associated with.
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
     /**
      * The query string extracted from the history token
      */
@@ -73,8 +74,8 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                     LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
                     @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged() BaseRestCallback.onSuccess()");
                                 checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
@@ -155,19 +156,16 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     public interface Display extends BaseFilteredResultsViewInterface<RESTBlobConstantCollectionItemV1> {
 
         /**
-         *
          * @return The text box that holds the ids to search on
          */
         TextBox getIdFilter();
 
         /**
-         *
          * @return The text box that holds the name to search on
          */
         TextBox getNameFilter();
 
         /**
-         *
          * @return The text box that holds the description to search on
          */
         TextBox getValueFilter();

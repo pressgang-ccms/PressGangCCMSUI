@@ -9,7 +9,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollect
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityWithPropertiesV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchildren.BaseDetailedChildrenPresenter;
@@ -41,8 +40,8 @@ public class CommonExtendedPropertiesPresenter
         extends BaseDetailedChildrenPresenter<
         RESTBaseEntityWithPropertiesV1<?, ?, ?>,
         RESTBaseEntityWithPropertiesV1<?, ?, ?>,
-            RESTPropertyTagCollectionItemV1,
-            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
+        RESTPropertyTagCollectionItemV1,
+        RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
 
     public interface Display extends BaseExtendedChildrenViewInterface<
             RESTBaseEntityWithPropertiesV1<?, ?, ?>,
@@ -254,7 +253,7 @@ public class CommonExtendedPropertiesPresenter
 
             checkState(getDisplay().getPossibleChildrenProvider() != null, "There should be a valid possible children provider");
 
-            final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
+            final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                         @Override
                         public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {

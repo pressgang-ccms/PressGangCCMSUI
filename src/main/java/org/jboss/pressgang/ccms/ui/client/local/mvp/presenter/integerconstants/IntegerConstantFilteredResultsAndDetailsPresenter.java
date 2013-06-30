@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants;
 
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -41,11 +44,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class IntegerConstantFilteredResultsAndDetailsPresenter extends
         BaseSearchAndEditPresenter<
-                        RESTIntegerConstantV1,
-                        RESTIntegerConstantCollectionV1,
-                        RESTIntegerConstantCollectionItemV1,
-                        RESTIntegerConstantV1DetailsEditor>
-implements BaseTemplatePresenterInterface {
+                RESTIntegerConstantV1,
+                RESTIntegerConstantCollectionV1,
+                RESTIntegerConstantCollectionItemV1,
+                RESTIntegerConstantV1DetailsEditor>
+        implements BaseTemplatePresenterInterface {
 
     /**
      * The history token used to identify this view
@@ -63,8 +66,10 @@ implements BaseTemplatePresenterInterface {
     @Inject
     private Display display;
 
-    @Inject private IntegerConstantFilteredResultsPresenter integerConstantFilteredResultsPresenter;
-    @Inject private IntegerConstantPresenter integerConstantPresenter;
+    @Inject
+    private IntegerConstantFilteredResultsPresenter integerConstantFilteredResultsPresenter;
+    @Inject
+    private IntegerConstantPresenter integerConstantPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -155,8 +160,8 @@ implements BaseTemplatePresenterInterface {
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-        eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(integerConstantFilteredResultsPresenter.getQuery(), newWindow));
-      }
+            eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(integerConstantFilteredResultsPresenter.getQuery(), newWindow));
+        }
     }
 
 
@@ -266,9 +271,9 @@ implements BaseTemplatePresenterInterface {
     }
 
     public interface Display extends BaseSearchAndEditViewInterface<
-                RESTIntegerConstantV1,
-                RESTIntegerConstantCollectionV1,
-                RESTIntegerConstantCollectionItemV1> {
+            RESTIntegerConstantV1,
+            RESTIntegerConstantCollectionV1,
+            RESTIntegerConstantCollectionItemV1> {
         PushButton getSave();
     }
 }

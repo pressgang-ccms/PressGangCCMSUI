@@ -727,172 +727,172 @@ public class BootstrapperImpl implements Bootstrapper {
     }
 
     private native static void _$550803640_display(ImagePresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter::display = value;
+	}-*/;
 
     private native static void _1567125089_searchResultsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::searchResultsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::searchResultsDisplay = value;
+	}-*/;
 
     private native static void _1478143022_display(WelcomePresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter::display = value;
+	}-*/;
 
     private native static void _$147774578_display(TagCategoriesPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter::display = value;
+	}-*/;
 
     private native static void _1567125089_topicXMLDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLDisplay = value;
+	}-*/;
 
     private native static void _$525173285_filteredResultsDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::filteredResultsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::filteredResultsDisplay = value;
+	}-*/;
 
     private native static void _392006560_display(TopicPresenter instance, Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter::display = value;
+	}-*/;
 
     private native static void _$1131523351_display(ImageFilteredResultsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter::display = value;
+	}-*/;
 
     private native static void _$525173285_projectsDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::projectsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::projectsDisplay = value;
+	}-*/;
 
     private native static void _1567125089_display(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::display = value;
+	}-*/;
 
     private native static void _$192804415_display(SearchPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter::display = value;
+	}-*/;
 
     private native static void _954332697_display(SearchResultsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::display = value;
+	}-*/;
 
     private native static void _491824760_imageDisplay(ImagesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageDisplay = value;
+	}-*/;
 
     private native static void _1500219897_eventBus(BaseTemplatePresenterInterface instance, HandlerManager value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface::eventBus = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface::eventBus = value;
+	}-*/;
 
     private native static void _1643984526_display(CategoriesFilteredResultsAndDetailsPresenter instance, CategoriesFilteredResultsAndDetailsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::display = value;
+	}-*/;
 
     private native static void _$525173285_resultDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::resultDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::resultDisplay = value;
+	}-*/;
 
     private native static void _$192804415_eventBus(SearchPresenter instance, HandlerManager value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter::eventBus = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter::eventBus = value;
+	}-*/;
 
     private native static void _1567125089_topicRevisionsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRevisionsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRevisionsDisplay = value;
+	}-*/;
 
     private native static void _$774116150_display(TagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter::display = value;
+	}-*/;
 
     private native static void _2098016610_manager(AppController instance, IOCBeanManager value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.AppController::manager = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.AppController::manager = value;
+	}-*/;
 
     private native static void _$1369662608_display(TagProjectsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter::display = value;
+	}-*/;
 
     private native static void _$525173285_display(TagsFilteredResultsAndDetailsPresenter instance, TagsFilteredResultsAndDetailsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::display = value;
+	}-*/;
 
     private native static void _1748359463_display(TagFilteredResultsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter::display = value;
+	}-*/;
 
     private native static void _491824760_imageFilteredResultsDisplay(ImagesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageFilteredResultsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageFilteredResultsDisplay = value;
+	}-*/;
 
     private native static void _1643984526_resultDisplay(CategoriesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::resultDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::resultDisplay = value;
+	}-*/;
 
     private native static void _1814806242_display(CategoryPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter::display = value;
+	}-*/;
 
     private native static void _$477517530_appController(App instance, AppController value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.App::appController = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.App::appController = value;
+	}-*/;
 
     private native static void _1567125089_topicSplitPanelRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicSplitPanelRenderedDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicSplitPanelRenderedDisplay = value;
+	}-*/;
 
     private native static void _954332697_topicViewDisplay(SearchResultsPresenter instance, Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::topicViewDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::topicViewDisplay = value;
+	}-*/;
 
     private native static void _1567125089_topicViewDisplay(SearchResultsAndTopicPresenter instance, Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicViewDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicViewDisplay = value;
+	}-*/;
 
     private native static void _1567125089_topicTagsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicTagsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicTagsDisplay = value;
+	}-*/;
 
     private native static void _1643984526_filteredResultsDisplay(CategoriesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::filteredResultsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter::filteredResultsDisplay = value;
+	}-*/;
 
     private native static void _$743140337_display(CategoryFilteredResultsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter::display = value;
+	}-*/;
 
     private native static void _2098016610_eventBus(AppController instance, HandlerManager value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.AppController::eventBus = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.AppController::eventBus = value;
+	}-*/;
 
     private native static void _1567125089_topicBugsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicBugsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicBugsDisplay = value;
+	}-*/;
 
     private native static void _$1893219218_display(TopicXMLErrorsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter::display = value;
+	}-*/;
 
     private native static void _$525173285_categoriesDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::categoriesDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::categoriesDisplay = value;
+	}-*/;
 
     private native static void _$1522350201_display(TopicTagsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter::display = value;
+	}-*/;
 
     private native static void _491824760_display(ImagesFilteredResultsAndDetailsPresenter instance, ImagesFilteredResultsAndDetailsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::display = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::display = value;
+	}-*/;
 
     private native static void _1567125089_topicRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRenderedDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRenderedDisplay = value;
+	}-*/;
 
     private native static void _1567125089_topicXMLErrorsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLErrorsDisplay = value;
-    }-*/;
+		instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLErrorsDisplay = value;
+	}-*/;
 
     public native static HandlerManager _$477517530_produceEventBus(App instance) /*-{
-        return instance.@org.jboss.pressgang.ccms.ui.client.local.App::produceEventBus()();
-    }-*/;
+		return instance.@org.jboss.pressgang.ccms.ui.client.local.App::produceEventBus()();
+	}-*/;
 
     // The main IOC bootstrap method.
     public BootstrapperInjectionContext bootstrapContainer() {

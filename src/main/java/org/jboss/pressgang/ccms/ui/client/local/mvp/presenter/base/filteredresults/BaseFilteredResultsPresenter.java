@@ -54,6 +54,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
 
     /**
      * Adds an event handler to listen for the entity list loaded event.
+     *
      * @param handler The event handler
      */
     public void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {

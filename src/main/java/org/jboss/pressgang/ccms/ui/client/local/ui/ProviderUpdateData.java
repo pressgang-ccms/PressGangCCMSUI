@@ -117,7 +117,6 @@ public class ProviderUpdateData<T> {
     }
 
     /**
-     *
      * @return true if this object holds valid data, and false otherwise.
      */
     public boolean isValid() {

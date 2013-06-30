@@ -27,13 +27,12 @@ import java.util.logging.Logger;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * @see BaseSearchAndEditPresenterInterface
- *
  * @param <T> The entity type
  * @param <U> The entity collection type of T
  * @param <V> The entity collection item type of T
  * @param <Y> The type of the Editor that is displayed by this component
  * @author Matthew Casperson
+ * @see BaseSearchAndEditPresenterInterface
  */
 abstract public class BaseSearchAndEditPresenter<
         T extends RESTBaseEntityV1<T, U, V>,
@@ -134,12 +133,12 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called once an entity has been saved to refresh the various lists that may have been modified by the edited or created
      * entity.
-     *
+     * <p/>
      * This is also called when a new entity is loaded. This has the effect of updating the filtered results
      * lists with any new information.
      *
      * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
-     * @param refreshList true if some changes have been made to the filtered list that should be redisplayed, false otherwise
+     * @param refreshList  true if some changes have been made to the filtered list that should be redisplayed, false otherwise
      */
     private final void updateDisplayWithNewEntityData(final boolean wasNewEntity, final boolean refreshList) {
         try {
@@ -273,7 +272,6 @@ abstract public class BaseSearchAndEditPresenter<
     }
 
 
-
     /**
      * Binds logic to the search results list row click event
      */
@@ -318,10 +316,10 @@ abstract public class BaseSearchAndEditPresenter<
      * Called when a new entity is selected, or when there is new data to display. This method is used to display any
      * data that is contained in the selected object when it is initially loaded, and when any data is loaded
      * asynchronously or after the initial entity was loaded.
-     *
+     * <p/>
      * Typically, this method is initially called when the entity is loaded with no filter (i.e. filter = null), meaning
      * that the displayBlah() methods on the views are called.
-     *
+     * <p/>
      * Additional data (usually child collections) is expected to be loaded and displayed in the
      * loadAdditionalDisplayedItemData() method. The loadAdditionalDisplayedItemData() will then
      * call initializeViews() with a filter set to the view that needs to be updated with the new data.

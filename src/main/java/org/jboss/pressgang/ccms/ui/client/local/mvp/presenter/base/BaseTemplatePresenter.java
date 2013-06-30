@@ -11,7 +11,6 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -97,7 +96,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
 
-                        eventBus.fireEvent(new DocBuilderViewEvent());
+                    eventBus.fireEvent(new DocBuilderViewEvent());
 
                 }
             }
@@ -325,13 +324,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     /**
      * Binding is done when the view is loaded. The code here doesn't reference the data in a selected entity (it is
      * quite possible that an entity has not been selected yet).
-     *
+     * <p/>
      * Binding is done once.
-     *
+     * <p/>
      * The display methods are used to display the actual data.
      *
      * @param topicId The help topic associated with the view
-     * @param pageId The id of the view
+     * @param pageId  The id of the view
      * @param display The view that this presenter is associated with
      */
     protected void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
@@ -372,7 +371,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + helpTopicId, false));
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + helpTopicId, false));
                     display.getHelpDialog().getDialogBox().hide();
                 }
             }

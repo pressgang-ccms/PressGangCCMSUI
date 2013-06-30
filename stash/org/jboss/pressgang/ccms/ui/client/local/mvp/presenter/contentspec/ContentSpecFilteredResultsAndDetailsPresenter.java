@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -58,10 +57,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ContentSpecFilteredResultsAndDetailsPresenter
         extends BaseSearchAndEditPresenter<
-            RESTContentSpecV1,
-            RESTContentSpecCollectionV1,
-            RESTContentSpecCollectionItemV1,
-            RESTContentSpecV1BasicDetailsEditor> {
+        RESTContentSpecV1,
+        RESTContentSpecCollectionV1,
+        RESTContentSpecCollectionItemV1,
+        RESTContentSpecV1BasicDetailsEditor> {
 
     public final static String HISTORY_TOKEN = "ContentSpecFilteredResultsAndContentSpecView";
 
@@ -99,11 +98,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
-    @Inject private ContentSpecPresenter contentSpecPresenter;
-    @Inject private ContentSpecDetailsPresenter contentSpecDetailsPresenter;
-    @Inject private ContentSpecFilteredResultsPresenter filteredResultsPresenter;
+    @Inject
+    private ContentSpecPresenter contentSpecPresenter;
+    @Inject
+    private ContentSpecDetailsPresenter contentSpecDetailsPresenter;
+    @Inject
+    private ContentSpecFilteredResultsPresenter filteredResultsPresenter;
     /**
      * The presenter used to display the property tags.
      */
@@ -111,8 +114,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     private CommonExtendedPropertiesPresenter commonExtendedPropertiesPresenter;
     @Inject
     private ContentSpecRevisionsPresenter contentSpecRevisionsComponent;
-    @Inject private ContentSpecTagsPresenter contentSpecTagsPresenter;
-    @Inject private ContentSpecErrorPresenter contentSpecErrorsPresenter;
+    @Inject
+    private ContentSpecTagsPresenter contentSpecTagsPresenter;
+    @Inject
+    private ContentSpecErrorPresenter contentSpecErrorsPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -225,14 +230,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(contentSpecPresenter.getDisplay());
             }
-        }) ;
+        });
 
         display.getErrors().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(contentSpecErrorsPresenter.getDisplay());
             }
-        }) ;
+        });
 
         display.getExtendedProperties().addClickHandler(new ClickHandler() {
             @Override
@@ -246,7 +251,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(contentSpecDetailsPresenter.getDisplay());
             }
-        }) ;
+        });
 
         display.getSave().addClickHandler(new ClickHandler() {
             @Override
@@ -386,7 +391,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                                 updateDisplayWithNewEntityData(true);
                                             }
 
-                                            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                                add(contentSpecPresenter.getDisplay());
+                                            }});
 
                                             Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                         } finally {
@@ -404,7 +411,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         /*
                             Save the spec
                          */
-                        final BaseRestCallback<RESTContentSpecV1, Display> updateCallback =  new BaseRestCallback<RESTContentSpecV1, Display>(
+                        final BaseRestCallback<RESTContentSpecV1, Display> updateCallback = new BaseRestCallback<RESTContentSpecV1, Display>(
                                 display,
                                 new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
                                     @Override
@@ -466,7 +473,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                         ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                                         ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
-                                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                            add(contentSpecPresenter.getDisplay());
+                                        }});
                                         updateDisplayWithNewEntityData(false);
 
                                         if (overwroteChanges) {
@@ -758,6 +767,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     /**
      * Displays a revision of a topic. This can be called when a revision is selected to be displayed, or if
      * a particular revision is set as the default to be displayed.
+     *
      * @param revisionSpec The revision to be displayed.
      */
     private void displayRevision(@NotNull final RESTContentSpecV1 revisionSpec) {
@@ -934,13 +944,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
         } else if (displayedView == this.contentSpecPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getText(), this.display.getTextDown());
-        }  else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
+        } else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
-        }  else if (displayedView == this.contentSpecRevisionsComponent.getDisplay()) {
+        } else if (displayedView == this.contentSpecRevisionsComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getHistory(), this.display.getHistoryDown());
-        }  else if (displayedView == this.contentSpecTagsPresenter.getDisplay()) {
+        } else if (displayedView == this.contentSpecTagsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getContentSpecTags(), this.display.getContentSpecTagsDown());
-        }  else if (displayedView == this.contentSpecErrorsPresenter.getDisplay()) {
+        } else if (displayedView == this.contentSpecErrorsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getErrors(), this.display.getErrorsDown());
         }
     }

@@ -12,11 +12,12 @@ import java.util.Comparator;
  * Sorts RESTTagCollectionItemV1 objects based on their inclusion in a parent.
  */
 public final class RESTProjectCollectionItemParentSort implements Comparator<RESTProjectCollectionItemV1> {
-    @NotNull private final RESTTagV1 parent;
+    @NotNull
+    private final RESTTagV1 parent;
     private final boolean ascending;
 
     /**
-     * @param parent the entity that holds the child entities being sorted
+     * @param parent    the entity that holds the child entities being sorted
      * @param ascending true if the items should be sorted in ascending order, false otherwise
      */
     public RESTProjectCollectionItemParentSort(@NotNull final RESTTagV1 parent, final boolean ascending) {
@@ -44,7 +45,7 @@ public final class RESTProjectCollectionItemParentSort implements Comparator<RES
         }
 
         if (arg1 == null) {
-            return 1 * acendingMultiplier ;
+            return 1 * acendingMultiplier;
         }
 
         /*

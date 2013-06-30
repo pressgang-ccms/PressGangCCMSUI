@@ -101,18 +101,18 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
 
             projects = new ValueListBox<SearchUIProject>(
-                new ProxyRenderer<SearchUIProject>(null) {
-                    @Nullable
-                    @Override
-                    public String render(@Nullable final SearchUIProject object) {
-                        return object == null ? null : object.getName();
-                    }
-                }, new ProvidesKey<SearchUIProject>() {
-                    @Override
-                    public Object getKey(@NotNull final SearchUIProject item) {
-                        return item.getId();
-                    }
+                    new ProxyRenderer<SearchUIProject>(null) {
+                        @Nullable
+                        @Override
+                        public String render(@Nullable final SearchUIProject object) {
+                            return object == null ? null : object.getName();
+                        }
+                    }, new ProvidesKey<SearchUIProject>() {
+                @Override
+                public Object getKey(@NotNull final SearchUIProject item) {
+                    return item.getId();
                 }
+            }
             );
             projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
 

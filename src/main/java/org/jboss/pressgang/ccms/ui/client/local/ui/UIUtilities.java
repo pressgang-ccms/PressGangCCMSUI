@@ -99,7 +99,7 @@ final public class UIUtilities {
 
     @NotNull
     public static Label createTopTabDownLabel(final String text) {
-        return createTopTabDownLabel(text, false)    ;
+        return createTopTabDownLabel(text, false);
     }
 
     @NotNull

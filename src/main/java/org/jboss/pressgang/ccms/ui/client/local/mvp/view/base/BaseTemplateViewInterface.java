@@ -18,50 +18,45 @@ public interface BaseTemplateViewInterface {
      */
     interface HelpDialog {
         /**
-         *
          * @return A reference to the dialog box (the class that implements this interface usually also extends
-         * the DialogBox class, so this method usually just returns "this").
+         *         the DialogBox class, so this method usually just returns "this").
          */
         @NotNull
         DialogBox getDialogBox();
 
         /**
-         *
          * @return The element that displays the help topic
          */
         @NotNull
         Frame getContents();
 
         /**
-         *
          * @return The OK button.
          */
         @NotNull
         PushButton getOK();
 
         /**
-         *
          * @return The Edit button
          */
         @NotNull
         PushButton getEdit();
 
         /**
-         *
          * @return The id of the topic that the dialog is displaying
          */
         int getHelpTopic();
 
         /**
          * Show the dialog box with the specified topic.
-         * @param topicId The id of the topic that the dialog is displaying
+         *
+         * @param topicId     The id of the topic that the dialog is displaying
          * @param waitDisplay The display to display the wait message
          */
         void show(final int topicId, final BaseTemplateViewInterface waitDisplay);
     }
 
     /**
-     *
      * @return The help dialog box.
      */
     @NotNull
@@ -262,13 +257,11 @@ public interface BaseTemplateViewInterface {
     PushButton getSearchTranslations();
 
     /**
-     *
      * @return The button that launches the monitoring page
      */
     PushButton getMonitoring();
 
     /**
-     *
      * @return The link that opens the help page
      */
     @NotNull
@@ -331,37 +324,46 @@ public interface BaseTemplateViewInterface {
 
     /**
      * Replaces a widget in the top action panel with another widget.
-     * @param existing The widget that is currently displayed in the top action panel
+     *
+     * @param existing    The widget that is currently displayed in the top action panel
      * @param replacement The widget to replace the existing widget with
      */
     void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement);
+
     /**
      * Replaces a widget in a flex table with another widget.
-     * @param existing The widget that is currently displayed in the top action panel
+     *
+     * @param existing    The widget that is currently displayed in the top action panel
      * @param replacement The widget to replace the existing widget with
-     * @param table The table that holds the widgets.
+     * @param table       The table that holds the widgets.
      */
     void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement, @NotNull final FlexTable table);
 
     /**
      * Remove a button from the top action panel.
+     *
      * @param existing The button to be removed
      */
     void removeTopActionButton(@NotNull final Widget existing);
 
     /**
      * Adds a widget to a new column in the table.
+     *
      * @param widget The widget to add.
-     * @param table The table to add the widget to.
+     * @param table  The table to add the widget to.
      */
     void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table);
+
     /**
      * Adds a widget to a new column in the top action panel.
+     *
      * @param widget The widget to add.
      */
     void addActionButton(@NotNull final Widget widget);
+
     /**
      * Adds a widget to a new column in the local (ie right hand side) top action panel.
+     *
      * @param widget The widget to add.
      */
     void addLocalActionButton(@NotNull final Widget widget);

@@ -12,7 +12,6 @@ public class RESTTagCollectionItemIDSort implements Comparator<RESTTagCollection
     final boolean ascending;
 
     /**
-     *
      * @param ascending true if the items should be sorted in ascending order, false otherwise
      */
     public RESTTagCollectionItemIDSort(final boolean ascending) {
@@ -39,7 +38,7 @@ public class RESTTagCollectionItemIDSort implements Comparator<RESTTagCollection
         }
 
         if (arg1 == null) {
-            return 1  * ascendingMultiplier;
+            return 1 * ascendingMultiplier;
         }
 
         /*

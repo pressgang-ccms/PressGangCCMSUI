@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 public interface GetNewEntityCallback<T extends RESTBaseEntityV1<?, ?, ?>> {
     /**
      * Load a new entity based on the one that was selected, and then call the displayCallback.
-     * @param selectedEntity The entity that was selected from the list of filtered results.
+     *
+     * @param selectedEntity  The entity that was selected from the list of filtered results.
      * @param displayCallback The callback to call once the new entity is loaded.
      */
     void getNewEntity(@NotNull final T selectedEntity, @NotNull final DisplayNewEntityCallback<T> displayCallback);

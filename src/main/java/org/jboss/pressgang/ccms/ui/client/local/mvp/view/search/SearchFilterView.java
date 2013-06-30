@@ -23,7 +23,6 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     private final SearchFilterPresenter.FilterPresenterDriver driver = GWT.create(SearchFilterPresenter.FilterPresenterDriver.class);
 
 
-
     /**
      * Sets the application and page titles.
      */

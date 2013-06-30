@@ -228,8 +228,11 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
             RESTFilterCollectionV1,
             RESTFilterCollectionItemV1> {
         PushButton getCreate();
+
         PushButton getOverwrite();
+
         PushButton getLoad();
+
         PushButton getLoadAndSearch();
     }
 }

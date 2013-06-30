@@ -14,8 +14,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 abstract public class BaseSearchAndEditView<
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
@@ -61,13 +59,12 @@ abstract public class BaseSearchAndEditView<
     private final ScrollPanel resultsActionButtonsParentPanelScroll = new ScrollPanel();
 
 
-
     /**
      * If true, this view will create top action panels above the filtered results, and above
      * the entity view area. It will also pull out the entity view top action panel and
      * place it in this new view. If false, this view won't touch the top action panel, and
      * will eave it to another presenter to manage.
-     *
+     * <p/>
      * The topic search view is an example where a BaseSearchAndEdit presenter is a child of
      * another presenter, and as such the child BaseSearchAndEdit does not manage the top action panel.
      * In this case, addCustomActionButtonFields is false.
@@ -121,7 +118,7 @@ abstract public class BaseSearchAndEditView<
     }
 
 
-    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName)  {
+    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName) {
         this(applicationName, pageName, true);
     }
 
@@ -171,7 +168,7 @@ abstract public class BaseSearchAndEditView<
 
     protected void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
 
-        final int fixedSearchResultsWidth =  searchResultsWidth < 0 ? 0 : searchResultsWidth;
+        final int fixedSearchResultsWidth = searchResultsWidth < 0 ? 0 : searchResultsWidth;
 
         splitPanel.clear();
         if (displaySearchResults) {

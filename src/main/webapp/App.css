@@ -24,7 +24,7 @@
     border-spacing: 2px;
 }
 
-.TopicRevisionDiffPanel{
+.TopicRevisionDiffPanel {
     width: 100%;
     height: 100%;
 }
@@ -48,8 +48,7 @@
 .ace_marker-layer div[class^='misspelled'] {
     position: absolute;
     z-index: -2;
-    background-color:
-    rgba(255, 0, 0, 0.2);
+    background-color: rgba(255, 0, 0, 0.2);
 }
 
 div[class^='misspelled'] {
@@ -112,8 +111,7 @@ div[class^='badword'] {
     height: 84px;
 }
 
-.TopActionParentPanel
- {
+.TopActionParentPanel {
     overflow: hidden;
     border-spacing: 0px;
     padding-top: 8px;
@@ -245,10 +243,6 @@ html {
 .TopActionGrandParentPanel {
     margin-left: 110px;
 }
-
-
-
-
 
 .FilteredResultsTabMenu {
     border-spacing: 0px;
@@ -699,7 +693,7 @@ html {
 }
 
 .LogicDetailsTable {
-    width:100%;
+    width: 100%;
 }
 
 .LogicDetailsTable td {

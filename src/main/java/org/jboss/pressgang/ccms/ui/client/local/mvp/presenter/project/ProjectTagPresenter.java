@@ -43,15 +43,16 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
      */
     public interface Display extends BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
         /**
-         *
          * @return The column that holds the child tag id
          */
-        @NotNull TextColumn<RESTTagCollectionItemV1> getTagsIdColumn();
+        @NotNull
+        TextColumn<RESTTagCollectionItemV1> getTagsIdColumn();
+
         /**
-         *
          * @return The column that holds the child tag name
          */
-        @NotNull TextColumn<RESTTagCollectionItemV1> getTagsNameColumn();
+        @NotNull
+        TextColumn<RESTTagCollectionItemV1> getTagsNameColumn();
     }
 
     public static final String HISTORY_TOKEN = "ProjectTagView";
@@ -148,9 +149,9 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
                         */
                         if (column == display.getPossibleChildrenButtonColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent, ascending));
-                        } else if (column == display.getTagsIdColumn())  {
+                        } else if (column == display.getTagsIdColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort(ascending));
-                        } else if (column == display.getTagsNameColumn())  {
+                        } else if (column == display.getTagsNameColumn()) {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                         }
                     }
