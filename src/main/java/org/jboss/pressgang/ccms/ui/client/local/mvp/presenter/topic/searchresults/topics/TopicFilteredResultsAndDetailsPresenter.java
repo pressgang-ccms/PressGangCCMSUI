@@ -2131,27 +2131,41 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return;
             }
 
-            // Create the topic wrapper
-            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-            topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+            /*
+                Set the initial XML from a template defined in a string constant.
+             */
+            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                @Override
+                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                    // Create the topic wrapper
+                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                    topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
-            // create the topic, and add to the wrapper
-            final RESTTopicV1 restTopic = new RESTTopicV1();
-            restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
-            restTopic.setTags(new RESTTagCollectionV1());
-            restTopic.setRevisions(new RESTTopicCollectionV1());
-            restTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-            restTopic.setLocale(defaultLocale);
-            topicCollectionItem.setItem(restTopic);
+                    // create the topic, and add to the wrapper
+                    final RESTTopicV1 restTopic = new RESTTopicV1();
+                    restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
+                    restTopic.setTags(new RESTTagCollectionV1());
+                    restTopic.setRevisions(new RESTTopicCollectionV1());
+                    restTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+                    restTopic.setLocale(defaultLocale);
+                    restTopic.setXml(retValue.getValue());
+                    topicCollectionItem.setItem(restTopic);
 
-            // the topic won't show up in the list of topics until it is saved, so the
-            // selected item is null
-            this.getSearchResultsComponent().getProviderData().setSelectedItem(null);
+                    // the topic won't show up in the list of topics until it is saved, so the
+                    // selected item is null
+                    getSearchResultsComponent().getProviderData().setSelectedItem(null);
 
-            // the new topic is being displayed though, so we set the displayed item
-            this.getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem);
+                    // the new topic is being displayed though, so we set the displayed item
+                    getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem);
 
-            updateViewsAfterNewEntityLoaded();
+                    updateViewsAfterNewEntityLoaded();
+                }
+            });
+
+            RESTCalls.getStringConstant(callback, ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID);
+
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -2168,7 +2182,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
 
-            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                 @Override
                 public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {

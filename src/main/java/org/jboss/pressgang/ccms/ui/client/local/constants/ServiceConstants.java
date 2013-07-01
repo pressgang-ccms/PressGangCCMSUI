@@ -52,6 +52,10 @@ public final class ServiceConstants {
      * other string constant IDs that contain docbook templates.
      */
     public static final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
+    /**
+     * The String Constant ID of the basic section template.
+      */
+    public static final Integer BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID = 59;
 
     /*
         *************** TOPIC CONSTANTS ***************
