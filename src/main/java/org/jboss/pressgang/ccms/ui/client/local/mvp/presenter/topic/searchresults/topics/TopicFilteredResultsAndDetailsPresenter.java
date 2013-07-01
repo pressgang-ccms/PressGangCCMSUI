@@ -1531,7 +1531,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 				}
 			}(this),
-				false);
+			false);
 
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
 		}
@@ -1541,9 +1541,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 if (text == worker.lastXML) {
-					$wnd.setTimeout(function(){
-						this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
-					}, 250);
+					$wnd.setTimeout(function(me) {
+                        return function(){
+							me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+						};
+					}(this), 250);
                 } else {
 					worker.lastXML = text;
 					worker.postMessage({xml: text, schema: dtd});
