@@ -448,7 +448,7 @@ define('ace/mode/behaviour/cstyle', ['require', 'exports', 'module' , 'ace/lib/o
 		});
 
 		this.add("string_dquotes", "insertion", function (state, action, editor, session, text) {
-			if (text == '"' || text == "'") {
+			if (text == '"' /*|| text == "'"*/) {
 				var quote = text;
 				var selection = editor.getSelectionRange();
 				var selected = session.doc.getTextRange(selection);
