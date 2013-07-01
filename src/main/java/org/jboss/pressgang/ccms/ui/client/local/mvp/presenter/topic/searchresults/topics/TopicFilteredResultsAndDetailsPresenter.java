@@ -1528,11 +1528,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 						}
 					}
 
-                    $wnd.setTimeout(function(){
-                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
-                    }, 250);
-
-
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 				}
 			}(this),
 				false);
@@ -1543,7 +1539,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
 			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
 			if (editor != null) {
-				worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()(), schema: dtd});
+                var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                if (text == worker.lastXML) {
+					$wnd.setTimeout(function(){
+						this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+					}, 250);
+                } else {
+					worker.lastXML = text;
+					worker.postMessage({xml: text, schema: dtd});
+                }
 			}
 		}
 	}-*/;
