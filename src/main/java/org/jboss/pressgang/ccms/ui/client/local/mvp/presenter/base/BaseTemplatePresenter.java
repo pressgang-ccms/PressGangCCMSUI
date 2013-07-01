@@ -218,10 +218,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         // beware! keyCode=40 means "down arrow", while charCode=40 means '('
                         // always check the keyCode against a list of "known to be buggy" codes!
                         if (keyCode == KeyCodes.KEY_ENTER) {
-                            doQuickSearch(event.isControlKeyDown());
+                            if (isOKToProceed())  {
+                                doQuickSearch(event.isControlKeyDown());
+                            }
                         }
                     } else if (charCode == KeyCodes.KEY_ENTER) {
-                        doQuickSearch(event.isControlKeyDown());
+                        if (isOKToProceed())  {
+                            doQuickSearch(event.isControlKeyDown());
+                        }
                     }
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT BaseTemplatePresenter.bindStandardButtons() KeyPressHandler.onKeyPress()");
