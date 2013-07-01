@@ -1528,7 +1528,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 						}
 					}
 
-					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd)
+                    $wnd.setTimeout(function(){
+                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+                    }, 250);
+
 
 				}
 			}(this),
