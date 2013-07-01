@@ -37,6 +37,21 @@ self.addEventListener('message', function (e) {
 
 	if (e.data.lines) {
 
+		if (positiveDictionary == null) {
+			console.log("Error: positiveDictionary == null");
+			return;
+		}
+
+		if (negativeDictionary == null) {
+			console.log("Error: negativeDictionary == null");
+			return;
+		}
+
+		if (negativePhraseDictionary == null) {
+			console.log("Error: negativePhraseDictionary == null");
+			return;
+		}
+
 		var lines = e.data.lines;
 
 		var retValue = [];

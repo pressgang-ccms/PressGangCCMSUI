@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307010741";
+    public static final String VERSION = "201307011106";
 
     /**
      * XML Mime type
@@ -182,13 +182,13 @@ public final class Constants {
 //    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
 //    public static final String BASE_URL = LOCAL_REST_SERVER;
 
-    public static final String BASE_URL = DEV_REST_SERVER;
-    public static final String BIRT_URL = DEV_BIRT_URL;
-    public static final String MONITORING_URL = DEV_MONITORING_URL;
+//    public static final String BASE_URL = DEV_REST_SERVER;
+//    public static final String BIRT_URL = DEV_BIRT_URL;
+//    public static final String MONITORING_URL = DEV_MONITORING_URL;
 
-//    public static final String MONITORING_URL = PROD_MONITORING_URL;
-//    public static final String BASE_URL = PROD_REST_SERVER;
-//    public static final String BIRT_URL = PROD_BIRT_URL;
+    public static final String MONITORING_URL = PROD_MONITORING_URL;
+    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BIRT_URL = PROD_BIRT_URL;
 
     /*------------------------------------------------------------------------------------------------------------------
 
