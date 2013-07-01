@@ -86,6 +86,10 @@ public final class RESTCalls {
      * The required expansion details for the projects.
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
+    /**
+     * The required expansion details for the images.
+     */
+    private static final String IMAGE_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}";
 
     // TODO: Fix this for 1.1
     /**
@@ -1023,7 +1027,19 @@ public final class RESTCalls {
 
     public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
+        final String expand =
+                "{" +
+                    "\"branches\":[" +
+                        "{" +
+                            "\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}," +
+                            "\"branches\":["
+                                + IMAGE_EXPANSION +
+                            "]" +
+                        "}" +
+                    "]" +
+                "}";
+
+        //final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

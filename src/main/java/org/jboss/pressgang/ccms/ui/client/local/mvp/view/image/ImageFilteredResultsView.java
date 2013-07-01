@@ -4,6 +4,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -36,6 +37,32 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
 
             return object.getItem().getId().toString();
 
+        }
+    };
+
+    @NotNull
+    private TextColumn<RESTImageCollectionItemV1> originalFileNames = new TextColumn<RESTImageCollectionItemV1>() {
+        @Override
+        public String getValue(@Nullable final RESTImageCollectionItemV1 object) {
+            if (object == null) {
+                return null + "";
+            }
+
+            final StringBuilder filenames = new StringBuilder();
+            if (object.getItem().getLanguageImages_OTM() != null ) {
+
+                for (final RESTLanguageImageCollectionItemV1 langImage : object.getItem().getLanguageImages_OTM().getItems()) {
+                    if (filenames.length() != 0) {
+                        filenames.append(", ");
+                    }
+
+                    if (langImage.getItem().getFilename() != null) {
+                        filenames.append(langImage.getItem().getFilename());
+                    }
+                }
+            }
+
+            return filenames.toString();
         }
     };
 
@@ -74,6 +101,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
         getResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
+        getResults().addColumn(originalFileNames, PressGangCCMSUI.INSTANCE.ImageOriginalFileName());
 
         addFilterField(PressGangCCMSUI.INSTANCE.ImageID(), imageIdFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ImageDescription(), imageDescriptionFilter);
