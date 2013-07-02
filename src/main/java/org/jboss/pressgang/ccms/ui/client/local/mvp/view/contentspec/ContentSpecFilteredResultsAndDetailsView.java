@@ -20,6 +20,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         ContentSpecFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton permissive = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PermissiveSave());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
