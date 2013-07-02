@@ -1,5 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import javax.enterprise.context.Dependent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -9,7 +15,7 @@ import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -22,12 +28,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Dependent
 public class ContentSpecTagsView extends BaseTemplateView implements ContentSpecTagsPresenter.Display {
@@ -236,7 +236,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     }
 
     @Override
-    public void display(@NotNull final RESTContentSpecV1 contentSpec, final boolean readOnly) {
+    public void display(@NotNull final RESTTextContentSpecV1 contentSpec, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();

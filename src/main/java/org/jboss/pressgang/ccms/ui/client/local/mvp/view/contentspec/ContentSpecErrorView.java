@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
 import com.google.gwt.user.client.ui.TextArea;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecErrorPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -20,7 +20,7 @@ public class ContentSpecErrorView extends BaseTemplateView implements ContentSpe
         this.getPanel().setWidget(errors);
     }
 
-    public void display(@Nullable final RESTContentSpecV1 contentSpec) {
+    public void display(@Nullable final RESTTextContentSpecV1 contentSpec) {
         errors.setText("");
 
         if (contentSpec != null && contentSpec.getErrors() != null) {

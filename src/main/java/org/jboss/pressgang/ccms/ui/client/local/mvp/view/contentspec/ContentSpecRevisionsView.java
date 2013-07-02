@@ -11,8 +11,8 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -51,23 +51,23 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     /**
      * The table used to display the revisions.
      */
-    private final CellTable<RESTContentSpecCollectionItemV1> results = new CellTable<RESTContentSpecCollectionItemV1>(
+    private final CellTable<RESTTextContentSpecCollectionItemV1> results = new CellTable<RESTTextContentSpecCollectionItemV1>(
             Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     /**
      * The column displaying the revision number.
      */
-    private final TextColumn<RESTContentSpecCollectionItemV1> revisionNumber = new TextColumn<RESTContentSpecCollectionItemV1>() {
+    private final TextColumn<RESTTextContentSpecCollectionItemV1> revisionNumber = new TextColumn<RESTTextContentSpecCollectionItemV1>() {
         @Override
-        public String getValue(@NotNull final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTTextContentSpecCollectionItemV1 object) {
             return object.getItem().getRevision().toString();
         }
     };
     /**
      * The column displaying the revision date.
      */
-    private final TextColumn<RESTContentSpecCollectionItemV1> revisionDate = new TextColumn<RESTContentSpecCollectionItemV1>() {
+    private final TextColumn<RESTTextContentSpecCollectionItemV1> revisionDate = new TextColumn<RESTTextContentSpecCollectionItemV1>() {
         @Override
-        public String getValue(@NotNull final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTTextContentSpecCollectionItemV1 object) {
             return DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(object.getItem().getLastModified());
         }
     };
@@ -75,10 +75,10 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column displaying the revision message.
      */
     @NotNull
-    private final TextColumn<RESTContentSpecCollectionItemV1> revisionMessage = new TextColumn<RESTContentSpecCollectionItemV1>() {
+    private final TextColumn<RESTTextContentSpecCollectionItemV1> revisionMessage = new TextColumn<RESTTextContentSpecCollectionItemV1>() {
         @Override
         @NotNull
-        public String getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getMessage() != null) {
                 return object.getItem().getLogDetails().getMessage();
             }
@@ -89,10 +89,10 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column displaying the user that committed the revision.
      */
     @NotNull
-    private final TextColumn<RESTContentSpecCollectionItemV1> revisionUser = new TextColumn<RESTContentSpecCollectionItemV1>() {
+    private final TextColumn<RESTTextContentSpecCollectionItemV1> revisionUser = new TextColumn<RESTTextContentSpecCollectionItemV1>() {
         @Override
         @NotNull
-        public String getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null
                     && object.getItem().getLogDetails().getUser() != null
                     && object.getItem().getLogDetails().getUser().getName() != null) {
@@ -105,11 +105,11 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column displaying the minor revision checkbox.
      */
     @NotNull
-    private final Column<RESTContentSpecCollectionItemV1, Boolean> minorRevisionColumn = new Column<RESTContentSpecCollectionItemV1, Boolean>(
+    private final Column<RESTTextContentSpecCollectionItemV1, Boolean> minorRevisionColumn = new Column<RESTTextContentSpecCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
         @NotNull
         @Override
-        public Boolean getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public Boolean getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 final Integer flag = object.getItem().getLogDetails().getFlag();
                 return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
@@ -121,11 +121,11 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column displaying the major revision checkbox.
      */
     @NotNull
-    private final Column<RESTContentSpecCollectionItemV1, Boolean> majorRevisionColumn = new Column<RESTContentSpecCollectionItemV1, Boolean>(
+    private final Column<RESTTextContentSpecCollectionItemV1, Boolean> majorRevisionColumn = new Column<RESTTextContentSpecCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
         @NotNull
         @Override
-        public Boolean getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public Boolean getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
             }
@@ -136,11 +136,11 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column that displays the button used to view the revision.
      */
     @NotNull
-    private final Column<RESTContentSpecCollectionItemV1, String> viewButton = new Column<RESTContentSpecCollectionItemV1, String>(
+    private final Column<RESTTextContentSpecCollectionItemV1, String> viewButton = new Column<RESTTextContentSpecCollectionItemV1, String>(
             viewButtonCell) {
         @NotNull
         @Override
-        public String getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             viewButtonCell.setEnabled(true);
 
             /*
@@ -168,11 +168,11 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * The column that displays the diff button.
      */
     @NotNull
-    private final Column<RESTContentSpecCollectionItemV1, String> diffButton = new Column<RESTContentSpecCollectionItemV1, String>(
+    private final Column<RESTTextContentSpecCollectionItemV1, String> diffButton = new Column<RESTTextContentSpecCollectionItemV1, String>(
             diffButtonCell) {
         @NotNull
         @Override
-        public String getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTextContentSpecCollectionItemV1 object) {
             diffButtonCell.setEnabled(true);
 
             if (mainContentSpec != null) {
@@ -195,15 +195,15 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     /**
      * The data provider used to display the revisions.
      */
-    private EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider;
+    private EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider;
     /**
      * A reference to the displayed revision topic.
      */
-    private RESTContentSpecV1 revisionContentSpec;
+    private RESTTextContentSpecV1 revisionContentSpec;
     /**
      * A reference to the displayed topic.
      */
-    private RESTContentSpecV1 mainContentSpec;
+    private RESTTextContentSpecV1 mainContentSpec;
 
     /**
      * Builds the UI.
@@ -232,41 +232,41 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
 
     @NotNull
     @Override
-    public Column<RESTContentSpecCollectionItemV1, String> getDiffButton() {
+    public Column<RESTTextContentSpecCollectionItemV1, String> getDiffButton() {
         return diffButton;
     }
 
     @Override
     @Nullable
-    public RESTContentSpecV1 getRevisionContentSpec() {
+    public RESTTextContentSpecV1 getRevisionContentSpec() {
         return revisionContentSpec;
     }
 
     @Override
-    public void setRevisionContentSpec(@Nullable final RESTContentSpecV1 revisionTopic) {
+    public void setRevisionContentSpec(@Nullable final RESTTextContentSpecV1 revisionTopic) {
         this.revisionContentSpec = revisionTopic;
     }
 
     @NotNull
     @Override
-    public Column<RESTContentSpecCollectionItemV1, String> getViewButton() {
+    public Column<RESTTextContentSpecCollectionItemV1, String> getViewButton() {
         return viewButton;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider) {
+    public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @NotNull
     @Override
-    public CellTable<RESTContentSpecCollectionItemV1> getResults() {
+    public CellTable<RESTTextContentSpecCollectionItemV1> getResults() {
         return results;
     }
 
@@ -276,7 +276,7 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     }
 
     @Override
-    public void display(@NotNull final RESTContentSpecV1 topic, final boolean readOnly) {
+    public void display(@NotNull final RESTTextContentSpecV1 topic, final boolean readOnly) {
         this.mainContentSpec = topic;
     }
 

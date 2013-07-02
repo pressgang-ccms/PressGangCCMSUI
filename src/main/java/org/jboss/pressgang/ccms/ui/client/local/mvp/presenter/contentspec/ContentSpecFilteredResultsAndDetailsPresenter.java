@@ -1,5 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,12 +21,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -32,35 +47,18 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTContentSpecCollectionItemV1RevisionSort;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
  */
 @Dependent
-public class ContentSpecFilteredResultsAndDetailsPresenter
-        extends BaseSearchAndEditPresenter<
-        RESTContentSpecV1,
-        RESTContentSpecCollectionV1,
-        RESTContentSpecCollectionItemV1,
-        RESTContentSpecV1BasicDetailsEditor> {
+public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPresenter<RESTTextContentSpecV1,
+        RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1, RESTTextContentSpecV1BasicDetailsEditor> {
 
     public final static String HISTORY_TOKEN = "ContentSpecFilteredResultsAndContentSpecView";
 
@@ -129,15 +127,20 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                    "There should be a displayed collection item.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed collection item to reference a valid entity.");
+            checkState(
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter
+                            .getProviderData().getDisplayedItem().getItem().getId() != null,
+                    "The displayed collection item to reference a valid entity with a valid ID.");
 
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
-            final RESTContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-            final RESTContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+            final RESTTextContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+            final RESTTextContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
 
 
             /*
@@ -145,7 +148,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 lead to the properties collection being null.
             */
             if (displayedItem.getProperties() != null) {
-                Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                Collections.sort(displayedItem.getProperties().getItems(),
+                        new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
                 commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
             }
 
@@ -163,7 +167,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 If this is not a new item (i.e. the selected item is not null), load some revisions.
              */
             if (selectedCollectionItem != null) {
-                this.contentSpecRevisionsComponent.getDisplay().setProvider(this.contentSpecRevisionsComponent.generateListProvider(selectedCollectionItem.getItem().getId(), display));
+                this.contentSpecRevisionsComponent.getDisplay().setProvider(
+                        this.contentSpecRevisionsComponent.generateListProvider(selectedCollectionItem.getItem().getId(), display));
             }
 
             loadTags();
@@ -177,13 +182,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.initializeViews()");
 
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                    "There should be a displayed collection item.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed collection item to reference a valid entity.");
 
-            final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+            final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
 
             if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
-                contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(), new ArrayList<String>());
+                contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(),
+                        new ArrayList<String>());
             }
 
             if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
@@ -212,15 +220,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             */
             if (viewIsInFilter(filter, contentSpecRevisionsComponent.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-                contentSpecRevisionsComponent.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
+                contentSpecRevisionsComponent.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                        isReadOnlyMode());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.initializeViews()");
         }
     }
 
-    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         flushChanges();
+        return true;
     }
 
     @Override
@@ -257,7 +267,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hasUnsavedChanges()) {
-                    display.getMessageLogDialog().getUsername().setText(Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+                    display.getMessageLogDialog().getUsername().setText(
+                            Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().center();
                 } else {
@@ -284,21 +295,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             }
         });
 
-        final ClickHandler saveClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                display.getMessageLogDialog().getUsername().setText(Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-
-                display.getMessageLogDialog().getDialogBox().center();
-                display.getMessageLogDialog().getDialogBox().show();
-            }
-        };
-
         display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                    LOGGER.log(Level.INFO,
+                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
                     final String user = display.getMessageLogDialog().getUsername().getText().trim();
                     Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
@@ -308,9 +310,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         message.append(user).append(": ");
                     }
                     message.append(display.getMessageLogDialog().getMessage().getText());
-                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                            : ServiceConstants.MAJOR_CHANGE);
 
-                    final RESTContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                    final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                     final Integer id = displayedEntity.getId();
 
                      /*
@@ -321,7 +324,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     /*
                         create the object to be saved
                      */
-                    final RESTContentSpecV1 updatedSpec = new RESTContentSpecV1();
+                    final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
                     updatedSpec.explicitSetText(displayedEntity.getText());
 
                     if (displayedEntity.getProperties() != null) {
@@ -330,80 +333,89 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     }
 
 
-                    /*if (displayedEntity.getTags() != null) {
+                    if (displayedEntity.getTags() != null) {
                         updatedSpec.explicitSetTags(new RESTTagCollectionV1());
                         updatedSpec.getTags().setItems(displayedEntity.getTags().getItems());
-                    }*/
+                    }
 
                     if (filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        final BaseRestCallback<RESTContentSpecV1, Display> addCallback = new BaseRestCallback<RESTContentSpecV1, Display>(
-                                display,
-                                new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final Display display) {
-                                        try {
-                                            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                        final BaseRestCallback<RESTTextContentSpecV1, Display> addCallback = new BaseRestCallback<RESTTextContentSpecV1,
+                                Display>(
+                                display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue, @NotNull final Display display) {
+                                try {
+                                    LOGGER.log(Level.INFO,
+                                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK"
+                                                    + ".onClick() addCallback.doSuccessAction() - New Content Spec");
 
-                                            // Create the topic wrapper
-                                            final RESTContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTContentSpecCollectionItemV1();
-                                            contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    // Create the contentspec wrapper
+                                    final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
+                                            RESTTextContentSpecCollectionItemV1();
+                                    contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                            // create the topic, and add to the wrapper
-                                            contentSpecCollectionItem.setItem(retValue);
+                                    // create the content spec, and add to the wrapper
+                                    contentSpecCollectionItem.setItem(retValue);
 
-                                            /* Update the displayed topic */
-                                            filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
+                                    // Update the displayed content spec
+                                    filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
 
-                                            /*
-                                                Two things can happen to the selected item at this point. Either we are in the
-                                                "create topic" mode, in which we simply add the new topics to the data provider, and
-                                                never refresh from the database. In this case, the selected item and the item
-                                                in the data provider are the same, and always linked.
+                                    /*
+                                        Two things can happen to the selected item at this point. Either we are in the
+                                        "create content spec" mode, in which we simply add the new topics to the data provider,
+                                        and never refresh from the database. In this case, the selected item and the item
+                                        in the data provider are the same, and always linked.
 
-                                                The second mode is where we have created a topic when already displaying a query.
-                                                In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                                or it will remain referencing the returned value here if the query doesn't actually
-                                                return the topic that was saved.
-                                             */
-                                            filteredResultsPresenter.getProviderData().setSelectedItem(contentSpecCollectionItem);
+                                        The second mode is where we have created a topic when already displaying a query.
+                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                        or it will remain referencing the returned value here if the query doesn't actually
+                                        return the topic that was saved.
+                                     */
+                                    filteredResultsPresenter.getProviderData().setSelectedItem(contentSpecCollectionItem);
 
-                                            /*
-                                                Show the invalid text if required. Also fix up the selected item, because this is what
-                                                we will be comparing to when checking for changes.
-                                            */
-                                            ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                    /*
+                                        Show the invalid text if required. Also fix up the selected item, because this is what
+                                        we will be comparing to when checking for changes.
+                                    */
+                                    ComponentContentSpecV1.fixDisplayedText(
+                                            filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
 
-                                            if (startWithNewSpec) {
-                                                LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                    if (startWithNewSpec) {
+                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
 
                                                 /* We need to swap the text with the invalid text */
-                                                ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                        ComponentContentSpecV1.fixDisplayedText(
+                                                filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
-                                                filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
-                                                filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
-                                                updateDisplayWithNewEntityData(false);
-                                            } else {
+                                        filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
+                                        filteredResultsPresenter.getProviderData().setSize(
+                                                filteredResultsPresenter.getProviderData().getItems().size());
+                                        updateDisplayWithNewEntityData(false);
+                                    } else {
                                                /* Update the selected topic */
-                                                LOGGER.log(Level.INFO, "Redisplaying query");
+                                        LOGGER.log(Level.INFO, "Redisplaying query");
 
                                                 /* When the list is repopulated, the text will be swapped with the invalid text */
-                                                updateDisplayWithNewEntityData(true);
-                                            }
-
-                                            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                                                add(contentSpecPresenter.getDisplay());
-                                            }});
-
-                                            Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
-                                        } finally {
-                                            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-                                        }
+                                        updateDisplayWithNewEntityData(true);
                                     }
-                                }
-                        );
 
-                        RESTCalls.createContentSpec(addCallback, updatedSpec, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                        add(contentSpecPresenter.getDisplay());
+                                    }});
+
+                                    Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                } finally {
+                                    LOGGER.log(Level.INFO,
+                                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK" +
+                                                    ".onClick() addCallback.doSuccessAction() - New Topic");
+                                }
+                            }
+                        });
+
+                        // TODO permissive
+                        RESTCalls.createContentSpec(addCallback, updatedSpec, false, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString());
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -411,17 +423,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         /*
                             Save the spec
                          */
-                        final BaseRestCallback<RESTContentSpecV1, Display> updateCallback = new BaseRestCallback<RESTContentSpecV1, Display>(
-                                display,
-                                new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final Display display) {
+                        final BaseRestCallback<RESTTextContentSpecV1, Display> updateCallback = new
+                                BaseRestCallback<RESTTextContentSpecV1, Display>(
+                                display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue, @NotNull final Display display) {
 
-                                        boolean overwroteChanges = false;
-                                        final Integer originalRevision = displayedEntity.getRevision();
+                                boolean overwroteChanges = false;
+                                final Integer originalRevision = displayedEntity.getRevision();
 
-                                        if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
-                                            Collections.sort(retValue.getRevisions().getItems(), new RESTContentSpecCollectionItemV1RevisionSort());
+                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                                    Collections.sort(retValue.getRevisions().getItems(),
+                                            new RESTTextContentSpecCollectionItemV1RevisionSort());
 
                                             /*
                                                 If no changes were made to the topic itself (i.e. we just update some children),
@@ -435,67 +448,74 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                                 The code is left here as a reminder that some additional checking might be required with
                                                 new children that are exposed through the UI.
                                             */
-                                            if (retValue.getRevisions().getItems().size() >= 1) {
-                                                final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                        .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+                                    if (retValue.getRevisions().getItems().size() >= 1) {
+                                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                                retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
 
-                                                LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+                                        LOGGER.log(Level.INFO,
+                                                "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
 
-                                                overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                            }
+                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                    }
 
                                             /*
-                                                Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
+                                                Otherwise we need to make sure that the second last revision matches the revision of the
+                                                topic we were editing.
                                              */
-                                            if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
+                                    if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                 /* Get the second last revision (the last one is the current one) */
-                                                final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                        .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                                retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
 
-                                                LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+                                        LOGGER.log(Level.INFO,
+                                                "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
                                                 /*
                                                  * if the second last revision doesn't match the revision of the topic when editing was
                                                  * started, then we have overwritten someone elses changes
                                                  */
-                                                overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                            }
-                                        }
+                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                    }
+                                }
 
                                         /* Update the displayed topic */
-                                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
                                         /* Update the selected topic */
-                                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
 
                                         /*
                                             Show the invalid text if required.
                                          */
-                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                ComponentContentSpecV1.fixDisplayedText(
+                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                ComponentContentSpecV1.fixDisplayedText(
+                                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
-                                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                                            add(contentSpecPresenter.getDisplay());
-                                        }});
-                                        updateDisplayWithNewEntityData(false);
+                                initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                    add(contentSpecPresenter.getDisplay());
+                                }});
+                                updateDisplayWithNewEntityData(false);
 
-                                        if (overwroteChanges) {
+                                if (overwroteChanges) {
                                             /* Take the user to the revisions view so they can review any overwritten changes */
-                                            switchView(contentSpecRevisionsComponent.getDisplay());
-                                            Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                        } else {
-                                            Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                        }
-                                    }
+                                    switchView(contentSpecRevisionsComponent.getDisplay());
+                                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                } else {
+                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
-                        );
+                            }
+                        });
 
-                        RESTCalls.updateContentSpec(updateCallback, updatedSpec, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                        // TODO permissive
+                        RESTCalls.updateContentSpec(updateCallback, updatedSpec, false, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString());
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
 
-                    LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                    LOGGER.log(Level.INFO,
+                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                 }
             }
         });
@@ -541,11 +561,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             }
 
             // Create the topic wrapper
-            final RESTContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTContentSpecCollectionItemV1();
+            final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTTextContentSpecCollectionItemV1();
             contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
             // create the topic, and add to the wrapper
-            final RESTContentSpecV1 newEntity = new RESTContentSpecV1();
+            final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
             newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
             newEntity.setText("");
             newEntity.setLocale(defaultLocale);
@@ -567,14 +587,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTContentSpecV1> getNewEntityCallback = new GetNewEntityCallback<RESTContentSpecV1>() {
+        final GetNewEntityCallback<RESTTextContentSpecV1> getNewEntityCallback = new GetNewEntityCallback<RESTTextContentSpecV1>() {
 
             @Override
-            public void getNewEntity(@NotNull final RESTContentSpecV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTContentSpecV1> displayCallback) {
-                @NotNull final RESTCalls.RESTCallback<RESTContentSpecV1> callback = new BaseRestCallback<RESTContentSpecV1, BaseTemplateViewInterface>(
-                        display, new BaseRestCallback.SuccessAction<RESTContentSpecV1, BaseTemplateViewInterface>() {
+            public void getNewEntity(@NotNull final RESTTextContentSpecV1 selectedEntity,
+                    @NotNull final DisplayNewEntityCallback<RESTTextContentSpecV1> displayCallback) {
+                @NotNull final RESTCalls.RESTCallback<RESTTextContentSpecV1> callback = new BaseRestCallback<RESTTextContentSpecV1,
+                        BaseTemplateViewInterface>(
+                        display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, BaseTemplateViewInterface>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                    public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
+                            @NotNull final BaseTemplateViewInterface display) {
                         checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
 
@@ -603,8 +626,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
          */
         contentSpecTagsPresenter.getTags();
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
-                filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
+        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
+                contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
+                getNewEntityCallback);
 
         bindViewTopicRevisionButton();
 
@@ -613,12 +637,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             @Override
             public void onCollectionReceived(@NotNull final RESTContentSpecCollectionV1 topics) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
+                    LOGGER.log(Level.INFO,
+                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
 
                     contentSpecListLoaded = true;
                     displayInitialContentSpec(getNewEntityCallback);
                 } finally {
-                    LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
+                    LOGGER.log(Level.INFO,
+                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
                 }
             }
         });
@@ -627,7 +653,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             @Override
             public void stringListLoaded(@NotNull final List<String> locales) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
+                    LOGGER.log(Level.INFO,
+                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
 
                     ContentSpecFilteredResultsAndDetailsPresenter.this.locales = locales;
                     localesLoaded = true;
@@ -653,7 +680,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
      * When the locales and the topic list have been loaded we can display the first topic if only
      * one was returned.
      */
-    protected void displayInitialContentSpec(@NotNull final GetNewEntityCallback<RESTContentSpecV1> getNewEntityCallback) {
+    protected void displayInitialContentSpec(@NotNull final GetNewEntityCallback<RESTTextContentSpecV1> getNewEntityCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
@@ -695,70 +722,78 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
 
-            contentSpecRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
-                @Override
-                public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 revisionContentSpec, final String value) {
-                    final RESTCalls.RESTCallback<RESTContentSpecV1> callback = new BaseRestCallback<RESTContentSpecV1, ContentSpecRevisionsPresenter.Display>(
-                            contentSpecRevisionsComponent.getDisplay(),
-                            new BaseRestCallback.SuccessAction<RESTContentSpecV1, ContentSpecRevisionsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, final ContentSpecRevisionsPresenter.Display display) {
-                                    checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
+            contentSpecRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(
+                    new FieldUpdater<RESTTextContentSpecCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionContentSpec,
+                                final String value) {
+                            final RESTCalls.RESTCallback<RESTTextContentSpecV1> callback = new BaseRestCallback<RESTTextContentSpecV1,
+                                    ContentSpecRevisionsPresenter.Display>(
+                                    contentSpecRevisionsComponent.getDisplay(),
+                                    new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, ContentSpecRevisionsPresenter.Display>() {
+                                        @Override
+                                        public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
+                                                final ContentSpecRevisionsPresenter.Display display) {
+                                            checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
-                                    if (getDisplayedContentSpec() != null) {
-                                        final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                                + ": "
-                                                + revisionContentSpec.getItem().getId()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.ContentSpecRevision()
-                                                + ": "
-                                                + revisionContentSpec.getItem().getRevision().toString()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                                + ": "
-                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(revisionContentSpec.getItem().getLastModified());
+                                            if (getDisplayedContentSpec() != null) {
+                                                final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " +
+                                                        revisionContentSpec.getItem().getId() + " " + PressGangCCMSUI.INSTANCE
+                                                        .ContentSpecRevision() + ": " + revisionContentSpec.getItem().getRevision()
+                                                        .toString() + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": " +
+                                                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                                                revisionContentSpec.getItem().getLastModified());
 
-                                        final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                                + ": "
-                                                + getDisplayedContentSpec().getId()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.ContentSpecRevision()
-                                                + ": "
-                                                + getDisplayedContentSpec().getRevision().toString()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                                + ": "
-                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(getDisplayedContentSpec().getLastModified());
+                                                final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " +
+                                                        getDisplayedContentSpec().getId() + " " + PressGangCCMSUI.INSTANCE
+                                                        .ContentSpecRevision() + ": " + getDisplayedContentSpec().getRevision().toString
+                                                        () + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": " + DateTimeFormat
+                                                        .getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                                        getDisplayedContentSpec().getLastModified());
 
-                                        ComponentContentSpecV1.fixDisplayedText(retValue);
+                                                ComponentContentSpecV1.fixDisplayedText(retValue);
 
-                                        GWTUtilities.displayDiff(retValue.getText(), retValueLabel, filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getText(), sourceTopicLabel, false);
-                                    }
-                                }
-                            });
-                    RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(), revisionContentSpec.getItem().getRevision());
-                }
-            });
+                                                GWTUtilities.displayDiff(retValue.getText(), retValueLabel,
+                                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getText(),
+                                                        sourceTopicLabel, false);
+                                            }
+                                        }
+                                    });
+                            RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(),
+                                    revisionContentSpec.getItem().getRevision());
+                        }
+                    });
 
-            contentSpecRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
-                @Override
-                public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 revisionTopic, final String value) {
+            contentSpecRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(
+                    new FieldUpdater<RESTTextContentSpecCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionTopic,
+                                final String value) {
 
-                    try {
-                        LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
+                            try {
+                                LOGGER.log(Level.INFO,
+                                        "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater"
+                                                + ".update()");
 
-                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                        checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
+                                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                                        "There should be a displayed collection item.");
+                                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                                        "The displayed collection item to reference a valid entity.");
+                                checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
-                        displayRevision(revisionTopic.getItem());
+                                displayRevision(revisionTopic.getItem());
 
-                        contentSpecRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(contentSpecRevisionsComponent.getProviderData().getItems(), contentSpecRevisionsComponent.getProviderData().getSize(), contentSpecRevisionsComponent.getProviderData().getStartRow());
-                    } finally {
-                        LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
-                    }
-                }
-            });
+                                contentSpecRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(
+                                        contentSpecRevisionsComponent.getProviderData().getItems(),
+                                        contentSpecRevisionsComponent.getProviderData().getSize(),
+                                        contentSpecRevisionsComponent.getProviderData().getStartRow());
+                            } finally {
+                                LOGGER.log(Level.INFO,
+                                        "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater" +
+                                                ".update()");
+                            }
+                        }
+                    });
         } finally {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
         }
@@ -770,7 +805,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
      *
      * @param revisionSpec The revision to be displayed.
      */
-    private void displayRevision(@NotNull final RESTContentSpecV1 revisionSpec) {
+    private void displayRevision(@NotNull final RESTTextContentSpecV1 revisionSpec) {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayRevision()");
 
@@ -815,16 +850,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
 
-            final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+            final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
 
-            checkState(displayedItem.getProperties() != null, "The displayed entity or revision needs to have a valid properties collection");
+            checkState(displayedItem.getProperties() != null,
+                    "The displayed entity or revision needs to have a valid properties collection");
 
             /*
                 Display the list of assigned property tags. This should not be null, but bugs in the REST api can
                 lead to the properties collection being null.
             */
 
-            Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+            Collections.sort(displayedItem.getProperties().getItems(),
+                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
             commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
 
         } finally {
@@ -852,12 +889,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             if (id != null) {
 
                 /* A callback to respond to a request for a topic with the tags expanded */
-                @NotNull final RESTCalls.RESTCallback<RESTContentSpecV1> contentSpecWithTagsCallback = new BaseRestCallback<RESTContentSpecV1, ContentSpecTagsPresenter.Display>(
-                        contentSpecTagsPresenter.getDisplay(), new BaseRestCallback.SuccessAction<RESTContentSpecV1, ContentSpecTagsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, final ContentSpecTagsPresenter.Display display) {
-                        try {
-                            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                @NotNull final RESTCalls.RESTCallback<RESTTextContentSpecV1> contentSpecWithTagsCallback = new
+                        BaseRestCallback<RESTTextContentSpecV1, ContentSpecTagsPresenter.Display>(
+                        contentSpecTagsPresenter.getDisplay(),
+                        new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, ContentSpecTagsPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
+                                    final ContentSpecTagsPresenter.Display display) {
+                                try {
+                                    LOGGER.log(Level.INFO,
+                                            "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback" +
+                                                    ".doSuccessAction()");
 
                             /*
                                 There is a small chance that in between loading the topic's details and
@@ -876,15 +918,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                             }*/
 
                             /* copy the revisions into the displayed Topic */
-                            getDisplayedContentSpec().setTags(retValue.getTags());
+                                    getDisplayedContentSpec().setTags(retValue.getTags());
 
                             /* update the view */
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
-                        } finally {
-                            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
-                        }
-                    }
-                });
+                                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
+                                } finally {
+                                    LOGGER.log(Level.INFO,
+                                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" + "" +
+                                                    ".doSuccessAction()");
+                                }
+                            }
+                        });
 
                 RESTCalls.getContentSpecWithTags(contentSpecWithTagsCallback, id);
             }
@@ -913,6 +957,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+    }
+
+    @Override
+    public void close() {
     }
 
     @Override
@@ -964,11 +1012,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     }
 
     @Nullable
-    private RESTContentSpecV1 getDisplayedContentSpec() {
+    private RESTTextContentSpecV1 getDisplayedContentSpec() {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.getDisplayedContentSpec()");
 
-            RESTContentSpecV1 source = null;
+            RESTTextContentSpecV1 source = null;
 
             if (contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec() != null) {
                 source = contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec();
@@ -1020,9 +1068,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
             flushChanges();
 
-            final RESTContentSpecCollectionItemV1 displayedEntityCollectionItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
-            final RESTContentSpecV1 displayedEntity = displayedEntityCollectionItem.getItem();
-            final RESTContentSpecCollectionItemV1 selectedEntityCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+            final RESTTextContentSpecCollectionItemV1 displayedEntityCollectionItem = filteredResultsPresenter.getProviderData()
+                    .getDisplayedItem();
+            final RESTTextContentSpecV1 displayedEntity = displayedEntityCollectionItem.getItem();
+            final RESTTextContentSpecCollectionItemV1 selectedEntityCollectionItem = filteredResultsPresenter.getProviderData()
+                    .getSelectedItem();
 
 
              /*
@@ -1042,8 +1092,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
             if (!displayedEntityCollectionItem.returnIsAddItem()) {
                 /* See if the text has changed */
-                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(), displayedEntity.getText())) {
-                    LOGGER.log(Level.INFO, "Text is different between selected and displayed. \n" + selectedEntityCollectionItem.getItem().getText() + "\n" + displayedEntity.getText());
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(),
+                        displayedEntity.getText())) {
+                    LOGGER.log(Level.INFO,
+                            "Text is different between selected and displayed. \n" + selectedEntityCollectionItem.getItem().getText() +
+                                    "\n" + displayedEntity.getText());
                     LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getId().toString());
                     LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getErrors());
                     LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getFailedContentSpec());
@@ -1068,8 +1121,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
      *
      * @author Matthew Casperson
      */
-    public interface Display extends
-            BaseSearchAndEditViewInterface<RESTContentSpecV1, RESTContentSpecCollectionV1, RESTContentSpecCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTTextContentSpecV1, RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1> {
         PushButton getText();
 
         PushButton getErrors();

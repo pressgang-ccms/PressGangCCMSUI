@@ -1,10 +1,19 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -18,18 +27,11 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
 @Dependent
-public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTContentSpecCollectionItemV1>
+public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTTextContentSpecCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
-    public interface Display extends BaseFilteredResultsViewInterface<RESTContentSpecCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTTextContentSpecCollectionItemV1> {
         //@NotNull PushButton getBulkImport();
         //@NotNull PushButton getBulkOverwrite();
     }
@@ -65,6 +67,10 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    @Override
+    public void close() {
+    }
+
     public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;
@@ -88,12 +94,12 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
     }
 
     @NotNull
-    protected EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> generateListProvider() {
+    protected EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> generateListProvider() {
         getProviderData().resetToEmpty();
 
-        @NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTContentSpecCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
                 displayNewFixedList(getProviderData().getItems());
             }
         };
@@ -102,26 +108,25 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
 
     @Nullable
     @Override
-    protected EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> generateListProvider(@Nullable final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> generateListProvider(@Nullable final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
 
         if (queryString == null) {
             return null;
         }
 
-        final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTContentSpecCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTContentSpecCollectionV1, Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTContentSpecCollectionV1, Display>() {
+                final BaseRestCallback<RESTTextContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTTextContentSpecCollectionV1, Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTTextContentSpecCollectionV1, Display>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTContentSpecCollectionV1 retValue, @NotNull final Display display) {
+                    public void doSuccessAction(@NotNull final RESTTextContentSpecCollectionV1 retValue, @NotNull final Display display) {
                         try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
-                            checkArgument(retValue.getItems().size() == 0 || retValue.getItems().get(0).getItem().getChildren_OTM() != null, "The items in the returned collection should have a valid children collection");
 
-                            for (final RESTContentSpecCollectionItemV1 item : retValue.getItems()) {
+                            for (final RESTTextContentSpecCollectionItemV1 item : retValue.getItems()) {
                                 ComponentContentSpecV1.fixDisplayedText(item.getItem());
                             }
 
@@ -130,7 +135,7 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
-                            getHandlerManager().fireEvent(new EntityListReceived<RESTContentSpecCollectionV1>(retValue));
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTextContentSpecCollectionV1>(retValue));
                         }
                     }
                 });

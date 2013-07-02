@@ -1,27 +1,32 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.datepicker.client.DateBox;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTContentSpecV1> {
+public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTextContentSpecV1> {
 
     private static final int ROWS = 6;
     private static final int COLS = 2;
 
-    private RESTContentSpecV1 value;
+    private RESTTextContentSpecV1 value;
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox revision = new SimpleIntegerBox();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
@@ -62,7 +67,7 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
         return id;
     }
 
-    public RESTContentSpecV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
+    public RESTTextContentSpecV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_PANEL);
@@ -119,7 +124,7 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
     }
 
     @Override
-    public void setValue(@NotNull final RESTContentSpecV1 value) {
+    public void setValue(@NotNull final RESTTextContentSpecV1 value) {
         this.value = value;
 
         id.setValue(value.getId());
@@ -138,7 +143,7 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
     }
 
     @Override
-    public RESTContentSpecV1 getValue() {
+    public RESTTextContentSpecV1 getValue() {
         value.setLocale(locale.getValue());
         return value;
     }

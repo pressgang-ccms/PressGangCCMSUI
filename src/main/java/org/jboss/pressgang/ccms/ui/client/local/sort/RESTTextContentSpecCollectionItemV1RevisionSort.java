@@ -1,18 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 import java.util.Comparator;
+
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Compares two RESTTopicCollectionItemV1's based on their revision numbers.
  */
-public final class RESTContentSpecCollectionItemV1RevisionSort implements Comparator<RESTContentSpecCollectionItemV1>, Serializable {
+public final class RESTTextContentSpecCollectionItemV1RevisionSort implements Comparator<RESTTextContentSpecCollectionItemV1>, Serializable {
 
     @Override
-    public int compare(@Nullable final RESTContentSpecCollectionItemV1 arg0, @Nullable final RESTContentSpecCollectionItemV1 arg1) {
+    public int compare(@Nullable final RESTTextContentSpecCollectionItemV1 arg0, @Nullable final RESTTextContentSpecCollectionItemV1 arg1) {
         if (arg0 == null && arg1 == null) {
             return 0;
         }

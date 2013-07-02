@@ -5,10 +5,10 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
-public final class RESTContentSpecV1TextEditor extends SimplePanel implements Editor<RESTContentSpecV1> {
+public final class RESTTextContentSpecV1TextEditor extends SimplePanel implements Editor<RESTTextContentSpecV1> {
     /**
      * Ace builds from the 17th December 2012 and prior use absolute positioning, and require
      * that the AceEditor being constructed with true. After the 17th December 2012 the ACE
@@ -16,13 +16,15 @@ public final class RESTContentSpecV1TextEditor extends SimplePanel implements Ed
      */
     public final AceEditor text = new AceEditor(false);
 
-    public RESTContentSpecV1TextEditor(final boolean readOnly) {
+    public RESTTextContentSpecV1TextEditor(final boolean readOnly) {
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         text.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
 
         text.setReadOnly(readOnly);
         text.setMode(AceEditorMode.TEXT);
         text.setTheme(AceEditorTheme.ECLIPSE);
+        text.setUseSoftTabs(true);
+        text.setTabSize(2);
 
         this.setWidget(text);
     }
