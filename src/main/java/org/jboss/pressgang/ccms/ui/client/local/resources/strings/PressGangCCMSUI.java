@@ -72,19 +72,19 @@ public interface PressGangCCMSUI extends Constants {
     String CommonDescription();
 
     @NotNull
-    String ImageUplodedSuccessfully();
+    String ImageUploadedSuccessfully();
 
     @NotNull
-    String ImagesUplodedSuccessfully();
+    String ImagesUploadedSuccessfully();
 
     @NotNull
-    String ImagesNotUplodedSuccessfully();
+    String ImagesNotUploadedSuccessfully();
 
     @NotNull
-    String TopicsUplodedSuccessfully();
+    String TopicsUploadedSuccessfully();
 
     @NotNull
-    String TopicsNotUplodedSuccessfully();
+    String TopicsNotUploadedSuccessfully();
 
     @NotNull
     String OverwriteFilenameErrorMessage();
@@ -376,6 +376,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Save();
+
+    @NotNull
+    String PermissiveSave();
 
     @NotNull
     String ImageDescription();

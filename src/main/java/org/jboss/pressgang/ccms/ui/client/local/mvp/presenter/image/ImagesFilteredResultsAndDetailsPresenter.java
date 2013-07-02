@@ -253,7 +253,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 initializeViews();
                 updateDisplayWithNewEntityData(false);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUplodedSuccessfully());
+                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
             }
         };
     }
@@ -754,7 +754,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
             }
 
             if (failedFiled.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUplodedSuccessfully() + " " + idsQuery.toString());
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + idsQuery.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiled) {
@@ -764,8 +764,8 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUplodedSuccessfully() + ": " + failedNames.toString() + "\n" +
-                        PressGangCCMSUI.INSTANCE.ImagesUplodedSuccessfully() + idsQuery.toString());
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString() + "\n" +
+                        PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + idsQuery.toString());
             }
 
 

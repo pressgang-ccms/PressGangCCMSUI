@@ -1298,7 +1298,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final StringBuilder message = new StringBuilder();
 
             if (failedFiled.size() == 0) {
-                message.append(PressGangCCMSUI.INSTANCE.TopicsUplodedSuccessfully());
+                message.append(PressGangCCMSUI.INSTANCE.TopicsUploadedSuccessfully());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiled) {
@@ -1308,7 +1308,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     failedNames.append(name);
                 }
 
-                message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
+                message.append(PressGangCCMSUI.INSTANCE.TopicsNotUploadedSuccessfully() + ": " + failedNames.toString());
 
                 if (overwrite) {
                     message.append("\n" + PressGangCCMSUI.INSTANCE.OverwriteFilenameErrorMessage());
