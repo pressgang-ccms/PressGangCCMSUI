@@ -20,7 +20,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         ContentSpecFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton permissive = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PermissiveSave());
+    private final PushButton permissiveSave = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PermissiveSave());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
@@ -63,6 +63,12 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     @Override
     public PushButton getSave() {
         return save;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getPermissiveSave() {
+        return permissiveSave;
     }
 
     @NotNull
@@ -117,6 +123,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         this.addActionButton(this.getExtendedProperties());
         this.addActionButton(this.getHistory());
         this.addActionButton(this.getSave());
+        this.addActionButton(this.getPermissiveSave());
     }
 
     @Override

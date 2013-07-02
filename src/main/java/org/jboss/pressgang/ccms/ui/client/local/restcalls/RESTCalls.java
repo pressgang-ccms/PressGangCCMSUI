@@ -41,7 +41,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
@@ -119,14 +118,14 @@ public final class RESTCalls {
     /**
      * Content specifications need the extended properties expanded
      */
-    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
      */
     private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS = "{\"branches\":[" +
-            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
             "]}";
 
     /**
@@ -862,25 +861,25 @@ public final class RESTCalls {
     }
 
     public static void updateContentSpec(@NotNull final RESTCallback<RESTTextContentSpecV1> callback,
-            @NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final Boolean permissive, @NotNull final String message,
-            @NotNull final Integer flag, @NotNull final String userId) {
+            @NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
+            @NotNull final String userId) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).updateJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
-                        permissive, message, flag, userId);
+                        message, flag, userId);
             }
         });
     }
 
     public static void createContentSpec(@NotNull final RESTCallback<RESTTextContentSpecV1> callback,
-            @NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final Boolean permissive, @NotNull final String message,
-            @NotNull final Integer flag, @NotNull final String userId) {
+            @NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
+            @NotNull final String userId) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).createJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
-                        permissive, message, flag, userId);
+                        message, flag, userId);
             }
         });
     }

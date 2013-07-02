@@ -8,14 +8,20 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -23,11 +29,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextCSProcessingOptionsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -49,6 +58,11 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -203,11 +217,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
 
             if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
-                /*
-                    Tags are always readonly. Tags associated with a csontent spec
-                    appear in the spec itself. This is just a secondary way to view them.
-                 */
-                contentSpecTagsPresenter.getDisplay().display(displayedItem, true);
+                contentSpecTagsPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
             }
 
             if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
@@ -229,7 +239,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+        LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.beforeSwitchView()");
         flushChanges();
+        LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.beforeSwitchView()");
         return true;
     }
 
@@ -277,6 +289,24 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
+        display.getPermissiveSave().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hasUnsavedChanges()) {
+                    display.getMessageLogDialog().getUsername().setText(
+                            Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+                    display.getMessageLogDialog().reset();
+                    display.getMessageLogDialog().getDialogBox().center();
+
+                    final RESTTextCSProcessingOptionsV1 processingOptions = new RESTTextCSProcessingOptionsV1();
+                    processingOptions.setPermissive(true);
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProcessingOptions(processingOptions);
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                }
+            }
+        });
+
         display.getHistory().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -316,16 +346,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                     final Integer id = displayedEntity.getId();
 
-                     /*
-                        Copy out the text
-                     */
+                     // Copy out the text
                     flushChanges();
 
-                    /*
-                        create the object to be saved
-                     */
+                    // create the object to be saved
                     final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
                     updatedSpec.explicitSetText(displayedEntity.getText());
+                    updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
 
                     if (displayedEntity.getProperties() != null) {
                         updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
@@ -384,7 +411,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     if (startWithNewSpec) {
                                         LOGGER.log(Level.INFO, "Adding new topic to static list");
 
-                                                /* We need to swap the text with the invalid text */
+                                        // We need to swap the text with the invalid text
                                         ComponentContentSpecV1.fixDisplayedText(
                                                 filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
@@ -393,10 +420,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                                 filteredResultsPresenter.getProviderData().getItems().size());
                                         updateDisplayWithNewEntityData(false);
                                     } else {
-                                               /* Update the selected topic */
+                                        // Update the selected topic
                                         LOGGER.log(Level.INFO, "Redisplaying query");
 
-                                                /* When the list is repopulated, the text will be swapped with the invalid text */
+                                        // When the list is repopulated, the text will be swapped with the invalid text
                                         updateDisplayWithNewEntityData(true);
                                     }
 
@@ -413,8 +440,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         });
 
-                        // TODO permissive
-                        RESTCalls.createContentSpec(addCallback, updatedSpec, false, message.toString(), flag,
+                        RESTCalls.createContentSpec(addCallback, updatedSpec, message.toString(), flag,
                                 ServiceConstants.NULL_USER_ID.toString());
                     } else {
                         /* We are updating, so we need the id */
@@ -436,18 +462,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     Collections.sort(retValue.getRevisions().getItems(),
                                             new RESTTextContentSpecCollectionItemV1RevisionSort());
 
-                                            /*
-                                                If no changes were made to the topic itself (i.e. we just update some children),
-                                                then the revision number will not change. So if what is sent back has the same
-                                                revision number as the topic we were editing, then we have not overwritten background
-                                                changes.
+                                    /*
+                                        If no changes were made to the topic itself (i.e. we just update some children),
+                                        then the revision number will not change. So if what is sent back has the same
+                                        revision number as the topic we were editing, then we have not overwritten background
+                                        changes.
 
-                                                Note that this should not happen because we don't actually just update the property tags;
-                                                any change to the property tag value results in the mapping being deleted and recreated.
+                                        Note that this should not happen because we don't actually just update the property tags;
+                                        any change to the property tag value results in the mapping being deleted and recreated.
 
-                                                The code is left here as a reminder that some additional checking might be required with
-                                                new children that are exposed through the UI.
-                                            */
+                                        The code is left here as a reminder that some additional checking might be required with
+                                        new children that are exposed through the UI.
+                                    */
                                     if (retValue.getRevisions().getItems().size() >= 1) {
                                         final Integer overwriteRevision = retValue.getRevisions().getItems().get(
                                                 retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
@@ -458,10 +484,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         overwroteChanges = !originalRevision.equals(overwriteRevision);
                                     }
 
-                                            /*
-                                                Otherwise we need to make sure that the second last revision matches the revision of the
-                                                topic we were editing.
-                                             */
+                                    /*
+                                        Otherwise we need to make sure that the second last revision matches the revision of the
+                                        topic we were editing.
+                                     */
                                     if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                 /* Get the second last revision (the last one is the current one) */
                                         final Integer overwriteRevision = retValue.getRevisions().getItems().get(
@@ -470,10 +496,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         LOGGER.log(Level.INFO,
                                                 "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
-                                                /*
-                                                 * if the second last revision doesn't match the revision of the topic when editing was
-                                                 * started, then we have overwritten someone elses changes
-                                                 */
+                                        /*
+                                         * if the second last revision doesn't match the revision of the topic when editing was
+                                         * started, then we have overwritten someone elses changes
+                                         */
                                         overwroteChanges = !originalRevision.equals(overwriteRevision);
                                     }
                                 }
@@ -506,13 +532,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         });
 
-                        // TODO permissive
-                        RESTCalls.updateContentSpec(updateCallback, updatedSpec, false, message.toString(), flag,
+                        RESTCalls.updateContentSpec(updateCallback, updatedSpec, message.toString(), flag,
                                 ServiceConstants.NULL_USER_ID.toString());
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProcessingOptions(null);
 
                     LOGGER.log(Level.INFO,
                             "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
@@ -630,12 +656,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
                 getNewEntityCallback);
 
+        bindTagButtons();
+
         bindViewTopicRevisionButton();
 
         /* When the topics have been loaded, display the first one */
-        filteredResultsPresenter.addTopicListReceivedHandler(new EntityListReceivedHandler<RESTContentSpecCollectionV1>() {
+        filteredResultsPresenter.addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTextContentSpecCollectionV1>() {
             @Override
-            public void onCollectionReceived(@NotNull final RESTContentSpecCollectionV1 topics) {
+            public void onCollectionReceived(@NotNull final RESTTextContentSpecCollectionV1 topics) {
                 try {
                     LOGGER.log(Level.INFO,
                             "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
@@ -881,14 +909,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags()");
 
-            /* Initiate the REST calls */
+            // Initiate the REST calls
             final Integer id = getDisplayedContentSpec().getId();
             final Integer revision = getDisplayedContentSpec().getRevision();
 
-            /* If this is a new topic, the id will be null, and there will not be any tags to get */
+            // If this is a new topic, the id will be null, and there will not be any tags to get
             if (id != null) {
 
-                /* A callback to respond to a request for a topic with the tags expanded */
+                // A callback to respond to a request for a topic with the tags expanded
                 @NotNull final RESTCalls.RESTCallback<RESTTextContentSpecV1> contentSpecWithTagsCallback = new
                         BaseRestCallback<RESTTextContentSpecV1, ContentSpecTagsPresenter.Display>(
                         contentSpecTagsPresenter.getDisplay(),
@@ -901,26 +929,26 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                             "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback" +
                                                     ".doSuccessAction()");
 
-                            /*
-                                There is a small chance that in between loading the topic's details and
-                                loading its tags, a new revision was created.
+                                    /*
+                                        There is a small chance that in between loading the topic's details and
+                                        loading its tags, a new revision was created.
 
-                                So, what do we do? If changes are made to the topic, then
-                                the user will be warned that they have overwritten a revision created
-                                in the mean time. In fact seeing the latest tag relationships could
-                                mean that the user doesn't try to add conflicting tags (like adding
-                                a tag from a mutually exclusive category when one already exists).
+                                        So, what do we do? If changes are made to the topic, then
+                                        the user will be warned that they have overwritten a revision created
+                                        in the mean time. In fact seeing the latest tag relationships could
+                                        mean that the user doesn't try to add conflicting tags (like adding
+                                        a tag from a mutually exclusive category when one already exists).
 
-                                This check is left in comments just to show that a conflict is possible.
-                            */
-                            /*if (!retValue.getRevision().equals(revision)) {
-                                Window.alert("The topics details and tags are not in sync.");
-                            }*/
+                                        This check is left in comments just to show that a conflict is possible.
+                                    */
+                                    /*if (!retValue.getRevision().equals(revision)) {
+                                        Window.alert("The topics details and tags are not in sync.");
+                                    }*/
 
-                            /* copy the revisions into the displayed Topic */
+                                    // copy the revisions into the displayed Topic */
                                     getDisplayedContentSpec().setTags(retValue.getTags());
 
-                            /* update the view */
+                                    // update the view
                                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
                                 } finally {
                                     LOGGER.log(Level.INFO,
@@ -1045,11 +1073,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 return;
             }
 
-            /* These are read only views */
-            if (lastDisplayedView == contentSpecTagsPresenter.getDisplay()) {
-                return;
-            }
-
             ((BasePopulatedEditorViewInterface) lastDisplayedView).getDriver().flush();
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.flushChanges()");
@@ -1076,13 +1099,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
 
              /*
-                If there are any modified tags in newTopic, we have unsaved changes.
+                If there are any modified tags in newContentSpec, we have unsaved changes.
                 If getTags() is null, the tags have not been loaded yet (and can't have been modified).
             */
-            /*if (displayedEntity.getTags() != null &&
+            if (displayedEntity.getTags() != null &&
                     !displayedEntity.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
                 return true;
-            }*/
+            }
 
             /* If there are any modified property tags in newTopic, we have unsaved changes */
             if (!displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
@@ -1116,6 +1139,323 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
     }
 
+    private void bindTagButtons() {
+        /* Bind the add button in the tags view */
+        bindNewTagListBoxes(new AddTagClickHandler(
+                new ReturnCurrentContentSpec() {
+                    @NotNull
+                    @Override
+                    public RESTTextContentSpecV1 getContentSpec() {
+                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                                "There should be a displayed collection item.");
+                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                        return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                    }
+                }, new ReturnReadOnlyMode() {
+            @Override
+            public boolean getReadOnlyMode() {
+                return isReadOnlyMode();
+            }
+        }, new BindRemoveButtons() {
+            @Override
+            public void bindRemoveButtons() {
+                bindTagEditingButtons();
+            }
+        },
+                contentSpecTagsPresenter.getDisplay()
+        ), contentSpecTagsPresenter.getDisplay()
+        );
+    }
+
+    /**
+     * Add behaviour to the tag delete buttons
+     */
+    private void bindTagEditingButtons() {
+
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindTagEditingButtons()");
+
+            /* This will be null if the tags have not been downloaded */
+            if (contentSpecTagsPresenter.getDisplay().getEditor() == null) {
+                return;
+            }
+
+            if (contentSpecTagsPresenter.getDisplay().getEditor().projects == null) {
+                return;
+            }
+
+            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : contentSpecTagsPresenter.getDisplay()
+                    .getEditor().projects.getEditors()) {
+
+                checkState(topicTagViewProjectEditor.categories != null && topicTagViewProjectEditor.categories.getEditors() != null, "The project's categories editor collection should be valid");
+
+                for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
+
+                    checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null, "The category's tag editor collection should be valid");
+
+                    for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+
+                        checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
+                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
+
+                        topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(
+                                topicTagViewTagEditor.getTag().getTag(),
+                                new ReturnCurrentContentSpec() {
+                                    @NotNull
+                                    @Override
+                                    public RESTTextContentSpecV1 getContentSpec() {
+
+                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+
+                                        return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                                    }
+                                }, new ReturnReadOnlyMode() {
+                            @Override
+                            public boolean getReadOnlyMode() {
+                                return isReadOnlyMode();
+                            }
+                        }, new BindRemoveButtons() {
+                            @Override
+                            public void bindRemoveButtons() {
+                                bindTagEditingButtons();
+                            }
+                        },
+                                contentSpecTagsPresenter.getDisplay()
+                        ));
+                    }
+                }
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindTagEditingButtons()");
+        }
+    }
+
+    /**
+     * Adds event handlers to the new tag combo boxes and add button. Similar to TopicTagsPresenter.bindNewTagListBoxes(),
+     * but this version takes the tags display, so we can apply it to the bulk import dialog too.
+     *
+     * @param clickHandler The Add button click handler
+     * @param tagsDisplay  The tags view
+     */
+    static private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler, @NotNull final ContentSpecTagsPresenter.Display tagsDisplay) {
+        tagsDisplay.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUIProject> event) {
+                tagsDisplay.updateNewTagCategoriesDisplay();
+            }
+        });
+
+        tagsDisplay.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUICategory> event) {
+                tagsDisplay.updateNewTagTagDisplay();
+            }
+        });
+
+        tagsDisplay.getAdd().addClickHandler(clickHandler);
+    }
+
+    private interface ReturnCurrentContentSpec {
+        @NotNull
+        RESTTextContentSpecV1 getContentSpec();
+    }
+
+    private interface ReturnReadOnlyMode {
+        boolean getReadOnlyMode();
+    }
+
+    private interface BindRemoveButtons {
+        void bindRemoveButtons();
+    }
+
+    /**
+     * A click handler to add a tag to a content spec
+     *
+     * @author Matthew Casperson
+     */
+    private static class AddTagClickHandler implements ClickHandler {
+
+        private final ReturnCurrentContentSpec returnCurrentContentSpec;
+        private final ContentSpecTagsPresenter.Display tagDisplay;
+        private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final BindRemoveButtons bindRemoveButtons;
+
+        /**
+         * @param returnCurrentContentSpec A callback used to get the topic that the click handler is modifying
+         * @param tagDisplay         The display that the callback is modifying
+         */
+        public AddTagClickHandler(
+                @NotNull final ReturnCurrentContentSpec returnCurrentContentSpec,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final BindRemoveButtons bindRemoveButtons,
+                @NotNull final ContentSpecTagsPresenter.Display tagDisplay) {
+            this.returnCurrentContentSpec = returnCurrentContentSpec;
+            this.tagDisplay = tagDisplay;
+            this.returnReadOnlyMode = returnReadOnlyMode;
+            this.bindRemoveButtons = bindRemoveButtons;
+        }
+
+        @Override
+        public void onClick(@NotNull final ClickEvent event) {
+
+            final RESTTagV1 selectedTag = tagDisplay.getMyTags().getValue().getTag().getItem();
+
+            /* Need to deal with re-adding removed tags */
+            @Nullable RESTTagCollectionItemV1 deletedTag = null;
+            for (@NotNull final RESTTagCollectionItemV1 tag : returnCurrentContentSpec.getContentSpec().getTags().getItems()) {
+                if (tag.getItem().getId().equals(selectedTag.getId())) {
+                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
+                        deletedTag = tag;
+                        break;
+                    } else {
+                        /* Don't add tags twice */
+                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
+                        return;
+                    }
+                }
+            }
+
+            /*
+             * If we get this far we are adding a tag to the topic. However, some categories are mutually exclusive, so we need
+             * to remove any conflicting tags.
+             */
+
+            /* Find the mutually exclusive categories that the new tag belongs to */
+            final Collection<RESTCategoryInTagCollectionItemV1> mutuallyExclusiveCategories = Collections2.filter(
+                    selectedTag.getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                @Override
+                public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 arg0) {
+                    if (arg0 == null || arg0.getItem() == null) {
+                        return false;
+                    }
+                    return arg0.getItem().getMutuallyExclusive();
+                }
+            });
+
+            /* Find existing tags that belong to any of the mutually exclusive categories */
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(returnCurrentContentSpec.getContentSpec().getTags().getItems(),
+                    new Predicate<RESTTagCollectionItemV1>() {
+
+                        @Override
+                        public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
+
+                            /* there is no match if the tag has already been removed */
+                            if (existingTag == null || existingTag.getItem() == null || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
+                                return false;
+                            }
+
+                            /* loop over the categories that the tag belongs to */
+                            return Iterables.any(existingTag.getItem().getCategories().getItems(),
+                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                        @Override
+                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
+                                            if (existingTagCategory == null || existingTagCategory.getItem() == null) {
+                                                return false;
+                                            }
+
+                                            /*
+                                             * match any categories that the tag belongs to with any of the mutually exclusive
+                                             * categories
+                                             */
+                                            return Iterables.any(mutuallyExclusiveCategories,
+                                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                                        @Override
+                                                        public boolean apply(
+                                                                final @Nullable RESTCategoryInTagCollectionItemV1
+                                                                        mutuallyExclusiveCategory) {
+                                                            return mutuallyExclusiveCategory.getItem().getId().equals(
+                                                                    existingTagCategory.getItem().getId());
+                                                        }
+                                                    });
+
+                                        }
+                                    });
+                        }
+                    });
+
+            if (!conflictingTags.isEmpty()) {
+                @NotNull final StringBuilder tags = new StringBuilder("\n");
+                for (@NotNull final RESTTagCollectionItemV1 tag : conflictingTags) {
+                    tags.append("\n* " + tag.getItem().getName());
+                }
+
+                /* make sure the user is happy to remove the conflicting tags */
+                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString())) {
+                    return;
+                }
+
+                for (@NotNull final RESTTagCollectionItemV1 tag : conflictingTags) {
+                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                }
+            }
+
+            if (deletedTag == null) {
+                /* Get the selected tag, and clone it */
+                final RESTTagV1 selectedTagClone = selectedTag.clone(true);
+                /* Add the tag to the topic */
+                returnCurrentContentSpec.getContentSpec().getTags().addNewItem(selectedTagClone);
+            } else {
+                deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+            }
+
+            /* Redisplay the view */
+            tagDisplay.display(returnCurrentContentSpec.getContentSpec(), returnReadOnlyMode.getReadOnlyMode());
+            bindRemoveButtons.bindRemoveButtons();
+        }
+    }
+
+    /**
+     * A click handler to remove a tag from a topic
+     *
+     * @author Matthew Casperson
+     */
+    private static class DeleteTagClickHandler implements ClickHandler {
+        private final RESTTagCollectionItemV1 tag;
+        private final ReturnCurrentContentSpec returnCurrentContentSpec;
+        private final ContentSpecTagsPresenter.Display tagDisplay;
+        private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final BindRemoveButtons bindRemoveButtons;
+
+
+        /**
+         * @param returnCurrentContentSpec A callback used to get the topic that the click handler is modifying
+         * @param tagDisplay         The display that the callback is modifying
+         */
+        public DeleteTagClickHandler(
+                @NotNull final RESTTagCollectionItemV1 tag,
+                @NotNull final ReturnCurrentContentSpec returnCurrentContentSpec,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final BindRemoveButtons bindRemoveButtons,
+                @NotNull final ContentSpecTagsPresenter.Display tagDisplay) {
+            this.returnCurrentContentSpec = returnCurrentContentSpec;
+            this.tagDisplay = tagDisplay;
+            this.tag = tag;
+            this.returnReadOnlyMode = returnReadOnlyMode;
+            this.bindRemoveButtons = bindRemoveButtons;
+        }
+
+        @Override
+        public void onClick(@NotNull final ClickEvent event) {
+
+            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
+                /* Tag was added and then removed, so we just delete the tag */
+                returnCurrentContentSpec.getContentSpec().getTags().getItems().remove(tag);
+            } else {
+                /* Otherwise we set the tag as removed */
+                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+            }
+
+            tagDisplay.display(returnCurrentContentSpec.getContentSpec(), returnReadOnlyMode.getReadOnlyMode());
+            bindRemoveButtons.bindRemoveButtons();
+        }
+    }
+
     /**
      * The view that holds the other views
      *
@@ -1131,6 +1471,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         PushButton getDetails();
 
         PushButton getSave();
+
+        PushButton getPermissiveSave();
 
         PushButton getHistory();
 

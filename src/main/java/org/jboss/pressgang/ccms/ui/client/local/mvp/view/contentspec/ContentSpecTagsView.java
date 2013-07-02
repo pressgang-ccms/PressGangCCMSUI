@@ -42,7 +42,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     /**
      * The GWT Editor Driver
      */
-    private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
+    private final ContentSpecTagsPresenterDriver driver = GWT.create(ContentSpecTagsPresenterDriver.class);
     private TopicTagViewProjectsEditor editor;
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
@@ -51,7 +51,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     private final ValueListBox<SearchUICategory> categories;
     private final ValueListBox<SearchUITag> myTags;
 
-    public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
+    public interface ContentSpecTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
 
 
@@ -93,7 +93,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.ContentSpecTags());
 
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicTagsView()");
+            LOGGER.log(Level.INFO, "ENTER ContentSpecTagsView()");
 
             /* Add the layout to the panel */
             layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
