@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.Blob
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
@@ -48,8 +49,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-//import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 
 /**
  * This class watches the event bus for page change requests, and instructs the appropriate presenters
@@ -107,9 +106,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             this.eventBus.addHandler(PropertyTagFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(PropertyCategoryFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(BulkTagSearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN));
-
-            // TODO: Fix this for 1.1
-            //this.eventBus.addHandler(ContentSpecSearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ContentSpecSearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
@@ -224,12 +221,9 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(PropertyCategoryFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(TopicRenderedPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TopicRenderedPresenter.class);
-                }
-
-                // TODO: Fix this for 1.1
-                /*else if (token.startsWith(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                }  else if (token.startsWith(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ContentSpecFilteredResultsAndDetailsPresenter.class);
-                }*/
+                }
 
                 if (presenter.isPresent()) {
                     if (lastPresenter != null) {

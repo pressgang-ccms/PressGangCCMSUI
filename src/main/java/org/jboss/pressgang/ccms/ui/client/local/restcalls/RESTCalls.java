@@ -6,8 +6,10 @@ import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.collections.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -22,9 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-//import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
-//import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 
 /**
  * This class provides a standard way to call the REST server and respond to the various success and failure paths.
@@ -91,29 +90,28 @@ public final class RESTCalls {
      */
     private static final String IMAGE_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}";
 
-    // TODO: Fix this for 1.1
     /**
      * The required expansion details for the content specs.
      */
-    //private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}";
+    private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}";
 
     /**
      * Content specifications need the extended properties expanded
      */
-    /*private static final String CONTENT_SPEC_ITEM_EXPANSION =
+    private static final String CONTENT_SPEC_ITEM_EXPANSION =
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}," +
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}," +
-                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";*/
+                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
      */
-    /*private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
+    private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
             "{\"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}" +
-            "]}";  */
+            "]}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
@@ -797,11 +795,6 @@ public final class RESTCalls {
         });
     }
 
-    /* **********************************
-        Content Specs
-    ********************************** */
-    // TODO: Fix this for 1.1
-    /*
     public static void getContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -904,7 +897,6 @@ public final class RESTCalls {
             }
         });
     }
-    */
 
     public static void getCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
