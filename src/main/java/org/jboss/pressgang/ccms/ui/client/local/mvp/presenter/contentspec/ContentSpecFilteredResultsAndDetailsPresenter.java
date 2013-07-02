@@ -533,14 +533,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     }
                                 }
 
-                                        /* Update the displayed topic */
+                                // Update the displayed content spec
                                 retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
-                                        /* Update the selected topic */
+                                // Update the selected content spec
                                 retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
 
-                                        /*
-                                            Show the invalid text if required.
-                                         */
+                                // Show the invalid text if required.
                                 ComponentContentSpecV1.fixDisplayedText(
                                         filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                                 ComponentContentSpecV1.fixDisplayedText(
@@ -552,7 +550,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                 updateDisplayWithNewEntityData(false);
 
                                 if (overwroteChanges) {
-                                            /* Take the user to the revisions view so they can review any overwritten changes */
+                                    // Take the user to the revisions view so they can review any overwritten changes
                                     switchView(contentSpecRevisionsComponent.getDisplay());
                                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else {
@@ -802,12 +800,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                                         filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
                                                                 .getRevision();
 
+                                                // Fix the displayed text up
+                                                ComponentContentSpecV1.fixDisplayedText(retValue);
+
+                                                // Display the diffs
                                                 contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
                                                         lhsReadonly, retValue.getText());
 
-                                                /*
-                                                    We can't save while merging.
-                                                 */
+                                                // We can't save while merging.
                                                 getDisplay().getSave().setEnabled(false);
                                                 getDisplay().getPermissiveSave().setEnabled(false);
                                             }

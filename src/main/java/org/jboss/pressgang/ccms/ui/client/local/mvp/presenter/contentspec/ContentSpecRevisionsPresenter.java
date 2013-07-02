@@ -152,7 +152,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                                     "Returned entities should have a valid properties collection with a valid size.");
                         }
 
-                                /* Fix the text */
+                        // Fix the text
                         for (final RESTTextContentSpecCollectionItemV1 item : retValue.getRevisions().getItems()) {
                             ComponentContentSpecV1.fixDisplayedText(item.getItem());
                         }

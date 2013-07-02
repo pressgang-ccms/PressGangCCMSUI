@@ -307,8 +307,8 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     }
 
     @Override
-    public void setRevisionContentSpec(@Nullable final RESTTextContentSpecV1 revisionTopic) {
-        this.revisionContentSpec = revisionTopic;
+    public void setRevisionContentSpec(@Nullable final RESTTextContentSpecV1 revisionContentSpec) {
+        this.revisionContentSpec = revisionContentSpec;
     }
 
     @NotNull
