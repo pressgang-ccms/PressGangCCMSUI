@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -135,6 +134,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * The category query string extracted from the history token
      */
     private String queryString;
+
+    @NotNull
+    protected Display getDisplay() {
+        return display;
+    }
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
@@ -316,6 +320,31 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
+        contentSpecRevisionsComponent.getDisplay().getDone().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (getDisplayedContentSpec().getRevision() == filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision
+                        ()) {
+                    checkState(contentSpecRevisionsComponent.getDisplay().getMergely() != null, "mergely should not be null");
+                    final String lhs = contentSpecRevisionsComponent.getDisplay().getMergely().getLhs();
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(lhs);
+                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
+                }
+                contentSpecRevisionsComponent.getDisplay().displayRevisions();
+                getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
+            }
+        });
+
+        contentSpecRevisionsComponent.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                contentSpecRevisionsComponent.getDisplay().displayRevisions();
+                getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
+            }
+        });
+
         display.getContentSpecTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -346,7 +375,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                     final Integer id = displayedEntity.getId();
 
-                     // Copy out the text
+                    // Copy out the text
                     flushChanges();
 
                     // create the object to be saved
@@ -658,7 +687,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         bindTagButtons();
 
-        bindViewTopicRevisionButton();
+        bindViewContentSpecRevisionButton();
 
         /* When the topics have been loaded, display the first one */
         filteredResultsPresenter.addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTextContentSpecCollectionV1>() {
@@ -746,9 +775,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     /**
      * Bind behaviour to the view buttons in the topic revisions cell table
      */
-    private void bindViewTopicRevisionButton() {
+    private void bindViewContentSpecRevisionButton() {
         try {
-            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton()");
 
             contentSpecRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(
                     new FieldUpdater<RESTTextContentSpecCollectionItemV1, String>() {
@@ -764,30 +793,28 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                                 final ContentSpecRevisionsPresenter.Display display) {
                                             checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
-                                            if (getDisplayedContentSpec() != null) {
-                                                final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " +
-                                                        revisionContentSpec.getItem().getId() + " " + PressGangCCMSUI.INSTANCE
-                                                        .ContentSpecRevision() + ": " + revisionContentSpec.getItem().getRevision()
-                                                        .toString() + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": " +
-                                                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                                                revisionContentSpec.getItem().getLastModified());
+                                            /*
+                                                It is possible to switch away from the view while this request was loading. If we
+                                                have done so, don't show the merge view.
+                                             */
+                                            if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
+                                                final boolean lhsReadonly = getDisplayedContentSpec().getRevision() !=
+                                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                                                .getRevision();
 
-                                                final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " +
-                                                        getDisplayedContentSpec().getId() + " " + PressGangCCMSUI.INSTANCE
-                                                        .ContentSpecRevision() + ": " + getDisplayedContentSpec().getRevision().toString
-                                                        () + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": " + DateTimeFormat
-                                                        .getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                                        getDisplayedContentSpec().getLastModified());
+                                                contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
+                                                        lhsReadonly, retValue.getText());
 
-                                                ComponentContentSpecV1.fixDisplayedText(retValue);
-
-                                                GWTUtilities.displayDiff(retValue.getText(), retValueLabel,
-                                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getText(),
-                                                        sourceTopicLabel, false);
+                                                /*
+                                                    We can't save while merging.
+                                                 */
+                                                getDisplay().getSave().setEnabled(false);
+                                                getDisplay().getPermissiveSave().setEnabled(false);
                                             }
+
+                                            contentSpecRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                         }
-                                    });
-                            RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(),
+                                    }); RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(),
                                     revisionContentSpec.getItem().getRevision());
                         }
                     });
@@ -800,7 +827,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                             try {
                                 LOGGER.log(Level.INFO,
-                                        "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater"
+                                        "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() FieldUpdater"
                                                 + ".update()");
 
                                 checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
@@ -817,13 +844,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         contentSpecRevisionsComponent.getProviderData().getStartRow());
                             } finally {
                                 LOGGER.log(Level.INFO,
-                                        "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater" +
+                                        "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() FieldUpdater" +
                                                 ".update()");
                             }
                         }
                     });
         } finally {
-            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton()");
         }
     }
 
@@ -1102,8 +1129,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 If there are any modified tags in newContentSpec, we have unsaved changes.
                 If getTags() is null, the tags have not been loaded yet (and can't have been modified).
             */
-            if (displayedEntity.getTags() != null &&
-                    !displayedEntity.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+            if (displayedEntity.getTags() != null && !displayedEntity.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
                 return true;
             }
 
@@ -1141,18 +1167,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     private void bindTagButtons() {
         /* Bind the add button in the tags view */
-        bindNewTagListBoxes(new AddTagClickHandler(
-                new ReturnCurrentContentSpec() {
-                    @NotNull
-                    @Override
-                    public RESTTextContentSpecV1 getContentSpec() {
-                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
-                                "There should be a displayed collection item.");
-                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
-                        return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-                    }
-                }, new ReturnReadOnlyMode() {
+        bindNewTagListBoxes(new AddTagClickHandler(new ReturnCurrentContentSpec() {
+            @NotNull
+            @Override
+            public RESTTextContentSpecV1 getContentSpec() {
+                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                        "There should be a displayed collection item.");
+                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                        "The displayed collection item to reference a valid entity.");
+                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null,
+                        "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+            }
+        }, new ReturnReadOnlyMode() {
             @Override
             public boolean getReadOnlyMode() {
                 return isReadOnlyMode();
@@ -1162,10 +1189,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void bindRemoveButtons() {
                 bindTagEditingButtons();
             }
-        },
-                contentSpecTagsPresenter.getDisplay()
-        ), contentSpecTagsPresenter.getDisplay()
-        );
+        }, contentSpecTagsPresenter.getDisplay()
+        ), contentSpecTagsPresenter.getDisplay());
     }
 
     /**
@@ -1185,46 +1210,53 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 return;
             }
 
-            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : contentSpecTagsPresenter.getDisplay()
-                    .getEditor().projects.getEditors()) {
+            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : contentSpecTagsPresenter.getDisplay().getEditor()
+                    .projects.getEditors()) {
 
-                checkState(topicTagViewProjectEditor.categories != null && topicTagViewProjectEditor.categories.getEditors() != null, "The project's categories editor collection should be valid");
+                checkState(topicTagViewProjectEditor.categories != null && topicTagViewProjectEditor.categories.getEditors() != null,
+                        "The project's categories editor collection should be valid");
 
-                for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
+                for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
+                        .getEditors()) {
 
-                    checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null, "The category's tag editor collection should be valid");
+                    checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null,
+                            "The category's tag editor collection should be valid");
 
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
 
                         checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
-                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
+                        checkState(topicTagViewTagEditor.getTag().getTag() != null,
+                                "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
 
-                        topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(
-                                topicTagViewTagEditor.getTag().getTag(),
-                                new ReturnCurrentContentSpec() {
+                        topicTagViewTagEditor.getDelete().addClickHandler(
+                                new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag(), new ReturnCurrentContentSpec() {
                                     @NotNull
                                     @Override
                                     public RESTTextContentSpecV1 getContentSpec() {
 
-                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+                                                "There should be a displayed collection item.");
+                                        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                                                "The displayed collection item to reference a valid entity.");
+                                        checkState(
+                                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags() != null,
+                                                "The displayed collection item to reference a valid entity and have a valid tags " +
+                                                        "collection.");
 
                                         return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                                     }
                                 }, new ReturnReadOnlyMode() {
-                            @Override
-                            public boolean getReadOnlyMode() {
-                                return isReadOnlyMode();
-                            }
-                        }, new BindRemoveButtons() {
-                            @Override
-                            public void bindRemoveButtons() {
-                                bindTagEditingButtons();
-                            }
-                        },
-                                contentSpecTagsPresenter.getDisplay()
-                        ));
+                                    @Override
+                                    public boolean getReadOnlyMode() {
+                                        return isReadOnlyMode();
+                                    }
+                                }, new BindRemoveButtons() {
+                                    @Override
+                                    public void bindRemoveButtons() {
+                                        bindTagEditingButtons();
+                                    }
+                                }, contentSpecTagsPresenter.getDisplay()
+                                ));
                     }
                 }
             }
@@ -1240,7 +1272,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * @param clickHandler The Add button click handler
      * @param tagsDisplay  The tags view
      */
-    static private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler, @NotNull final ContentSpecTagsPresenter.Display tagsDisplay) {
+    static private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler,
+            @NotNull final ContentSpecTagsPresenter.Display tagsDisplay) {
         tagsDisplay.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<SearchUIProject> event) {
@@ -1285,12 +1318,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         /**
          * @param returnCurrentContentSpec A callback used to get the topic that the click handler is modifying
-         * @param tagDisplay         The display that the callback is modifying
+         * @param tagDisplay               The display that the callback is modifying
          */
-        public AddTagClickHandler(
-                @NotNull final ReturnCurrentContentSpec returnCurrentContentSpec,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
-                @NotNull final BindRemoveButtons bindRemoveButtons,
+        public AddTagClickHandler(@NotNull final ReturnCurrentContentSpec returnCurrentContentSpec,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode, @NotNull final BindRemoveButtons bindRemoveButtons,
                 @NotNull final ContentSpecTagsPresenter.Display tagDisplay) {
             this.returnCurrentContentSpec = returnCurrentContentSpec;
             this.tagDisplay = tagDisplay;
@@ -1337,47 +1368,45 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             });
 
             /* Find existing tags that belong to any of the mutually exclusive categories */
-            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(returnCurrentContentSpec.getContentSpec().getTags().getItems(),
-                    new Predicate<RESTTagCollectionItemV1>() {
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(
+                    returnCurrentContentSpec.getContentSpec().getTags().getItems(), new Predicate<RESTTagCollectionItemV1>() {
 
-                        @Override
-                        public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
+                @Override
+                public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
 
                             /* there is no match if the tag has already been removed */
-                            if (existingTag == null || existingTag.getItem() == null || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
-                                return false;
-                            }
+                    if (existingTag == null || existingTag.getItem() == null || RESTBaseCollectionItemV1.REMOVE_STATE.equals(
+                            existingTag.getState())) {
+                        return false;
+                    }
 
                             /* loop over the categories that the tag belongs to */
-                            return Iterables.any(existingTag.getItem().getCategories().getItems(),
-                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+                    return Iterables.any(existingTag.getItem().getCategories().getItems(),
+                            new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
-                                        @Override
-                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
-                                            if (existingTagCategory == null || existingTagCategory.getItem() == null) {
-                                                return false;
-                                            }
+                                @Override
+                                public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
+                                    if (existingTagCategory == null || existingTagCategory.getItem() == null) {
+                                        return false;
+                                    }
 
                                             /*
                                              * match any categories that the tag belongs to with any of the mutually exclusive
                                              * categories
                                              */
-                                            return Iterables.any(mutuallyExclusiveCategories,
-                                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+                                    return Iterables.any(mutuallyExclusiveCategories, new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
-                                                        @Override
-                                                        public boolean apply(
-                                                                final @Nullable RESTCategoryInTagCollectionItemV1
-                                                                        mutuallyExclusiveCategory) {
-                                                            return mutuallyExclusiveCategory.getItem().getId().equals(
-                                                                    existingTagCategory.getItem().getId());
-                                                        }
-                                                    });
-
+                                        @Override
+                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
+                                            return mutuallyExclusiveCategory.getItem().getId().equals(
+                                                    existingTagCategory.getItem().getId());
                                         }
                                     });
-                        }
-                    });
+
+                                }
+                            });
+                }
+            });
 
             if (!conflictingTags.isEmpty()) {
                 @NotNull final StringBuilder tags = new StringBuilder("\n");
@@ -1425,14 +1454,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         /**
          * @param returnCurrentContentSpec A callback used to get the topic that the click handler is modifying
-         * @param tagDisplay         The display that the callback is modifying
+         * @param tagDisplay               The display that the callback is modifying
          */
-        public DeleteTagClickHandler(
-                @NotNull final RESTTagCollectionItemV1 tag,
-                @NotNull final ReturnCurrentContentSpec returnCurrentContentSpec,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
-                @NotNull final BindRemoveButtons bindRemoveButtons,
-                @NotNull final ContentSpecTagsPresenter.Display tagDisplay) {
+        public DeleteTagClickHandler(@NotNull final RESTTagCollectionItemV1 tag,
+                @NotNull final ReturnCurrentContentSpec returnCurrentContentSpec, @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final BindRemoveButtons bindRemoveButtons, @NotNull final ContentSpecTagsPresenter.Display tagDisplay) {
             this.returnCurrentContentSpec = returnCurrentContentSpec;
             this.tagDisplay = tagDisplay;
             this.tag = tag;

@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -10,6 +13,10 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -22,6 +29,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +39,10 @@ import org.jetbrains.annotations.Nullable;
  * @author Matthew Casperson
  */
 public class ContentSpecRevisionsView extends BaseTemplateView implements ContentSpecRevisionsPresenter.Display {
+    /**
+     * The height of the button panel in the merge view
+     */
+    private static final int BUTTON_PANEL_HEIGHT = 44;
 
     /**
      * A button used when rendering the view button column.
@@ -40,6 +52,34 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
      * A button used when rendering the diff button column.
      */
     private final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
+    /**
+     * Holds the mergely elements and the ok/cancel buttons
+     */
+    private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
+    /**
+     * The parent for the mergely elements. Needs to be a layout panel so resize events are propogated.
+     */
+    private final SimpleLayoutPanel diffParent = new SimpleLayoutPanel();
+    /**
+     * The done button.
+     */
+    private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+    /**
+     * The cancel button.
+     */
+    private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
+    /**
+     * The current instance of the Mergely ui element.
+     */
+    private Mergely mergely;
+    /**
+     * true if we are displaying the revisions, and false if we are displaying the mergely ui element.
+     */
+    private boolean isDisplayingRevisions = true;
+    /**
+     * true if the diff and view buttons in the revisions cell table are enabled, and false otherwise.
+     */
+    private boolean buttonsEnabled = true;
     /**
      * The panel that holds the table and pager.
      */
@@ -184,7 +224,22 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
                 }
 
                 if (revisionContentSpec == null || (object != null && object.getItem() != null && !revisionContentSpec.getRevision().equals(object.getItem().getRevision()))) {
-                    return PressGangCCMSUI.INSTANCE.Diff();
+                    final String viewingText = revisionContentSpec == null ? mainContentSpec.getText() : revisionContentSpec.getText();
+                    @NotNull final String fixedViewingXML = viewingText == null ? "" : viewingText.trim();
+
+                    checkState(object.getItem() != null, "The collection item should reference a valid entity.");
+
+                    if (object.getItem().getText() == null || object.getItem().getText().trim().isEmpty()) {
+                        /* Diffs don't work if there is no text to compare to */
+                        diffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.NoXML();
+                    } else if (object.getItem().getText().trim().equals(fixedViewingXML)) {
+                        /* The text is the same */
+                        diffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.SameXML();
+                    } else {
+                        return PressGangCCMSUI.INSTANCE.Diff();
+                    }
                 }
             }
 
@@ -211,14 +266,14 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     public ContentSpecRevisionsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Revisions());
 
+        results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
+        results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
         results.addColumn(minorRevisionColumn, PressGangCCMSUI.INSTANCE.MinorChange());
         results.addColumn(majorRevisionColumn, PressGangCCMSUI.INSTANCE.MajorChange());
         results.addColumn(revisionUser, PressGangCCMSUI.INSTANCE.Username());
         results.addColumn(revisionMessage, PressGangCCMSUI.INSTANCE.RevisionMessage());
-        results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
-        results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 
         searchResultsPanel.addStyleName(CSSConstants.TopicView.SEARCH_RESULTS_PANEL);
 
@@ -226,6 +281,15 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
         searchResultsPanel.add(pager);
 
         pager.setDisplay(results);
+
+        final HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
+        buttonPanel.add(done);
+        buttonPanel.add(cancel);
+
+        diffPanel.addSouth(buttonPanel, BUTTON_PANEL_HEIGHT);
+        diffPanel.add(diffParent);
+        diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
 
         this.getPanel().add(searchResultsPanel);
     }
@@ -280,5 +344,60 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
         this.mainContentSpec = topic;
     }
 
+    @Override
+    public void displayRevisions() {
+        this.getPanel().setWidget(searchResultsPanel);
+        isDisplayingRevisions = true;
+    }
 
+    /**
+     * Display a mergely diff viewer.
+     * <p/>
+     * For mergely to display properly, it has to be attached when the parent element is attached to the DOM. If you
+     * attach megely when the parent is detached, it will not resize properly.
+     *
+     * @param lhs         The text for the left hand side
+     * @param lhsReadOnly true if the left hand side is read only, and false otherwise
+     * @param rhs         The text for the right hand side
+     */
+    @Override
+    public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly, @NotNull final String rhs) {
+        diffParent.setWidget(null);
+        mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true, Constants.PLAIN_TEXT_MIME_TYPE, false);
+        this.getPanel().setWidget(diffPanel);
+        diffParent.setWidget(mergely);
+        isDisplayingRevisions = false;
+    }
+
+    @Override
+    public PushButton getDone() {
+        return done;
+    }
+
+    @Override
+    @Nullable
+    public Mergely getMergely() {
+        return mergely;
+    }
+
+    @Override
+    public PushButton getCancel() {
+        return cancel;
+    }
+
+    @Override
+    public boolean isDisplayingRevisions() {
+        return isDisplayingRevisions;
+    }
+
+    @Override
+    public boolean isButtonsEnabled() {
+        return buttonsEnabled;
+    }
+
+    @Override
+    public void setButtonsEnabled(boolean buttonsEnabled) {
+        this.buttonsEnabled = buttonsEnabled;
+        results.redraw();
+    }
 }

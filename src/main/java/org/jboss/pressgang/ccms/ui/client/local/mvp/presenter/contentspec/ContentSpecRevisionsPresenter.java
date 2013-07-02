@@ -10,10 +10,10 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,22 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
          * @param revisionTopic The currently selected revision content spec.
          */
         void setRevisionContentSpec(@Nullable RESTTextContentSpecV1 revisionTopic);
+
+        PushButton getDone();
+
+        PushButton getCancel();
+
+        Mergely getMergely();
+
+        void displayRevisions();
+
+        void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
+
+        boolean isDisplayingRevisions();
+
+        boolean isButtonsEnabled();
+
+        void setButtonsEnabled(boolean buttonsEnabled);
     }
 
     /**
