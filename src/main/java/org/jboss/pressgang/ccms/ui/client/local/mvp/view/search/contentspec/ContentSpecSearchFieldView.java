@@ -1,18 +1,18 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search.contentspec;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec.ContentSpecSearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.contentspec.ContentSpecSearchFieldUIEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.ContentSpecSearchUIFields;
 import org.jetbrains.annotations.NotNull;
 
-public class SearchFieldView extends BaseTemplateView implements SearchFieldPresenter.Display {
+public class ContentSpecSearchFieldView extends BaseTemplateView implements ContentSpecSearchFieldPresenter.Display {
 
     /**
      * The GWT Editor Driver
@@ -21,11 +21,10 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
     /**
      * The UI hierarchy
      */
-    private final SearchUIFields searchUIFields = new SearchUIFields();
+    private final ContentSpecSearchUIFields contentSpecSearchUIFields = new ContentSpecSearchUIFields();
 
-    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
     private final Label fields = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
@@ -36,23 +35,18 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
 
     @NotNull
     @Override
-    public SearchUIFields getSearchUIFields() {
-        return searchUIFields;
+    public ContentSpecSearchUIFields getFields() {
+        return contentSpecSearchUIFields;
     }
 
     @Override
-    public PushButton getSearchTopics() {
-        return searchTopics;
+    public PushButton getSearchButton() {
+        return searchContentSpecs;
     }
 
     @Override
-    public PushButton getTagsSearch() {
+    public PushButton getTagsButton() {
         return tagsSearch;
-    }
-
-    @Override
-    public PushButton getFilters() {
-        return filters;
     }
 
     @Override
@@ -60,26 +54,25 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         return locales;
     }
 
-    public SearchFieldView() {
+    public ContentSpecSearchFieldView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
 
         /* Build the action bar icons */
-        addActionButton(searchTopics);
+        addActionButton(searchContentSpecs);
         addActionButton(tagsSearch);
         addActionButton(fields);
-        //addActionButton(locales);
-        addActionButton(filters);
+        addActionButton(locales);
     }
 
     @Override
     public void display(final RESTFilterV1 filter, final boolean readOnly) {
-        searchUIFields.initialize(filter);
+        contentSpecSearchUIFields.initialize(filter);
         /* SearchUIProjectsEditor is a grid */
-        @NotNull final SearchFieldEditor editor = new SearchFieldEditor();
+        @NotNull final ContentSpecSearchFieldUIEditor editor = new ContentSpecSearchFieldUIEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
-        driver.edit(searchUIFields);
+        driver.edit(contentSpecSearchUIFields);
         /* Add the projects */
         this.getPanel().setWidget(editor);
     }

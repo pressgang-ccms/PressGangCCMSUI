@@ -148,7 +148,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton home;
     private final PushButton docbuilder;
     private final PushButton createTopic;
-    private final PushButton search;
+    private final PushButton searchTopics;
+    private final PushButton searchContentSpecs;
     private final PushButton searchTranslations;
     private final PushButton images;
     private final PushButton tags;
@@ -508,8 +509,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public PushButton getSearch() {
-        return search;
+    public PushButton getSearchTopics() {
+        return searchTopics;
+    }
+
+    @NotNull
+    @Override
+    public PushButton getSearchContentSpecs() {
+        return searchContentSpecs;
     }
 
     /**
@@ -635,8 +642,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         createTopic = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
         addShortcutButton(createTopic);
 
-        search = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Search());
-        addShortcutButton(search);
+        searchTopics = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchTopics());
+        addShortcutButton(searchTopics);
+
+        searchContentSpecs = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
+        addShortcutButton(searchContentSpecs);
 
         searchTranslations = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
         addShortcutButton(searchTranslations);

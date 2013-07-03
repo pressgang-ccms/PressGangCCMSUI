@@ -671,12 +671,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         contentSpecTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
-        /**
-         * For now we defer to the tags presenter to get the tags. When bulk importing is implemented, this collection of tags
-         * will be loaded in this class and then supplied to the display. This is because both the bul import and the
-         * tags views need the same collection of tags, so it makes sense to load the collection once and share it with
-         * both presenters.
-         */
         contentSpecTagsPresenter.getTags();
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),

@@ -144,10 +144,13 @@ public interface PressGangCCMSUI extends Constants {
     String SearchContentSpecs();
 
     @NotNull
-    String DownloadZip();
+    String DownloadTopicZip();
 
     @NotNull
-    String DownloadCSV();
+    String DownloadContentSpecZip();
+
+    @NotNull
+    String DownloadTopicCSV();
 
     @NotNull
     String ApplyBulkTags();
@@ -922,4 +925,25 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ContentSpecTags();
+
+    @NotNull
+    String ContentSpecsEditedInLastXDays();
+
+    @NotNull
+    String ContentSpecsNotEditedInLastXDays();
+
+    @NotNull
+    String ContentSpecEditedAfter();
+
+    @NotNull
+    String ContentSpecEditedBefore();
+
+    @NotNull
+    String ContentSpecIds();
+
+    @NotNull
+    String ContentSpecProduct();
+
+    @NotNull
+    String ContentSpecVersion();
 }

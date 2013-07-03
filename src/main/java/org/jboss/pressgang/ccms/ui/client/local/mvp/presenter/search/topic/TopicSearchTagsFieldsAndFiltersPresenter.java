@@ -1,4 +1,17 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,20 +21,37 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
-import org.jboss.pressgang.ccms.rest.v1.collections.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
 import org.jboss.pressgang.ccms.rest.v1.components.GWTComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterDialogInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchLocalePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -33,25 +63,12 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
  * presenters.
  */
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
     /**
      * The history token used to access this page
      */
@@ -67,7 +84,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     /**
      * A Logger
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TopicSearchTagsFieldsAndFiltersPresenter.class.getName());
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -77,7 +94,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Inject
     private SearchPresenter tagsComponent;
     @Inject
-    private SearchFieldPresenter fieldsComponent;
+    private TopicSearchFieldPresenter fieldsComponent;
     @Inject
     private SearchLocalePresenter localePresenter;
     /**
@@ -192,7 +209,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 if (doingTranslatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 } else {
-                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }
         };
@@ -207,7 +224,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             @Override
             public void onClick(final ClickEvent event) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
+                    LOGGER.log(Level.INFO, "ENTER TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
 
                     /* Setting the ID to null indicates that this is a new filter */
                     filter.setId(null);
@@ -218,7 +235,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                     saveFilterDialog.getDialogBox().show();
                 } finally {
-                    LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
+                    LOGGER.log(Level.INFO, "EXIT TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
                 }
             }
         };
@@ -282,7 +299,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 saveFilterDialog.getDialogBox().hide();
 
                 tagsComponent.getDisplay().getSearchUIProjects().populateFilter(filter);
-                fieldsComponent.getDisplay().getSearchUIFields().populateFilter(filter);
+                fieldsComponent.getDisplay().getFields().populateFilter(filter);
 
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
@@ -291,7 +308,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                     @Override
                     public void doSuccessAction(@NotNull final RESTFilterV1 retValue, @NotNull final Display display) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "ENTER TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
 
                             // Create the topic wrapper
                             @NotNull final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
@@ -309,7 +326,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
 
                         } finally {
-                            LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "EXIT TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
                         }
                     }
                 }, new BaseRestCallback.FailureAction<Display>() {
@@ -390,32 +407,13 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 localePresenter.getDisplay().getDriver().flush();
 
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
 
                 if (doingTranslatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 } else {
-                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
-                }
-            }
-        };
-
-        final ClickHandler searchContentSpecsHandler = new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
-                localePresenter.getDisplay().getDriver().flush();
-
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
-
-                if (doingTranslatedSearch) {
-                    //eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
-                } else {
-                    eventBus.fireEvent(new ContentSpecSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }
         };
@@ -428,7 +426,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 localePresenter.getDisplay().getDriver().flush();
 
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
 
                 /* Get a list of the tags to be added and removed */
@@ -462,7 +460,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 localePresenter.getDisplay().getDriver().flush();
 
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
                 Window.open(Constants.REST_SERVER + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
@@ -476,17 +474,16 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 localePresenter.getDisplay().getDriver().flush();
 
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
                 Window.open(Constants.REST_SERVER + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
 
-        display.getSearchTopics().addClickHandler(searchHandler);
-        display.getSearchContentSpecs().addClickHandler(searchContentSpecsHandler);
+        display.getSearchButton().addClickHandler(searchHandler);
         display.getDownloadZip().addClickHandler(downloadZipHandler);
         display.getDownloadCSV().addClickHandler(downloadCsvHandler);
-        display.getTagsSearch().addClickHandler(tagsHandler);
+        display.getTagsButton().addClickHandler(tagsHandler);
         display.getFields().addClickHandler(fieldsHandler);
         display.getFilters().addClickHandler(filtersHandler);
         display.getLocales().addClickHandler(localesHandler);
@@ -495,7 +492,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void resetTopActionButtons() {
         display.replaceTopActionButton(display.getLocalesDownLabel(), display.getLocales());
-        display.replaceTopActionButton(display.getTagsSearchDownLabel(), display.getTagsSearch());
+        display.replaceTopActionButton(display.getTagsDownLabel(), display.getTagsButton());
         display.replaceTopActionButton(display.getFieldsDownLabel(), display.getFields());
         display.replaceTopActionButton(display.getFiltersDownLabel(), display.getFilters());
         display.getTopViewSpecificLeftActionPanel().clear();
@@ -521,7 +518,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         display.getPanel().clear();
         display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
         resetTopActionButtons();
-        display.replaceTopActionButton(display.getTagsSearch(), display.getTagsSearchDownLabel());
+        display.replaceTopActionButton(display.getTagsButton(), display.getTagsDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(true);
@@ -662,9 +659,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     public interface Display extends BaseTemplateViewInterface {
-        PushButton getSearchTopics();
-
-        PushButton getSearchContentSpecs();
+        PushButton getSearchButton();
 
         PushButton getDownloadZip();
 
@@ -672,7 +667,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         PushButton getApplyBulkTags();
 
-        PushButton getTagsSearch();
+        PushButton getTagsButton();
 
         PushButton getFilters();
 
@@ -680,7 +675,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         PushButton getLocales();
 
-        Label getTagsSearchDownLabel();
+        Label getTagsDownLabel();
 
         Label getFiltersDownLabel();
 

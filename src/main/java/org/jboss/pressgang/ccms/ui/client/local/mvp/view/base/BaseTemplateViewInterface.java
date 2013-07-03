@@ -170,7 +170,13 @@ public interface BaseTemplateViewInterface {
      * @return The button that switches to the topic search view
      */
     @NotNull
-    PushButton getSearch();
+    PushButton getSearchTopics();
+
+    /**
+     * @return The button that opens the translated topics search results view
+     */
+    @NotNull
+    PushButton getSearchContentSpecs();
 
     /**
      * @return The button that switches to the topic create view

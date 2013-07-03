@@ -1,15 +1,18 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
+package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.topic;
 
-import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.base.BaseSearchFieldUIEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.TopicSearchUIFields;
 import org.jetbrains.annotations.NotNull;
 
-public final class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
+public final class TopicSearchFieldUIEditor extends BaseSearchFieldUIEditor<TopicSearchUIFields> {
 
     /**
      * The default format for the DateBoxes
@@ -42,9 +45,9 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
 
-    private SearchUIFields value;
+    private TopicSearchUIFields value;
 
-    public SearchFieldEditor() {
+    public TopicSearchFieldUIEditor() {
         @NotNull final Label topicCreatedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedAfter());
         createdAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         createdAfter.getTextBox().setReadOnly(true);
@@ -137,7 +140,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
     }
 
     @Override
-    public void setValue(@NotNull final SearchUIFields value) {
+    public void setValue(@NotNull final TopicSearchUIFields value) {
         this.value = value;
 
         createdAfter.setValue(value.getCreatedAfter());
@@ -164,7 +167,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
     }
 
     @Override
-    public SearchUIFields getValue() {
+    public TopicSearchUIFields getValue() {
 
         value.setCreatedAfter(createdAfter.getValue());
         value.setCreatedBefore(createdBefore.getValue());

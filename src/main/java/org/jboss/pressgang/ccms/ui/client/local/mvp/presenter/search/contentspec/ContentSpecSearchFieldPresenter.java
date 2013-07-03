@@ -1,4 +1,7 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -9,30 +12,26 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.contentspec.ContentSpecSearchFieldUIEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.ContentSpecSearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
 @Dependent
-public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class ContentSpecSearchFieldPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
-    public static final String HISTORY_TOKEN = "SearchFieldView";
+    public static final String HISTORY_TOKEN = "ContentSpecSearchFieldView";
 
-    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTFilterV1, SearchUIFields, SearchFieldEditor> {
-        interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
+    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTFilterV1, ContentSpecSearchUIFields,
+            ContentSpecSearchFieldUIEditor> {
+        interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<ContentSpecSearchUIFields, ContentSpecSearchFieldUIEditor> {
         }
 
-        PushButton getSearchTopics();
+        PushButton getSearchButton();
 
-        PushButton getTagsSearch();
+        PushButton getTagsButton();
 
-        SearchUIFields getSearchUIFields();
-
-        PushButton getFilters();
+        ContentSpecSearchUIFields getFields();
 
         PushButton getLocales();
     }

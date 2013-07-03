@@ -1,8 +1,8 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search.topic;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic.TopicSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * This is the view that combines all the other search views.
  */
-public class SearchTagsFieldsAndFiltersView extends
+public class TopicSearchTagsFieldsAndFiltersView extends
         BaseTemplateView implements
-        SearchTagsFieldsAndFiltersPresenter.Display {
+        TopicSearchTagsFieldsAndFiltersPresenter.Display {
 
     /**
      * The dialog that is presented when the view is unavailable.
@@ -22,9 +22,8 @@ public class SearchTagsFieldsAndFiltersView extends
     private final WaitingDialog waiting = new WaitingDialog();
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTopics());
-    private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
-    private final PushButton downloadZip = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadZip());
-    private final PushButton downloadCSV = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadCSV());
+    private final PushButton downloadZip = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadTopicZip());
+    private final PushButton downloadCSV = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadTopicCSV());
     private final PushButton applyBulkTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ApplyBulkTags());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
@@ -36,11 +35,10 @@ public class SearchTagsFieldsAndFiltersView extends
     private final Label fieldsDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
     private final Label localesDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
-    public SearchTagsFieldsAndFiltersView() {
+    public TopicSearchTagsFieldsAndFiltersView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
 
         addActionButton(searchTopics);
-        addActionButton(searchContentSpecs);
         addActionButton(downloadZip);
         addActionButton(downloadCSV);
         addActionButton(applyBulkTags);
@@ -62,14 +60,8 @@ public class SearchTagsFieldsAndFiltersView extends
 
     @Override
     @NotNull
-    public PushButton getSearchTopics() {
+    public PushButton getSearchButton() {
         return searchTopics;
-    }
-
-    @Override
-    @NotNull
-    public PushButton getSearchContentSpecs() {
-        return searchContentSpecs;
     }
 
     @Override
@@ -92,7 +84,7 @@ public class SearchTagsFieldsAndFiltersView extends
 
     @Override
     @NotNull
-    public PushButton getTagsSearch() {
+    public PushButton getTagsButton() {
         return tagsSearch;
     }
 
@@ -116,7 +108,7 @@ public class SearchTagsFieldsAndFiltersView extends
 
     @Override
     @NotNull
-    public Label getTagsSearchDownLabel() {
+    public Label getTagsDownLabel() {
         return tagsSearchDownLabel;
     }
 
