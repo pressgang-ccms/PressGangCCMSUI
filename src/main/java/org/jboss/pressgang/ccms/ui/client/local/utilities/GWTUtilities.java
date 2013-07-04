@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.Date;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -11,8 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Date;
 
 /**
  * GWT has some limitations, like not being able to bind an Editor to an array
@@ -293,13 +293,32 @@ final public class GWTUtilities {
     }
 
     /**
-     * Compares two strings for equality, considering null to be equal.
+     * Compares two integers for equality, considering null to be equal.
      *
-     * @param a The first string
-     * @param b The second string
-     * @return true if both strings are either null or empty string, or if both strings are equal
+     * @param a The first integer
+     * @param b The second integer
+     * @return true if both integers are either null or if both integers are equal
      */
     public static boolean integerEquals(@Nullable final Integer a, @Nullable final Integer b) {
+        if (a == null && b == null) {
+            return true;
+        }
+
+        if (a != null) {
+            return a.equals(b);
+        }
+
+        return b.equals(a);
+    }
+
+    /**
+     * Compares two booleans for equality, considering null to be equal.
+     *
+     * @param a The first boolean
+     * @param b The second boolean
+     * @return true if both booleans are either null or if both booleans are equal
+     */
+    public static boolean booleanEquals(@Nullable final Boolean a, @Nullable final Boolean b) {
         if (a == null && b == null) {
             return true;
         }

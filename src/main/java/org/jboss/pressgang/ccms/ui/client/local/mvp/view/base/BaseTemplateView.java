@@ -152,6 +152,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton searchContentSpecs;
     private final PushButton searchTranslations;
     private final PushButton images;
+    private final PushButton files;
     private final PushButton tags;
     private final PushButton categories;
     private final PushButton projects;
@@ -425,6 +426,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
+    public PushButton getFiles() {
+        return files;
+    }
+
+    @NotNull
+    @Override
     public Label getPageTitle() {
         return pageTitle;
     }
@@ -653,6 +660,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         images = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Images());
         addShortcutButton(images);
+
+        files = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Files());
+        addShortcutButton(files);
 
         tags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
         addShortcutButton(tags);

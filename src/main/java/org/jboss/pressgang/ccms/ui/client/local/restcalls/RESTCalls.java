@@ -14,6 +14,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
@@ -28,11 +29,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentS
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
@@ -559,17 +562,6 @@ public final class RESTCalls {
 
     public static void getImageWithoutPreview(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images, but don't get the preview */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
-        doRestCall(callback, new RestMethodCaller() {
-            @Override
-            public void call() throws Exception {
-                createRestMethod(callback).getJSONImage(id, expand);
-            }
-        });
-    }
-
-    public static void getImageWithoutLanguageImages(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
-        /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1254,5 +1246,62 @@ public final class RESTCalls {
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
         }
+    }
+
+    public static void updateFile(@NotNull final RESTCallback<RESTFileV1> callback, @NotNull final RESTFileV1 file) {
+        /* Expand the language files */
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONFile(expand, file);
+            }
+        });
+    }
+
+    public static void createFile(@NotNull final RESTCallback<RESTFileV1> callback, @NotNull final RESTFileV1 file) {
+        /* Expand the language images */
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONFile(expand, file);
+            }
+        });
+    }
+
+    public static void getFile(@NotNull final RESTCallback<RESTFileV1> callback, @NotNull final Integer id) {
+        /* Expand the language files */
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}," +
+                "\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageFileV1.FILE_DATA_NAME + "\"}}]}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONFile(id, expand);
+            }
+        });
+    }
+
+    public static void getFileWithoutData(@NotNull final RESTCallback<RESTFileV1> callback, @NotNull final Integer id) {
+        /* Expand the language files, but don't get the actual data */
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONFile(id, expand);
+            }
+        });
+    }
+
+    public static void getFilesFromQuery(@NotNull final RESTCallback<RESTFileCollectionV1> callback, @NotNull final String queryString,
+            final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                "\"name\": \"" + RESTv1Constants.FILES_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONFilesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
     }
 }

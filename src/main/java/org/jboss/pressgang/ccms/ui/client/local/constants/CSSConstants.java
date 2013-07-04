@@ -89,6 +89,11 @@ public interface CSSConstants {
         String DESCRIPTION_FIELD = "BulkImageUploadDescriptionField";
     }
 
+    interface BulkFileUploadDialog {
+        String DESCRIPTION_FIELD = "BulkFileUploadDescriptionField";
+        String FILE_PATH_FIELD = "BulkFileUploadFilePathField";
+    }
+
     interface HelpDialog {
         String HELP_CONTENTS = "HelpContents";
     }
@@ -610,6 +615,100 @@ public interface CSSConstants {
          * Assigned to the cell that holds the image upload buttons.
          */
         String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL = "ImageViewLanguageImageUploadButtonsCell";
+    }
+
+    /**
+     * Holds the styles that are applied to the files view.
+     */
+    interface FileView {
+        /**
+         * Assigned to the dock panel that hosts the file description and the tab view of specific language files.
+         */
+        String FILE_VIEW_PARENT_DOCK_PANEL = "FileViewParentDockPanel";
+        /**
+         * Assigned to the tab panel of specific language files.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_TAB_PANEL = "FileViewLanguageFileTabPanel";
+        /**
+         * Assigned to the tab that shows a specific language file.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_TAB = "FileViewLanguageFileTab";
+        /**
+         * Assigned to the cell that holds the file name label.
+         */
+        String FILE_VIEW_FILENAME_LABEL = "FileViewFilenameLabel";
+        /**
+         * Assigned to the cell that holds the file name text.
+         */
+        String FILE_VIEW_FILENAME_TEXT = "FileViewFilenameText";
+        /**
+         * Assigned to the cell that holds the file name label cell.
+         */
+        String FILE_VIEW_FILENAME_LABEL_CELL = "FileViewFilenameLabelCell";
+        /**
+         * Assigned to the cell that holds the file name text cell.
+         */
+        String FILE_VIEW_FILENAME_TEXT_CELL = "FileViewFilenameTextCell";
+        /**
+         * Assigned to the cell that holds the file path label.
+         */
+        String FILE_VIEW_FILE_PATH_LABEL = "FileViewFilePathLabel";
+        /**
+         * Assigned to the cell that holds the file path text.
+         */
+        String FILE_VIEW_FILE_PATH_TEXT = "FileViewFilePathText";
+        /**
+         * Assigned to the cell that holds the file path label cell.
+         */
+        String FILE_VIEW_FILE_PATH_LABEL_CELL = "FileViewFilePathLabelCell";
+        /**
+         * Assigned to the cell that holds the file path text cell.
+         */
+        String FILE_VIEW_FILE_PATH_TEXT_CELL = "FileViewFilePathTextCell";
+        /**
+         * Assigned to the file description label.
+         */
+        String FILE_VIEW_DESCRIPTION_LABEL = "FileViewDescriptionLabel";
+        /**
+         * Assigned to the file description text.
+         */
+        String FILE_VIEW_DESCRIPTION_TEXT = "FileViewDescriptionText";
+        /**
+         * Assigned to the file id label cell.
+         */
+        String FILE_VIEW_ID_LABEL_CELL = "FileViewIDLabelCell";
+        /**
+         * Assigned to the file id text cell.
+         */
+        String FILE_VIEW_ID_TEXT_CELL = "FileViewIDTextCell";
+        /**
+         * Assigned to the file description label cell.
+         */
+        String FILE_VIEW_DESCRIPTION_LABEL_CELL = "FileViewDescriptionLabelCell";
+        /**
+         * Assigned to the file description text cell.
+         */
+        String FILE_VIEW_DESCRIPTION_TEXT_CELL = "FileViewDescriptionTextCell";
+        /**
+         * Assigned to the table that holds the file details.
+         */
+        String FILE_VIEW_DETAILS_TABLE = "FileViewDetailsTable";
+        /**
+         * Assigned to the cell that holds the file upload label.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_UPLOAD_LABEL_CELL = "FileViewLanguageFileUploadLabelCell";
+        /**
+         * Assigned to the cell that holds the file upload buttons.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_UPLOAD_BUTTONS_CELL = "FileViewLanguageFileUploadButtonsCell";
+        /**
+         * Assigned to the cell that holds the file explode archive label.
+         */
+        String FILE_VIEW_EXPLODE_ARCHIVE_LABEL = "FileViewExplodeArchiveLabel";
+        /**
+         * Assigned to the cell that holds the file path label cell.
+         */
+        String FILE_VIEW_EXPLODE_ARCHIVE_LABEL_CELL = "FileViewExplodeArchiveLabelCell";
     }
 
     /**

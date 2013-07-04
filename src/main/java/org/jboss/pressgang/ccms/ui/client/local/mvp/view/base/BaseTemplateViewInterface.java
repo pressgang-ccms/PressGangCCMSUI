@@ -191,6 +191,12 @@ public interface BaseTemplateViewInterface {
     PushButton getImages();
 
     /**
+     * @return The button that switches to the files view
+     */
+    @NotNull
+    PushButton getFiles();
+
+    /**
      * @return The button that opens the advanced menu
      */
     @NotNull

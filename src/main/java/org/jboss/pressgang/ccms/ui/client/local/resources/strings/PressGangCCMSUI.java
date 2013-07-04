@@ -468,6 +468,9 @@ public interface PressGangCCMSUI extends Constants {
     String BulkImageUpload();
 
     @NotNull
+    String BulkFileUpload();
+
+    @NotNull
     String DocbookImageTemplate();
 
     @NotNull
@@ -946,4 +949,38 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ContentSpecVersion();
+
+    @NotNull
+    String FileID();
+
+    @NotNull
+    String FileDescription();
+
+    @NotNull
+    String FileName();
+
+    @NotNull
+    String FilePath();
+
+    @NotNull
+    String FilePlaceholder();
+
+    @NotNull
+    String ExplodeFileArchive();
+
+    @NotNull
+    String FileUploadedSuccessfully();
+
+    @NotNull
+    String FilesUploadedSuccessfully();
+
+    @NotNull
+    String FilesNotUploadedSuccessfully();
+
+    @NotNull
+    String Files();
+
+    @NotNull
+    String CreateFile();
+
 }

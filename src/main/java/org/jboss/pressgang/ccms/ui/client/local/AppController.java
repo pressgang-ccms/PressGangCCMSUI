@@ -21,6 +21,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.Categories
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.IntegerConstantFilteredResultsAndDetailsViewEvent;
@@ -47,6 +49,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.Categorie
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FileFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
@@ -69,7 +74,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRendere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics
+        .TranslatedTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
@@ -149,6 +155,9 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     new ViewOpenWithQueryEventHandler(ContentSpecSearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(ContentSpecSearchResultsAndContentSpecViewEvent.TYPE,
                     new ViewOpenWithQueryEventHandler(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(FilesViewEvent.TYPE, new ViewOpenEventHandler(FilePresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(FilesFilteredResultsAndFileViewEvent.TYPE,
+                    new ViewOpenWithQueryEventHandler(FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
@@ -269,6 +278,12 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(ContentSpecSearchFieldPresenter.class);
                 } else if (token.startsWith(ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ContentSpecFilteredResultsAndDetailsPresenter.class);
+                } else if (token.startsWith(FilePresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(FilePresenter.class);
+                } else if (token.startsWith(FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(FilesFilteredResultsAndDetailsPresenter.class);
+                } else if (token.startsWith(FileFilteredResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(FileFilteredResultsPresenter.class);
                 }
 
                 if (presenter.isPresent()) {
