@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -22,8 +23,6 @@ import org.vectomatic.file.FileUploadExt;
  * @author Matthew Casperson
  */
 public final class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
-    private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
-
     /**
      * Keep a reference to the object this editor gets its values from.
      */
@@ -152,16 +151,16 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
         if (value.getItem().getImageDataBase64() != null) {
             @NotNull final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
-            this.imageDataBase64.addLoadHandler(new LoadHandler() {
+            imageDataBase64.addLoadHandler(new LoadHandler() {
 
                 @Override
                 public void onLoad(final LoadEvent event) {
-                    RESTLanguageImageV1Editor.this.dimensions.setText(RESTLanguageImageV1Editor.this.imageDataBase64.getWidth()
-                            + "x" + RESTLanguageImageV1Editor.this.imageDataBase64.getHeight());
+                    dimensions.setText(imageDataBase64.getWidth() + "x" + imageDataBase64.getHeight());
                 }
             });
-            this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
 
+            final String mimeType = ComponentLanguageImageV1.getMimeType(value.getItem());
+            imageDataBase64.setUrl("data:" + mimeType + ";base64," + base64);
         }
 
         if (value.getItem().getLocale() != null) {
