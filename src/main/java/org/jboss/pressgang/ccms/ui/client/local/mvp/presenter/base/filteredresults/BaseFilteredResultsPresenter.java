@@ -1,7 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.URL;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -11,11 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @see BaseFilteredResultsPresenterInterface
@@ -121,4 +123,14 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      */
     @Nullable
     abstract protected EnhancedAsyncDataProvider<V> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay);
+
+    /**
+     * Encode a query parameter so that it can be sent via http
+     *
+     * @param value The value to be encoded.
+     * @return The encoded query parameter.
+     */
+    protected String encodeQueryParameter(final String value) {
+        return Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(value) : value;
+    }
 }

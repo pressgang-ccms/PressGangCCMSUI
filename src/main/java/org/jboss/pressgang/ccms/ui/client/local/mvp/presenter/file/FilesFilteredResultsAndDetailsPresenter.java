@@ -184,7 +184,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             public void doSuccessAction(@NotNull final RESTFileV1 retValue,
                                     @NotNull final BaseTemplateViewInterface display) {
                                 checkArgument(retValue.getLanguageFiles_OTM() != null,
-                                        "The initially retrieved entity should have a " + "language files collection");
+                                        "The initially retrieved entity should have a language files collection");
                                 displayCallback.displayNewEntity(retValue);
                             }
                         }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
@@ -198,7 +198,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, fileComponent.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.FILE_VIEW_MAIN_SPLIT_WIDTH, fileComponent.getDisplay(),
                 fileComponent.getDisplay(), fileFilteredResultsComponent.getDisplay(), fileFilteredResultsComponent, display, display,
                 getNewEntityCallback);
 

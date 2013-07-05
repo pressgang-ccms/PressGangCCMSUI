@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -20,18 +27,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
 @Dependent
-public class ImageFilteredResultsPresenter
-        extends
-        BaseFilteredResultsPresenter<RESTImageCollectionItemV1>
-        implements BaseTemplatePresenterInterface {
+public class ImageFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTImageCollectionItemV1> implements
+        BaseTemplatePresenterInterface {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTImageCollectionItemV1> {
 
@@ -100,17 +98,20 @@ public class ImageFilteredResultsPresenter
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getImageIdFilter().getText()));
         }
         if (!display.getImageDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getImageDescriptionFilter().getText()));
         }
         if (!display.getImageOriginalFileNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getImageOriginalFileNameFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON +
+                retValue.toString();
     }
 
     /**
@@ -119,15 +120,19 @@ public class ImageFilteredResultsPresenter
      */
     @Override
     @NotNull
-    protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
+    protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(@NotNull final String queryString,
+            @NotNull final BaseTemplateViewInterface waitDisplay) {
+        @NotNull final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new
+                EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTImageCollectionItemV1> item) {
                 getProviderData().setStartRow(item.getVisibleRange().getStart());
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                @NotNull final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1,
+                        Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTImageCollectionV1 retValue, @NotNull final Display display) {
                         checkState(retValue.getItems() != null, "The returned collection should have a valid items collection");

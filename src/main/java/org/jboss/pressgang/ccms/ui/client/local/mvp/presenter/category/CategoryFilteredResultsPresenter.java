@@ -1,5 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -21,22 +30,12 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
 /**
  * The presenter used to add logic to the category filtered list view.
  */
 @Dependent
-public class CategoryFilteredResultsPresenter
-        extends BaseFilteredResultsPresenter<RESTCategoryCollectionItemV1>
-        implements BaseTemplatePresenterInterface {
+public class CategoryFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTCategoryCollectionItemV1> implements
+        BaseTemplatePresenterInterface {
 
     /**
      * This history token.
@@ -96,7 +95,8 @@ public class CategoryFilteredResultsPresenter
 
     @Override
     @NotNull
-    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString,
+            @NotNull final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> list) {
@@ -119,7 +119,9 @@ public class CategoryFilteredResultsPresenter
                     @Override
                     public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+                            LOGGER.log(Level.INFO,
+                                    "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): "
+                                            + retValue.getItems().size());
 
                             checkState(retValue.getItems() != null, "There returned collection should have a valid items collection.");
                             checkState(retValue.getSize() != null, "There returned collection should have a valid size collection.");
@@ -127,7 +129,8 @@ public class CategoryFilteredResultsPresenter
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                    getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -136,7 +139,8 @@ public class CategoryFilteredResultsPresenter
                     @Override
                     public void failed(@NotNull final Message message, @NotNull final Throwable throwable) {
                         display.removeWaitOperation();
-                        LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
+                        LOGGER.log(Level.SEVERE,
+                                "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -154,17 +158,21 @@ public class CategoryFilteredResultsPresenter
     @NotNull
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
-        if (!this.display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
+        if (!display.getIdFilter().getText().isEmpty()) {
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getIdFilter().getText()));
         }
-        if (!this.display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
+        if (!display.getNameFilter().getText().isEmpty()) {
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getNameFilter().getText()));
         }
-        if (!this.display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
+        if (!display.getDescriptionFilter().getText().isEmpty()) {
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getDescriptionFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON +
+                retValue.toString();
     }
 
     @Override
@@ -188,8 +196,7 @@ public class CategoryFilteredResultsPresenter
     /**
      * The interface used to define the category filtered list view.
      */
-    public interface Display extends
-            BaseFilteredResultsViewInterface<RESTCategoryCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTCategoryCollectionItemV1> {
 
         /**
          * @return The fields used to specify the category ids filter

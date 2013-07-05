@@ -28,10 +28,8 @@ import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 
 @Dependent
-public class FileFilteredResultsPresenter
-        extends
-        BaseFilteredResultsPresenter<RESTFileCollectionItemV1>
-        implements BaseTemplatePresenterInterface {
+public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTFileCollectionItemV1> implements
+        BaseTemplatePresenterInterface {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTFileCollectionItemV1> {
 
@@ -100,17 +98,20 @@ public class FileFilteredResultsPresenter
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getFileIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.FILE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getFileIdFilter().getText()) : display.getFileIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.FILE_IDS_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getFileIdFilter().getText()));
         }
         if (!display.getFileDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.FILE_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getFileDescriptionFilter().getText()) : display.getFileDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.FILE_DESCRIPTION_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getFileDescriptionFilter().getText()));
         }
         if (!display.getFileNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.FILE_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getFileNameFilter().getText()) : display.getFileNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.FILE_NAME_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getFileNameFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON +
+                retValue.toString();
     }
 
     /**
@@ -121,14 +122,17 @@ public class FileFilteredResultsPresenter
     @NotNull
     protected EnhancedAsyncDataProvider<RESTFileCollectionItemV1> generateListProvider(@NotNull final String queryString,
             @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTFileCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFileCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTFileCollectionItemV1> provider = new
+                EnhancedAsyncDataProvider<RESTFileCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTFileCollectionItemV1> item) {
                 getProviderData().setStartRow(item.getVisibleRange().getStart());
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                @NotNull final BaseRestCallback<RESTFileCollectionV1, Display> callback = new BaseRestCallback<RESTFileCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFileCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTFileCollectionV1, Display> callback = new BaseRestCallback<RESTFileCollectionV1,
+                        Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTFileCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTFileCollectionV1 retValue, @NotNull final Display display) {
                         checkState(retValue.getItems() != null, "The returned collection should have a valid items collection");
@@ -155,11 +159,11 @@ public class FileFilteredResultsPresenter
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals(CommonFilterConstants.FILE_IDS_FILTER_VAR)) {
-                    this.display.getFileIdFilter().setText(URL.decodeQueryString(queryElements[1]));
+                    display.getFileIdFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals(CommonFilterConstants.FILE_DESCRIPTION_FILTER_VAR)) {
-                    this.display.getFileDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
+                    display.getFileDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals(CommonFilterConstants.FILE_NAME_FILTER_VAR)) {
-                    this.display.getFileNameFilter().setText(URL.decodeQueryString(queryElements[1]));
+                    display.getFileNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
         }
