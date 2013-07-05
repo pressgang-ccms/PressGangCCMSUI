@@ -40,6 +40,8 @@ public class FilePresenter extends BaseTemplatePresenter {
 
         PushButton getAddLocale();
 
+        PushButton getDownloadFile();
+
         PushButton getSave();
 
         AddLocaleInterface getAddLocaleDialog();

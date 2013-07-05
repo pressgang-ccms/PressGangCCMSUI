@@ -30,6 +30,7 @@ public class FileView extends BaseTemplateView implements FilePresenter.Display 
 
     private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
     private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
+    private final PushButton downloadFile = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadFile());
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final AddLocaleDialog addLocaleDialog = new AddLocaleDialog();
 
@@ -128,12 +129,18 @@ public class FileView extends BaseTemplateView implements FilePresenter.Display 
         return addLocale;
     }
 
+    @Override
+    public PushButton getDownloadFile() {
+        return downloadFile;
+    }
+
     public FileView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Files());
 
-        this.addActionButton(addLocale);
-        this.addActionButton(removeLocale);
-        this.addActionButton(save);
+        addActionButton(addLocale);
+        addActionButton(removeLocale);
+        addActionButton(downloadFile);
+        addActionButton(save);
     }
 
     @Override

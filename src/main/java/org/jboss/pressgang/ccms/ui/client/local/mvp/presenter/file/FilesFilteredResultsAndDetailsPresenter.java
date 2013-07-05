@@ -267,7 +267,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 initializeViews();
                 updateDisplayWithNewEntityData(false);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
+                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
             }
         };
     }
@@ -277,7 +277,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
         return new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
             @Override
             public void doFailureAction(final BaseTemplateViewInterface display) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
+                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadFailure());
             }
         };
     }
@@ -476,6 +476,26 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
 
+            }
+        });
+
+        fileComponent.getDisplay().getDownloadFile().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem() != null,
+                        "There should be a displayed collection item.");
+                checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
+                        "The displayed collection item to reference a valid entity.");
+
+                final int selectedTab = fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().getSelectedIndex();
+                if (selectedTab != -1) {
+                    final RESTLanguageFileCollectionItemV1 selectedFile = fileComponent.getDisplay().getEditor().languageFiles_OTMEditor
+                            ().itemsEditor().getList().get(selectedTab);
+
+                    Window.open(Constants.REST_SERVER + "/1/file/get/raw/" +
+                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedFile
+                            .getItem().getLocale(), null, null);
+                }
             }
         });
 
@@ -817,15 +837,14 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                         @NotNull final RESTCallback<RESTFileV1> fileCallback = new BaseRestCallback<RESTFileV1,
                                 FilesFilteredResultsAndDetailsPresenter.Display>(
-                                display,
-                                new BaseRestCallback.SuccessAction<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTFileV1 retValue,
-                                            @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
-                                        ids.add(retValue.getId());
-                                        createNewFile(description, locale, filePath, index + 1, files, ids, failedFiles);
-                                    }
-                                }, new BaseRestCallback.FailureAction<Display>() {
+                                display, new BaseRestCallback.SuccessAction<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTFileV1 retValue,
+                                    @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
+                                ids.add(retValue.getId());
+                                createNewFile(description, locale, filePath, index + 1, files, ids, failedFiles);
+                            }
+                        }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
                             public void doFailureAction(@NotNull final Display display) {
                                 createNewFile(description, locale, filePath, index + 1, files, ids, failedFiles);

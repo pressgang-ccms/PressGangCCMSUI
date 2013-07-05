@@ -978,9 +978,14 @@ public interface PressGangCCMSUI extends Constants {
     String FilesNotUploadedSuccessfully();
 
     @NotNull
+    String FileUploadFailure();
+
+    @NotNull
     String Files();
 
     @NotNull
     String CreateFile();
 
+    @NotNull
+    String DownloadFile();
 }
