@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
@@ -25,6 +26,8 @@ import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -44,13 +47,30 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private static final int BUTTON_PANEL_HEIGHT = 44;
 
     /**
+     * Saves the html rendered by the XML frames when diffing the rendered html of two revisions
+     */
+    private List<String> renderedHTML;
+    /**
+     * Holds the mergely elements and the ok/cancel buttons
+     */
+    private final DockLayoutPanel htmlDiffPanel = new DockLayoutPanel(Style.Unit.PX);
+    /**
+     * The parent for the mergely elements. Needs to be a layout panel so resize events are propogated.
+     */
+    private final SimpleLayoutPanel htmlDiffParent = new SimpleLayoutPanel();
+    /**
+     * The done button.
+     */
+    private final PushButton htmlDone = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+
+    /**
      * A button used when rendering the view button column.
      */
     private final DisableableButtonCell viewButtonCell = new DisableableButtonCell();
     /**
      * A button used when rendering the diff button column.
      */
-    private final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
+    private final DisableableButtonCell htmlDiffButtonCell = new DisableableButtonCell();
     /**
      * Holds the mergely elements and the ok/cancel buttons
      */
@@ -88,6 +108,10 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * The pager used to page over the table results.
      */
     private final SimplePager pager = UIUtilities.createSimplePager();
+    /**
+     * The message listener for HTML5 message passing
+     */
+    private JavaScriptObject listener;
     /**
      * The table used to display the revisions.
      */
@@ -209,16 +233,16 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     @NotNull
     private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(
-            diffButtonCell) {
+            htmlDiffButtonCell) {
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            diffButtonCell.setEnabled(buttonsEnabled);
+            htmlDiffButtonCell.setEnabled(buttonsEnabled);
 
             if (mainTopic != null) {
                 if (object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
                     if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
-                        diffButtonCell.setEnabled(false);
+                        htmlDiffButtonCell.setEnabled(false);
                         return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                     }
                 }
@@ -226,17 +250,17 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
                 if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getRevision().equals(object.getItem().getRevision()))) {
 
                     final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getXml();
-                    @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
+                    final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
 
                     checkState(object.getItem() != null, "The collection item should reference a valid entity.");
 
                     if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
                         /* Diffs don't work if there is no XML to compare to */
-                        diffButtonCell.setEnabled(false);
+                        htmlDiffButtonCell.setEnabled(false);
                         return PressGangCCMSUI.INSTANCE.NoXML();
                     } else if (object.getItem().getXml().trim().equals(fixedViewingXML)) {
                         /* The XML is the same */
-                        diffButtonCell.setEnabled(false);
+                        htmlDiffButtonCell.setEnabled(false);
                         return PressGangCCMSUI.INSTANCE.SameXML();
                     } else {
                         return PressGangCCMSUI.INSTANCE.Diff();
@@ -244,7 +268,52 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
                 }
             }
 
-            diffButtonCell.setEnabled(false);
+            htmlDiffButtonCell.setEnabled(false);
+            return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
+        }
+    };
+
+    /**
+     * The column that displays the diff button.
+     */
+    @NotNull
+    private final Column<RESTTopicCollectionItemV1, String> htmlDiffButton = new Column<RESTTopicCollectionItemV1, String>(
+            htmlDiffButtonCell) {
+        @NotNull
+        @Override
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
+            htmlDiffButtonCell.setEnabled(buttonsEnabled);
+
+            if (mainTopic != null) {
+                if (object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
+                    if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
+                        htmlDiffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+                    }
+                }
+
+                if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getRevision().equals(object.getItem().getRevision()))) {
+
+                    final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getXml();
+                    final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
+
+                    checkState(object.getItem() != null, "The collection item should reference a valid entity.");
+
+                    if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
+                        /* Diffs don't work if there is no XML to compare to */
+                        htmlDiffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.NoXML();
+                    } else if (object.getItem().getXml().trim().equals(fixedViewingXML)) {
+                        /* The XML is the same */
+                        htmlDiffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.SameXML();
+                    } else {
+                        return PressGangCCMSUI.INSTANCE.HTMLDiff();
+                    }
+                }
+            }
+
+            htmlDiffButtonCell.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
         }
     };
@@ -271,6 +340,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
+        results.addColumn(htmlDiffButton, PressGangCCMSUI.INSTANCE.HTMLDiff());
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
         results.addColumn(revisionUser, PressGangCCMSUI.INSTANCE.Username());
@@ -294,6 +364,9 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         pager.setDisplay(results);
 
+        /*
+            Setup the mergely container
+         */
         final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         buttonPanel.add(done);
@@ -303,13 +376,33 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         diffPanel.add(diffParent);
         diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
 
+        /*
+            Setup the HTML diff container
+         */
+        final HorizontalPanel htmlButtonPanel = new HorizontalPanel();
+        htmlButtonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
+        htmlButtonPanel.add(htmlDone);
+
+        htmlDiffPanel.addSouth(htmlButtonPanel, BUTTON_PANEL_HEIGHT);
+        htmlDiffPanel.add(htmlDiffParent);
+        htmlDiffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
+
         this.getPanel().setWidget(searchResultsPanel);
+
+        createEventListener();
+        addEventListener();
     }
 
     @NotNull
     @Override
     public Column<RESTTopicCollectionItemV1, String> getDiffButton() {
         return diffButton;
+    }
+
+    @NotNull
+    @Override
+    public Column<RESTTopicCollectionItemV1, String> getHTMLDiffButton() {
+        return htmlDiffButton;
     }
 
     @Override
@@ -386,6 +479,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
+    public PushButton getHTMLDone() {
+        return done;
+    }
+
+    @Override
     @Nullable
     public Mergely getMergely() {
         return mergely;
@@ -411,4 +509,62 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.buttonsEnabled = buttonsEnabled;
         results.redraw();
     }
+
+    @Override
+    public void displayHTMLDiff(@NotNull final Integer echo1, @NotNull final Integer echo2) {
+        renderedHTML = new ArrayList<String>();
+
+        final Frame frame1 = new Frame();
+        frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
+
+        final Frame frame2 = new Frame();
+        frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
+    }
+
+    public void saveRenderedHTML(@NotNull final String html) {
+        renderedHTML.add(html);
+
+        if (renderedHTML.size() == 2) {
+            final String diff = diffHTML(renderedHTML.get(0), renderedHTML.get(1));
+            final HTML htmlDiff = new HTML("<div>");
+            htmlDiff.setHTML(diff);
+
+            htmlDiffParent.setWidget(null);
+            this.getPanel().setWidget(htmlDiffParent);
+            htmlDiffParent.setWidget(htmlDiff);
+            isDisplayingRevisions = false;
+
+            renderedHTML = null;
+        }
+    }
+
+    @NotNull
+    private native String diffHTML(@NotNull final String html1, @NotNull final String html2) /*-{
+        var diff = $wnd.htmldiff(html1, html2);
+        return diff;
+    }-*/;
+
+    /**
+     * The listener hold a reference to this, which will prevent it from being reclaimed by the GC.
+     * So here we remove the listener.
+     */
+    public native void removeListener() /*-{
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener != null) {
+			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener);
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener = null;
+		}
+	}-*/;
+
+    private native void createEventListener() /*-{
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener =
+			function (me) {
+				return function displayAfterLoaded(event) {
+                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::saveRenderedHTML(Ljava/lang/String;)(event.data);
+				};
+			}(this);
+	}-*/;
+
+    private native void addEventListener() /*-{
+		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener);
+	}-*/;
 }

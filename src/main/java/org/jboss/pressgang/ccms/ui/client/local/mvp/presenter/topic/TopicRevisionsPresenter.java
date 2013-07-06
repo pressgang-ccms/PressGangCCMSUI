@@ -43,6 +43,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         Column<RESTTopicCollectionItemV1, String> getDiffButton();
 
+        Column<RESTTopicCollectionItemV1, String> getHTMLDiffButton();
+
         /**
          * @return The currently selected revision topic.
          */
@@ -57,17 +59,23 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         PushButton getCancel();
 
+        PushButton getHTMLDone();
+
         Mergely getMergely();
 
         void displayRevisions();
 
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
 
+        void displayHTMLDiff(Integer echo1, Integer echo2);
+
         boolean isDisplayingRevisions();
 
         boolean isButtonsEnabled();
 
         void setButtonsEnabled(boolean buttonsEnabled);
+
+        void removeListener();
     }
 
     /**
@@ -109,7 +117,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     @Override
     public void close() {
-
+        display.removeListener();
     }
 
     public void bindExtended(final int topicId, @NotNull final String pageId) {

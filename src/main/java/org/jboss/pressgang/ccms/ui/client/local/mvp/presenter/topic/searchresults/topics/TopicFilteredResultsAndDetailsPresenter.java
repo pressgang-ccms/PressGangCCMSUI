@@ -35,6 +35,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -874,6 +875,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setXml(lhs);
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLComponent().getDisplay()}));
                     }
+                    topicRevisionsComponent.getDisplay().displayRevisions();
+                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
+
+                }
+            });
+
+            topicRevisionsComponent.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
                     topicRevisionsComponent.getDisplay().displayRevisions();
                     getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
@@ -1992,6 +2002,48 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 }
             });
+
+            topicRevisionsComponent.getDisplay().getHTMLDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+
+                    topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
+
+                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                            topicRevisionsComponent.getDisplay(),
+                            new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                                @Override
+                                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                                    checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+
+                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(display,
+                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
+                                                @Override
+                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRevisionsPresenter.Display display) {
+                                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(display,
+                                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
+                                                                @Override
+                                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display display) {
+                                                                    topicRevisionsComponent.getDisplay().displayHTMLDiff(retValue.value, retValue2.value);
+                                                                }
+                                                            }, true);
+
+                                                    RESTCalls.holdXml(callback2, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml());
+                                                }
+                                            }, true);
+
+                                    RESTCalls.holdXml(callback1, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml());
+
+                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+
+                                }
+                            });
+                    RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
+
+                }
+            });
+
+
         } finally {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
         }
