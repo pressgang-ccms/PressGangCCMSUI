@@ -1781,12 +1781,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 lastDisplayedView == topicRevisionsComponent.getDisplay() &&
                 !topicRevisionsComponent.getDisplay().isDisplayingRevisions()) {
 
-            checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "Mergely should be loaded.");
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
             if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
-                if (!topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
+                if (topicRevisionsComponent.getDisplay().getMergely() != null &&
+                        !topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
