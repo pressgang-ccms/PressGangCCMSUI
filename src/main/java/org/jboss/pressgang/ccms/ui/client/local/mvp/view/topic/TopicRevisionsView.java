@@ -481,7 +481,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
     @Override
     public PushButton getHTMLDone() {
-        return done;
+        return htmlDone;
     }
 
     @Override
