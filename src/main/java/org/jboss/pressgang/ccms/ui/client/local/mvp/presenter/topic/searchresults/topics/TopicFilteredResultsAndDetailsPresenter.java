@@ -2013,7 +2013,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             topicRevisionsComponent.getDisplay(),
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                                public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display display) {
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                                     final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(display,
@@ -2025,6 +2025,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                                 @Override
                                                                 public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display display) {
                                                                     topicRevisionsComponent.getDisplay().displayHTMLDiff(retValue.value, retValue2.value);
+                                                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }
                                                             }, true);
 
@@ -2032,9 +2033,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 }
                                             }, true);
 
-                                    RESTCalls.holdXml(callback1, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml());
+                                    RESTCalls.holdXml(callback1, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + revisionTopic.getXml());
 
-                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+
 
                                 }
                             });

@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
@@ -512,31 +513,69 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
     @Override
     public void displayHTMLDiff(@NotNull final Integer echo1, @NotNull final Integer echo2) {
-        renderedHTML = new ArrayList<String>();
+        try {
+            LOGGER.info("ENTER TopicRevisionsView.displayHTMLDiff()");
 
-        final Frame frame1 = new Frame();
-        frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
+            renderedHTML = new ArrayList<String>();
 
-        final Frame frame2 = new Frame();
-        frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
+            final VerticalPanel verticalPanel = new VerticalPanel();
+
+            final Frame frame1 = new Frame();
+            frame1.setVisible(false);
+            frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
+
+            final Frame frame2 = new Frame();
+            frame2.setVisible(false);
+            frame2.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
+
+            verticalPanel.add(frame1);
+            verticalPanel.add(frame2);
+
+            htmlDiffParent.setWidget(verticalPanel);
+            this.getPanel().setWidget(htmlDiffPanel);
+
+        } finally {
+            LOGGER.info("EXIT TopicRevisionsView.displayHTMLDiff()");
+        }
     }
 
     public void saveRenderedHTML(@NotNull final String html) {
-        renderedHTML.add(html);
+        try {
+            LOGGER.info("ENTER TopicRevisionsView.saveRenderedHTML()");
 
-        if (renderedHTML.size() == 2) {
-            final String diff = diffHTML(renderedHTML.get(0), renderedHTML.get(1));
-            final HTML htmlDiff = new HTML("<div>");
-            htmlDiff.setHTML(diff);
+            /*
+                This will be null when we add the diffed HTML, because it still has the javascript
+                postmessage callback.
+             */
+            if (renderedHTML != null) {
+                renderedHTML.add(html);
 
-            htmlDiffParent.setWidget(null);
-            this.getPanel().setWidget(htmlDiffParent);
-            htmlDiffParent.setWidget(htmlDiff);
-            isDisplayingRevisions = false;
+                if (renderedHTML.size() == 2) {
+                    final String diff = diffHTML(renderedHTML.get(0), renderedHTML.get(1));
+                    final Frame htmlDiff = new Frame();
+                    htmlDiff.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_HTML_DIFF_FRAME);
+                    htmlDiffParent.setWidget(htmlDiff);
 
-            renderedHTML = null;
+                    final IFrameElement iFrameElement = htmlDiff.getElement().cast();
+                    writeHTMLToIFrame(iFrameElement.getContentDocument(), diff);
+
+                    isDisplayingRevisions = false;
+
+                    renderedHTML = null;
+                }
+            }
+        } finally {
+            LOGGER.info("EXIT TopicRevisionsView.saveRenderedHTML()");
         }
     }
+
+    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
+		document.open('text/html', 'replace');
+		document.write(content);
+		document.close();
+
+	}-*/;
+
 
     @NotNull
     private native String diffHTML(@NotNull final String html1, @NotNull final String html2) /*-{
@@ -559,7 +598,9 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
-                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::saveRenderedHTML(Ljava/lang/String;)(event.data);
+                    if (event.data != 'loaded') {
+                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::saveRenderedHTML(Ljava/lang/String;)(event.data);
+                    }
 				};
 			}(this);
 	}-*/;
