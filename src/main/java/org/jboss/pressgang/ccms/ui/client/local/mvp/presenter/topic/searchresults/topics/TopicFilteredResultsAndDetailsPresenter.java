@@ -2032,7 +2032,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
                                                             new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
                                                                 @Override
-                                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display display) {
+                                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
                                                                     topicRevisionsComponent.renderXML(retValue.value, retValue2.value, display.getHiddenAttachmentArea());
                                                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }
