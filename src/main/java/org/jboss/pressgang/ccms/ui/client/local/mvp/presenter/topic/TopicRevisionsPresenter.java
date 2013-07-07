@@ -204,6 +204,12 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         return provider;
     }
 
+    /**
+     * Creates some iFrames to render the XML.
+     * @param echo1 The id to used when building the URL to the echo xml endpoint
+     * @param echo2 The id to used when building the URL to the echo xml endpoint
+     * @param hiddenAttach A panel where hidden iframes can be attached.
+     */
     public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2, @NotNull final Panel hiddenAttach) {
         display.showWaitingFromRenderedDiff();
 
