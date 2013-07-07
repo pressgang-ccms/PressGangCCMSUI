@@ -5,10 +5,7 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -207,7 +204,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         return provider;
     }
 
-    public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2) {
+    public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2, @NotNull final Panel hiddenAttach) {
         display.showWaitingFromRenderedDiff();
 
         currentXML = new Frame();
@@ -227,8 +224,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         /*
             iFrames have to be attached to the DOM to load their pages
          */
-        display.getHiddenAttachmentArea().add(currentXML);
-        display.getHiddenAttachmentArea().add(comparedXML);
+        hiddenAttach.add(currentXML);
+        hiddenAttach.add(comparedXML);
     }
 
     private void displayRenderedHTML() {
@@ -242,9 +239,11 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
             if (renderedHTML1 != null && renderedHTML2 != null && !display.isDisplayingRevisions()) {
                 final String diff = diffHTML(renderedHTML1, renderedHTML2);
 
+                currentXML.removeFromParent();
+                comparedXML.removeFromParent();
+
                 renderedHTML1 = renderedHTML2 = null;
                 currentXML = comparedXML = null;
-                display.getHiddenAttachmentArea().clear();
 
                 display.displayHtmlDiff(diff);
             }

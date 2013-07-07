@@ -2022,18 +2022,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             topicRevisionsComponent.getDisplay(),
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display display) {
+                                public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display waitDisplay) {
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(display,
+                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
                                             new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
                                                 @Override
-                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRevisionsPresenter.Display display) {
-                                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(display,
+                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
+                                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
                                                             new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
                                                                 @Override
                                                                 public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display display) {
-                                                                    topicRevisionsComponent.renderXML(retValue.value, retValue2.value);
+                                                                    topicRevisionsComponent.renderXML(retValue.value, retValue2.value, display.getHiddenAttachmentArea());
                                                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }
                                                             }, true);
