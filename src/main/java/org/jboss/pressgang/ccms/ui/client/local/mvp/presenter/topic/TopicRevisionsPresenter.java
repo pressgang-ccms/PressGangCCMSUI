@@ -265,7 +265,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
      */
     public native void removeListener() /*-{
 		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener != null) {
-			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter::listener);
+			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener);
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener = null;
 		}
 	}-*/;
