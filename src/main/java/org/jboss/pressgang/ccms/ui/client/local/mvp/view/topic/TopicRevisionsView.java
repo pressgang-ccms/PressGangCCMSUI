@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -47,10 +48,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private static final int BUTTON_PANEL_HEIGHT = 44;
 
-    /**
-     * Saves the html rendered by the XML frames when diffing the rendered html of two revisions
-     */
-    private List<String> renderedHTML;
+
     /**
      * Holds the mergely elements and the ok/cancel buttons
      */
@@ -109,10 +107,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * The pager used to page over the table results.
      */
     private final SimplePager pager = UIUtilities.createSimplePager();
-    /**
-     * The message listener for HTML5 message passing
-     */
-    private JavaScriptObject listener;
+
     /**
      * The table used to display the revisions.
      */
@@ -332,6 +327,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private RESTTopicV1 mainTopic;
 
     /**
+     * The image to display in the waiting dialog.
+     */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+
+    /**
      * Builds the UI.
      */
     public TopicRevisionsView() {
@@ -390,8 +390,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         this.getPanel().setWidget(searchResultsPanel);
 
-        createEventListener();
-        addEventListener();
+
     }
 
     @NotNull
@@ -474,6 +473,32 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         isDisplayingRevisions = false;
     }
 
+    public void displayHtmlDiff(@NotNull final String htmlDiff) {
+        final Frame diffFrame = new Frame();
+        diffFrame.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_HTML_DIFF_FRAME);
+        htmlDiffParent.setWidget(diffFrame);
+
+        final IFrameElement iFrameElement = diffFrame.getElement().cast();
+        writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+
+        isDisplayingRevisions = false;
+
+        this.getPanel().setWidget(htmlDiffPanel);
+    }
+
+    @Override
+    public void showWaitingFromRenderedDiff() {
+        this.getPanel().setWidget(spinner);
+        this.isDisplayingRevisions = false;
+    }
+
+    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
+		document.open('text/html', 'replace');
+		document.write(content);
+		document.close();
+
+	}-*/;
+
     @Override
     public PushButton getDone() {
         return done;
@@ -511,101 +536,9 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         results.redraw();
     }
 
-    @Override
-    public void displayHTMLDiff(@NotNull final Integer echo1, @NotNull final Integer echo2) {
-        try {
-            LOGGER.info("ENTER TopicRevisionsView.displayHTMLDiff()");
-
-            renderedHTML = new ArrayList<String>();
-
-            final VerticalPanel verticalPanel = new VerticalPanel();
-
-            final Frame frame1 = new Frame();
-            frame1.setVisible(false);
-            frame1.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
-
-            final Frame frame2 = new Frame();
-            frame2.setVisible(false);
-            frame2.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
-
-            verticalPanel.add(frame1);
-            verticalPanel.add(frame2);
-
-            htmlDiffParent.setWidget(verticalPanel);
-            this.getPanel().setWidget(htmlDiffPanel);
-
-        } finally {
-            LOGGER.info("EXIT TopicRevisionsView.displayHTMLDiff()");
-        }
-    }
-
-    public void saveRenderedHTML(@NotNull final String html) {
-        try {
-            LOGGER.info("ENTER TopicRevisionsView.saveRenderedHTML()");
-
-            /*
-                This will be null when we add the diffed HTML, because it still has the javascript
-                postmessage callback.
-             */
-            if (renderedHTML != null) {
-                renderedHTML.add(html);
-
-                if (renderedHTML.size() == 2) {
-                    final String diff = diffHTML(renderedHTML.get(0), renderedHTML.get(1));
-                    final Frame htmlDiff = new Frame();
-                    htmlDiff.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_HTML_DIFF_FRAME);
-                    htmlDiffParent.setWidget(htmlDiff);
-
-                    final IFrameElement iFrameElement = htmlDiff.getElement().cast();
-                    writeHTMLToIFrame(iFrameElement.getContentDocument(), diff);
-
-                    isDisplayingRevisions = false;
-
-                    renderedHTML = null;
-                }
-            }
-        } finally {
-            LOGGER.info("EXIT TopicRevisionsView.saveRenderedHTML()");
-        }
-    }
-
-    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
-		document.open('text/html', 'replace');
-		document.write(content);
-		document.close();
-
-	}-*/;
 
 
-    @NotNull
-    private native String diffHTML(@NotNull final String html1, @NotNull final String html2) /*-{
-        var diff = $wnd.htmldiff(html1, html2);
-        return diff;
-    }-*/;
 
-    /**
-     * The listener hold a reference to this, which will prevent it from being reclaimed by the GC.
-     * So here we remove the listener.
-     */
-    public native void removeListener() /*-{
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener != null) {
-			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener);
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener = null;
-		}
-	}-*/;
 
-    private native void createEventListener() /*-{
-		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener =
-			function (me) {
-				return function displayAfterLoaded(event) {
-                    if (event.data != 'loaded') {
-                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::saveRenderedHTML(Ljava/lang/String;)(event.data);
-                    }
-				};
-			}(this);
-	}-*/;
 
-    private native void addEventListener() /*-{
-		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRevisionsView::listener);
-	}-*/;
 }

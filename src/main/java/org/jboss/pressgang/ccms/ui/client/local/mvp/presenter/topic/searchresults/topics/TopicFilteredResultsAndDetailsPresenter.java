@@ -1777,6 +1777,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
+        /*
+            When switching from the revisions view, make sure there are no unsaved changes.
+         */
         if (displayedView != topicRevisionsComponent.getDisplay() &&
                 lastDisplayedView == topicRevisionsComponent.getDisplay() &&
                 !topicRevisionsComponent.getDisplay().isDisplayingRevisions()) {
@@ -1790,6 +1793,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
+
+            /*
+                If the user moved away from the revisions screen, return to the revision list. This is a safety net
+                in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
+             */
+            topicRevisionsComponent.getDisplay().displayRevisions();
         }
 
         flushChanges();
@@ -2024,7 +2033,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
                                                                 @Override
                                                                 public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display display) {
-                                                                    topicRevisionsComponent.getDisplay().displayHTMLDiff(retValue.value, retValue2.value);
+                                                                    topicRevisionsComponent.renderXML(retValue.value, retValue2.value);
                                                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }
                                                             }, true);

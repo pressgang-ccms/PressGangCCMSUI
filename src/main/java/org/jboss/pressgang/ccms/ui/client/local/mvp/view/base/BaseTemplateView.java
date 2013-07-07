@@ -175,6 +175,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
 
+    /**
+     * A hidden element that displays can attach elements to that need to be in the DOM to work (like iFrames)
+     * but that should not be seen.
+     */
+    private final HorizontalPanel hiddenAttachmentArea = new HorizontalPanel();
+
+    @Override
+    public HorizontalPanel getHiddenAttachmentArea() {
+        return hiddenAttachmentArea;
+    }
+
     @Override
     public PushButton getMonitoring() {
         return monitoring;
@@ -528,6 +539,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
+
+        /*
+            Add the hidden DOM attachment area
+         */
+        hiddenAttachmentArea.setVisible(false);
+        topLevelLayoutPanel.addSouth(hiddenAttachmentArea, 0);
 
         /* Set the second level layout */
         secondLevelLayoutPanel.addStyleName(CSSConstants.Template.SECOND_LEVEL_LAYOUT_PANEL);

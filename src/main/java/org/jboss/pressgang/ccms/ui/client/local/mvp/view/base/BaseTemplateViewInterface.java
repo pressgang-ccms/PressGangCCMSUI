@@ -367,4 +367,10 @@ public interface BaseTemplateViewInterface {
      * @param widget The widget to add.
      */
     void addLocalActionButton(@NotNull final Widget widget);
+
+    /**
+     * @return The hidden DOM element that can be used as a parent for other elements
+     * that need to be attached but hidden.
+     */
+    HorizontalPanel getHiddenAttachmentArea();
 }

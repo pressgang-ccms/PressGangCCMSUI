@@ -1,13 +1,19 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -21,6 +27,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -67,15 +75,20 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
 
-        void displayHTMLDiff(Integer echo1, Integer echo2);
+        void displayHtmlDiff(String htmlDiff);
 
+        /**
+         *
+         * @return true if the view is displaying the list of revisions, and false if
+         * it is in any other state (i.e. showing or in the process of showing a diff).
+         */
         boolean isDisplayingRevisions();
 
         boolean isButtonsEnabled();
 
         void setButtonsEnabled(boolean buttonsEnabled);
 
-        void removeListener();
+        void showWaitingFromRenderedDiff();
     }
 
     /**
@@ -87,6 +100,31 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
      * History token
      */
     public static final String HISTORY_TOKEN = "TopicHistoryView";
+
+    /**
+     * The start of the IDs assigned to the iFrames that are used to render the XML.
+     */
+    private static final String FRAME_ID_PREFIX = "TempRenderingFrame";
+    private static final String CURRENT_FRAME_ID_PREFIX = "Current" + FRAME_ID_PREFIX;
+    private static final String COMPARE_FRAME_ID_PREFIX = "Compare" + FRAME_ID_PREFIX;
+
+    private static int tempIFrameCount = 0;
+
+    /**
+     * The message listener for HTML5 message passing
+     */
+    private JavaScriptObject listener;
+
+    /**
+     * Saves the html rendered by the XML frames when diffing the rendered html of two revisions
+     */
+    private String renderedHTML1, renderedHTML2;
+
+    /**
+     * The frames that will host the XML to be converted to HTML.
+     */
+    private Frame currentXML, comparedXML;
+
 
     private String topicId;
 
@@ -117,11 +155,13 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     @Override
     public void close() {
-        display.removeListener();
+        removeListener();
     }
 
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
+        createEventListener();
+        addEventListener();
     }
 
     @Override
@@ -166,5 +206,95 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         };
         return provider;
     }
+
+    public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2) {
+        display.showWaitingFromRenderedDiff();
+
+        currentXML = new Frame();
+        comparedXML = new Frame();
+
+        final IFrameElement currentXMLIFrameElement = currentXML.getElement().cast();
+        final IFrameElement comparedXMLXMLIFrameElement = comparedXML.getElement().cast();
+
+        ++tempIFrameCount;
+
+        currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
+        comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
+
+        currentXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
+        comparedXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
+
+        /*
+            iFrames have to be attached to the DOM to load their pages
+         */
+        display.getHiddenAttachmentArea().add(currentXML);
+        display.getHiddenAttachmentArea().add(comparedXML);
+    }
+
+    private void displayRenderedHTML() {
+        try {
+            LOGGER.info("ENTER TopicRevisionsView.saveRenderedHTML()");
+
+            /*
+                Check isDisplayingRevisions() here because the user may have
+                moved off the view.
+             */
+            if (renderedHTML1 != null && renderedHTML2 != null && !display.isDisplayingRevisions()) {
+                final String diff = diffHTML(renderedHTML1, renderedHTML2);
+
+                renderedHTML1 = renderedHTML2 = null;
+                currentXML = comparedXML = null;
+                display.getHiddenAttachmentArea().clear();
+
+                display.displayHtmlDiff(diff);
+            }
+        } finally {
+            LOGGER.info("EXIT TopicRevisionsView.saveRenderedHTML()");
+        }
+    }
+
+    @NotNull
+    private native String diffHTML(@NotNull final String html1, @NotNull final String html2) /*-{
+		var diff = $wnd.htmldiff(html1, html2);
+		return diff;
+	}-*/;
+
+    /**
+     * The listener hold a reference to this, which will prevent it from being reclaimed by the GC.
+     * So here we remove the listener.
+     */
+    public native void removeListener() /*-{
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener != null) {
+			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter::listener);
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener = null;
+		}
+	}-*/;
+
+    private native void createEventListener() /*-{
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener =
+			function (me) {
+				return function displayAfterLoaded(event) {
+
+                    // Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
+                    // This ensures that the diff ordering is correct
+
+                    var currentIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::CURRENT_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
+					var compareIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::COMPARE_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
+
+                    if (event.source.id == currentIFrameID) {
+						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
+                    } else if (event.source.id == compareIFrameID) {
+						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
+					}
+
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::displayRenderedHTML()();
+
+				};
+			}(this);
+	}-*/;
+
+    private native void addEventListener() /*-{
+		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener);
+	}-*/;
 
 }
