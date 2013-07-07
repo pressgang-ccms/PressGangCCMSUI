@@ -390,6 +390,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         this.getPanel().setWidget(searchResultsPanel);
 
+        spinner.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_SPINNER);
+
 
     }
 
@@ -477,13 +479,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         final Frame diffFrame = new Frame();
         diffFrame.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_HTML_DIFF_FRAME);
         htmlDiffParent.setWidget(diffFrame);
+        this.getPanel().setWidget(htmlDiffPanel);
 
         final IFrameElement iFrameElement = diffFrame.getElement().cast();
         writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
 
         isDisplayingRevisions = false;
-
-        this.getPanel().setWidget(htmlDiffPanel);
     }
 
     @Override

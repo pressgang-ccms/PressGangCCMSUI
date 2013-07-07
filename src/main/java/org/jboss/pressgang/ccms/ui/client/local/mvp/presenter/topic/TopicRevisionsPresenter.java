@@ -213,8 +213,27 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2, @NotNull final Panel hiddenAttach) {
         display.showWaitingFromRenderedDiff();
 
+        /*
+            Clean up the temporary data if they weren't cleaned up in displayRenderedHTML() (which could happen
+            if the user switches away from the revisions view before the rendered diff is displayed).
+         */
+        renderedHTML1 = renderedHTML2 = null;
+        if (currentXML != null) {
+            currentXML.removeFromParent();
+        }
+
+        if (comparedXML != null) {
+            comparedXML.removeFromParent();
+        }
+
         currentXML = new Frame();
         comparedXML = new Frame();
+
+        /*
+            iFrames have to be attached to the DOM to load their pages
+         */
+        hiddenAttach.add(currentXML);
+        hiddenAttach.add(comparedXML);
 
         final IFrameElement currentXMLIFrameElement = currentXML.getElement().cast();
         final IFrameElement comparedXMLXMLIFrameElement = comparedXML.getElement().cast();
@@ -226,12 +245,6 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         currentXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
         comparedXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
-
-        /*
-            iFrames have to be attached to the DOM to load their pages
-         */
-        hiddenAttach.add(currentXML);
-        hiddenAttach.add(comparedXML);
     }
 
     private void displayRenderedHTML() {
@@ -286,9 +299,9 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                     var currentIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::CURRENT_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
 					var compareIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::COMPARE_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
 
-                    if (event.source.id == currentIFrameID) {
+                    if (event.source.frameElement.id == currentIFrameID) {
 						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
-                    } else if (event.source.id == compareIFrameID) {
+                    } else if (event.source.frameElement.id == compareIFrameID) {
 						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
 					}
 

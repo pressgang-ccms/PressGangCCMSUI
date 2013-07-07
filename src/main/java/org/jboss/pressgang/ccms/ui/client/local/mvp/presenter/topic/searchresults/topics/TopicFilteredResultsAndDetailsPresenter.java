@@ -287,6 +287,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
+        topicRevisionsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+
         bindTagButtons();
 
         /* Bind logic to the revisions buttons */

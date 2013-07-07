@@ -65,7 +65,7 @@ div[class^='badword'] {
     background-color: rgba(245, 255, 0, 0.2);
 }
 
-.TopicTagViewSpinner {
+.TopicTagViewSpinner, .TopicRevisionViewSpinner {
     position: relative;
     margin: auto;
     top: 0;
