@@ -31,6 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -552,7 +553,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     final RESTLanguageImageCollectionItemV1 selectedImage = imageComponent.getDisplay().getEditor()
                             .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
-                    Window.open(Constants.REST_SERVER + "/1/image/get/raw/" +
+                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage.getItem().getLocale(),
                             null, null);
                 }

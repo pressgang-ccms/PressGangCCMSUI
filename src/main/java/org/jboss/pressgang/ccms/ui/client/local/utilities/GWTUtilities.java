@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -33,7 +34,11 @@ final public class GWTUtilities {
     }
 
     public static String getLocalUrl() {
-        return Window.Location.getProtocol() + "//" + Window.Location.getHost() + Window.Location.getPath();
+        return Window.Location.getProtocol() + "//" + Window.Location.getHost();
+    }
+
+    public static String getLocalUrlEncoded() {
+        return URL.encode(Window.Location.getProtocol() + "//" + Window.Location.getHost());
     }
 
     /**

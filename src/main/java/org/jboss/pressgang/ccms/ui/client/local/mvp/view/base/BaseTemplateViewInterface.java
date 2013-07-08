@@ -278,6 +278,11 @@ public interface BaseTemplateViewInterface {
      */
     @NotNull
     PushButton getClose();
+    /**
+     * @return The list of available servers.
+     */
+    @NotNull
+    ListBox getServers();
 
     /**
      * All calls to addWaitOperation() should be matched by a call to removeWaitOperation() when

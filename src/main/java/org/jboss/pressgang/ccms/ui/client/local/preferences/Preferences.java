@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
  */
 final public class Preferences {
     /**
+     * Saves the server that the UI should connect to.
+     */
+    public static final String SERVER = "Server";
+    /**
      * Saves the last entered username in the topic save log message dialog box.
      */
     public static final String LOG_MESSAGE_USERNAME = "LogMessageUsername";

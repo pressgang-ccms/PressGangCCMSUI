@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -175,11 +176,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
 
         /* the id will be null for new topics */
         if (value.getId() != null) {
-            final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
-            final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
+            final String detailsURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
+            final String xmlURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 
             final String idString = value.getId().toString();
-            String webDAV = Constants.BASE_URL + "/webdav/TOPICS/";
+            String webDAV = ServerDetails.getSavedServer().getRestUrl() + "/webdav/TOPICS/";
             for (int i = 0; i < idString.length(); ++i) {
                 webDAV += idString.charAt(i) + "/";
             }

@@ -413,7 +413,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public void setRevisionTopic(final RESTTopicV1 revisionTopic) {
+    public void setRevisionTopic(@NotNull final RESTTopicV1 revisionTopic) {
         this.revisionTopic = revisionTopic;
     }
 
@@ -423,6 +423,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         return viewButton;
     }
 
+    @NotNull
     @Override
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
         return provider;
@@ -446,7 +447,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public void display(@NotNull final RESTTopicV1 topic, final boolean readOnly) {
         this.mainTopic = topic;
     }
 
@@ -460,7 +461,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * Display a mergely diff viewer.
      * <p/>
      * For mergely to display properly, it has to be attached when the parent element is attached to the DOM. If you
-     * attach megely when the parent is detached, it will not resize properly.
+     * attach mergely when the parent is detached, it will not resize properly.
      *
      * @param lhs         The text for the left hand side
      * @param lhsReadOnly true if the left hand side is read only, and false otherwise
@@ -500,11 +501,13 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
 	}-*/;
 
+    @NotNull
     @Override
     public PushButton getDone() {
         return done;
     }
 
+    @NotNull
     @Override
     public PushButton getHTMLDone() {
         return htmlDone;
@@ -516,6 +519,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         return mergely;
     }
 
+    @NotNull
     @Override
     public PushButton getCancel() {
         return cancel;
@@ -532,7 +536,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public void setButtonsEnabled(boolean buttonsEnabled) {
+    public void setButtonsEnabled(final boolean buttonsEnabled) {
         this.buttonsEnabled = buttonsEnabled;
         results.redraw();
     }

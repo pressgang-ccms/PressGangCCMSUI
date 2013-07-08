@@ -13,7 +13,9 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -77,6 +79,26 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         return false;
     }
 
+    private void bindServerSelector() {
+        display.getServers().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(@NotNull final ChangeEvent event) {
+                final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
+
+                final String serverIdString = display.getServers().getValue(display.getServers().getSelectedIndex());
+                Preferences.INSTANCE.saveSetting(Preferences.SERVER, serverIdString);
+
+                final ServerDetails newServerSettings = ServerDetails.getSavedServer();
+
+                if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name()).replace("$2", newServerSettings.getServerType().name()));
+                    Window.Location.reload();
+                }
+            }
+        });
+    }
+
+
     /**
      * Called to bind the UI elements to event handlers.
      */
@@ -135,14 +157,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getReports().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.BIRT_URL, "_blank", "");
+                Window.open(ServerDetails.getSavedServer().getReportUrl(), "_blank", "");
             }
         });
 
         display.getMonitoring().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.MONITORING_URL, "_blank", "");
+                Window.open(ServerDetails.getSavedServer().getMonitoringUrl(), "_blank", "");
             }
         });
 
@@ -187,7 +209,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        @NotNull final ClickHandler closeAdvancedMenu = new ClickHandler() {
+        final ClickHandler closeAdvancedMenu = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
@@ -341,8 +363,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         this.display = display;
         this.helpTopicId = topicId;
 
-        this.setFeedbackLink(pageId);
-        this.bindStandardButtons();
+        setFeedbackLink(pageId);
+        bindStandardButtons();
+        bindServerSelector();
 
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {
