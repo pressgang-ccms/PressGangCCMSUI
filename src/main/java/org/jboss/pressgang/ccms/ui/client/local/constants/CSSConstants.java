@@ -181,6 +181,14 @@ public interface CSSConstants {
          * Assigned to the panel that holds the filter options for images.
          */
         String FILTERED_OPTIONS_PANEL = "FilteredOptionsPanel";
+        /**
+         * Assigned to the table that holds the list of results.
+         */
+        String FILTERED_RESULTS_TABLE = "FilteredResultsTable";
+        /**
+         * Assigned to the selected row of the table that holds the list of results.
+         */
+        String FILTERED_RESULTS_TABLE_SELECTED_ROW = "FilteredResultsTableSelectedRow";
     }
 
     interface OrderedChildrenResultsView {

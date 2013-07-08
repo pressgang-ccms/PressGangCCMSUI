@@ -761,3 +761,12 @@ html {
     width: 100%;
     box-sizing: border-box;
 }
+
+tr.FilteredResultsTableSelectedRow {
+    background-color: #0072C6;
+    color: white;
+}
+
+tr[class*='FilteredResultsTableSelectedRow']>td {
+    border-color: #0072C6;
+}

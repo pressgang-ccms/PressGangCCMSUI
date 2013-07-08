@@ -1,8 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults;
 
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SingleSelectionModel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -55,9 +61,24 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
 
         create = UIUtilities.createPushButton(createLabel);
 
+        // Configure the selector to display the selected result
+        final SingleSelectionModel<V> selectionModel = new SingleSelectionModel<V>();
+        results.setSelectionModel(selectionModel);
+        results.setRowStyles(new RowStyles<V>() {
+            @Override
+            public String getStyleNames(V row, int rowIndex) {
+                if (selectionModel.isSelected(row)) {
+                    return CSSConstants.FilteredResultsView.FILTERED_RESULTS_TABLE_SELECTED_ROW;
+                } else {
+                    return null;
+                }
+            }
+        });
+
         searchResultsPanel.addStyleName(CSSConstants.FilteredResultsView.FILTERED_RESULTS_PANEL);
         filterTable.addStyleName(CSSConstants.FilteredResultsView.FILTERED_OPTIONS_PANEL);
         tabPanel.addStyleName(CSSConstants.Template.FILTERED_RESULTS_TAB_MENU_TABLE);
+        results.addStyleName(CSSConstants.FilteredResultsView.FILTERED_RESULTS_TABLE);
 
         this.addActionButton(entitySearch);
         this.addActionButton(create);
