@@ -14,7 +14,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ImageID());
 
-    private final TextBox id = new TextBox();
+    private final SimpleIntegerBox id = new SimpleIntegerBox();
     /**
      * A text area to represent the description field.
      */
@@ -119,7 +119,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     @Override
     public void setValue(final RESTImageV1 value) {
         this.value = value;
-        this.id.setText(value.getId().toString());
+        this.id.setValue(value.getId());
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
         this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
 
