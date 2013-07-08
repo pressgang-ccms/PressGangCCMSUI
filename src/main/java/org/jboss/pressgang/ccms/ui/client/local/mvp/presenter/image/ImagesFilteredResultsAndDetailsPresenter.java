@@ -588,8 +588,14 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     for (@NotNull final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
-                            existingLanguageImageItem = langImage;
-                            break;
+                            if (existingLanguageImageItem.returnIsRemoveItem()) {
+                                // The language item exists but isn't displayed because it was set for removal
+                                existingLanguageImageItem = langImage;
+                                break;
+                            } else {
+                                // The language already exists so just return
+                                return;
+                            }
                         }
                     }
                 }
