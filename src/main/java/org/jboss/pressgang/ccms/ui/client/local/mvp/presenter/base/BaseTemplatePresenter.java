@@ -8,6 +8,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
@@ -89,6 +90,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 Preferences.INSTANCE.saveSetting(Preferences.SERVER, serverIdString);
 
                 final ServerDetails newServerSettings = ServerDetails.getSavedServer();
+
+                RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
 
                 if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
                     Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name()).replace("$2", newServerSettings.getServerType().name()));
