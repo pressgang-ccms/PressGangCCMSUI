@@ -319,7 +319,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
 
                             /* Update the displayed topic */
                             searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setDisplayedItem(collectionItem.clone(true));
-                            searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setSelectedItem(collectionItem);
+                            searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().setSelectedItem(collectionItem);
 
                             /* if filter.getId() == null, we created a new filter */
                             searchFilterResultsAndFilterPresenter.updateDisplayWithNewEntityData(filter.getId() == null);

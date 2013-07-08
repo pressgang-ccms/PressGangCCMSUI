@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.view.client.SingleSelectionModel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -102,7 +103,8 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
                 checkState(this.providerData.getSelectedItem().getItem().getId() != null, "The entity collection item needs to have a valid entity with a valid id");
 
                 if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId())) {
-                    this.providerData.setSelectedItem(filteredResultEntity);
+                    setSelectedItem(filteredResultEntity);
+
                     break;
                 }
             }
@@ -132,5 +134,20 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      */
     protected String encodeQueryParameter(final String value) {
         return Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(value) : value;
+    }
+
+    /**
+     * Sets the selected item in the Filtered Results.
+     *
+     * @param selectedItem
+     */
+    public void setSelectedItem(@Nullable final V selectedItem) {
+        getProviderData().setSelectedItem(selectedItem);
+        if (selectedItem == null) {
+            final SingleSelectionModel<V> selectionModel = (SingleSelectionModel<V>) getDisplay().getResults().getSelectionModel();
+            selectionModel.clear();
+        } else {
+            getDisplay().getResults().getSelectionModel().setSelected(selectedItem, true);
+        }
     }
 }

@@ -427,7 +427,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         or it will remain referencing the returned value here if the query doesn't actually
                                         return the topic that was saved.
                                      */
-                                    filteredResultsPresenter.getProviderData().setSelectedItem(contentSpecCollectionItem);
+                                    filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
 
                                     /*
                                         Show the invalid text if required. Also fix up the selected item, because this is what
@@ -626,7 +626,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             // the topic won't show up in the list of topics until it is saved, so the
             // selected item is null
-            filteredResultsPresenter.getProviderData().setSelectedItem(null);
+            filteredResultsPresenter.setSelectedItem(null);
 
             // the new topic is being displayed though, so we set the displayed item
             filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);

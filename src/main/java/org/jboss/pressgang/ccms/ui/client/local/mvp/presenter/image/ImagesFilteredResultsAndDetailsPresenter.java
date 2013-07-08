@@ -711,8 +711,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                                     final RESTImageCollectionItemV1 selectedImageCollectionItem = new
                                                             RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));
-                                                    imageFilteredResultsComponent.getProviderData().setSelectedItem(
-                                                            selectedImageCollectionItem);
+                                                    imageFilteredResultsComponent.setSelectedItem(selectedImageCollectionItem);
 
                                                     final RESTImageCollectionItemV1 displayedImageCollectionItem = new
                                                             RESTImageCollectionItemV1();

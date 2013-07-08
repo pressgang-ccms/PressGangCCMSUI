@@ -55,6 +55,8 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * The provider used to populate the cell table
      */
     private EnhancedAsyncDataProvider<V> provider;
+    
+    private final SingleSelectionModel<V> selectionModel = new SingleSelectionModel<V>();
 
     public BaseFilteredResultsView(@NotNull final String applicationName, @NotNull final String pageName, final String createLabel) {
         super(applicationName, pageName);
@@ -62,7 +64,6 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
         create = UIUtilities.createPushButton(createLabel);
 
         // Configure the selector to display the selected result
-        final SingleSelectionModel<V> selectionModel = new SingleSelectionModel<V>();
         results.setSelectionModel(selectionModel);
         results.setRowStyles(new RowStyles<V>() {
             @Override

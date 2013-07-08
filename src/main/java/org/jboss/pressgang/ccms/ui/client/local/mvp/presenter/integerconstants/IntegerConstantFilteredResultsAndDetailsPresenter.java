@@ -1,5 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.integerEquals;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -29,14 +40,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.integerconstant.RESTIn
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.List;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
  * The presenter used to display a list of integer constants and their details.
@@ -200,7 +203,7 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
                 displayedEntity.setId(Constants.NULL_ID);
                 final RESTIntegerConstantCollectionItemV1 displayedTagWrapper = new RESTIntegerConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
-                integerConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
+                integerConstantFilteredResultsPresenter.setSelectedItem(selectedTagWrapper);
                 integerConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                 updateViewsAfterNewEntityLoaded();

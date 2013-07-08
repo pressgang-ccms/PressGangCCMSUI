@@ -41,4 +41,6 @@ public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollect
      * @param queryString The query string that is passed to the REST interface
      */
     void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
+
+    void setSelectedItem(@Nullable final V selectedItem);
 }

@@ -276,7 +276,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                     // Update the displayed file
                     fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem.clone(true));
-                    fileFilteredResultsComponent.getProviderData().setSelectedItem(fileCollectionItem);
+                    fileFilteredResultsComponent.setSelectedItem(fileCollectionItem);
                 }
 
                 updateDisplayWithNewEntityData(newEntity);
@@ -787,7 +787,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                                     // the file won't show up in the list of files until it is saved, so the
                                     // selected item is null
-                                    fileFilteredResultsComponent.getProviderData().setSelectedItem(null);
+                                    fileFilteredResultsComponent.setSelectedItem(null);
 
                                     // the new file is being displayed though, so we set the displayed item
                                     fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
