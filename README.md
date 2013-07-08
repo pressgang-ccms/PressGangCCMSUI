@@ -97,3 +97,5 @@ To define the jboss-public and oss-public repos, include the following in ~/.m2/
 			</profile>
 		</profiles>
 	</settings>
+
+This project uses HTMLDiff.js - https://github.com/tnwinc/htmldiff.js

@@ -34,7 +34,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
         public RESTLanguageImageV1Editor create(final int index) {
             @NotNull final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this,
                     index);
-            RESTLanguageImageCollectionV1Editor.this.add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
+            add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
             return editor;
         }
 
@@ -46,7 +46,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
         @Override
         public void setIndex(@NotNull final RESTLanguageImageV1Editor subEditor, final int index) {
             subEditor.removeFromParent();
-            RESTLanguageImageCollectionV1Editor.this.insert(subEditor, index);
+            insert(subEditor, index);
         }
     }
 

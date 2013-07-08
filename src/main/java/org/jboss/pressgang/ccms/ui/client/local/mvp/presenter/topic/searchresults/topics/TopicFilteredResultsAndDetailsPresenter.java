@@ -63,6 +63,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -305,6 +306,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(),
                 topicViewComponent.getDisplay(), getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(),
                 getDisplay(), getNewEntityCallback);
+
+        topicRevisionsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
         bindTagButtons();
 
@@ -931,6 +934,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             });
 
+            topicRevisionsComponent.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicRevisionsComponent.getDisplay().displayRevisions();
+                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
+
+                }
+            });
+
             topicRevisionsComponent.getDisplay().getCancel().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
@@ -1065,7 +1077,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             // create the topic, and add to the wrapper
                                             topicCollectionItem.setItem(retValue);
 
-                                                        /* Update the displayed topic */
+                                            /* Update the displayed topic */
                                             getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
 
                                             /*
@@ -1090,7 +1102,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                         getSearchResultsComponent().getProviderData().getItems().size());
                                                 updateDisplayWithNewEntityData(false);
                                             } else {
-                                                        /* Update the selected topic */
+                                                /* Update the selected topic */
                                                 LOGGER.log(Level.INFO, "Redisplaying query");
                                                 updateDisplayWithNewEntityData(true);
                                             }
@@ -1098,9 +1110,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             LOGGER.log(Level.INFO, "Refreshing editor");
                                             if (getTopicXMLComponent().getDisplay().getEditor() != null) {
                                                 getTopicXMLComponent().getDisplay().getEditor().redisplay();
-                                                        /*
-                                                            This forces the xml validation to rehighlight the invalid rows
-                                                         */
+                                                /*
+                                                    This forces the xml validation to rehighlight the invalid rows
+                                                 */
                                                 getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                             }
 
@@ -1144,22 +1156,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 Collections.sort(retValue.getRevisions().getItems(),
                                                         new RESTTopicCollectionItemV1RevisionSort());
 
-                                                        /*
-                                                            If no changes were made to the topic itself (i.e. we just update some children),
-                                                            then the revision number will not change. So if what is sent back has the same
-                                                            revision number as the topic we were editing,
-                                                            then we have not overwritten background
-                                                            changes.
+                                                /*
+                                                    If no changes were made to the topic itself (i.e. we just update some children),
+                                                    then the revision number will not change. So if what is sent back has the same
+                                                    revision number as the topic we were editing,
+                                                    then we have not overwritten background
+                                                    changes.
 
-                                                            Note that this should not happen because we don't actually just update the
-                                                            property tags;
-                                                            any change to the property tag value results in the mapping being deleted and
-                                                             recreated.
+                                                    Note that this should not happen because we don't actually just update the
+                                                    property tags;
+                                                    any change to the property tag value results in the mapping being deleted and
+                                                     recreated.
 
-                                                            The code is left here as a reminder that some additional checking might be
-                                                            required with
-                                                            new children that are exposed through the UI.
-                                                        */
+                                                    The code is left here as a reminder that some additional checking might be
+                                                    required with
+                                                    new children that are exposed through the UI.
+                                                */
                                                 if (retValue.getRevisions().getItems().size() >= 1) {
                                                     final Integer overwriteRevision = retValue.getRevisions().getItems().get(
                                                             retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
@@ -1170,10 +1182,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     overwroteChanges = !originalRevision.equals(overwriteRevision);
                                                 }
 
-                                                        /*
-                                                            Otherwise we need to make sure that the second last revision matches the
-                                                            revision of the topic we were editing.
-                                                         */
+                                                /*
+                                                    Otherwise we need to make sure that the second last revision matches the
+                                                    revision of the topic we were editing.
+                                                 */
                                                 if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                             /* Get the second last revision (the last one is the current one) */
                                                     final Integer overwriteRevision = retValue.getRevisions().getItems().get(
@@ -1182,19 +1194,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " +
                                                             overwriteRevision);
 
-                                                            /*
-                                                             * if the second last revision doesn't match the revision of the topic when
-                                                             * editing was
-                                                             * started, then we have overwritten someone elses changes
-                                                             */
+                                                    /*
+                                                     * if the second last revision doesn't match the revision of the topic when
+                                                     * editing was
+                                                     * started, then we have overwritten someone elses changes
+                                                     */
                                                     overwroteChanges = !originalRevision.equals(overwriteRevision);
                                                 }
                                             }
 
-                                                    /* Update the displayed topic */
+                                            /* Update the displayed topic */
                                             retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
                                                     true);
-                                                    /* Update the selected topic */
+                                            /* Update the selected topic */
                                             retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(),
                                                     true);
 
@@ -1203,7 +1215,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             updateDisplayWithNewEntityData(false);
 
                                             if (overwroteChanges) {
-                                                        /* Take the user to the revisions view so they can review any overwritten changes */
+                                                /* Take the user to the revisions view so they can review any overwritten changes */
                                                 switchView(topicRevisionsComponent.getDisplay());
                                                 Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                             } else {
@@ -1216,9 +1228,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                             if (getTopicXMLComponent().getDisplay().getEditor() != null) {
                                                 getTopicXMLComponent().getDisplay().getEditor().redisplay();
-                                                        /*
-                                                            This forces the xml validation to rehighlight the invalid rows
-                                                         */
+                                                /*
+                                                    This forces the xml validation to rehighlight the invalid rows
+                                                 */
                                                 getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                             }
                                         }
@@ -1563,89 +1575,88 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * The worker that continuously checks the XML will stop when checkingXML is set to false.
      */
     private native void stopCheckingXMLAndCloseThread() /*-{
-        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML = false;
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker != null) {
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.terminate();
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = null;
-        }
-    }-*/;
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML = false;
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker != null) {
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.terminate();
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = null;
+		}
+	}-*/;
 
     private native void checkXML(@NotNull final String dtd) /*-{
-        var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
-        var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
-        var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
+		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 
-        if (worker == null) {
-            worker = new Worker('javascript/xmllint/xmllint.js');
-            worker.addEventListener('message', function (me) {
-                return function (e) {
-                    var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-                    var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+		if (worker == null) {
+			worker = new Worker('javascript/xmllint/xmllint.js');
+			worker.addEventListener('message', function (me) {
+				return function (e) {
+					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+					var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
 
-                    var theseErrors = e.data;
-                    var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
-                    if (oldErrors != theseErrors) {
-                        // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
-                        // message, and is removed before being displayed.
-                        var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
-                        if (errorMessage.length == 0) {
-                            var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
-                            var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
-                            errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
-                        } else {
-                            errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
-                        }
+					var theseErrors = e.data;
+					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+					if (oldErrors != theseErrors) {
+						// "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
+						// message, and is removed before being displayed.
+						var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
+						if (errorMessage.length == 0) {
+							var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+							var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
+						} else {
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
+						}
 
-                        var errorLineRegex = /topic.xml:(\d+):/g;
-                        var match = null;
-                        var lineNumbers = [];
-                        while (match = errorLineRegex.exec(theseErrors)) {
-                            if (match.length >= 1) {
-                                var line = parseInt(match[1]) - 1;
-                                var found = false;
-                                for (var i = 0, lineNumbersLength = lineNumbers.length; i < lineNumbersLength; ++i) {
-                                    if (lineNumbers[i] == line) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (!found) {
-                                    lineNumbers.push(line);
-                                }
-                            }
-                        }
+						var errorLineRegex = /topic.xml:(\d+):/g;
+						var match = null;
+						var lineNumbers = [];
+						while (match = errorLineRegex.exec(theseErrors)) {
+							if (match.length >= 1) {
+								var line = parseInt(match[1]) - 1;
+								var found = false;
+								for (var i = 0, lineNumbersLength = lineNumbers.length; i < lineNumbersLength; ++i) {
+									if (lineNumbers[i] == line) {
+										found = true;
+										break;
+									}
+								}
+								if (!found) {
+									lineNumbers.push(line);
+								}
+							}
+						}
 
-                        if (editor != null) {
-                            editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)
-                                (lineNumbers, "xmlerror");
-                        }
-                    }
+						if (editor != null) {
+							editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)(lineNumbers, "xmlerror");
+						}
+					}
 
-                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
-                }
-            }(this),
-                false);
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+				}
+			}(this),
+			false);
 
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
-        }
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
+		}
 
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
-            var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-            if (editor != null) {
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
+			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 if (text == worker.lastXML) {
-                    $wnd.setTimeout(function (me) {
-                        return function () {
-                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
-                        };
-                    }(this), 250);
+					$wnd.setTimeout(function(me) {
+                        return function(){
+							me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+						};
+					}(this), 250);
                 } else {
-                    worker.lastXML = text;
-                    worker.postMessage({xml: text, schema: dtd});
+					worker.lastXML = text;
+					worker.postMessage({xml: text, schema: dtd});
                 }
-            }
-        }
-    }-*/;
+			}
+		}
+	}-*/;
 
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
@@ -1870,20 +1881,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
+        /*
+            When switching from the revisions view, make sure there are no unsaved changes.
+         */
         if (displayedView != topicRevisionsComponent.getDisplay() &&
                 lastDisplayedView == topicRevisionsComponent.getDisplay() &&
                 !topicRevisionsComponent.getDisplay().isDisplayingRevisions()) {
 
-            checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "Mergely should be loaded.");
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
-            if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem()
-                    .getRevision()) {
-                if (!topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
+            if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
+                if (topicRevisionsComponent.getDisplay().getMergely() != null &&
+                        !topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
+
+            /*
+                If the user moved away from the revisions screen, return to the revision list. This is a safety net
+                in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
+             */
+            topicRevisionsComponent.getDisplay().displayRevisions();
         }
 
         flushChanges();
@@ -2116,6 +2135,49 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 }
             });
+
+            topicRevisionsComponent.getDisplay().getHTMLDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+
+                    topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
+
+                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                            topicRevisionsComponent.getDisplay(),
+                            new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                                @Override
+                                public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display waitDisplay) {
+                                    checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+
+                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
+                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
+                                                @Override
+                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
+                                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
+                                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
+                                                                @Override
+                                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
+                                                                    topicRevisionsComponent.renderXML(retValue.value, retValue2.value, display.getHiddenAttachmentArea());
+                                                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                                                                }
+                                                            }, true);
+
+                                                    RESTCalls.holdXml(callback2, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml());
+                                                }
+                                            }, true);
+
+                                    RESTCalls.holdXml(callback1, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + revisionTopic.getXml());
+
+
+
+                                }
+                            });
+                    RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
+
+                }
+            });
+
+
         } finally {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
         }
@@ -2281,7 +2343,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     // the topic won't show up in the list of topics until it is saved, so the
                     // selected item is null
                     getSearchResultsComponent().setSelectedItem(null);
-
 
                     // the new topic is being displayed though, so we set the displayed item
                     getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem);

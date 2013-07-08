@@ -309,6 +309,9 @@ public interface PressGangCCMSUI extends Constants {
     String Diff();
 
     @NotNull
+    String HTMLDiff();
+
+    @NotNull
     String NoXML();
 
     @NotNull

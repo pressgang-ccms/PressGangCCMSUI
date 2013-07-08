@@ -126,6 +126,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
+
+
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
             @Override

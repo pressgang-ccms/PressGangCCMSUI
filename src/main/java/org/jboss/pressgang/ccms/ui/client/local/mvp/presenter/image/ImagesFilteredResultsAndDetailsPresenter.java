@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
@@ -220,31 +221,32 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 "There should be a displayed collection item.");
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
-        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null,
-                "The displayed collection item to reference a valid entity and have a valid id");
 
-        final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
-                display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(@NotNull final RESTImageV1 retValue,
-                    @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
-                checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
+        // If the displayed item isn't a new image then load the additional data
+        if (!imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
+            final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                    display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
+                @Override
+                public void doSuccessAction(@NotNull final RESTImageV1 retValue,
+                        @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                    checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
 
-                /*
-                 * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
-                 * http://code.google.com/p/chromium/issues/detail?id=56588
-                 */
-                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                    /*
+                     * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
+                     * http://code.google.com/p/chromium/issues/detail?id=56588
+                     */
+                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
-                finishLoading();
-            }
-        });
+                    finishLoading();
+                }
+            });
 
-        RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
+            RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
+        }
     }
 
     @NotNull
-    private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
+    private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback(final boolean newEntity) {
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
@@ -253,15 +255,28 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         "There should be a displayed collection item.");
                 checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                         "The displayed collection item to reference a valid entity.");
-                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null,
-                        "There should be a selected collection item.");
-                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
-                        "The selected collection item to reference a valid entity.");
 
-                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-                initializeViews();
-                updateDisplayWithNewEntityData(false);
+                if (!newEntity) {
+                    checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null,
+                            "There should be a selected collection item.");
+                    checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
+                            "The selected collection item to reference a valid entity.");
+
+                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
+                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                } else {
+                    final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
+                    imageCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                    // create the image, and add to the wrapper
+                    imageCollectionItem.setItem(retValue);
+
+                    // Update the displayed image
+                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem.clone(true));
+                    imageFilteredResultsComponent.setSelectedItem(imageCollectionItem);
+                }
+
+                updateDisplayWithNewEntityData(newEntity);
 
                 Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
             }
@@ -353,8 +368,6 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                             "There should be a displayed collection item.");
                                     checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                                             "The displayed collection item to reference a valid entity.");
-                                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null,
-                                            "The displayed collection item to reference a valid entity and have a valid id");
 
                                     final String result = reader.getStringResult();
                                     final byte[] buffer = GWTUtilities.getByteArray(result, 1);
@@ -370,21 +383,34 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     updateImage.explicitSetDescription(
                                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
+                                    // Create the language image item
+                                    final RESTLanguageImageCollectionItemV1 updatedLanguageImageItem = editor.self.clone(false);
+
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
                                     updatedLanguageImage.setId(editor.self.getItem().getId());
+                                    updatedLanguageImage.explicitSetLocale(editor.self.getItem().getLocale());
                                     updatedLanguageImage.explicitSetImageData(buffer);
                                     updatedLanguageImage.explicitSetFilename(file.getName());
+                                    updatedLanguageImageItem.setItem(updatedLanguageImage);
 
                                     /* Add the language image */
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                                    updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
+                                    updateImage.getLanguageImages_OTM().getItems().add(updatedLanguageImageItem);
 
-                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
-                                            BaseTemplateViewInterface>(
-                                            display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback());
+                                    if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
+                                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
+                                                BaseTemplateViewInterface>(
+                                                display, getDefaultImageRestCallback(true), getDefaultImageRestFailureCallback());
 
-                                    RESTCalls.updateImage(callback, updateImage);
+                                        RESTCalls.createImage(callback, updateImage);
+                                    } else {
+                                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
+                                                BaseTemplateViewInterface>(
+                                                display, getDefaultImageRestCallback(false), getDefaultImageRestFailureCallback());
+
+                                        RESTCalls.updateImage(callback, updateImage);
+                                    }
                                 } finally {
                                     display.removeWaitOperation();
                                 }
@@ -409,16 +435,33 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     "There should be a displayed collection item.");
             checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                     "The displayed collection item to reference a valid entity.");
-            checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null,
-                    "There should be a selected collection item.");
-            checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
-                    "The selected collection item to reference a valid entity.");
 
             imageComponent.getDisplay().getDriver().flush();
 
-            return !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
-                    imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
-                    imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+            final RESTImageV1 displayedImage = imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
+            if (imageFilteredResultsComponent.getProviderData().getSelectedItem() == null) {
+                if (!GWTUtilities.isStringNullOrEmpty(displayedImage.getDescription())) {
+                    return true;
+                }
+            } else {
+                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null,
+                        "There should be a selected collection item.");
+                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
+                        "The selected collection item to reference a valid entity.");
+
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(
+                        imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
+                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription())) {
+                    return true;
+                }
+            }
+
+            // If there are any modified language images in the image, we have unsaved changes
+            if (displayedImage.getLanguageImages_OTM() != null && !displayedImage.getLanguageImages_OTM()
+                    .returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+                return true;
+            }
         }
         return false;
     }
@@ -445,6 +488,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                             "The displayed collection item to reference a valid entity.");
 
+                    final RESTImageV1 sourceImage = imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
                     /*
                      * Create the image to be modified. This is so we don't send off unnessessary data.
                      */
@@ -453,10 +498,23 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     updateImage.explicitSetDescription(
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
-                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                            display, getDefaultImageRestCallback());
+                    if (sourceImage.getLanguageImages_OTM() != null && sourceImage.getLanguageImages_OTM().getItems() != null) {
+                        updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                        updateImage.getLanguageImages_OTM().setItems(
+                                sourceImage.getLanguageImages_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                    }
+                    
+                    if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
+                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                                display, getDefaultImageRestCallback(true), getDefaultImageRestFailureCallback());
 
-                    RESTCalls.updateImage(callback, updateImage);
+                        RESTCalls.createImage(callback, updateImage);
+                    } else {
+                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                                display, getDefaultImageRestCallback(false), getDefaultImageRestFailureCallback());
+
+                        RESTCalls.updateImage(callback, updateImage);
+                    }
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
@@ -489,29 +547,19 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                 .languageImages_OTMEditor().itemsEditor().getList().get(
                                 selectedTab);
 
-                        /* Adding or removing a locale will save changes to the description */
-                        imageComponent.getDisplay().getDriver().flush();
+                        // Change the state to removed and remove the tab from the view
+                        if (selectedImage.returnIsAddItem()) {
+                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().getItems
+                                    ().remove(selectedImage);
+                        } else {
+                            selectedImage.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                        }
+                        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
+                                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
+                                        .returnExistingAddedAndUpdatedCollectionItems());
 
-                        /*
-                         * Create the image to be modified. This is so we don't send off unnessessary data.
-                         */
-                        final RESTImageV1 updateImage = new RESTImageV1();
-                        updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        updateImage.explicitSetDescription(
-                                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-
-                        /* Create the language image */
-                        final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                        languageImage.setId(selectedImage.getItem().getId());
-
-                        /* Add the langauge image */
-                        updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                        updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
-
-                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                display, getDefaultImageRestCallback());
-
-                        RESTCalls.updateImage(callback, updateImage);
+                        // Rebind the upload buttons
+                        bindImageUploadButtons();
                     }
                 }
             }
@@ -541,29 +589,18 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
                 }
 
-                /* Adding or removing a locate will also save any changes to the description */
-                imageComponent.getDisplay().getDriver().flush();
-
-                /*
-                 * Create the image to be modified. This is so we don't send off unnessessary data.
-                 */
-                final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateImage.explicitSetDescription(
-                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-
-                /* Create the language image */
+                // Add the new language image to the displayed image
                 final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
                 languageImage.explicitSetLocale(selectedLocale);
+                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().addNewItem(
+                        languageImage);
 
-                /* Add the langauge image */
-                updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                updateImage.getLanguageImages_OTM().addNewItem(languageImage);
+                imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
+                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
+                                .returnExistingAddedAndUpdatedCollectionItems());
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
-                        getDefaultImageRestCallback());
-
-                RESTCalls.updateImage(callback, updateImage);
+                // Rebind the upload buttons
+                bindImageUploadButtons();
             }
         });
 
@@ -591,8 +628,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                     Window.open(Constants.REST_SERVER + "/1/image/get/raw/" +
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage
-                            .getItem().getLocale(),
-                            null, null);
+                            .getItem().getLocale(), null, null);
                 }
             }
         });
@@ -615,8 +651,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     final String searchQuery = "images/" + docbookFileName;
 
                     eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants
-                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
+                            Constants.QUERY_PATH_SEGMENT_PREFIX + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants
+                                    .TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
                                     searchQuery) : searchQuery), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 
@@ -691,45 +727,27 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                                     checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
 
-                                    /* When we have the default locale, create a new image */
+                                    // Create the image wrapper
+                                    final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
+                                    imageCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+
+                                    // When we have the default locale, create a new image
                                     final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
                                     langImage.explicitSetLocale(retValue.getValue());
 
                                     final RESTImageV1 newImage = new RESTImageV1();
                                     newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     newImage.getLanguageImages_OTM().addNewItem(langImage);
+                                    imageCollectionItem.setItem(newImage);
 
-                                    final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1,
-                                            ImagesFilteredResultsAndDetailsPresenter.Display>(
-                                            display,
-                                            new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter
-                                                    .Display>() {
-                                                @Override
-                                                public void doSuccessAction(@NotNull final RESTImageV1 retValue,
-                                                        @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                                    // the image won't show up in the list of files until it is saved, so the
+                                    // selected item is null
+                                    imageFilteredResultsComponent.setSelectedItem(null);
 
-                                                    final RESTImageCollectionItemV1 selectedImageCollectionItem = new
-                                                            RESTImageCollectionItemV1();
-                                                    selectedImageCollectionItem.setItem(retValue.clone(false));
-                                                    imageFilteredResultsComponent.setSelectedItem(selectedImageCollectionItem);
+                                    // the new image is being displayed though, so we set the displayed item
+                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem);
 
-                                                    final RESTImageCollectionItemV1 displayedImageCollectionItem = new
-                                                            RESTImageCollectionItemV1();
-                                                    displayedImageCollectionItem.setItem(retValue.clone(false));
-                                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(
-                                                            displayedImageCollectionItem);
-
-                                                    initializeViews();
-
-                                                    /* Display the entities property view */
-                                                    switchView(imageComponent.getDisplay());
-
-                                                    /* Reload the filtered results view */
-                                                    updateDisplayWithNewEntityData(true);
-                                                }
-                                            });
-
-                                    RESTCalls.createImage(imageCallback, newImage);
+                                    updateViewsAfterNewEntityLoaded();
                                 }
                             });
 

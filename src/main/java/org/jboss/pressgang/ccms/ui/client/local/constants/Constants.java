@@ -214,6 +214,11 @@ public final class Constants {
     public static final String DOCBOOK_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single.xsl'?>";
 
     /**
+     * The reference to the XSL file that will post back the rendered HTML, to be added to any XML being rendered by the browser
+     */
+    public static final String DOCBOOK_DIFF_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-diff.xsl'?>";
+
+    /**
      * The reference to the XSL file with placeholder images, to be added to any XML being rendered by the browser
      */
     public static final String DOCBOOK_PLACEHOLDER_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-placeholder.xsl'?>";

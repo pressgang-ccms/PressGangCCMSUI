@@ -13,12 +13,16 @@
     <link rel="stylesheet" type="text/css" href="javascript/contextmenu/jquery.contextmenu.css">
     <link rel="stylesheet" type="text/css" href="javascript/mergely/codemirror.css">
     <link rel="stylesheet" type="text/css" href="javascript/mergely/mergely.css">
-    <link rel="stylesheet" type="text/css" href="javascript/mergely/eclipse.css">
     <script type="text/javascript">
         // Turn off remote communication in the client bus
         erraiBusRemoteCommunicationEnabled = false;
     </script>
     <script type="text/javascript" src="app/app.nocache.js"></script>
+    <!--
+        Including this before the others means that we expose the function htmldiff on the window object. Including
+        it after something like ace means that it will add itself as a requirejs module.
+    -->
+    <script src="javascript/htmldiff/htmldiff.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/ace/theme-eclipse.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/ace/mode-xml.js" type="text/javascript" charset="utf-8"></script>
@@ -29,6 +33,7 @@
     <script src="javascript/contextmenu/jquery.contextmenu.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/mergely/mergely.js" type="text/javascript" charset="utf-8"></script>
     <script src="javascript/mergely/codemirror.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
 <body>
 <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
