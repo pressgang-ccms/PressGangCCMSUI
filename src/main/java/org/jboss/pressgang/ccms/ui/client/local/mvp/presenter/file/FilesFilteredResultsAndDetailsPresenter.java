@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
@@ -617,9 +618,10 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         } else {
                             selectedFile.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
                         }
-                        fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().setValue(
-                                fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
-                                        .returnExistingAddedAndUpdatedCollectionItems());
+
+                        // Remove the language file from the display and remove add the locale back to the locale dialog list
+                        fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().getList().remove(selectedFile);
+                        fileComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedFile.getItem().getLocale());
 
                         // Rebind the file upload buttons
                         bindFileUploadButtons();
@@ -643,23 +645,40 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         fileComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 // Don't add locales twice
+                RESTLanguageFileCollectionItemV1 existingLanguageFileItem = null;
                 if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null) {
                     for (@NotNull final RESTLanguageFileCollectionItemV1 langFile : fileFilteredResultsComponent.getProviderData()
-                            .getDisplayedItem().getItem().getLanguageFiles_OTM().returnExistingAndAddedCollectionItems()) {
+                            .getDisplayedItem().getItem().getLanguageFiles_OTM().getItems()) {
                         if (langFile.getItem().getLocale().equals(selectedLocale)) {
-                            return;
+                            existingLanguageFileItem = langFile;
+                            break;
                         }
                     }
                 }
 
-                // Add the new language file to the displayed file
-                final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
-                languageFile.explicitSetLocale(selectedLocale);
-                fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM().addNewItem(languageFile);
+                final RESTLanguageFileCollectionItemV1 languageFileItem;
+                if (existingLanguageFileItem == null) {
+                    // Add the new language file to the displayed file
+                    languageFileItem = new RESTLanguageFileCollectionItemV1();
+                    languageFileItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
-                fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().setValue(
-                        fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
-                                .returnExistingAddedAndUpdatedCollectionItems());
+                    final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
+                    languageFile.explicitSetLocale(selectedLocale);
+                    languageFileItem.setItem(languageFile);
+                    fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM().addNewItem(languageFile);
+                } else {
+                    // Change the state from removed to updated or added
+                    languageFileItem = existingLanguageFileItem;
+                    if (languageFileItem.getItem().getId() == null) {
+                        languageFileItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    } else {
+                        languageFileItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    }
+                }
+
+                // Add the language file to the display and remove the locale from the locale dialog list
+                fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().getList().add(languageFileItem);
+                fileComponent.getDisplay().getAddLocaleDialog().getLocales().removeItem(fileComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 // Rebind the file upload buttons
                 bindFileUploadButtons();
