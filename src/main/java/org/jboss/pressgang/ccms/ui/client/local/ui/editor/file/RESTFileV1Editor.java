@@ -5,7 +5,10 @@ import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentFileV1;
@@ -19,7 +22,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
 
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.FileID());
 
-    private final TextBox id = new TextBox();
+    private final SimpleIntegerBox id = new SimpleIntegerBox();
     /**
      * A text area to represent the description field.
      */
@@ -59,8 +62,12 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     public RESTFileV1Editor() {
         this.addStyleName(CSSConstants.FileView.FILE_VIEW_PARENT_DOCK_PANEL);
 
-        fileName.setReadOnly(true);
-        filePath.setReadOnly(true);
+        // The panel used to hole the file path label and text box
+        final HorizontalPanel filePathPanel = new HorizontalPanel();
+        filePathPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        filePathPanel.add(new Label("files/"));
+        filePathPanel.add(filePath);
+
         id.setReadOnly(true);
         explodeArchive.setEnabled(false);
 
@@ -80,7 +87,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         fileDetails.setWidget(2, 0, fileNameLabel);
         fileDetails.setWidget(2, 1, fileName);
         fileDetails.setWidget(3, 0, filePathLabel);
-        fileDetails.setWidget(3, 1, filePath);
+        fileDetails.setWidget(3, 1, filePathPanel);
         fileDetails.setWidget(4, 0, explodeArchiveLabel);
         fileDetails.setWidget(4, 1, explodeArchive);
 
@@ -106,6 +113,8 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     @Override
     public void flush() {
         value.setDescription(description.getText());
+        value.setFileName((fileName.getText()));
+        value.setFilePath((filePath.getText()));
         if (explodeArchive.isEnabled()) {
             value.setExplodeArchive(explodeArchive.getValue());
         }
@@ -120,14 +129,14 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     @Override
     public void setValue(final RESTFileV1 value) {
         this.value = value;
-        id.setText(value.getId().toString());
+        id.setValue(value.getId());
         fileName.setText(value.getFileName());
         filePath.setText(value.getFilePath());
         if (ComponentFileV1.isArchive(value)) {
-            explodeArchive.setEnabled(false);
-        } else {
             explodeArchive.setEnabled(true);
             explodeArchive.setValue(value.getExplodeArchive());
+        } else {
+            explodeArchive.setEnabled(false);
         }
     }
 

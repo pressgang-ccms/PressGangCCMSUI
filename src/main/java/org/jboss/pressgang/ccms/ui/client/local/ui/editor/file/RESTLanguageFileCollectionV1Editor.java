@@ -24,7 +24,7 @@ public final class RESTLanguageFileCollectionV1Editor extends TabLayoutPanel imp
             .of(new LanguageFileEditorSource());
 
     /**
-     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor.
+     * The EditorSource is used to create and organise the Editors that go into a ListEditor.
      *
      * @author Matthew Casperson
      */
@@ -56,6 +56,6 @@ public final class RESTLanguageFileCollectionV1Editor extends TabLayoutPanel imp
 
     public RESTLanguageFileCollectionV1Editor() {
         super(2, Unit.EM);
-        this.addStyleName(CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_TAB_PANEL);
+        addStyleName(CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_TAB_PANEL);
     }
 }

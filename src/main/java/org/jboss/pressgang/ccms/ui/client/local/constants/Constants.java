@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307041659";
+    public static final String VERSION = "201307081315";
 
     /**
      * XML Mime type
@@ -184,8 +184,12 @@ public final class Constants {
      -----------------------------------------------------------------------------------------------------------------*/
 
     public static final String BIRT_URL = null; //LOCAL_BIRT_URL;
-    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
-    public static final String BASE_URL = LOCAL_REST_SERVER;
+    public static final String BASE_URL = "../pressgang-ccms";
+    public static final String MONITORING_URL = BASE_URL + "/monitoring";
+
+//    public static final String BIRT_URL = null; //LOCAL_BIRT_URL;
+//    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
+//    public static final String BASE_URL = LOCAL_REST_SERVER;
 
 //    public static final String BASE_URL = DEV_REST_SERVER;
 //    public static final String BIRT_URL = DEV_BIRT_URL;

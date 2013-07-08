@@ -101,6 +101,11 @@ div[class^='badword'] {
     height: 5em;
 }
 
+.BulkFileUploadDescriptionField {
+    width: 320px;
+    height: 5em;
+}
+
 /*
     The div referenced here is created by a scroll panel. We need to set it's height so
     the action buttons don't decrease in side when the horizontal scroll bar is present.
@@ -649,7 +654,7 @@ html {
     overflow: auto !important;
 }
 
-.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText {
+.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText, .FileViewDescriptionText {
     width: 100%;
     height: 5em;
     box-sizing: border-box;
@@ -702,4 +707,57 @@ html {
     padding: 0px;
     text-align: center;
 
+}
+
+.FileViewLanguageFileUploadButtonsCell {
+    height: 3em;
+}
+
+.FileViewFilenameLabel {
+    white-space: nowrap;
+}
+
+.FileViewParentDockPanel {
+    height: 100%;
+    width: 100%;
+}
+
+.FileViewParentDockPanel>tbody>tr:nth-child(2)>td {
+    height: 100%;
+}
+
+.FileViewLanguageFileTabPanel {
+    height: 100%;
+    width: 100%;
+}
+
+.FileViewLanguageFileTab {
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+}
+
+.FileViewLanguageFileTab td {
+    vertical-align: top;
+}
+
+.FileViewDetailsTable td {
+    vertical-align: top;
+}
+
+.FileViewLanguageFileTabPanel>div:nth-child(3)>div>div {
+    overflow: auto !important;
+}
+
+.FileViewDescriptionTextCell {
+    width: 100%;
+}
+
+.FileViewDescriptionLabelCell {
+    white-space: nowrap;
+}
+
+.FileViewFilenameText {
+    width: 100%;
+    box-sizing: border-box;
 }
