@@ -94,7 +94,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
 
                 if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name()).replace("$2", newServerSettings.getServerType().name()));
+                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name().replaceAll("_", " ")).replace("$2", newServerSettings.getServerType().name().replaceAll("_", " ")));
                     Window.Location.reload();
                 }
             }

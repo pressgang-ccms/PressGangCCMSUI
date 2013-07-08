@@ -23,9 +23,24 @@ public class ServerDetails {
     private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local);
 
     /**
+     * A HA test server.
+     */
+    private static final  ServerDetails HATEST1 = new  ServerDetails(4, "HA Test Server 1", "http://10.64.15.224:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+
+    /**
+     * A HA test server.
+     */
+    private static final  ServerDetails HATEST2 = new  ServerDetails(5, "HA Test Server 2", "http://10.64.15.218:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+
+    /**
+     * A HA test server.
+     */
+    private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://10.64.15.215:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+
+    /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] SERVERS = new ServerDetails[] {BNE_PRODUCTION, BNE_DEVELOPMENT, LOCAL};
+    public static final ServerDetails[] SERVERS = new ServerDetails[] {BNE_PRODUCTION, BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3};
 
     /**
      *
