@@ -173,6 +173,7 @@ abstract public class BaseSearchAndEditView<
         splitPanel.clear();
         if (displaySearchResults) {
             splitPanel.addWest(resultsViewLayoutPanel, fixedSearchResultsWidth);
+            splitPanel.setWidgetMinSize(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
         }
         if (callback != null) {
             callback.addToCompassPoints();

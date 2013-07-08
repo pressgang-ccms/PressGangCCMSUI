@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
@@ -410,7 +412,14 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         addLocalActionButton(this.showInvisibles);
 
         /* Add the projects */
-        this.getPanel().setWidget(getVerticalPanel());
+        this.getPanel().setWidget(verticalPanel);
+
+        verticalPanel.addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(@NotNull final ResizeEvent event) {
+
+            }
+        });
     }
 
     @Override
@@ -429,7 +438,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
 
     @Override
     public void initialize(final int splitHeight) {
-        this.getVerticalPanel().addSouth(this.getXmlErrors(), splitHeight);
+        this.getVerticalPanel().addSouth(xmlErrors, splitHeight);
+        this.getVerticalPanel().setWidgetMinSize(xmlErrors, Constants.MINIMUM_SPLIT_SIZE);
         /*
         * We don't add the editor here, because it is null. Instead we add
         * a panel to hold the editor. Adding null here causes all sorts

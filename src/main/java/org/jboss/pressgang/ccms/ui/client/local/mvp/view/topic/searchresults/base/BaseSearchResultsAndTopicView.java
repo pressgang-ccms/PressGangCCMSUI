@@ -256,6 +256,7 @@ public abstract class BaseSearchResultsAndTopicView<
         // add the filtered results panel
         getSplitPanel().clear();
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
+        getSplitPanel().setWidgetMinSize(this.getResultsViewLayoutPanel(), Constants.MINIMUM_SPLIT_SIZE);
 
         this.populateTopActionBar();
     }
@@ -288,8 +289,10 @@ public abstract class BaseSearchResultsAndTopicView<
 
                 if (splitType == SplitType.HORIZONTAL) {
                     getSplitPanel().addSouth(renderedPanelParent, fixedRenderedPanelSize);
+                    getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 } else if (splitType == SplitType.VERTICAL) {
                     getSplitPanel().addEast(renderedPanelParent, fixedRenderedPanelSize);
+                    getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 }
             }
         });

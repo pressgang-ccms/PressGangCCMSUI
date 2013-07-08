@@ -31,7 +31,7 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
 
     public void setSplitPosition(@NotNull final Widget widgetBeforeTheSplitter, final double size, final boolean animate) {
         if (this.getChildren().contains(widgetBeforeTheSplitter)) {
-            @NotNull final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
+            final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
             layout.oldSize = layout.size;
             layout.size = size;
             if (animate) {
@@ -42,7 +42,8 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
         }
     }
 
-    public double getSplitPosition(@NotNull final Widget widgetBeforeTheSplitter) {
-        return ((LayoutData) widgetBeforeTheSplitter.getLayoutData()).size;
+    public double getSplitPosition(@NotNull final Widget widget) {
+        return ((LayoutData) widget.getLayoutData()).size;
     }
+
 }
