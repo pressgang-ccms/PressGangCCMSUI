@@ -227,7 +227,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 "The displayed collection item to reference a valid entity.");
 
         // If the displayed item isn't a new file then load the additional data
-        if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null) {
+        if (!fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
             final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>(
                     display, new BaseRestCallback.SuccessAction<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
                 @Override
@@ -235,10 +235,10 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
                     checkArgument(retValue.getLanguageFiles_OTM() != null, "The file should have the language file children populated.");
 
-                            /*
-                             * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
-                             * http://code.google.com/p/chromium/issues/detail?id=56588
-                             */
+                    /*
+                     * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
+                     * http://code.google.com/p/chromium/issues/detail?id=56588
+                     */
                     retValue.cloneInto(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
                     finishLoading();
@@ -412,13 +412,13 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
                                         final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1,
                                                 BaseTemplateViewInterface>(
-                                                display, getDefaultFileRestCallback(true));
+                                                display, getDefaultFileRestCallback(true), getDefaultFileRestFailureCallback());
 
                                         RESTCalls.createFile(callback, updateFile);
                                     } else {
                                         final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1,
                                                 BaseTemplateViewInterface>(
-                                                display, getDefaultFileRestCallback(false));
+                                                display, getDefaultFileRestCallback(false), getDefaultFileRestFailureCallback());
 
                                         RESTCalls.updateFile(callback, updateFile);
                                     }
@@ -611,37 +611,18 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                 selectedTab);
 
                         // Change the state to removed and remove the tab from the view
-                        selectedFile.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                        if (selectedFile.returnIsAddItem()) {
+                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM().getItems()
+                                    .remove(selectedFile);
+                        } else {
+                            selectedFile.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                        }
                         fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().setValue(
                                 fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
                                         .returnExistingAddedAndUpdatedCollectionItems());
 
-
-//                        /* Adding or removing a locale will save changes to the description */
-//                        fileComponent.getDisplay().getDriver().flush();
-//
-//                        /*
-//                         * Create the file to be modified. This is so we don't send off unnessessary data.
-//                         */
-//                        final RESTFileV1 updateFile = new RESTFileV1();
-//                        updateFile.setId(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-//                        updateFile.explicitSetDescription(
-//                                fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-//                        updateFile.explicitSetExplodeArchive(
-//                                fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getExplodeArchive());
-//
-//                        // Create the language file
-//                        final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
-//                        languageFile.setId(selectedFile.getItem().getId());
-//
-//                        // Add the language file
-//                        updateFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
-//                        updateFile.getLanguageFiles_OTM().addRemoveItem(languageFile);
-//
-//                        final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, BaseTemplateViewInterface>(display,
-//                                getDefaultFileRestCallback());
-//
-//                        RESTCalls.updateFile(callback, updateFile);
+                        // Rebind the file upload buttons
+                        bindFileUploadButtons();
                     }
                 }
             }
@@ -680,31 +661,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
                                 .returnExistingAddedAndUpdatedCollectionItems());
 
-//                // Adding or removing a locate will also save any changes to the description
-//                fileComponent.getDisplay().getDriver().flush();
-//
-//                /*
-//                 * Create the file to be modified. This is so we don't send off unnessessary data.
-//                 */
-//                final RESTFileV1 updateFile = new RESTFileV1();
-//                updateFile.setId(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-//                updateFile.explicitSetDescription(
-//                        fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-//                updateFile.explicitSetExplodeArchive(
-//                        fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getExplodeArchive());
-//
-//                // Create the language file
-//                final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
-//                languageFile.explicitSetLocale(selectedLocale);
-//
-//                // Add the language file
-//                updateFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
-//                updateFile.getLanguageFiles_OTM().addNewItem(languageFile);
-//
-//                final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, BaseTemplateViewInterface>(display,
-//                        getDefaultFileRestCallback());
-//
-//                RESTCalls.updateFile(callback, updateFile);
+                // Rebind the file upload buttons
+                bindFileUploadButtons();
             }
         });
 
