@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
@@ -550,13 +551,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         // Change the state to removed and remove the tab from the view
                         if (selectedImage.returnIsAddItem()) {
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().getItems
-                                    ().remove(selectedImage);
+                                    ().remove(
+                                    selectedImage);
                         } else {
                             selectedImage.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
                         }
-                        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
-                                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
-                                        .returnExistingAddedAndUpdatedCollectionItems());
+
+                        // Remove the language image from the display and re-add the locale to the locale dialog list
+                        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getList().remove(selectedImage);
+                        imageComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedImage.getItem().getLocale());
 
                         // Rebind the upload buttons
                         bindImageUploadButtons();
@@ -580,24 +583,42 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         imageComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
+                RESTLanguageImageCollectionItemV1 existingLanguageImageItem = null;
                 if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
                     for (@NotNull final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
-                            return;
+                            existingLanguageImageItem = langImage;
+                            break;
                         }
                     }
                 }
 
-                // Add the new language image to the displayed image
-                final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                languageImage.explicitSetLocale(selectedLocale);
-                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().addNewItem(
-                        languageImage);
+                final RESTLanguageImageCollectionItemV1 languageImageItem;
+                if (existingLanguageImageItem == null) {
+                    // Add the new language image to the displayed image
+                    languageImageItem = new RESTLanguageImageCollectionItemV1();
+                    languageImageItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
-                imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
-                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
-                                .returnExistingAddedAndUpdatedCollectionItems());
+                    final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                    languageImage.explicitSetLocale(selectedLocale);
+                    languageImageItem.setItem(languageImage);
+                    imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().addNewItem(
+                            languageImage);
+                } else {
+                    // Change the state from removed to added/updated
+                    languageImageItem = existingLanguageImageItem;
+                    if (languageImageItem.getItem().getId() == null) {
+                        languageImageItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    } else {
+                        languageImageItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    }
+                }
+
+                // Add the language image item to the display and remove the locale from the locale dialog list
+                imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getList().add(languageImageItem);
+                imageComponent.getDisplay().getAddLocaleDialog().getLocales().removeItem(
+                        imageComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 // Rebind the upload buttons
                 bindImageUploadButtons();
