@@ -650,8 +650,14 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     for (@NotNull final RESTLanguageFileCollectionItemV1 langFile : fileFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageFiles_OTM().getItems()) {
                         if (langFile.getItem().getLocale().equals(selectedLocale)) {
-                            existingLanguageFileItem = langFile;
-                            break;
+                            if (langFile.returnIsRemoveItem()) {
+                                // The language file exists, but has been removed from the display
+                                existingLanguageFileItem = langFile;
+                                break;
+                            } else {
+                                // The language file already exists so just return
+                                return;
+                            }
                         }
                     }
                 }
