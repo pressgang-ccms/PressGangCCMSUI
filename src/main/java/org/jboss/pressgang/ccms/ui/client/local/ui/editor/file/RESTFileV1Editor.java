@@ -32,6 +32,8 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
 
     private final TextBox filePath = new TextBox();
 
+    private final Label fullFilePath = new Label();
+
     private final CheckBox explodeArchive = new CheckBox();
 
     private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.FileDescription());
@@ -39,6 +41,8 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     private final Label fileNameLabel = new Label(PressGangCCMSUI.INSTANCE.FileName());
 
     private final Label filePathLabel = new Label(PressGangCCMSUI.INSTANCE.FilePath());
+
+    private final Label fullFilePathLabel = new Label(PressGangCCMSUI.INSTANCE.FullFilePath());
 
     private final Label explodeArchiveLabel = new Label(PressGangCCMSUI.INSTANCE.ExplodeFileArchive());
 
@@ -78,6 +82,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         fileName.addStyleName(CSSConstants.FileView.FILE_VIEW_FILENAME_TEXT);
         filePathLabel.addStyleName(CSSConstants.FileView.FILE_VIEW_FILE_PATH_LABEL);
         filePath.addStyleName(CSSConstants.FileView.FILE_VIEW_FILE_PATH_TEXT);
+        fullFilePath.addStyleName(CSSConstants.FileView.FILE_VIEW_FULL_FILE_PATH_LABEL);
         explodeArchiveLabel.setStyleName(CSSConstants.FileView.FILE_VIEW_EXPLODE_ARCHIVE_LABEL);
 
         fileDetails.setWidget(0, 0, idLabel);
@@ -88,8 +93,10 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         fileDetails.setWidget(2, 1, fileName);
         fileDetails.setWidget(3, 0, filePathLabel);
         fileDetails.setWidget(3, 1, filePathPanel);
-        fileDetails.setWidget(4, 0, explodeArchiveLabel);
-        fileDetails.setWidget(4, 1, explodeArchive);
+        fileDetails.setWidget(4, 0, fullFilePathLabel);
+        fileDetails.setWidget(4, 1, fullFilePath);
+        fileDetails.setWidget(5, 0, explodeArchiveLabel);
+        fileDetails.setWidget(5, 1, explodeArchive);
 
         fileDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.FileView.FILE_VIEW_ID_LABEL_CELL);
         fileDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.FileView.FILE_VIEW_ID_TEXT_CELL);
@@ -99,7 +106,9 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         fileDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.FileView.FILE_VIEW_FILENAME_TEXT_CELL);
         fileDetails.getCellFormatter().addStyleName(3, 0, CSSConstants.FileView.FILE_VIEW_FILE_PATH_LABEL_CELL);
         fileDetails.getCellFormatter().addStyleName(3, 1, CSSConstants.FileView.FILE_VIEW_FILE_PATH_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.FileView.FILE_VIEW_EXPLODE_ARCHIVE_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.FileView.FILE_VIEW_FULL_FILE_PATH_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(4, 1, CSSConstants.FileView.FILE_VIEW_FULL_FILE_PATH_TEXT_CELL);
+        fileDetails.getCellFormatter().addStyleName(5, 0, CSSConstants.FileView.FILE_VIEW_EXPLODE_ARCHIVE_LABEL_CELL);
 
         add(fileDetails, DockPanel.NORTH);
         add(languageFiles_OTM, DockPanel.CENTER);
@@ -132,6 +141,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         id.setValue(value.getId());
         fileName.setText(value.getFileName());
         filePath.setText(value.getFilePath());
+        fullFilePath.setText("files/" + (value.getFilePath() == null ? "" : value.getFilePath()) + value.getFileName());
         if (ComponentFileV1.isArchive(value)) {
             explodeArchive.setEnabled(true);
             explodeArchive.setValue(value.getExplodeArchive());

@@ -683,6 +683,22 @@ public interface CSSConstants {
          */
         String FILE_VIEW_FILE_PATH_TEXT_CELL = "FileViewFilePathTextCell";
         /**
+         * Assigned to the cell that holds the full file path label.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_LABEL = "FileViewFullFilePathLabel";
+        /**
+         * Assigned to the cell that holds the full file path text.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_TEXT = "FileViewFullFilePathText";
+        /**
+         * Assigned to the cell that holds the full file path label cell.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_LABEL_CELL = "FileViewFullFilePathLabelCell";
+        /**
+         * Assigned to the cell that holds the full file path text cell.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_TEXT_CELL = "FileViewFullFilePathTextCell";
+        /**
          * Assigned to the file description label.
          */
         String FILE_VIEW_DESCRIPTION_LABEL = "FileViewDescriptionLabel";

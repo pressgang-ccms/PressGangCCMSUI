@@ -966,6 +966,9 @@ public interface PressGangCCMSUI extends Constants {
     String FilePath();
 
     @NotNull
+    String FullFilePath();
+
+    @NotNull
     String FilePlaceholder();
 
     @NotNull
