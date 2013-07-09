@@ -2,9 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +49,37 @@ public final class FailOverRESTCallDatabase {
      * A topic with expanded property tags
      */
     private static final String TOPIC_PROPERTIES_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
+
+    /**
+     * A topic with expanded tags
+     */
+    private static final String TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
+            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
+            + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+
+    /**
+     * The required expansion details for a topic. This is used when loading a topic for the first time
+     */
+    private static final String TOPIC_EXPANSION_WO_REVISIONS =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                    "]}";
+
+    /**
+     * The required expansion details for a filter.
+     */
+    private static final String FILTER_EXPANSION =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.PROJECT_NAME + "\"}}" +
+                    "]}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
+                    "]}" +
+                    "]}";
 
     /**
      * Create a RESTCall object to call the REST holdXML method
@@ -327,6 +356,172 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + TOPIC_PROPERTIES_EXPANSION + "]}";
                 restService.getJSONTopicRevision(id, revision, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static final RESTCall getTopicWithTags(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+                restService.getJSONTopic(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTranslatedTopic method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONTranslatedTopic method
+     */
+    public static final RESTCall getTranslatedTopicWithTags(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+                restService.getJSONTranslatedTopic(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicRevision method
+     * @param id The entity ID
+     * @param revision The entity revision
+     * @return A RESTCall that can call the REST getJSONTopicRevision method
+     */
+    public static final RESTCall getTopicRevisionWithTags(@NotNull final Integer id, @NotNull final Integer revision) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+                restService.getJSONTopicRevision(id, revision, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
+     * @param
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static final RESTCall getTopic(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTopic(id, TOPIC_EXPANSION_WO_REVISIONS);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONImage method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONImage method
+     */
+    public static final RESTCall getImage(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                restService.getJSONImage(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONImage method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONImage method
+     */
+    public static final RESTCall getImageWithoutPreview(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
+                restService.getJSONImage(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONImage method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONImage method
+     */
+    public static final RESTCall getImageWithoutLanguageImages(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
+                restService.getJSONImage(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONImage method
+     * @param image The image to be updated
+     * @return A RESTCall that can call the REST updateJSONImage method
+     */
+    public static final RESTCall updateImage(@NotNull final RESTImageV1 image) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                restService.updateJSONImage(expand, image);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONImage method
+     * @param  image The image to be created
+     * @return A RESTCall that can call the REST createJSONImage method
+     */
+    public static final RESTCall createImage(@NotNull final RESTImageV1 image) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                restService.createJSONImage(expand, image);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONFilter method
+     * @param filter The filter to be created
+     * @return A RESTCall that can call the REST createJSONFilter method
+     */
+    public static final RESTCall createFilter(@NotNull final RESTFilterV1 filter) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONFilter(FILTER_EXPANSION, filter);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONFilter method
+     * @param filter The filter to be updated
+     * @return A RESTCall that can call the REST updateJSONFilter method
+     */
+    public static final RESTCall updateFilter(@NotNull final RESTFilterV1 filter) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONFilter(FILTER_EXPANSION, filter);
             }
         };
     }
