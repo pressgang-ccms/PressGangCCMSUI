@@ -19,6 +19,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -620,7 +622,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         }
 
                         // Remove the language file from the display and remove add the locale back to the locale dialog list
-                        fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().getList().remove(selectedFile);
+                        fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().setValue(
+                                fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
+                                        .returnExistingAddedAndUpdatedCollectionItems());
                         fileComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedFile.getItem().getLocale());
 
                         // Rebind the file upload buttons
@@ -695,6 +699,25 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             @Override
             public void onClick(final ClickEvent event) {
                 fileComponent.getDisplay().getAddLocaleDialog().getDialogBox().hide();
+            }
+        });
+    }
+
+    private void bindLanguageFileTabPanelEvents() {
+        fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(final BeforeSelectionEvent<Integer> event) {
+                final int curSelectedIndex = fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().getSelectedIndex();
+                if (curSelectedIndex >= 0) {
+                    final RESTLanguageFileV1Editor editor = fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor()
+                            .getEditors().get(curSelectedIndex);
+
+                    if (editor.getUpload().getFiles() != null && editor.getUpload().getFiles().getLength() > 0) {
+                        if (!Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedFileUploadPrompt())) {
+                            event.cancel();
+                        }
+                    }
+                }
             }
         });
     }
@@ -944,5 +967,6 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
         }
 
         bindFileUploadButtons();
+        bindLanguageFileTabPanelEvents();
     }
 }

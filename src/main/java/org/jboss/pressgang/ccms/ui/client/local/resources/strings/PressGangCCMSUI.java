@@ -994,4 +994,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String DownloadFile();
+
+    @NotNull
+    String UnsavedImageUploadPrompt();
+
+    @NotNull
+    String UnsavedFileUploadPrompt();
 }

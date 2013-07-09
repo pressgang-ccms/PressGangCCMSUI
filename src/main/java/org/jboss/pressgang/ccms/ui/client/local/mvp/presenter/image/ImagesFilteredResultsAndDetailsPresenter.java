@@ -18,6 +18,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
@@ -558,7 +560,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         }
 
                         // Remove the language image from the display and re-add the locale to the locale dialog list
-                        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getList().remove(selectedImage);
+                        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
+                                imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
+                                        .returnExistingAddedAndUpdatedCollectionItems());
                         imageComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedImage.getItem().getLocale());
 
                         // Rebind the upload buttons
@@ -683,6 +687,25 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     searchQuery) : searchQuery), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 
+            }
+        });
+    }
+
+    private void bindLanguageImageTabPanelEvents() {
+        imageComponent.getDisplay().getEditor().languageImages_OTMEditor().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(final BeforeSelectionEvent<Integer> event) {
+                final int curSelectedIndex = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().getSelectedIndex();
+                if (curSelectedIndex >= 0) {
+                    final RESTLanguageImageV1Editor editor = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor()
+                            .getEditors().get(curSelectedIndex);
+
+                    if (editor.getUpload().getFiles() != null && editor.getUpload().getFiles().getLength() > 0) {
+                        if (!Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedImageUploadPrompt())) {
+                            event.cancel();
+                        }
+                    }
+                }
             }
         });
     }
@@ -942,5 +965,6 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         }
 
         bindImageUploadButtons();
+        bindLanguageImageTabPanelEvents();
     }
 }
