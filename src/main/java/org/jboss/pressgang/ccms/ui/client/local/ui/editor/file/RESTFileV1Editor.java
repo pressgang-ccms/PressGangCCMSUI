@@ -68,9 +68,11 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
 
         // The panel used to hole the file path label and text box
         final HorizontalPanel filePathPanel = new HorizontalPanel();
+        filePathPanel.setWidth("100%");
         filePathPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         filePathPanel.add(new Label("files/"));
         filePathPanel.add(filePath);
+        filePathPanel.setCellWidth(filePath, "100%");
 
         id.setReadOnly(true);
         explodeArchive.setEnabled(false);
