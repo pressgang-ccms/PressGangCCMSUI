@@ -49,6 +49,10 @@ public interface CSSConstants {
          */
         String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
         /**
+         * Assigned to the textbox that is used for the quick search query.
+         */
+        String QUICK_SEARCH_TEXT_BOX = "QuickSearchTextBox";
+        /**
          * Assigned to the panel that holds the page title and quick search buttons
          */
         String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";

@@ -574,6 +574,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
         quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        quickSearchQuery.addStyleName(CSSConstants.Template.QUICK_SEARCH_TEXT_BOX);
 
         final HorizontalPanel quickSearchPanel = new HorizontalPanel();
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);

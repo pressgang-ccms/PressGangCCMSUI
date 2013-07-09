@@ -360,6 +360,10 @@ html {
     font-size: medium;
 }
 
+.QuickSearchTextBox {
+    margin-right: 10px;
+}
+
 .ProjectsLayout, .CategoriesLayout {
     height: 100%;
 }
@@ -494,7 +498,6 @@ html {
 
 .TopicViewLabel, .FilterViewLabel {
     white-space: nowrap;
-    vertical-align: top;
 }
 
 .TopicXMLViewPanel {
@@ -741,10 +744,6 @@ html {
     vertical-align: top;
 }
 
-.FileViewDetailsTable td {
-    vertical-align: top;
-}
-
 .FileViewLanguageFileTabPanel>div:nth-child(3)>div>div {
     overflow: auto !important;
 }
@@ -777,4 +776,22 @@ tr.FilteredResultsTableSelectedRow {
 
 tr[class*='FilteredResultsTableSelectedRow']>td {
     border-color: #0072C6;
+}
+
+textarea {
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-top: 1px solid #999;
+}
+
+input[type="text"] {
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-top: 1px solid #999;
+    font-size: small;
+}
+
+input[type="text"].-readonly, .gwt-TextBox-readonly {
+    color: rgb(100, 100, 100);
+    background-color: rgb(233, 233, 233);
 }
