@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
@@ -78,6 +79,15 @@ public final class FailOverRESTCallDatabase {
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
+                    "]}" +
+                    "]}";
+
+    private static final String TOPIC_TAG_EXPANSION =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
+                    "]}" +
                     "]}" +
                     "]}";
 
@@ -522,6 +532,115 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONFilter(FILTER_EXPANSION, filter);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONFiltersWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONFiltersWithQuery method
+     */
+    public static final RESTCall getFiltersFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONFiltersWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONFilter method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONFilter method
+     */
+    public static final RESTCall getFilter(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONFilter(id, FILTER_EXPANSION);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicRevision method
+     * @param id The entity ID
+     * @param revision The entity revision
+     * @return A RESTCall that can call the REST getJSONTopicRevision method
+     */
+    public static final RESTCall getTopicRevision(@NotNull final Integer id, @NotNull final Integer revision) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTopicRevision(id, revision, TOPIC_EXPANSION_WO_REVISIONS);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static final RESTCall getTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static final RESTCall getTopicsFromQuery(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static final RESTCall getTopicsFromQueryWithExpandedTags(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), TOPIC_TAG_EXPANSION);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTranslatedTopicsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONTranslatedTopicsWithQuery method
+     */
+    public static final RESTCall saveTag(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTranslatedTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
         };
     }
