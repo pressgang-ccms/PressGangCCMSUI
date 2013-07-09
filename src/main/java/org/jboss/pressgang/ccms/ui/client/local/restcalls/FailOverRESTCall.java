@@ -24,7 +24,7 @@ import java.util.List;
  * This class holds a number of preconfigured REST calls that can fail over to another server
  * if the call failed.
  */
-public final class FailOverRESTCalls {
+public final class FailOverRESTCall {
 
     public static <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback) {
         performRESTCall(restCall, callback, false, new ArrayList<Integer>());
@@ -48,7 +48,6 @@ public final class FailOverRESTCalls {
 
                 if (throwable instanceof ResponseException) {
                     final ResponseException ex = (ResponseException) throwable;
-
 
                     if (ex.getResponse().getHeader(Constants.REST_SERVER_HEADER) == null) {
                         /*
