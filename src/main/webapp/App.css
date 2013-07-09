@@ -459,10 +459,6 @@ html {
     height: 100%;
 }
 
-.TopicViewDescriptionDetail, .FilterViewDescriptionDetail {
-    height: 100%;
-}
-
 .EntityViewLayoutPanel {
     margin-left: 8px;
 }
@@ -492,12 +488,27 @@ html {
     width: 100%;
 }
 
-.TopicViewDetail, .FilterViewDetail {
+.TopicViewDetailCell, .FilterViewDetailCell, .ContentSpecViewDetailCell, .BlobConstantViewDetailCell, .StringConstantViewDetailCell,
+.IntegerConstantViewDetailCell, .TagViewDetailCell, .CategoryViewDetailCell, .ProjectViewDetailCell, .PropertyTagViewDetailCell,
+.PropertyCategoryViewDetailCell, .FileViewDetailCell, .ImageViewDetailCell {
     width: 100%;
+    padding: 4px;
 }
 
-.TopicViewLabel, .FilterViewLabel {
+.TopicViewLabelCell, .FilterViewLabelCell, .ContentSpecViewLabelCell, .BlobConstantViewLabelCell, .StringConstantViewLabelCell,
+.IntegerConstantViewLabelCell, .TagViewLabelCell, .CategoryViewLabelCell, .ProjectViewLabelCell, .PropertyTagViewLabelCell,
+.PropertyCategoryViewLabelCell, .FileViewLabelCell, .ImageViewLabelCell {
     white-space: nowrap;
+    padding: 4px 0px;
+    vertical-align: top;
+}
+
+.TopicViewDescriptionCell, .FilterViewDescriptionCell, .ContentSpecViewDescriptionCell, .BlobConstantViewDescriptionCell,
+.StringConstantViewDescriptionCell, .IntegerConstantViewDescriptionCell, .TagViewDescriptionCell, .CategoryViewDescriptionCell,
+.ProjectViewDescriptionCell, .PropertyTagViewDescriptionCell, .PropertyCategoryViewDescriptionCell, .FileViewDescriptionCell,
+.ImageViewDescriptionCell {
+    height: 100%;
+    padding: 4px;
 }
 
 .TopicXMLViewPanel {
@@ -505,12 +516,12 @@ html {
     height: 100%;
 }
 
-.TopicXMLViewACEPanel {
+.TopicXMLViewACEPanel, .ContentSpecTextViewACEPanel {
     width: 100%;
     height: 100%;
 }
 
-.TopicXMLViewXMLField {
+.TopicXMLViewXMLField, .ContentSpecTextViewTextField {
     height: 100%;
 }
 
@@ -535,7 +546,6 @@ html {
 
 .TopicSearchResultsAndViewParentPanel {
     /*border: 3px solid #e7e7e7;*/
-
 }
 
 .ThirdLevelLayoutPanel {
@@ -663,14 +673,6 @@ html {
     box-sizing: border-box;
 }
 
-.ImageViewDescriptionTextCell {
-    width: 100%;
-}
-
-.ImageViewDescriptionLabelCell {
-    white-space: nowrap;
-}
-
 .ImageViewLanguageImageFilenameText {
     width: 100%;
     box-sizing: border-box;
@@ -748,15 +750,7 @@ html {
     overflow: auto !important;
 }
 
-.FileViewDescriptionTextCell {
-    width: 100%;
-}
-
-.FileViewDescriptionLabelCell {
-    white-space: nowrap;
-}
-
-.FileViewFilenameText {
+.FileViewFilenameText, .FileViewFilePathText {
     width: 100%;
     box-sizing: border-box;
 }
@@ -767,6 +761,16 @@ html {
 
 .FilteredResultsTable {
     width: 100%;
+}
+
+.TagViewNameText, .CategoryViewNameText, .ProjectViewNameText, .PropertyTagViewNameField, .PropertyCategoryViewNameField {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.PropertyTagViewRegexField {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 tr.FilteredResultsTableSelectedRow {
@@ -788,10 +792,11 @@ input[type="text"] {
     padding: 2px 4px;
     border: 1px solid #ccc;
     border-top: 1px solid #999;
+    /* Set the font size to small as firefox doesn't appear to inherit font-size for text boxes */
     font-size: small;
 }
 
-input[type="text"].-readonly, .gwt-TextBox-readonly {
-    color: rgb(100, 100, 100);
-    background-color: rgb(233, 233, 233);
+/* Used to make readonly fields look less editable in Firefox */
+textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] {
+    cursor: default;
 }

@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentFileV1;
@@ -22,7 +22,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
 
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.FileID());
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     /**
      * A text area to represent the description field.
      */
@@ -66,7 +66,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     public RESTFileV1Editor() {
         this.addStyleName(CSSConstants.FileView.FILE_VIEW_PARENT_DOCK_PANEL);
 
-        // The panel used to hole the file path label and text box
+        // The panel used to hold the file path label and text box
         final HorizontalPanel filePathPanel = new HorizontalPanel();
         filePathPanel.setWidth("100%");
         filePathPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -74,7 +74,6 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         filePathPanel.add(filePath);
         filePathPanel.setCellWidth(filePath, "100%");
 
-        id.setReadOnly(true);
         explodeArchive.setEnabled(false);
 
         fileDetails.addStyleName(CSSConstants.FileView.FILE_VIEW_DETAILS_TABLE);
@@ -100,17 +99,17 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         fileDetails.setWidget(5, 0, explodeArchiveLabel);
         fileDetails.setWidget(5, 1, explodeArchive);
 
-        fileDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.FileView.FILE_VIEW_ID_LABEL_CELL);
-        fileDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.FileView.FILE_VIEW_ID_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.FileView.FILE_VIEW_DESCRIPTION_LABEL_CELL);
-        fileDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.FileView.FILE_VIEW_DESCRIPTION_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.FileView.FILE_VIEW_FILENAME_LABEL_CELL);
-        fileDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.FileView.FILE_VIEW_FILENAME_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(3, 0, CSSConstants.FileView.FILE_VIEW_FILE_PATH_LABEL_CELL);
-        fileDetails.getCellFormatter().addStyleName(3, 1, CSSConstants.FileView.FILE_VIEW_FILE_PATH_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.FileView.FILE_VIEW_FULL_FILE_PATH_LABEL_CELL);
-        fileDetails.getCellFormatter().addStyleName(4, 1, CSSConstants.FileView.FILE_VIEW_FULL_FILE_PATH_TEXT_CELL);
-        fileDetails.getCellFormatter().addStyleName(5, 0, CSSConstants.FileView.FILE_VIEW_EXPLODE_ARCHIVE_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.FileView.FILE_VIEW_DETAIL_CELL);
+        fileDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.FileView.FILE_VIEW_DESCRIPTION_CELL);
+        fileDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.FileView.FILE_VIEW_DETAIL_CELL);
+        fileDetails.getCellFormatter().addStyleName(3, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(3, 1, CSSConstants.FileView.FILE_VIEW_DETAIL_CELL);
+        fileDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        fileDetails.getCellFormatter().addStyleName(4, 1, CSSConstants.FileView.FILE_VIEW_DETAIL_CELL);
+        fileDetails.getCellFormatter().addStyleName(5, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
 
         add(fileDetails, DockPanel.NORTH);
         add(languageFiles_OTM, DockPanel.CENTER);

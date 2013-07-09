@@ -75,12 +75,12 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
         this.setWidget(row, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.FilterEditor.FILTER_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.FilterEditor.FILTER_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.FilterEditor.FILTER_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.FilterEditor.FILTER_VIEW_DETAIL_CELL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.FilterEditor.FILTER_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.FilterEditor.FILTER_VIEW_DESCRIPTION_CELL);
     }
 }

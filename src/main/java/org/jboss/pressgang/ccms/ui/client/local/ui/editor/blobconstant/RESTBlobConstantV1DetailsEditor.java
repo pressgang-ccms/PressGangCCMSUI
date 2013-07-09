@@ -22,13 +22,13 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
      */
     public RESTBlobConstantV1 self;
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -54,7 +54,6 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         id.addStyleName(CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_ID_FIELD);
         name.addStyleName(CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_NAME_FIELD);
 
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
 
         @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
@@ -73,33 +72,30 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         uploadPanel.add(uploadButton);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_DETAIL_CELL);
         }
     }
 
     @Override
     public void flush() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onPropertyChange(final String... paths) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void setValue(@NotNull final RESTBlobConstantV1 value) {
         this.self = value;
-        this.id.setText(value.getId().toString());
+        this.id.setValue(value.getId());
         this.name.setText(value.getName());
     }
 
     @Override
     public void setDelegate(final EditorDelegate<RESTBlobConstantV1> delegate) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

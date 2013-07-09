@@ -17,8 +17,8 @@ public final class RESTTextContentSpecV1TextEditor extends SimplePanel implement
     public final AceEditor text = new AceEditor(false);
 
     public RESTTextContentSpecV1TextEditor(final boolean readOnly) {
-        this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
-        text.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
+        this.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_TEXT_VIEW_ACE_PANEL);
+        text.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_TEXT_VIEW_TEXT_FIELD);
 
         text.setReadOnly(readOnly);
         text.setMode(AceEditorMode.TEXT);

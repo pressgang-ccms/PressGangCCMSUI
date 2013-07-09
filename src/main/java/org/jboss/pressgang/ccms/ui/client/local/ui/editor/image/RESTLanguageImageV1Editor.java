@@ -40,8 +40,8 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
      */
     private final int parentIndex;
 
-    private final TextBox filename = new TextBox();
-    private final TextBox dimensions = new TextBox();
+    private final Label filename = new Label();
+    private final Label dimensions = new Label();
     private final Image imageDataBase64 = new Image();
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
@@ -53,7 +53,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
     @NotNull
     @Ignore
-    public TextBox getFilename() {
+    public Label getFilename() {
         return filename;
     }
 
@@ -77,9 +77,6 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
     public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
-
-        this.filename.setReadOnly(true);
-        this.dimensions.setReadOnly(true);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
@@ -114,12 +111,12 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
 
         ++row;
-        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
-        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
 
         ++row;
-        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL);
-        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL);
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
 
         ++row;
         this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);

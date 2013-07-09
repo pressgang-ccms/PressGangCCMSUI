@@ -1,10 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DateLabel;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -12,18 +22,14 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 
     private static final int ROWS = 10;
     private static final int COLS = 2;
 
     private RESTTopicV1 value;
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
-    private final SimpleIntegerBox revision = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
+    private final SimpleIntegerLabel revision = new SimpleIntegerLabel();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
 
         @Override
@@ -37,22 +43,20 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     });
     private final TextArea title = new TextArea();
     private final TextArea description = new TextArea();
-    private final DateBox created = new DateBox();
-    private final DateBox lastModified = new DateBox();
+    private final DateLabel created = new DateLabel(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
+    private final DateLabel lastModified = new DateLabel(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
 
-    private final Anchor restTopicDetailsLabel = new Anchor(PressGangCCMSUI.INSTANCE.TopicDetailsRESTEndpoint());
-    private final Anchor restTopicXMLLabel = new Anchor(PressGangCCMSUI.INSTANCE.TopicXMLRESTEndpoint());
-    private final TextBox restTopicDetails = new TextBox();
-    private final TextBox restTopicXML = new TextBox();
-    private final TextBox restTopicWebDav = new TextBox();
+    private final Anchor restTopicDetails = new Anchor();
+    private final Anchor restTopicXML = new Anchor();
+    private final Label restTopicWebDav = new Label();
 
     @NotNull
-    public DateBox lastModifiedEditor() {
+    public DateLabel lastModifiedEditor() {
         return lastModified;
     }
 
     @NotNull
-    public DateBox createdEditor() {
+    public DateLabel createdEditor() {
         return created;
     }
 
@@ -72,12 +76,12 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     }
 
     @NotNull
-    public SimpleIntegerBox revisionEditor() {
+    public SimpleIntegerLabel revisionEditor() {
         return revision;
     }
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -93,14 +97,6 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue("");
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
         description.setReadOnly(readOnly);
-
-        id.setReadOnly(true);
-        revision.setReadOnly(true);
-        created.setEnabled(false);
-        lastModified.setEnabled(false);
-        restTopicDetails.setReadOnly(true);
-        restTopicXML.setReadOnly(true);
-        restTopicWebDav.setReadOnly(true);
 
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
@@ -136,11 +132,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.setWidget(row, 1, title);
 
         ++row;
-        this.setWidget(row, 0, restTopicDetailsLabel);
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDetailsRESTEndpoint()));
         this.setWidget(row, 1, restTopicDetails);
 
         ++row;
-        this.setWidget(row, 0, restTopicXMLLabel);
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicXMLRESTEndpoint()));
         this.setWidget(row, 1, restTopicXML);
 
         ++row;
@@ -152,13 +148,13 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.setWidget(row, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL_CELL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_CELL);
     }
 
     @Override
@@ -185,13 +181,12 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
             }
             webDAV += "TOPIC" + idString + "/" + idString + ".xml";
 
-            restTopicDetailsLabel.setHref(detailsURL);
-            restTopicXMLLabel.setHref(xmlURL);
+            restTopicDetails.setHref(detailsURL);
+            restTopicDetails.setText(detailsURL);
+            restTopicXML.setHref(xmlURL);
+            restTopicXML.setText(xmlURL);
 
-            restTopicDetails.setValue(detailsURL);
-            restTopicXML.setValue(xmlURL);
-
-            restTopicWebDav.setValue(webDAV);
+            restTopicWebDav.setText(webDAV);
         }
     }
 

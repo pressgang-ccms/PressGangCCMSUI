@@ -10,7 +10,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -27,8 +27,8 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
     private static final int COLS = 2;
 
     private RESTTextContentSpecV1 value;
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
-    private final SimpleIntegerBox revision = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
+    private final SimpleIntegerLabel revision = new SimpleIntegerLabel();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
 
         @Override
@@ -42,10 +42,10 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
     });
     private final DateBox lastModified = new DateBox();
 
-    private final Anchor restTopicDetailsLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecDetailsRESTEndpoint());
-    private final Anchor restTopicXMLLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecTextRESTEndpoint());
-    private final TextBox restTopicDetails = new TextBox();
-    private final TextBox restTopicXML = new TextBox();
+    private final Anchor restContentSpecDetailsLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecDetailsRESTEndpoint());
+    private final Anchor restContentSpecTextLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecTextRESTEndpoint());
+    private final TextBox restContentSpecDetails = new TextBox();
+    private final TextBox restContentSpecText = new TextBox();
 
     @NotNull
     public DateBox lastModifiedEditor() {
@@ -58,12 +58,12 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
     }
 
     @NotNull
-    public SimpleIntegerBox revisionEditor() {
+    public SimpleIntegerLabel revisionEditor() {
         return revision;
     }
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -78,18 +78,16 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         locale.setValue("");
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
 
-        id.setReadOnly(true);
-        revision.setReadOnly(true);
         lastModified.setEnabled(false);
-        restTopicDetails.setReadOnly(true);
-        restTopicXML.setReadOnly(true);
+        restContentSpecDetails.setReadOnly(true);
+        restContentSpecText.setReadOnly(true);
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", true);
 
-        id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
-        revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
-        restTopicDetails.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DETAILS_ENDPOINT_FIELD);
-        restTopicXML.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XML_ENDPOINT_FIELD);
-        locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
+        id.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_ID_FIELD);
+        revision.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD);
+        restContentSpecDetails.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_DETAILS_ENDPOINT_FIELD);
+        restContentSpecText.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_TEXT_ENDPOINT_FIELD);
+        locale.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_LOCALE_FIELD);
 
         int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecID()));
@@ -107,19 +105,19 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecLocale()));
         this.setWidget(row, 1, locale);
         ++row;
-        this.setWidget(row, 0, restTopicDetailsLabel);
-        this.setWidget(row, 1, restTopicDetails);
+        this.setWidget(row, 0, restContentSpecDetailsLabel);
+        this.setWidget(row, 1, restContentSpecDetails);
 
         ++row;
-        this.setWidget(row, 0, restTopicXMLLabel);
-        this.setWidget(row, 1, restTopicXML);
+        this.setWidget(row, 0, restContentSpecTextLabel);
+        this.setWidget(row, 1, restContentSpecText);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_DETAIL_CELL);
         }
     }
 
@@ -135,11 +133,11 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         final String detailsURL = Constants.REST_SERVER + "/1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
         final String textURL = Constants.REST_SERVER + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
 
-        restTopicDetailsLabel.setHref(detailsURL);
-        restTopicXMLLabel.setHref(textURL);
+        restContentSpecDetailsLabel.setHref(detailsURL);
+        restContentSpecTextLabel.setHref(textURL);
 
-        restTopicDetails.setValue(detailsURL);
-        restTopicXML.setValue(textURL);
+        restContentSpecDetails.setValue(detailsURL);
+        restContentSpecText.setValue(textURL);
     }
 
     @Override

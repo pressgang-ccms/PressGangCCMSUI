@@ -14,12 +14,12 @@ public final class RESTStringConstantV1DetailsEditor extends Grid implements Edi
     private static final int ROWS = 3;
     private static final int COLS = 2;
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final TextArea value = new TextArea();
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -41,7 +41,6 @@ public final class RESTStringConstantV1DetailsEditor extends Grid implements Edi
         name.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_NAME_FIELD);
         value.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_VALUE_FIELD);
 
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         value.setReadOnly(readOnly);
 
@@ -58,13 +57,13 @@ public final class RESTStringConstantV1DetailsEditor extends Grid implements Edi
         this.setWidget(2, 1, value);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_DETAIL_CELL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_DESCRIPTION_CELL);
     }
 
 }
