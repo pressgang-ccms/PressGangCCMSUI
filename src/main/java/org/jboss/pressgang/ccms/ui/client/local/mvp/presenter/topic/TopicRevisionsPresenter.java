@@ -72,7 +72,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         void displayRevisions();
 
-        void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
+        void displayDiff(String lhs, boolean rhsReadOnly, String rhs);
 
         void displayHtmlDiff(String htmlDiff);
 

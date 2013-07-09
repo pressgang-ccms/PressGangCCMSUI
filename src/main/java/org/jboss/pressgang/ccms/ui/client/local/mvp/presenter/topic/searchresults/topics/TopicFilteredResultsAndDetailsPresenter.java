@@ -1977,9 +1977,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         have done so, don't show the merge view.
                                      */
                                     if (lastDisplayedView == topicRevisionsComponent.getDisplay()) {
-                                        final boolean lhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                                        final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                        topicRevisionsComponent.getDisplay().displayDiff(getDisplayedTopic().getXml(), lhsReadonly, retValue.getXml());
+                                        topicRevisionsComponent.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
 
                                         /*
                                             We can't save while merging.
