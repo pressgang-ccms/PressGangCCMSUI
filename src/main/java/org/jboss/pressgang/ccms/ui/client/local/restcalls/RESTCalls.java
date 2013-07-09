@@ -223,6 +223,12 @@ public final class RESTCalls {
 
     }
 
+    /**
+     * Wraps the Errai RemoteCallback result, and passes it to the supplied RESTCallback object.
+     * @param callback The callback object to feed the Errai response to
+     * @param <T> The kind of object we expect this REST call to return
+     * @return An Errai callback that is supplied to the actual REST call
+     */
     @NotNull
     private static <T> RemoteCallback<T> constructSuccessCallback(@NotNull final RESTCallback<T> callback) {
         final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
@@ -234,6 +240,12 @@ public final class RESTCalls {
         return successCallback;
     }
 
+    /**
+     * Wraps the Errai RemoteCallback result, and passes it to the supplied RESTCallback object.
+     * @param callback The callback object to feed the Errai response to
+     * @param <T> The kind of object we expect this REST call to return
+     * @return An Errai callback that is supplied to the actual REST call
+     */
     @NotNull
     private static <T> ErrorCallback constructErrorCallback(@NotNull final RESTCallback<T> callback) {
         final ErrorCallback errorCallback = new ErrorCallback() {
