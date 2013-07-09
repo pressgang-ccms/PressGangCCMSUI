@@ -464,7 +464,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * attach mergely when the parent is detached, it will not resize properly.
      *
      * @param lhs         The text for the left hand side
-     * @param lhsReadOnly true if the left hand side is read only, and false otherwise
+     * @param rhsReadOnly true if the right hand side is read only, and false otherwise
      * @param rhs         The text for the right hand side
      */
     @Override
