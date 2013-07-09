@@ -92,6 +92,22 @@ public final class FailOverRESTCallDatabase {
                     "]}";
 
     /**
+     * The required expansion details for a translated topic. The revisions are required so we can check to see if
+     * the last revision was the one we edited. If not, there was a conflicting save.
+     * <p/>
+     * The properties are loaded here, unlike in TOPIC_EXPANSION. This is really just for convenience, as the topic
+     * view is much more optimized for fast loading of the topics basic details.
+     * <p/>
+     * We only need the last 2 revisions to check for save conflicts.
+     */
+    private static final String TRANSLATED_TOPIC_EXPANSION =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
+                    "]}";
+
+    /**
      * Create a RESTCall object to call the REST holdXML method
      * @param xml The XML to be held by the REST server
      * @return A RESTCall that can call the REST holdXML method
@@ -641,6 +657,52 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTranslatedTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTranslatedTopic method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONTranslatedTopic method
+     */
+    public static final RESTCall getTranslatedTopic(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTranslatedTopic(id, TRANSLATED_TOPIC_EXPANSION);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST something method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST something method
+     */
+    public static final RESTCall getTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTagsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONTagsWithQuery method
+     */
+    public static final RESTCall getTagsFromQuery(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
         };
     }
