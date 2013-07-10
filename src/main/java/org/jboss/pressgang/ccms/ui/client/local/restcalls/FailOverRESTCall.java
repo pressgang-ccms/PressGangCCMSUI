@@ -74,25 +74,19 @@ public final class FailOverRESTCall {
                 if (throwable instanceof ResponseException) {
                     final ResponseException ex = (ResponseException) throwable;
 
-                    if (ex.getResponse().getHeader(Constants.REST_SERVER_HEADER) == null) {
-                        /*
-                            If we didn't receive the header, then the response was not from the PressGang REST
-                            server.
-                        */
-                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                    } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                    /*if (ex.getResponse().getHeader(Constants.REST_SERVER_HEADER) == null) {
+                       // If we didn't receive the header, then the response was not from the PressGang REST server.
+                       failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                    } else*/ if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                         /*
                             A bad request means invalid input, like a duplicated name. This does not indicate a
                             failure of the REST server.
                         */
+
                         if (!disableDefaultFailureAction) {
                             Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + ex.getResponse().getText());
                         }
-                    } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
-                        /*
-                            Not found is also not an indication of a failure of the rest server (as long as it also
-                            includes the REST_SERVER_HEADER).
-                         */
+                    } else {
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                     }
                 } else {
