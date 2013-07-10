@@ -24,7 +24,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;

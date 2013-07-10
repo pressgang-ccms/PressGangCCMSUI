@@ -13,7 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class TagProjectsView extends
         BaseChildrenView<RESTTagV1,

@@ -17,7 +17,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagCollectionItemParentSort;

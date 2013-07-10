@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.server;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Contains the details for the various servers that the UI can connect to.

@@ -6,8 +6,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,13 +77,13 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
      * Get the category from the database and use it to populate the editor in the view
      */
     public void getEntity(@NotNull final Integer entityId) {
-        @NotNull final RESTCalls.RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, PropertyCategoryPresenter.Display>(display,
-                new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, PropertyCategoryPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final PropertyCategoryPresenter.Display display) {
-                        display.display(retValue, false);
-                    }
-                });
-        RESTCalls.getPropertyCategory(callback, entityId);
+        final RESTCallBack<RESTPropertyCategoryV1> callback = new RESTCallBack<RESTPropertyCategoryV1>() {
+            @Override
+            public void success(@NotNull final RESTPropertyCategoryV1 retValue) {
+                display.display(retValue, false);
+            }
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(entityId), callback, display);
     }
 }

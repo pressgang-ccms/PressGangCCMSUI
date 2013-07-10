@@ -11,8 +11,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
