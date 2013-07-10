@@ -9,8 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -271,16 +270,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
                         @Override
                         public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                            final BaseRestCallback<IntegerWrapper, BaseTemplateViewInterface> callback = new BaseRestCallback<IntegerWrapper, BaseTemplateViewInterface>(display,
-                                    new BaseRestCallback.SuccessAction<IntegerWrapper, BaseTemplateViewInterface>() {
-                                        @Override
-                                        public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final BaseTemplateViewInterface display) {
-                                            contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + retValue.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+
+                            final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
+
+                            FailOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.holdXML(xml),
+                                    new RESTCallBack<IntegerWrapper>() {
+                                        void success(@NotNull final IntegerWrapper value) {
+                                            contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
                                             center();
                                         }
-                                    }, true);
-
-                            RESTCalls.holdXml(callback, Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml());
+                                    },
+                                    display
+                            );
                         }
 
                     });

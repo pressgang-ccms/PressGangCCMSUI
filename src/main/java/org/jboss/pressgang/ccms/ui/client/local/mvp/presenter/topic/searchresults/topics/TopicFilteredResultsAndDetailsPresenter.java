@@ -57,10 +57,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEdito
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
@@ -2029,24 +2026,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display waitDisplay) {
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback1 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
-                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
-                                                @Override
-                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
-                                                    final BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display> callback2 = new BaseRestCallback<IntegerWrapper, TopicRevisionsPresenter.Display>(waitDisplay,
-                                                            new BaseRestCallback.SuccessAction<IntegerWrapper, TopicRevisionsPresenter.Display>() {
-                                                                @Override
-                                                                public void doSuccessAction(@NotNull final IntegerWrapper retValue2, @NotNull final TopicRevisionsPresenter.Display waitDisplay) {
-                                                                    topicRevisionsComponent.renderXML(retValue.value, retValue2.value, display.getHiddenAttachmentArea());
+                                    final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + revisionTopic.getXml();
+
+                                    FailOverRESTCall.performRESTCall(
+                                            FailOverRESTCallDatabase.holdXML(xml1),
+                                            new RESTCallBack<IntegerWrapper>() {
+                                                void success(@NotNull final IntegerWrapper value1) {
+                                                    final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
+
+                                                    FailOverRESTCall.performRESTCall(
+                                                            FailOverRESTCallDatabase.holdXML(xml2),
+                                                            new RESTCallBack<IntegerWrapper>() {
+                                                                void success(@NotNull final IntegerWrapper value2) {
+                                                                    topicRevisionsComponent.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
                                                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }
-                                                            }, true);
-
-                                                    RESTCalls.holdXml(callback2, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml());
+                                                            },
+                                                            waitDisplay
+                                                    );
                                                 }
-                                            }, true);
-
-                                    RESTCalls.holdXml(callback1, Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + revisionTopic.getXml());
+                                            },
+                                            waitDisplay
+                                    );
 
 
 

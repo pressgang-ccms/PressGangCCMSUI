@@ -9,8 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,15 +58,18 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     }
 
     public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
-        final BaseRestCallback<IntegerWrapper, Display> callback = new BaseRestCallback<IntegerWrapper, Display>(display,
-                new BaseRestCallback.SuccessAction<IntegerWrapper, Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final Display display) {
-                        display.displayTopicRendered(retValue.value, readOnly, showImages);
-                    }
-                }, true);
 
-        RESTCalls.holdXml(callback, (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML);
+        final String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML;
+
+        FailOverRESTCall.performRESTCall(
+                FailOverRESTCallDatabase.holdXML(xml),
+                new RESTCallBack<IntegerWrapper>() {
+                    void success(@NotNull final IntegerWrapper value) {
+                        display.displayTopicRendered(value.value, readOnly, showImages);
+                    }
+                },
+                display
+        );
     }
 
     @Override

@@ -8,8 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
@@ -50,15 +49,17 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
 
                     @Override
                     public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                        final BaseRestCallback<IntegerWrapper, Display> callback = new BaseRestCallback<IntegerWrapper, Display>(display,
-                                new BaseRestCallback.SuccessAction<IntegerWrapper, Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final Display display) {
-                                        display.displayTopicRendered(retValue.value);
-                                    }
-                                }, true);
 
-                        RESTCalls.holdXml(callback, Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml());
+                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
+                        FailOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.holdXML(xml),
+                            new RESTCallBack<IntegerWrapper>() {
+                                void success(@NotNull final IntegerWrapper value) {
+                                    display.displayTopicRendered(value.value);
+                                }
+                            },
+                            display
+                        );
                     }
 
                 });
