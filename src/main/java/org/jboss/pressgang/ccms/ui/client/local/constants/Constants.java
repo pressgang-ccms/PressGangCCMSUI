@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307110755";
+    public static final String VERSION = "201307110856";
 
     /**
      * This header is expected from all responses of the REST server

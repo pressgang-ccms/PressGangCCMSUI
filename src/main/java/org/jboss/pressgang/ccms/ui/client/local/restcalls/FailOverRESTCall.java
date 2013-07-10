@@ -75,8 +75,9 @@ public final class FailOverRESTCall {
                 if (throwable instanceof ResponseException) {
                     final ResponseException ex = (ResponseException) throwable;
                     final String responseText = ex.getResponse().getText();
+                    final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
 
-                    if (!responseText.startsWith(RESTv1Constants.ERROR_TEXT_PREFIX)) {
+                    if (pressgangHeader != null) {
                        // The response text did not include the expected prefix,
                        // which means it was not from the PressGang REST server.
                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
@@ -87,7 +88,7 @@ public final class FailOverRESTCall {
                         */
 
                         if (!disableDefaultFailureAction) {
-                            Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText.replaceFirst(RESTv1Constants.ERROR_TEXT_PREFIX + " ", ""));
+                            Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
                         }
                     } else {
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
