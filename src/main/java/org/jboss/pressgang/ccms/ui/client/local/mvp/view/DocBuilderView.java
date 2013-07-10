@@ -23,6 +23,12 @@ public class DocBuilderView extends BaseTemplateView implements DocBuilderPresen
         this.getPanel().add(iFrame);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getDocBuilderButton().setDown(true);
+    }
+
     public void display(@Nullable final Integer id) {
         String url = Constants.DOCBUILDER_SERVER;
         if (id != null) {

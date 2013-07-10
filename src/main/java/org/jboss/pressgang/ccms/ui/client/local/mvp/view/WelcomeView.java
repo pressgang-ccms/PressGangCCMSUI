@@ -21,6 +21,12 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
     }
 
     @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getHomeButton().setDown(true);
+    }
+
+    @Override
     public void displayTopicRendered(@NotNull final Integer topicXMLHoldID) {
         content.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
     }

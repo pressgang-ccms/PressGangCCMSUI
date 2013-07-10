@@ -21,14 +21,6 @@ public interface CSSConstants {
          */
         String SERVER_TYPE_DEVELOPMENT = "ServerTypeDevelopment";
         /**
-         * Assigned to the panel that holds the shortcut panels.
-         */
-        String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
-        /**
-         * Assigned to the vertical panel holding the shortcut buttons on the left of the screen.
-         */
-        String SHORTCUT_PANEL = "ShortcutPanel";
-        /**
          * Assigned to the panel down the bottom of the screen that serves as the footer.
          */
         String FOOTER_PANEL = "FooterPanel";
@@ -368,7 +360,7 @@ public interface CSSConstants {
          */
         String CONTENT_SPEC_VIEW_TEXT_ENDPOINT_FIELD = "ContentSpecViewTextEndpointField";
         String CONTENT_SPEC_TEXT_VIEW_ACE_PANEL = "ContentSpecTextViewACEPanel";
-        String CONTENT_SPEC_TEXT_VIEW_TEXT_FIELD = "ContentSpecTextViewXMLField";
+        String CONTENT_SPEC_TEXT_VIEW_TEXT_FIELD = "ContentSpecTextViewTextField";
 
         String CONTENT_SPEC_VIEW_LABEL_CELL = "ContentSpecViewLabelCell";
         String CONTENT_SPEC_VIEW_DETAIL_CELL = "ContentSpecViewDetailCell";
@@ -718,6 +710,10 @@ public interface CSSConstants {
          */
         String TEXT_BUTTON = "TextButton";
         /**
+         * Assigned to left.
+         */
+        String LEFT_TAB_LABEL = "LeftTabLabel";
+        /**
          * Assigned to image buttons that are top tabs
          */
         String TOP_TAB_BUTTON = "TopTab";
@@ -755,4 +751,26 @@ public interface CSSConstants {
         String CUSTOM_BUTTON_DOWN = "CustomButtonDown";
     }
 
+    public interface Shortcut {
+        /**
+         * Assigned to the panel that holds the shortcut panels.
+         */
+        String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
+        /**
+         * Assigned to the vertical panel holding the shortcut buttons on the left of the screen.
+         */
+        String SHORTCUT_PANEL = "ShortcutPanel";
+        /**
+         * Assigned to shortcut menus that can be collapsed.
+         */
+        String SHORTCUT_COLLAPSE_MENU = "ShortcutCollapseMenu";
+        /**
+         * Assigned to the shortcut menus header, for collapsible menus.
+         */
+        String SHORTCUT_COLLAPSE_MENU_HEADER = "ShortcutCollapseMenuHeader";
+        /**
+         * Assigned to the shortcut menus content, for collapsible menus.
+         */
+        String SHORTCUT_COLLAPSE_MENU_CONTENT = "ShortcutCollapseMenuContent";
+    }
 }

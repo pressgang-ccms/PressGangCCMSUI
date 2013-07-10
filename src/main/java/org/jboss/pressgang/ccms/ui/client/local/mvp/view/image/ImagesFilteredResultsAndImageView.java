@@ -88,9 +88,15 @@ public class ImagesFilteredResultsAndImageView extends
     private final BulkUploadDisplay bulkUploadDialog = new BulkUploadDisplayDialog();
 
     public ImagesFilteredResultsAndImageView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
-        addSpacerToShortcutPanels();
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getImagesButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().openEntitiesMenu();
+    }
 }

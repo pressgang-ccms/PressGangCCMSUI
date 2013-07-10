@@ -71,8 +71,15 @@ public class TagsFilteredResultsAndTagView
     public TagsFilteredResultsAndTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
+    }
+
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getTagsButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().openEntitiesMenu();
     }
 
     private void populateTopActionBar() {

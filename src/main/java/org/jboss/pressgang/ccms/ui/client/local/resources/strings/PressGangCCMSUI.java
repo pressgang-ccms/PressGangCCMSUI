@@ -1000,4 +1000,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String UnsavedFileUploadPrompt();
+
+    @NotNull
+    String Entities();
 }

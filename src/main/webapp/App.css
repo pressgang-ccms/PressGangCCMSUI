@@ -277,8 +277,8 @@ html {
     margin-right: 8px;
 }
 
-.ShortcutPanel td {
-    padding: 1px;
+.ShortcutPanel>tbody>tr>td {
+    padding: 2px 1px;
 }
 
 .gwt-ToggleButton-down {
@@ -773,6 +773,11 @@ html {
     box-sizing: border-box;
 }
 
+.ContentSpecViewDetailsEndpointField, .ContentSpecViewTextEndpointField {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 tr.FilteredResultsTableSelectedRow {
     background-color: #0072C6;
     color: white;
@@ -799,4 +804,31 @@ input[type="text"] {
 /* Used to make readonly fields look less editable in Firefox */
 textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] {
     cursor: default;
+}
+
+.ShortcutPanel {
+    width: 100%;
+}
+
+.ShortcutCollapseMenuContent {
+    border-collapse: collapse;
+    margin-top: 2px;
+}
+
+.ShortcutCollapseMenuContent td {
+    padding: 2px 0px;
+}
+
+.ShortcutCollapseMenuHeader {
+    background-color: #00C618;
+    border-color: #009200;
+    border: 1px solid #005492;
+    padding: 3px;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+
+.ShortcutCollapseMenu {
+    width: 100%;
 }

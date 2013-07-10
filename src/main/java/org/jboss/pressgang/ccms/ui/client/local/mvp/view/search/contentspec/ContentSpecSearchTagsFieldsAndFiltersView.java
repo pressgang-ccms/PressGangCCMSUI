@@ -42,6 +42,13 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
     }
 
     @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getSearchContentSpecsButton().setDown(true);
+        getShortcuts().openSearchMenu();
+    }
+
+    @Override
     protected void showWaiting() {
         waiting.center();
     }

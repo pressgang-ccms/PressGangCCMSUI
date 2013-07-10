@@ -48,8 +48,15 @@ public class PropertyCategoryFilteredResultsAndDetailsView extends BaseSearchAnd
     public PropertyCategoryFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedPropertyCategories());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
+    }
+
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().showAdvancedSubMenu();
     }
 
     private void populateTopActionBar() {

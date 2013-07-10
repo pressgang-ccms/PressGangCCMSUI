@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 
+import javax.enterprise.context.Dependent;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -16,13 +18,11 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
-
 /**
  * The view for the extended properties assigned to an entity.
  */
 @Dependent
-public class CommonExtenedPropertyView extends BaseExtendedChildrenView<
+public class CommonExtendedPropertyView extends BaseExtendedChildrenView<
         RESTBaseEntityWithPropertiesV1<?, ?, ?>,
         RESTPropertyTagCollectionItemV1,
         RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
@@ -146,7 +146,7 @@ public class CommonExtenedPropertyView extends BaseExtendedChildrenView<
         return propertyTagValueColumn;
     }
 
-    public CommonExtenedPropertyView() {
+    public CommonExtendedPropertyView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.PropertyTags());
 
         getExistingChildrenResults().addColumn(propertyTagNameColumn, PressGangCCMSUI.INSTANCE.PropertyTagName());

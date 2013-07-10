@@ -28,10 +28,16 @@ public class StringConstantFilteredResultsAndDetailsView extends
     public StringConstantFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.StringConstants());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getAdvancedSubMenu().getStringConstantsButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().showAdvancedSubMenu();
+    }
 
     private void populateTopActionBar() {
         this.addActionButton(this.getSave());

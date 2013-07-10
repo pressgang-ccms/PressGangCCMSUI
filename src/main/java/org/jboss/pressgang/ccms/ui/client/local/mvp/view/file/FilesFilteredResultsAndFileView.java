@@ -104,9 +104,15 @@ public class FilesFilteredResultsAndFileView extends
     private final BulkUploadDisplay bulkUploadDialog = new BulkUploadDisplayDialog();
 
     public FilesFilteredResultsAndFileView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
-        addSpacerToShortcutPanels();
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Files());
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getFilesButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().openEntitiesMenu();
+    }
 }
