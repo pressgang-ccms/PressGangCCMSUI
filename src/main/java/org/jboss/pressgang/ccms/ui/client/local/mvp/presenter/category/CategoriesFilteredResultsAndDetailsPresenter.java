@@ -34,8 +34,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -362,24 +361,22 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                      /* Sync the UI to the underlying object */
                 categoryPresenter.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTCategoryV1 retValue, final Display display) {
-                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                final RESTCallBack<RESTCategoryV1> callback = new RESTCallBack<RESTCategoryV1>() {
+                    public void success(@NotNull final RESTCategoryV1 retValue) {
+                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This category is no longer a new category */
-                                filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                        categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                        categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayWithNewEntityData(wasNewEntity);
+                        updateDisplayWithNewEntityData(wasNewEntity);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        });
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    }
+                };
 
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
@@ -391,16 +388,16 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
                     if (unsavedTagChanges) {
 
-                        @NotNull final RESTCategoryV1 category = new RESTCategoryV1();
+                        final RESTCategoryV1 category = new RESTCategoryV1();
                         category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription());
                         category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
 
                         if (wasNewEntity) {
-                            RESTCalls.createCategory(callback, category);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createCategory(category), callback, display);
                         } else {
-                            RESTCalls.saveCategory(callback, category);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveCategory(category), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

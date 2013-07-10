@@ -274,7 +274,7 @@ public final class RESTCalls {
     /**
      * POST some XML that will be held for a short period and made available to be repeated back.
      */
-    public static void holdXml(@NotNull final RESTCallback<IntegerWrapper> callback, @NotNull final String xml) {
+    public static void holdXmlMigrated(@NotNull final RESTCallback<IntegerWrapper> callback, @NotNull final String xml) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -283,7 +283,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void echoXml(@NotNull final RESTCallback<String> callback, @NotNull final Integer id) {
+    public static void echoXmlMigrated(@NotNull final RESTCallback<String> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -292,7 +292,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void echoXml(@NotNull final RESTCallback<String> callback, @NotNull final String xml) {
+    public static void echoXmlMigrated(@NotNull final RESTCallback<String> callback, @NotNull final String xml) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -301,7 +301,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void saveTag(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
+    public static void saveTagMigrated(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -312,7 +312,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createTag(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
+    public static void createTagMigrated(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -323,7 +323,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void saveCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
+    public static void saveCategoryMigrated(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
         final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -333,7 +333,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
+    public static void createCategoryMigrated(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
         final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override

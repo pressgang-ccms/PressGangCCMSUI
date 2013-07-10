@@ -45,8 +45,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
@@ -260,13 +259,8 @@ public class TagsFilteredResultsAndDetailsPresenter
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
-                /* Save any changes made to the tag entity itself */
-                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTTagV1 retValue,
-                                                final TagsFilteredResultsAndDetailsPresenter.Display display) {
-
+                final RESTCallBack<RESTTagV1> callback = new RESTCallBack<RESTTagV1>() {
+                    public void success(@NotNull final RESTTagV1 retValue) {
                         /* we are now viewing the object returned by the save */
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
                         filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
@@ -283,9 +277,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                             updateDisplayWithNewEntityData(wasNewTag);
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                         }
-
                     }
-                });
+                };
+
+
 
                 /* Sync changes from the tag view */
                 final RESTTagV1 sourceTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
@@ -367,9 +362,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                  */
                 if (unsavedTagChanges) {
                     if (wasNewTag) {
-                        RESTCalls.createTag(callback, updateTag);
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTag(updateTag), callback, display);
                     } else {
-                        RESTCalls.saveTag(callback, updateTag);
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTag(updateTag), callback, display);
                     }
                 }
                 /*
