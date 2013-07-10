@@ -94,7 +94,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
         /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue("");
+        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
         description.setReadOnly(readOnly);
 
