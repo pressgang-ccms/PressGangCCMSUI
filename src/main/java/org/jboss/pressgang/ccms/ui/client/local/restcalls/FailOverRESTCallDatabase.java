@@ -108,6 +108,21 @@ public final class FailOverRESTCallDatabase {
                     "]}";
 
     /**
+     * The required expansion details for the projects.
+     */
+    private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
+
+    /**
+     * The required expansion details for the images.
+     */
+    private static final String IMAGE_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}";
+
+    /**
+     * The required expansion details for the property tags.
+     */
+    private static final String PROPERTY_TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyTagV1.PROPERTY_CATEGORIES_NAME + "\"}}";
+
+    /**
      * Create a RESTCall object to call the REST holdXML method
      * @param xml The XML to be held by the REST server
      * @return A RESTCall that can call the REST holdXML method
@@ -857,4 +872,247 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+    /**
+     * Create a RESTCall object to call the REST getJSONCategory method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONCategory method
+     */
+    public static final RESTCall getUnexpandedCategory(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONCategory(id, "");
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getCategories method
+     * @return A RESTCall that can call the REST getCategories method
+     */
+    public static final RESTCall getCategories() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
+                        + "]}]}";
+                restService.getJSONCategories(expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONCategoriesWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
+     */
+    public static final RESTCall getUnexpandedCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+                        + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONCategoriesWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
+     */
+    public static final RESTCall getCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+                        + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
+                restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProjectsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONProjectsWithQuery method
+     */
+    public static final RESTCall getProjectsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+                        + ", \"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                restService.getJSONProjectsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST something method
+     * @return A RESTCall that can call the REST something method
+     */
+    public static final RESTCall getProjects() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                restService.getJSONProjects(expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProject method
+     * @param  id The entity ID
+     * @return A RESTCall that can call the REST getJSONProject method
+     */
+    public static final RESTCall getProject(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+                restService.getJSONProject(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getUnexpandedProject method
+     * @param  id The entity ID
+     * @return A RESTCall that can call the REST getUnexpandedProject method
+     */
+    public static final RESTCall getUnexpandedProject(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONProject(id, "");
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONProject method
+     * @param  project The project to be saved
+     * @return A RESTCall that can call the REST updateJSONProject method
+     */
+    public static final RESTCall saveProject(@NotNull final RESTProjectV1 project) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+                restService.updateJSONProject(expand, project);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONProject method
+     * @param project The project to be created
+     * @return A RESTCall that can call the REST createJSONProject method
+     */
+    public static final RESTCall createProject(@NotNull final RESTProjectV1 project) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+                restService.createJSONProject(expand, project);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST something method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST something method
+     */
+    public static final RESTCall getImagesFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand =
+                    "{" +
+                        "\"branches\":[" +
+                            "{" +
+                                "\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}," +
+                                "\"branches\":["
+                                    + IMAGE_EXPANSION +
+                                "]" +
+                            "}" +
+                        "]" +
+                    "}";
+                restService.getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONPropertyCategories method
+     * @return A RESTCall that can call the REST getJSONPropertyCategories method
+     */
+    public static final RESTCall getPropertyTagCategories() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONPropertyCategories(expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONPropertyTagsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONPropertyTagsWithQuery method
+     */
+    public static final RESTCall getPropertyTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONPropertyTag method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONPropertyTag method
+     */
+    public static final RESTCall getPropertyTag(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
+                restService.getJSONPropertyTag(id, expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONPropertyTag method
+     * @param propertyTag The property tag to save
+     * @return A RESTCall that can call the REST createJSONPropertyTag method
+     */
+    public static final RESTCall savePropertyTag(@NotNull final RESTPropertyTagV1 propertyTag) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
+                restService.createJSONPropertyTag(expand, propertyTag);
+            }
+        };
+    }
 }
