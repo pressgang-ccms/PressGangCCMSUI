@@ -1213,7 +1213,7 @@ public final class FailOverRESTCallDatabase {
      *
      * @param loadedCallback The callback to call when the locales are loaded
      */
-    public static final void loadLocals(@NotNull final StringListLoaded loadedCallback) {
+    public static final void loadLocals(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
         FailOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
             new RESTCallBack<RESTStringConstantV1>() {
@@ -1223,7 +1223,7 @@ public final class FailOverRESTCallDatabase {
                             .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
                             .replaceAll(" ", "").split(Constants.COMMA)));
 
-                        /* Clean the list */
+                    /* Clean the list */
                     while (locales.contains("")) {
                         locales.remove("");
                     }
@@ -1232,30 +1232,26 @@ public final class FailOverRESTCallDatabase {
 
                     loadedCallback.stringListLoaded(locales);
                 }
-
-                @Override
-                public void failed() {
-                    // do nothing
-                }
-            }
+            },
+            display
         );
 
     }
 
-    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback) {
+    /**
+     * Load the default locale
+     * @param loadedCallback The callback to call when the default locale is loaded
+     */
+    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
         FailOverRESTCall.performRESTCall(
-                getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
-                new RESTCallBack<RESTStringConstantV1>() {
-                    @Override
-                    public void success(@NotNull final RESTStringConstantV1 value) {
-                        loadedCallback.stringLoaded(value.getValue());
-                    }
-
-                    @Override
-                    public void failed() {
-                        // do nothing
-                    }
+            getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
+            new RESTCallBack<RESTStringConstantV1>() {
+                @Override
+                public void success(@NotNull final RESTStringConstantV1 value) {
+                    loadedCallback.stringLoaded(value.getValue());
                 }
+            },
+            display
         );
     }
 }
