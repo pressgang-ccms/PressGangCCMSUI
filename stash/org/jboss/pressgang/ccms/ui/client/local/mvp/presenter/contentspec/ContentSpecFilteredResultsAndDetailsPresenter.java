@@ -29,6 +29,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
@@ -640,7 +641,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             }
         }, display);
 
-        RESTCalls.loadDefaultLocale(new StringLoaded() {
+        FailOverRESTCallDatabase.loadDefaultLocale(new StringLoaded() {
             @Override
             public void stringLoaded(@NotNull final String string) {
                 defaultLocale = string;
