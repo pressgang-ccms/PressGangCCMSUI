@@ -9,6 +9,7 @@ import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -73,18 +74,20 @@ public final class FailOverRESTCall {
 
                 if (throwable instanceof ResponseException) {
                     final ResponseException ex = (ResponseException) throwable;
+                    final String responseText = ex.getResponse().getText();
 
-                    /*if (ex.getResponse().getHeader(Constants.REST_SERVER_HEADER) == null) {
-                       // If we didn't receive the header, then the response was not from the PressGang REST server.
+                    if (!responseText.startsWith(RESTv1Constants.ERROR_TEXT_PREFIX)) {
+                       // The response text did not include the expected prefix,
+                       // which means it was not from the PressGang REST server.
                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                    } else*/ if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                    } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                         /*
                             A bad request means invalid input, like a duplicated name. This does not indicate a
                             failure of the REST server.
                         */
 
                         if (!disableDefaultFailureAction) {
-                            Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + ex.getResponse().getText());
+                            Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText.replaceFirst(RESTv1Constants.ERROR_TEXT_PREFIX + " ", ""));
                         }
                     } else {
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);

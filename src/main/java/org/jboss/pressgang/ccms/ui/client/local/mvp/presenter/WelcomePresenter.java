@@ -59,7 +59,8 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
                                         display.displayTopicRendered(value.value);
                                     }
                                 },
-                                display
+                                display,
+                                true
                         );
                     }
                 },

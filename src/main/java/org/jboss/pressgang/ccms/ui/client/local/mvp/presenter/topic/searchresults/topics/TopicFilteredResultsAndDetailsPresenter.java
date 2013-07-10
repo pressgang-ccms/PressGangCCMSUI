@@ -2033,11 +2033,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                         }
                                                     },
-                                                    topicRevisionsComponent.getDisplay()
+                                                    topicRevisionsComponent.getDisplay(),
+                                                    true
                                             );
                                         }
                                     },
-                                    topicRevisionsComponent.getDisplay()
+                                    topicRevisionsComponent.getDisplay(),
+                                    true
                             );
                         }
                     };

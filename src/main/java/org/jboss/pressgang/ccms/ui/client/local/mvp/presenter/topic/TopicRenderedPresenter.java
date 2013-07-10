@@ -72,7 +72,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                         display.displayTopicRendered(value.value, readOnly, showImages);
                     }
                 },
-                display
+                display,
+                true
         );
     }
 

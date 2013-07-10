@@ -285,7 +285,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                                     center();
                                 }
                             },
-                            waitDisplay
+                            waitDisplay,
+                            true
                     );
                 }
             };
