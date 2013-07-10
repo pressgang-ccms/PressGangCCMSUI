@@ -285,9 +285,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
 
-                @NotNull final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
+                final RESTCallBack<RESTFilterV1> callback = new RESTCallBack<RESTFilterV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTFilterV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTFilterV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
 
@@ -310,18 +310,17 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                             LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
                         }
                     }
-                }, new BaseRestCallback.FailureAction<Display>() {
+
                     @Override
-                    public void doFailureAction(final Display display) {
+                    public void failed() {
                         saveFilterDialog.getDialogBox().hide();
                     }
-                }
-                );
+                };
 
                 if (filter.getId() == null) {
-                    RESTCalls.createFilter(createFilter, filter);
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, display);
                 } else {
-                    RESTCalls.updateFilter(createFilter, filter);
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, display);
                 }
             }
         };
@@ -565,71 +564,71 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             return;
         }
 
-        final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+        final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
+            @Override
+            public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        final List<RESTTopicV1> modifiedTopics = new ArrayList<RESTTopicV1>();
+                final List<RESTTopicV1> modifiedTopics = new ArrayList<RESTTopicV1>();
 
-                        for (@NotNull final RESTTopicCollectionItemV1 topic : retValue.getItems()) {
+                for (@NotNull final RESTTopicCollectionItemV1 topic : retValue.getItems()) {
 
-                            checkState(topic.getItem().getTags() != null, "Returned collection items should have an expanded tags collection.");
-                            checkState(topic.getItem().getTags().getItems() != null, "Returned collection items should have an expanded tags collection.");
+                    checkState(topic.getItem().getTags() != null, "Returned collection items should have an expanded tags collection.");
+                    checkState(topic.getItem().getTags().getItems() != null, "Returned collection items should have an expanded tags collection.");
 
-                            final RESTTopicV1 modifiedTopic = new RESTTopicV1();
-                            modifiedTopic.setId(topic.getItem().getId());
-                            modifiedTopic.explicitSetTags(new RESTTagCollectionV1());
+                    final RESTTopicV1 modifiedTopic = new RESTTopicV1();
+                    modifiedTopic.setId(topic.getItem().getId());
+                    modifiedTopic.explicitSetTags(new RESTTagCollectionV1());
 
-                            for (@NotNull final Integer removeTagID : removeTags) {
-                                if (GWTComponentTopicV1.hasTag(topic.getItem(), removeTagID)) {
+                    for (@NotNull final Integer removeTagID : removeTags) {
+                        if (GWTComponentTopicV1.hasTag(topic.getItem(), removeTagID)) {
+                            final RESTTagV1 removeTag = new RESTTagV1();
+                            removeTag.setId(removeTagID);
+                            modifiedTopic.getTags().addRemoveItem(removeTag);
+                        }
+                    }
+
+                    for (@NotNull final SearchUICategory addTagCategory : addTags.keySet()) {
+                        if (addTagCategory.getMutuallyExclusiveCategory()) {
+
+                            checkState(addTags.get(addTagCategory).size() == 1, "Only one tag should be added in a mutually exclusive category.");
+
+                                    /* Remove any existing tag in the mutually exclusive category */
+                            for (final RESTTagCollectionItemV1 existingTags : topic.getItem().getTags().getItems()) {
+
+                                checkState(existingTags.getItem().getCategories() != null, "Tag should have an expanded categories collection.");
+                                checkState(existingTags.getItem().getCategories().getItems() != null, "Tag should have an expanded categories collection.");
+
+                                if (ComponentTagV1.containedInCategory(existingTags.getItem(), addTagCategory.getId())) {
                                     final RESTTagV1 removeTag = new RESTTagV1();
-                                    removeTag.setId(removeTagID);
+                                    removeTag.setId(existingTags.getItem().getId());
                                     modifiedTopic.getTags().addRemoveItem(removeTag);
                                 }
                             }
-
-                            for (@NotNull final SearchUICategory addTagCategory : addTags.keySet()) {
-                                if (addTagCategory.getMutuallyExclusiveCategory()) {
-
-                                    checkState(addTags.get(addTagCategory).size() == 1, "Only one tag should be added in a mutually exclusive category.");
-
-                                    /* Remove any existing tag in the mutually exclusive category */
-                                    for (final RESTTagCollectionItemV1 existingTags : topic.getItem().getTags().getItems()) {
-
-                                        checkState(existingTags.getItem().getCategories() != null, "Tag should have an expanded categories collection.");
-                                        checkState(existingTags.getItem().getCategories().getItems() != null, "Tag should have an expanded categories collection.");
-
-                                        if (ComponentTagV1.containedInCategory(existingTags.getItem(), addTagCategory.getId())) {
-                                            final RESTTagV1 removeTag = new RESTTagV1();
-                                            removeTag.setId(existingTags.getItem().getId());
-                                            modifiedTopic.getTags().addRemoveItem(removeTag);
-                                        }
-                                    }
-                                }
-
-                                for (final Integer addTagID : addTags.get(addTagCategory)) {
-                                    if (!GWTComponentTopicV1.hasTag(topic.getItem(), addTagID)) {
-                                        final RESTTagV1 addTag = new RESTTagV1();
-                                        addTag.setId(addTagID);
-                                        modifiedTopic.getTags().addNewItem(addTag);
-                                    }
-                                }
-                            }
-
-                            modifiedTopics.add(modifiedTopic);
                         }
 
-                        if (modifiedTopics.size() == 0) {
-                            Window.alert(PressGangCCMSUI.INSTANCE.NoTopicsFound());
-                        } else if (Window.confirm(PressGangCCMSUI.INSTANCE.ThisOperationWillModify() + " " + modifiedTopics.size() + " " + PressGangCCMSUI.INSTANCE.Topics() + ".\n" + PressGangCCMSUI.INSTANCE.AreYouSureYouWishToContinue())) {
-                            updateTopic(0, new ArrayList<Integer>(), modifiedTopics);
+                        for (final Integer addTagID : addTags.get(addTagCategory)) {
+                            if (!GWTComponentTopicV1.hasTag(topic.getItem(), addTagID)) {
+                                final RESTTagV1 addTag = new RESTTagV1();
+                                addTag.setId(addTagID);
+                                modifiedTopic.getTags().addNewItem(addTag);
+                            }
                         }
                     }
-                });
-        RESTCalls.getTopicsFromQueryWithExpandedTags(callback, query);
+
+                    modifiedTopics.add(modifiedTopic);
+                }
+
+                if (modifiedTopics.size() == 0) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoTopicsFound());
+                } else if (Window.confirm(PressGangCCMSUI.INSTANCE.ThisOperationWillModify() + " " + modifiedTopics.size() + " " + PressGangCCMSUI.INSTANCE.Topics() + ".\n" + PressGangCCMSUI.INSTANCE.AreYouSureYouWishToContinue())) {
+                    updateTopic(0, new ArrayList<Integer>(), modifiedTopics);
+                }
+            }
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQueryWithExpandedTags(query), callback, display);
 
     }
 

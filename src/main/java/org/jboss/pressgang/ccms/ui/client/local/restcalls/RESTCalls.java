@@ -515,7 +515,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTranslatedTopicWithTags(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
+    public static void getTranslatedTopicWithTagsMigrated(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -526,7 +526,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicRevisionWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
+    public static void getTopicRevisionWithTagsMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -537,7 +537,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopic(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
+    public static void getTopicMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -546,7 +546,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
+    public static void getImageMigrated(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
@@ -558,7 +558,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getImageWithoutPreview(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
+    public static void getImageWithoutPreviewMigrated(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images, but don't get the preview */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -569,7 +569,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getImageWithoutLanguageImages(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
+    public static void getImageWithoutLanguageImagesMigrated(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -580,7 +580,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
+    public static void updateImageMigrated(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
         /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
@@ -592,7 +592,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
+    public static void createImageMigrated(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
         /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
@@ -604,7 +604,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createFilter(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final RESTFilterV1 filter) {
+    public static void createFilterMigrated(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final RESTFilterV1 filter) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -613,7 +613,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateFilter(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final RESTFilterV1 filter) {
+    public static void updateFilterMigrated(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final RESTFilterV1 filter) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -622,7 +622,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getFiltersFromQuery(@NotNull final RESTCallback<RESTFilterCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getFiltersFromQueryMigrated(@NotNull final RESTCallback<RESTFilterCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -633,7 +633,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getFilter(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final Integer id) {
+    public static void getFilterMigrated(@NotNull final RESTCallback<RESTFilterV1> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -642,7 +642,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicRevision(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
+    public static void getTopicRevisionMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -651,7 +651,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getTopicsFromQueryMigrated(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -662,7 +662,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
+    public static void getTopicsFromQueryMigrated(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -673,7 +673,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicsFromQueryWithExpandedTags(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
+    public static void getTopicsFromQueryWithExpandedTagsMigrated(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {
             @Override

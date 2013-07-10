@@ -261,10 +261,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 try {
                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
-                            getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                        public void success(@NotNull final RESTTopicV1 retValue) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
@@ -275,8 +274,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
                             }
                         }
-                    });
-                    RESTCalls.getTopic(callback, selectedEntity.getId());
+                    };
+
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(selectedEntity.getId()), callback, getDisplay());
+
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }
@@ -577,10 +578,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final Integer revision = displayedTopic.getRevision();
 
                 /* A callback to respond to a request for a topic with the tags expanded */
-                final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                 final RESTCallBack<RESTTopicV1> topicWithTagsCallback = new RESTCallBack<RESTTopicV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                    public void success(@NotNull final RESTTopicV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
 
@@ -609,9 +609,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
                         }
                     }
-                });
+                };
 
-                RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -636,11 +636,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (this.topicRevisionViewData.containsKey(topicId)) {
                 final Integer topicRevision = topicRevisionViewData.get(topicId);
 
-                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                                displayRevision(retValue);
+                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTopicV1 retValue) {
+                        displayRevision(retValue);
 
                                 /*
                                     If the revision presenter has a valid provider data, then it has loaded and displayed
@@ -650,13 +649,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                      If that is the case, we need to redisplay the list to reflect the fact that we are displaying
                                      a new revision.
                                  */
-                                if (topicRevisionsComponent.getProviderData().isValid()) {
-                                    topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
-                                }
-                            }
-                        });
+                        if (topicRevisionsComponent.getProviderData().isValid()) {
+                            topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                        }
+                    }
+                };
 
-                RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
             }
         }
     }
@@ -1956,33 +1955,31 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
                     topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
 
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                            topicRevisionsComponent.getDisplay(),
-                            new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                                    checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTopicV1 retValue) {
+                            checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                                     /*
                                         It is possible to switch away from the view while this request was loading. If we
                                         have done so, don't show the merge view.
                                      */
-                                    if (lastDisplayedView == topicRevisionsComponent.getDisplay()) {
-                                        final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                            if (lastDisplayedView == topicRevisionsComponent.getDisplay()) {
+                                final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                        topicRevisionsComponent.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
+                                topicRevisionsComponent.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
 
                                         /*
                                             We can't save while merging.
                                          */
-                                        getDisplay().getSave().setEnabled(false);
-                                    }
+                                getDisplay().getSave().setEnabled(false);
+                            }
 
-                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                            topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                        }
+                    };
 
-                                }
-                            });
-                    RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
                 }
             });
 
@@ -2665,22 +2662,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                   @NotNull final BaseTemplateViewInterface display) {
         @NotNull final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
-            @NotNull final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
-                @Override
-                public void begin() {
-                    display.addWaitOperation();
-                }
 
-                @Override
-                public void generalException(final Exception e) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.removeWaitOperation();
-                }
-
+            final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                    try {
-                        @NotNull final StringBuilder details = new StringBuilder();
+                        final StringBuilder details = new StringBuilder();
                         for (@NotNull final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
                             final RESTTopicV1 topic = topicCollectionItem.getItem();
                             if (!details.toString().isEmpty()) {
@@ -2691,20 +2677,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         topicXMLDisplay.getEditor().insertText(details.toString());
 
-                    } finally {
-                        display.removeWaitOperation();
-                    }
                 }
 
                 @Override
-                public void failed(final Message message, final Throwable throwable) {
+                public void failed() {
                     display.removeWaitOperation();
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                 }
             };
 
-            RESTCalls.getTopicsFromQuery(callback, Constants.QUERY_PATH_SEGMENT_PREFIX
-                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids), callback, display);
+
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
 

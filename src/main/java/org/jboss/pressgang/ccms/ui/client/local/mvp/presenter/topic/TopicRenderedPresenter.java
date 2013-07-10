@@ -78,14 +78,14 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         try {
             final Integer topicId = Integer.parseInt(fixedToken);
 
-            final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+            final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                public void success(@NotNull final RESTTopicV1 retValue) {
                     displayTopicRendered(retValue.getXml(), true, true);
                 }
-            });
+            };
 
-            RESTCalls.getTopic(callback, topicId);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
 
         } catch (@NotNull final NumberFormatException ex) {
 

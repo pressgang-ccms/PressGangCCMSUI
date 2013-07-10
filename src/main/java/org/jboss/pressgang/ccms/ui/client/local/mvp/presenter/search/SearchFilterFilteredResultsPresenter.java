@@ -9,8 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,32 +68,30 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
                 @Override
                 protected void onRangeChanged(@NotNull final HasData<RESTFilterCollectionItemV1> list) {
 
-                    @NotNull final RESTCalls.RESTCallback<RESTFilterCollectionV1> callback = new BaseRestCallback<RESTFilterCollectionV1, Display>(
-                            display,
-                            new BaseRestCallback.SuccessAction<RESTFilterCollectionV1, Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTFilterCollectionV1 retValue, @NotNull final Display display) {
-                                    try {
-                                        LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
-
-                                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
-
-                                        getProviderData().setItems(retValue.getItems());
-                                        getProviderData().setSize(retValue.getSize());
-                                        relinkSelectedItem();
-                                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                                    } finally {
-                                        LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
-                                    }
-                                }
-                            });
-
                     getProviderData().setStartRow(list.getVisibleRange().getStart());
                     final int length = list.getVisibleRange().getLength();
-                    final int end = getProviderData().getStartRow() + length;
+                    final int end = getProviderData().getStartRow() + length;;
 
-                    RESTCalls.getFiltersFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                    final RESTCallBack<RESTFilterCollectionV1> callback = new RESTCallBack<RESTFilterCollectionV1>() {
+                        @Override
+                        public void success(@NotNull final RESTFilterCollectionV1 retValue) {
+                            try {
+                                LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
+
+                                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
+                                getProviderData().setItems(retValue.getItems());
+                                getProviderData().setSize(retValue.getSize());
+                                relinkSelectedItem();
+                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            } finally {
+                                LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
+                            }
+                        }
+                    };
+
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFiltersFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
                 }
             };
             return provider;

@@ -12,8 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -123,9 +122,13 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
+
+                final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                         try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
@@ -138,13 +141,9 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                             getHandlerManager().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
                         }
                     }
-                });
+                };
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
-
-                RESTCalls.getTopicsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(ueryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

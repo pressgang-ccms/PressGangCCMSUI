@@ -13,8 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -108,10 +107,9 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
                 try {
                     LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
 
-                    @NotNull final RESTCalls.RESTCallback<RESTFilterV1> callback = new BaseRestCallback<RESTFilterV1, BaseTemplateViewInterface>(
-                            display, new BaseRestCallback.SuccessAction<RESTFilterV1, BaseTemplateViewInterface>() {
+                    final RESTCallBack<RESTFilterV1> callback = new RESTCallBack<RESTFilterV1>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
+                        public void success(@NotNull final RESTFilterV1 retValue) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTERSearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
 
@@ -131,8 +129,9 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
                                 LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
                             }
                         }
-                    });
-                    RESTCalls.getFilter(callback, selectedEntity.getId());
+                    };
+
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFilter(selectedEntity.getId()), callback, display);
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
                 }

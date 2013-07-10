@@ -264,29 +264,25 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         public void show(final int topicId, @NotNull final BaseTemplateViewInterface waitDisplay) {
             this.helpTopic = topicId;
 
-            final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
-                    waitDisplay,
-                    new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+            final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                @Override
+                public void success(@NotNull final RESTTopicV1 retValue) {
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
 
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                    FailOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.holdXML(xml),
+                            new RESTCallBack<IntegerWrapper>() {
+                                public void success(@NotNull final IntegerWrapper value) {
+                                    contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+                                    center();
+                                }
+                            },
+                            waitDisplay
+                    );
+                }
+            };
 
-                            final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
-
-                            FailOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.holdXML(xml),
-                                    new RESTCallBack<IntegerWrapper>() {
-                                        public void success(@NotNull final IntegerWrapper value) {
-                                            contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-                                            center();
-                                        }
-                                    },
-                                    display
-                            );
-                        }
-
-                    });
-            RESTCalls.getTopic(callback, topicId);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, waitDisplay);
         }
     }
 

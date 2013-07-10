@@ -176,21 +176,15 @@ public class ImagesFilteredResultsAndDetailsPresenter
             @Override
             public void getNewEntity(@NotNull final RESTImageV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
 
-                final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
-                        new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                                checkArgument(retValue.getLanguageImages_OTM() != null, "The initially retrieved entity should have a language images collection");
-                                displayCallback.displayNewEntity(retValue);
-                            }
-                        }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+                final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
                     @Override
-                    public void doFailureAction(@NotNull final BaseTemplateViewInterface display) {
-
+                    public void success(@NotNull final RESTImageV1 retValue) {
+                        checkArgument(retValue.getLanguageImages_OTM() != null, "The initially retrieved entity should have a language images collection");
+                        displayCallback.displayNewEntity(retValue);
                     }
-                }
-                );
-                RESTCalls.getImageWithoutPreview(callback, selectedEntity.getId());
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -218,10 +212,9 @@ public class ImagesFilteredResultsAndDetailsPresenter
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity and have a valid id");
 
-        final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
-                display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
+        final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+            public void success(@NotNull final RESTImageV1 retValue) {
                 checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
 
                 /*
@@ -232,16 +225,16 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                 finishLoading();
             }
-        });
+        };
 
-        RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
     }
 
     @NotNull
-    private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
-        return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
+    private RESTCallBack<RESTImageV1> getDefaultImageRestCallback() {
+        return new RESTCallBack<RESTImageV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+            public void success(@NotNull final RESTImageV1 retValue) {
 
                 checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
                 checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
@@ -255,14 +248,9 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                 Window.alert(PressGangCCMSUI.INSTANCE.ImageUplodedSuccessfully());
             }
-        };
-    }
 
-    @NotNull
-    private BaseRestCallback.FailureAction<BaseTemplateViewInterface> getDefaultImageRestFailureCallback() {
-        return new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
             @Override
-            public void doFailureAction(final BaseTemplateViewInterface display) {
+            public void failed() {
                 Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
             }
         };
@@ -361,10 +349,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
-                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback());
-
-                                    RESTCalls.updateImage(callback, updateImage);
+                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                                 } finally {
                                     display.removeWaitOperation();
                                 }
@@ -426,9 +411,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                     updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
-                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display, getDefaultImageRestCallback());
-
-                    RESTCalls.updateImage(callback, updateImage);
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
@@ -476,9 +459,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display, getDefaultImageRestCallback());
-
-                        RESTCalls.updateImage(callback, updateImage);
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                     }
                 }
             }
@@ -524,10 +505,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                        display, getDefaultImageRestCallback());
-
-                RESTCalls.updateImage(callback, updateImage);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
             }
         });
 
@@ -649,31 +627,28 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                             newImage.getLanguageImages_OTM().addNewItem(langImage);
 
-                            final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
-                                    display,
-                                    new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
-                                        @Override
-                                        public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                            final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
+                                @Override
+                                public void success(@NotNull final RESTImageV1 retValue) {
+                                    final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
+                                    selectedImageCollectionItem.setItem(retValue.clone(false));
+                                    imageFilteredResultsComponent.getProviderData().setSelectedItem(selectedImageCollectionItem);
 
-                                            final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
-                                            selectedImageCollectionItem.setItem(retValue.clone(false));
-                                            imageFilteredResultsComponent.getProviderData().setSelectedItem(selectedImageCollectionItem);
+                                    final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
+                                    displayedImageCollectionItem.setItem(retValue.clone(false));
+                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(displayedImageCollectionItem);
 
-                                            final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
-                                            displayedImageCollectionItem.setItem(retValue.clone(false));
-                                            imageFilteredResultsComponent.getProviderData().setDisplayedItem(displayedImageCollectionItem);
-
-                                            initializeViews();
+                                    initializeViews();
 
                                             /* Display the entities property view */
-                                            switchView(imageComponent.getDisplay());
+                                    switchView(imageComponent.getDisplay());
 
                                             /* Reload the filtered results view */
-                                            updateDisplayWithNewEntityData(true);
-                                        }
-                                    });
+                                    updateDisplayWithNewEntityData(true);
+                                }
+                            };
 
-                            RESTCalls.createImage(imageCallback, newImage);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
                         }
                     };
 
@@ -705,22 +680,21 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
                     /* Start by getting the default locale */
-                    @NotNull final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
-                            display,
-                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
-                                    checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                                    createNewImage(
-                                            display.getBulkUploadDialog().getDescription().getText(),
-                                            retValue.getValue(),
-                                            0,
-                                            display.getBulkUploadDialog().getFiles().getFiles(),
-                                            new ArrayList<Integer>(),
-                                            new ArrayList<String>());
-                                }
-                            });
-                    RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
+                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                        @Override
+                        public void success(@NotNull final RESTStringConstantV1 retValue) {
+                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
+                            createNewImage(
+                                    display.getBulkUploadDialog().getDescription().getText(),
+                                    retValue.getValue(),
+                                    0,
+                                    display.getBulkUploadDialog().getFiles().getFiles(),
+                                    new ArrayList<Integer>(),
+                                    new ArrayList<String>());
+                        }
+                    };
+
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
                 }
             }
         });
@@ -783,36 +757,35 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
                     try {
                         final String result = reader.getStringResult();
-                        @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+                        final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                          /* When we have the default locale, create a new image */
-                        @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
+                        final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
                         langImage.explicitSetLocale(locale);
                         langImage.explicitSetImageData(buffer);
                         langImage.explicitSetFilename(files.getItem(index).getName());
 
-                        @NotNull final RESTImageV1 newImage = new RESTImageV1();
+                        final RESTImageV1 newImage = new RESTImageV1();
                         newImage.explicitSetDescription(description);
                         newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         newImage.getLanguageImages_OTM().addNewItem(langImage);
 
-                        @NotNull final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
-                                display,
-                                new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
-                                        ids.add(retValue.getId());
-                                        createNewImage(description, locale, index + 1, files, ids, failedFiled);
-                                    }
-                                }, new BaseRestCallback.FailureAction<Display>() {
+                        RESTCalls.createImage(imageCallback, newImage);
+
+                        final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
                             @Override
-                            public void doFailureAction(@NotNull final Display display) {
+                            public void success(@NotNull final RESTImageV1 retValue) {
+                                ids.add(retValue.getId());
                                 createNewImage(description, locale, index + 1, files, ids, failedFiled);
                             }
-                        }
-                        );
 
-                        RESTCalls.createImage(imageCallback, newImage);
+                            @Override
+                            public void failed() {
+                                createNewImage(description, locale, index + 1, files, ids, failedFiled);
+                            }
+                        };
+
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
                     } finally {
                         display.removeWaitOperation();
                     }

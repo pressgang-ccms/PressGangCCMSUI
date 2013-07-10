@@ -18,8 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTo
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
@@ -178,10 +177,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             if (id != null) {
 
             /* A callback to respond to a request for a topic with the tags expanded */
-                final RESTCalls.RESTCallback<RESTTranslatedTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTranslatedTopicV1, TopicTagsPresenter.Display>(
-                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, TopicTagsPresenter.Display>() {
+                final RESTCallBack<RESTTranslatedTopicV1> topicWithTagsCallback = new RESTCallBack<RESTTranslatedTopicV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTranslatedTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                    public void success(@NotNull final RESTTranslatedTopicV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
 
@@ -210,9 +208,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                             LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData() topicWithTagsCallback.doSuccessAction()");
                         }
                     }
-                });
+                };
 
-                RESTCalls.getTranslatedTopicWithTags(topicWithTagsCallback, id);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicWithTags(id), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
