@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
@@ -141,7 +142,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     private void loadSearchLocales() {
-        RESTCalls.populateLocales(new StringListLoaded() {
+        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> stringList) {
                 localePresenter.getDisplay().display(stringList, false);

@@ -313,7 +313,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         });
 
-        RESTCalls.populateLocales(new StringListLoaded() {
+        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> locales) {
                 try {

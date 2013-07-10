@@ -1213,7 +1213,7 @@ public final class FailOverRESTCallDatabase {
      *
      * @param loadedCallback The callback to call when the locales are loaded
      */
-    public static final void loadLocals(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
+    public static final void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
         FailOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
             new RESTCallBack<RESTStringConstantV1>() {

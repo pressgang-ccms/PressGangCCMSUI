@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -90,7 +91,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;
 
-        RESTCalls.populateLocales(new StringListLoaded() {
+        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> locales) {
 
