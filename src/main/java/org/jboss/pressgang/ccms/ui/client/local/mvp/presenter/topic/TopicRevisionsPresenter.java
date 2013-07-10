@@ -110,6 +110,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     private static int tempIFrameCount = 0;
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The message listener for HTML5 message passing
      */
@@ -201,7 +203,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
                 this.resetProvider();
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
             }
         };
         return provider;

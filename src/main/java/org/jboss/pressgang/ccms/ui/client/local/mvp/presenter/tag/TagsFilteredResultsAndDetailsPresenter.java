@@ -110,6 +110,8 @@ public class TagsFilteredResultsAndDetailsPresenter
      */
     public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private HandlerManager eventBus;
 
@@ -363,9 +365,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                  */
                 if (unsavedTagChanges) {
                     if (wasNewTag) {
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTag(updateTag), callback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTag(updateTag), callback, display);
                     } else {
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTag(updateTag), callback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTag(updateTag), callback, display);
                     }
                 }
                 /*
@@ -447,7 +449,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 }
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateCategories(updatedCategories), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateCategories(updatedCategories), callback, display);
             } finally {
                 LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
             }
@@ -488,7 +490,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
             }
         };
 

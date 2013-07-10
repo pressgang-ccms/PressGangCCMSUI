@@ -133,6 +133,8 @@ public class ImagesFilteredResultsAndDetailsPresenter
      */
     private static final Logger LOGGER = Logger.getLogger(ImagesFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * A reference to the StringConstants that holds the locales.
      */
@@ -185,7 +187,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -228,7 +230,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
     }
 
     @NotNull
@@ -288,7 +290,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
     }
 
     /**
@@ -350,7 +352,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
-                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
+                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                                 } finally {
                                     display.removeWaitOperation();
                                 }
@@ -412,7 +414,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                     updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
@@ -460,7 +462,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
                     }
                 }
             }
@@ -506,7 +508,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(), display);
             }
         });
 
@@ -649,11 +651,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                 }
                             };
 
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
                 }
             }
         });
@@ -695,7 +697,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
                 }
             }
         });
@@ -784,7 +786,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             }
                         };
 
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
                     } finally {
                         display.removeWaitOperation();
                     }

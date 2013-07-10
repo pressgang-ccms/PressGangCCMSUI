@@ -17,6 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
+
 /**
  * This class is used to build the standard page template. All views extend this class.
  * <p/>
@@ -46,6 +48,9 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+
     /**
      * true when the view is visible, false otherwise
      */
@@ -208,6 +213,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     public final static class HelpDialogImpl extends DialogBox implements HelpDialog {
 
+        @Inject private FailOverRESTCall failOverRESTCall;
         private final VerticalPanel layout = new VerticalPanel();
         private final Frame contents = new Frame();
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
@@ -271,7 +277,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                 public void success(@NotNull final RESTTopicV1 retValue) {
                     final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
 
-                    FailOverRESTCall.performRESTCall(
+                    failOverRESTCall.performRESTCall(
                             FailOverRESTCallDatabase.holdXML(xml),
                             new RESTCallBack<IntegerWrapper>() {
                                 public void success(@NotNull final IntegerWrapper value) {
@@ -284,7 +290,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, waitDisplay);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, waitDisplay);
         }
     }
 

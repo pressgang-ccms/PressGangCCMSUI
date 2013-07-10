@@ -44,6 +44,9 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer entityId;
     /**
@@ -107,7 +110,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
             }
         };
         getPossibleChildrenProviderData().reset();
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
     }
 
     @Override

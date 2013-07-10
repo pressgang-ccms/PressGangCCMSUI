@@ -95,6 +95,9 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             return false;
         }
     };
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The Errai event bus
      */
@@ -154,7 +157,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategory(selectedEntity.getId()), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategory(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -396,9 +399,9 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
 
                         if (wasNewEntity) {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createCategory(category), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createCategory(category), callback, display);
                         } else {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveCategory(category), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveCategory(category), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

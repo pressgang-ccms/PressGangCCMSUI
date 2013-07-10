@@ -60,6 +60,9 @@ public class CommonExtendedPropertiesPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommonExtendedPropertiesPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer topicId;
     @Inject
@@ -269,7 +272,7 @@ public class CommonExtendedPropertiesPresenter
                 }
             };
             getDisplay().getPossibleChildrenProvider().resetProvider();
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

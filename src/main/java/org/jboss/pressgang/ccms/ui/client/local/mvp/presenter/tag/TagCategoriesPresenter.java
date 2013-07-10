@@ -71,6 +71,8 @@ public class TagCategoriesPresenter
      */
     public static final String HISTORY_TOKEN = "TagCategoriesView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -324,6 +326,6 @@ public class TagCategoriesPresenter
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategories(), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategories(), callback, display);
     }
 }

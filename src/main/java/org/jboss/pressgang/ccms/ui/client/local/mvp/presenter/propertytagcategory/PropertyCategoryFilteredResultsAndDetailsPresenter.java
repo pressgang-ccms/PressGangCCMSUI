@@ -89,6 +89,8 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
      */
     private static final Logger LOGGER = Logger.getLogger(PropertyCategoryFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private HandlerManager eventBus;
 
@@ -144,7 +146,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(selectedEntity.getId()), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -293,9 +295,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                         propertyTag.explicitSetPropertyTags(displayedItem.getPropertyTags());
 
                         if (wasNewEntity) {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createPropertyCategory(propertyTag), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createPropertyCategory(propertyTag), callback, display);
                         } else {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.savePropertyCategory(propertyTag), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.savePropertyCategory(propertyTag), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

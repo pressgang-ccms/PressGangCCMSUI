@@ -27,6 +27,8 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
         void displayTopicRendered(final Integer topicXMLHoldID);
     }
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -45,12 +47,12 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
 
-        FailOverRESTCall.performRESTCall(
+        failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopic(ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 value) {
                         final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + value.getXml();
-                        FailOverRESTCall.performRESTCall(
+                        failOverRESTCall.performRESTCall(
                                 FailOverRESTCallDatabase.holdXML(xml),
                                 new RESTCallBack<IntegerWrapper>() {
                                     public void success(@NotNull final IntegerWrapper value) {

@@ -36,6 +36,9 @@ public class ProjectFilteredResultsPresenter
      * History token
      */
     public static final String HISTORY_TOKEN = "ProjectFilteredResultsView";
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
     private String queryString;
@@ -96,7 +99,7 @@ public class ProjectFilteredResultsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjectsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjectsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

@@ -67,6 +67,8 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
      */
     private static final Logger LOGGER = Logger.getLogger(BlobConstantFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
@@ -161,9 +163,9 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                         blobConstant.explicitSetValue(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(blobConstant), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(blobConstant), callback, display);
                         } else {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(blobConstant), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(blobConstant), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -359,9 +361,9 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                                 };
 
                                 if (wasNewEntity) {
-                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(updateEntity), callback, display);
+                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(updateEntity), callback, display);
                                 } else {
-                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(updateEntity), callback, display);
+                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(updateEntity), callback, display);
                                 }
 
                             } finally {

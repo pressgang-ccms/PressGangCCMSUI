@@ -38,6 +38,8 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     private Display display;
     private String queryString;
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Override
     @NotNull
     public Display getDisplay() {
@@ -94,7 +96,7 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

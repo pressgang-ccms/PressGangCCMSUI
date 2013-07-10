@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringL
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -20,7 +21,6 @@ import java.util.List;
  * A collection of REST calls.
  */
 public final class FailOverRESTCallDatabase {
-
     /**
      * The required expansion details for the tags.
      */
@@ -141,7 +141,7 @@ public final class FailOverRESTCallDatabase {
      * @param xml The XML to be held by the REST server
      * @return A RESTCall that can call the REST holdXML method
      */
-    public static final RESTCall holdXML(@NotNull final String xml) {
+    public static RESTCall holdXML(@NotNull final String xml) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -155,7 +155,7 @@ public final class FailOverRESTCallDatabase {
      * @param tag The tag to be saved
      * @return A RESTCall that can call the REST updateJSONTag method
      */
-    public static final RESTCall saveTag(@NotNull final RESTTagV1 tag) {
+    public static RESTCall saveTag(@NotNull final RESTTagV1 tag) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -170,7 +170,7 @@ public final class FailOverRESTCallDatabase {
      * @param tag The tag to be created
      * @return A RESTCall that can call the REST createJSONTag method
      */
-    public static final RESTCall createTag(@NotNull final RESTTagV1 tag) {
+    public static RESTCall createTag(@NotNull final RESTTagV1 tag) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -185,7 +185,7 @@ public final class FailOverRESTCallDatabase {
      * @param category The category to be updated
      * @return A RESTCall that can call the REST something method
      */
-    public static final RESTCall saveCategory(@NotNull final RESTCategoryV1 category) {
+    public static RESTCall saveCategory(@NotNull final RESTCategoryV1 category) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -200,7 +200,7 @@ public final class FailOverRESTCallDatabase {
      * @param category The category to be created
      * @return A RESTCall that can call the REST createJSONCategory method
      */
-    public static final RESTCall createCategory(@NotNull final RESTCategoryV1 category) {
+    public static RESTCall createCategory(@NotNull final RESTCategoryV1 category) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -215,7 +215,7 @@ public final class FailOverRESTCallDatabase {
      * @param categories The categories to be saved
      * @return A RESTCall that can call the REST updateJSONCategories method
      */
-    public static final RESTCall updateCategories(@NotNull final RESTCategoryCollectionV1 categories) {
+    public static RESTCall updateCategories(@NotNull final RESTCategoryCollectionV1 categories) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -229,7 +229,7 @@ public final class FailOverRESTCallDatabase {
      * @param topic The topic to be updated
      * @return A RESTCall that can call the REST updateJSONTopic method
      */
-    public static final RESTCall saveTopic(@NotNull final RESTTopicV1 topic) {
+    public static RESTCall saveTopic(@NotNull final RESTTopicV1 topic) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -246,7 +246,7 @@ public final class FailOverRESTCallDatabase {
      * @param userId The user that made the changes
      * @return A RESTCall that can call the REST updateJSONTopic method
      */
-    public static final RESTCall saveTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
+    public static RESTCall saveTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
                                            @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
@@ -261,7 +261,7 @@ public final class FailOverRESTCallDatabase {
      * @param topic The topic to be created
      * @return A RESTCall that can call the REST createTopic method
      */
-    public static final RESTCall createTopic(@NotNull final RESTTopicV1 topic) {
+    public static RESTCall createTopic(@NotNull final RESTTopicV1 topic) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -278,7 +278,7 @@ public final class FailOverRESTCallDatabase {
      * @param userId The user that made the changes
      * @return A RESTCall that can call the REST createJSONTopic method
      */
-    public static final RESTCall createTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
+    public static RESTCall createTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
                                              @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
@@ -293,7 +293,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONStringConstant method
      */
-    public static final RESTCall getStringConstant(final int id) {
+    public static RESTCall getStringConstant(final int id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -306,7 +306,7 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST getJSONPropertyTags method
      * @return A RESTCall that can call the REST getJSONPropertyTags method
      */
-    public static final RESTCall getPropertyTags() {
+    public static RESTCall getPropertyTags() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -320,7 +320,7 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST getJSONTags method
      * @return A RESTCall that can call the REST getJSONTags method
      */
-    public static final RESTCall getTags() {
+    public static RESTCall getTags() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -335,7 +335,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTag method
      */
-    public static final RESTCall getTag(@NotNull final Integer id) {
+    public static RESTCall getTag(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -350,7 +350,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTag method
      */
-    public static final RESTCall getUnexpandedTag(@NotNull final Integer id) {
+    public static RESTCall getUnexpandedTag(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -366,7 +366,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the revision
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static final RESTCall getTopicWithRevisions(@NotNull final Integer id, final int start, final int end) {
+    public static RESTCall getTopicWithRevisions(@NotNull final Integer id, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -389,7 +389,7 @@ public final class FailOverRESTCallDatabase {
      * @para id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static final RESTCall getTopicWithRevisions(@NotNull final Integer id) {
+    public static RESTCall getTopicWithRevisions(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -405,7 +405,7 @@ public final class FailOverRESTCallDatabase {
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
-    public static final RESTCall getTopicRevisionWithProperties(@NotNull final Integer id, @NotNull final Integer revision) {
+    public static RESTCall getTopicRevisionWithProperties(@NotNull final Integer id, @NotNull final Integer revision) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -420,7 +420,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static final RESTCall getTopicWithTags(@NotNull final Integer id) {
+    public static RESTCall getTopicWithTags(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -435,7 +435,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTranslatedTopic method
      */
-    public static final RESTCall getTranslatedTopicWithTags(@NotNull final Integer id) {
+    public static RESTCall getTranslatedTopicWithTags(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -451,7 +451,7 @@ public final class FailOverRESTCallDatabase {
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
-    public static final RESTCall getTopicRevisionWithTags(@NotNull final Integer id, @NotNull final Integer revision) {
+    public static RESTCall getTopicRevisionWithTags(@NotNull final Integer id, @NotNull final Integer revision) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -466,7 +466,7 @@ public final class FailOverRESTCallDatabase {
      * @param
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static final RESTCall getTopic(@NotNull final Integer id) {
+    public static RESTCall getTopic(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -480,7 +480,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
-    public static final RESTCall getImage(@NotNull final Integer id) {
+    public static RESTCall getImage(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -496,7 +496,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
-    public static final RESTCall getImageWithoutPreview(@NotNull final Integer id) {
+    public static RESTCall getImageWithoutPreview(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -511,7 +511,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
-    public static final RESTCall getImageWithoutLanguageImages(@NotNull final Integer id) {
+    public static RESTCall getImageWithoutLanguageImages(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -526,7 +526,7 @@ public final class FailOverRESTCallDatabase {
      * @param image The image to be updated
      * @return A RESTCall that can call the REST updateJSONImage method
      */
-    public static final RESTCall updateImage(@NotNull final RESTImageV1 image) {
+    public static RESTCall updateImage(@NotNull final RESTImageV1 image) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -542,7 +542,7 @@ public final class FailOverRESTCallDatabase {
      * @param  image The image to be created
      * @return A RESTCall that can call the REST createJSONImage method
      */
-    public static final RESTCall createImage(@NotNull final RESTImageV1 image) {
+    public static RESTCall createImage(@NotNull final RESTImageV1 image) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -558,7 +558,7 @@ public final class FailOverRESTCallDatabase {
      * @param filter The filter to be created
      * @return A RESTCall that can call the REST createJSONFilter method
      */
-    public static final RESTCall createFilter(@NotNull final RESTFilterV1 filter) {
+    public static RESTCall createFilter(@NotNull final RESTFilterV1 filter) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -572,7 +572,7 @@ public final class FailOverRESTCallDatabase {
      * @param filter The filter to be updated
      * @return A RESTCall that can call the REST updateJSONFilter method
      */
-    public static final RESTCall updateFilter(@NotNull final RESTFilterV1 filter) {
+    public static RESTCall updateFilter(@NotNull final RESTFilterV1 filter) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -588,7 +588,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONFiltersWithQuery method
      */
-    public static final RESTCall getFiltersFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getFiltersFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -603,7 +603,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONFilter method
      */
-    public static final RESTCall getFilter(@NotNull final Integer id) {
+    public static RESTCall getFilter(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -618,7 +618,7 @@ public final class FailOverRESTCallDatabase {
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
-    public static final RESTCall getTopicRevision(@NotNull final Integer id, @NotNull final Integer revision) {
+    public static RESTCall getTopicRevision(@NotNull final Integer id, @NotNull final Integer revision) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -634,7 +634,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
-    public static final RESTCall getTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -649,7 +649,7 @@ public final class FailOverRESTCallDatabase {
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
-    public static final RESTCall getTopicsFromQuery(@NotNull final String queryString) {
+    public static RESTCall getTopicsFromQuery(@NotNull final String queryString) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -664,7 +664,7 @@ public final class FailOverRESTCallDatabase {
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
-    public static final RESTCall getTopicsFromQueryWithExpandedTags(@NotNull final String queryString) {
+    public static RESTCall getTopicsFromQueryWithExpandedTags(@NotNull final String queryString) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -680,7 +680,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONTranslatedTopicsWithQuery method
      */
-    public static final RESTCall getTranslatedTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getTranslatedTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -695,7 +695,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTranslatedTopic method
      */
-    public static final RESTCall getTranslatedTopic(@NotNull final Integer id) {
+    public static RESTCall getTranslatedTopic(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -711,7 +711,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST something method
      */
-    public static final RESTCall getTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -726,7 +726,7 @@ public final class FailOverRESTCallDatabase {
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTagsWithQuery method
      */
-    public static final RESTCall getTagsFromQuery(@NotNull final String queryString) {
+    public static RESTCall getTagsFromQuery(@NotNull final String queryString) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -743,7 +743,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONStringConstantsWithQuery method
      */
-    public static final RESTCall getStringConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getStringConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -758,7 +758,7 @@ public final class FailOverRESTCallDatabase {
      * @param entity The string constant to create
      * @return A RESTCall that can call the REST createStringConstant method
      */
-    public static final RESTCall createStringConstant(@NotNull final RESTStringConstantV1 entity)  {
+    public static RESTCall createStringConstant(@NotNull final RESTStringConstantV1 entity)  {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -772,7 +772,7 @@ public final class FailOverRESTCallDatabase {
      * @param entity The String Constant to update
      * @return A RESTCall that can call the REST updateJSONStringConstant method
      */
-    public static final RESTCall updateStringConstant(@NotNull final RESTStringConstantV1 entity) {
+    public static RESTCall updateStringConstant(@NotNull final RESTStringConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -788,7 +788,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONIntegerConstantsWithQuery method
      */
-    public static final RESTCall getIntegerConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getIntegerConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -803,7 +803,7 @@ public final class FailOverRESTCallDatabase {
      * @param  entity The Integer Constant to create
      * @return A RESTCall that can call the REST createJSONIntegerConstant method
      */
-    public static final RESTCall createIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
+    public static RESTCall createIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -817,7 +817,7 @@ public final class FailOverRESTCallDatabase {
      * @param  entity The Integer Constant to save
      * @return A RESTCall that can call the REST updateJSONIntegerConstant method
      */
-    public static final RESTCall updateIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
+    public static RESTCall updateIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -833,7 +833,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONBlobConstantsWithQuery method
      */
-    public static final RESTCall getBlobConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getBlobConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -848,7 +848,7 @@ public final class FailOverRESTCallDatabase {
      * @param entity The Blob Constant to create
      * @return A RESTCall that can call the REST createJSONBlobConstant method
      */
-    public static final RESTCall createBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
+    public static RESTCall createBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -862,7 +862,7 @@ public final class FailOverRESTCallDatabase {
      * @param entity The Blob Constant to update
      * @return A RESTCall that can call the REST updateJSONBlobConstant method
      */
-    public static final RESTCall updateBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
+    public static RESTCall updateBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -876,7 +876,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONCategory method
      */
-    public static final RESTCall getCategory(@NotNull final Integer id) {
+    public static RESTCall getCategory(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -891,7 +891,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONCategory method
      */
-    public static final RESTCall getUnexpandedCategory(@NotNull final Integer id) {
+    public static RESTCall getUnexpandedCategory(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -904,7 +904,7 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST getCategories method
      * @return A RESTCall that can call the REST getCategories method
      */
-    public static final RESTCall getCategories() {
+    public static RESTCall getCategories() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -922,7 +922,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
      */
-    public static final RESTCall getUnexpandedCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getUnexpandedCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -940,7 +940,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
      */
-    public static final RESTCall getCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -958,7 +958,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONProjectsWithQuery method
      */
-    public static final RESTCall getProjectsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getProjectsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -973,7 +973,7 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST something method
      * @return A RESTCall that can call the REST something method
      */
-    public static final RESTCall getProjects() {
+    public static RESTCall getProjects() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -988,7 +988,7 @@ public final class FailOverRESTCallDatabase {
      * @param  id The entity ID
      * @return A RESTCall that can call the REST getJSONProject method
      */
-    public static final RESTCall getProject(@NotNull final Integer id) {
+    public static RESTCall getProject(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1003,7 +1003,7 @@ public final class FailOverRESTCallDatabase {
      * @param  id The entity ID
      * @return A RESTCall that can call the REST getUnexpandedProject method
      */
-    public static final RESTCall getUnexpandedProject(@NotNull final Integer id) {
+    public static RESTCall getUnexpandedProject(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1017,7 +1017,7 @@ public final class FailOverRESTCallDatabase {
      * @param  project The project to be saved
      * @return A RESTCall that can call the REST updateJSONProject method
      */
-    public static final RESTCall saveProject(@NotNull final RESTProjectV1 project) {
+    public static RESTCall saveProject(@NotNull final RESTProjectV1 project) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1032,7 +1032,7 @@ public final class FailOverRESTCallDatabase {
      * @param project The project to be created
      * @return A RESTCall that can call the REST createJSONProject method
      */
-    public static final RESTCall createProject(@NotNull final RESTProjectV1 project) {
+    public static RESTCall createProject(@NotNull final RESTProjectV1 project) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1049,7 +1049,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST something method
      */
-    public static final RESTCall getImagesFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getImagesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1073,7 +1073,7 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST getJSONPropertyCategories method
      * @return A RESTCall that can call the REST getJSONPropertyCategories method
      */
-    public static final RESTCall getPropertyTagCategories() {
+    public static RESTCall getPropertyTagCategories() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1090,7 +1090,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONPropertyTagsWithQuery method
      */
-    public static final RESTCall getPropertyTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getPropertyTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1105,7 +1105,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONPropertyTag method
      */
-    public static final RESTCall getPropertyTag(@NotNull final Integer id) {
+    public static RESTCall getPropertyTag(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1120,7 +1120,7 @@ public final class FailOverRESTCallDatabase {
      * @param propertyTag The property tag to save
      * @return A RESTCall that can call the REST createJSONPropertyTag method
      */
-    public static final RESTCall savePropertyTag(@NotNull final RESTPropertyTagV1 propertyTag) {
+    public static RESTCall savePropertyTag(@NotNull final RESTPropertyTagV1 propertyTag) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1135,7 +1135,7 @@ public final class FailOverRESTCallDatabase {
      * @param propertyTag The property tag to create
      * @return A RESTCall that can call the REST createJSONPropertyTag method
      */
-    public static final RESTCall createPropertyTag(@NotNull final RESTPropertyTagV1 propertyTag) {
+    public static RESTCall createPropertyTag(@NotNull final RESTPropertyTagV1 propertyTag) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1152,7 +1152,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONPropertyCategoriesWithQuery method
      */
-    public static final RESTCall getPropertyCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
+    public static RESTCall getPropertyCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1167,7 +1167,7 @@ public final class FailOverRESTCallDatabase {
      * @param id The entity id
      * @return A RESTCall that can call the REST getJSONPropertyCategory method
      */
-    public static final RESTCall getPropertyCategory(@NotNull final Integer id) {
+    public static RESTCall getPropertyCategory(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1182,7 +1182,7 @@ public final class FailOverRESTCallDatabase {
      * @param propertyCategory The property tag category to save
      * @return A RESTCall that can call the REST updateJSONPropertyCategory method
      */
-    public static final RESTCall savePropertyCategory(@NotNull final RESTPropertyCategoryV1 propertyCategory) {
+    public static RESTCall savePropertyCategory(@NotNull final RESTPropertyCategoryV1 propertyCategory) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1197,7 +1197,7 @@ public final class FailOverRESTCallDatabase {
      * @param propertyCategory The property tag category to create
      * @return A RESTCall that can call the REST createJSONPropertyCategory method
      */
-    public static final RESTCall createPropertyCategory(@NotNull final RESTPropertyCategoryV1 propertyCategory) {
+    public static RESTCall createPropertyCategory(@NotNull final RESTPropertyCategoryV1 propertyCategory) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1212,8 +1212,8 @@ public final class FailOverRESTCallDatabase {
      *
      * @param loadedCallback The callback to call when the locales are loaded
      */
-    public static final void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
-        FailOverRESTCall.performRESTCall(
+    public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display, @NotNull final FailOverRESTCall failOverRESTCall) {
+        failOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
             new RESTCallBack<RESTStringConstantV1>() {
                 @Override
@@ -1241,8 +1241,8 @@ public final class FailOverRESTCallDatabase {
      * Load the default locale
      * @param loadedCallback The callback to call when the default locale is loaded
      */
-    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
-        FailOverRESTCall.performRESTCall(
+    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display, @NotNull final FailOverRESTCall failOverRESTCall) {
+        failOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
             new RESTCallBack<RESTStringConstantV1>() {
                 @Override

@@ -54,6 +54,8 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
 
     private static final Logger LOGGER = Logger.getLogger(TopicTagsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer topicId;
 
@@ -113,7 +115,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicTagsPresenter.getTags()");
         }

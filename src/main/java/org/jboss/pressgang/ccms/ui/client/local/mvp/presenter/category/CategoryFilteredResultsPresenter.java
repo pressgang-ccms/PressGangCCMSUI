@@ -44,6 +44,9 @@ public class CategoryFilteredResultsPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CategoryFilteredResultsPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The display used to show the list of categories.
      */
@@ -116,7 +119,7 @@ public class CategoryFilteredResultsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
     }

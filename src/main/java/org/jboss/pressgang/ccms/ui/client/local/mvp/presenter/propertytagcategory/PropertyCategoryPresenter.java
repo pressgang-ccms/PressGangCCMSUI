@@ -38,6 +38,8 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer entityId;
 
@@ -84,6 +86,6 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(entityId), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(entityId), callback, display);
     }
 }

@@ -48,6 +48,9 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchFilterResultsAndFilterPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private SearchFilterPresenter searchFilterPresenter;
     @Inject
@@ -133,7 +136,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFilter(selectedEntity.getId()), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFilter(selectedEntity.getId()), callback, display);
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
                 }

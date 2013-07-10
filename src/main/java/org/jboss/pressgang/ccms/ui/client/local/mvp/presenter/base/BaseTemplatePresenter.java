@@ -11,6 +11,8 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -410,6 +412,20 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getHelp().addClickHandler(openHelpClickHandler);
         display.getHelpDialog().getOK().addClickHandler(okClickHandler);
         display.getHelpDialog().getEdit().addClickHandler(editClickHandler);
+
+        this.eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
+            @Override
+            public void onFailOverEvent() {
+                final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
+
+                for (int i = 0; i < display.getServers().getItemCount(); ++i) {
+                    if (display.getServers().getValue(i).equals(currentServerSettings.getId() + "")) {
+                        display.getServers().setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     /**

@@ -34,6 +34,9 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
      * History token.
      */
     public static final String HISTORY_TOKEN = "PropertyTagFilteredResultsView";
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
     private String queryString;
@@ -94,7 +97,7 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTagsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTagsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

@@ -58,6 +58,9 @@ public class CategoryTagPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CategoryTagPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The id of the category to display.
      */
@@ -140,7 +143,7 @@ public class CategoryTagPresenter
                 }
             };
             getPossibleChildrenProviderData().reset();
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

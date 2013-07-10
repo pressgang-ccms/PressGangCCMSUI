@@ -36,6 +36,8 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
      */
     public static final String HISTORY_TOKEN = "StringConstantFilteredResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The view that corresponds to this presenter.
      */
@@ -88,7 +90,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
     }

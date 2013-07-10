@@ -53,6 +53,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
      */
     public static final String HISTORY_TOKEN = "TagProjectsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -178,7 +179,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
     }
 }
 

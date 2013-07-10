@@ -35,6 +35,8 @@ public class ProjectPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "ProjectView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer entityId;
 
@@ -81,6 +83,6 @@ public class ProjectPresenter extends BaseTemplatePresenter {
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getUnexpandedProject(entityId), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getUnexpandedProject(entityId), callback, display);
     }
 }

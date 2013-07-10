@@ -33,6 +33,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         void removeListener();
     }
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The rendered topic view display
      */
@@ -63,7 +65,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         final String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + topicXML;
 
-        FailOverRESTCall.performRESTCall(
+        failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.holdXML(xml),
                 new RESTCallBack<IntegerWrapper>() {
                     public void success(@NotNull final IntegerWrapper value) {
@@ -87,7 +89,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
 
         } catch (@NotNull final NumberFormatException ex) {
 

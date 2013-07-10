@@ -57,6 +57,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      */
     private static final Logger LOGGER = Logger.getLogger(TranslatedTopicFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The main view.
      */
@@ -116,7 +118,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopic(selectedEntity.getId()), callback, getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopic(selectedEntity.getId()), callback, getDisplay());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }
@@ -211,7 +213,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicWithTags(id), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicWithTags(id), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");

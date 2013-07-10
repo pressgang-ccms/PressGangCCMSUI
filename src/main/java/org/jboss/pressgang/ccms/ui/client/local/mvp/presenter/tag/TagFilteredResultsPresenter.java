@@ -45,6 +45,8 @@ public class TagFilteredResultsPresenter
      */
     public static final String HISTORY_TOKEN = "TagFilteredResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -123,7 +125,7 @@ public class TagFilteredResultsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTagsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTagsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
 

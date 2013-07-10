@@ -70,6 +70,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -147,7 +150,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             public void stringListLoaded(@NotNull final List<String> stringList) {
                 localePresenter.getDisplay().display(stringList, false);
             }
-        }, display);
+        }, display, failOverRESTCall);
     }
 
     /**
@@ -166,7 +169,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
     }
 
     /**
@@ -321,9 +324,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 };
 
                 if (filter.getId() == null) {
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, display);
                 } else {
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, display);
                 }
             }
         };
@@ -631,7 +634,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQueryWithExpandedTags(query), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQueryWithExpandedTags(query), callback, display);
 
     }
 
@@ -650,7 +653,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 }
             };
 
-            FailOverRESTCall.performRESTCall(
+            failOverRESTCall.performRESTCall(
                     FailOverRESTCallDatabase.saveTopic(modifiedTopics.get(index),
                             PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
                             new Integer(ServiceConstants.MINOR_CHANGE),

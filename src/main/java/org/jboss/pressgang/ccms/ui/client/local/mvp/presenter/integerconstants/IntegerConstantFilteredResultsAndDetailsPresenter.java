@@ -61,6 +61,8 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
      */
     private static final Logger LOGGER = Logger.getLogger(IntegerConstantFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
@@ -144,9 +146,9 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
                         integerConstant.explicitSetValue(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createIntegerConstant(integerConstant), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createIntegerConstant(integerConstant), callback, display);
                         } else {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateIntegerConstant(integerConstant), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateIntegerConstant(integerConstant), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

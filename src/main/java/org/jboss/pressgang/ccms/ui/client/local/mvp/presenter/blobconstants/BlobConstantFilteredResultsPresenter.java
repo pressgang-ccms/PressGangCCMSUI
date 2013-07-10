@@ -39,6 +39,9 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BlobConstantFilteredResultsPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The view this presenter is associated with.
      */
@@ -96,7 +99,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getBlobConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getBlobConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
 
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");

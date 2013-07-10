@@ -38,6 +38,8 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "PropertyTagView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer entityId;
 
@@ -84,6 +86,6 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTag(entityId), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTag(entityId), callback, display);
     }
 }

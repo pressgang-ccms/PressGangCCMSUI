@@ -105,7 +105,7 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecTagsPresenter.getTags()");
         }

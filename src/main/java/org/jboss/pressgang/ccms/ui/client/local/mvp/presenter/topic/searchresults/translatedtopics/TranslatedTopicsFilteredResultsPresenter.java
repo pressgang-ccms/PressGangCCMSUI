@@ -53,6 +53,8 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
      */
     private static final RegExp LOCALE_REGEX = RegExp.compile(LOCALE_REGEX_STRING);
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -135,7 +137,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                 }
 
             }
-        }, display);
+        }, display, failOverRESTCall);
     }
 
     private void displayLocaleResults(@Nullable final String localeSearch) {
@@ -216,7 +218,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

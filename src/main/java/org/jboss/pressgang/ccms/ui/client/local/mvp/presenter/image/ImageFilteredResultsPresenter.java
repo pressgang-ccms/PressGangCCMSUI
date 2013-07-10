@@ -62,6 +62,8 @@ public class ImageFilteredResultsPresenter
      */
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -141,7 +143,7 @@ public class ImageFilteredResultsPresenter
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImagesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImagesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

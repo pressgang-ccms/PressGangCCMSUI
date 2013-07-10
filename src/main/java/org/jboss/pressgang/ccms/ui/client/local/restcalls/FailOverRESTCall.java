@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import org.jboss.errai.bus.client.api.ErrorCallback;
@@ -7,8 +8,11 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -17,6 +21,8 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,21 +30,32 @@ import java.util.List;
  * This class holds a number of preconfigured REST calls that can fail over to another server
  * if the call failed.
  */
+@Dependent
 public final class FailOverRESTCall {
 
-    public static <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback) {
+    /**
+     * The GWT event bus.
+     */
+    @Inject
+    private HandlerManager eventBus;
+
+    public FailOverRESTCall () {
+
+    }
+
+    public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback) {
         performRESTCall(restCall, callback, null, false, new ArrayList<Integer>());
     }
 
-    public static <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display) {
+    public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display) {
         performRESTCall(restCall, callback, display, false, new ArrayList<Integer>());
     }
 
-    public static <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction) {
+    public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction) {
         performRESTCall(restCall, callback, display, disableDefaultFailureAction, new ArrayList<Integer>());
     }
 
-    private static <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
+    private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
         final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
             @Override
             public void callback(final T retValue) {
@@ -111,7 +128,7 @@ public final class FailOverRESTCall {
      * Switch to another server in the same group if available and try the rest call again.
      * @param failedRESTServers The list of servers that have already failed
      */
-    private static <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
+    private <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
         /*
             The server that we failed to call.
          */
@@ -129,6 +146,9 @@ public final class FailOverRESTCall {
             if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
                 Preferences.INSTANCE.saveSetting(Preferences.SERVER, nextServer.getId() + "");
                 RestClient.setApplicationRoot(nextServer.getRestEndpoint());
+
+                eventBus.fireEvent(new FailoverEvent(nextServer.getId()));
+
                 performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                 return;
             }

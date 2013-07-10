@@ -100,6 +100,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicCollectionItemV1,
         RESTTopicV1BasicDetailsEditor> {
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /*
         True when the XML elements dialog is opened for the first time, and the
         elements are loaded.
@@ -277,7 +279,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(selectedEntity.getId()), callback, getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(selectedEntity.getId()), callback, getDisplay());
 
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
@@ -327,7 +329,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
             }
-        }, display);
+        }, display, failOverRESTCall);
 
         FailOverRESTCallDatabase.loadDefaultLocale(new StringLoaded() {
             @Override
@@ -335,7 +337,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 defaultLocale = string;
                 displayNewTopic();
             }
-        }, display);
+        }, display, failOverRESTCall);
 
         addKeyboardShortcutEventHandler(this.getTopicXMLComponent().getDisplay(), this.getDisplay(), new GetCurrentTopic() {
 
@@ -514,7 +516,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getTopicTagsPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadAllTags()");
@@ -612,7 +614,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -656,7 +658,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
             }
         }
     }
@@ -715,7 +717,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 };
                 final Integer id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId();
                 final Integer revision = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
             }
         }
     }
@@ -1060,7 +1062,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     }
                                 };
 
-                                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
+                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                             } else {
 
                                 final RESTCallBack<RESTTopicV1> updateCallback = new RESTCallBack<RESTTopicV1>() {
@@ -1153,7 +1155,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     }
                                 };
 
-                                FailOverRESTCall.performRESTCall(
+                                failOverRESTCall.performRESTCall(
                                         FailOverRESTCallDatabase.saveTopic(
                                                 newTopic,
                                                 message.toString(),
@@ -1416,9 +1418,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         };
 
                         if (overwrite) {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         } else {
-                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         }
                     } finally {
                         display.removeWaitOperation();
@@ -1980,7 +1982,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
                 }
             });
 
@@ -2017,13 +2019,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                             final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml();
 
-                            FailOverRESTCall.performRESTCall(
+                            failOverRESTCall.performRESTCall(
                                     FailOverRESTCallDatabase.holdXML(xml1),
                                     new RESTCallBack<IntegerWrapper>() {
                                         public void success(@NotNull final IntegerWrapper value1) {
                                             final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
 
-                                            FailOverRESTCall.performRESTCall(
+                                            failOverRESTCall.performRESTCall(
                                                     FailOverRESTCallDatabase.holdXML(xml2),
                                                     new RESTCallBack<IntegerWrapper>() {
                                                         public void success(@NotNull final IntegerWrapper value2) {
@@ -2040,7 +2042,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
 
                 }
             });
@@ -2216,7 +2218,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
 
 
         } finally {
@@ -2259,7 +2261,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
         }
@@ -2309,7 +2311,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, waitDisplay);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, waitDisplay);
                     } catch (@NotNull final NumberFormatException ex) {
                         // this should not happen if GWTUtilities.fixUpIdSearchString() does its job properly
                     }
@@ -2317,7 +2319,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID), callback, waitDisplay);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID), callback, waitDisplay);
     }
 
     private boolean isAnyDialogBoxesOpen(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
@@ -2683,7 +2685,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
                     + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids), callback, display);
 
             hideCspDetailsDialogBox(topicXMLDisplay);

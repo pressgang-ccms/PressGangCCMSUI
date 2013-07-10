@@ -43,6 +43,8 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
 
@@ -145,7 +147,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

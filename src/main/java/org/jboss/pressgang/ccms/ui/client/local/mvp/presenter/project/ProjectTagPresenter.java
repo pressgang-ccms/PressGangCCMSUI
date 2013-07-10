@@ -57,6 +57,8 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
 
     public static final String HISTORY_TOKEN = "ProjectTagView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Nullable
     private Integer entityId;
 
@@ -117,7 +119,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
             }
         };
         getPossibleChildrenProviderData().reset();
-        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
     }
 
     @Override

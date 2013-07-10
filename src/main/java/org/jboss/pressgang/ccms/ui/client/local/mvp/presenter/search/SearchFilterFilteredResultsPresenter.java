@@ -44,6 +44,8 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
      */
     public static final String HISTORY_TOKEN = "SearchFilterFilteredResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * The display.
      */
@@ -93,7 +95,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
                         }
                     };
 
-                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFiltersFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFiltersFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
                 }
             };
             return provider;

@@ -33,6 +33,8 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
 
     public static final String HISTORY_TOKEN = "IntegerConstantFilteredResultsView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     @Inject
     private Display display;
     private String queryString;
@@ -79,7 +81,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getIntegerConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getIntegerConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;
