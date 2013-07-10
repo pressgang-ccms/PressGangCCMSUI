@@ -353,7 +353,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void saveTopic(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic) {
+    public static void saveTopicMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -362,7 +362,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void saveTopic(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic, @NotNull final String message,
+    public static void saveTopicMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic, @NotNull final String message,
                                  @NotNull final Integer flag, @NotNull final String userId) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -372,7 +372,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createTopic(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic) {
+    public static void createTopicMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

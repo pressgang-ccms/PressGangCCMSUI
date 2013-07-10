@@ -24,10 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
@@ -640,20 +637,26 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     private void updateTopic(final int index, @NotNull final List<Integer> failedTopics, @NotNull final List<RESTTopicV1> modifiedTopics) {
         checkArgument(index >= 0, "The index must be positive");
         if (index < modifiedTopics.size()) {
-            final BaseRestCallback<RESTTopicV1, Display> updateTopicCallback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                @Override
-                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+
+            final RESTCallBack<RESTTopicV1> updateTopicCallback = new RESTCallBack<RESTTopicV1>() {
+                public void success(@NotNull final RESTTopicV1 retValue) {
                     updateTopic(index + 1, failedTopics, modifiedTopics);
                 }
-            }, new BaseRestCallback.FailureAction<Display>() {
-                @Override
-                public void doFailureAction(@NotNull final Display display) {
+
+                public void failed() {
                     failedTopics.add(modifiedTopics.get(index).getId());
                     updateTopic(index + 1, failedTopics, modifiedTopics);
                 }
-            }
-            );
-            RESTCalls.saveTopic(updateTopicCallback, modifiedTopics.get(index), PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(), new Integer(ServiceConstants.MINOR_CHANGE), ServiceConstants.NULL_USER_ID.toString());
+            };
+
+            FailOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.saveTopic(modifiedTopics.get(index),
+                            PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
+                            new Integer(ServiceConstants.MINOR_CHANGE),
+                            ServiceConstants.NULL_USER_ID.toString()),
+                    updateTopicCallback,
+                    display);
+
         } else {
             if (failedTopics.size() == 0) {
                 Window.alert(PressGangCCMSUI.INSTANCE.AllTopicsUpdatedSuccessfully());

@@ -1069,19 +1069,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 RESTCalls.createTopic(addCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                             } else {
-                                final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
-                                        display,
-                                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                                            @Override
-                                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                                                try {
-                                                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
-                                                    boolean overwroteChanges = false;
-                                                    final Integer originalRevision = getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getRevision();
+                                final RESTCallBack<RESTTopicV1> updateCallback = new RESTCallBack<RESTTopicV1>() {
+                                    @Override
+                                    public void success(@NotNull final RESTTopicV1 retValue) {
+                                        try {
+                                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
-                                                    if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
-                                                        Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                                            boolean overwroteChanges = false;
+                                            final Integer originalRevision = getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getRevision();
+
+                                            if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                                                Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
 
                                                         /*
                                                             If no changes were made to the topic itself (i.e. we just update some children),
@@ -1095,76 +1094,80 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             The code is left here as a reminder that some additional checking might be required with
                                                             new children that are exposed through the UI.
                                                         */
-                                                        if (retValue.getRevisions().getItems().size() >= 1) {
-                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                                    .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+                                                if (retValue.getRevisions().getItems().size() >= 1) {
+                                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                            .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
 
-                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+                                                    LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
 
-                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                                        }
+                                                    overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                }
 
                                                         /*
                                                             Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
                                                          */
-                                                        if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
+                                                if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                             /* Get the second last revision (the last one is the current one) */
-                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                                    .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                            .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
 
-                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+                                                    LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
                                                             /*
                                                              * if the second last revision doesn't match the revision of the topic when editing was
                                                              * started, then we have overwritten someone elses changes
                                                              */
-                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                                        }
-                                                    }
+                                                    overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                }
+                                            }
 
                                                     /* Update the displayed topic */
-                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(), true);
+                                            retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(), true);
                                                     /* Update the selected topic */
-                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
+                                            retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
 
-                                                    lastXML = null;
+                                            lastXML = null;
 
-                                                    updateDisplayWithNewEntityData(false);
+                                            updateDisplayWithNewEntityData(false);
 
-                                                    if (overwroteChanges) {
+                                            if (overwroteChanges) {
                                                         /* Take the user to the revisions view so they can review any overwritten changes */
-                                                        switchView(topicRevisionsComponent.getDisplay());
-                                                        Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                                    } else {
-                                                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                                    }
-                                                } finally {
-                                                    LOGGER.log(Level.INFO,
-                                                            "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
+                                                switchView(topicRevisionsComponent.getDisplay());
+                                                Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                            } else {
+                                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                            }
+                                        } finally {
+                                            LOGGER.log(Level.INFO,
+                                                    "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
-                                                    if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                            if (getTopicXMLComponent().getDisplay().getEditor() != null) {
+                                                getTopicXMLComponent().getDisplay().getEditor().redisplay();
                                                         /*
                                                             This forces the xml validation to rehighlight the invalid rows
                                                          */
-                                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
-                                                    }
-                                                }
+                                                getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                             }
-                                        }, new BaseRestCallback.FailureAction<Display>() {
-                                    @Override
-                                    public void doFailureAction(final Display display) {
+                                        }
+                                    }
+
+                                    public void failed() {
                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
                                         /*
                                             This forces the xml validation to rehighlight the invalid rows
                                          */
                                         getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                     }
-                                }
-                                );
+                                };
 
-
-                                RESTCalls.saveTopic(updateCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                                FailOverRESTCall.performRESTCall(
+                                        FailOverRESTCallDatabase.saveTopic(
+                                                newTopic,
+                                                message.toString(),
+                                                flag,
+                                                ServiceConstants.NULL_USER_ID.toString()),
+                                        updateCallback,
+                                        display);
                             }
                         }
                     } finally {
@@ -1391,41 +1394,38 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.getProperties().addNewItem(originalFileName);
                         }
 
-                        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
-                                display,
-                                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                                        ids.add(retValue.getId());
+                        final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                            @Override
+                            public void success(@NotNull final RESTTopicV1 retValue) {
+                                ids.add(retValue.getId());
 
                                         /*
                                             If we are working with a collection of new topics, add anything uploaded to
                                             that list.
                                          */
-                                        if (startWithNewTopic) {
-                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-                                            topicCollectionItem.setItem(retValue);
-                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                if (startWithNewTopic) {
+                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                    topicCollectionItem.setItem(retValue);
+                                    topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                            getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
-                                            getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
-                                        }
+                                    getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
+                                    getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
+                                }
 
-                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
-                                    }
-                                }, new BaseRestCallback.FailureAction<Display>() {
+                                createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
+                            }
+
                             @Override
-                            public void doFailureAction(@NotNull final Display display) {
+                            public void failed() {
                                 failedFiled.add(files.getItem(index).getName());
                                 createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                             }
-                        }
-                        );
+                        };
 
                         if (overwrite) {
-                            RESTCalls.saveTopic(callback, newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         } else {
-                            RESTCalls.createTopic(callback, newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         }
                     } finally {
                         display.removeWaitOperation();
