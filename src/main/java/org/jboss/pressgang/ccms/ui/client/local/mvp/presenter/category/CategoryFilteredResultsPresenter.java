@@ -16,6 +16,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -101,51 +104,24 @@ public class CategoryFilteredResultsPresenter
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> list) {
 
-                @NotNull final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCallback<RESTCategoryCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        LOGGER.log(Level.INFO, "RESTCallback.begin()");
-                        resetProvider();
-                        display.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(@NotNull final Exception ex) {
-                        LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
-                        try {
-                            LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
-
-                            checkState(retValue.getItems() != null, "There returned collection should have a valid items collection.");
-                            checkState(retValue.getSize() != null, "There returned collection should have a valid size collection.");
-
-                            getProviderData().setItems(retValue.getItems());
-                            getProviderData().setSize(retValue.getSize());
-                            relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed(@NotNull final Message message, @NotNull final Throwable throwable) {
-                        display.removeWaitOperation();
-                        LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-                };
-
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                RESTCalls.getCategoriesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                final RESTCallBack<RESTCategoryCollectionV1> callback = new RESTCallBack<RESTCategoryCollectionV1>() {
+                    @Override
+                    public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
+                        checkState(retValue.getItems() != null, "There returned collection should have a valid items collection.");
+                        checkState(retValue.getSize() != null, "There returned collection should have a valid size collection.");
+
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getSize());
+                        relinkSelectedItem();
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                    }
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
     }

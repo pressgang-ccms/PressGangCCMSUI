@@ -14,8 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -127,9 +126,9 @@ public class ImageFilteredResultsPresenter
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                @NotNull final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
+                final RESTCallBack<RESTImageCollectionV1> callback = new RESTCallBack<RESTImageCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTImageCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTImageCollectionV1 retValue) {
                         checkState(retValue.getItems() != null, "The returned collection should have a valid items collection");
                         checkState(retValue.getSize() != null, "The returned collection should have a valid size");
 
@@ -138,9 +137,9 @@ public class ImageFilteredResultsPresenter
                         relinkSelectedItem();
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
-                RESTCalls.getImagesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createCategory(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

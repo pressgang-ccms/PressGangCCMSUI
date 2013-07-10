@@ -144,16 +144,16 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
             @Override
             public void getNewEntity(@NotNull final RESTCategoryV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
-                @NotNull final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
-                        display, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
+                final RESTCallBack<RESTCategoryV1> callback = new RESTCallBack<RESTCategoryV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTCategoryV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                        checkArgument(retValue.getTags() != null, "The initially retrieved entity should have a tags collection");
+                    public void success(@NotNull final RESTCategoryV1 retValue) {
+                            checkArgument(retValue.getTags() != null, "The initially retrieved entity should have a tags collection");
 
-                        displayCallback.displayNewEntity(retValue);
+                            displayCallback.displayNewEntity(retValue);
                     }
-                });
-                RESTCalls.getCategory(callback, selectedEntity.getId());
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategory(selectedEntity.getId()), callback, display);
             }
         };
 

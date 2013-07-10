@@ -6,8 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,13 +72,13 @@ public class ProjectPresenter extends BaseTemplatePresenter {
      * Get the category from the database and use it to populate the editor in the view
      */
     public void getEntity(@NotNull final Integer entityId) {
-        @NotNull final RESTCalls.RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, ProjectPresenter.Display>(display,
-                new BaseRestCallback.SuccessAction<RESTProjectV1, ProjectPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTProjectV1 retValue, @NotNull final ProjectPresenter.Display display) {
-                        display.display(retValue, false);
-                    }
-                });
-        RESTCalls.getUnexpandedProject(callback, entityId);
+        final RESTCallBack<RESTProjectV1> callback = new RESTCallBack<RESTProjectV1>() {
+            @Override
+            public void success(@NotNull final RESTProjectV1 retValue) {
+                display.display(retValue, false);
+            }
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getUnexpandedProject(entityId), callback, display);
     }
 }

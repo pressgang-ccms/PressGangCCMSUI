@@ -918,7 +918,7 @@ public final class RESTCalls {
     }
     */
 
-    public static void getCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final Integer id) {
+    public static void getCategoryMigrated(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -938,7 +938,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getCategories(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback) {
+    public static void getCategoriesMigrated(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
                 + "]}]}";
@@ -962,7 +962,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getCategoriesFromQueryMigrated(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
@@ -974,7 +974,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getProjectsFromQuery(@NotNull final RESTCallback<RESTProjectCollectionV1> callback, @NotNull final String queryString,
+    public static void getProjectsFromQueryMigrated(@NotNull final RESTCallback<RESTProjectCollectionV1> callback, @NotNull final String queryString,
                                             final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
@@ -987,7 +987,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getProjects(@NotNull final RESTCallback<RESTProjectCollectionV1> callback) {
+    public static void getProjectsMigrated(@NotNull final RESTCallback<RESTProjectCollectionV1> callback) {
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -997,7 +997,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final Integer id) {
+    public static void getProjectMigrated(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -1008,7 +1008,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getUnexpandedProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final Integer id) {
+    public static void getUnexpandedProjectMigrated(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -1017,7 +1017,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void saveProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
+    public static void saveProjectMigrated(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
         final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1027,7 +1027,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
+    public static void createProjectMigrated(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
         final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1037,7 +1037,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getImagesFromQueryMigrated(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand =
                 "{" +
@@ -1065,7 +1065,7 @@ public final class RESTCalls {
      *
      * @param callback The callback to process the results from the REST server
      */
-    public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback) {
+    public static void getPropertyTagCategoriesMigrated(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback) {
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1083,7 +1083,7 @@ public final class RESTCalls {
      * @param start       The start of the range of returned entities
      * @param end         The end of the range of returned entities
      */
-    public static void getPropertyTagsFromQuery(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getPropertyTagsFromQueryMigrated(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1093,7 +1093,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final Integer id) {
+    public static void getPropertyTagMigrated(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final Integer id) {
         final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1103,7 +1103,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void savePropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
+    public static void savePropertyTagMigrated(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
         final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1113,7 +1113,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
+    public static void createPropertyTagMigrated(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
         final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1131,7 +1131,7 @@ public final class RESTCalls {
      * @param start       The start of the range of returned entities
      * @param end         The end of the range of returned entities
      */
-    public static void getPropertyCategoriesFromQuery(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getPropertyCategoriesFromQueryMigrated(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1141,7 +1141,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final Integer id) {
+    public static void getPropertyCategoryMigrated(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final Integer id) {
         final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1151,7 +1151,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void savePropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
+    public static void savePropertyCategoryMigrated(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
         final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -1161,7 +1161,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
+    public static void createPropertyCategoryMigrated(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
         final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override

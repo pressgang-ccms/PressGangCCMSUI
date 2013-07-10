@@ -13,8 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemNameSort;
@@ -159,25 +158,25 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
 
-        final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
-
-                        getPossibleChildrenProviderData().setStartRow(0);
-                        getPossibleChildrenProviderData().setItems(retValue.getItems());
-                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
-
-                    /* Refresh the list */
-                        redisplayPossibleChildList(parent);
-                    }
-                });
-
         getPossibleChildrenProviderData().reset();
 
-        RESTCalls.getProjects(callback);
+
+        final RESTCallBack<RESTProjectCollectionV1> callback = new RESTCallBack<RESTProjectCollectionV1>() {
+            @Override
+            public void success(@NotNull final RESTProjectCollectionV1 retValue) {
+                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
+                getPossibleChildrenProviderData().setStartRow(0);
+                getPossibleChildrenProviderData().setItems(retValue.getItems());
+                getPossibleChildrenProviderData().setSize(retValue.getItems().size());
+
+                /* Refresh the list */
+                redisplayPossibleChildList(parent);
+            }
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
     }
 }
 

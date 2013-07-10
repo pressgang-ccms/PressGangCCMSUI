@@ -13,8 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,25 +77,24 @@ public class ProjectFilteredResultsPresenter
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
-                                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
-
-                                getProviderData().setItems(retValue.getItems());
-                                getProviderData().setSize(retValue.getSize());
-                                relinkSelectedItem();
-                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                            }
-                        });
-
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                RESTCalls.getProjectsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                final RESTCallBack<RESTProjectCollectionV1> callback = new RESTCallBack<RESTProjectCollectionV1>() {
+                    @Override
+                    public void success(@NotNull final RESTProjectCollectionV1 retValue) {
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getSize());
+                        relinkSelectedItem();
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                    }
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjectsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

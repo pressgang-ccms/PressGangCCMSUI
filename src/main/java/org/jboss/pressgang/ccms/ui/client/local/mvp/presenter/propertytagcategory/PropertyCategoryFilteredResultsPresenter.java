@@ -13,8 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,9 +75,13 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTPropertyCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, Display>() {
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
+
+                final RESTCallBack<RESTPropertyCategoryCollectionV1> callback = new RESTCallBack<RESTPropertyCategoryCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTPropertyCategoryCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTPropertyCategoryCollectionV1 retValue) {
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
@@ -87,13 +90,9 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
                         relinkSelectedItem();
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
-
-                RESTCalls.getPropertyCategoriesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategoriesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

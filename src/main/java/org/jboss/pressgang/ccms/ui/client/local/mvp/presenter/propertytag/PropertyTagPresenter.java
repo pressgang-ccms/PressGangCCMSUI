@@ -6,8 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,13 +75,13 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
      * Get the category from the database and use it to populate the editor in the view
      */
     public void getEntity(@NotNull final Integer entityId) {
-        @NotNull final RESTCalls.RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, PropertyTagPresenter.Display>(display,
-                new BaseRestCallback.SuccessAction<RESTPropertyTagV1, PropertyTagPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final PropertyTagPresenter.Display display) {
-                        display.display(retValue, false);
-                    }
-                });
-        RESTCalls.getPropertyTag(callback, entityId);
+        final RESTCallBack<RESTPropertyTagV1> callback = new RESTCallBack<RESTPropertyTagV1>() {
+            @Override
+            public void success(@NotNull final RESTPropertyTagV1 retValue) {
+                display.display(retValue, false);
+            }
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTag(entityId), callback, display);
     }
 }

@@ -31,8 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -135,15 +134,15 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
             @Override
             public void getNewEntity(@NotNull final RESTProjectV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
-                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
-                        new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                                checkArgument(retValue.getTags() != null, "The initially retrieved entity should have an expanded tags collection");
-                                displayCallback.displayNewEntity(retValue);
-                            }
-                        });
-                RESTCalls.getProject(callback, selectedEntity.getId());
+                final RESTCallBack<RESTProjectV1> callback = new RESTCallBack<RESTProjectV1>() {
+                    @Override
+                    public void success(@NotNull final RESTProjectV1 retValue) {
+                        checkArgument(retValue.getTags() != null, "The initially retrieved entity should have an expanded tags collection");
+                        displayCallback.displayNewEntity(retValue);
+                    }
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProject(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -260,30 +259,29 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTProjectV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final Display display) {
-                                checkState(filteredResultsComponent.getProviderData().isValid(), "The filtered results provider data should be valid.");
+                final RESTCallBack<RESTProjectV1> callback = new RESTCallBack<RESTProjectV1>() {
+                    @Override
+                    public void success(@NotNull final RESTProjectV1 retValue) {
+                        checkState(filteredResultsComponent.getProviderData().isValid(), "The filtered results provider data should be valid.");
 
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        true);
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                true);
 
                                 /* This project is no longer a new project */
-                                filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                filteredResultsComponent.getDisplay().getProvider().updateRowData(
-                                        filteredResultsComponent.getProviderData().getStartRow(),
-                                        filteredResultsComponent.getProviderData().getItems());
+                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsComponent.getDisplay().getProvider().updateRowData(
+                                filteredResultsComponent.getProviderData().getStartRow(),
+                                filteredResultsComponent.getProviderData().getItems());
 
-                                tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-                                tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                        tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayWithNewEntityData(wasNewEntity);
+                        updateDisplayWithNewEntityData(wasNewEntity);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        });
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    }
+                };
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
@@ -296,9 +294,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                         project.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
 
                         if (wasNewEntity) {
-                            RESTCalls.createProject(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createProject(project), callback, display);
                         } else {
-                            RESTCalls.saveProject(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveProject(project), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

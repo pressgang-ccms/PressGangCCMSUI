@@ -25,8 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemParentSort;
@@ -307,10 +306,11 @@ public class TagCategoriesPresenter
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
 
-        @NotNull final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
-            @Override
-            public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
+        getPossibleChildrenProviderData().reset();
 
+        final RESTCallBack<RESTCategoryCollectionV1> callback = new RESTCallBack<RESTCategoryCollectionV1>() {
+            @Override
+            public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
                 checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                 checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
@@ -320,10 +320,8 @@ public class TagCategoriesPresenter
 
                 redisplayPossibleChildList(parent);
             }
-        });
+        };
 
-        getPossibleChildrenProviderData().reset();
-
-        RESTCalls.getCategories(callback);
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategories(), callback, display);
     }
 }
