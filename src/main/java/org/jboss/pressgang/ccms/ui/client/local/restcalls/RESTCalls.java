@@ -343,7 +343,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateCategories(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback,
+    public static void updateCategoriesMigrated(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback,
                                         final RESTCategoryCollectionV1 categories) {
         doRestCall(callback, new RestMethodCaller() {
             @Override

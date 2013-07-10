@@ -389,26 +389,23 @@ public class TagsFilteredResultsAndDetailsPresenter
             try {
                 LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
 
-                @NotNull final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
-
-                                checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                                checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                final RESTCallBack<RESTCategoryCollectionV1> callback = new RESTCallBack<RESTCategoryCollectionV1>() {
+                    public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                                 /*
                                     Reload the list of categories and projects if this is the last REST call to succeed
                                 */
-                                if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
-                                    categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem().getItem());
-                                }
-                                categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
+                            categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem().getItem());
+                        }
+                        categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayWithNewEntityData(wasNewTag);
-                                Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
-                            }
-                        });
+                        updateDisplayWithNewEntityData(wasNewTag);
+                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
+                    }
+                };
 
                 @NotNull final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
@@ -449,7 +446,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 }
 
-                RESTCalls.updateCategories(callback, updatedCategories);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateCategories(updatedCategories), callback, display);
             } finally {
                 LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
             }
