@@ -493,10 +493,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 /* Disable the OK button, and change the text so it is clear something is happening */
                 display.getBulkImport().setLoading();
 
-                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
-                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
+                final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final TopicTagsPresenter.Display tagsDisplay) {
+                    public void success(@NotNull final RESTTagCollectionV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
 
@@ -511,8 +510,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
                         }
                     }
-                });
-                RESTCalls.getTags(callback);
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadAllTags()");
@@ -698,29 +698,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
                 checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision() != null, "The displayed collection item to reference a valid entity with a valid revision.");
 
-                final BaseRestCallback<RESTTopicV1, CommonExtendedPropertiesPresenter.Display> callback =
-                        new BaseRestCallback<RESTTopicV1, CommonExtendedPropertiesPresenter.Display>(
-                                getTopicPropertyTagPresenter().getDisplay(),
-                                new BaseRestCallback.SuccessAction<RESTTopicV1, CommonExtendedPropertiesPresenter.Display>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final CommonExtendedPropertiesPresenter.Display display) {
-                                        checkArgument(retValue.getProperties().getItems() != null, "Returned collection should have a valid items collection.");
-                                        checkArgument(retValue.getProperties().getSize() != null, "Returned collection should have a valid size.");
+                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTopicV1 retValue) {
+                        checkArgument(retValue.getProperties().getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getProperties().getSize() != null, "Returned collection should have a valid size.");
 
-                                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
+                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
 
-                                        Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
-                                                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                        Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
                                         /* We have new data to display */
-                                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
-                                    }
-                                }
-                        );
-
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
+                    }
+                };
                 final Integer id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId();
                 final Integer revision = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
-                RESTCalls.getTopicRevisionWithProperties(callback, id, revision);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
             }
         }
     }
@@ -2283,11 +2278,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param loadedCallback The callback to call when the data is loaded
      */
     private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
-        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-
+            public void success(@NotNull final RESTStringConstantV1 retValue) {
                 /* Get the list of template string constant ids from the StringConstant */
                 final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
                         retValue.getValue()).split(Constants.COMMA)));
@@ -2305,9 +2298,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 data.put(retValue.getName(), retValue.getValue());
 
-                                                /*
-                                                 * If this was the last call, return the data to the callee.
-                                                 */
+                                /*
+                                 * If this was the last call, return the data to the callee.
+                                 */
                                 if (counter[0] == xmlElements.size()) {
                                     loadedCallback.stringMapLoaded(data);
                                 }
@@ -2322,16 +2315,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, display);
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, waitDisplay);
                     } catch (@NotNull final NumberFormatException ex) {
                         // this should not happen if GWTUtilities.fixUpIdSearchString() does its job properly
                     }
                 }
-
             }
-        });
+        };
 
-        RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID);
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID), callback, waitDisplay);
     }
 
     private boolean isAnyDialogBoxesOpen(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {

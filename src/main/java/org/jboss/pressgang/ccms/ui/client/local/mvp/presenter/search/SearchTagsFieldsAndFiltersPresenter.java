@@ -152,19 +152,18 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      */
     private void loadSearchTags() {
 
-        @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
-                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
+        final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
-
+            public void success(@NotNull final RESTTagCollectionV1 retValue) {
                 /* Bind the load, load and search and overwrite buttons */
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
                 tagsComponent.getDisplay().displayExtended(retValue, null, false, showBulkTags);
             }
-        });
-        RESTCalls.getTags(callback);
+        };
+
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
     }
 
     /**

@@ -91,10 +91,9 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecTagsPresenter.getTags()");
 
-            @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ContentSpecTagsPresenter.Display>(
-                    display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, ContentSpecTagsPresenter.Display>() {
+            final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final ContentSpecTagsPresenter.Display display) {
+                public void success(@NotNull final RESTTagCollectionV1 retValue) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER ContentSpecTagsPresenter.getTags() callback.doSuccessAction()");
 
@@ -106,8 +105,9 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
                         LOGGER.log(Level.INFO, "EXIT ContentSpecTagsPresenter.getTags() callback.doSuccessAction()");
                     }
                 }
-            });
-            RESTCalls.getTags(callback);
+            };
+
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecTagsPresenter.getTags()");
         }

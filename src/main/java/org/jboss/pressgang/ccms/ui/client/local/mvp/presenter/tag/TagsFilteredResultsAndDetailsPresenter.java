@@ -478,16 +478,16 @@ public class TagsFilteredResultsAndDetailsPresenter
 
             @Override
             public void getNewEntity(@NotNull final RESTTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
-                @NotNull final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
-                        display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
+                final RESTCallBack<RESTTagV1> callback = new RESTCallBack<RESTTagV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
+                    public void success(@NotNull final RESTTagV1 retValue) {
                         checkArgument(retValue.getProjects() != null, "The initially retrieved entity should have an expanded projects collection");
                         checkArgument(retValue.getCategories() != null, "The initially retrieved entity should have an expanded categories collection");
                         displayCallback.displayNewEntity(retValue);
                     }
-                });
-                RESTCalls.getTag(callback, selectedEntity.getId());
+                };
+
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
             }
         };
 

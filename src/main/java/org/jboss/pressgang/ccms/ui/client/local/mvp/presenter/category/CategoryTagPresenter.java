@@ -17,8 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagCollectionItemParentSort;
@@ -118,9 +117,9 @@ public class CategoryTagPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
-            @NotNull final BaseRestCallback<RESTTagCollectionV1, Display> callback = new BaseRestCallback<RESTTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
+            final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final Display display) {
+                public void success(@NotNull final RESTTagCollectionV1 retValue) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() BaseRestCallback.doSuccessAction()");
 
@@ -137,11 +136,9 @@ public class CategoryTagPresenter
                         LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() BaseRestCallback.doSuccessAction()");
                     }
                 }
-            });
-
+            };
             getPossibleChildrenProviderData().reset();
-
-            RESTCalls.getTags(callback);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

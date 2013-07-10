@@ -15,8 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -176,9 +175,9 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTTopicV1 retValue) {
                         checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
 
@@ -191,7 +190,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                         getProviderData().setSize(retValue.getRevisions().getSize());
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
                 final int start = list.getVisibleRange().getStart();
                 getProviderData().setStartRow(start);
@@ -200,7 +199,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
                 this.resetProvider();
 
-                RESTCalls.getTopicWithRevisions(callback, id, start, end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
             }
         };
         return provider;
