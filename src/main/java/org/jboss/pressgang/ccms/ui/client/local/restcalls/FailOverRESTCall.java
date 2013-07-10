@@ -77,7 +77,7 @@ public final class FailOverRESTCall {
                     final String responseText = ex.getResponse().getText();
                     final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
 
-                    if (pressgangHeader != null) {
+                    if (pressgangHeader == null) {
                        // The response text did not include the expected prefix,
                        // which means it was not from the PressGang REST server.
                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
@@ -90,7 +90,10 @@ public final class FailOverRESTCall {
                         if (!disableDefaultFailureAction) {
                             Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
                         }
-                    } else {
+                    } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
+                        /*
+                            A 404 is not necessarily an error, as long as the PressGang header is present.
+                         */
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                     }
                 } else {

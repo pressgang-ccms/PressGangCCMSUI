@@ -68,7 +68,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" output-file-name="httpclient-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" output-file-name="httpcore-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" output-file-name="jcip-annotations-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130710.215453-51.jar" output-file-name="pressgang-ccms-restv1-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130710.225439-52.jar" output-file-name="pressgang-ccms-restv1-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130630.233702-39.jar" output-file-name="pressgang-ccms-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" output-file-name="commons-lang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" output-file-name="xalan-.jar" />
