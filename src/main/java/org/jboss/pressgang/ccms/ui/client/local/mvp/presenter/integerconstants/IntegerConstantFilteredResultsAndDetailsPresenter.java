@@ -23,8 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.integerconstant.RESTIntegerConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -115,38 +114,37 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
                 /* Sync the UI to the underlying object */
                 integerConstantPresenter.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCalls.RESTCallback<RESTIntegerConstantV1> callback = new BaseRestCallback<RESTIntegerConstantV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTIntegerConstantV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTIntegerConstantV1 retValue, @NotNull final Display display) {
-                                retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                final RESTCallBack<RESTIntegerConstantV1> callback = new RESTCallBack<RESTIntegerConstantV1>() {
+                    @Override
+                    public void success(@NotNull final RESTIntegerConstantV1 retValue) {
+                        retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                        retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                                integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                integerConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
-                                        integerConstantFilteredResultsPresenter.getProviderData().getStartRow(),
-                                        integerConstantFilteredResultsPresenter.getProviderData().getItems());
+                        integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        integerConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
+                                integerConstantFilteredResultsPresenter.getProviderData().getStartRow(),
+                                integerConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayWithNewEntityData(wasNewEntity);
+                        updateDisplayWithNewEntityData(wasNewEntity);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        });
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    }
+                };
 
                 if (integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
                     if (hasUnsavedChanges()) {
 
-                        @NotNull final RESTIntegerConstantV1 project = new RESTIntegerConstantV1();
-                        project.setId(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                        project.explicitSetName(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
-                        project.explicitSetValue(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
+                        final RESTIntegerConstantV1 integerConstant = new RESTIntegerConstantV1();
+                        integerConstant.setId(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                        integerConstant.explicitSetName(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                        integerConstant.explicitSetValue(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            RESTCalls.createIntegerConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createIntegerConstant(integerConstant), callback, display);
                         } else {
-                            RESTCalls.updateIntegerConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateIntegerConstant(integerConstant), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());

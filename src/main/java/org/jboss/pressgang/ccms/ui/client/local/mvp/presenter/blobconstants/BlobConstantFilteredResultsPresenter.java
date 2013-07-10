@@ -12,8 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,9 +72,13 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                 try {
                     LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
-                    @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
+                    getProviderData().setStartRow(list.getVisibleRange().getStart());
+                    final int length = list.getVisibleRange().getLength();
+                    final int end = getProviderData().getStartRow() + length;
+
+                    final RESTCallBack<RESTBlobConstantCollectionV1> callback = new RESTCallBack<RESTBlobConstantCollectionV1>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
+                        public void success(@NotNull final RESTBlobConstantCollectionV1 retValue) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged() BaseRestCallback.onSuccess()");
                                 checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
@@ -89,13 +92,10 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                                 LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged() BaseRestCallback.onSuccess()");
                             }
                         }
-                    });
+                    };
 
-                    getProviderData().setStartRow(list.getVisibleRange().getStart());
-                    final int length = list.getVisibleRange().getLength();
-                    final int end = getProviderData().getStartRow() + length;
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getBlobConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
 
-                    RESTCalls.getBlobConstantsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
                 }

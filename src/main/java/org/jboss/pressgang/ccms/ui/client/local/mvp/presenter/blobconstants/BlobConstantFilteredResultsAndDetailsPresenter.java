@@ -23,8 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.blobconstant.RESTBlobConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -125,30 +124,28 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                 /* Sync the UI to the underlying object */
                 blobConstantPresenter.getDisplay().getDriver().flush();
 
-                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTBlobConstantV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTBlobConstantV1 retValue, final Display display) {
+                final RESTCallBack<RESTBlobConstantV1> callback = new RESTCallBack<RESTBlobConstantV1>() {
+                    @Override
+                    public void success(@NotNull final RESTBlobConstantV1 retValue) {
+                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There has to be a selected item");
+                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected item need to reference a valid entity");
+                        checkState(blobConstantFilteredResultsPresenter.getProviderData().isValid(), "The provider data needs to be valid");
 
-                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
-                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There has to be a selected item");
-                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected item need to reference a valid entity");
-                                checkState(blobConstantFilteredResultsPresenter.getProviderData().isValid(), "The provider data needs to be valid");
-
-                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                        retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                        retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                                blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                blobConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
-                                        blobConstantFilteredResultsPresenter.getProviderData().getStartRow(),
-                                        blobConstantFilteredResultsPresenter.getProviderData().getItems());
+                        blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        blobConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
+                                blobConstantFilteredResultsPresenter.getProviderData().getStartRow(),
+                                blobConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayWithNewEntityData(wasNewEntity);
+                        updateDisplayWithNewEntityData(wasNewEntity);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        });
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    }
+                };
 
                 if (blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
@@ -156,15 +153,15 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
 
                         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-                        @NotNull final RESTBlobConstantV1 project = new RESTBlobConstantV1();
-                        project.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                        project.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
-                        project.explicitSetValue(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
+                        final RESTBlobConstantV1 blobConstant = new RESTBlobConstantV1();
+                        blobConstant.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                        blobConstant.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                        blobConstant.explicitSetValue(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            RESTCalls.createBlobConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(blobConstant), callback, display);
                         } else {
-                            RESTCalls.updateBlobConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(blobConstant), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -346,26 +343,23 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                                 updateEntity.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                                 updateEntity.explicitSetValue(buffer);
 
-                                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
-                                        display,
-                                        new BaseRestCallback.SuccessAction<RESTBlobConstantV1, BaseTemplateViewInterface>() {
-                                            @Override
-                                            public void doSuccessAction(@NotNull final RESTBlobConstantV1 retValue, final BaseTemplateViewInterface display) {
+                                final RESTCallBack<RESTBlobConstantV1> callback = new RESTCallBack<RESTBlobConstantV1>() {
+                                    @Override
+                                    public void success(@NotNull final RESTBlobConstantV1 retValue) {
+                                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+                                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-                                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-                                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
-
-                                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), false);
-                                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
-                                                initializeViews();
-                                                updateDisplayWithNewEntityData(wasNewEntity);
-                                            }
-                                        });
+                                        retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), false);
+                                        retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                                        initializeViews();
+                                        updateDisplayWithNewEntityData(wasNewEntity);
+                                    }
+                                };
 
                                 if (wasNewEntity) {
-                                    RESTCalls.createBlobConstant(callback, updateEntity);
+                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(updateEntity), callback, display);
                                 } else {
-                                    RESTCalls.updateBlobConstant(callback, updateEntity);
+                                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(updateEntity), callback, display);
                                 }
 
                             } finally {

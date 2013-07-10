@@ -735,7 +735,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createStringConstant(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
+    public static void createStringConstantMigrated(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -744,7 +744,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateStringConstant(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
+    public static void updateStringConstantMigrated(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -753,7 +753,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getIntegerConstantsFromQuery(@NotNull final RESTCallback<RESTIntegerConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getIntegerConstantsFromQueryMigrated(@NotNull final RESTCallback<RESTIntegerConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -763,7 +763,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createIntegerConstant(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
+    public static void createIntegerConstantMigrated(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -772,7 +772,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateIntegerConstant(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
+    public static void updateIntegerConstantMigrated(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -781,7 +781,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getBlobConstantsFromQuery(@NotNull final RESTCallback<RESTBlobConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getBlobConstantsFromQueryMigrated(@NotNull final RESTCallback<RESTBlobConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -791,7 +791,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
+    public static void createBlobConstantMigrated(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -800,7 +800,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
+    public static void updateBlobConstantMigrated(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
