@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleIntegerLabel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
-import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -40,15 +40,15 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         public void render(final String object, final Appendable appendable) throws IOException {
         }
     });
-    private final DateBox lastModified = new DateBox();
+    private final DateLabel lastModified = new DateLabel(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
 
-    private final Anchor restContentSpecDetailsLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecDetailsRESTEndpoint());
-    private final Anchor restContentSpecTextLabel = new Anchor(PressGangCCMSUI.INSTANCE.ContentSpecTextRESTEndpoint());
-    private final TextBox restContentSpecDetails = new TextBox();
-    private final TextBox restContentSpecText = new TextBox();
+    private final Label restContentSpecDetailsLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecDetailsRESTEndpoint());
+    private final Label restContentSpecTextLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecTextRESTEndpoint());
+    private final Anchor restContentSpecDetails = new Anchor();
+    private final Anchor restContentSpecText = new Anchor();
 
     @NotNull
-    public DateBox lastModifiedEditor() {
+    public DateLabel lastModifiedEditor() {
         return lastModified;
     }
 
@@ -75,13 +75,8 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
         /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue("");
+        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
-
-        lastModified.setEnabled(false);
-        restContentSpecDetails.setReadOnly(true);
-        restContentSpecText.setReadOnly(true);
-        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", true);
 
         id.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD);
@@ -133,11 +128,11 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         final String detailsURL = Constants.REST_SERVER + "/1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
         final String textURL = Constants.REST_SERVER + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
 
-        restContentSpecDetailsLabel.setHref(detailsURL);
-        restContentSpecTextLabel.setHref(textURL);
+        restContentSpecDetails.setHref(detailsURL);
+        restContentSpecText.setHref(textURL);
 
-        restContentSpecDetails.setValue(detailsURL);
-        restContentSpecText.setValue(textURL);
+        restContentSpecDetails.setText(detailsURL);
+        restContentSpecText.setText(textURL);
     }
 
     @Override

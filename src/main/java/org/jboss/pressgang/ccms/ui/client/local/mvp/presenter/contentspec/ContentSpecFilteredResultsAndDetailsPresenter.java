@@ -209,7 +209,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
                 contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(),
-                        new ArrayList<String>());
+                        locales);
             }
 
             if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
