@@ -681,7 +681,7 @@ public final class FailOverRESTCallDatabase {
      * @param end The end of the results
      * @return A RESTCall that can call the REST getJSONTranslatedTopicsWithQuery method
      */
-    public static final RESTCall saveTag(@NotNull final String queryString, final int start, final int end) {
+    public static final RESTCall getTranslatedTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {

@@ -18,10 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -186,40 +183,37 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTranslatedTopicCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTTranslatedTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTranslatedTopicCollectionV1, Display>(
-                        display,
-                        new BaseRestCallback.SuccessAction<RESTTranslatedTopicCollectionV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTTranslatedTopicCollectionV1 retValue, @NotNull final Display display) {
-                                try {
-                                    checkState(retValue.getItems() != null, "The returned collection data should have items.");
-                                    checkState(retValue.getSize() != null, "The returned collection data should have a size.");
-                                    checkState(getProviderData().getStartRow() != null, "The data provider should have a starting row.");
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
 
-                                    getProviderData().setItems(retValue.getItems());
-                                    getProviderData().setSize(retValue.getSize());
-                                    relinkSelectedItem();
-                                    displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                                } finally {
-                                    getHandlerManager().fireEvent(new EntityListReceived<RESTTranslatedTopicCollectionV1>(retValue));
-                                }
-                            }
-                        }, new BaseRestCallback.FailureAction<Display>() {
+                final RESTCallBack<RESTTranslatedTopicCollectionV1> callback = new RESTCallBack<RESTTranslatedTopicCollectionV1>() {
                     @Override
-                    public void doFailureAction(final Display display) {
+                    public void success(@NotNull final RESTTranslatedTopicCollectionV1 retValue) {
+                        try {
+                            checkState(retValue.getItems() != null, "The returned collection data should have items.");
+                            checkState(retValue.getSize() != null, "The returned collection data should have a size.");
+                            checkState(getProviderData().getStartRow() != null, "The data provider should have a starting row.");
+
+                            getProviderData().setItems(retValue.getItems());
+                            getProviderData().setSize(retValue.getSize());
+                            relinkSelectedItem();
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                        } finally {
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTranslatedTopicCollectionV1>(retValue));
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
                         getProviderData().setItems(new ArrayList<RESTTranslatedTopicCollectionItemV1>());
                         getProviderData().setSize(0);
                         getProviderData().setStartRow(0);
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                }
-                );
+                };
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
-
-                RESTCalls.getTranslatedTopicsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

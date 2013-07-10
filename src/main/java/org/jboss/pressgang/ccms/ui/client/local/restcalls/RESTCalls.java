@@ -683,7 +683,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTranslatedTopicsFromQuery(@NotNull final RESTCallback<RESTTranslatedTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getTranslatedTopicsFromQueryMigrated(@NotNull final RESTCallback<RESTTranslatedTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -694,7 +694,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTranslatedTopic(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
+    public static void getTranslatedTopicMigrated(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -703,7 +703,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getTagsFromQueryMigrated(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -714,7 +714,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString) {
+    public static void getTagsFromQueryMigrated(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -725,7 +725,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getStringConstantsFromQuery(@NotNull final RESTCallback<RESTStringConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+    public static void getStringConstantsFromQueryMigrated(@NotNull final RESTCallback<RESTStringConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override

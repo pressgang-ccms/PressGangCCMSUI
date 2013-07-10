@@ -12,8 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,10 +68,14 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         return new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTStringConstantCollectionItemV1> list) {
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
 
-                @NotNull final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback = new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
+
+                final RESTCallBack<RESTStringConstantCollectionV1> callback = new RESTCallBack<RESTStringConstantCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTStringConstantCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTStringConstantCollectionV1 retValue) {
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
@@ -81,13 +84,9 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
                         relinkSelectedItem();
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
-
-                RESTCalls.getStringConstantsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
     }

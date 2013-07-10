@@ -16,6 +16,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -103,26 +106,17 @@ public class TagFilteredResultsPresenter
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> range) {
 
-                @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        resetProvider();
-                        display.addWaitOperation();
-                    }
+                getProviderData().setStartRow(range.getVisibleRange().getStart());
+                final int length = range.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
 
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                    }
-
+                final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
                     @Override
                     public void success(@NotNull final RESTTagCollectionV1 retValue) {
-                        try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
@@ -130,23 +124,10 @@ public class TagFilteredResultsPresenter
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed(final Message message, final Throwable throwable) {
-                        display.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
 
-                getProviderData().setStartRow(range.getVisibleRange().getStart());
-                final int length = range.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
-
-                RESTCalls.getTagsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTagsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
 
@@ -156,7 +137,7 @@ public class TagFilteredResultsPresenter
     @Override
     @NotNull
     public String getQuery() {
-        @NotNull final StringBuilder retValue = new StringBuilder();
+        final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.TAG_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }

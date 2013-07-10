@@ -98,10 +98,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 try {
                     LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
-                    @NotNull final RESTCalls.RESTCallback<RESTTranslatedTopicV1> callback = new BaseRestCallback<RESTTranslatedTopicV1, BaseTemplateViewInterface>(
-                            getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, BaseTemplateViewInterface>() {
+                    final RESTCallBack<RESTTranslatedTopicV1> callback = new RESTCallBack<RESTTranslatedTopicV1>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTTranslatedTopicV1 retValue, final BaseTemplateViewInterface display) {
+                        public void success(@NotNull final RESTTranslatedTopicV1 retValue) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
@@ -114,8 +113,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                                 LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
                             }
                         }
-                    });
-                    RESTCalls.getTranslatedTopic(callback, selectedEntity.getId());
+                    };
+
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopic(selectedEntity.getId()), callback, getDisplay());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }

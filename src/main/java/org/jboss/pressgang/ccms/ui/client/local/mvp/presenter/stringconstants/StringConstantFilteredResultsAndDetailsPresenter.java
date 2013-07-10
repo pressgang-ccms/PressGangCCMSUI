@@ -23,8 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -124,40 +123,41 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                 /* Sync the UI to the underlying object */
                 stringConstantPresenter.getDisplay().getDriver().flush();
 
-                final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final Display display) {
-                                checkState(stringConstantFilteredResultsPresenter.getProviderData().isValid(), "The filtered results data provider should be valid.");
+                final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                    @Override
+                    public void success(@NotNull final RESTStringConstantV1 retValue) {
+                        checkState(stringConstantFilteredResultsPresenter.getProviderData().isValid(), "The filtered results data provider should be valid.");
 
-                                retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                        retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                        retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                                stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                stringConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
-                                        stringConstantFilteredResultsPresenter.getProviderData().getStartRow(),
-                                        stringConstantFilteredResultsPresenter.getProviderData().getItems());
+                        stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        stringConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
+                                stringConstantFilteredResultsPresenter.getProviderData().getStartRow(),
+                                stringConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayWithNewEntityData(wasNewEntity);
+                        updateDisplayWithNewEntityData(wasNewEntity);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        });
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    }
+                };
+
+
 
                 if (stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTStringConstantV1 project = new RESTStringConstantV1();
-                        project.setId(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                        project.explicitSetName(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
-                        project.explicitSetValue(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
+                        final RESTStringConstantV1 stringConstant = new RESTStringConstantV1();
+                        stringConstant.setId(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                        stringConstant.explicitSetName(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                        stringConstant.explicitSetValue(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            RESTCalls.createStringConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createStringConstant(stringConstant), callback, display);
                         } else {
-                            RESTCalls.updateStringConstant(callback, project);
+                            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateStringConstant(stringConstant), callback, display);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
