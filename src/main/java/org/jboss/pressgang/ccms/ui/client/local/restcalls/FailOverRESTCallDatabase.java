@@ -707,4 +707,154 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+    /**
+     * Create a RESTCall object to call the REST getJSONStringConstantsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONStringConstantsWithQuery method
+     */
+    public static final RESTCall getStringConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONStringConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createStringConstant method
+     * @param entity The string constant to create
+     * @return A RESTCall that can call the REST createStringConstant method
+     */
+    public static final RESTCall createStringConstant(@NotNull final RESTStringConstantV1 entity)  {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONStringConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONStringConstant method
+     * @param entity The String Constant to update
+     * @return A RESTCall that can call the REST updateJSONStringConstant method
+     */
+    public static final RESTCall updateStringConstant(@NotNull final RESTStringConstantV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONStringConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONIntegerConstantsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONIntegerConstantsWithQuery method
+     */
+    public static final RESTCall getIntegerConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONIntegerConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONIntegerConstant method
+     * @param  entity The Integer Constant to create
+     * @return A RESTCall that can call the REST createJSONIntegerConstant method
+     */
+    public static final RESTCall createIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONIntegerConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONIntegerConstant method
+     * @param  entity The Integer Constant to save
+     * @return A RESTCall that can call the REST updateJSONIntegerConstant method
+     */
+    public static final RESTCall updateIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONIntegerConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONBlobConstantsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONBlobConstantsWithQuery method
+     */
+    public static final RESTCall getBlobConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONBlobConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONBlobConstant method
+     * @param entity The Blob Constant to create
+     * @return A RESTCall that can call the REST createJSONBlobConstant method
+     */
+    public static final RESTCall createBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONBlobConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONBlobConstant method
+     * @param entity The Blob Constant to update
+     * @return A RESTCall that can call the REST updateJSONBlobConstant method
+     */
+    public static final RESTCall updateBlobConstant(@NotNull final RESTBlobConstantV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONBlobConstant("", entity);
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONCategory method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONCategory method
+     */
+    public static final RESTCall getCategory(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
+                restService.getJSONCategory(id, expand);
+            }
+        };
+    }
+
 }
