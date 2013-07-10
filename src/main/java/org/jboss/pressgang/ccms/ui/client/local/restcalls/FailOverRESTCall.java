@@ -78,8 +78,10 @@ public final class FailOverRESTCall {
                     final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
 
                     if (pressgangHeader == null) {
-                       // The response text did not include the expected prefix,
-                       // which means it was not from the PressGang REST server.
+                        /*
+                            The response did not contain the header that should be found in all responses from the
+                            pressgang sever. This means the server is down.
+                         */
                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                     } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                         /*
