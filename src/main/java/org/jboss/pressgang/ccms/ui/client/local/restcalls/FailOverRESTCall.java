@@ -10,6 +10,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerTypes;
@@ -126,6 +127,7 @@ public final class FailOverRESTCall {
 
         for (final ServerDetails nextServer : ServerDetails.SERVERS) {
             if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
+                Preferences.INSTANCE.saveSetting(Preferences.SERVER, nextServer.getId() + "");
                 RestClient.setApplicationRoot(nextServer.getRestEndpoint());
                 performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                 return;
