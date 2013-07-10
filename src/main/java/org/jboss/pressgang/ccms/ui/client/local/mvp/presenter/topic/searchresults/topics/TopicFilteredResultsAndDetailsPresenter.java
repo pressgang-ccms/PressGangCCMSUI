@@ -997,77 +997,75 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetXml(sourceTopic.getXml());
 
                             if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
-                                        display,
-                                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                                            @Override
-                                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                                                try {
-                                                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
-                                                    // Create the topic wrapper
-                                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-                                                    topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                final RESTCallBack<RESTTopicV1> addCallback = new RESTCallBack<RESTTopicV1>() {
+                                    @Override
+                                    public void success(@NotNull final RESTTopicV1 retValue) {
+                                        try {
+                                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
-                                                    // create the topic, and add to the wrapper
-                                                    topicCollectionItem.setItem(retValue);
+                                            // Create the topic wrapper
+                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                                            // create the topic, and add to the wrapper
+                                            topicCollectionItem.setItem(retValue);
 
                                                         /* Update the displayed topic */
-                                                    getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
+                                            getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
 
-                                                    /*
-                                                        Two things can happen to the selected item at this point. Either we are in the
-                                                        "create topic" mode, in which we simply add the new topics to the data provider, and
-                                                        never refresh from the database. In this case, the selected item and the item
-                                                        in the data provider are the same, and always linked.
+                                            /*
+                                                Two things can happen to the selected item at this point. Either we are in the
+                                                "create topic" mode, in which we simply add the new topics to the data provider, and
+                                                never refresh from the database. In this case, the selected item and the item
+                                                in the data provider are the same, and always linked.
 
-                                                        The second mode is where we have created a topic when already displaying a query.
-                                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                                        or it will remain referencing the returned value here if the query doesn't actually
-                                                        return the topic that was saved.
-                                                     */
-                                                    getSearchResultsComponent().getProviderData().setSelectedItem(topicCollectionItem);
+                                                The second mode is where we have created a topic when already displaying a query.
+                                                In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                                or it will remain referencing the returned value here if the query doesn't actually
+                                                return the topic that was saved.
+                                             */
+                                            getSearchResultsComponent().getProviderData().setSelectedItem(topicCollectionItem);
 
-                                                    lastXML = null;
+                                            lastXML = null;
 
-                                                    if (startWithNewTopic) {
-                                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
-                                                        getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
-                                                        getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
-                                                        updateDisplayWithNewEntityData(false);
-                                                    } else {
+                                            if (startWithNewTopic) {
+                                                LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                                getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
+                                                getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
+                                                updateDisplayWithNewEntityData(false);
+                                            } else {
                                                         /* Update the selected topic */
-                                                        LOGGER.log(Level.INFO, "Redisplaying query");
-                                                        updateDisplayWithNewEntityData(true);
-                                                    }
+                                                LOGGER.log(Level.INFO, "Redisplaying query");
+                                                updateDisplayWithNewEntityData(true);
+                                            }
 
-                                                    LOGGER.log(Level.INFO, "Refreshing editor");
-                                                    if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                            LOGGER.log(Level.INFO, "Refreshing editor");
+                                            if (getTopicXMLComponent().getDisplay().getEditor() != null) {
+                                                getTopicXMLComponent().getDisplay().getEditor().redisplay();
                                                         /*
                                                             This forces the xml validation to rehighlight the invalid rows
                                                          */
-                                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
-                                                    }
-
-                                                    Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
-                                                } finally {
-                                                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-                                                }
+                                                getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                             }
-                                        }, new BaseRestCallback.FailureAction<Display>() {
+
+                                            Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                        } finally {
+                                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                                        }
+                                    }
+
                                     @Override
-                                    public void doFailureAction(final Display display) {
+                                    public void failed() {
                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
                                         /*
                                             This forces the xml validation to rehighlight the invalid rows
                                          */
                                         getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                     }
-                                }
-                                );
+                                };
 
-                                RESTCalls.createTopic(addCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                             } else {
 
                                 final RESTCallBack<RESTTopicV1> updateCallback = new RESTCallBack<RESTTopicV1>() {
@@ -2201,10 +2199,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /*
                 Set the initial XML from a template defined in a string constant.
              */
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+             final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                public void success(@NotNull final RESTStringConstantV1 retValue) {
                     // Create the topic wrapper
                     final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
                     topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
@@ -2228,9 +2225,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     updateViewsAfterNewEntityLoaded();
                 }
-            });
+            };
 
-            RESTCalls.getStringConstant(callback, ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
 
 
         } finally {
@@ -2249,10 +2246,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+            final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                public void success(@NotNull final RESTStringConstantV1 retValue) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements() callback.doSuccessAction()");
 
@@ -2272,9 +2268,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.populateXMLElements() callback.doSuccessAction()");
                     }
                 }
-            });
+            };
 
-            RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
         }
@@ -2302,37 +2298,31 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 for (final String id : xmlElements) {
                     try {
-                        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                                waitDisplay,
-                                new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                                    @Override
-                                    public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
-                                                                final BaseTemplateViewInterface display) {
+                        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                            @Override
+                            public void success(@NotNull final RESTStringConstantV1 retValue) {
+                                ++counter[0];
 
-                                        ++counter[0];
-
-                                        data.put(retValue.getName(), retValue.getValue());
+                                data.put(retValue.getName(), retValue.getValue());
 
                                                 /*
                                                  * If this was the last call, return the data to the callee.
                                                  */
-                                        if (counter[0] == xmlElements.size()) {
-                                            loadedCallback.stringMapLoaded(data);
-                                        }
-                                    }
-                                }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+                                if (counter[0] == xmlElements.size()) {
+                                    loadedCallback.stringMapLoaded(data);
+                                }
+                            }
 
                             @Override
-                            public void doFailureAction(final BaseTemplateViewInterface display) {
+                            public void failed() {
                                 ++counter[0];
                                 if (counter[0] == xmlElements.size()) {
                                     loadedCallback.stringMapLoaded(data);
                                 }
                             }
-                        }
-                        );
+                        };
 
-                        RESTCalls.getStringConstant(callback, Integer.parseInt(id));
+                        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, display);
                     } catch (@NotNull final NumberFormatException ex) {
                         // this should not happen if GWTUtilities.fixUpIdSearchString() does its job properly
                     }

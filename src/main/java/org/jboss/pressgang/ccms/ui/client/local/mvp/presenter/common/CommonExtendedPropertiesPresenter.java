@@ -15,8 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchild
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -253,25 +252,22 @@ public class CommonExtendedPropertiesPresenter
 
             checkState(getDisplay().getPossibleChildrenProvider() != null, "There should be a valid possible children provider");
 
-            final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
-                    new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
-                            LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
-                            LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+            final RESTCallBack<RESTPropertyTagCollectionV1> callback = new RESTCallBack<RESTPropertyTagCollectionV1>() {
+                @Override
+                public void success(@NotNull final RESTPropertyTagCollectionV1 retValue) {
+                    LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
+                    LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                             /* Zero results can be a null list */
-                            getPossibleChildrenProviderData().setStartRow(0);
-                            getPossibleChildrenProviderData().setItems(retValue.getItems());
-                            getPossibleChildrenProviderData().setSize(retValue.getItems().size());
+                    getPossibleChildrenProviderData().setStartRow(0);
+                    getPossibleChildrenProviderData().setItems(retValue.getItems());
+                    getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                             /* Refresh the list */
-                            getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
-                        }
-                    });
-
-            /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
+                    getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                }
+            };
             getDisplay().getPossibleChildrenProvider().resetProvider();
-            RESTCalls.getPropertyTags(callback);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

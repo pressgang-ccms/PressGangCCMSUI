@@ -381,7 +381,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void createTopic(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic, @NotNull final String message,
+    public static void createTopicMigrated(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final RESTTopicV1 topic, @NotNull final String message,
                                    @NotNull final Integer flag, @NotNull final String userId) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -391,7 +391,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getStringConstant(@NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback, final int id) {
+    public static void getStringConstantMigrated(@NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback, final int id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -400,7 +400,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getPropertyTags(@NotNull final RESTCalls.RESTCallback<RESTPropertyTagCollectionV1> callback) {
+    public static void getPropertyTagsMigrated(@NotNull final RESTCalls.RESTCallback<RESTPropertyTagCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\":\"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
@@ -1178,12 +1178,10 @@ public final class RESTCalls {
      */
     public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
 
-        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                            /* Get the list of locales from the StringConstant */
-                @NotNull final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
+            public void success(@NotNull final RESTStringConstantV1 retValue) {
+                final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
                         .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
                         .replaceAll(" ", "").split(Constants.COMMA)));
 
@@ -1196,26 +1194,23 @@ public final class RESTCalls {
 
                 loadedCallback.stringListLoaded(locales);
             }
-        });
+        };
 
-        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
     }
 
     public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    display,
-                    new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                            loadedCallback.stringLoaded(retValue.getValue());
-                        }
-                    }
-            );
+            final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                @Override
+                public void success(@NotNull final RESTStringConstantV1 retValue) {
+                    loadedCallback.stringLoaded(retValue.getValue());
+                }
+            };
 
-            RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
+            FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
         }

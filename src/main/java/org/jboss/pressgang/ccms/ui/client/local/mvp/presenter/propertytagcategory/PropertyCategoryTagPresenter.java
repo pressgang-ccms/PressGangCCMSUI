@@ -15,8 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.*;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemNameSort;
@@ -91,26 +90,23 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTPropertyCategoryV1 parent) {
 
-        @NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>(display,
-                new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final PropertyCategoryTagPresenter.Display display) {
-                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+        final RESTCallBack<RESTPropertyTagCollectionV1> callback = new RESTCallBack<RESTPropertyTagCollectionV1>() {
+            @Override
+            public void success(@NotNull final RESTPropertyTagCollectionV1 retValue) {
+                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        /* Zero results can be a null list */
-                        getPossibleChildrenProviderData().setStartRow(0);
-                        getPossibleChildrenProviderData().setItems(retValue.getItems());
-                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
+                /* Zero results can be a null list */
+                getPossibleChildrenProviderData().setStartRow(0);
+                getPossibleChildrenProviderData().setItems(retValue.getItems());
+                getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
-                        /* Refresh the list */
-                        redisplayPossibleChildList(parent);
-                    }
-                });
-
+                /* Refresh the list */
+                redisplayPossibleChildList(parent);
+            }
+        };
         getPossibleChildrenProviderData().reset();
-
-        RESTCalls.getPropertyTags(callback);
+        FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
     }
 
     @Override
