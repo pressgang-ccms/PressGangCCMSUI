@@ -2031,13 +2031,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     FailOverRESTCall.performRESTCall(
                                             FailOverRESTCallDatabase.holdXML(xml1),
                                             new RESTCallBack<IntegerWrapper>() {
-                                                void success(@NotNull final IntegerWrapper value1) {
+                                                public void success(@NotNull final IntegerWrapper value1) {
                                                     final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
 
                                                     FailOverRESTCall.performRESTCall(
                                                             FailOverRESTCallDatabase.holdXML(xml2),
                                                             new RESTCallBack<IntegerWrapper>() {
-                                                                void success(@NotNull final IntegerWrapper value2) {
+                                                                public void success(@NotNull final IntegerWrapper value2) {
                                                                     topicRevisionsComponent.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
                                                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
                                                                 }

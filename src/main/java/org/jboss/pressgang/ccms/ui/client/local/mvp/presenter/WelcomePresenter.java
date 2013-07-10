@@ -43,27 +43,24 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
 
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
-                display,
-                new BaseRestCallback.SuccessAction<RESTTopicV1, WelcomePresenter.Display>() {
-
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-
-                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
+        FailOverRESTCall.performRESTCall(
+                FailOverRESTCallDatabase.getTopic(ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC),
+                new RESTCallBack<RESTTopicV1>() {
+                    public void success(@NotNull final RESTTopicV1 value) {
+                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + value.getXml();
                         FailOverRESTCall.performRESTCall(
-                            FailOverRESTCallDatabase.holdXML(xml),
-                            new RESTCallBack<IntegerWrapper>() {
-                                void success(@NotNull final IntegerWrapper value) {
-                                    display.displayTopicRendered(value.value);
-                                }
-                            },
-                            display
+                                FailOverRESTCallDatabase.holdXML(xml),
+                                new RESTCallBack<IntegerWrapper>() {
+                                    public void success(@NotNull final IntegerWrapper value) {
+                                        display.displayTopicRendered(value.value);
+                                    }
+                                },
+                                display
                         );
                     }
-
-                });
-        RESTCalls.getTopic(callback, ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC);
+                },
+                display
+        );
     }
 
 

@@ -64,7 +64,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         FailOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.holdXML(xml),
                 new RESTCallBack<IntegerWrapper>() {
-                    void success(@NotNull final IntegerWrapper value) {
+                    public void success(@NotNull final IntegerWrapper value) {
                         display.displayTopicRendered(value.value, readOnly, showImages);
                     }
                 },

@@ -276,7 +276,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                             FailOverRESTCall.performRESTCall(
                                     FailOverRESTCallDatabase.holdXML(xml),
                                     new RESTCallBack<IntegerWrapper>() {
-                                        void success(@NotNull final IntegerWrapper value) {
+                                        public void success(@NotNull final IntegerWrapper value) {
                                             contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
                                             center();
                                         }
