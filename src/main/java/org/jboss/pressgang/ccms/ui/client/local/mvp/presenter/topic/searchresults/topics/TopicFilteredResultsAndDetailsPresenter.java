@@ -2009,41 +2009,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
 
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                            topicRevisionsComponent.getDisplay(),
-                            new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTTopicV1 revisionTopic, final TopicRevisionsPresenter.Display waitDisplay) {
-                                    checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTopicV1 retValue) {
+                            checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + revisionTopic.getXml();
+                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml();
 
-                                    FailOverRESTCall.performRESTCall(
-                                            FailOverRESTCallDatabase.holdXML(xml1),
-                                            new RESTCallBack<IntegerWrapper>() {
-                                                public void success(@NotNull final IntegerWrapper value1) {
-                                                    final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
+                            FailOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.holdXML(xml1),
+                                    new RESTCallBack<IntegerWrapper>() {
+                                        public void success(@NotNull final IntegerWrapper value1) {
+                                            final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
 
-                                                    FailOverRESTCall.performRESTCall(
-                                                            FailOverRESTCallDatabase.holdXML(xml2),
-                                                            new RESTCallBack<IntegerWrapper>() {
-                                                                public void success(@NotNull final IntegerWrapper value2) {
-                                                                    topicRevisionsComponent.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
-                                                                    topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
-                                                                }
-                                                            },
-                                                            waitDisplay
-                                                    );
-                                                }
-                                            },
-                                            waitDisplay
-                                    );
+                                            FailOverRESTCall.performRESTCall(
+                                                    FailOverRESTCallDatabase.holdXML(xml2),
+                                                    new RESTCallBack<IntegerWrapper>() {
+                                                        public void success(@NotNull final IntegerWrapper value2) {
+                                                            topicRevisionsComponent.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
+                                                            topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                                                        }
+                                                    },
+                                                    topicRevisionsComponent.getDisplay()
+                                            );
+                                        }
+                                    },
+                                    topicRevisionsComponent.getDisplay()
+                            );
+                        }
+                    };
 
-
-
-                                }
-                            });
-                    RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
+                    FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
 
                 }
             });

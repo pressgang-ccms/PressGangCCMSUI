@@ -143,7 +143,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                     }
                 };
 
-                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(ueryString, getProviderData().getStartRow(), end), callback, display);
+                FailOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;

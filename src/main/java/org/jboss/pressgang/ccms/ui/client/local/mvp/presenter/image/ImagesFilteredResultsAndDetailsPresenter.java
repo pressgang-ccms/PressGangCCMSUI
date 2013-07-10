@@ -770,8 +770,6 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         newImage.getLanguageImages_OTM().addNewItem(langImage);
 
-                        RESTCalls.createImage(imageCallback, newImage);
-
                         final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
                             @Override
                             public void success(@NotNull final RESTImageV1 retValue) {
