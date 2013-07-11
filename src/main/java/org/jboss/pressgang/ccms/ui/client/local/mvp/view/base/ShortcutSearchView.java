@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.user.client.ui.ToggleButton;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePanel;
@@ -14,6 +15,7 @@ public class ShortcutSearchView extends ShortcutDisclosurePanel {
 
     public ShortcutSearchView(final String header) {
         super(header);
+        setOpen(Preferences.INSTANCE.getBoolean(Preferences.SHORTCUT_SEARCH_MENU_OPEN, false));
     }
 
     @NotNull

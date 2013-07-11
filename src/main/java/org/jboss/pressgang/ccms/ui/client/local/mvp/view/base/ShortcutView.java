@@ -92,14 +92,14 @@ public class ShortcutView extends ShortcutPanel {
         add(docbuilder);
         add(createTopic);
         add(createContentSpec);
-        add(searchShortcutPanel);
-        add(entitiesShortcutPanel);
 
         // Only add the reports button if the URL is not null
         if (Constants.BIRT_URL != null) {
             add(reports);
         }
         add(bug);
+        add(searchShortcutPanel);
+        add(entitiesShortcutPanel);
         add(advancedShortcutPanel);
     }
 

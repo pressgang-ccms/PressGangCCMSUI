@@ -40,6 +40,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeVie
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -414,6 +415,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 if (display.getTopLevelPanel().isAttached() && hasUnsavedChanges()) {
                     event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
+
+                // Save the open shortcut menus
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, display.getShortcuts().getAdvancedSubMenu()
+                        .isOpen());
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, display.getShortcuts().getSearchSubMenu()
+                        .isOpen());
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, display.getShortcuts().getEntitiesSubMenu()
+                        .isOpen());
             }
         });
 
