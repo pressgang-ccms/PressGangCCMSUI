@@ -4,14 +4,10 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.SubShortcutPanel;
+import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePanel;
 import org.jetbrains.annotations.NotNull;
 
-public class ShortcutAdvancedView extends SubShortcutPanel {
-
-    private final PushButton advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
-    private final PushButton advancedClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
-
+public class ShortcutAdvancedView extends ShortcutDisclosurePanel {
     private final ToggleButton bulkTagging = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BulkTagging());
     private final ToggleButton stringConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.StringConstants());
     private final ToggleButton blobConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BlobConstants());
@@ -20,16 +16,8 @@ public class ShortcutAdvancedView extends SubShortcutPanel {
     private final ToggleButton propertyTagCategories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
     private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true);
 
-    @Override
-    @NotNull
-    public PushButton getCloseButton() {
-        return advancedClose;
-    }
-
-    @Override
-    @NotNull
-    public PushButton getOpenButton() {
-        return advancedOpen;
+    public ShortcutAdvancedView(final String header) {
+        super(header);
     }
 
     @NotNull
@@ -69,7 +57,6 @@ public class ShortcutAdvancedView extends SubShortcutPanel {
 
     public void initialise() {
         // Advanced Sub Menu
-        add(advancedOpen);
         add(bulkTagging);
         add(stringConstants);
         add(blobConstants);
@@ -77,6 +64,5 @@ public class ShortcutAdvancedView extends SubShortcutPanel {
         add(propertyTags);
         add(propertyTagCategories);
         add(monitoring);
-        add(advancedClose);
     }
 }

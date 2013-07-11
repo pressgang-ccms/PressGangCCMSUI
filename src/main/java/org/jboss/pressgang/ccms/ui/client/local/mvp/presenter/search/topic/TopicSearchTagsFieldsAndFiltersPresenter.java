@@ -143,13 +143,13 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         if (!showBulkTags) {
             display.removeTopActionButton(display.getApplyBulkTags());
             if (!doingTranslatedSearch) {
-                display.getShortcuts().getSearchTopicsButton().setDown(true);
+                display.getShortcuts().getSearchSubMenu().getSearchTopicsButton().setDown(true);
             } else {
-                display.getShortcuts().getSearchTranslationsButton().setDown(true);
+                display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton().setDown(true);
             }
-            display.getShortcuts().openSearchMenu();
+            display.getShortcuts().getSearchSubMenu().setOpen(true);
         } else {
-            display.getShortcuts().showAdvancedSubMenu();
+            display.getShortcuts().getAdvancedSubMenu().setOpen(true);
             display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton().setDown(true);
         }
 

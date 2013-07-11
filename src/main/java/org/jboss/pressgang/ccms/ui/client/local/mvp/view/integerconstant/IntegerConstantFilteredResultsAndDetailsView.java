@@ -36,7 +36,7 @@ public class IntegerConstantFilteredResultsAndDetailsView extends
         super.initialiseShortcuts();
         getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton().setDown(true);
         getShortcuts().setSpacerEnabled(true);
-        getShortcuts().showAdvancedSubMenu();
+        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

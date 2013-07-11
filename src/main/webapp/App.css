@@ -273,14 +273,6 @@ html {
     position: relative;
 }
 
-.ShortcutPanelParent {
-    margin-right: 8px;
-}
-
-.ShortcutPanel>tbody>tr>td {
-    padding: 2px 1px;
-}
-
 .gwt-ToggleButton-down {
     background-color: #005492 !important;
 }
@@ -804,6 +796,16 @@ input[type="text"] {
 /* Used to make readonly fields look less editable in Firefox */
 textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] {
     cursor: default;
+}
+
+.ShortcutPanelParent {
+    margin-right: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.ShortcutPanel>tbody>tr>td {
+    padding: 2px 1px;
 }
 
 .ShortcutPanel {

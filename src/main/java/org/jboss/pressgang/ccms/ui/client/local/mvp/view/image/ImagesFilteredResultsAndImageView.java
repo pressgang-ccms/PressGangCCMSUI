@@ -95,8 +95,8 @@ public class ImagesFilteredResultsAndImageView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getImagesButton().setDown(true);
+        getShortcuts().getEntitiesSubMenu().getImagesButton().setDown(true);
         getShortcuts().setSpacerEnabled(true);
-        getShortcuts().openEntitiesMenu();
+        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 }

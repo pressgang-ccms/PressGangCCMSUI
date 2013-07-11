@@ -111,8 +111,8 @@ public class FilesFilteredResultsAndFileView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getFilesButton().setDown(true);
+        getShortcuts().getEntitiesSubMenu().getFilesButton().setDown(true);
         getShortcuts().setSpacerEnabled(true);
-        getShortcuts().openEntitiesMenu();
+        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 }

@@ -36,7 +36,7 @@ public class StringConstantFilteredResultsAndDetailsView extends
         super.initialiseShortcuts();
         getShortcuts().getAdvancedSubMenu().getStringConstantsButton().setDown(true);
         getShortcuts().setSpacerEnabled(true);
-        getShortcuts().showAdvancedSubMenu();
+        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

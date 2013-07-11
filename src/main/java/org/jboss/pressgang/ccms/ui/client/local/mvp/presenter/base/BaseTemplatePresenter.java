@@ -165,7 +165,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getSearchTopicsButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getSearchSubMenu().getSearchTopicsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -174,11 +174,20 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getSearchContentSpecsButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new ContentSpecSearchTagsFieldsAndFiltersViewEvent());
+                }
+            }
+        });
+
+        display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new TranslatedSearchTagsFieldsAndFiltersViewEvent());
                 }
             }
         });
@@ -228,7 +237,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getImagesButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getEntitiesSubMenu().getImagesButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -238,7 +247,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getFilesButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getEntitiesSubMenu().getFilesButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -248,7 +257,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getTagsButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getEntitiesSubMenu().getTagsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -258,7 +267,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getCategoriesButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getEntitiesSubMenu().getCategoriesButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -268,20 +277,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getProjectsButton().addClickHandler(new ClickHandler() {
+        display.getShortcuts().getEntitiesSubMenu().getProjectsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
                         GWTUtilities.isEventToOpenNewWindow(event)));
-            }
-        });
-
-        display.getShortcuts().getSearchTranslationsButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new TranslatedSearchTagsFieldsAndFiltersViewEvent());
-                }
             }
         });
     }
