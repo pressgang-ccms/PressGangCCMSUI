@@ -147,6 +147,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.holdXML(xml);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -161,6 +166,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
                 restService.updateJSONTag(expand, tag);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -177,6 +187,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
                 restService.createJSONTag(expand, tag);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -191,6 +206,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
                 restService.updateJSONCategory(expand, category);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -207,6 +227,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
                 restService.createJSONCategory(expand, category);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -221,6 +246,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONCategories("", categories);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -234,6 +264,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONTopic(TOPIC_EXPANSION, topic);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -253,6 +288,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONTopic(TOPIC_EXPANSION, topic, message, flag, userId);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -266,6 +306,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONTopic(TOPIC_EXPANSION, topic);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -285,6 +330,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONTopic(TOPIC_EXPANSION, topic, message, flag, userId);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -298,6 +348,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONStringConstant(id, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -313,6 +368,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\":\"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyTags(expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -326,6 +386,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION + "],\"trunk\":{\"name\":\"tags\"}}]}";
                 restService.getJSONTags(expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -342,6 +407,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
                 restService.getJSONTag(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -355,6 +425,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONTag(id, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -381,6 +456,11 @@ public final class FailOverRESTCallDatabase {
                         "]}";
                 restService.getJSONTopic(id, revisionExpand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -395,6 +475,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION + "]}";
                 restService.getJSONTopic(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -412,6 +497,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + TOPIC_PROPERTIES_EXPANSION + "]}";
                 restService.getJSONTopicRevision(id, revision, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -427,6 +517,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
                 restService.getJSONTopic(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -441,6 +536,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
                 restService.getJSONTranslatedTopic(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -458,6 +558,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
                 restService.getJSONTopicRevision(id, revision, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -471,6 +576,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONTopic(id, TOPIC_EXPANSION_WO_REVISIONS);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -488,6 +598,11 @@ public final class FailOverRESTCallDatabase {
                         + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.getJSONImage(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -503,6 +618,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
                 restService.getJSONImage(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -517,6 +637,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
                 restService.getJSONImage(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -534,6 +659,11 @@ public final class FailOverRESTCallDatabase {
                         + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.updateJSONImage(expand, image);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -550,6 +680,11 @@ public final class FailOverRESTCallDatabase {
                         + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.createJSONImage(expand, image);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -564,6 +699,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONFilter(FILTER_EXPANSION, filter);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -577,6 +717,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONFilter(FILTER_EXPANSION, filter);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -595,6 +740,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONFiltersWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -608,6 +758,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONFilter(id, FILTER_EXPANSION);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -623,6 +778,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONTopicRevision(id, revision, TOPIC_EXPANSION_WO_REVISIONS);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -641,6 +801,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -656,6 +821,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -669,6 +839,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), TOPIC_TAG_EXPANSION);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -687,6 +862,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTranslatedTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -700,6 +880,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONTranslatedTopic(id, TRANSLATED_TOPIC_EXPANSION);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -718,6 +903,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -732,6 +922,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -750,6 +945,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONStringConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -764,6 +964,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONStringConstant("", entity);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -777,6 +982,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONStringConstant("", entity);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -795,6 +1005,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONIntegerConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -809,6 +1024,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONIntegerConstant("", entity);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -822,6 +1042,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONIntegerConstant("", entity);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -840,6 +1065,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONBlobConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -854,6 +1084,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.createJSONBlobConstant("", entity);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -867,6 +1102,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONBlobConstant("", entity);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -883,6 +1123,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
                 restService.getJSONCategory(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -896,6 +1141,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONCategory(id, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -911,6 +1161,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
                         + "]}]}";
                 restService.getJSONCategories(expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -930,6 +1185,11 @@ public final class FailOverRESTCallDatabase {
                         + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -947,6 +1207,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                         + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
                 restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -966,6 +1231,11 @@ public final class FailOverRESTCallDatabase {
                         + ", \"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
                 restService.getJSONProjectsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -979,6 +1249,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
                 restService.getJSONProjects(expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -995,6 +1270,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
                 restService.getJSONProject(id, expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -1008,6 +1288,11 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONProject(id, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -1024,6 +1309,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
                 restService.updateJSONProject(expand, project);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -1038,6 +1328,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
                 restService.createJSONProject(expand, project);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -1066,6 +1361,11 @@ public final class FailOverRESTCallDatabase {
                     "}";
                 restService.getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -1079,6 +1379,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyCategories(expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -1097,6 +1402,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -1111,6 +1421,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
                 restService.getJSONPropertyTag(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -1127,6 +1442,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
                 restService.updateJSONPropertyTag(expand, propertyTag);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -1141,6 +1461,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
                 restService.createJSONPropertyTag(expand, propertyTag);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }
@@ -1159,6 +1484,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
         };
     }
 
@@ -1173,6 +1503,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
                 restService.getJSONPropertyCategory(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -1189,6 +1524,11 @@ public final class FailOverRESTCallDatabase {
                 final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
                 restService.updateJSONPropertyCategory(expand, propertyCategory);
             }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
         };
     }
 
@@ -1203,6 +1543,11 @@ public final class FailOverRESTCallDatabase {
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
                 restService.createJSONPropertyCategory(expand, propertyCategory);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }

@@ -12,6 +12,11 @@ public final class Constants {
     public static final String VERSION = "201307111611";
 
     /**
+     * The time in milliseconds to wait for a rest call to complete.
+     */
+    public static final int REST_CALL_TIMEOUT = 30000;
+
+    /**
      * This header is expected from all responses of the REST server
      */
     public static final String REST_SERVER_HEADER = "X-PressGang-Version";

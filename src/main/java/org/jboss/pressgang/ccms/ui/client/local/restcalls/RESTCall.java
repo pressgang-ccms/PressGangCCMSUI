@@ -10,4 +10,9 @@ public interface RESTCall {
      * @param restService The service to make a call against.
      */
     void call(final RESTInterfaceV1 restService);
+
+    /**
+     * @return true for REST calls that can be repeated (i.e calls that are idempotent), and false otherwise
+     */
+    boolean isRepeatable();
 }

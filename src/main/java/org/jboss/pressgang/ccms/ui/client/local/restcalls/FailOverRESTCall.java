@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.Message;
@@ -57,60 +58,93 @@ public final class FailOverRESTCall {
     }
 
     private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
-        final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
-            @Override
-            public void callback(final T retValue) {
-                if (display != null) {
-                    display.removeWaitOperation();
-                }
 
-                callback.success(retValue);
+        final SuccessCallbackWrapper<T> successCallbackWrapper = new SuccessCallbackWrapper<T>() {
+            @Override
+            public RemoteCallback<T> getSuccessCallback() {
+                return new RemoteCallback<T>() {
+                    @Override
+                    public void callback(final T retValue) {
+                        if (!isTimedout() && !isReturned()) {
+                            if (display != null) {
+                                display.removeWaitOperation();
+                            }
+
+                            callback.success(retValue);
+                        }
+
+                        setReturned(true);
+                    }
+                };
             }
         };
 
-        final ErrorCallback errorCallback = new ErrorCallback() {
+        final FailureCallbackWrapper failureCallbackWrapper = new FailureCallbackWrapper() {
             @Override
-            public boolean error(final Message message, final Throwable throwable) {
+            public ErrorCallback getErrorCallback() {
+                return new ErrorCallback() {
+                    @Override
+                    public boolean error(final Message message, final Throwable throwable) {
+                        if (!isTimedout() && !isReturned()) {
+                            if (throwable instanceof ResponseException) {
+                                final ResponseException ex = (ResponseException) throwable;
+                                final String responseText = ex.getResponse().getText();
+                                final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
 
-                if (throwable instanceof ResponseException) {
-                    final ResponseException ex = (ResponseException) throwable;
-                    final String responseText = ex.getResponse().getText();
-                    final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
+                                if (pressgangHeader == null) {
+                                    /*
+                                        The response did not contain the header that should be found in all responses from the
+                                        pressgang sever. This means the server is down.
+                                     */
+                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                                    /*
+                                        A bad request means invalid input, like a duplicated name. This does not indicate a
+                                        failure of the REST server.
+                                    */
 
-                    if (pressgangHeader == null) {
-                        /*
-                            The response did not contain the header that should be found in all responses from the
-                            pressgang sever. This means the server is down.
-                         */
-                       failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                    } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
-                        /*
-                            A bad request means invalid input, like a duplicated name. This does not indicate a
-                            failure of the REST server.
-                        */
+                                    if (!disableDefaultFailureAction) {
+                                        Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
+                                    }
+                                } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
+                                    /*
+                                        A 404 is not necessarily an error, as long as the PressGang header is present.
+                                     */
+                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                                }
+                            } else {
+                                failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                            }
 
-                        if (!disableDefaultFailureAction) {
-                            Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
+                            if (display != null) {
+                                display.removeWaitOperation();
+                            }
                         }
-                    } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
-                        /*
-                            A 404 is not necessarily an error, as long as the PressGang header is present.
-                         */
+
+                        return true;
+                    }
+                };
+            }
+        };
+
+        final Timer timeoutMonitor = new Timer() {
+            @Override
+            public void run() {
+                if (!successCallbackWrapper.isReturned() && !failureCallbackWrapper.isReturned()) {
+                    /*
+                        If this particular rest call can be repeated, mark the old callbacks as timed out
+                        and fail over.
+                     */
+                    if (restCall.isRepeatable()) {
+                        successCallbackWrapper.setTimedout(true);
+                        failureCallbackWrapper.setTimedout(true);
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                     }
-                } else {
-                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                 }
-
-                if (display != null) {
-                    display.removeWaitOperation();
-                }
-
-               return true;
             }
         };
 
-        final RESTInterfaceV1 restInterface = RestClient.create(RESTInterfaceV1.class, successCallback, errorCallback);
+        final RESTInterfaceV1 restInterface = RestClient.create(RESTInterfaceV1.class, successCallbackWrapper.getSuccessCallback(), failureCallbackWrapper.getErrorCallback());
 
         try {
             if (display != null) {
@@ -118,6 +152,7 @@ public final class FailOverRESTCall {
             }
 
             restCall.call(restInterface);
+            timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
         } catch (@NotNull final Exception ex) {
             if (display != null) {
                 display.removeWaitOperation();
