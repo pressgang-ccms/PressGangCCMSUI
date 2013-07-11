@@ -838,3 +838,7 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 .ShortcutCollapseMenu {
     width: 100%;
 }
+
+.gwt-DisclosurePanel a {
+    text-decoration: none;
+}

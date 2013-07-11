@@ -7,13 +7,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePanel;
 import org.jetbrains.annotations.NotNull;
 
-public class ShortcutSearchView extends ShortcutDisclosurePanel {
+public class ShortcutSearchPanel extends ShortcutDisclosurePanel {
 
     private final ToggleButton searchTopics = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTopics());
     private final ToggleButton searchContentSpecs = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
     private final ToggleButton searchTranslations = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
 
-    public ShortcutSearchView(final String header) {
+    public ShortcutSearchPanel(final String header) {
         super(header);
         setOpen(Preferences.INSTANCE.getBoolean(Preferences.SHORTCUT_SEARCH_MENU_OPEN, false));
     }

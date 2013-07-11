@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -13,16 +14,16 @@ public class ShortcutView extends ShortcutPanel {
     /**
      * The panel that holds the shortcut buttons visible when the advanced submenu is open.
      */
-    private final ShortcutAdvancedView advancedShortcutPanel = new ShortcutAdvancedView(PressGangCCMSUI.INSTANCE.Advanced());
+    private final ShortcutAdvancedPanel advancedShortcutPanel = new ShortcutAdvancedPanel(PressGangCCMSUI.INSTANCE.Advanced());
 
     /**
      * The panel that holds the shortcut buttons visible when the entities submenu is open.
      */
-    private final ShortcutEntitiesView entitiesShortcutPanel = new ShortcutEntitiesView(PressGangCCMSUI.INSTANCE.Entities());
+    private final ShortcutEntitiesPanel entitiesShortcutPanel = new ShortcutEntitiesPanel(PressGangCCMSUI.INSTANCE.Entities());
     /**
      * The panel that holds the shortcut buttons visible when the entities submenu is open.
      */
-    private final ShortcutSearchView searchShortcutPanel = new ShortcutSearchView(PressGangCCMSUI.INSTANCE.Search());
+    private final ShortcutSearchPanel searchShortcutPanel = new ShortcutSearchPanel(PressGangCCMSUI.INSTANCE.Search());
 
     private final ToggleButton home = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Home());
     private final ToggleButton docbuilder = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.DocBuilder());
@@ -34,22 +35,18 @@ public class ShortcutView extends ShortcutPanel {
     private boolean spacerEnabled = false;
     private SimplePanel spacer = new SimplePanel();
 
-    public ShortcutView() {
-        spacer.setHeight(Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
-    }
-
     @NotNull
-    public ShortcutAdvancedView getAdvancedSubMenu() {
+    public ShortcutAdvancedPanel getAdvancedSubMenu() {
         return advancedShortcutPanel;
     }
 
     @NotNull
-    public ShortcutEntitiesView getEntitiesSubMenu() {
+    public ShortcutEntitiesPanel getEntitiesSubMenu() {
         return entitiesShortcutPanel;
     }
 
     @NotNull
-    public ShortcutSearchView getSearchSubMenu() {
+    public ShortcutSearchPanel getSearchSubMenu() {
         return searchShortcutPanel;
     }
 
@@ -106,6 +103,7 @@ public class ShortcutView extends ShortcutPanel {
     public void setSpacerEnabled(boolean enabled) {
         if (enabled && !spacerEnabled) {
             insert(spacer, 0);
+            setCellHeight(spacer, Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
             spacerEnabled = true;
         } else if (!enabled && spacerEnabled) {
             remove(spacer);
@@ -128,6 +126,8 @@ public class ShortcutView extends ShortcutPanel {
         if (!isSpacerEnabled()) {
             setSpacerEnabled(true);
         }
-        spacer.setWidget(button);
+        final FlowPanel panel = new FlowPanel();
+        panel.add(button);
+        spacer.setWidget(panel);
     }
 }

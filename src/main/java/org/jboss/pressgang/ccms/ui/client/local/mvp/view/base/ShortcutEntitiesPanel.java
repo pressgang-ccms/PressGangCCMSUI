@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePanel;
 import org.jetbrains.annotations.NotNull;
 
-public class ShortcutEntitiesView extends ShortcutDisclosurePanel {
+public class ShortcutEntitiesPanel extends ShortcutDisclosurePanel {
 
     private final ToggleButton images = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Images());
     private final ToggleButton files = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Files());
@@ -15,7 +15,7 @@ public class ShortcutEntitiesView extends ShortcutDisclosurePanel {
     private final ToggleButton categories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Categories());
     private final ToggleButton projects = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Projects());
 
-    public ShortcutEntitiesView(@NotNull final String header) {
+    public ShortcutEntitiesPanel(@NotNull final String header) {
         super(header);
         setOpen(Preferences.INSTANCE.getBoolean(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, false));
     }

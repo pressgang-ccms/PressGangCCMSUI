@@ -184,8 +184,12 @@ public final class Constants {
      -----------------------------------------------------------------------------------------------------------------*/
 
     public static final String BIRT_URL = null; //LOCAL_BIRT_URL;
-    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
-    public static final String BASE_URL = LOCAL_REST_SERVER;
+    public static final String BASE_URL = "http://lnewson1.usersys.redhat.com:8080/pressgang-ccms";
+    public static final String MONITORING_URL = BASE_URL + "/monitoring";
+
+//    public static final String BIRT_URL = null; //LOCAL_BIRT_URL;
+//    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
+//    public static final String BASE_URL = LOCAL_REST_SERVER;
 
 //    public static final String BASE_URL = DEV_REST_SERVER;
 //    public static final String BIRT_URL = DEV_BIRT_URL;

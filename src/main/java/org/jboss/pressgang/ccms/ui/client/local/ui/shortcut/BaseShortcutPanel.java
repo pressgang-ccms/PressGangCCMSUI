@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.shortcut;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -11,6 +12,7 @@ public class BaseShortcutPanel extends Composite implements IShortcutPanel {
 
     public BaseShortcutPanel() {
         initWidget(panel);
+        panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         setStyleName(CSSConstants.Shortcut.SHORTCUT_PANEL);
     }
 
@@ -48,5 +50,13 @@ public class BaseShortcutPanel extends Composite implements IShortcutPanel {
         }
 
         panel.remove(widget);
+    }
+
+    public void setVerticalAlignment(final HasVerticalAlignment.VerticalAlignmentConstant verticalAlignment) {
+        panel.setVerticalAlignment(verticalAlignment);
+    }
+
+    public void setCellHeight(final Widget widget, final String height) {
+        panel.setCellHeight(widget, height);
     }
 }

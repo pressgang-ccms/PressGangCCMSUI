@@ -59,6 +59,10 @@ public class ShortcutPanel extends Composite implements IShortcutPanel {
         baseShortcutPanel.remove(widget);
     }
 
+    public void setCellHeight(final Widget widget, final String height) {
+        baseShortcutPanel.setCellHeight(widget, height);
+    }
+
     public void addSubMenu(@NotNull final SubShortcutPanel subShortcutPanel, @NotNull final PushButton subMenuButton) {
         subMenus.put(subShortcutPanel, subMenuButton);
         add(subMenuButton);

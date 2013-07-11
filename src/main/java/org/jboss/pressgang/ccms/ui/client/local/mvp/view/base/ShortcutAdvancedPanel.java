@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePanel;
 import org.jetbrains.annotations.NotNull;
 
-public class ShortcutAdvancedView extends ShortcutDisclosurePanel {
+public class ShortcutAdvancedPanel extends ShortcutDisclosurePanel {
     private final ToggleButton bulkTagging = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BulkTagging());
     private final ToggleButton stringConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.StringConstants());
     private final ToggleButton blobConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BlobConstants());
@@ -17,7 +17,7 @@ public class ShortcutAdvancedView extends ShortcutDisclosurePanel {
     private final ToggleButton propertyTagCategories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
     private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true);
 
-    public ShortcutAdvancedView(final String header) {
+    public ShortcutAdvancedPanel(final String header) {
         super(header);
         setOpen(Preferences.INSTANCE.getBoolean(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, false));
     }
