@@ -825,10 +825,14 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
     background-color: #00C618;
     border-color: #009200;
     border: 1px solid #005492;
-    padding: 3px;
+    padding: 3px 3px 3px 2px;
     color: white;
     height: 100%;
     width: 100%;
+}
+
+.ShortcutCollapseMenuHeader img {
+    vertical-align: middle;
 }
 
 .ShortcutCollapseMenu {
