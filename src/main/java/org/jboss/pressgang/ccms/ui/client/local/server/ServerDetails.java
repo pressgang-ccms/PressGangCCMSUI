@@ -24,17 +24,17 @@ public class ServerDetails {
     /**
      * A HA test server.
      */
-    private static final  ServerDetails HATEST1 = new  ServerDetails(4, "HA Test Server 1", "http://10.64.15.224:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+    private static final  ServerDetails HATEST1 = new  ServerDetails(4, "HA Test Server 1", "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
 
     /**
      * A HA test server.
      */
-    private static final  ServerDetails HATEST2 = new  ServerDetails(5, "HA Test Server 2", "http://10.64.15.218:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+    private static final  ServerDetails HATEST2 = new  ServerDetails(5, "HA Test Server 2", "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
 
     /**
      * A HA test server.
      */
-    private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://10.64.15.215:8080/pressgang-ccms", null, "http://10.64.15.224:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+    private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
 
     private static final  ServerDetails DEFAULT =  BNE_DEVELOPMENT;
     //private static final  ServerDetails DEFAULT =  BNE_PRODUCTION;
