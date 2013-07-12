@@ -694,6 +694,14 @@ public interface CSSConstants {
          * Assigned to the file explode archive label.
          */
         String FILE_VIEW_EXPLODE_ARCHIVE_LABEL = "FileViewExplodeArchiveLabel";
+        /**
+         * Assigned to the cell that holds the language file file name label.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_FILENAME_LABEL = "FileViewLanguageFileFilenameLabel";
+        /**
+         * Assigned to the cell that holds the language file file name text.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_FILENAME_TEXT = "FileViewLanguageFileFilenameText";
     }
 
     /**

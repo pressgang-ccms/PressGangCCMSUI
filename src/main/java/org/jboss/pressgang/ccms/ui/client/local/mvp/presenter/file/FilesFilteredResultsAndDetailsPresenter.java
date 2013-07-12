@@ -406,6 +406,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     updatedLanguageFile.setId(editor.self.getItem().getId());
                                     updatedLanguageFile.explicitSetLocale(editor.self.getItem().getLocale());
                                     updatedLanguageFile.explicitSetFileData(buffer);
+                                    updatedLanguageFile.explicitSetFilename(file.getName());
                                     updatedLanguageFileItem.setItem(updatedLanguageFile);
 
                                     // Add the language file
@@ -916,6 +917,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         @NotNull final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
                         langFile.explicitSetLocale(locale);
                         langFile.explicitSetFileData(buffer);
+                        langFile.explicitSetFilename(files.getItem(index).getName());
 
                         @NotNull final RESTFileV1 newFile = new RESTFileV1();
                         newFile.explicitSetDescription(description);

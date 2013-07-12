@@ -40,10 +40,18 @@ public final class RESTLanguageFileV1Editor extends FlexTable implements ValueAw
      */
     private final int parentIndex;
 
+    private final Label filename = new Label();
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
+    private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.FileOriginalFilename());
     private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
+
+    @NotNull
+    @Ignore
+    public Label getFilename() {
+        return filename;
+    }
 
     @NotNull
     @Ignore
@@ -71,9 +79,20 @@ public final class RESTLanguageFileV1Editor extends FlexTable implements ValueAw
         this.setWidget(row, 0, this.newFileLabel);
         this.setWidget(row, 1, uploadPanel);
 
+        ++row;
+        this.setWidget(row, 0, this.filenameLabel);
+        this.setWidget(row, 1, this.filename);
+
+        this.filenameLabel.addStyleName(CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_FILENAME_LABEL);
+        this.filename.addStyleName(CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_FILENAME_TEXT);
+
         row = 0;
         this.getCellFormatter().addStyleName(row, 0, CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_UPLOAD_LABEL_CELL);
         this.getCellFormatter().addStyleName(row, 1, CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_UPLOAD_BUTTONS_CELL);
+
+        ++row;
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.FileView.FILE_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.FileView.FILE_VIEW_DETAIL_CELL);
     }
 
     @Override
@@ -97,6 +116,10 @@ public final class RESTLanguageFileV1Editor extends FlexTable implements ValueAw
 
         if (value.getItem().getLocale() != null) {
             this.parentPanel.setTabText(this.parentIndex, value.getItem().getLocale());
+        }
+
+        if (value.getItem().getFilename() != null) {
+            this.filename.setText(value.getItem().getFilename());
         }
     }
 }

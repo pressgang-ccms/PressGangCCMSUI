@@ -710,7 +710,7 @@ html {
     height: 3em;
 }
 
-.FileViewFilenameLabel {
+.FileViewFilenameLabel .FileViewLanguageFileFilenameLabel {
     white-space: nowrap;
 }
 
@@ -730,7 +730,7 @@ html {
 
 .FileViewLanguageFileTab {
     width: 100%;
-    height: 60px;
+    height: 80px;
     padding: 8px;
 }
 
@@ -742,7 +742,7 @@ html {
     overflow: auto !important;
 }
 
-.FileViewFilenameText, .FileViewFilePathText {
+.FileViewFilenameText, .FileViewFilePathText, .FileViewLanguageFileFilenameText {
     width: 100%;
     box-sizing: border-box;
 }
