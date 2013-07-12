@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTTagCollectionV1, SearchUIProjects, SearchUIProjectsEditor> {
         // Empty interface declaration, similar to UiBinder
@@ -38,7 +38,7 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(SearchPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SearchTagPresenter.class.getName());
 
     @Inject
     private HandlerManager eventBus;

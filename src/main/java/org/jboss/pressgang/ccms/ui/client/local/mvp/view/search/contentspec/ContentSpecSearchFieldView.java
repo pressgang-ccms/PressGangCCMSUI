@@ -26,6 +26,7 @@ public class ContentSpecSearchFieldView extends BaseTemplateView implements Cont
     private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
     private final Label fields = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
     @Override
@@ -54,6 +55,11 @@ public class ContentSpecSearchFieldView extends BaseTemplateView implements Cont
         return locales;
     }
 
+    @Override
+    public PushButton getFiltersButton() {
+        return filters;
+    }
+
     public ContentSpecSearchFieldView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
 
@@ -62,6 +68,7 @@ public class ContentSpecSearchFieldView extends BaseTemplateView implements Cont
         addActionButton(tagsSearch);
         addActionButton(fields);
         addActionButton(locales);
+        addActionButton(filters);
     }
 
     @Override

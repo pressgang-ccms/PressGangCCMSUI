@@ -26,10 +26,12 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
 
     private final Label tagsSearchDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final Label fieldsDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
     private final Label localesDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
+    private final Label filtersDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Filters());
 
     public ContentSpecSearchTagsFieldsAndFiltersView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
@@ -39,6 +41,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
         addActionButton(tags);
         addActionButton(fields);
         addActionButton(locales);
+        addActionButton(filters);
     }
 
     @Override
@@ -90,6 +93,12 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
 
     @Override
     @NotNull
+    public PushButton getFilters() {
+        return filters;
+    }
+
+    @Override
+    @NotNull
     public Label getTagsButtonDownLabel() {
         return tagsSearchDownLabel;
     }
@@ -104,5 +113,11 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
     @NotNull
     public Label getLocalesDownLabel() {
         return localesDownLabel;
+    }
+
+    @Override
+    @NotNull
+    public Label getFiltersDownLabel() {
+        return filtersDownLabel;
     }
 }

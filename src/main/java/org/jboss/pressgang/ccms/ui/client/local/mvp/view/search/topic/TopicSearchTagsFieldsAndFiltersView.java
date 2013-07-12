@@ -108,7 +108,7 @@ public class TopicSearchTagsFieldsAndFiltersView extends
 
     @Override
     @NotNull
-    public Label getTagsDownLabel() {
+    public Label getTagsButtonDownLabel() {
         return tagsSearchDownLabel;
     }
 

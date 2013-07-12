@@ -15,10 +15,8 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
@@ -42,25 +40,23 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterDialogInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchLocalePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -68,7 +64,7 @@ import org.jetbrains.annotations.NotNull;
  * presenters.
  */
 @Dependent
-public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFieldsAndFiltersPresenter {
     /**
      * The history token used to access this page
      */
@@ -85,31 +81,20 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(TopicSearchTagsFieldsAndFiltersPresenter.class.getName());
-    /**
-     * true if we are showing bulk tag buttons, and false otherwise.
-     */
-    private boolean showBulkTags;
     @Inject
     private Display display;
     @Inject
-    private SearchPresenter tagsComponent;
-    @Inject
-    private TopicSearchFieldPresenter fieldsComponent;
-    @Inject
-    private SearchLocalePresenter localePresenter;
+    private TopicSearchFieldPresenter fieldsPresenter;
     /**
      * The presenter used to display the list of filters
      */
     @Inject
-    private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+    private TopicSearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
     /**
      * The dialog used when saving or overwriting a filter
      */
     @Inject
     private SaveFilterDialogInterface saveFilterDialog;
-    @Inject
-    private HandlerManager eventBus;
-    private HasWidgets container;
     /**
      * This is set to true if the history token indicates that we are trying to do a search of translated topics.
      */
@@ -118,19 +103,19 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
     @Override
     public void go(@NotNull final HasWidgets container) {
 
-        this.container = container;
         clearContainerAndAddTopLevelPanel(container, display);
 
         display.setViewShown(true);
 
         bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
 
-        tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
-        fieldsComponent.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
-        localePresenter.bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
-        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
+        getTagsPresenter().bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        fieldsPresenter.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
+        getLocalePresenter().bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
+        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN,
+                Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        fieldsComponent.getDisplay().display(null, false);
+        fieldsPresenter.getDisplay().display(null, false);
 
         bindSearchButtons();
         loadSearchTags();
@@ -140,7 +125,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
             Show the bulk tagging button instead of the search button if the history token
             indicates that we are displaying a bulk tagging screen.
          */
-        if (!showBulkTags) {
+        if (!isShowBulkTags()) {
             display.removeTopActionButton(display.getApplyBulkTags());
             if (!doingTranslatedSearch) {
                 display.getShortcuts().getSearchSubMenu().getSearchTopicsButton().setDown(true);
@@ -161,43 +146,26 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
 
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        bind(helpTopicId, pageId, display);
+    @Override
+    protected Display getDisplay() {
+        return display;
     }
 
-    private void loadSearchLocales() {
-        RESTCalls.populateLocales(new StringListLoaded() {
-            @Override
-            public void stringListLoaded(@NotNull final List<String> stringList) {
-                localePresenter.getDisplay().display(stringList, false);
-            }
-        }, display);
+    @Override
+    protected BaseSearchFieldPresenter getFieldsPresenter() {
+        return fieldsPresenter;
     }
 
-    /**
-     * Gets the tags from the REST server
-     */
-    private void loadSearchTags() {
-
-        @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
-                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
-            @Override
-            public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
-
-                /* Bind the load, load and search and overwrite buttons */
-                bindFilterActionButtons(retValue);
-
-                /* Display the tags */
-                tagsComponent.getDisplay().displayExtended(retValue, null, false, showBulkTags);
-            }
-        });
-        RESTCalls.getTags(callback);
+    @Override
+    protected BaseSearchFilterResultsAndFilterPresenter getSearchFilterResultsAndFilterPresenter() {
+        return searchFilterResultsAndFilterPresenter;
     }
 
     /**
      * Adds logic to the filter action buttons
      */
-    private void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
+    @Override
+    protected void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
         final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -205,8 +173,8 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                tagsComponent.getDisplay().displayExtended(tags, displayedFilter, false, showBulkTags);
-                fieldsComponent.getDisplay().display(displayedFilter, false);
+                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, false, isShowBulkTags());
+                fieldsPresenter.getDisplay().display(displayedFilter, false);
             }
         };
 
@@ -216,9 +184,9 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
                 final String query = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_ID + "=" + displayedFilter.getId();
                 if (doingTranslatedSearch) {
-                    eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 } else {
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }
         };
@@ -241,6 +209,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
                     filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
                     filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
                     filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
+                    filter.explicitSetType(RESTFilterTypeV1.TOPIC);
 
                     saveFilterDialog.getDialogBox().show();
                 } finally {
@@ -257,8 +226,8 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 /* Save any changes back to the underlying object */
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
+                fieldsPresenter.getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
 
@@ -307,8 +276,8 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
 
                 saveFilterDialog.getDialogBox().hide();
 
-                tagsComponent.getDisplay().getSearchUIProjects().populateFilter(filter);
-                fieldsComponent.getDisplay().getFields().populateFilter(filter);
+                getTagsPresenter().getDisplay().getSearchUIProjects().populateFilter(filter);
+                getFieldsPresenter().getDisplay().getFields().populateFilter(filter);
 
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
@@ -374,55 +343,29 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         if (historyToken.startsWith(TRANSLATED_HISTORY_TOKEN)) {
             doingTranslatedSearch = true;
         } else if (historyToken.startsWith(BULK_TAG_HISTORY_TOKEN)) {
-            showBulkTags = true;
+            setShowBulkTags(true);
         }
     }
 
-    private void bindSearchButtons() {
-
-        final ClickHandler tagsHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                displayTags();
-            }
-        };
-
-        final ClickHandler fieldsHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                displayFields();
-            }
-        };
-
-        final ClickHandler filtersHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                displayFilters();
-            }
-        };
-
-        final ClickHandler localesHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                displayLocales();
-            }
-        };
+    @Override
+    protected void bindSearchButtons() {
+        super.bindSearchButtons();
 
         final ClickHandler searchHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
-                localePresenter.getDisplay().getDriver().flush();
+                getFieldsPresenter().getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
+                getLocalePresenter().getDisplay().getDriver().flush();
 
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
+                        + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
 
                 if (doingTranslatedSearch) {
-                    eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 } else {
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new TopicSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }
         };
@@ -430,19 +373,19 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         final ClickHandler bulkTaggingHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
-                localePresenter.getDisplay().getDriver().flush();
+                getFieldsPresenter().getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
+                getLocalePresenter().getDisplay().getDriver().flush();
 
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
+                        + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
 
                 /* Get a list of the tags to be added and removed */
                 final List<Integer> removeTags = new ArrayList<Integer>();
                 final Map<SearchUICategory, ArrayList<Integer>> addTags = new HashMap<SearchUICategory, ArrayList<Integer>>();
 
-                for (@NotNull final SearchUIProject project : tagsComponent.getDisplay().getSearchUIProjects().getProjects()) {
+                for (@NotNull final SearchUIProject project : getTagsPresenter().getDisplay().getSearchUIProjects().getProjects()) {
                     for (@NotNull final SearchUICategory category : project.getCategories()) {
                         for (@NotNull final SearchUITag tag : category.getMyTags()) {
                             if (tag.getBulkTagState() == TriStateSelectionState.SELECTED) {
@@ -464,13 +407,13 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         final ClickHandler downloadZipHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
-                localePresenter.getDisplay().getDriver().flush();
+                getFieldsPresenter().getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
 
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
+                        + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
                 Window.open(Constants.REST_SERVER + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
         };
@@ -478,13 +421,13 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         final ClickHandler downloadCsvHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                fieldsComponent.getDisplay().getDriver().flush();
-                tagsComponent.getDisplay().getDriver().flush();
-                localePresenter.getDisplay().getDriver().flush();
+                getFieldsPresenter().getDisplay().getDriver().flush();
+                getTagsPresenter().getDisplay().getDriver().flush();
+                getLocalePresenter().getDisplay().getDriver().flush();
 
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsPresenter.getDisplay().getFields().getSearchQuery(false)
+                        + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
                 Window.open(Constants.REST_SERVER + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
@@ -492,78 +435,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         display.getSearchButton().addClickHandler(searchHandler);
         display.getDownloadZip().addClickHandler(downloadZipHandler);
         display.getDownloadCSV().addClickHandler(downloadCsvHandler);
-        display.getTagsButton().addClickHandler(tagsHandler);
-        display.getFields().addClickHandler(fieldsHandler);
-        display.getFilters().addClickHandler(filtersHandler);
-        display.getLocales().addClickHandler(localesHandler);
         display.getApplyBulkTags().addClickHandler(bulkTaggingHandler);
-    }
-
-    private void resetTopActionButtons() {
-        display.replaceTopActionButton(display.getLocalesDownLabel(), display.getLocales());
-        display.replaceTopActionButton(display.getTagsDownLabel(), display.getTagsButton());
-        display.replaceTopActionButton(display.getFieldsDownLabel(), display.getFields());
-        display.replaceTopActionButton(display.getFiltersDownLabel(), display.getFilters());
-        display.getTopViewSpecificLeftActionPanel().clear();
-    }
-
-    private void displayLocales() {
-        this.setHelpTopicId(localePresenter.getHelpTopicId());
-
-        display.getPanel().clear();
-        display.getPanel().setWidget(localePresenter.getDisplay().getPanel());
-        resetTopActionButtons();
-        display.replaceTopActionButton(display.getLocales(), display.getLocalesDownLabel());
-
-        fieldsComponent.getDisplay().setViewShown(false);
-        tagsComponent.getDisplay().setViewShown(false);
-        localePresenter.getDisplay().setViewShown(true);
-        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
-    }
-
-    private void displayTags() {
-        this.setHelpTopicId(tagsComponent.getHelpTopicId());
-
-        display.getPanel().clear();
-        display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
-        resetTopActionButtons();
-        display.replaceTopActionButton(display.getTagsButton(), display.getTagsDownLabel());
-
-        fieldsComponent.getDisplay().setViewShown(false);
-        tagsComponent.getDisplay().setViewShown(true);
-        localePresenter.getDisplay().setViewShown(false);
-        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
-    }
-
-    private void displayFields() {
-        this.setHelpTopicId(fieldsComponent.getHelpTopicId());
-
-        display.getPanel().clear();
-        display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());
-        resetTopActionButtons();
-        display.replaceTopActionButton(display.getFields(), display.getFieldsDownLabel());
-
-        fieldsComponent.getDisplay().setViewShown(true);
-        tagsComponent.getDisplay().setViewShown(false);
-        localePresenter.getDisplay().setViewShown(false);
-        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
-    }
-
-    private void displayFilters() {
-        this.setHelpTopicId(searchFilterResultsAndFilterPresenter.getHelpTopicId());
-
-        display.getPanel().clear();
-        display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
-        resetTopActionButtons();
-        display.replaceTopActionButton(display.getFilters(), display.getFiltersDownLabel());
-
-        searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel().removeFromParent();
-        display.getTopViewSpecificLeftActionPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel());
-
-        fieldsComponent.getDisplay().setViewShown(false);
-        tagsComponent.getDisplay().setViewShown(false);
-        localePresenter.getDisplay().setViewShown(false);
-        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(true);
     }
 
     private void applyBulkTags(@NotNull final String query, @NotNull final List<Integer> removeTags, @NotNull final Map<SearchUICategory, ArrayList<Integer>> addTags) {
@@ -667,31 +539,9 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresen
         }
     }
 
-    public interface Display extends BaseTemplateViewInterface {
-        PushButton getSearchButton();
-
-        PushButton getDownloadZip();
-
+    public interface Display extends BaseSearchTagsFieldsAndFiltersPresenter.Display {
         PushButton getDownloadCSV();
 
         PushButton getApplyBulkTags();
-
-        PushButton getTagsButton();
-
-        PushButton getFilters();
-
-        PushButton getFields();
-
-        PushButton getLocales();
-
-        Label getTagsDownLabel();
-
-        Label getFiltersDownLabel();
-
-        Label getFieldsDownLabel();
-
-        Label getLocalesDownLabel();
     }
-
-
 }
