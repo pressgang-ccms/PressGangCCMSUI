@@ -344,12 +344,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     try {
                         LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
 
+                        if (topicXMLComponent.getDisplay().getEditor() != null) {
+                            topicXMLComponent.getDisplay().getEditor().redisplay();
+                        }
+
                         if (topicSplitPanelRenderedPresenter.getDisplay().getPanel().isAttached()) {
                             double splitSize = getDisplay().getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
-
-                            if (topicXMLComponent.getDisplay().getEditor() != null) {
-                                topicXMLComponent.getDisplay().getEditor().redisplay();
-                            }
 
                             /*
                              * Saves the width of the split screen
