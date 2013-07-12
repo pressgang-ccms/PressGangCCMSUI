@@ -417,8 +417,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
 
                 // Save the open shortcut menus
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, display.getShortcuts().getAdvancedSubMenu()
-                        .isOpen());
                 Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, display.getShortcuts().getSearchSubMenu()
                         .isOpen());
                 Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, display.getShortcuts().getEntitiesSubMenu()
