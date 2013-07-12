@@ -36,13 +36,18 @@ public class ServerDetails {
      */
     private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
 
+    /**
+     * A HA test server.
+     */
+    private static final  ServerDetails HATEST4 = new  ServerDetails(6, "HA Test Server 4", "http://local-pg-test-1:8080/pressgang-ccms", null, "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
+
     private static final  ServerDetails DEFAULT =  BNE_DEVELOPMENT;
     //private static final  ServerDetails DEFAULT =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] SERVERS = new ServerDetails[] {/*BNE_PRODUCTION,*/ BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3};
+    public static final ServerDetails[] SERVERS = new ServerDetails[] {/*BNE_PRODUCTION,*/ BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4};
 
     /**
      *

@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307111611";
+    public static final String VERSION = "201307120830";
 
     /**
      * The time in milliseconds to wait for a rest call to complete.
