@@ -110,8 +110,13 @@ abstract public class BaseDetailedChildrenPresenter<
 
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(preferencesKey,
-                        BaseDetailedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseDetailedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
+                try {
+                    LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenPresenter.refreshExistingChildList() ResizeHandler.onResize()");
+                    Preferences.INSTANCE.saveSetting(preferencesKey,
+                            BaseDetailedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseDetailedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT BaseOrderedChildrenPresenter.refreshExistingChildList() ResizeHandler.onResize()");
+                }
             }
         });
     }

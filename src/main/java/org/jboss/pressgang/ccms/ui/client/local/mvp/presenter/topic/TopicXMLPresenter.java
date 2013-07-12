@@ -195,12 +195,19 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
             display.getVerticalPanel().addResizeHandler(new ResizeHandler() {
                 @Override
                 public void onResize(@NotNull final ResizeEvent event) {
-                    if (display.getEditor() != null) {
-                        display.getEditor().redisplay();
-                    }
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER TopicXMLPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
 
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_XML_ERRORS_SPLIT_WIDTH, getDisplay()
-                            .getVerticalPanel().getSplitPosition(display.getXmlErrors()) + "");
+
+                        if (display.getEditor() != null) {
+                            display.getEditor().redisplay();
+                        }
+
+                        Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_XML_ERRORS_SPLIT_WIDTH, getDisplay()
+                                .getVerticalPanel().getSplitPosition(display.getXmlErrors()) + "");
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT TopicXMLPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
+                    }
 
                 }
             });

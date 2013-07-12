@@ -341,27 +341,27 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getSplitPanel().addResizeHandler(new ResizeHandler() {
                 @Override
                 public void onResize(@NotNull final ResizeEvent event) {
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
 
-                    /*if (getDisplay().getSplitPanel().getCenterWidget() != null && topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent() != null) {
-                        getDisplay().getSplitPanel().ensureWidgetMinimumSize(
-                                Constants.MINIMUM_SPLIT_SIZE,
-                                getDisplay().getSplitPanel().getCenterWidget(),
-                                topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
-                    }*/
+                        if (topicSplitPanelRenderedPresenter.getDisplay().getPanel().isAttached()) {
+                            double splitSize = getDisplay().getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
 
-                    double splitSize = getDisplay().getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
+                            if (topicXMLComponent.getDisplay().getEditor() != null) {
+                                topicXMLComponent.getDisplay().getEditor().redisplay();
+                            }
 
-                    if (topicXMLComponent.getDisplay().getEditor() != null) {
-                        topicXMLComponent.getDisplay().getEditor().redisplay();
-                    }
-
-                    /*
-                     * Saves the width of the split screen
-                     */
-                    if (split == SplitType.HORIZONTAL) {
-                        Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, splitSize + "");
-                    } else if (split == SplitType.VERTICAL) {
-                        Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, splitSize + "");
+                            /*
+                             * Saves the width of the split screen
+                             */
+                            if (split == SplitType.HORIZONTAL) {
+                                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, splitSize + "");
+                            } else if (split == SplitType.VERTICAL) {
+                                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, splitSize + "");
+                            }
+                        }
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
                     }
                 }
             });
@@ -651,7 +651,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                         @Override
                         public void execute() {
-                            getDisplay().getSplitPanel().onResize();
+                            try {
+                                LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                                getDisplay().getSplitPanel().onResize();
+                            } finally {
+                                LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                            }
                         }
                     });
                 }

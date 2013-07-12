@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedi
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -355,12 +356,17 @@ abstract public class BaseSearchAndEditPresenter<
 
                 @Override
                 public void onResize(@NotNull final ResizeEvent event) {
-                    /**
-                     * The results panel may not be displayed, in which case we don't want to save
-                     * the size.
-                     */
-                    if (display.getResultsViewLayoutPanel().isAttached()) {
-                        Preferences.INSTANCE.saveSetting(saveKey, display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindMainSplitResize() ResizeHandler.onResize()");
+                        /**
+                         * The results panel may not be displayed, in which case we don't want to save
+                         * the size.
+                         */
+                        if (display.getResultsViewLayoutPanel().isAttached()) {
+                            Preferences.INSTANCE.saveSetting(saveKey, display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+                        }
+                    }  finally {
+                        LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.bindMainSplitResize() ResizeHandler.onResize()");
                     }
                 }
             });
@@ -379,10 +385,13 @@ abstract public class BaseSearchAndEditPresenter<
             checkState(display != null, "The display variable should have been initialized. You need to call bindSearchAndEdit() first.");
 
             if (display.getResultsViewLayoutPanel().isAttached()) {
-                display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
-                        Preferences.INSTANCE.getInt(mainSplitSizePreferenceKey, Constants.SPLIT_PANEL_SIZE), false);
+                final int newPanelSize = Preferences.INSTANCE.getInt(mainSplitSizePreferenceKey, Constants.SPLIT_PANEL_SIZE);
+                final Widget widget = display.getResultsViewLayoutPanel();
+                display.getSplitPanel().setSplitPosition(widget, newPanelSize < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : newPanelSize, false);
             }
 
+        } catch (Exception ex) {
+            LOGGER.log(Level.INFO, "Caught exception");
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadMainSplitResize()");
         }

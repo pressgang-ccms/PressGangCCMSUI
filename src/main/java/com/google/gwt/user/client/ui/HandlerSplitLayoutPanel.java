@@ -21,6 +21,7 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
     @Override
     public void onResize() {
         super.onResize();
+
         ResizeEvent.fire(this, this.getOffsetWidth(), this.getOffsetHeight());
     }
 
