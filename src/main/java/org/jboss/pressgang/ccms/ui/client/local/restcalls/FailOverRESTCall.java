@@ -67,6 +67,11 @@ public final class FailOverRESTCall {
 
     private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
 
+        /*
+            The server that we failed to call.
+        */
+        final ServerDetails serverDetails = ServerDetails.getSavedServer();
+
         final SuccessCallbackWrapper<T> successCallbackWrapper = new SuccessCallbackWrapper<T>() {
             @Override
             public RemoteCallback<T> getSuccessCallback() {
@@ -105,7 +110,7 @@ public final class FailOverRESTCall {
                                         pressgang sever. This means the server is down.
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
-                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                 } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                     /*
                                         A bad request means invalid input, like a duplicated name. This does not indicate a
@@ -125,11 +130,11 @@ public final class FailOverRESTCall {
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
                                      */
                                     LOGGER.info("Failing over due unrecognised HTTP response");
-                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                 }
                             } else {
                                 LOGGER.info("Failing over due to error");
-                                failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                                failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                             }
                         }
 
@@ -153,7 +158,7 @@ public final class FailOverRESTCall {
                         successCallbackWrapper.setTimedout(true);
                         failureCallbackWrapper.setTimedout(true);
                         LOGGER.info("Failing over due to timeout");
-                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                     }
                 }
             }
@@ -178,7 +183,7 @@ public final class FailOverRESTCall {
             }
 
             LOGGER.info("Failing over due to exception");
-            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
         }
     }
 
@@ -186,11 +191,9 @@ public final class FailOverRESTCall {
      * Switch to another server in the same group if available and try the rest call again.
      * @param failedRESTServers The list of servers that have already failed
      */
-    private <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
-        /*
-            The server that we failed to call.
-         */
-        final ServerDetails serverDetails = ServerDetails.getSavedServer();
+    private <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback,
+                              @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction,
+                              @NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
         /*
             We know this server has failed.
          */
