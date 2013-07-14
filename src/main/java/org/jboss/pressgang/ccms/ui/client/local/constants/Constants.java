@@ -9,7 +9,22 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307150747";
+    public static final String VERSION = "201307150826";
+
+    /**
+     * The JSON Key for a recently failed failed server id
+     */
+    public static final String FAILED_SERVER_ID = "FailedServerId";
+
+    /**
+     * The JSON Key for a recently failed failed server time
+     */
+    public static final String FAILED_SERVER_TIME = "FailedServerTime";
+
+    /**
+     * How long to remember recently failed servers in milliseconds
+     */
+    public static final int REMEMBER_RECENTLY_FAILED_SERVERS = 30000;
 
     /**
      * The time in milliseconds to wait for a rest call to complete.

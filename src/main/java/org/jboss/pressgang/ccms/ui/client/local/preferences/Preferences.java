@@ -14,6 +14,10 @@ final public class Preferences {
      */
     public static final String SERVER = "Server";
     /**
+     * Saves the server that the UI should connect to.
+     */
+    public static final String FAILED_SERVER = "FailedServer";
+    /**
      * Saves the last entered username in the topic save log message dialog box.
      */
     public static final String LOG_MESSAGE_USERNAME = "LogMessageUsername";

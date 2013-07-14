@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import org.jboss.errai.bus.client.api.ErrorCallback;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -198,6 +200,82 @@ public final class FailOverRESTCall {
         */
         final ServerTypes serverType = serverDetails.getServerType();
 
+        /*
+            Often there are concurrent requests. To save time we need to make a note of any failed servers so the next
+            concurrent REST request to fail on the dead node will prioritise nodes that are not known to be down.
+         */
+        JSONArray recentlyFailedServers = JSONParser.parseStrict(Preferences.INSTANCE.getString(Preferences.FAILED_SERVER, new JSONArray().toString())).isArray();
+        if (recentlyFailedServers == null) {
+            recentlyFailedServers = new JSONArray();
+        }
+
+        /*
+            Remember only the current entries
+         */
+        final JSONArray newRecentlyFailedServers = new JSONArray();
+        for (int i = 0, length = recentlyFailedServers.size(); i < length; ++i) {
+            final JSONObject failedServer = recentlyFailedServers.get(i).isObject();
+            if (failedServer != null) {
+                final JSONNumber date = failedServer.get(Constants.FAILED_SERVER_TIME).isNumber();
+                final JSONNumber id = failedServer.get(Constants.FAILED_SERVER_ID).isNumber();
+                if (date != null &&
+                        id != null &&
+                        id.doubleValue() != serverDetails.getId() &&
+                        new Date().getTime() < date.doubleValue() + Constants.REMEMBER_RECENTLY_FAILED_SERVERS) {
+                    newRecentlyFailedServers.set(newRecentlyFailedServers.size(), failedServer);
+                }
+            }
+        }
+
+        /*
+            Note the current failure
+         */
+        final JSONObject newlyFailedServer = new JSONObject();
+        newlyFailedServer.put(Constants.FAILED_SERVER_ID, new JSONNumber(serverDetails.getId()));
+        newlyFailedServer.put(Constants.FAILED_SERVER_TIME, new JSONNumber(new Date().getTime()));
+        newRecentlyFailedServers.set(newRecentlyFailedServers.size(), newlyFailedServer);
+
+        /*
+            Save the failures
+         */
+        Preferences.INSTANCE.saveSetting(Preferences.FAILED_SERVER, newRecentlyFailedServers.toString());
+
+        /*
+            Do an initial loop over the available servers, skipping any recently failed servers
+         */
+        outerloop:
+        for (final ServerDetails nextServer : ServerDetails.SERVERS) {
+            if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
+                /*
+                    Make sure this server did not recently fail
+                 */
+                innerloop:
+                for (int i = 0, length = newRecentlyFailedServers.size(); i < length; ++i) {
+                    final JSONObject failedServer = newRecentlyFailedServers.get(i).isObject();
+                    if (failedServer != null) {
+                        final JSONNumber date = failedServer.get(Constants.FAILED_SERVER_TIME).isNumber();
+                        final JSONNumber id = failedServer.get(Constants.FAILED_SERVER_ID).isNumber();
+                        if (date != null && id != null) {
+                            if (id.doubleValue() == nextServer.getId()) {
+                                continue outerloop;
+                            }
+                        }
+                    }
+                }
+
+                Preferences.INSTANCE.saveSetting(Preferences.SERVER, nextServer.getId() + "");
+                RestClient.setApplicationRoot(nextServer.getRestEndpoint());
+
+                eventBus.fireEvent(new FailoverEvent(nextServer.getId()));
+
+                performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+                return;
+            }
+        }
+
+        /*
+            If we get to here, all servers have recently failed. We now try them again.
+         */
         for (final ServerDetails nextServer : ServerDetails.SERVERS) {
             if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
                 Preferences.INSTANCE.saveSetting(Preferences.SERVER, nextServer.getId() + "");
