@@ -121,6 +121,8 @@ public final class FailOverRESTCall {
                             }
                         }
 
+                        setReturned(true);
+
                         return true;
                     }
                 };
@@ -130,7 +132,7 @@ public final class FailOverRESTCall {
         final Timer timeoutMonitor = new Timer() {
             @Override
             public void run() {
-                if (!successCallbackWrapper.isReturned() && !failureCallbackWrapper.isReturned()) {
+                if (!(successCallbackWrapper.isReturned() || failureCallbackWrapper.isReturned())) {
                     /*
                         If this particular rest call can be repeated, mark the old callbacks as timed out
                         and fail over.
