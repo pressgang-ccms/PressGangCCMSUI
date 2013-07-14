@@ -27,6 +27,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * This class holds a number of preconfigured REST calls that can fail over to another server
@@ -40,6 +41,11 @@ public final class FailOverRESTCall {
      */
     @Inject
     private HandlerManager eventBus;
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(FailOverRESTCall.class.getName());
 
     public FailOverRESTCall () {
 
@@ -96,6 +102,7 @@ public final class FailOverRESTCall {
                                         The response did not contain the header that should be found in all responses from the
                                         pressgang sever. This means the server is down.
                                      */
+                                    LOGGER.info("Failing over due to incorrect headers");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                                 } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                     /*
@@ -110,9 +117,11 @@ public final class FailOverRESTCall {
                                     /*
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
                                      */
+                                    LOGGER.info("Failing over due unrecognised HTTP response");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                                 }
                             } else {
+                                LOGGER.info("Failing over due to error");
                                 failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                             }
 
@@ -140,6 +149,7 @@ public final class FailOverRESTCall {
                     if (restCall.isRepeatable()) {
                         successCallbackWrapper.setTimedout(true);
                         failureCallbackWrapper.setTimedout(true);
+                        LOGGER.info("Failing over due to timeout");
                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
                     }
                 }
@@ -149,7 +159,11 @@ public final class FailOverRESTCall {
         final RESTInterfaceV1 restInterface = RestClient.create(RESTInterfaceV1.class, successCallbackWrapper.getSuccessCallback(), failureCallbackWrapper.getErrorCallback());
 
         try {
-            if (display != null) {
+            /*
+                Only add a wait operation if this is the first time we are calling this REST endpoint (i.e.
+                failedRESTServers.size() == 0).
+             */
+            if (display != null && failedRESTServers.size() == 0) {
                 display.addWaitOperation();
             }
 
@@ -160,6 +174,7 @@ public final class FailOverRESTCall {
                 display.removeWaitOperation();
             }
 
+            LOGGER.info("Failing over due to exception");
             failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
         }
     }
@@ -194,6 +209,12 @@ public final class FailOverRESTCall {
             }
         }
 
+        /*
+            There are no more servers left to call, so remove the wait operation and call the failed callback.
+         */
+        if (display != null) {
+            display.removeWaitOperation();
+        }
         callback.failed();
     }
 }
