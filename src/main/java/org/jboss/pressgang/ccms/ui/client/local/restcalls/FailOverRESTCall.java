@@ -117,6 +117,7 @@ public final class FailOverRESTCall {
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
+                                    callback.failed();
                                 } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
                                     /*
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
