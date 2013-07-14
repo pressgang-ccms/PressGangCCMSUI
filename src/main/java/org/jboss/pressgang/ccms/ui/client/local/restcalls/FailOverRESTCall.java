@@ -113,6 +113,10 @@ public final class FailOverRESTCall {
                                     if (!disableDefaultFailureAction) {
                                         Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
                                     }
+
+                                    if (display != null) {
+                                        display.removeWaitOperation();
+                                    }
                                 } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
                                     /*
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
@@ -123,10 +127,6 @@ public final class FailOverRESTCall {
                             } else {
                                 LOGGER.info("Failing over due to error");
                                 failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                            }
-
-                            if (display != null) {
-                                display.removeWaitOperation();
                             }
                         }
 
