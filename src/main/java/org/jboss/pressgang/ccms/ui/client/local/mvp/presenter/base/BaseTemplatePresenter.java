@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -42,6 +45,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -99,6 +103,27 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     @Override
     public boolean hasUnsavedChanges() {
         return false;
+    }
+
+    private void bindServerSelector() {
+        display.getServers().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(@NotNull final ChangeEvent event) {
+                final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
+
+                final String serverIdString = display.getServers().getValue(display.getServers().getSelectedIndex());
+                Preferences.INSTANCE.saveSetting(Preferences.SERVER, serverIdString);
+
+                final ServerDetails newServerSettings = ServerDetails.getSavedServer();
+
+                RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
+
+                if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name().replaceAll("_", " ")).replace("$2", newServerSettings.getServerType().name().replaceAll("_", " ")));
+                    Window.Location.reload();
+                }
+            }
+        });
     }
 
     /**
@@ -234,7 +259,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getShortcuts().getReportsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.BIRT_URL, "_blank", "");
+                Window.open(ServerDetails.getSavedServer().getReportUrl(), "_blank", "");
             }
         });
 
@@ -291,7 +316,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getShortcuts().getAdvancedSubMenu().getMonitoringButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.MONITORING_URL, "_blank", "");
+                Window.open(ServerDetails.getSavedServer().getMonitoringUrl(), "_blank", "");
             }
         });
 
@@ -368,19 +393,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                     /* If the search query was numbers and integers, assume that we are searching for topics ids */
                     @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                     eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery,
-                            newWindow));
+                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
                 } else {
                     /* Otherwise do a search against the title, description and content of the topics */
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants
-                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
-                                    query) : query) + ";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + (Constants
-                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
-                                    query) : query) + ";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + (Constants
-                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
-                                    query) : query) + ";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC,
-                            newWindow));
+                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
+                            + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
+                            + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
+                            + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC, newWindow));
                 }
             }
         } finally {
@@ -404,8 +424,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         this.display = display;
         this.helpTopicId = topicId;
 
-        this.setFeedbackLink(pageId);
-        this.bindStandardButtons();
+        setFeedbackLink(pageId);
+        bindStandardButtons();
+        bindServerSelector();
 
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {

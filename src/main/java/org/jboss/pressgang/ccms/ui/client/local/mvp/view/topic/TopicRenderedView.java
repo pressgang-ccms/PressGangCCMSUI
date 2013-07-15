@@ -10,6 +10,8 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -124,7 +126,10 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
-					if (event.data == 'loaded') {
+					// Make sure the iframe sending the data is from an expected source
+                    var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
+                    var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
+                    if (event.data == 'loaded' && serverHost.indexOf(event.origin) == 0) {
 						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
 					}
 				};
@@ -197,7 +202,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         loadingiframe = new Frame();
         loadingiframe.getElement().setId(LOADING_IFRAME);
-        loadingiframe.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID);
+        loadingiframe.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
         loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
         flexTable.setWidget(displayingRow, 0, loadingiframe);
 

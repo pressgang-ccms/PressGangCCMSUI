@@ -36,6 +36,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchT
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterDialogInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
@@ -318,7 +319,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(
                         true) + getFieldsPresenter().getDisplay().getFields().getSearchQuery(
                         false) + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
             }
         };
 

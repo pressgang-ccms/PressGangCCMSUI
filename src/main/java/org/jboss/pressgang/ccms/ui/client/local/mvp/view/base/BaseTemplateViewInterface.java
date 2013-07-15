@@ -141,6 +141,11 @@ public interface BaseTemplateViewInterface {
      */
     @NotNull
     Anchor getHelp();
+    /**
+     * @return The list of available servers.
+     */
+    @NotNull
+    ListBox getServers();
 
     /**
      * All calls to addWaitOperation() should be matched by a call to removeWaitOperation() when

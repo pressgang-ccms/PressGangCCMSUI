@@ -52,6 +52,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterD
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
@@ -414,7 +415,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/" + query, "Zip Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
         };
 
@@ -428,7 +429,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsPresenter.getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/" + query, "Csv Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
 

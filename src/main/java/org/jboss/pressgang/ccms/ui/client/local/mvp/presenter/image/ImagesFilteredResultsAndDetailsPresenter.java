@@ -52,6 +52,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -80,8 +81,14 @@ import org.vectomatic.file.events.LoadEndHandler;
  * @author Matthew Casperson
  */
 @Dependent
-public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPresenter<RESTImageV1, RESTImageCollectionV1,
-        RESTImageCollectionItemV1, RESTImageV1Editor> implements BaseTemplatePresenterInterface {
+public class ImagesFilteredResultsAndDetailsPresenter
+        extends
+        BaseSearchAndEditPresenter<
+                RESTImageV1,
+                RESTImageCollectionV1,
+                RESTImageCollectionItemV1,
+                RESTImageV1Editor>
+        implements BaseTemplatePresenterInterface {
 
 
     public interface Display extends BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
@@ -657,9 +664,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             .languageImages_OTMEditor().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(Constants.REST_SERVER + "/1/image/get/raw/" +
-                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage
-                            .getItem().getLocale(), null, null);
+                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
+                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage.getItem().getLocale(),
+                            null, null);
                 }
             }
         });

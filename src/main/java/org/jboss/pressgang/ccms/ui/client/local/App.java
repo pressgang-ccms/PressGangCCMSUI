@@ -10,7 +10,9 @@ import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +74,7 @@ public class App {
             GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
 
             /* Setup the REST client */
-            RestClient.setApplicationRoot(Constants.REST_SERVER);
+            RestClient.setApplicationRoot(ServerDetails.getSavedServer().getRestEndpoint());
             RestClient.setJacksonMarshallingActive(true);
 
             final RootLayoutPanel root = RootLayoutPanel.get();

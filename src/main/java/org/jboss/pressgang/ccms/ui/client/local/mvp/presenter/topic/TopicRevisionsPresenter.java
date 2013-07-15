@@ -17,8 +17,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 
@@ -243,8 +245,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
         comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
 
-        currentXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo1);
-        comparedXML.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + echo2);
+        currentXML.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+        comparedXML.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
     }
 
     private void displayRenderedHTML() {
@@ -293,19 +295,24 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 			function (me) {
 				return function displayAfterLoaded(event) {
 
-                    // Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
-                    // This ensures that the diff ordering is correct
+                    // Make sure the iframe sending the data is from an expected source
+                    var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
+					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
+                    if (serverHost.indexOf(event.origin) == 0) {
+                        // Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
+                        // This ensures that the diff ordering is correct
 
-                    var currentIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::CURRENT_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
-					var compareIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::COMPARE_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
+                        var currentIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::CURRENT_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
+                        var compareIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::COMPARE_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
 
-                    if (event.source.frameElement.id == currentIFrameID) {
-						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
-                    } else if (event.source.frameElement.id == compareIFrameID) {
-						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
-					}
+                        if (event.source.frameElement.id == currentIFrameID) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
+                        } else if (event.source.frameElement.id == compareIFrameID) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
+                        }
 
-					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::displayRenderedHTML()();
+                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::displayRenderedHTML()();
+                    }
 
 				};
 			}(this);

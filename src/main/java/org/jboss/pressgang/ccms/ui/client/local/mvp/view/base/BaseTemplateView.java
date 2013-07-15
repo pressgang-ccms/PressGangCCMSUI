@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,7 +27,9 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -152,6 +155,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
+    private final ListBox servers = new ListBox();
     /**
      * The text box where a quick search is entered.
      */
@@ -170,6 +174,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public HorizontalPanel getHiddenAttachmentArea() {
         return hiddenAttachmentArea;
+    }
+
+    @NotNull
+    public ListBox getServers() {
+        return servers;
     }
 
     /**
@@ -247,7 +256,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                                     new BaseRestCallback.SuccessAction<IntegerWrapper, BaseTemplateViewInterface>() {
                                         @Override
                                         public void doSuccessAction(@NotNull final IntegerWrapper retValue, @NotNull final BaseTemplateViewInterface display) {
-                                            contents.setUrl(Constants.REST_SERVER + Constants.ECHO_ENDPOINT + "?id=" + retValue.value);
+                                            contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + retValue.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
                                             center();
                                         }
                                     }, true);
@@ -456,24 +465,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, 0, version);
 
         /* Add the REST server */
-        final Label restServer = new Label();
-
-        if (Constants.BASE_URL.equals(Constants.DEV_REST_SERVER)) {
-            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
-            restServer.setText(PressGangCCMSUI.INSTANCE.DevelopmentServer());
-        } else if (Constants.BASE_URL.equals(Constants.PROD_REST_SERVER)) {
-            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_PRODUCTION);
-            restServer.setText(PressGangCCMSUI.INSTANCE.ProductionServer());
-        } else if (Constants.BASE_URL.equals(Constants.LOCAL_REST_SERVER)) {
-            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
-            restServer.setText(PressGangCCMSUI.INSTANCE.LocalServer());
-        } else {
-            restServer.setText(PressGangCCMSUI.INSTANCE.OtherServer());
-            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
+        for (final ServerDetails serverDetails : ServerDetails.SERVERS) {
+            servers.addItem(serverDetails.getName(), serverDetails.getId() + "");
+            if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
+                servers.setSelectedIndex(servers.getItemCount() - 1);
+            }
         }
 
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), restServer);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
 
         /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);
