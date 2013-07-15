@@ -26,9 +26,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTLanguageFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -129,6 +130,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
      */
     private static final Logger LOGGER = Logger.getLogger(FilesFilteredResultsAndDetailsPresenter.class.getName());
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     /**
      * A reference to the StringConstants that holds the locales.
      */
@@ -173,23 +176,16 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             public void getNewEntity(@NotNull final RESTFileV1 selectedEntity,
                     @NotNull final DisplayNewEntityCallback<RESTFileV1> displayCallback) {
 
-                final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, BaseTemplateViewInterface>(display,
-                        new BaseRestCallback.SuccessAction<RESTFileV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTFileV1 retValue,
-                                    @NotNull final BaseTemplateViewInterface display) {
-                                checkArgument(retValue.getLanguageFiles_OTM() != null,
-                                        "The initially retrieved entity should have a language files collection");
-                                displayCallback.displayNewEntity(retValue);
-                            }
-                        }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+                final RESTCallBack<RESTFileV1> callback = new RESTCallBack<RESTFileV1>() {
                     @Override
-                    public void doFailureAction(@NotNull final BaseTemplateViewInterface display) {
-
+                    public void success(@NotNull final RESTFileV1 retValue) {
+                        checkArgument(retValue.getLanguageFiles_OTM() != null,
+                                "The initially retrieved entity should have a language files collection");
+                        displayCallback.displayNewEntity(retValue);
                     }
-                }
-                );
-                RESTCalls.getFileWithoutData(callback, selectedEntity.getId());
+                };
+
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFileWithoutData(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -221,11 +217,10 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         // If the displayed item isn't a new file then load the additional data
         if (!fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-            final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>(
-                    display, new BaseRestCallback.SuccessAction<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
+
+            final RESTCallBack<RESTFileV1> callback = new RESTCallBack<RESTFileV1>() {
                 @Override
-                public void doSuccessAction(@NotNull final RESTFileV1 retValue,
-                        @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
+                public void success(@NotNull final RESTFileV1 retValue) {
                     checkArgument(retValue.getLanguageFiles_OTM() != null, "The file should have the language file children populated.");
 
                     /*
@@ -236,18 +231,20 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                     finishLoading();
                 }
-            });
+            };
 
-            RESTCalls.getFileWithoutData(callback, fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getFileWithoutData(
+                            fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()),
+                    callback, display);
         }
     }
 
     @NotNull
-    private BaseRestCallback.SuccessAction<RESTFileV1, BaseTemplateViewInterface> getDefaultFileRestCallback(final boolean newEntity) {
-        return new BaseRestCallback.SuccessAction<RESTFileV1, BaseTemplateViewInterface>() {
+    private RESTCallBack<RESTFileV1> getDefaultFileRestCallback(final boolean newEntity) {
+        return new RESTCallBack<RESTFileV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTFileV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-
+            public void success(@NotNull final RESTFileV1 retValue) {
                 checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem() != null,
                         "There should be a displayed collection item.");
                 checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
@@ -276,14 +273,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                 Window.alert(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
             }
-        };
-    }
 
-    @NotNull
-    private BaseRestCallback.FailureAction<BaseTemplateViewInterface> getDefaultFileRestFailureCallback() {
-        return new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
             @Override
-            public void doFailureAction(final BaseTemplateViewInterface display) {
+            public void failed() {
                 Window.alert(PressGangCCMSUI.INSTANCE.FileUploadFailure());
             }
         };
@@ -313,18 +305,18 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     }
 
     private void populateLocales() {
-        final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(display,
-                new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                        /* Get the list of locales from the StringConstant */
-                        locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",");
 
-                        finishLoading();
-                    }
-                });
+        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+            @Override
+            public void success(@NotNull final RESTStringConstantV1 retValue) {
+                /* Get the list of locales from the StringConstant */
+                locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",");
 
-        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
+                finishLoading();
+            }
+        };
+
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
     }
 
     /**
@@ -404,17 +396,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     updateFile.getLanguageFiles_OTM().getItems().add(updatedLanguageFileItem);
 
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                        final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1,
-                                                BaseTemplateViewInterface>(
-                                                display, getDefaultFileRestCallback(true), getDefaultFileRestFailureCallback());
-
-                                        RESTCalls.createFile(callback, updateFile);
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(updateFile), getDefaultFileRestCallback(true), display);
                                     } else {
-                                        final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1,
-                                                BaseTemplateViewInterface>(
-                                                display, getDefaultFileRestCallback(false), getDefaultFileRestFailureCallback());
-
-                                        RESTCalls.updateFile(callback, updateFile);
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
                                     }
                                 } finally {
                                     display.removeWaitOperation();
@@ -540,15 +524,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     }
 
                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, BaseTemplateViewInterface>(display,
-                                getDefaultFileRestCallback(true));
-
-                        RESTCalls.createFile(callback, updateFile);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(updateFile), getDefaultFileRestCallback(true), display);
                     } else {
-                        final RESTCallback<RESTFileV1> callback = new BaseRestCallback<RESTFileV1, BaseTemplateViewInterface>(display,
-                                getDefaultFileRestCallback(false));
-
-                        RESTCalls.updateFile(callback, updateFile);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
                     }
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -571,7 +549,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             ().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(Constants.REST_SERVER + "/1/file/get/raw/" +
+                    Window.open(ServerDetails.getSavedServer().getRestUrl() + "/1/file/get/raw/" +
                             fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedFile
                             .getItem().getLocale(),
                             null, null);
@@ -759,42 +737,36 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (isOKToProceed()) {
 
                     /* Start by getting the default locale */
-                    final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1,
-                            FilesFilteredResultsAndDetailsPresenter.Display>(
-                            display,
-                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
-                                        @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
+                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                        @Override
+                        public void success(@NotNull final RESTStringConstantV1 retValue) {
+                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
 
-                                    checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-
-                                    // Create the file wrapper
-                                    final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
-                                    fileCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                            // Create the file wrapper
+                            final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
+                            fileCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
                                     /* When we have the default locale, create a new file */
-                                    final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
-                                    langFile.explicitSetLocale(retValue.getValue());
+                            final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
+                            langFile.explicitSetLocale(retValue.getValue());
 
-                                    final RESTFileV1 newFile = new RESTFileV1();
-                                    newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
-                                    newFile.getLanguageFiles_OTM().addNewItem(langFile);
-                                    fileCollectionItem.setItem(newFile);
+                            final RESTFileV1 newFile = new RESTFileV1();
+                            newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
+                            newFile.getLanguageFiles_OTM().addNewItem(langFile);
+                            fileCollectionItem.setItem(newFile);
 
-                                    // the file won't show up in the list of files until it is saved, so the
-                                    // selected item is null
-                                    fileFilteredResultsComponent.setSelectedItem(null);
+                            // the file won't show up in the list of files until it is saved, so the
+                            // selected item is null
+                            fileFilteredResultsComponent.setSelectedItem(null);
 
-                                    // the new file is being displayed though, so we set the displayed item
-                                    fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
+                            // the new file is being displayed though, so we set the displayed item
+                            fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
 
-                                    updateViewsAfterNewEntityLoaded();
-                                }
-                            });
+                            updateViewsAfterNewEntityLoaded();
+                        }
+                    };
 
-                    RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
-
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
                 }
             }
         });
@@ -821,22 +793,18 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
-                    /* Start by getting the default locale */
-                    @NotNull final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1,
-                            FilesFilteredResultsAndDetailsPresenter.Display>(
-                            display,
-                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
-                                @Override
-                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
-                                        @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
-                                    checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                                    createNewFile(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(),
-                                            display.getBulkUploadDialog().getFilePath().getText(), 0,
-                                            display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
-                                            new ArrayList<String>());
-                                }
-                            });
-                    RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
+                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                        @Override
+                        public void success(@NotNull final RESTStringConstantV1 retValue) {
+                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
+                            createNewFile(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(),
+                                    display.getBulkUploadDialog().getFilePath().getText(), 0,
+                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
+                                    new ArrayList<String>());
+                        }
+                    };
+
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
                 }
             }
         });
@@ -916,24 +884,20 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
                         newFile.getLanguageFiles_OTM().addNewItem(langFile);
 
-                        @NotNull final RESTCallback<RESTFileV1> fileCallback = new BaseRestCallback<RESTFileV1,
-                                FilesFilteredResultsAndDetailsPresenter.Display>(
-                                display, new BaseRestCallback.SuccessAction<RESTFileV1, FilesFilteredResultsAndDetailsPresenter.Display>() {
+                        final RESTCallBack<RESTFileV1> callback = new RESTCallBack<RESTFileV1>() {
                             @Override
-                            public void doSuccessAction(@NotNull final RESTFileV1 retValue,
-                                    @NotNull final FilesFilteredResultsAndDetailsPresenter.Display display) {
+                            public void success(@NotNull final RESTFileV1 retValue) {
                                 ids.add(retValue.getId());
                                 createNewFile(description, locale, filePath, index + 1, files, ids, failedFiles);
                             }
-                        }, new BaseRestCallback.FailureAction<Display>() {
+
                             @Override
-                            public void doFailureAction(@NotNull final Display display) {
+                            public void failed() {
                                 createNewFile(description, locale, filePath, index + 1, files, ids, failedFiles);
                             }
-                        }
-                        );
+                        };
 
-                        RESTCalls.createFile(fileCallback, newFile);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(newFile), callback, display);
                     } finally {
                         display.removeWaitOperation();
                     }
