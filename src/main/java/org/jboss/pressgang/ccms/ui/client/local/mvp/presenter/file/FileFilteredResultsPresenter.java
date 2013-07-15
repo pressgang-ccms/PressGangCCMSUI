@@ -14,8 +14,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -61,6 +62,8 @@ public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<R
 
     @Inject
     private Display display;
+
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     private String queryString;
 
@@ -130,11 +133,9 @@ public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<R
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                @NotNull final BaseRestCallback<RESTFileCollectionV1, Display> callback = new BaseRestCallback<RESTFileCollectionV1,
-                        Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTFileCollectionV1, Display>() {
+                final RESTCallBack<RESTFileCollectionV1> callback = new RESTCallBack<RESTFileCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTFileCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTFileCollectionV1 retValue) {
                         checkState(retValue.getItems() != null, "The returned collection should have a valid items collection");
                         checkState(retValue.getSize() != null, "The returned collection should have a valid size");
 
@@ -143,9 +144,9 @@ public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<R
                         relinkSelectedItem();
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
-                RESTCalls.getFilesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFilesFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;
