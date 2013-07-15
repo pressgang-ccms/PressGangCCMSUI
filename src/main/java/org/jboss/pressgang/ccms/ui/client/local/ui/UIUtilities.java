@@ -72,6 +72,17 @@ final public class UIUtilities {
         return retValue;
     }
 
+    @NotNull
+    public static ToggleButton createLeftSideTabToggleButton(final String text) {
+        return createLeftSideTabToggleButton(text, false);
+    }
+
+    @NotNull
+    public static ToggleButton createLeftSideTabToggleButton(final String text, final boolean subMenu) {
+        @NotNull final ToggleButton retValue = createToggleButton(text, subMenu);
+        retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
+        return retValue;
+    }
 
     @NotNull
     public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
@@ -116,9 +127,31 @@ final public class UIUtilities {
 
     @NotNull
     public static Label createLeftSideTabDownLabel(final String text, final boolean subMenu) {
-        @NotNull final Label retvalue = createDownLabel(text);
-        retvalue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
-        return retvalue;
+        @NotNull final Label retValue = createDownLabel(text);
+        retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        }
+
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createLeftSideTabLabel(final String text) {
+        return createLeftSideTabLabel(text, false);
+    }
+
+    @NotNull
+    public static Label createLeftSideTabLabel(final String text, final boolean subMenu) {
+        @NotNull final Label retValue = new Label(text);
+        retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        }
+
+        return retValue;
     }
 
     /**

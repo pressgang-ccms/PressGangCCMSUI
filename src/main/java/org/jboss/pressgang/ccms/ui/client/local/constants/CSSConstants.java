@@ -21,14 +21,6 @@ public interface CSSConstants {
          */
         String SERVER_TYPE_DEVELOPMENT = "ServerTypeDevelopment";
         /**
-         * Assigned to the panel that holds the shortcut panels.
-         */
-        String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
-        /**
-         * Assigned to the vertical panel holding the shortcut buttons on the left of the screen.
-         */
-        String SHORTCUT_PANEL = "ShortcutPanel";
-        /**
          * Assigned to the panel down the bottom of the screen that serves as the footer.
          */
         String FOOTER_PANEL = "FooterPanel";
@@ -48,6 +40,10 @@ public interface CSSConstants {
          * Assigned to the panel that holds the quick search controls.
          */
         String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
+        /**
+         * Assigned to the textbox that is used for the quick search query.
+         */
+        String QUICK_SEARCH_TEXT_BOX = "QuickSearchTextBox";
         /**
          * Assigned to the panel that holds the page title and quick search buttons
          */
@@ -87,6 +83,11 @@ public interface CSSConstants {
 
     interface BulkImageUploadDialog {
         String DESCRIPTION_FIELD = "BulkImageUploadDescriptionField";
+    }
+
+    interface BulkFileUploadDialog {
+        String DESCRIPTION_FIELD = "BulkFileUploadDescriptionField";
+        String FILE_PATH_FIELD = "BulkFileUploadFilePathField";
     }
 
     interface HelpDialog {
@@ -152,15 +153,15 @@ public interface CSSConstants {
         /**
          * The style name of the cell that holds the label next to the filter's details.
          */
-        String FILTER_VIEW_LABEL = "FilterViewLabel";
+        String FILTER_VIEW_LABEL_CELL = "FilterViewLabelCell";
         /**
          * The style name of the cell that holds the filter's details.
          */
-        String FILTER_VIEW_DETAIL = "FilterViewDetail";
+        String FILTER_VIEW_DETAIL_CELL = "FilterViewDetailCell";
         /**
          * The style name of the cell that holds the filter's description textarea.
          */
-        String FILTER_VIEW_DESCRIPTION_DETAIL = "FilterViewDescriptionDetail";
+        String FILTER_VIEW_DESCRIPTION_CELL = "FilterViewDescriptionCell";
     }
 
     interface PlainTextXMLDialog {
@@ -176,6 +177,14 @@ public interface CSSConstants {
          * Assigned to the panel that holds the filter options for images.
          */
         String FILTERED_OPTIONS_PANEL = "FilteredOptionsPanel";
+        /**
+         * Assigned to the table that holds the list of results.
+         */
+        String FILTERED_RESULTS_TABLE = "FilteredResultsTable";
+        /**
+         * Assigned to the selected row of the table that holds the list of results.
+         */
+        String FILTERED_RESULTS_TABLE_SELECTED_ROW = "FilteredResultsTableSelectedRow";
     }
 
     interface OrderedChildrenResultsView {
@@ -217,6 +226,10 @@ public interface CSSConstants {
         String STRING_CONSTANT_VIEW_ID_FIELD = "StringConstantViewIdField";
         String STRING_CONSTANT_VIEW_NAME_FIELD = "StringConstantViewNameField";
         String STRING_CONSTANT_VIEW_VALUE_FIELD = "StringConstantViewValueField";
+
+        String STRING_CONSTANT_VIEW_LABEL_CELL = "StringConstantViewLabelCell";
+        String STRING_CONSTANT_VIEW_DETAIL_CELL = "StringConstantViewDetailCell";
+        String STRING_CONSTANT_VIEW_DESCRIPTION_CELL = "StringConstantViewDescriptionCell";
     }
 
     /**
@@ -230,6 +243,10 @@ public interface CSSConstants {
         String PROPERTY_TAG_VIEW_DESCRIPTION_FIELD = "PropertyTagViewDescriptionField";
         String PROPERTY_TAG_VIEW_UNIQUE_FIELD = "PropertyTagViewUniqueField";
         String PROPERTY_TAG_VIEW_CANBENULL_FIELD = "PropertyTagViewCanBeNullField";
+
+        String PROPERTY_TAG_VIEW_LABEL_CELL = "PropertyTagViewLabelCell";
+        String PROPERTY_TAG_VIEW_DETAIL_CELL = "PropertyTagViewDetailCell";
+        String PROPERTY_TAG_VIEW_DESCRIPTION_CELL = "PropertyTagViewDescriptionCell";
     }
 
     /**
@@ -240,6 +257,10 @@ public interface CSSConstants {
         String PROPERTY_CATEGORY_VIEW_ID_FIELD = "PropertyCategoryViewIdField";
         String PROPERTY_CATEGORY_VIEW_NAME_FIELD = "PropertyCategoryViewNameField";
         String PROPERTY_CATEGORY_VIEW_DESCRIPTION_FIELD = "PropertyCategoryViewDescriptionField";
+
+        String PROPERTY_CATEGORY_VIEW_LABEL_CELL = "PropertyCategoryViewLabelCell";
+        String PROPERTY_CATEGORY_VIEW_DETAIL_CELL = "PropertyCategoryViewDetailCell";
+        String PROPERTY_CATEGORY_VIEW_DESCRIPTION_CELL = "PropertyCategoryViewDescriptionCell";
     }
 
     /**
@@ -250,6 +271,10 @@ public interface CSSConstants {
         String INTEGER_CONSTANT_VIEW_ID_FIELD = "IntegerConstantViewIdField";
         String INTEGER_CONSTANT_VIEW_NAME_FIELD = "IntegerConstantViewNameField";
         String INTEGER_CONSTANT_VIEW_VALUE_FIELD = "IntegerConstantViewValueField";
+
+        String INTEGER_CONSTANT_VIEW_LABEL_CELL = "IntegerConstantViewLabelCell";
+        String INTEGER_CONSTANT_VIEW_DETAIL_CELL = "IntegerConstantViewDetailCell";
+        String INTEGER_CONSTANT_VIEW_DESCRIPTION_CELL = "IntegerConstantViewDescriptionCell";
     }
 
     /**
@@ -259,6 +284,10 @@ public interface CSSConstants {
         String BLOB_CONSTANT_VIEW_PANEL = "BlobConstantViewPanel";
         String BLOB_CONSTANT_VIEW_ID_FIELD = "BlobConstantViewIdField";
         String BLOB_CONSTANT_VIEW_NAME_FIELD = "BlobConstantViewNameField";
+
+        String BLOB_CONSTANT_VIEW_LABEL_CELL = "BlobConstantViewLabelCell";
+        String BLOB_CONSTANT_VIEW_DETAIL_CELL = "BlobConstantViewDetailCell";
+        String BLOB_CONSTANT_VIEW_DESCRIPTION_CELL = "BlobConstantViewDescriptionCell";
     }
 
     /**
@@ -273,12 +302,9 @@ public interface CSSConstants {
         String TAG_VIEW_DESCRIPTION_LABEL = "TagViewDescriptionLabel";
         String TAG_VIEW_DESCRIPTION_TEXT = "TagViewDescriptionText";
 
-        String TAG_VIEW_ID_LABEL_CELL = "TagViewIDLabelCell";
-        String TAG_VIEW_ID_TEXT_CELL = "TagViewIDTextCell";
-        String TAG_VIEW_NAME_LABEL_CELL = "TagViewNameLabelCell";
-        String TAG_VIEW_NAME_TEXT_CELL = "TagViewNameTextCell";
-        String TAG_VIEW_DESCRIPTION_LABEL_CELL = "TagViewDescriptionLabelCell";
-        String TAG_VIEW_DESCRIPTION_TEXT_CELL = "TagViewDescriptionTextCell";
+        String TAG_VIEW_LABEL_CELL = "TagViewLabelCell";
+        String TAG_VIEW_DETAIL_CELL = "TagViewDetailCell";
+        String TAG_VIEW_DESCRIPTION_CELL = "TagViewDescriptionCell";
     }
 
     /**
@@ -293,12 +319,9 @@ public interface CSSConstants {
         String CATEGORY_VIEW_DESCRIPTION_LABEL = "CategoryViewDescriptionLabel";
         String CATEGORY_VIEW_DESCRIPTION_TEXT = "CategoryViewDescriptionText";
 
-        String CATEGORY_VIEW_ID_LABEL_CELL = "CategoryViewIDLabelCell";
-        String CATEGORY_VIEW_ID_TEXT_CELL = "CategoryViewIDTextCell";
-        String CATEGORY_VIEW_NAME_LABEL_CELL = "CategoryViewNameLabelCell";
-        String CATEGORY_VIEW_NAME_TEXT_CELL = "CategoryViewNameTextCell";
-        String CATEGORY_VIEW_DESCRIPTION_LABEL_CELL = "CategoryViewDescriptionLabelCell";
-        String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
+        String CATEGORY_VIEW_LABEL_CELL = "CategoryViewLabelCell";
+        String CATEGORY_VIEW_DETAIL_CELL = "CategoryViewDetailCell";
+        String CATEGORY_VIEW_DESCRIPTION_CELL = "CategoryViewDescriptionCell";
     }
 
     /**
@@ -313,14 +336,9 @@ public interface CSSConstants {
         String PROJECT_VIEW_DESCRIPTION_LABEL = "ProjectViewDescriptionLabel";
         String PROJECT_VIEW_DESCRIPTION_TEXT = "ProjectViewDescriptionText";
 
-        String PROJECT_VIEW_ID_LABEL_CELL = "ProjectViewIDLabelCell";
-        String PROJECT_VIEW_ID_TEXT_CELL = "ProjectViewIDTextCell";
-        String PROJECT_VIEW_NAME_LABEL_CELL = "ProjectViewNameLabelCell";
-        String PROJECT_VIEW_NAME_TEXT_CELL = "ProjectViewNameTextCell";
-        String PROJECT_VIEW_DESCRIPTION_LABEL_CELL = "ProjectViewDescriptionLabelCell";
-        String PROJECT_VIEW_DESCRIPTION_TEXT_CELL = "ProjectViewDescriptionTextCell";
-
-
+        String PROJECT_VIEW_LABEL_CELL = "ProjectViewLabelCell";
+        String PROJECT_VIEW_DETAIL_CELL = "ProjectViewDetailCell";
+        String PROJECT_VIEW_DESCRIPTION_CELL = "ProjectViewDescriptionCell";
     }
 
     interface TranslatedTopicView {
@@ -330,18 +348,33 @@ public interface CSSConstants {
 
     interface ContentSpecView {
         String CONTENT_SPEC_VIEW_PANEL = "ContentSpecViewPanel";
+        String CONTENT_SPEC_VIEW_ID_FIELD = "ContentSpecViewIDField";
+        String CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD = "ContentSpecViewRevisionNumberField";
+        String CONTENT_SPEC_VIEW_LOCALE_FIELD = "ContentSpecViewLocaleField";
+        /**
+         * Assigned to the field that holds the content spec's detail endpoint url
+         */
+        String CONTENT_SPEC_VIEW_DETAILS_ENDPOINT_FIELD = "ContentSpecViewDetailsEndpointField";
+        /**
+         * Assigned to the field that holds the content spec's Text endpoint url
+         */
+        String CONTENT_SPEC_VIEW_TEXT_ENDPOINT_FIELD = "ContentSpecViewTextEndpointField";
+        String CONTENT_SPEC_TEXT_VIEW_ACE_PANEL = "ContentSpecTextViewACEPanel";
+        String CONTENT_SPEC_TEXT_VIEW_TEXT_FIELD = "ContentSpecTextViewTextField";
 
+        String CONTENT_SPEC_VIEW_LABEL_CELL = "ContentSpecViewLabelCell";
+        String CONTENT_SPEC_VIEW_DETAIL_CELL = "ContentSpecViewDetailCell";
     }
 
     interface TopicRevisionView {
-        String TOPIC_REVISION_NUMBER_COULMN = "TopicRevisionNumberColumn";
-        String TOPIC_REVISION_DATE_COULMN = "TopicRevisionDateColumn";
-        String TOPIC_REVISION_MINOR_RELEASE_COULMN = "TopicRevisionMinorReleaseColumn";
-        String TOPIC_REVISION_MAJOR_RELEASE_COULMN = "TopicRevisionMajorReleaseColumn";
-        String TOPIC_REVISION_USER_COULMN = "TopicRevisionUserColumn";
-        String TOPIC_REVISION_MESSAGE_COULMN = "TopicRevisionMessageColumn";
-        String TOPIC_REVISION_VIEW_COULMN = "TopicRevisionViewColumn";
-        String TOPIC_REVISION_DIFF_COULMN = "TopicRevisionDiffColumn";
+        String TOPIC_REVISION_NUMBER_COLUMN = "TopicRevisionNumberColumn";
+        String TOPIC_REVISION_DATE_COLUMN = "TopicRevisionDateColumn";
+        String TOPIC_REVISION_MINOR_RELEASE_COLUMN = "TopicRevisionMinorReleaseColumn";
+        String TOPIC_REVISION_MAJOR_RELEASE_COLUMN = "TopicRevisionMajorReleaseColumn";
+        String TOPIC_REVISION_USER_COLUMN = "TopicRevisionUserColumn";
+        String TOPIC_REVISION_MESSAGE_COLUMN = "TopicRevisionMessageColumn";
+        String TOPIC_REVISION_VIEW_COLUMN = "TopicRevisionViewColumn";
+        String TOPIC_REVISION_DIFF_COLUMN = "TopicRevisionDiffColumn";
         String TOPIC_REVISION_DIFF_PANEL = "TopicRevisionDiffPanel";
         String TOPIC_REVISION_DIFF_BUTTON_PANEL = "TopicRevisionDiffButtonPanel";
         String TOPIC_REVISION_HTML_DIFF_FRAME = "TopicRevisionHTMLDiffFrame";
@@ -372,9 +405,9 @@ public interface CSSConstants {
         String TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD = "TopicViewWebDAVEndpointField";
         String TOPIC_VIEW_LOCALE_FIELD = "TopicViewLocaleField";
         String TOPIC_VIEW_DESCRIPTION_FIELD = "TopicViewDescriptionField";
-        String TOPIC_VIEW_LABEL = "TopicViewLabel";
-        String TOPIC_VIEW_DETAIL = "TopicViewDetail";
-        String TOPIC_VIEW_DESCRIPTION_DETAIL = "TopicViewDescriptionDetail";
+        String TOPIC_VIEW_LABEL_CELL = "TopicViewLabelCell";
+        String TOPIC_VIEW_DETAIL_CELL = "TopicViewDetailCell";
+        String TOPIC_VIEW_DESCRIPTION_CELL = "TopicViewDescriptionCell";
         String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
         String TOPIC_RENDERED_VIEW_IFRAME = "TopicRenderedViewIFrame";
         String TOPIC_RENDERED_VIEW_IFRAME_TABLE = "TopicRenderedViewIFrameTable";
@@ -536,13 +569,13 @@ public interface CSSConstants {
          */
         String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE = "ImageViewLanguageImageDisplayImage";
         /**
-         * Assigned to the cell that holds the language file name label cell.
+         * Assigned to the cells that hold the label for a set of properties
          */
-        String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL = "ImageViewLanguageImageFilenameLabelCell";
+        String IMAGE_VIEW_LABEL_CELL = "ImageViewLabelCell";
         /**
-         * Assigned to the cell that holds the language file name text cell.
+         * Assigned to the cells that holds the details for a set of properties.
          */
-        String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL = "ImageViewLanguageImageFilenameTextCell";
+        String IMAGE_VIEW_DETAIL_CELL = "ImageViewDetailCell";
         /**
          * Assigned to the cell that holds the language display label cell.
          */
@@ -551,14 +584,6 @@ public interface CSSConstants {
          * Assigned to the cell that holds the language display image cell.
          */
         String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL = "ImageViewLanguageImageDisplayImageCell";
-        /**
-         * Assigned to the cell that holds the language display label cell.
-         */
-        String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL = "ImageViewLanguageImageDimensionLabelCell";
-        /**
-         * Assigned to the cell that holds the language display image cell.
-         */
-        String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL = "ImageViewLanguageImageDimensionTextCell";
         /**
          * Assigned to the image description label.
          */
@@ -572,37 +597,13 @@ public interface CSSConstants {
          */
         String IMAGE_VIEW_TEMPLATE_TEXT = "ImageViewTemplateText";
         /**
-         * Assigned to the image id label cell.
-         */
-        String IMAGE_VIEW_ID_LABEL_CELL = "ImageViewIDLabelCell";
-        /**
-         * Assigned to the image id text cell.
-         */
-        String IMAGE_VIEW_ID_TEXT_CELL = "ImageViewIDTextCell";
-        /**
-         * Assigned to the image description label cell.
-         */
-        String IMAGE_VIEW_DESCRIPTION_LABEL_CELL = "ImageViewDescriptionLabelCell";
-        /**
          * Assigned to the image description text cell.
          */
-        String IMAGE_VIEW_DESCRIPTION_TEXT_CELL = "ImageViewDescriptionTextCell";
+        String IMAGE_VIEW_DESCRIPTION_CELL = "ImageViewDescriptionCell";
         /**
-         * Assigned to the cell that holds the image template label.
+         * Assigned to the cell that holds the image template text cells.
          */
-        String IMAGE_VIEW_TEMPLATE_LABEL_CELL = "ImageViewTemplateLabelCell";
-        /**
-         * Assigned to the cell that holds the image template text.
-         */
-        String IMAGE_VIEW_TEMPLATE_TEXT_CELL = "ImageViewTemplateTextCell";
-        /**
-         * Assigned to the image docbook file name label cell.
-         */
-        String IMAGE_VIEW_DOCBOOK_FILENAME_LABEL_CELL = "ImageViewDocbookFileNameLabelCell";
-        /**
-         * Assigned to the image docbook file name text cell.
-         */
-        String IMAGE_VIEW_DOCBOOK_FILENAME_TEXT_CELL = "ImageViewDocbookFileNameTextCell";
+        String IMAGE_VIEW_TEMPLATE_CELL = "ImageViewTemplateCell";
         /**
          * Assigned to the table that holds the image details.
          */
@@ -618,6 +619,92 @@ public interface CSSConstants {
     }
 
     /**
+     * Holds the styles that are applied to the files view.
+     */
+    interface FileView {
+        /**
+         * Assigned to the dock panel that hosts the file description and the tab view of specific language files.
+         */
+        String FILE_VIEW_PARENT_DOCK_PANEL = "FileViewParentDockPanel";
+        /**
+         * Assigned to the tab panel of specific language files.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_TAB_PANEL = "FileViewLanguageFileTabPanel";
+        /**
+         * Assigned to the tab that shows a specific language file.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_TAB = "FileViewLanguageFileTab";
+        /**
+         * Assigned to the cell that holds the file name label.
+         */
+        String FILE_VIEW_FILENAME_LABEL = "FileViewFilenameLabel";
+        /**
+         * Assigned to the cell that holds the file name text.
+         */
+        String FILE_VIEW_FILENAME_TEXT = "FileViewFilenameText";
+        /**
+         * Assigned to the cells that holds the labels.
+         */
+        String FILE_VIEW_LABEL_CELL = "FileViewLabelCell";
+        /**
+         * Assigned to the cells that holds the details.
+         */
+        String FILE_VIEW_DETAIL_CELL = "FileViewDetailCell";
+        /**
+         * Assigned to the cell that holds the file path label.
+         */
+        String FILE_VIEW_FILE_PATH_LABEL = "FileViewFilePathLabel";
+        /**
+         * Assigned to the cell that holds the file path text.
+         */
+        String FILE_VIEW_FILE_PATH_TEXT = "FileViewFilePathText";
+        /**
+         * Assigned to the cell that holds the full file path label.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_LABEL = "FileViewFullFilePathLabel";
+        /**
+         * Assigned to the cell that holds the full file path text.
+         */
+        String FILE_VIEW_FULL_FILE_PATH_TEXT = "FileViewFullFilePathText";
+        /**
+         * Assigned to the file description label.
+         */
+        String FILE_VIEW_DESCRIPTION_LABEL = "FileViewDescriptionLabel";
+        /**
+         * Assigned to the file description text.
+         */
+        String FILE_VIEW_DESCRIPTION_TEXT = "FileViewDescriptionText";
+        /**
+         * Assigned to the file description text cell.
+         */
+        String FILE_VIEW_DESCRIPTION_CELL = "FileViewDescriptionCell";
+        /**
+         * Assigned to the table that holds the file details.
+         */
+        String FILE_VIEW_DETAILS_TABLE = "FileViewDetailsTable";
+        /**
+         * Assigned to the cell that holds the file upload label.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_UPLOAD_LABEL_CELL = "FileViewLanguageFileUploadLabelCell";
+        /**
+         * Assigned to the cell that holds the file upload buttons.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_UPLOAD_BUTTONS_CELL = "FileViewLanguageFileUploadButtonsCell";
+        /**
+         * Assigned to the file explode archive label.
+         */
+        String FILE_VIEW_EXPLODE_ARCHIVE_LABEL = "FileViewExplodeArchiveLabel";
+        /**
+         * Assigned to the cell that holds the language file file name label.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_FILENAME_LABEL = "FileViewLanguageFileFilenameLabel";
+        /**
+         * Assigned to the cell that holds the language file file name text.
+         */
+        String FILE_VIEW_LANGUAGE_FILE_FILENAME_TEXT = "FileViewLanguageFileFilenameText";
+    }
+
+    /**
      * Holds the styles that are applied to UI elements used throughout the app.
      */
     interface Common {
@@ -630,6 +717,10 @@ public interface CSSConstants {
          * Assigned to image buttons.
          */
         String TEXT_BUTTON = "TextButton";
+        /**
+         * Assigned to left.
+         */
+        String LEFT_TAB_LABEL = "LeftTabLabel";
         /**
          * Assigned to image buttons that are top tabs
          */
@@ -668,4 +759,26 @@ public interface CSSConstants {
         String CUSTOM_BUTTON_DOWN = "CustomButtonDown";
     }
 
+    public interface Shortcut {
+        /**
+         * Assigned to the panel that holds the shortcut panels.
+         */
+        String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
+        /**
+         * Assigned to the vertical panel holding the shortcut buttons on the left of the screen.
+         */
+        String SHORTCUT_PANEL = "ShortcutPanel";
+        /**
+         * Assigned to shortcut menus that can be collapsed.
+         */
+        String SHORTCUT_COLLAPSE_MENU = "ShortcutCollapseMenu";
+        /**
+         * Assigned to the shortcut menus header, for collapsible menus.
+         */
+        String SHORTCUT_COLLAPSE_MENU_HEADER = "ShortcutCollapseMenuHeader";
+        /**
+         * Assigned to the shortcut menus content, for collapsible menus.
+         */
+        String SHORTCUT_COLLAPSE_MENU_CONTENT = "ShortcutCollapseMenuContent";
+    }
 }

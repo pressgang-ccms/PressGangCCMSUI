@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
@@ -19,16 +26,9 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
 @Dependent
-public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTPropertyTagCollectionItemV1>
-        implements BaseTemplatePresenterInterface {
+public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTPropertyTagCollectionItemV1> implements
+        BaseTemplatePresenterInterface {
 
     /**
      * History token.
@@ -75,8 +75,10 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
      */
     @Override
     @NotNull
-    protected EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
+    protected EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generateListProvider(@NotNull final String queryString,
+            @NotNull final BaseTemplateViewInterface waitDisplay) {
+        @NotNull final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new
+                EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> list) {
 
@@ -108,16 +110,20 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROP_TAG_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROP_TAG_IDS_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getIdFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROP_TAG_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROP_TAG_NAME_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getNameFilter().getText()));
         }
         if (!display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROP_TAG_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROP_TAG_DESCRIPTION_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getDescriptionFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON +
+                retValue.toString();
     }
 
     @Override

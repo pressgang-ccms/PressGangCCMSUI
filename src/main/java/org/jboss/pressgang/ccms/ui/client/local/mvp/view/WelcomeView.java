@@ -23,6 +23,12 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
     }
 
     @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getHomeButton().setDown(true);
+    }
+
+    @Override
     public void displayTopicRendered(@NotNull final Integer topicXMLHoldID) {
         content.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
     }

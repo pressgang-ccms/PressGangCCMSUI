@@ -101,6 +101,11 @@ div[class^='badword'] {
     height: 5em;
 }
 
+.BulkFileUploadDescriptionField {
+    width: 320px;
+    height: 5em;
+}
+
 /*
     The div referenced here is created by a scroll panel. We need to set it's height so
     the action buttons don't decrease in side when the horizontal scroll bar is present.
@@ -268,14 +273,6 @@ html {
     position: relative;
 }
 
-.ShortcutPanelParent {
-    margin-right: 8px;
-}
-
-.ShortcutPanel td {
-    padding: 1px;
-}
-
 .gwt-ToggleButton-down {
     background-color: #005492 !important;
 }
@@ -353,6 +350,10 @@ html {
     width: 100%;
     padding-right: 8px;
     font-size: medium;
+}
+
+.QuickSearchTextBox {
+    margin-right: 10px;
 }
 
 .ProjectsLayout, .CategoriesLayout {
@@ -450,10 +451,6 @@ html {
     height: 100%;
 }
 
-.TopicViewDescriptionDetail, .FilterViewDescriptionDetail {
-    height: 100%;
-}
-
 .EntityViewLayoutPanel {
     margin-left: 8px;
 }
@@ -483,13 +480,27 @@ html {
     width: 100%;
 }
 
-.TopicViewDetail, .FilterViewDetail {
+.TopicViewDetailCell, .FilterViewDetailCell, .ContentSpecViewDetailCell, .BlobConstantViewDetailCell, .StringConstantViewDetailCell,
+.IntegerConstantViewDetailCell, .TagViewDetailCell, .CategoryViewDetailCell, .ProjectViewDetailCell, .PropertyTagViewDetailCell,
+.PropertyCategoryViewDetailCell, .FileViewDetailCell, .ImageViewDetailCell {
     width: 100%;
+    padding: 4px;
 }
 
-.TopicViewLabel, .FilterViewLabel {
+.TopicViewLabelCell, .FilterViewLabelCell, .ContentSpecViewLabelCell, .BlobConstantViewLabelCell, .StringConstantViewLabelCell,
+.IntegerConstantViewLabelCell, .TagViewLabelCell, .CategoryViewLabelCell, .ProjectViewLabelCell, .PropertyTagViewLabelCell,
+.PropertyCategoryViewLabelCell, .FileViewLabelCell, .ImageViewLabelCell {
     white-space: nowrap;
+    padding: 4px 0px;
     vertical-align: top;
+}
+
+.TopicViewDescriptionCell, .FilterViewDescriptionCell, .ContentSpecViewDescriptionCell, .BlobConstantViewDescriptionCell,
+.StringConstantViewDescriptionCell, .IntegerConstantViewDescriptionCell, .TagViewDescriptionCell, .CategoryViewDescriptionCell,
+.ProjectViewDescriptionCell, .PropertyTagViewDescriptionCell, .PropertyCategoryViewDescriptionCell, .FileViewDescriptionCell,
+.ImageViewDescriptionCell {
+    height: 100%;
+    padding: 4px;
 }
 
 .TopicXMLViewPanel {
@@ -497,12 +508,12 @@ html {
     height: 100%;
 }
 
-.TopicXMLViewACEPanel {
+.TopicXMLViewACEPanel, .ContentSpecTextViewACEPanel {
     width: 100%;
     height: 100%;
 }
 
-.TopicXMLViewXMLField {
+.TopicXMLViewXMLField, .ContentSpecTextViewTextField {
     height: 100%;
 }
 
@@ -527,7 +538,6 @@ html {
 
 .TopicSearchResultsAndViewParentPanel {
     /*border: 3px solid #e7e7e7;*/
-
 }
 
 .ThirdLevelLayoutPanel {
@@ -649,18 +659,10 @@ html {
     overflow: auto !important;
 }
 
-.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText {
+.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText, .FileViewDescriptionText {
     width: 100%;
     height: 5em;
     box-sizing: border-box;
-}
-
-.ImageViewDescriptionTextCell {
-    width: 100%;
-}
-
-.ImageViewDescriptionLabelCell {
-    white-space: nowrap;
 }
 
 .ImageViewLanguageImageFilenameText {
@@ -702,4 +704,141 @@ html {
     padding: 0px;
     text-align: center;
 
+}
+
+.FileViewLanguageFileUploadButtonsCell {
+    height: 3em;
+}
+
+.FileViewFilenameLabel .FileViewLanguageFileFilenameLabel {
+    white-space: nowrap;
+}
+
+.FileViewParentDockPanel {
+    height: 100%;
+    width: 100%;
+}
+
+.FileViewParentDockPanel>tbody>tr:nth-child(2)>td {
+    height: 100%;
+}
+
+.FileViewLanguageFileTabPanel {
+    height: 100%;
+    width: 100%;
+}
+
+.FileViewLanguageFileTab {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+}
+
+.FileViewLanguageFileTab td {
+    vertical-align: top;
+}
+
+.FileViewLanguageFileTabPanel>div:nth-child(3)>div>div {
+    overflow: auto !important;
+}
+
+.FileViewFilenameText, .FileViewFilePathText, .FileViewLanguageFileFilenameText {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.FilteredResultsPanel {
+    width: 100%;
+}
+
+.FilteredResultsTable {
+    width: 100%;
+}
+
+.TagViewNameText, .CategoryViewNameText, .ProjectViewNameText, .PropertyTagViewNameField, .PropertyCategoryViewNameField {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.PropertyTagViewRegexField {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ContentSpecViewDetailsEndpointField, .ContentSpecViewTextEndpointField {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+tr.FilteredResultsTableSelectedRow {
+    background-color: #0072C6;
+    color: white;
+}
+
+tr[class*='FilteredResultsTableSelectedRow']>td {
+    border-color: #0072C6;
+}
+
+textarea {
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-top: 1px solid #999;
+}
+
+input[type="text"] {
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-top: 1px solid #999;
+    /* Set the font size to small as firefox doesn't appear to inherit font-size for text boxes */
+    font-size: small;
+}
+
+/* Used to make readonly fields look less editable in Firefox */
+textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] {
+    cursor: default;
+}
+
+.ShortcutPanelParent {
+    margin-right: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.ShortcutPanel>tbody>tr>td {
+    padding: 2px 1px;
+}
+
+.ShortcutPanel {
+    width: 100%;
+}
+
+.ShortcutCollapseMenuContent {
+    border-collapse: collapse;
+    margin-top: 2px;
+}
+
+.ShortcutCollapseMenuContent td {
+    padding: 2px 0px;
+}
+
+.ShortcutCollapseMenuHeader {
+    background-color: #00C618;
+    border-color: #009200;
+    border: 1px solid #005492;
+    padding: 3px 3px 3px 2px;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+
+.ShortcutCollapseMenuHeader img {
+    vertical-align: middle;
+}
+
+.ShortcutCollapseMenu {
+    width: 100%;
+}
+
+.gwt-DisclosurePanel a {
+    text-decoration: none;
 }

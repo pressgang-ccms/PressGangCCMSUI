@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -22,8 +23,6 @@ import org.vectomatic.file.FileUploadExt;
  * @author Matthew Casperson
  */
 public final class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
-    private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
-
     /**
      * Keep a reference to the object this editor gets its values from.
      */
@@ -41,8 +40,8 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
      */
     private final int parentIndex;
 
-    private final TextBox filename = new TextBox();
-    private final TextBox dimensions = new TextBox();
+    private final Label filename = new Label();
+    private final Label dimensions = new Label();
     private final Image imageDataBase64 = new Image();
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
@@ -54,7 +53,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
     @NotNull
     @Ignore
-    public TextBox getFilename() {
+    public Label getFilename() {
         return filename;
     }
 
@@ -78,9 +77,6 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
     public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
-
-        this.filename.setReadOnly(true);
-        this.dimensions.setReadOnly(true);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
@@ -115,12 +111,12 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
 
         ++row;
-        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
-        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
 
         ++row;
-        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL);
-        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL);
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
 
         ++row;
         this.getCellFormatter().addStyleName(row, 0, CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
@@ -152,16 +148,16 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
         if (value.getItem().getImageDataBase64() != null) {
             @NotNull final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
-            this.imageDataBase64.addLoadHandler(new LoadHandler() {
+            imageDataBase64.addLoadHandler(new LoadHandler() {
 
                 @Override
                 public void onLoad(final LoadEvent event) {
-                    RESTLanguageImageV1Editor.this.dimensions.setText(RESTLanguageImageV1Editor.this.imageDataBase64.getWidth()
-                            + "x" + RESTLanguageImageV1Editor.this.imageDataBase64.getHeight());
+                    dimensions.setText(imageDataBase64.getWidth() + "x" + imageDataBase64.getHeight());
                 }
             });
-            this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
 
+            final String mimeType = ComponentLanguageImageV1.getMimeType(value.getItem());
+            imageDataBase64.setUrl("data:" + mimeType + ";base64," + base64);
         }
 
         if (value.getItem().getLocale() != null) {

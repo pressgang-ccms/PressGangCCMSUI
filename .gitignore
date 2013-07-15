@@ -1,2 +1,5 @@
 .errai/
 target/
+.idea/
+*.iml
+*.*~

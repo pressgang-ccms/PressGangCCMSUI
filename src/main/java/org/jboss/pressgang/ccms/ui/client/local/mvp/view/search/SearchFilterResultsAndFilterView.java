@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -21,7 +21,7 @@ public class SearchFilterResultsAndFilterView extends BaseSearchAndEditView<
         RESTFilterV1,
         RESTFilterCollectionV1,
         RESTFilterCollectionItemV1>
-        implements SearchFilterResultsAndFilterPresenter.Display {
+        implements BaseSearchFilterResultsAndFilterPresenter.Display {
 
     private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
     private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());

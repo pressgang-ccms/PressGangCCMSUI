@@ -26,12 +26,18 @@ public class IntegerConstantFilteredResultsAndDetailsView extends
 
 
     public IntegerConstantFilteredResultsAndDetailsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.IntegerConstants());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().getAdvancedSubMenu().setOpen(true);
+    }
 
     private void populateTopActionBar() {
         this.addActionButton(this.getSave());

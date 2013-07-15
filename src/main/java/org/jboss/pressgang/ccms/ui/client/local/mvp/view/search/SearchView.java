@@ -3,7 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProject
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jetbrains.annotations.NotNull;
 
-public class SearchView extends BaseTemplateView implements SearchPresenter.Display {
+public class SearchView extends BaseTemplateView implements SearchTagPresenter.Display {
     /**
      * The GWT Editor Driver
      */

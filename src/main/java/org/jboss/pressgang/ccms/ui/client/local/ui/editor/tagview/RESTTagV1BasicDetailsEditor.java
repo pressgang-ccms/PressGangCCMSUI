@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 
 public final class RESTTagV1BasicDetailsEditor extends FlexTable implements Editor<RESTTagV1> {
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();
 
@@ -17,7 +17,7 @@ public final class RESTTagV1BasicDetailsEditor extends FlexTable implements Edit
     private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.TagDescription());
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -32,7 +32,6 @@ public final class RESTTagV1BasicDetailsEditor extends FlexTable implements Edit
     }
 
     public RESTTagV1BasicDetailsEditor(final boolean readOnly) {
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 
@@ -52,11 +51,11 @@ public final class RESTTagV1BasicDetailsEditor extends FlexTable implements Edit
         descriptionLabel.addStyleName(CSSConstants.TagView.TAG_VIEW_DESCRIPTION_LABEL);
         description.addStyleName(CSSConstants.TagView.TAG_VIEW_DESCRIPTION_TEXT);
 
-        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TagView.TAG_VIEW_ID_LABEL_CELL);
-        this.getCellFormatter().addStyleName(0, 1, CSSConstants.TagView.TAG_VIEW_ID_TEXT_CELL);
-        this.getCellFormatter().addStyleName(1, 0, CSSConstants.TagView.TAG_VIEW_NAME_LABEL_CELL);
-        this.getCellFormatter().addStyleName(1, 1, CSSConstants.TagView.TAG_VIEW_NAME_TEXT_CELL);
-        this.getCellFormatter().addStyleName(2, 0, CSSConstants.TagView.TAG_VIEW_DESCRIPTION_LABEL_CELL);
-        this.getCellFormatter().addStyleName(2, 1, CSSConstants.TagView.TAG_VIEW_DESCRIPTION_TEXT_CELL);
+        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TagView.TAG_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(0, 1, CSSConstants.TagView.TAG_VIEW_DETAIL_CELL);
+        this.getCellFormatter().addStyleName(1, 0, CSSConstants.TagView.TAG_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(1, 1, CSSConstants.TagView.TAG_VIEW_DETAIL_CELL);
+        this.getCellFormatter().addStyleName(2, 0, CSSConstants.TagView.TAG_VIEW_LABEL_CELL);
+        this.getCellFormatter().addStyleName(2, 1, CSSConstants.TagView.TAG_VIEW_DESCRIPTION_CELL);
     }
 }

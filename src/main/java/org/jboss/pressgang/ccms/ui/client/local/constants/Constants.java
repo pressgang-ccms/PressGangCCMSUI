@@ -59,6 +59,11 @@ public final class Constants {
     public static final String XML_MIME_TYPE = "application/xml";
 
     /**
+     * Plain Text Mime type
+     */
+    public static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
+
+    /**
      * The maximum length of the title before it is truncated
      */
     public static final int MAX_PAGE_TITLE_LENGTH = 70;

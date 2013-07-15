@@ -20,12 +20,12 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
      */
     private static final int COLS = 2;
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -53,7 +53,6 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
         name.addStyleName(CSSConstants.PropertyCategoryView.PROPERTY_CATEGORY_VIEW_NAME_FIELD);
         description.addStyleName(CSSConstants.PropertyCategoryView.PROPERTY_CATEGORY_VIEW_DESCRIPTION_FIELD);
 
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 
@@ -70,13 +69,13 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
         this.setWidget(2, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.PropertyCategoryView.PROPERTY_CATEGORY_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.PropertyCategoryView.PROPERTY_CATEGORY_VIEW_DETAIL_CELL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.PropertyCategoryView.PROPERTY_CATEGORY_VIEW_DESCRIPTION_CELL);
     }
 
 }

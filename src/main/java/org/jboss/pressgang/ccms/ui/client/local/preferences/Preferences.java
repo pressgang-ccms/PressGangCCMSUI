@@ -109,7 +109,13 @@ final public class Preferences {
      * The setting that saves the width of the split screen on the string constants list screen
      */
     public static final String STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH = "StringConstantsViewMainSplitWidth";
+    /**
+     * The setting that saves the width of the split screen on the category search screen
+     */
+    public static final String FILE_VIEW_MAIN_SPLIT_WIDTH = "FileViewMainSplitWidth";
 
+    public static final String SHORTCUT_SEARCH_MENU_OPEN = "ShortcutSearchMenuOpen";
+    public static final String SHORTCUT_ENTITIES_MENU_OPEN = "ShortcutEntitiesMenuOpen";
 
     /**
      * A singelton instance of this class.
@@ -128,6 +134,24 @@ final public class Preferences {
     public void saveSetting(final String key, final String data) {
         if (storage != null) {
             storage.setItem(key, data);
+        }
+    }
+
+    public void saveSetting(final String key, final Boolean data) {
+        if (storage != null && data != null) {
+            storage.setItem(key, data.toString());
+        }
+    }
+
+    public void saveSetting(final String key, final Integer data) {
+        if (storage != null && data != null) {
+            storage.setItem(key, data.toString());
+        }
+    }
+
+    public void deleteSetting(final String key) {
+        if (storage != null) {
+            storage.removeItem(key);
         }
     }
 
@@ -169,6 +193,17 @@ final public class Preferences {
 
         } catch (@NotNull final Exception ex) {
 
+        }
+
+        return defaultValue;
+    }
+
+    public Boolean getBoolean(final String key, final Boolean defaultValue) {
+        if (storage != null) {
+            final String data = storage.getItem(key);
+            if (data != null) {
+                return Boolean.parseBoolean(data);
+            }
         }
 
         return defaultValue;

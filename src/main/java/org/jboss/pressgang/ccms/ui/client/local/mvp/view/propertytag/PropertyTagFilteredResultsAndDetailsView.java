@@ -49,8 +49,15 @@ public class PropertyTagFilteredResultsAndDetailsView extends
     public PropertyTagFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedProperties());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
+    }
+
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getAdvancedSubMenu().getPropertyTagsButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

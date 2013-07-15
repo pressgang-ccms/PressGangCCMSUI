@@ -75,19 +75,19 @@ public interface PressGangCCMSUI extends Constants {
     String CommonDescription();
 
     @NotNull
-    String ImageUplodedSuccessfully();
+    String ImageUploadedSuccessfully();
 
     @NotNull
-    String ImagesUplodedSuccessfully();
+    String ImagesUploadedSuccessfully();
 
     @NotNull
-    String ImagesNotUplodedSuccessfully();
+    String ImagesNotUploadedSuccessfully();
 
     @NotNull
-    String TopicsUplodedSuccessfully();
+    String TopicsUploadedSuccessfully();
 
     @NotNull
-    String TopicsNotUplodedSuccessfully();
+    String TopicsNotUploadedSuccessfully();
 
     @NotNull
     String OverwriteFilenameErrorMessage();
@@ -147,10 +147,13 @@ public interface PressGangCCMSUI extends Constants {
     String SearchContentSpecs();
 
     @NotNull
-    String DownloadZip();
+    String DownloadTopicZip();
 
     @NotNull
-    String DownloadCSV();
+    String DownloadContentSpecZip();
+
+    @NotNull
+    String DownloadTopicCSV();
 
     @NotNull
     String ApplyBulkTags();
@@ -384,6 +387,9 @@ public interface PressGangCCMSUI extends Constants {
     String Save();
 
     @NotNull
+    String PermissiveSave();
+
+    @NotNull
     String ImageDescription();
 
     @NotNull
@@ -466,6 +472,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String BulkImageUpload();
+
+    @NotNull
+    String BulkFileUpload();
 
     @NotNull
     String DocbookImageTemplate();
@@ -925,4 +934,79 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ContentSpecTags();
+
+    @NotNull
+    String ContentSpecsEditedInLastXDays();
+
+    @NotNull
+    String ContentSpecsNotEditedInLastXDays();
+
+    @NotNull
+    String ContentSpecEditedAfter();
+
+    @NotNull
+    String ContentSpecEditedBefore();
+
+    @NotNull
+    String ContentSpecIds();
+
+    @NotNull
+    String ContentSpecProduct();
+
+    @NotNull
+    String ContentSpecVersion();
+
+    @NotNull
+    String FileID();
+
+    @NotNull
+    String FileDescription();
+
+    @NotNull
+    String FileName();
+
+    @NotNull
+    String FileOriginalFilename();
+
+    @NotNull
+    String FilePath();
+
+    @NotNull
+    String FullFilePath();
+
+    @NotNull
+    String FilePlaceholder();
+
+    @NotNull
+    String ExplodeFileArchive();
+
+    @NotNull
+    String FileUploadedSuccessfully();
+
+    @NotNull
+    String FilesUploadedSuccessfully();
+
+    @NotNull
+    String FilesNotUploadedSuccessfully();
+
+    @NotNull
+    String FileUploadFailure();
+
+    @NotNull
+    String Files();
+
+    @NotNull
+    String CreateFile();
+
+    @NotNull
+    String DownloadFile();
+
+    @NotNull
+    String UnsavedImageUploadPrompt();
+
+    @NotNull
+    String UnsavedFileUploadPrompt();
+
+    @NotNull
+    String Entities();
 }

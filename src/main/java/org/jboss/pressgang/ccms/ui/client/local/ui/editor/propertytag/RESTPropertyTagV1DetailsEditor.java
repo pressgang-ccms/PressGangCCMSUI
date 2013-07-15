@@ -20,7 +20,7 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
      */
     private static final int COLS = 2;
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();
     private final TextBox regex = new TextBox();
@@ -28,7 +28,7 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
     private final CheckBox canBeNull = new CheckBox();
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -73,7 +73,6 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
         unique.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_UNIQUE_FIELD);
         canBeNull.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_CANBENULL_FIELD);
 
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
         regex.setReadOnly(readOnly);
@@ -105,13 +104,13 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
         this.setWidget(5, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_DETAIL_CELL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_DESCRIPTION_CELL);
     }
 
 }

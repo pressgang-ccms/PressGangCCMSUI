@@ -1,5 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
@@ -17,15 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter used to display the list of integer constants.
@@ -70,12 +70,15 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
 
     @NotNull
     @Override
-    protected EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1>() {
+    protected EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> generateListProvider(@NotNull final String queryString,
+            @NotNull final BaseTemplateViewInterface waitDisplay) {
+        @NotNull final EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> provider = new
+                EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTBlobConstantCollectionItemV1> list) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
+                    LOGGER.log(Level.INFO,
+                            "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
                     getProviderData().setStartRow(list.getVisibleRange().getStart());
                     final int length = list.getVisibleRange().getLength();
@@ -85,16 +88,21 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                         @Override
                         public void success(@NotNull final RESTBlobConstantCollectionV1 retValue) {
                             try {
-                                LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged() BaseRestCallback.onSuccess()");
+                                LOGGER.log(Level.INFO,
+                                        "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider" +
+                                                ".onRangeChanged() BaseRestCallback.onSuccess()");
                                 checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                                 checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                                 getProviderData().setItems(retValue.getItems());
                                 getProviderData().setSize(retValue.getSize());
                                 relinkSelectedItem();
-                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                        getProviderData().getStartRow());
                             } finally {
-                                LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged() BaseRestCallback.onSuccess()");
+                                LOGGER.log(Level.INFO,
+                                        "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider" +
+                                                ".onRangeChanged() BaseRestCallback.onSuccess()");
                             }
                         }
                     };
@@ -102,7 +110,8 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                     failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getBlobConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
 
                 } finally {
-                    LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
+                    LOGGER.log(Level.INFO,
+                            "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
                 }
             }
         };
@@ -114,16 +123,20 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_IDS_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getIdFilter().getText()));
         }
         if (!display.getValueFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_VALUE_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getValueFilter().getText()) : display.getValueFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_VALUE_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getValueFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_NAME_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(display.getNameFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON +
+                retValue.toString();
     }
 
     @Override

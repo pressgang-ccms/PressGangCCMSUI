@@ -119,22 +119,10 @@ public interface BaseTemplateViewInterface {
     String getApplicationName();
 
     /**
-     * @return The panel that holds the advanced links
-     */
-    @NotNull
-    FlexTable getAdvancedShortcutPanel();
-
-    /**
-     * @return The panel that holds the standard links
-     */
-    @NotNull
-    FlexTable getShortcutPanel();
-
-    /**
      * @return The panel that holds the standard and advanced shortcut panels
      */
     @NotNull
-    SimplePanel getShortCutPanelParent();
+    ShortcutView getShortcuts();
 
     /**
      * @return The panel that holds the top action buttons
@@ -149,135 +137,11 @@ public interface BaseTemplateViewInterface {
     SimplePanel getTopActionGrandParentPanel();
 
     /**
-     * @return The button that opens the home view
-     */
-    @NotNull
-    PushButton getHome();
-
-    /**
-     * @return The button that opens the docbuilder view
-     */
-    @NotNull
-    PushButton getDocBuilder();
-
-    /**
-     * @return The button that opens the bugzilla window
-     */
-    @NotNull
-    PushButton getBug();
-
-    /**
-     * @return The button that switches to the topic search view
-     */
-    @NotNull
-    PushButton getSearch();
-
-    /**
-     * @return The button that switches to the topic create view
-     */
-    @NotNull
-    PushButton getCreateTopic();
-
-    /**
-     * @return The button that switches to the images view
-     */
-    @NotNull
-    PushButton getImages();
-
-    /**
-     * @return The button that opens the advanced menu
-     */
-    @NotNull
-    PushButton getAdvanced();
-
-    /**
-     * @return The button that opens the property tag categories view
-     */
-    @NotNull
-    PushButton getPropertyTagCategories();
-
-    /**
-     * @return The button that opens the property tags view
-     */
-    @NotNull
-    PushButton getPropertyTags();
-
-    /**
-     * @return The button that opens the integer constants view
-     */
-    @NotNull
-    PushButton getIntegerConstants();
-
-    /**
-     * @return The button that opens the blob constants view
-     */
-    @NotNull
-    PushButton getBlobConstants();
-
-    /**
-     * @return The button that opens the bulk tagging view
-     */
-    @NotNull
-    PushButton getBulkTagging();
-
-    /**
-     * @return The button that opens the string constants view
-     */
-    @NotNull
-    PushButton getStringConstants();
-
-    /**
-     * @return The button that opens the projects view
-     */
-    @NotNull
-    PushButton getProjects();
-
-    /**
-     * @return The button that opens the categories view
-     */
-    @NotNull
-    PushButton getCategories();
-
-    /**
-     * @return The button that opens the tags view
-     */
-    @NotNull
-    PushButton getTags();
-
-    /**
-     * @return The button that opens the external reports view
-     */
-    @NotNull
-    PushButton getReports();
-
-    /**
-     * @return The button that opens the translated topics search results view
-     */
-    @NotNull
-    PushButton getSearchTranslations();
-
-    /**
-     * @return The button that launches the monitoring page
-     */
-    PushButton getMonitoring();
-
-    /**
      * @return The link that opens the help page
      */
     @NotNull
     Anchor getHelp();
 
-    /**
-     * @return The button that closes the advanced menu
-     */
-    @NotNull
-    PushButton getAdvancedOpen();
-
-    /**
-     * @return The button that closes the advanced menu
-     */
-    @NotNull
-    PushButton getClose();
     /**
      * @return The list of available servers.
      */

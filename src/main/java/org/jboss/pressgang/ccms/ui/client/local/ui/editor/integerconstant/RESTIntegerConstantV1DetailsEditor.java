@@ -4,6 +4,7 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -17,12 +18,12 @@ public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Ed
     private static final int ROWS = 3;
     private static final int COLS = 2;
 
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final TextBox name = new TextBox();
     private final SimpleIntegerBox value = new SimpleIntegerBox();
 
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -44,7 +45,6 @@ public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Ed
         name.addStyleName(CSSConstants.IntegerConstantView.INTEGER_CONSTANT_VIEW_NAME_FIELD);
         value.addStyleName(CSSConstants.IntegerConstantView.INTEGER_CONSTANT_VIEW_VALUE_FIELD);
 
-        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         value.setReadOnly(readOnly);
 
@@ -61,11 +61,11 @@ public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Ed
         this.setWidget(2, 1, value);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.IntegerConstantView.INTEGER_CONSTANT_VIEW_LABEL_CELL);
         }
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.IntegerConstantView.INTEGER_CONSTANT_VIEW_DETAIL_CELL);
         }
     }
 

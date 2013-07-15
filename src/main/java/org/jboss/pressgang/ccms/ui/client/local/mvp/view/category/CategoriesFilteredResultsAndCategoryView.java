@@ -49,10 +49,16 @@ public class CategoriesFilteredResultsAndCategoryView extends
     public CategoriesFilteredResultsAndCategoryView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getEntitiesSubMenu().getCategoriesButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().getEntitiesSubMenu().setOpen(true);
+    }
 
     private void populateTopActionBar() {
         this.addActionButton(this.getDetails());

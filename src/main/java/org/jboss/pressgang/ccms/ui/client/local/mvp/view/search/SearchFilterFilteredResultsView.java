@@ -2,7 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ import javax.enterprise.context.Dependent;
  */
 @Dependent
 public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RESTFilterCollectionItemV1>
-        implements SearchFilterFilteredResultsPresenter.Display {
+        implements BaseSearchFilterFilteredResultsPresenter.Display {
 
     @NotNull
     private final TextColumn<RESTFilterCollectionItemV1> idColumn = new TextColumn<RESTFilterCollectionItemV1>() {

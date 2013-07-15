@@ -1,7 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -100,15 +115,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The panel that holds the vertical shortcut buttons on the left hand side of the screen.
      */
-    private final SimplePanel shortCutPanelParent = new SimplePanel();
-    /**
-     * The panel that holds the shortcut buttons that are visible by default.
-     */
-    private final FlexTable shortcutPanel = new FlexTable();
-    /**
-     * The panel that holds the shortcut buttons visible when the advanced submenu is open.
-     */
-    private final FlexTable advancedShortcutPanel = new FlexTable();
+    private final ShortcutView shortcuts = new ShortcutView();
     /**
      * This is where the page specific content is held.
      */
@@ -153,28 +160,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
-    private final PushButton home;
-    private final PushButton docbuilder;
-    private final PushButton createTopic;
-    private final PushButton search;
-    private final PushButton searchTranslations;
-    private final PushButton images;
-    private final PushButton tags;
-    private final PushButton categories;
-    private final PushButton projects;
-    private final PushButton bulkTagging;
-    private final PushButton stringConstants;
-    private final PushButton blobConstants;
-    private final PushButton integerConstants;
-    private final PushButton propertyTags;
-    private final PushButton propertyTagCategories;
-    private final PushButton monitoring;
-    private final PushButton bug;
-    private final PushButton reports;
-    private final PushButton advanced;
-    private final PushButton advancedOpen;
-    private final PushButton close;
-    private final ListBox servers = new ListBox();
     /**
      * The text box where a quick search is entered.
      */
@@ -194,12 +179,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     public HorizontalPanel getHiddenAttachmentArea() {
         return hiddenAttachmentArea;
     }
-
-    @Override
-    public PushButton getMonitoring() {
-        return monitoring;
-    }
-
 
     @NotNull
     public ListBox getServers() {
@@ -302,18 +281,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public PushButton getHome() {
-        return home;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getDocBuilder() {
-        return docbuilder;
-    }
-
-    @NotNull
-    @Override
     public Anchor getHelp() {
         return help;
     }
@@ -336,12 +303,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return quickSearchQuery;
     }
 
-    @NotNull
-    @Override
-    public PushButton getCreateTopic() {
-        return createTopic;
-    }
-
     /**
      * @return true when the view is visible, false otherwise
      */
@@ -361,92 +322,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public PushButton getClose() {
-        return close;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getAdvancedOpen() {
-        return advancedOpen;
-    }
-
-    @NotNull
-    @Override
-    public SimplePanel getShortCutPanelParent() {
-        return shortCutPanelParent;
-    }
-
-    @NotNull
-    @Override
-    public FlexTable getAdvancedShortcutPanel() {
-        return advancedShortcutPanel;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getAdvanced() {
-        return advanced;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getPropertyTagCategories() {
-        return propertyTagCategories;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getPropertyTags() {
-        return propertyTags;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getIntegerConstants() {
-        return integerConstants;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getBlobConstants() {
-        return blobConstants;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getBulkTagging() {
-        return bulkTagging;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getStringConstants() {
-        return stringConstants;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getProjects() {
-        return projects;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getCategories() {
-        return categories;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getTags() {
-        return tags;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getImages() {
-        return images;
+    public ShortcutView getShortcuts() {
+        return shortcuts;
     }
 
     @NotNull
@@ -475,12 +352,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public FlexTable getShortcutPanel() {
-        return shortcutPanel;
-    }
-
-    @NotNull
-    @Override
     public DockLayoutPanel getTopLevelPanel() {
         return topLevelLayoutPanel;
     }
@@ -489,18 +360,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public SimpleLayoutPanel getPanel() {
         return panel;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getReports() {
-        return reports;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getSearchTranslations() {
-        return searchTranslations;
     }
 
     @NotNull
@@ -525,18 +384,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public SimplePanel getTopViewSpecificLeftActionPanel() {
         return topViewSpecificLeftActionPanel;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getBug() {
-        return bug;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getSearch() {
-        return search;
     }
 
     /**
@@ -576,6 +423,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
         quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        quickSearchQuery.addStyleName(CSSConstants.Template.QUICK_SEARCH_TEXT_BOX);
 
         final HorizontalPanel quickSearchPanel = new HorizontalPanel();
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
@@ -615,12 +463,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
-        /* Set the shortcut bar */
-        shortCutPanelParent.setWidget(shortcutPanel);
-        shortCutPanelParent.addStyleName(CSSConstants.Template.SHORTCUT_PANEL_PARENT);
-        shortcutPanel.addStyleName(CSSConstants.Template.SHORTCUT_PANEL);
-
-        thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
+        thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
 
 
         /* Add the version */
@@ -649,72 +492,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         thirdLevelLayoutPanel.add(panel);
 
         /* Build the shortcut panel */
+        initialiseShortcuts();
+    }
 
-        home = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Home());
-        addShortcutButton(home);
-
-        docbuilder = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.DocBuilder());
-        addShortcutButton(docbuilder);
-
-        createTopic = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
-        addShortcutButton(createTopic);
-
-        search = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Search());
-        addShortcutButton(search);
-
-        searchTranslations = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
-        addShortcutButton(searchTranslations);
-
-        images = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Images());
-        addShortcutButton(images);
-
-        tags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
-        addShortcutButton(tags);
-
-        categories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Categories());
-        addShortcutButton(categories);
-
-        projects = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Projects());
-        addShortcutButton(projects);
-
-        /* Only add the reports button if the URL is not null */
-        reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true);
-        if (ServerDetails.getSavedServer().getReportUrl() != null) {
-            addShortcutButton(reports);
-        }
-
-        bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true);
-        addShortcutButton(bug);
-
-        advanced = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
-        addShortcutButton(advanced);
-
-        advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
-        addShortcutButton(advancedOpen, advancedShortcutPanel);
-
-        bulkTagging = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.BulkTagging());
-        addShortcutButton(bulkTagging, advancedShortcutPanel);
-
-        stringConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
-        addShortcutButton(stringConstants, advancedShortcutPanel);
-
-        blobConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.BlobConstants());
-        addShortcutButton(blobConstants, advancedShortcutPanel);
-
-        integerConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.IntegerConstants());
-        addShortcutButton(integerConstants, advancedShortcutPanel);
-
-        propertyTags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
-        addShortcutButton(propertyTags, advancedShortcutPanel);
-
-        propertyTagCategories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
-        addShortcutButton(propertyTagCategories, advancedShortcutPanel);
-
-        monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true);
-        addShortcutButton(monitoring, advancedShortcutPanel);
-
-        close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
-        addShortcutButton(close, advancedShortcutPanel);
+    protected void initialiseShortcuts() {
+        shortcuts.initialise();
     }
 
     @Override
@@ -787,50 +569,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     public void addActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopActionPanel());
-    }
-
-    private void addShortcutButton(@NotNull final Widget widget) {
-        addShortcutButton(widget, this.shortcutPanel);
-    }
-
-    private void addShortcutButton(@NotNull final Widget widget, @NotNull final FlexTable table) {
-        final int rows = table.getRowCount();
-        table.setWidget(rows, 0, widget);
-    }
-
-    /**
-     * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
-     * the template action bar, which is removed.
-     */
-    protected void addSpacerToShortcutPanels() {
-        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
-        final HTML spacer = new HTML(spacerDiv);
-        final HTML spacer2 = new HTML(spacerDiv);
-        this.getShortcutPanel().insertRow(0);
-        this.getShortcutPanel().setWidget(0, 0, spacer);
-        this.getAdvancedShortcutPanel().insertRow(0);
-        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
-    }
-
-    /**
-     * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
-     * the template action bar, which is removed.
-     * <p/>
-     * The button supplied to this method is placed in the spacer cell.
-     */
-    protected void addButtonToShortcutPanels(@NotNull final PushButton button) {
-        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
-
-        this.getShortcutPanel().insertRow(0);
-        final SimplePanel panel = new SimplePanel();
-        panel.setWidget(button);
-        this.getShortcutPanel().setWidget(0, 0, panel);
-        this.getShortcutPanel().getCellFormatter().setHeight(0, 0, Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
-        this.getShortcutPanel().getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-
-        final HTML spacer2 = new HTML(spacerDiv);
-        this.getAdvancedShortcutPanel().insertRow(0);
-        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
     }
 
     /**

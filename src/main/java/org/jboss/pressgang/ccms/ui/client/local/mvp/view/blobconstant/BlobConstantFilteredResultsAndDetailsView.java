@@ -12,9 +12,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 /**
  * The view used to display the blob constants results and their details.
  */
-public class BlobConstantFilteredResultsAndDetailsView extends
-        BaseSearchAndEditView<RESTBlobConstantV1, RESTBlobConstantCollectionV1, RESTBlobConstantCollectionItemV1> implements
-        BlobConstantFilteredResultsAndDetailsPresenter.Display {
+public class BlobConstantFilteredResultsAndDetailsView extends BaseSearchAndEditView<RESTBlobConstantV1, RESTBlobConstantCollectionV1,
+        RESTBlobConstantCollectionItemV1> implements BlobConstantFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
 
@@ -26,12 +25,18 @@ public class BlobConstantFilteredResultsAndDetailsView extends
 
 
     public BlobConstantFilteredResultsAndDetailsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.BlobConstants());
         populateTopActionBar();
-        addSpacerToShortcutPanels();
         super.initialize(true);
     }
 
+    @Override
+    protected void initialiseShortcuts() {
+        super.initialiseShortcuts();
+        getShortcuts().getAdvancedSubMenu().getBlobConstantsButton().setDown(true);
+        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().getAdvancedSubMenu().setOpen(true);
+    }
 
     private void populateTopActionBar() {
         this.addActionButton(this.getSave());

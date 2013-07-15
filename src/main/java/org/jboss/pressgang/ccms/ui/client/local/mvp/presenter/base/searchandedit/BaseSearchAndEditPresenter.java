@@ -1,5 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -20,12 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @param <T> The entity type
@@ -254,7 +254,7 @@ abstract public class BaseSearchAndEditPresenter<
                          * The selected item will be the category from the list. This is the unedited, unexpanded
                          * copy of the category
                          */
-                        filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
+                        filteredResultsComponent.setSelectedItem(selectedItem);
 
                         /*
                          * All editing is done in a clone of the selected category. Any expanded collections will be
