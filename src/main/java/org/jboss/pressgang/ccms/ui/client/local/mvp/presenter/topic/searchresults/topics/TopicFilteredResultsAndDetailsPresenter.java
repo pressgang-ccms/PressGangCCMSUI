@@ -94,8 +94,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * display, edit and create topics.
  */
 @Dependent
-public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredResultsAndDetailsPresenter<RESTTopicV1,
-        RESTTopicCollectionV1, RESTTopicCollectionItemV1, RESTTopicV1BasicDetailsEditor> {
+public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredResultsAndDetailsPresenter<
+        RESTTopicV1,
+        RESTTopicCollectionV1,
+        RESTTopicCollectionItemV1,
+        RESTTopicV1BasicDetailsEditor> {
 
     @Inject private FailOverRESTCall failOverRESTCall;
 

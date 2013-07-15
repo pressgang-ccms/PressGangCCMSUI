@@ -1,18 +1,45 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
-import org.jboss.pressgang.ccms.rest.v1.collections.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
 import org.jboss.pressgang.ccms.rest.v1.components.GWTComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -33,19 +60,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
@@ -404,7 +418,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestUrl() + "/1/topics/get/zip/" + query, "Zip Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
         };
 
@@ -418,7 +432,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsPresenter.getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestUrl() + "/1/topics/get/csv/" + query, "Csv Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
 

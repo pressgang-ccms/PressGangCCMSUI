@@ -1,5 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -33,14 +41,6 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
@@ -321,7 +321,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(
                         true) + getFieldsPresenter().getDisplay().getFields().getSearchQuery(
                         false) + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestUrl() + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
+                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
             }
         };
 
