@@ -306,6 +306,24 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+    public static RESTCall getContentSpecsFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.CONTENT_SPEC_EXPANSION_NAME + "\"}, " +
+                        "\"branches\":[]}]}";
+
+                restService.getJSONTextContentSpecsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
     /**
      * Create a RESTCall object to call the REST holdXML method
      * @param xml The XML to be held by the REST server

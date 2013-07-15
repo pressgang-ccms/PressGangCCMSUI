@@ -12,6 +12,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +36,8 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
     }
 
     public static final String HISTORY_TOKEN = "ContentSpecFilteredResultsView";
+
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -114,10 +119,9 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTextContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTTextContentSpecCollectionV1, Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTextContentSpecCollectionV1, Display>() {
+                final RESTCallBack<RESTTextContentSpecCollectionV1> callback = new RESTCallBack<RESTTextContentSpecCollectionV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTextContentSpecCollectionV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTTextContentSpecCollectionV1 retValue) {
                         try {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
@@ -134,13 +138,13 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
                             getHandlerManager().fireEvent(new EntityListReceived<RESTTextContentSpecCollectionV1>(retValue));
                         }
                     }
-                });
+                };
 
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                RESTCalls.getContentSpecsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
             }
         };
         return provider;
