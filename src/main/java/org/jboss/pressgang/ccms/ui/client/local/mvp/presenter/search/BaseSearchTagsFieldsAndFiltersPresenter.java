@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,20 +71,18 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      */
     protected void loadSearchTags() {
 
-        @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1,
-                BaseTemplateViewInterface>(
-                getDisplay(), new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
+        final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
             @Override
-            public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
-
+            public void success(@NotNull final RESTTagCollectionV1 retValue) {
                 /* Bind the load, load and search and overwrite buttons */
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
                 tagsPresenter.getDisplay().displayExtended(retValue, null, false, isShowBulkTags());
             }
-        });
-        RESTCalls.getTags(callback);
+        };
+
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getDisplay());
     }
 
     /**
