@@ -11,6 +11,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
@@ -50,6 +53,8 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "ContentSpecTagsView";
 
     private static final Logger LOGGER = Logger.getLogger(ContentSpecTagsPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer contentSpecID;
