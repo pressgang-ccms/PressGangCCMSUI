@@ -1537,20 +1537,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 				return function (e) {
 					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
 					var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+					var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+					var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
 
 					var theseErrors = e.data;
 					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
 
                     if (theseErrors == "" && oldErrors == "") {
-						var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
 						errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
                     } else if (oldErrors != theseErrors) {
 						// "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
 						// message, and is removed before being displayed.
 						var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
 						if (errorMessage.length == 0) {
-							var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
-							var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
 							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
 						} else {
 							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
