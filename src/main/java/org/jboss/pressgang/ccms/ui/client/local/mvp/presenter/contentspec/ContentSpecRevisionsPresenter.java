@@ -13,6 +13,9 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.mergelygwt.client.Mergely;
@@ -80,6 +83,8 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "ContentSpecHistoryView";
 
+    @Inject private FailOverRESTCall failOverRESTCall;
+
     private String contentSpec;
 
     @Inject
@@ -131,10 +136,9 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTextContentSpecV1, Display> callback = new BaseRestCallback<RESTTextContentSpecV1, Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, Display>() {
+                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue, @NotNull final Display display) {
+                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         checkArgument(retValue.getRevisions() != null, "Returned entity should have a valid revisions collection.");
                         checkArgument(retValue.getRevisions().getItems() != null,
                                 "Returned entity should have a valid revisions collection with a valid items collection.");
@@ -159,14 +163,14 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                         getProviderData().setSize(retValue.getRevisions().getSize());
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-                });
+                };
 
                 final int start = list.getVisibleRange().getStart();
                 getProviderData().setStartRow(start);
                 final int length = list.getVisibleRange().getLength();
                 final int end = start + length;
 
-                RESTCalls.getContentSpecWithRevisions(callback, id, start, end);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(id, start, end), callback, display);
             }
         };
         return provider;

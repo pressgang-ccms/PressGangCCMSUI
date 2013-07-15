@@ -35,6 +35,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -235,7 +236,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     }
 
     @NotNull
-    private RESTCallBack<RESTImageV1> getDefaultImageRestCallback() {
+    private RESTCallBack<RESTImageV1> getDefaultImageRestCallback(final boolean newEntity) {
         return new RESTCallBack<RESTImageV1>() {
             @Override
             public void success(@NotNull final RESTImageV1 retValue) {
@@ -382,9 +383,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     updateImage.getLanguageImages_OTM().getItems().add(updatedLanguageImageItem);
 
                                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(), display);
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(true), display);
                                     } else {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(), display);
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(false), display);
                                     }
                                     
                                 } finally {
@@ -481,9 +482,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
                     
                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(true), getDefaultImageRestFailureCallback(), display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(true), display);
                     } else {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(false), getDefaultImageRestFailureCallback(), display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(false), display);
                     }
                     
                 } else {
@@ -625,7 +626,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             .languageImages_OTMEditor().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(Constants.REST_SERVER + "/1/image/get/raw/" +
+                    Window.open(ServerDetails.getSavedServer().getRestUrl() + "/1/image/get/raw/" +
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage
                             .getItem().getLocale(), null, null);
                 }

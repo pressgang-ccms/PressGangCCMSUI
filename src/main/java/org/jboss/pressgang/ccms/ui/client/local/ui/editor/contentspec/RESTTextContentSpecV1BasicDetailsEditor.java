@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -120,8 +121,8 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        final String detailsURL = Constants.REST_SERVER + "/1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
-        final String textURL = Constants.REST_SERVER + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
+        final String detailsURL = ServerDetails.getSavedServer().getRestUrl() + "/1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
+        final String textURL = ServerDetails.getSavedServer().getRestUrl() + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
 
         restContentSpecDetails.setHref(detailsURL);
         restContentSpecText.setHref(textURL);

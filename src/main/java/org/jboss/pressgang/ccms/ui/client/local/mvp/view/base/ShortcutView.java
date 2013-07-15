@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ToggleButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutPanel;
 import org.jetbrains.annotations.NotNull;
@@ -91,7 +92,7 @@ public class ShortcutView extends ShortcutPanel {
         add(createContentSpec);
 
         // Only add the reports button if the URL is not null
-        if (Constants.BIRT_URL != null) {
+        if (ServerDetails.getSavedServer().getReportUrl() != null) {
             add(reports);
         }
         add(bug);
