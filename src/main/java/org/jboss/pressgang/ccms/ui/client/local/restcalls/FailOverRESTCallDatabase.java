@@ -225,6 +225,51 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+    public static RESTCall getFileWithoutData(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+                restService.getJSONFile(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall createFile(@NotNull final RESTFileV1 file) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+                restService.createJSONFile(expand, file);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    public static RESTCall updateFile(@NotNull final RESTFileV1 file) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
+                restService.createJSONFile(expand, file);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
     /**
      * Create a RESTCall object to call the REST holdXML method
      * @param xml The XML to be held by the REST server
