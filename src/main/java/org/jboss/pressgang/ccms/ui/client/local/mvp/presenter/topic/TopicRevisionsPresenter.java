@@ -127,6 +127,11 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
      */
     private Frame currentXML, comparedXML;
 
+    /**
+     * The URLs used to return the rendered XML
+     */
+    private String currentXMLHREF, comparedXMLHREF;
+
 
     private String topicId;
 
@@ -248,13 +253,16 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
         comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
 
-        currentXML.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-        comparedXML.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+        currentXMLHREF =  ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+        comparedXMLHREF = ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+
+        currentXML.setUrl(currentXMLHREF);
+        comparedXML.setUrl(comparedXMLHREF);
     }
 
     private void displayRenderedHTML() {
         try {
-            LOGGER.info("ENTER TopicRevisionsView.saveRenderedHTML()");
+            LOGGER.info("ENTER TopicRevisionsView.displayRenderedHTML()");
 
             /*
                 Check isDisplayingRevisions() here because the user may have
@@ -272,7 +280,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                 display.displayHtmlDiff(diff);
             }
         } finally {
-            LOGGER.info("EXIT TopicRevisionsView.saveRenderedHTML()");
+            LOGGER.info("EXIT TopicRevisionsView.displayRenderedHTML()");
         }
     }
 
@@ -297,6 +305,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
+                    console.log("ENTER TopicRevisionsView.createEventListener() TopicRevisionsView.displayAfterLoaded()");
 
                     // Make sure the iframe sending the data is from an expected source
                     var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
@@ -305,18 +314,19 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                         // Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
                         // This ensures that the diff ordering is correct
 
-                        var currentIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::CURRENT_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
-                        var compareIFrameID = @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::COMPARE_FRAME_ID_PREFIX + @org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::tempIFrameCount;
+                        var comparedXMLHREF = me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::comparedXMLHREF;
+                        var currentXMLHREF = me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::currentXMLHREF;
 
-                        if (event.source.frameElement.id == currentIFrameID) {
-                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
-                        } else if (event.source.frameElement.id == compareIFrameID) {
-                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
+                        if (event.data.href == currentXMLHREF) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data.html;
+                        } else if (event.data.href == comparedXMLHREF) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data.html;
                         }
 
                         me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::displayRenderedHTML()();
                     }
 
+					console.log("EXIT TopicRevisionsView.createEventListener() TopicRevisionsView.displayAfterLoaded()");
 				};
 			}(this);
 	}-*/;
