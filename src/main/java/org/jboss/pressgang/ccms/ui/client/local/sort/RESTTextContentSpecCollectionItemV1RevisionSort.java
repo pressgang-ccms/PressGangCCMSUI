@@ -1,10 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Compares two RESTTopicCollectionItemV1's based on their revision numbers.

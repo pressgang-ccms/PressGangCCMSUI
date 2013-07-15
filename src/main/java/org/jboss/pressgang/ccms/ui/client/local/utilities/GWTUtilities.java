@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
-import java.util.Date;
-
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -14,6 +12,8 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Date;
 
 /**
  * GWT has some limitations, like not being able to bind an Editor to an array

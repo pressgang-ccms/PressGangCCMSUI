@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
 
-import javax.enterprise.context.Dependent;
-
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -9,6 +7,8 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
+
+import javax.enterprise.context.Dependent;
 
 @Dependent
 public class TopicSearchFilterFilteredResultsPresenter extends BaseSearchFilterFilteredResultsPresenter {

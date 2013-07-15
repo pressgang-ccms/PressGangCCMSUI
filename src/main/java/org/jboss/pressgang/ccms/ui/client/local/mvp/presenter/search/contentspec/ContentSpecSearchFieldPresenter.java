@@ -1,8 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -11,6 +8,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.contentspec.Con
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.ContentSpecSearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ContentSpecSearchFieldPresenter extends BaseSearchFieldPresenter {

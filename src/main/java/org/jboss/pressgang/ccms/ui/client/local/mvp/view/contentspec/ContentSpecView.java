@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -12,6 +10,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1TextEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * The view that displays the text content of a content spec

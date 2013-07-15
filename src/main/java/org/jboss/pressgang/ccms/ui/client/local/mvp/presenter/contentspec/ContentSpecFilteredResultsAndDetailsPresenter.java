@@ -1,19 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -51,8 +37,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
@@ -65,6 +52,16 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
@@ -79,6 +76,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ContentSpecFilteredResultsAndDetailsPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     /**
      * true if this presenter should be opened with a fresh topic, and false otherwise
@@ -395,11 +394,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
 
                     if (filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        final BaseRestCallback<RESTTextContentSpecV1, Display> addCallback = new BaseRestCallback<RESTTextContentSpecV1,
-                                Display>(
-                                display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, Display>() {
+
+                        final RESTCallBack<RESTTextContentSpecV1> addCallback = new RESTCallBack<RESTTextContentSpecV1>() {
                             @Override
-                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue, @NotNull final Display display) {
+                            public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                                 try {
                                     LOGGER.log(Level.INFO,
                                             "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK"
@@ -467,10 +465,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                                     ".onClick() addCallback.doSuccessAction() - New Topic");
                                 }
                             }
-                        });
+                        };
 
-                        RESTCalls.createContentSpec(addCallback, updatedSpec, message.toString(), flag,
-                                ServiceConstants.NULL_USER_ID.toString());
+                        failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.createContentSpec(
+                                updatedSpec,
+                                message.toString(),
+                                flag,
+                                ServiceConstants.NULL_USER_ID.toString())
+                        ,addCallback, display);
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -478,12 +481,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         /*
                             Save the spec
                          */
-                        final BaseRestCallback<RESTTextContentSpecV1, Display> updateCallback = new
-                                BaseRestCallback<RESTTextContentSpecV1, Display>(
-                                display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, Display>() {
+                        final RESTCallBack<RESTTextContentSpecV1> updateCallback = new RESTCallBack<RESTTextContentSpecV1>() {
                             @Override
-                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue, @NotNull final Display display) {
-
+                            public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                                 boolean overwroteChanges = false;
                                 final Integer originalRevision = displayedEntity.getRevision();
 
@@ -557,10 +557,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
                             }
-                        });
+                        };
 
-                        RESTCalls.updateContentSpec(updateCallback, updatedSpec, message.toString(), flag,
-                                ServiceConstants.NULL_USER_ID.toString());
+                        failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.updateContentSpec(
+                                        updatedSpec,
+                                        message.toString(),
+                                        flag,
+                                        ServiceConstants.NULL_USER_ID.toString()),
+                                updateCallback, display);
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
@@ -645,20 +650,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void getNewEntity(@NotNull final RESTTextContentSpecV1 selectedEntity,
                     @NotNull final DisplayNewEntityCallback<RESTTextContentSpecV1> displayCallback) {
-                @NotNull final RESTCalls.RESTCallback<RESTTextContentSpecV1> callback = new BaseRestCallback<RESTTextContentSpecV1,
-                        BaseTemplateViewInterface>(
-                        display, new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, BaseTemplateViewInterface>() {
+
+                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
-                            @NotNull final BaseTemplateViewInterface display) {
+                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
 
                         ComponentContentSpecV1.fixDisplayedText(retValue);
                         displayCallback.displayNewEntity(retValue);
                     }
-                });
-                RESTCalls.getContentSpec(callback, selectedEntity.getId());
+                };
+
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpec(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -698,7 +702,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        RESTCalls.populateLocales(new StringListLoaded() {
+        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> locales) {
                 try {
@@ -714,15 +718,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
 
             }
-        }, display);
+        }, display, failOverRESTCall);
 
-        RESTCalls.loadDefaultLocale(new StringLoaded() {
+        FailOverRESTCallDatabase.loadDefaultLocale(new StringLoaded() {
             @Override
             public void stringLoaded(@NotNull final String string) {
                 defaultLocale = string;
                 displayNewContentSpec();
             }
-        }, display);
+        }, display, failOverRESTCall);
     }
 
     /**
@@ -776,40 +780,42 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         @Override
                         public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionContentSpec,
                                 final String value) {
-                            final RESTCalls.RESTCallback<RESTTextContentSpecV1> callback = new BaseRestCallback<RESTTextContentSpecV1,
-                                    ContentSpecRevisionsPresenter.Display>(
-                                    contentSpecRevisionsComponent.getDisplay(),
-                                    new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, ContentSpecRevisionsPresenter.Display>() {
-                                        @Override
-                                        public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
-                                                final ContentSpecRevisionsPresenter.Display display) {
-                                            checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
-                                            /*
-                                                It is possible to switch away from the view while this request was loading. If we
-                                                have done so, don't show the merge view.
-                                             */
-                                            if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
-                                                final boolean lhsReadonly = getDisplayedContentSpec().getRevision() !=
-                                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                                                .getRevision();
+                            final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
+                                @Override
+                                public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                                    checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
-                                                // Fix the displayed text up
-                                                ComponentContentSpecV1.fixDisplayedText(retValue);
+                                    /*
+                                        It is possible to switch away from the view while this request was loading. If we
+                                        have done so, don't show the merge view.
+                                     */
+                                    if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
+                                        final boolean lhsReadonly = getDisplayedContentSpec().getRevision() !=
+                                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                                        .getRevision();
 
-                                                // Display the diffs
-                                                contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
-                                                        lhsReadonly, retValue.getText());
+                                        // Fix the displayed text up
+                                        ComponentContentSpecV1.fixDisplayedText(retValue);
 
-                                                // We can't save while merging.
-                                                getDisplay().getSave().setEnabled(false);
-                                                getDisplay().getPermissiveSave().setEnabled(false);
-                                            }
+                                        // Display the diffs
+                                        contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
+                                                lhsReadonly, retValue.getText());
 
-                                            contentSpecRevisionsComponent.getDisplay().setButtonsEnabled(true);
-                                        }
-                                    }); RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(),
-                                    revisionContentSpec.getItem().getRevision());
+                                        // We can't save while merging.
+                                        getDisplay().getSave().setEnabled(false);
+                                        getDisplay().getPermissiveSave().setEnabled(false);
+                                    }
+
+                                    contentSpecRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                                }
+                            };
+
+                            failOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.getContentSpecRevision(
+                                            revisionContentSpec.getItem().getId(),
+                                            revisionContentSpec.getItem().getRevision()),
+                                    callback, display);
                         }
                     });
 
@@ -938,48 +944,44 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             if (id != null) {
 
                 // A callback to respond to a request for a topic with the tags expanded
-                @NotNull final RESTCalls.RESTCallback<RESTTextContentSpecV1> contentSpecWithTagsCallback = new
-                        BaseRestCallback<RESTTextContentSpecV1, ContentSpecTagsPresenter.Display>(
-                        contentSpecTagsPresenter.getDisplay(),
-                        new BaseRestCallback.SuccessAction<RESTTextContentSpecV1, ContentSpecTagsPresenter.Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTTextContentSpecV1 retValue,
-                                    final ContentSpecTagsPresenter.Display display) {
-                                try {
-                                    LOGGER.log(Level.INFO,
-                                            "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback" +
-                                                    ".doSuccessAction()");
+                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                        try {
+                            LOGGER.log(Level.INFO,
+                                    "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback" +
+                                            ".doSuccessAction()");
 
-                                    /*
-                                        There is a small chance that in between loading the topic's details and
-                                        loading its tags, a new revision was created.
+                            /*
+                                There is a small chance that in between loading the topic's details and
+                                loading its tags, a new revision was created.
 
-                                        So, what do we do? If changes are made to the topic, then
-                                        the user will be warned that they have overwritten a revision created
-                                        in the mean time. In fact seeing the latest tag relationships could
-                                        mean that the user doesn't try to add conflicting tags (like adding
-                                        a tag from a mutually exclusive category when one already exists).
+                                So, what do we do? If changes are made to the topic, then
+                                the user will be warned that they have overwritten a revision created
+                                in the mean time. In fact seeing the latest tag relationships could
+                                mean that the user doesn't try to add conflicting tags (like adding
+                                a tag from a mutually exclusive category when one already exists).
 
-                                        This check is left in comments just to show that a conflict is possible.
-                                    */
-                                    /*if (!retValue.getRevision().equals(revision)) {
-                                        Window.alert("The topics details and tags are not in sync.");
-                                    }*/
+                                This check is left in comments just to show that a conflict is possible.
+                            */
+                            /*if (!retValue.getRevision().equals(revision)) {
+                                Window.alert("The topics details and tags are not in sync.");
+                            }*/
 
-                                    // copy the revisions into the displayed Topic */
-                                    getDisplayedContentSpec().setTags(retValue.getTags());
+                            // copy the revisions into the displayed Topic */
+                            getDisplayedContentSpec().setTags(retValue.getTags());
 
-                                    // update the view
-                                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
-                                } finally {
-                                    LOGGER.log(Level.INFO,
-                                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" + "" +
-                                                    ".doSuccessAction()");
-                                }
-                            }
-                        });
+                            // update the view
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
+                        } finally {
+                            LOGGER.log(Level.INFO,
+                                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" + "" +
+                                            ".doSuccessAction()");
+                        }
+                    }
+                };
 
-                RESTCalls.getContentSpecWithTags(contentSpecWithTagsCallback, id);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecWithTags(id), callback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");

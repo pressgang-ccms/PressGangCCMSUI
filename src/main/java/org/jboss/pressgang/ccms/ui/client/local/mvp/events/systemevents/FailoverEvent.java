@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents;
 
 import com.google.gwt.event.shared.GwtEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 
-import javax.enterprise.context.Dependent;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -17,6 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.enterprise.context.Dependent;
 
 /**
  * The view for the extended properties assigned to an entity.

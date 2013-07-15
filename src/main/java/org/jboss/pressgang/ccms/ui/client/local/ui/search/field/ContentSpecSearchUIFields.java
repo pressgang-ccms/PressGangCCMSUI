@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.field;
 
-import java.util.Date;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
@@ -12,6 +10,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Date;
 
 /**
  * The backing object for the search fields view. Instance of this class will be manipulated by a GWT Editor

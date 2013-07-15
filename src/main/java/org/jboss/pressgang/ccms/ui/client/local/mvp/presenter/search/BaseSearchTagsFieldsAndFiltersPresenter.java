@@ -1,8 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
-import javax.inject.Inject;
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -12,10 +9,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
@@ -28,6 +28,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchLocalePresenter localePresenter;
     @Inject
     private HandlerManager eventBus;
+    @Inject private FailOverRESTCall failOverRESTCall;
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -56,12 +57,12 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void loadSearchLocales() {
-        RESTCalls.populateLocales(new StringListLoaded() {
+        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> stringList) {
                 localePresenter.getDisplay().display(stringList, false);
             }
-        }, getDisplay());
+        }, getDisplay(), failOverRESTCall);
     }
 
     /**

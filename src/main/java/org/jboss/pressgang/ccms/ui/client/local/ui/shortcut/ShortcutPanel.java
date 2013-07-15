@@ -1,8 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.shortcut;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -11,6 +8,9 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShortcutPanel extends Composite implements IShortcutPanel {
     private SimplePanel rootPanel = new SimplePanel();

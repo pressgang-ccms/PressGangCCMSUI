@@ -1,26 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.DateLabel;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerLabel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.ValueListBox;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 

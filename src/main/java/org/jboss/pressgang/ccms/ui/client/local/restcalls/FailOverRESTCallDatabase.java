@@ -4,6 +4,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -11,7 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringL
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -135,6 +135,95 @@ public final class FailOverRESTCallDatabase {
      * The required expansion details for the property tags.
      */
     private static final String PROPERTY_CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyCategoryV1.PROPERTY_TAGS_NAME + "\"}}";
+
+    /**
+     * Content specifications need the extended properties expanded
+     */
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
+
+    /**
+     * The required expansion details for a topic. This is used when loading a topic for the first time
+     */
+    private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS = "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
+            "]}";
+
+    public static RESTCall createContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
+                                             @NotNull final String userId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
+                        message, flag, userId);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    public static RESTCall updateContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
+                                             @NotNull final String userId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
+                        message, flag, userId);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    public static RESTCall getContentSpec(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTextContentSpec(id, "{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall getContentSpecRevision(@NotNull final Integer id,
+                                                  @NotNull final Integer revision) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONTextContentSpecRevision(id, revision, CONTENT_SPEC_EXPANSION_WO_REVISIONS);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall getContentSpecWithTags(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+                restService.getJSONTextContentSpec(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
 
     /**
      * Create a RESTCall object to call the REST holdXML method
@@ -1557,7 +1646,9 @@ public final class FailOverRESTCallDatabase {
      *
      * @param loadedCallback The callback to call when the locales are loaded
      */
-    public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display, @NotNull final FailOverRESTCall failOverRESTCall) {
+    public static void populateLocales(@NotNull final StringListLoaded loadedCallback,
+                                       @NotNull final BaseTemplateViewInterface display,
+                                       @NotNull final FailOverRESTCall failOverRESTCall) {
         failOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
             new RESTCallBack<RESTStringConstantV1>() {
@@ -1586,7 +1677,9 @@ public final class FailOverRESTCallDatabase {
      * Load the default locale
      * @param loadedCallback The callback to call when the default locale is loaded
      */
-    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display, @NotNull final FailOverRESTCall failOverRESTCall) {
+    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback,
+                                         @NotNull final BaseTemplateViewInterface display,
+                                         @NotNull final FailOverRESTCall failOverRESTCall) {
         failOverRESTCall.performRESTCall(
             getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
             new RESTCallBack<RESTStringConstantV1>() {
