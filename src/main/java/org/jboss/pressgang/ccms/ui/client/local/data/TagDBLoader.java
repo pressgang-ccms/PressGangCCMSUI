@@ -52,10 +52,9 @@ public class TagDBLoader {
                     FailOverRESTCallDatabase.getTopicsWithPropertiesFromQuery(query),
                     new RESTCallBack<RESTTopicCollectionV1>() {
                         public void success(@NotNull final RESTTopicCollectionV1 value) {
-                            final JSONObject jsonObject = new JSONObject();
                             for (final RESTTopicCollectionItemV1 restTopicV1 : value.getItems())  {
                                 final RESTAssignedPropertyTagV1 property = ComponentTopicV1.returnProperty(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
-                                jsonObject.put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
                             }
 
                             /*
