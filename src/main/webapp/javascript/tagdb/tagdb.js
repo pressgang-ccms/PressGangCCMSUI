@@ -19,7 +19,9 @@ self.addEventListener('message', function (e) {
             while (tagMatch = tagRe.exec(line)) {
                 var prefix = tagMatch[1];
                 var tag = tagMatch[2];
-                tags.push([tagMatch.index + prefix.length, tag.length]);
+                var start = tagMatch.index + prefix.length;
+                var end = start + tag.length;
+                tags.push([start, end]);
             }
 
             retValue.push(tags);
