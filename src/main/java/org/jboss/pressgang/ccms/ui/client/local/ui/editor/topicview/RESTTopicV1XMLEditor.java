@@ -8,6 +8,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
 
 public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
     /**
@@ -21,8 +22,13 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
      * @param readOnly           true if the UI created by this editor should be readonly, and false otherwise
      * @param positiveDictionary a reference to the dictionary used by the ACE editor spell checking
      */
-    public RESTTopicV1XMLEditor(final boolean readOnly, final TypoJS positiveDictionary, final TypoJS negativeDictionary, final TypoJS negativePhraseDictionary) {
-        this.xml = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary);
+    public RESTTopicV1XMLEditor(
+            final boolean readOnly,
+            final TypoJS positiveDictionary,
+            final TypoJS negativeDictionary,
+            final TypoJS negativePhraseDictionary,
+            final TagDBLoader tagDBLoader) {
+        this.xml = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB());
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
