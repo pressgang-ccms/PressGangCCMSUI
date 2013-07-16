@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -26,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -33,6 +35,7 @@ import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TopicRevisionsPresenter extends BaseTemplatePresenter {
@@ -68,6 +71,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         PushButton getCancel();
 
         PushButton getHTMLDone();
+
+        PushButton getHtmlOpenDiff();
 
         Mergely getMergely();
 
@@ -132,9 +137,6 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
      */
     private String currentXMLHREF, comparedXMLHREF;
 
-
-    private String topicId;
-
     @Inject
     private Display display;
 
@@ -158,6 +160,15 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.TOPIC_REVISIONS_TOPIC, HISTORY_TOKEN);
+
+        /*
+            When this presenter is used a sa standalone presenter to display the rendered diff
+            view of a topic, the done and new window buttons are not displayed.
+         */
+        display.getHTMLDone().setVisible(false);
+        display.getHtmlOpenDiff().setVisible(false);
+        display.showWaitingFromRenderedDiff();
+
     }
 
     @Override
@@ -173,7 +184,57 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
+        try {
+            final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
+            final String[] topicDetails = fixedToken.split(";");
+            if (topicDetails.length == 2 || topicDetails.length == 3) {
+                final Integer topicID = Integer.parseInt(topicDetails[0]);
+                final Integer firstRevision = Integer.parseInt(topicDetails[1]);
+                final Integer secondRevision = topicDetails.length == 3 ? Integer.parseInt(topicDetails[2]) : null;
 
+                loadTopics(topicID, firstRevision, secondRevision);
+            }
+        } catch (final NumberFormatException ex) {
+            // invalid data supplied on the url. do nothing
+        }
+    }
+
+    private void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision) {
+        final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+            @Override
+            public void success(@NotNull final RESTTopicV1 retValue1) {
+                final RESTCallBack<RESTTopicV1> callback2 = new RESTCallBack<RESTTopicV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTopicV1 retValue2) {
+
+                        final RESTCallBack<IntegerWrapper> hold1 = new RESTCallBack<IntegerWrapper>() {
+                            @Override
+                            public void success(@NotNull final IntegerWrapper holdValue1) {
+                                final RESTCallBack<IntegerWrapper> hold2 = new RESTCallBack<IntegerWrapper>() {
+                                    @Override
+                                    public void success(@NotNull final IntegerWrapper holdValue2) {
+                                        renderXML(holdValue1.value, holdValue2.value, display.getHiddenAttachmentArea());
+                                    }
+                                };
+
+                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display);
+                            }
+                        };
+
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display);
+
+                    }
+                };
+
+                if (secondRevision == null) {
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback2, display);
+                } else {
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, secondRevision), callback2, display);
+                }
+            }
+        };
+
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback, display);
     }
 
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final Integer id, @NotNull final BaseTemplateViewInterface waitDisplay) {

@@ -44,6 +44,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
@@ -134,6 +135,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             this.eventBus.addHandler(FilesViewEvent.TYPE, new ViewOpenEventHandler(FilePresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(FilesFilteredResultsAndFileViewEvent.TYPE,
                     new ViewOpenWithQueryEventHandler(FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(RenderedDiffEvent.TYPE,
+                    new ViewOpenWithQueryEventHandler(TopicRevisionsPresenter.HISTORY_TOKEN));
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
@@ -262,6 +265,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(FilesFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(FileFilteredResultsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(FileFilteredResultsPresenter.class);
+                } else if (token.startsWith(TopicRevisionsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TopicRevisionsPresenter.class);
                 }
 
                 if (presenter.isPresent()) {

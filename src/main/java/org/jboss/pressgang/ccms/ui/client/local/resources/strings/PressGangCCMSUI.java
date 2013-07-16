@@ -24,6 +24,9 @@ public interface PressGangCCMSUI extends Constants {
     String Done();
 
     @NotNull
+    String NewWindow();
+
+    @NotNull
     String Close();
 
     @NotNull
