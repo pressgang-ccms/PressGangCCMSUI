@@ -40,6 +40,8 @@
 }
 
 .ace_marker-layer div[class^='tagmatch'] {
+    position: absolute;
+    z-index: -2;
     background-color: rgba(0, 245, 255, 0.2);
 }
 
