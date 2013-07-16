@@ -1,3 +1,8 @@
+/*
+    This script scans an array of lines of text looking for xml tags, and passes a message
+    back with the start and end points of the tags.
+ */
+
 self.addEventListener('message', function (e) {
     if (e.data.lines) {
         var lines = e.data.lines;
