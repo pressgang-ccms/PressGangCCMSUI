@@ -174,6 +174,11 @@ abstract public class BaseSearchAndEditView<
         if (displaySearchResults) {
             splitPanel.addWest(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
             splitPanel.setWidgetMinSize(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
+
+            /*
+                The size has to be set after setWidgetMinSize is called, otherwise some panels
+                 are smaller than expected.
+             */
             splitPanel.setSplitPosition(resultsViewLayoutPanel, fixedSearchResultsWidth, false);
         }
         if (callback != null) {

@@ -295,6 +295,10 @@ public abstract class BaseSearchResultsAndTopicView<
                     getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 }
 
+                /*
+                    The size has to be set after setWidgetMinSize is called, otherwise some panels
+                    are smaller than expected.
+                */
                 getSplitPanel().setSplitPosition(renderedPanelParent, fixedRenderedPanelSize, false);
             }
         });
