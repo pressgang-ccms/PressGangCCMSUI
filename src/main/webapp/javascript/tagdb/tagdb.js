@@ -14,11 +14,12 @@ self.addEventListener('message', function (e) {
             var tags = [];
 
             // match only xml/html elements
-            var tagRe = /<\s*([^\s]+).*?>/g;
+            var tagRe = /(<\s*)([^\s/>]+)/g;
             var tagMatch = null;
             while (tagMatch = tagRe.exec(line)) {
-                var tag = tagMatch[1];
-                tags.push([tagMatch.index, tag.length]);
+                var prefix = tagMatch[1];
+                var tag = tagMatch[2];
+                tags.push([tagMatch.index + prefix.length, tag.length]);
             }
 
             retValue.push(tags);
