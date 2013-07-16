@@ -2582,6 +2582,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         }
                     });
+                } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'T') {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
+                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                                String selection = topicXMLDisplay.getEditor().getSelection();
+                                if (selection != null) {
+                                    selection = selection.replaceAll("&", "&amp;");
+                                    selection = selection.replaceAll("'", "&apos;");
+                                    selection = selection.replaceAll("\"", "&quot;");
+                                    selection = selection.replaceAll("<", "&lt;");
+                                    selection = selection.replaceAll(">", "&gt;");
+                                    topicXMLDisplay.getEditor().replaceSelection(selection);
+                                }
+                            }
+                        }
+                    });
                 }
 
             }

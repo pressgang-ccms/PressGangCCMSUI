@@ -41,8 +41,8 @@ public class ServerDetails {
      */
     private static final  ServerDetails HATEST4 = new  ServerDetails(7, "HA Test Server 4", "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test);
 
-    private static final  ServerDetails DEFAULT =  BNE_DEVELOPMENT;
-    //private static final  ServerDetails DEFAULT =  BNE_PRODUCTION;
+    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
@@ -62,7 +62,7 @@ public class ServerDetails {
             }
         }
 
-        return DEFAULT;
+        return DEFAULT_OVERRIDE;
     }
 
     /**
