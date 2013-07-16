@@ -288,12 +288,14 @@ public abstract class BaseSearchResultsAndTopicView<
                 renderedPanelParent.add(panel);
 
                 if (splitType == SplitType.HORIZONTAL) {
-                    getSplitPanel().addSouth(renderedPanelParent, fixedRenderedPanelSize);
-                    //getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
+                    getSplitPanel().addSouth(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
+                    getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 } else if (splitType == SplitType.VERTICAL) {
-                    getSplitPanel().addEast(renderedPanelParent, fixedRenderedPanelSize);
-                    //getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
+                    getSplitPanel().addEast(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
+                    getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 }
+
+                getSplitPanel().setSplitPosition(renderedPanelParent, fixedRenderedPanelSize, false);
             }
         });
 
