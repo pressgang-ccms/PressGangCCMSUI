@@ -221,10 +221,14 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
-        final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
-            @Override
-            public void success(@NotNull final RESTImageV1 retValue) {
-                checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
+        // If the displayed item isn't a new image then load the additional data
+        if (!imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
+            checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity and have a valid id");
+
+            final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
+                @Override
+                public void success(@NotNull final RESTImageV1 retValue) {
+                    checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
 
                     /*
                      * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
@@ -232,11 +236,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                      */
                     retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
-                finishLoading();
-            }
-        };
+                    finishLoading();
+                }
+            };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
+        }
     }
 
     @NotNull
@@ -828,8 +833,23 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
      * @param ids         A list of the newly created image ids
      */
     private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index,
-            @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
+            @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
+
+            if (failedFiles.size() == 0) {
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
+            } else {
+                final StringBuilder failedNames = new StringBuilder();
+                for (final String name : failedFiles) {
+                    if (!failedNames.toString().isEmpty()) {
+                        failedNames.append(",");
+                    }
+                    failedNames.append(name);
+                }
+
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString());
+            }
+
 
             final StringBuilder idsQuery = new StringBuilder();
             for (final Integer id : ids) {
@@ -838,23 +858,6 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 }
                 idsQuery.append(id);
             }
-
-            if (failedFiled.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + idsQuery.toString());
-            } else {
-                final StringBuilder failedNames = new StringBuilder();
-                for (final String name : failedFiled) {
-                    if (!failedNames.toString().isEmpty()) {
-                        failedNames.append(",");
-                    }
-                    failedNames.append(name);
-                }
-
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString() + "\n" +
-                        PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + idsQuery.toString());
-            }
-
-
             eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.IMAGE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
@@ -867,8 +870,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 @Override
                 public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                     display.removeWaitOperation();
-                    failedFiled.add(files.getItem(index).getName());
-                    createNewImage(description, locale, index + 1, files, ids, failedFiled);
+                    failedFiles.add(files.getItem(index).getName());
+                    createNewImage(description, locale, index + 1, files, ids, failedFiles);
                 }
             });
 
@@ -894,12 +897,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             @Override
                             public void success(@NotNull final RESTImageV1 retValue) {
                                 ids.add(retValue.getId());
-                                createNewImage(description, locale, index + 1, files, ids, failedFiled);
+                                createNewImage(description, locale, index + 1, files, ids, failedFiles);
                             }
 
                             @Override
                             public void failed() {
-                                createNewImage(description, locale, index + 1, files, ids, failedFiled);
+                                createNewImage(description, locale, index + 1, files, ids, failedFiles);
                             }
                         };
 
