@@ -278,7 +278,7 @@ public abstract class BaseSearchResultsAndTopicView<
         this.splitType = splitType;
         this.readOnly = readOnly;
 
-        final double fixedRenderedPanelSize = renderedPanelSize < 0 ? 0 : renderedPanelSize;
+        final double fixedRenderedPanelSize = renderedPanelSize < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : renderedPanelSize;
 
         super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override

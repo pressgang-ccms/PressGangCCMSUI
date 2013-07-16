@@ -168,7 +168,7 @@ abstract public class BaseSearchAndEditView<
 
     protected void initialize(final boolean displaySearchResults, final double searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
 
-        final double fixedSearchResultsWidth = searchResultsWidth < 0 ? 0 : searchResultsWidth;
+        final double fixedSearchResultsWidth = searchResultsWidth < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : searchResultsWidth;
 
         splitPanel.clear();
         if (displaySearchResults) {
