@@ -122,7 +122,7 @@
 .context-menu-theme-osx {
     background-color: white;
     opacity: .93;
-    filter: alpha(opacity=93);
+    /*filter: alpha(opacity=93);*/
     zoom: 1.0;
     border: 1px solid #b2b2b2;
 }
