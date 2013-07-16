@@ -57,6 +57,10 @@ public class TagDBLoader {
                                 final RESTAssignedPropertyTagV1 property = ComponentTopicV1.returnProperty(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
                                 jsonObject.put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
                             }
+
+                            /*
+                                Let the ACE editor know that the tag database has been loaded.
+                             */
                             tagDB.setLoaded(true);
                         }
                     },
