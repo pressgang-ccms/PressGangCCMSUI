@@ -1,5 +1,19 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -52,16 +66,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
@@ -144,34 +148,41 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+            RESTTextContentSpecCollectionItemV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
+            checkState(displayedItem != null,
                     "There should be a displayed collection item.");
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+            checkState(displayedItem.getItem() != null,
                     "The displayed collection item to reference a valid entity.");
             checkState(
-                    filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter
-                            .getProviderData().getDisplayedItem().getItem().getId() != null,
+                    displayedItem.returnIsAddItem() || displayedItem.getItem().getId() != null,
                     "The displayed collection item to reference a valid entity with a valid ID.");
+
+            // Make the window title display the id of the content spec
+            if (displayedItem.getItem().getId() != null) {
+                GWTUtilities.setBrowserWindowTitle("CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE
+                        .PressGangCCMS());
+            } else {
+                GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+            }
 
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
-            final RESTTextContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+            final RESTTextContentSpecV1 displayedContentSpec = displayedItem.getItem();
             final RESTTextContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
-
 
             /*
                 Display the list of assigned property tags. This should not be null, but bugs in the REST api can
                 lead to the properties collection being null.
             */
-            if (displayedItem.getProperties() != null) {
-                Collections.sort(displayedItem.getProperties().getItems(),
+            if (displayedContentSpec.getProperties() != null) {
+                Collections.sort(displayedContentSpec.getProperties().getItems(),
                         new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedContentSpec);
             }
 
             /* Get a new collection of property tags. */
-            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedContentSpec);
 
             displayPropertyTags();
 
@@ -791,7 +802,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         have done so, don't show the merge view.
                                      */
                                     if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
-                                        final boolean lhsReadonly = getDisplayedContentSpec().getRevision() !=
+                                        final boolean rhsReadonly = getDisplayedContentSpec().getRevision() !=
                                                 filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
                                                         .getRevision();
 
@@ -799,8 +810,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         ComponentContentSpecV1.fixDisplayedText(retValue);
 
                                         // Display the diffs
-                                        contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
-                                                lhsReadonly, retValue.getText());
+                                        contentSpecRevisionsComponent.getDisplay().displayDiff(retValue.getText(),
+                                                rhsReadonly, getDisplayedContentSpec().getText());
 
                                         // We can't save while merging.
                                         getDisplay().getSave().setEnabled(false);
