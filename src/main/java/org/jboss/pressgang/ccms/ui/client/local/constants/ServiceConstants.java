@@ -15,7 +15,7 @@ public final class ServiceConstants {
     /**
      * Tag style property tag id
      */
-    public static final int TAG_STYLE_PROPERTY_TAG = 30;
+    public static final int TAG_STYLE_PROPERTY_TAG = 36;
 
     /**
      * Used to indicate a minor change to an entity.

@@ -29,11 +29,14 @@ self.addEventListener('message', function (e) {
             var tagRe = /(<\s*\/?\s*)([^\s/>]+)/g;
             var tagMatch = null;
             while (tagMatch = tagRe.exec(line)) {
-                var prefix = tagMatch[1];
                 var tag = tagMatch[2];
-                var start = tagMatch.index + prefix.length;
-                var end = start + tag.length;
-                tags.push([start, end]);
+
+                if (tags.indexOf(tag) != -1) {
+                    var prefix = tagMatch[1];
+                    var start = tagMatch.index + prefix.length;
+                    var end = start + tag.length;
+                    tags.push([start, end]);
+                }
             }
 
             retValue.push(tags);
