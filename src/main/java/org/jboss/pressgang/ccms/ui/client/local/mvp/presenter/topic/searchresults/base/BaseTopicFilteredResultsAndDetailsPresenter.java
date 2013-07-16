@@ -255,6 +255,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     getSearchResultsComponent().getProviderData().getItems() != null &&
                     getSearchResultsComponent().getProviderData().getItems().size() == 1) {
                 loadNewEntity(getNewEntityCallback, getSearchResultsComponent().getProviderData().getItems().get(0));
+                setSearchResultsVisible(false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
@@ -291,14 +292,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 split = SplitType.HORIZONTAL;
             }
 
-            int renderedPanelSize = Constants.SPLIT_PANEL_SIZE;
+            double renderedPanelSize = Constants.SPLIT_PANEL_SIZE;
             if (this.split == SplitType.HORIZONTAL) {
-                renderedPanelSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
             } else if (this.split == SplitType.VERTICAL) {
-                renderedPanelSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+            } else {
+                LOGGER.log(Level.INFO, "split not set");
             }
 
-            final int searchResultsWidth = Preferences.INSTANCE.getInt(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
+            final double searchResultsWidth = Preferences.INSTANCE.getDouble(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
             getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedPresenter.getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
@@ -358,6 +361,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, splitSize + "");
                             } else if (split == SplitType.VERTICAL) {
                                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, splitSize + "");
+                            } else {
+                                LOGGER.log(Level.INFO, "split not set");
                             }
                         }
                     } finally {
@@ -639,26 +644,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler showHideSearchResults = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    setDisplayingSearchResults(!isDisplayingSearchResults());
-                    initializeDisplay();
-
-                    /*
-                        Elements like the ace editor and mergely diff viewer need to get
-                        an onResize event so they can be sized appropriately. For reasons that
-                        I have not yet worked out, this can only be done after control has been
-                        handed back to the browser loop (which is when scheduleDeferred runs).
-                     */
-                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                        @Override
-                        public void execute() {
-                            try {
-                                LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
-                                getDisplay().getSplitPanel().onResize();
-                            } finally {
-                                LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
-                            }
-                        }
-                    });
+                    setSearchResultsVisible(!isDisplayingSearchResults());
                 }
             };
 
@@ -719,6 +705,31 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             postBindActionButtons();
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons()");
+        }
+    }
+
+    private void setSearchResultsVisible(final boolean visible) {
+        if (visible != isDisplayingSearchResults()) {
+            setDisplayingSearchResults(visible);
+            initializeDisplay();
+
+                        /*
+                            Elements like the ace editor and mergely diff viewer need to get
+                            an onResize event so they can be sized appropriately. For reasons that
+                            I have not yet worked out, this can only be done after control has been
+                            handed back to the browser loop (which is when scheduleDeferred runs).
+                         */
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                        getDisplay().getSplitPanel().onResize();
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                    }
+                }
+            });
         }
     }
 
@@ -1061,7 +1072,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         SplitType getSplitType();
 
-        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel, final int searchResultsWidth, final int renderedPanelSize);
+        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel, final double searchResultsWidth, final double renderedPanelSize);
 
         /**
          * @return The button used to show or hide the search results panel

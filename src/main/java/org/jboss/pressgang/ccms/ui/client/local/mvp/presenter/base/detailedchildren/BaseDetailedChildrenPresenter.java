@@ -129,7 +129,7 @@ abstract public class BaseDetailedChildrenPresenter<
     private void loadChildSplitResize(@NotNull final String preferencesKey) {
 
         this.display.getSplit().setSplitPosition(this.display.getPossibleChildrenResultsPanel(),
-                Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
+                Preferences.INSTANCE.getDouble(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
 
     /**

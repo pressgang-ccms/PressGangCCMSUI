@@ -166,14 +166,20 @@ abstract public class BaseSearchAndEditView<
         initialize(displaySearchResults, Constants.SPLIT_PANEL_SIZE, null);
     }
 
-    protected void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
+    protected void initialize(final boolean displaySearchResults, final double searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
 
-        final int fixedSearchResultsWidth = searchResultsWidth < 0 ? 0 : searchResultsWidth;
+        final double fixedSearchResultsWidth = searchResultsWidth < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : searchResultsWidth;
 
         splitPanel.clear();
         if (displaySearchResults) {
-            splitPanel.addWest(resultsViewLayoutPanel, fixedSearchResultsWidth);
+            splitPanel.addWest(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
             splitPanel.setWidgetMinSize(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
+
+            /*
+                The size has to be set after setWidgetMinSize is called, otherwise some panels
+                 are smaller than expected.
+             */
+            splitPanel.setSplitPosition(resultsViewLayoutPanel, fixedSearchResultsWidth, false);
         }
         if (callback != null) {
             callback.addToCompassPoints();

@@ -273,12 +273,12 @@ public abstract class BaseSearchResultsAndTopicView<
      * @param renderedPanelSize   the width of the rendered panel
      */
     @Override
-    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel, final int searchResultsWidth, final int renderedPanelSize) {
+    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel, final double searchResultsWidth, final double renderedPanelSize) {
 
         this.splitType = splitType;
         this.readOnly = readOnly;
 
-        final int fixedRenderedPanelSize = renderedPanelSize < 0 ? 0 : renderedPanelSize;
+        final double fixedRenderedPanelSize = renderedPanelSize < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : renderedPanelSize;
 
         super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override
@@ -288,12 +288,18 @@ public abstract class BaseSearchResultsAndTopicView<
                 renderedPanelParent.add(panel);
 
                 if (splitType == SplitType.HORIZONTAL) {
-                    getSplitPanel().addSouth(renderedPanelParent, fixedRenderedPanelSize);
+                    getSplitPanel().addSouth(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                     getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 } else if (splitType == SplitType.VERTICAL) {
-                    getSplitPanel().addEast(renderedPanelParent, fixedRenderedPanelSize);
+                    getSplitPanel().addEast(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                     getSplitPanel().setWidgetMinSize(renderedPanelParent, Constants.MINIMUM_SPLIT_SIZE);
                 }
+
+                /*
+                    The size has to be set after setWidgetMinSize is called, otherwise some panels
+                    are smaller than expected.
+                */
+                getSplitPanel().setSplitPosition(renderedPanelParent, fixedRenderedPanelSize, false);
             }
         });
 

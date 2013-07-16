@@ -385,7 +385,7 @@ abstract public class BaseSearchAndEditPresenter<
             checkState(display != null, "The display variable should have been initialized. You need to call bindSearchAndEdit() first.");
 
             if (display.getResultsViewLayoutPanel().isAttached()) {
-                final int newPanelSize = Preferences.INSTANCE.getInt(mainSplitSizePreferenceKey, Constants.SPLIT_PANEL_SIZE);
+                final double newPanelSize = Preferences.INSTANCE.getDouble(mainSplitSizePreferenceKey, Constants.SPLIT_PANEL_SIZE);
                 final Widget widget = display.getResultsViewLayoutPanel();
                 display.getSplitPanel().setSplitPosition(widget, newPanelSize < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : newPanelSize, false);
             }
