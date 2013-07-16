@@ -33,48 +33,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private Frame loadingiframe;
     private Frame loadediframe;
-
-    /**
-     * The GWT scrolling functions don't work in Firefox in a window that contains
-     * XSL transformed into HTML. So we use native code to get access to the scroll
-     * position of the default view. Tested in Chrome and Firefox.
-     *
-     * @param id The iframe id
-     * @return The current horizontal scroll position
-     */
-    private native int getScrollX(@NotNull final String id)  /*-{
-		try {
-			var iframe = $doc.getElementById(id);
-			if (iframe != null &&
-				iframe.contentWindow != null) {
-				return iframe.contentWindow.pageXOffset;
-			}
-		} catch (exception) {
-			// probably a cross domain violation
-		}
-		return 0;
-	}-*/;
-
-    /**
-     * The GWT scrolling functions don't work in Firefox in a window that contains
-     * XSL transformed into HTML. So we use native code to get access to the scroll
-     * position of the default view. Tested in Chrome and Firefox.
-     *
-     * @param id The iframe id
-     * @return The current vertical scroll position
-     */
-    private native int getScrollY(@NotNull final String id)  /*-{
-		try {
-			var iframe = $doc.getElementById(id);
-			if (iframe != null &&
-				iframe.contentWindow != null) {
-				return iframe.contentWindow.document.defaultView.pageYOffset;
-			}
-		} catch (exception) {
-			// probably a cross domain violation
-		}
-		return 0;
-	}-*/;
+    private int scrollTopPosition = 0, scrollLeftPosition = 0;
+    private String echoServer;
 
     /**
      * The GWT scrolling functions don't work in Firefox in a window that contains
@@ -90,7 +50,8 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 			var iframe = $doc.getElementById(id);
 			if (iframe != null &&
 				iframe.contentWindow != null) {
-				iframe.contentWindow.document.defaultView.scrollTo(scrollLeft, scrollTop);
+				iframe.contentWindow.postMessage('{"event":"scroll","scrollLeft":' + scrollLeft + ',"scrollTop":' + scrollTop + '}',
+                    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::echoServer);
 			}
 		} catch (exception) {
 			// probably a cross domain violation
@@ -129,9 +90,22 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 					// Make sure the iframe sending the data is from an expected source
                     var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
                     var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
-                    if (event.data == 'loaded' && serverHost.indexOf(event.origin) == 0) {
-						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
-					}
+
+                    try {
+                        var eventObject = JSON.parse(event.data);
+
+                        if (eventObject.event == 'loaded' && serverHost.indexOf(event.origin) == 0) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
+                        } else if (eventObject.event == 'scrolled') {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::scrollTopPosition = eventObject.scrollTop;
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::scrollLeftPosition = eventObject.scrollLeft;
+                        }
+                    } catch (exception) {
+                        // The events just used to be 'loaded', so fall back to that if the JSON parsing failed
+                        if (event.data == 'loaded' && serverHost.indexOf(event.origin) == 0) {
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::displayRendered()();
+                        }
+                    }
 				};
 			}(this);
 	}-*/;
@@ -143,15 +117,6 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private void displayRendered() {
         if (loadingiframe != null) {
             final int next = displayingRow == 0 ? 1 : 0;
-
-            /*
-                Maintain the scroll position. This will fail if the iframe is not in the same domain.
-                We have to get these values before the iframe is hidden, otherwise Firefox will
-                lose the scroll position.
-             */
-            final int scrollX = getScrollX(LOADED_IFRAME);
-            final int scrollY = getScrollY(LOADED_IFRAME);
-
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
@@ -165,7 +130,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
                 flexTable.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
             }
 
-            setScroll(LOADING_IFRAME, scrollX, scrollY);
+            setScroll(LOADING_IFRAME, scrollLeftPosition, scrollTopPosition);
 
             if (loadediframe != null) {
                 loadediframe.getElement().setId(HIDDEN_IFRAME);
@@ -200,14 +165,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             All this means in this situation is that the user will see blank screen or a half rendered HTML page.
          */
 
+        final ServerDetails serverDetails = ServerDetails.getSavedServer();
+        echoServer = serverDetails.getRestUrl();
+
         loadingiframe = new Frame();
         loadingiframe.getElement().setId(LOADING_IFRAME);
-        loadingiframe.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+        loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
         loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
         flexTable.setWidget(displayingRow, 0, loadingiframe);
 
         return true;
     }
-
-
 }
