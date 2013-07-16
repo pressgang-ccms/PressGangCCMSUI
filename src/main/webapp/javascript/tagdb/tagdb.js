@@ -7,10 +7,11 @@ var tags = null;
 
 self.addEventListener('message', function (e) {
     if (e.data.tagDB) {
+        var database = JSON.parse(e.data.tagDB);
         tags = [];
 
-        for (var property in e.data.tagDB) {
-            if (e.data.tagDB.hasOwnProperty(property)) {
+        for (var property in database) {
+            if (database.hasOwnProperty(property)) {
                 tags.push(property);
             }
         }
