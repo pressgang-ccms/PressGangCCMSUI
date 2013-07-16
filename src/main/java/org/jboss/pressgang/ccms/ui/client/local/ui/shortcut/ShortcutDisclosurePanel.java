@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.shortcut;
 
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -68,5 +70,13 @@ public class ShortcutDisclosurePanel extends Composite implements IShortcutPanel
 
     public boolean isOpen() {
         return panel.isOpen();
+    }
+
+    public void addOpenHandler(OpenHandler<DisclosurePanel> openHandler) {
+        panel.addOpenHandler(openHandler);
+    }
+
+    public void addCloseHandler(CloseHandler<DisclosurePanel> openHandler) {
+        panel.addCloseHandler(openHandler);
     }
 }
