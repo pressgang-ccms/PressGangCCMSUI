@@ -3,8 +3,20 @@
     back with the start and end points of the tags.
  */
 
+var tags = null;
+
 self.addEventListener('message', function (e) {
-    if (e.data.lines) {
+    if (e.data.tagDB) {
+        tags = [];
+
+        for (var property in e.data.tagDB) {
+            if (e.data.tagDB.hasOwnProperty(property)) {
+                tags.push(property);
+            }
+        }
+    }
+
+    if (e.data.lines && tags != null) {
         var lines = e.data.lines;
 
         var retValue = [];
@@ -14,7 +26,7 @@ self.addEventListener('message', function (e) {
             var tags = [];
 
             // match only xml/html elements
-            var tagRe = /(<\s*)([^\s/>]+)/g;
+            var tagRe = /(<\s*\/?\s*)([^\s/>]+)/g;
             var tagMatch = null;
             while (tagMatch = tagRe.exec(line)) {
                 var prefix = tagMatch[1];
