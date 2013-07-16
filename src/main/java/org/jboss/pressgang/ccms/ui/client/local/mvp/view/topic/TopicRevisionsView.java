@@ -59,6 +59,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * The done button.
      */
     private final PushButton htmlDone = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+    private final PushButton htmlOpenDiff = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NewWindow());
 
     /**
      * A button used when rendering the view button column.
@@ -381,6 +382,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         final HorizontalPanel htmlButtonPanel = new HorizontalPanel();
         htmlButtonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         htmlButtonPanel.add(htmlDone);
+        htmlButtonPanel.add(htmlOpenDiff);
 
         htmlDiffPanel.addSouth(htmlButtonPanel, BUTTON_PANEL_HEIGHT);
         htmlDiffPanel.add(htmlDiffParent);
@@ -540,8 +542,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
 
-
-
-
-
+    /**
+     * The open diff button.
+     */
+    @Override
+    public PushButton getHtmlOpenDiff() {
+        return htmlOpenDiff;
+    }
 }

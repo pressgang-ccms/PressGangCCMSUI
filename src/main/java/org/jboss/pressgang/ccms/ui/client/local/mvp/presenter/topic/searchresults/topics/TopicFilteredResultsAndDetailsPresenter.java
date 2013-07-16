@@ -39,6 +39,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -234,6 +235,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * true after the topics have been loaded
      */
     private boolean topicListLoaded = false;
+    private Integer renderedDiffRevision;
 
     private final Map<Integer, Integer> topicRevisionViewData = new HashMap<Integer, Integer>();
 
@@ -910,6 +912,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     topicRevisionsComponent.getDisplay().displayRevisions();
                     getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
+                }
+            });
+
+            topicRevisionsComponent.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    final String query = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() + ";" +
+                        getRenderedDiffRevision() + ";" +
+                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+
+                    eventBus.fireEvent(new RenderedDiffEvent(query,GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             });
 
@@ -2040,9 +2053,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 topicRevisionsComponent.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
 
-                                        /*
-                                            We can't save while merging.
-                                         */
+                                /*
+                                    We can't save while merging.
+                                 */
                                 getDisplay().getSave().setEnabled(false);
                             }
 
@@ -2050,7 +2063,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
+
+
                     failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
+
                 }
             });
 
@@ -2117,6 +2133,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             );
                         }
                     };
+
+                    /*
+                        Make a note of the revision for the click handler.
+                    */
+                    setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
                     failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
 
@@ -2770,6 +2791,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
 
+    }
+
+    /**
+     * The revision that was used to generate the rendered diff
+      */
+    private Integer getRenderedDiffRevision() {
+        return renderedDiffRevision;
+    }
+
+    private void setRenderedDiffRevision(@Nullable final Integer renderedDiffRevision) {
+        this.renderedDiffRevision = renderedDiffRevision;
     }
 
     private interface ReturnCurrentTopic {
