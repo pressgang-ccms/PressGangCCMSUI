@@ -833,16 +833,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
 
-            final StringBuilder idsQuery = new StringBuilder();
-            for (final Integer id : ids) {
-                if (!idsQuery.toString().isEmpty()) {
-                    idsQuery.append(",");
-                }
-                idsQuery.append(id);
-            }
-
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
+                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -852,11 +844,17 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString() + "\n" +
-                        PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + idsQuery.toString());
+                Window.alert(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
 
+            final StringBuilder idsQuery = new StringBuilder();
+            for (final Integer id : ids) {
+                if (!idsQuery.toString().isEmpty()) {
+                    idsQuery.append(",");
+                }
+                idsQuery.append(id);
+            }
             eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
