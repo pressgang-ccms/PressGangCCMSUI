@@ -116,6 +116,7 @@ final public class Preferences {
 
     public static final String SHORTCUT_SEARCH_MENU_OPEN = "ShortcutSearchMenuOpen";
     public static final String SHORTCUT_ENTITIES_MENU_OPEN = "ShortcutEntitiesMenuOpen";
+    public static final String SHORTCUT_ADVANCED_MENU_OPEN = "ShortcutAdvancedMenuOpen";
 
     /**
      * A singelton instance of this class.

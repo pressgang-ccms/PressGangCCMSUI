@@ -11,6 +11,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
@@ -18,6 +22,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -173,6 +178,50 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void bindDefaultShortcutButtons() {
+        // Sub menu open/close handlers
+        display.getShortcuts().getEntitiesSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
+            @Override
+            public void onClose(CloseEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, false);
+            }
+        });
+
+        display.getShortcuts().getSearchSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
+            @Override
+            public void onClose(CloseEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, false);
+            }
+        });
+
+        display.getShortcuts().getAdvancedSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
+            @Override
+            public void onClose(CloseEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, false);
+            }
+        });
+
+        display.getShortcuts().getEntitiesSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, true);
+            }
+        });
+
+        display.getShortcuts().getSearchSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, true);
+            }
+        });
+
+        display.getShortcuts().getAdvancedSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
+            @Override
+            public void onOpen(OpenEvent<DisclosurePanel> event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, true);
+            }
+        });
+
+        // Shortcut button menus
         display.getShortcuts().getHomeButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -438,12 +487,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 if (display.getTopLevelPanel().isAttached() && hasUnsavedChanges()) {
                     event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
-
-                // Save the open shortcut menus
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, display.getShortcuts().getSearchSubMenu()
-                        .isOpen());
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, display.getShortcuts().getEntitiesSubMenu()
-                        .isOpen());
             }
         });
 
