@@ -35,6 +35,8 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final Label tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final Label errorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
 
+    private final PushButton showHideSearchResults = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
+
     /**
      * An instance of the message log dialog box
      */
@@ -96,6 +98,17 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     }
 
     @Override
+    public void initialize(boolean displaySearchResults, double searchResultsWidth) {
+        super.initialize(displaySearchResults, searchResultsWidth, null);
+    }
+
+    @NotNull
+    @Override
+    public PushButton getShowHideSearchResults() {
+        return showHideSearchResults;
+    }
+
+    @Override
     @NotNull
     public PushButton getExtendedProperties() {
         return extendedProperties;
@@ -110,7 +123,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     public ContentSpecFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecifications());
         populateTopActionBar();
-        getShortcuts().setSpacerEnabled(true);
+        getShortcuts().setSpacerButton(showHideSearchResults);
         super.initialize(true);
     }
 

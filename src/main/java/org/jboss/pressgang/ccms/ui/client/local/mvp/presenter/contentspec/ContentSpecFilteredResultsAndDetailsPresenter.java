@@ -1,9 +1,24 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -52,16 +67,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
@@ -134,6 +139,23 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private String queryString;
 
+    private boolean displayingSearchResults = true;
+
+
+    public boolean isDisplayingSearchResults() {
+        return displayingSearchResults;
+    }
+
+    public void setDisplayingSearchResults(final boolean displayingSearchResults) {
+        this.displayingSearchResults = displayingSearchResults;
+        if (displayingSearchResults) {
+            getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
+        } else {
+            getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+
+        }
+    }
+
     @NotNull
     protected Display getDisplay() {
         return display;
@@ -144,34 +166,41 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
+            RESTTextContentSpecCollectionItemV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
+            checkState(displayedItem != null,
                     "There should be a displayed collection item.");
-            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+            checkState(displayedItem.getItem() != null,
                     "The displayed collection item to reference a valid entity.");
             checkState(
-                    filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter
-                            .getProviderData().getDisplayedItem().getItem().getId() != null,
+                    displayedItem.returnIsAddItem() || displayedItem.getItem().getId() != null,
                     "The displayed collection item to reference a valid entity with a valid ID.");
+
+            // Make the window title display the id of the content spec
+            if (displayedItem.getItem().getId() != null) {
+                GWTUtilities.setBrowserWindowTitle("CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE
+                        .PressGangCCMS());
+            } else {
+                GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+            }
 
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
-            final RESTTextContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+            final RESTTextContentSpecV1 displayedContentSpec = displayedItem.getItem();
             final RESTTextContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
-
 
             /*
                 Display the list of assigned property tags. This should not be null, but bugs in the REST api can
                 lead to the properties collection being null.
             */
-            if (displayedItem.getProperties() != null) {
-                Collections.sort(displayedItem.getProperties().getItems(),
+            if (displayedContentSpec.getProperties() != null) {
+                Collections.sort(displayedContentSpec.getProperties().getItems(),
                         new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedContentSpec);
             }
 
             /* Get a new collection of property tags. */
-            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedContentSpec);
 
             displayPropertyTags();
 
@@ -278,7 +307,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        display.getSave().addClickHandler(new ClickHandler() {
+        final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hasUnsavedChanges()) {
@@ -290,9 +319,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             }
-        });
+        };
 
-        display.getPermissiveSave().addClickHandler(new ClickHandler() {
+        final ClickHandler permissiveSaveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hasUnsavedChanges()) {
@@ -308,18 +337,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             }
-        });
+        };
 
-        display.getHistory().addClickHandler(new ClickHandler() {
+        final ClickHandler revisionsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecRevisionsComponent.getDisplay());
                 }
             }
-        });
+        };
 
-        contentSpecRevisionsComponent.getDisplay().getDone().addClickHandler(new ClickHandler() {
+        final ClickHandler revisionDoneClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (getDisplayedContentSpec().getRevision() == filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision
@@ -333,27 +362,27 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
                 getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
-        });
+        };
 
-        contentSpecRevisionsComponent.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+        final ClickHandler revisionCancelClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 contentSpecRevisionsComponent.getDisplay().displayRevisions();
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
                 getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
-        });
+        };
 
-        display.getContentSpecTags().addClickHandler(new ClickHandler() {
+        final ClickHandler tagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecTagsPresenter.getDisplay());
                 }
             }
-        });
+        };
 
-        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
+        final ClickHandler logMessageOkClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -576,16 +605,78 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                 }
             }
-        });
+        };
 
-        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+        final ClickHandler showHideSearchResults = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                setSearchResultsVisible(!isDisplayingSearchResults());
+            }
+        };
+
+        final ClickHandler logMessageCancelClickHandler = new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
                 display.getMessageLogDialog().reset();
                 display.getMessageLogDialog().getDialogBox().hide();
             }
-        });
+        };
+
+        display.getSave().addClickHandler(saveClickHandler);
+        display.getPermissiveSave().addClickHandler(permissiveSaveClickHandler);
+        display.getHistory().addClickHandler(revisionsClickHandler);
+        display.getContentSpecTags().addClickHandler(tagsClickHandler);
+        display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
+        contentSpecRevisionsComponent.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
+        contentSpecRevisionsComponent.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
+        display.getMessageLogDialog().getCancel().addClickHandler(logMessageCancelClickHandler);
+        getDisplay().getShowHideSearchResults().addClickHandler(showHideSearchResults);
+    }
+
+    private void setSearchResultsVisible(final boolean visible) {
+        if (visible != isDisplayingSearchResults()) {
+            setDisplayingSearchResults(visible);
+            initializeDisplay();
+
+            /*
+                Elements like the ace editor and mergely diff viewer need to get
+                an onResize event so they can be sized appropriately. For reasons that
+                I have not yet worked out, this can only be done after control has been
+                handed back to the browser loop (which is when scheduleDeferred runs).
+             */
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" +
+                                ".execute()");
+                        getDisplay().getSplitPanel().onResize();
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" +
+                                ".execute()");
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * (Re)Initialize the main display with the rendered view split pane (if selected).
+     */
+    private void initializeDisplay() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.initializeDisplay()");
+
+            final double searchResultsWidth = Preferences.INSTANCE.getDouble(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+
+            /* Have to do this after the parseToken method has been called */
+            getDisplay().initialize(isDisplayingSearchResults(), searchResultsWidth);
+            enableAndDisableActionButtons(lastDisplayedView);
+            loadMainSplitResize(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.initializeDisplay()");
+        }
     }
 
     @Override
@@ -677,7 +768,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         contentSpecTagsPresenter.getTags();
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
                 contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
                 getNewEntityCallback);
 
@@ -741,6 +832,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     filteredResultsPresenter.getProviderData().getItems() != null &&
                     filteredResultsPresenter.getProviderData().getItems().size() == 1) {
                 loadNewEntity(getNewEntityCallback, filteredResultsPresenter.getProviderData().getItems().get(0));
+                setSearchResultsVisible(false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
@@ -791,7 +883,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         have done so, don't show the merge view.
                                      */
                                     if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
-                                        final boolean lhsReadonly = getDisplayedContentSpec().getRevision() !=
+                                        final boolean rhsReadonly = getDisplayedContentSpec().getRevision() !=
                                                 filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
                                                         .getRevision();
 
@@ -799,8 +891,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         ComponentContentSpecV1.fixDisplayedText(retValue);
 
                                         // Display the diffs
-                                        contentSpecRevisionsComponent.getDisplay().displayDiff(getDisplayedContentSpec().getText(),
-                                                lhsReadonly, retValue.getText());
+                                        contentSpecRevisionsComponent.getDisplay().displayDiff(retValue.getText(),
+                                                rhsReadonly, getDisplayedContentSpec().getText());
 
                                         // We can't save while merging.
                                         getDisplay().getSave().setEnabled(false);
@@ -1514,6 +1606,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         LogMessageInterface getMessageLogDialog();
 
+        void initialize(final boolean displaySearchResults, final double searchResultsWidth);
 
+        /**
+         * @return The button used to show or hide the search results panel
+         */
+        @NotNull
+        PushButton getShowHideSearchResults();
     }
 }

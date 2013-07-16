@@ -113,6 +113,10 @@ final public class Preferences {
      * The setting that saves the width of the split screen on the category search screen
      */
     public static final String FILE_VIEW_MAIN_SPLIT_WIDTH = "FileViewMainSplitWidth";
+    /**
+     * The setting that saves the width of the split screen on the content spec search screen
+     */
+    public static final String CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH = "ContentSpecViewMainSplitWidth";
 
     public static final String SHORTCUT_SEARCH_MENU_OPEN = "ShortcutSearchMenuOpen";
     public static final String SHORTCUT_ENTITIES_MENU_OPEN = "ShortcutEntitiesMenuOpen";
