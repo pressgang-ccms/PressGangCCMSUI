@@ -1763,7 +1763,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
-                /* Make sure that the query string has at least the prefix */
+                    /* Make sure that the query string has at least the prefix */
                     setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
                 }
             }

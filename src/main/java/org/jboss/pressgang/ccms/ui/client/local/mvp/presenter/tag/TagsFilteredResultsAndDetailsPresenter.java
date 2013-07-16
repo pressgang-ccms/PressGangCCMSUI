@@ -497,7 +497,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
-                Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+                Preferences.INSTANCE.getDouble(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
         filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         projectsComponent.bindChildrenExtended(ServiceConstants.TAG_PROJECTS_HELP_TOPIC, pageId);
