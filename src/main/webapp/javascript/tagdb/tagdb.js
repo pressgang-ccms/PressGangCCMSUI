@@ -24,7 +24,7 @@ self.addEventListener('message', function (e) {
         for (var lineIndex = 0, linesLength = lines.length; lineIndex < linesLength; ++lineIndex) {
 
             var line = lines[lineIndex];
-            var tags = [];
+            var tagDetails = [];
 
             // match only xml/html elements
             var tagRe = /(<\s*\/?\s*)([^\s/>]+)/g;
@@ -36,11 +36,11 @@ self.addEventListener('message', function (e) {
                     var prefix = tagMatch[1];
                     var start = tagMatch.index + prefix.length;
                     var end = start + tag.length;
-                    tags.push([start, end]);
+                    tagDetails.push([start, end]);
                 }
             }
 
-            retValue.push(tags);
+            retValue.push(tagDetails);
         }
 
         postMessage(retValue);
