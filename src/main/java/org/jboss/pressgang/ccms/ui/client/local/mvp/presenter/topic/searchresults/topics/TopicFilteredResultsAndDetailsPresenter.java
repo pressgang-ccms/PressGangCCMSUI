@@ -1566,7 +1566,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 
 		if (worker == null) {
-			worker = new Worker('javascript/xmllint/xmllint.js');
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = new Worker('javascript/xmllint/xmllint.js');
+			worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
 			worker.addEventListener('message', function (me) {
 				return function (e) {
 					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
