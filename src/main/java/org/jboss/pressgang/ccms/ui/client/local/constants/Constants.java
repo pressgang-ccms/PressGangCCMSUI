@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307170927";
+    public static final String VERSION = "201307171035";
 
     /**
      * The JSON Key for a recently failed failed server id
