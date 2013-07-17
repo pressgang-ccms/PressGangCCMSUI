@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.field;
 
+import java.util.Date;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
@@ -10,8 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Date;
 
 /**
  * The backing object for the search fields view. Instance of this class will be manipulated by a GWT Editor
@@ -230,7 +230,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                 includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         if (!GWTUtilities.isStringNullOrEmpty(ids)) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_IDS_FILTER_VAR).append("=").append(encodeQueryParameter(ids));
+            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR).append("=").append(encodeQueryParameter(ids));
         }
         if (!GWTUtilities.isStringNullOrEmpty(title)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_TITLE_FILTER_VAR).append("=").append(
