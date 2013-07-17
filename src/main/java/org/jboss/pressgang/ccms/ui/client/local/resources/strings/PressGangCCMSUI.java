@@ -912,9 +912,6 @@ public interface PressGangCCMSUI extends Constants {
     String NoBulkTagsSelected();
 
     @NotNull
-    String ContentSpecTextEdit();
-
-    @NotNull
     String ContentSpecID();
 
     @NotNull
