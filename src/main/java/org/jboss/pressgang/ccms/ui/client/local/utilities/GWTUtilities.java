@@ -53,6 +53,17 @@ final public class GWTUtilities {
     }
 
     /**
+     * Strips out the doctype preamble in XML. This is usually done before the XML
+     * is rendered in the UI
+     * @param xml The source xml
+     * @return the xml without the doctype
+     */
+    public static String removeDoctypePreamble(@NotNull final String xml) {
+        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>");
+        return regExp.replace(xml, "");
+    }
+
+    /**
      * Open a new window with the results of a prettydiff comparison
      *
      * @param source      The source XML
