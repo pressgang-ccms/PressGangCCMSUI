@@ -334,7 +334,7 @@ html {
 }
 
 .TextButton.Warning:hover, .DownLabel.Warning {
-    background-color: #FF8000;
+    background-color: #FF6000;
     border-color: #FF6000;
 }
 
