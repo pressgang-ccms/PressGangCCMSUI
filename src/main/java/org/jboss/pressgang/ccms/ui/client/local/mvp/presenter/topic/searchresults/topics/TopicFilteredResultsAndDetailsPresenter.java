@@ -1612,6 +1612,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                // Add the doctype that include the standard docbook entities
+                text = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()() + text;
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
