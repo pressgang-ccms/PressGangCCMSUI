@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
@@ -79,6 +80,9 @@ public class App {
 
             /* Inject the CSS file */
             CSSResources.INSTANCE.appCss().ensureInjected();
+
+            /* Load the DTD file used for validation and rendering */
+            DocbookDTD.loadDtd();
 
             this.appController.go(root);
         } finally {

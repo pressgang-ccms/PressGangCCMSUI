@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -260,7 +261,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
-                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + retValue.getXml();
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue.getXml();
 
                     failOverRESTCall.performRESTCall(
                             FailOverRESTCallDatabase.holdXML(xml),

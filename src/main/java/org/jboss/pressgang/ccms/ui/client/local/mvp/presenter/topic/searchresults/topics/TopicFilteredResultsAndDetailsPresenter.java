@@ -874,24 +874,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 /* This should always be false */
                 if (!checkingXML) {
-
-                    /*
-                        Load the DTD and start checking the XML
-                     */
-                    try {
-                        new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
-                            @Override
-                            public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
-                                startCheckingXML(resp.getText());
-                            }
-
-                            @Override
-                            public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-                            }
-                        });
-                    } catch (@NotNull final RequestException e) {
-                        // do nothing
-                    }
+                    startCheckingXML();
                 }
             } else {
                 timer.cancel();
@@ -1541,9 +1524,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * The worker that continuously checks the XML will stop when checkingXML is set to false.
      */
-    private void startCheckingXML(@NotNull final String dtd) {
+    private void startCheckingXML() {
         checkingXML = true;
-        checkXML(dtd);
+        checkXML();
     }
 
     /**
@@ -1572,7 +1555,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
 	}-*/;
 
-    private native void checkXML(@NotNull final String dtd) /*-{
+    private native void checkXML() /*-{
 		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
 		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 
@@ -1624,7 +1607,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 						}
 					}
 
-					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML()();
 				}
 			}(this),
 			false);
@@ -1637,12 +1620,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
-                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+
+                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML()();
 						};
 					}(this), 250);
                 } else {
-					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML = text;
-					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.postMessage({xml: text, schema: dtd});
+				    var dtd = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtd()();
+                    if (dtd != "") {
+                        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML = text;
+                        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.postMessage({xml: text, schema: dtd});
+                    }
                 }
 			}
 		}
