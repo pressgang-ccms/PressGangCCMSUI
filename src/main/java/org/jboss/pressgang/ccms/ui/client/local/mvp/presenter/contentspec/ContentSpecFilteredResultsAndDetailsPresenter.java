@@ -1105,6 +1105,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     @Override
     public void close() {
+        GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
+
+        /*
+            Allow the child components to close.
+         */
+        contentSpecRevisionsComponent.close();
+        filteredResultsPresenter.close();
+        commonExtendedPropertiesPresenter.close();
+        contentSpecTagsPresenter.close();
+        contentSpecDetailsPresenter.close();
     }
 
     @Override
