@@ -268,19 +268,19 @@ public abstract class BaseSearchResultsAndTopicView<
      * @param readOnly            true if the view should be read only, and false otherwise
      * @param splitType           How the parent panel should be split
      * @param panel               The rendered view panel itself
-     * @param dislaySearchResults true if the search results are being displayed, false otherwise
+     * @param displaySearchResults true if the search results are being displayed, false otherwise
      * @param searchResultsWidth  the width of the search results panel
      * @param renderedPanelSize   the width of the rendered panel
      */
     @Override
-    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel, final double searchResultsWidth, final double renderedPanelSize) {
+    public void initialize(final boolean readOnly, final SplitType splitType, final boolean displaySearchResults, @NotNull final Panel panel, final double searchResultsWidth, final double renderedPanelSize) {
 
         this.splitType = splitType;
         this.readOnly = readOnly;
 
         final double fixedRenderedPanelSize = renderedPanelSize < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : renderedPanelSize;
 
-        super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
+        super.initialize(displaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override
             public void addToCompassPoints() {
                 final SimplePanel renderedPanelParent = new SimplePanel();

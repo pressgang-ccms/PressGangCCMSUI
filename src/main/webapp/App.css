@@ -328,6 +328,16 @@ html {
     border-color: #920000;
 }
 
+.TextButton.Warning {
+    background-color: #FF8000;
+    border-color: #FF6000;
+}
+
+.TextButton.Warning:hover, .DownLabel.Warning {
+    background-color: #FF6000;
+    border-color: #FF6000;
+}
+
 .TextButton:hover, .DownLabel {
     background-color: #005492;
     border: 1px solid #005492;
