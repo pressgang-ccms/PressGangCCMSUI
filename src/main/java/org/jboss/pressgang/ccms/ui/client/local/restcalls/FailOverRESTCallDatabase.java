@@ -127,6 +127,11 @@ public final class FailOverRESTCallDatabase {
     private static final String IMAGE_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}";
 
     /**
+     * The required expansion for topics with properties
+     */
+    private static final String TOPIC_WITH_PROPERTIES_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
+
+    /**
      * The required expansion details for the property tags.
      */
     private static final String PROPERTY_TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyTagV1.PROPERTY_CATEGORIES_NAME + "\"}}";
@@ -1007,6 +1012,38 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static RESTCall getTopicsWithPropertiesFromQuery(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+
+                final String expand =
+                    "{" +
+                        "\"branches\":[" +
+                            "{" +
+                                "\"trunk\":\"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"," +
+                                "\"branches\":["
+                                    + TOPIC_WITH_PROPERTIES_EXPANSION +
+                                "]" +
+                            "}" +
+                        "]" +
+                    "}";
+
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
