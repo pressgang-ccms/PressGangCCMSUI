@@ -776,7 +776,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
-                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), false);
+                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */

@@ -261,7 +261,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
-                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue.getXml();
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +  GWTUtilities.removeAllPreabmle(retValue.getXml());
 
                     failOverRESTCall.performRESTCall(
                             FailOverRESTCallDatabase.holdXML(xml),

@@ -1613,7 +1613,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 // Add the doctype that include the standard docbook entities
-                text = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()() + text;
+                text = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()() +
+                    @org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities::removeAllPreabmle(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
@@ -1831,7 +1832,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
                     getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                            addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
+                            addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(this.getDisplayedTopic().getXml())), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();
