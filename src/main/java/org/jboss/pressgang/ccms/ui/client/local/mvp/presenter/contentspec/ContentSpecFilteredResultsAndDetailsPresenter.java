@@ -38,6 +38,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextCSProcessingOptionsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -1104,6 +1105,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     @Override
     public void close() {
+        GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
+
+        /*
+            Allow the child components to close.
+         */
+        contentSpecRevisionsComponent.close();
+        filteredResultsPresenter.close();
+        commonExtendedPropertiesPresenter.close();
+        contentSpecTagsPresenter.close();
+        contentSpecDetailsPresenter.close();
     }
 
     @Override
@@ -1143,6 +1154,22 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             this.display.replaceTopActionButton(this.display.getContentSpecTags(), this.display.getContentSpecTagsDown());
         } else if (displayedView == this.contentSpecErrorsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getErrors(), this.display.getErrorsDown());
+        }
+
+        final RESTTextContentSpecV1 displayedContentSpec = getDisplayedContentSpec();
+        if (displayedContentSpec!= null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty()) {
+            if (displayedContentSpec.getErrors().contains("ERROR")) {
+                getDisplay().getErrors().addStyleName(CSSConstants.Common.ERROR);
+                getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.ERROR);
+            } else {
+                getDisplay().getErrors().addStyleName(CSSConstants.Common.WARNING);
+                getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.WARNING);
+            }
+        } else {
+            getDisplay().getErrors().removeStyleName(CSSConstants.Common.ERROR);
+            getDisplay().getErrors().removeStyleName(CSSConstants.Common.WARNING);
+            getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
+            getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
         }
     }
 

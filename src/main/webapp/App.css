@@ -1,3 +1,15 @@
+.ContextMenuIFrameParent {
+    width: 400px;
+    height: 300px;
+    cursor: default;
+}
+
+.ContextMenuIFrame {
+    width: 100%;
+    height: 296px;
+    border: 0px none transparent;
+}
+
 .TopicRenderedViewIFrameTableLoadingCell {
     display: none;
 }
@@ -39,13 +51,7 @@
     background-color: rgba(255, 87, 0, 0.20);
 }
 
-.ace_marker-layer div[class^='tagmatch'] {
-    position: absolute;
-    z-index: -2;
-    background-color: rgba(0, 245, 255, 0.2);
-}
-
-.ace_marker-layer div[class^='badphrase'] {
+.ace_marker-layer div[class^='badphrase'], .ace_marker-layer div[class^='tagmatch'] {
     position: absolute;
     z-index: -2;
     background-color: rgba(133, 0, 255, 0.2);
@@ -320,6 +326,16 @@ html {
 .TextButton.Error:hover, .DownLabel.Error {
     background-color: #920000;
     border-color: #920000;
+}
+
+.TextButton.Warning {
+    background-color: #FF8000;
+    border-color: #FF6000;
+}
+
+.TextButton.Warning:hover, .DownLabel.Warning {
+    background-color: #FF6000;
+    border-color: #FF6000;
 }
 
 .TextButton:hover, .DownLabel {
