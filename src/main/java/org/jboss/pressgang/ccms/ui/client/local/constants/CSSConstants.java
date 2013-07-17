@@ -747,6 +747,10 @@ public interface CSSConstants {
          */
         String ERROR = "Error";
         /**
+         * Assigned to push buttons that have an warning state.
+         */
+        String WARNING = "Warning";
+        /**
          * Assigned to buttons that need to show some kind of alert status.
          */
         String ALERT_BUTTON = "AlertButton";
