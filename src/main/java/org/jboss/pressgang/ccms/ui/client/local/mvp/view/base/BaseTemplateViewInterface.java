@@ -191,6 +191,9 @@ public interface BaseTemplateViewInterface {
     @NotNull
     TextBox getQuickSearchQuery();
 
+    @NotNull
+    PushButton getHelpMode();
+
     /**
      * Replaces a widget in the top action panel with another widget.
      *

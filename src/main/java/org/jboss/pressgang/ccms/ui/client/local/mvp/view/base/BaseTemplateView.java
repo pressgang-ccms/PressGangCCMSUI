@@ -182,6 +182,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final ListBox servers = new ListBox();
 
+    private final PushButton helpMode = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Help());
+
     @Override
     public HorizontalPanel getHiddenAttachmentArea() {
         return hiddenAttachmentArea;
@@ -190,6 +192,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public ListBox getServers() {
         return servers;
+    }
+
+    /**
+     * Enable the help overlay.
+     */
+    @Override
+    public PushButton getHelpMode() {
+        return helpMode;
     }
 
     /**
@@ -492,6 +502,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, footerPanel.getCellCount(0), help);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), feedback);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), helpMode);
 
         /* Add the content panel */
         panel.addStyleName(CSSConstants.Template.CONTENT_LAYOUT_PANEL);

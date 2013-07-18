@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,15 +19,19 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpOverlay;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
@@ -69,6 +74,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTemplatePresenter.class.getName());
+
+    @Inject
+    private HelpOverlay helpOverlay;
 
     /**
      * The GWT event bus.
@@ -532,6 +540,22 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         display.getServers().setSelectedIndex(i);
                         break;
                     }
+                }
+            }
+        });
+
+        display.getHelpMode().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                helpOverlay.toggleOverlay(new HashMap<Widget, HelpData>());
+            }
+        });
+
+        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
+                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE && helpOverlay.isHelpOverlayEnabled()) {
+                    helpOverlay.toggleOverlay(new HashMap<Widget, HelpData>());
                 }
             }
         });

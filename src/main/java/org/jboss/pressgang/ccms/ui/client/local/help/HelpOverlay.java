@@ -20,8 +20,8 @@ public class HelpOverlay {
     private boolean helpOverlayEnabled = false;
     private final Widget dimmerPanel = new HTML("<div>");
 
-    public void setHelpOverlayEnabled(final boolean helpOverlayEnabled) {
-        this.helpOverlayEnabled = helpOverlayEnabled;
+    public boolean isHelpOverlayEnabled() {
+        return helpOverlayEnabled;
     }
 
     public HelpOverlay() {
