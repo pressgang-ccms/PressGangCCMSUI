@@ -9,7 +9,17 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307180855";
+    public static final String VERSION = "201307180924";
+
+    /**
+     * The zindex of the widgets promoted above the help overlay dimmer
+     */
+    public static final Integer HELP_OVERLAY_ITEM_ZINDEX = 10001;
+
+    /**
+     * The zindex of the panels over the widgets above the help overlay dimmer
+     */
+    public static final Integer HELP_OVERLAY_ITEM_PANEL_ZINDEX = 10002;
 
     /**
      * The JSON Key for a recently failed failed server id

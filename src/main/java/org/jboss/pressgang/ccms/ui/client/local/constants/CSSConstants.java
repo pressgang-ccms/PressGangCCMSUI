@@ -8,6 +8,13 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface HelpOverlay {
+        /**
+         * Style applied to the dimmer panel as the base of the help overlay.
+         */
+        String HELP_OVERLAY_DIMMER_PANEL = "HelpOverlayDimmerPanel";
+    }
+
     /**
      * Styles applied to the base template.
      */
