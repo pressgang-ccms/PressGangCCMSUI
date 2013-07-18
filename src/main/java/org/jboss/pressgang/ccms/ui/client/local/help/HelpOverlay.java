@@ -38,12 +38,14 @@ public class HelpOverlay {
 
     public void toggleOverlay(@NotNull final Map<Widget, HelpData> helpDatabase) {
         if (helpOverlayEnabled) {
+            helpOverlayEnabled = false;
             removeEventListenersOnHelpWidgets(helpDatabase);
             unstyleHelpWidgets(helpDatabase);
             demoteHelpWidgets(helpDatabase);
             removeDimmerPanel();
 
         } else {
+            helpOverlayEnabled = true;
             addDimmerPanel();
             promoteHelpWidgets(helpDatabase);
             styleHelpWidgets(helpDatabase);
