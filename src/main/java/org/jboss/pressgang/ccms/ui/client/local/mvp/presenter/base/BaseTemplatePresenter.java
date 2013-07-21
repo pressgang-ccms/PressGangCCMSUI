@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -77,6 +78,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     @Inject
     private HelpOverlay helpOverlay;
+
+    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /**
      * The GWT event bus.
@@ -486,6 +489,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setFeedbackLink(pageId);
         bindStandardButtons();
         bindServerSelector();
+        buildHelpDatabase();
 
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {
@@ -547,7 +551,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getHelpMode().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                helpOverlay.toggleOverlay(new HashMap<Widget, HelpData>());
+                toggleHelpOverlay(new HashMap<Widget, HelpData>());
             }
         });
 
@@ -555,10 +559,21 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             @Override
             public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
                 if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE && helpOverlay.isHelpOverlayEnabled()) {
-                    helpOverlay.toggleOverlay(new HashMap<Widget, HelpData>());
+                    toggleHelpOverlay(new HashMap<Widget, HelpData>());
                 }
             }
         });
+    }
+
+    private void buildHelpDatabase() {
+        final HelpData docBuilderHelp = new HelpData(display.getShortcuts().getDocBuilderButton(), 14007);
+
+        this.helpDatabase.put(display.getShortcuts().getDocBuilderButton(), docBuilderHelp);
+    }
+
+    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
+        helpDataHashMap.putAll(helpDatabase);
+        helpOverlay.toggleOverlay(helpDataHashMap);
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -20,6 +21,13 @@ public class HelpData {
     private final Integer opacity;
     private HandlerRegistration mouseOverHandler;
     private HandlerRegistration mouseOutHandler;
+    private final boolean staticCss;
+
+    public HelpData(@NotNull final FocusWidget widget,
+                    @NotNull final Integer topicID)
+    {
+        this(widget, topicID, null, null);
+    }
 
     public HelpData(@NotNull final FocusWidget widget,
                     @NotNull final Integer topicID,
@@ -48,7 +56,11 @@ public class HelpData {
         }
 
         opacity = zIndexParsed;
+
+        staticCss = widget.getElement().getStyle().getPosition() == Style.Position.STATIC.getCssName();
     }
+
+
 
     /**
      *
@@ -108,5 +120,9 @@ public class HelpData {
 
     public Integer getOpacity() {
         return opacity;
+    }
+
+    public boolean isStatic() {
+        return staticCss;
     }
 }

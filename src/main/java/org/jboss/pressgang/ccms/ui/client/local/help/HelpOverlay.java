@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -18,7 +19,8 @@ public class HelpOverlay {
     private static final float UNFOCUSED_HELP_WIDGET_OPACITY = 0.7f;
     private static final float FOCUSED_HELP_WIDGET_OPACITY = 1f;
     private boolean helpOverlayEnabled = false;
-    private final Widget dimmerPanel = new HTML("<div>");
+    private final Widget dimmerPanel = new HTML();
+    private final Widget mouseLockPanel = new HTML();
 
     public boolean isHelpOverlayEnabled() {
         return helpOverlayEnabled;
@@ -26,6 +28,7 @@ public class HelpOverlay {
 
     public HelpOverlay() {
         dimmerPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_DIMMER_PANEL);
+        mouseLockPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_MOUSE_LOCK_PANEL);
     }
 
     /**
@@ -56,10 +59,12 @@ public class HelpOverlay {
     private void addDimmerPanel() {
         final RootLayoutPanel root = RootLayoutPanel.get();
         root.add(dimmerPanel);
+        root.add(mouseLockPanel);
     }
 
     private void removeDimmerPanel() {
         dimmerPanel.removeFromParent();
+        mouseLockPanel.removeFromParent();
     }
 
     private void promoteHelpWidgets(@NotNull final Map<Widget, HelpData> helpDatabase) {
@@ -76,13 +81,17 @@ public class HelpOverlay {
 
     private void styleHelpWidgets(@NotNull final Map<Widget, HelpData> helpDatabase) {
         for (final HelpData helpData : helpDatabase.values()) {
-            helpData.getWidget().getElement().getStyle().setOpacity(UNFOCUSED_HELP_WIDGET_OPACITY);
+            if (helpData.isStatic()) {
+                helpData.getWidget().getElement().getStyle().setPosition(Style.Position.RELATIVE);
+            }
         }
     }
 
     private void unstyleHelpWidgets(@NotNull final Map<Widget, HelpData> helpDatabase) {
         for (final HelpData helpData : helpDatabase.values()) {
-            helpData.getWidget().getElement().getStyle().setOpacity(helpData.getOpacity());
+            if (helpData.isStatic()) {
+                helpData.getWidget().getElement().getStyle().setPosition(Style.Position.STATIC);
+            }
         }
     }
 

@@ -13,6 +13,10 @@ public interface CSSConstants {
          * Style applied to the dimmer panel as the base of the help overlay.
          */
         String HELP_OVERLAY_DIMMER_PANEL = "HelpOverlayDimmerPanel";
+        /**
+         * Style applied to the panel that covers the screen to disable mouse events
+         */
+        String HELP_OVERLAY_MOUSE_LOCK_PANEL = "HelpOverlayMouseLockPanel";
     }
 
     /**
