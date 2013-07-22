@@ -47,11 +47,8 @@ public abstract class BaseChildrenPresenter<
     /**
      * An empty implementation of the extended bind method. Classes extending BaseChildrenPresenter should implement
      * bindChildrenExtended().
-     *
-     * @param topicId the help topic for the page
-     * @param pageId  The history token of the page
      */
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended() {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindChildren() instead.");
     }
 
@@ -69,13 +66,11 @@ public abstract class BaseChildrenPresenter<
     /**
      * Initialize this presenter.
      *
-     * @param topicId The help topic id for this view.
-     * @param pageId  The id for this page, used for the survey link.
      * @param display The view to display the wait dialog.
      */
-    protected void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
+    protected void bindChildren(@NotNull final BaseChildrenViewInterface display) {
         this.display = display;
-        super.bind(topicId, pageId, display);
+        super.bind(display);
     }
 
     /**

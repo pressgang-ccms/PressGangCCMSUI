@@ -159,7 +159,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -168,11 +168,10 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
 
-        imageComponent.bindExtended(ServiceConstants.IMAGE_HELP_TOPIC, pageId);
-        imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        imageComponent.bindExtended();
+        imageFilteredResultsComponent.bindExtendedFilteredResults(queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
@@ -195,7 +194,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(),
+        super.bindSearchAndEdit(Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(),
                 imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(), imageFilteredResultsComponent, display, display,
                 getNewEntityCallback);
 

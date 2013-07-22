@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
@@ -37,7 +38,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void go(@NotNull final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.HOME_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -45,14 +46,15 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
 
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    @Override
+    public void bindExtended() {
+        super.bind(display);
 
         failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopic(ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC),
+                FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 value) {
-                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + value.getXml();
+                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
                         failOverRESTCall.performRESTCall(
                                 FailOverRESTCallDatabase.holdXML(xml),
                                 new RESTCallBack<IntegerWrapper>() {

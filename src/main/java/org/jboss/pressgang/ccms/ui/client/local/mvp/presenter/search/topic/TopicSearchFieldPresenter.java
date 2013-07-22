@@ -34,7 +34,7 @@ public class TopicSearchFieldPresenter extends BaseSearchFieldPresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override

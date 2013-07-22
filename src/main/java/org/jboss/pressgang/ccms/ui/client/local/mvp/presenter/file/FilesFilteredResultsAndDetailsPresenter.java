@@ -164,7 +164,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -173,11 +173,10 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
 
-        fileComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        fileFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        fileComponent.bindExtended();
+        fileFilteredResultsComponent.bindExtendedFilteredResults(queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTFileV1> getNewEntityCallback = new GetNewEntityCallback<RESTFileV1>() {
@@ -199,7 +198,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.FILE_VIEW_MAIN_SPLIT_WIDTH, fileComponent.getDisplay(),
+        super.bindSearchAndEdit(Preferences.FILE_VIEW_MAIN_SPLIT_WIDTH, fileComponent.getDisplay(),
                 fileComponent.getDisplay(), fileFilteredResultsComponent.getDisplay(), fileFilteredResultsComponent, display, display,
                 getNewEntityCallback);
 

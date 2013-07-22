@@ -70,20 +70,18 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     }
 
     /**
-     * @param topicId     The ID of the help topic associated with this view
-     * @param pageId      The history token associated with this view
      * @param queryString The query that defines the results to be displayed
      * @param display     The filtered results view
      */
-    protected void bindFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
-        super.bind(topicId, pageId, display);
+    protected void bindFilteredResults(@NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
+        super.bind(display);
         displayQueryElements(queryString);
     }
 
     /**
      * An empty implementation. Extending classes should use bindExtendedFilteredResults.
      */
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended() {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindFilteredResults() instead.");
     }
 

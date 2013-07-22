@@ -159,7 +159,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.TOPIC_REVISIONS_TOPIC, HISTORY_TOKEN);
+        bindExtended();
 
         /*
             When this presenter is used a sa standalone presenter to display the rendered diff
@@ -176,8 +176,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         removeListener();
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
         createEventListener();
         addEventListener();
     }

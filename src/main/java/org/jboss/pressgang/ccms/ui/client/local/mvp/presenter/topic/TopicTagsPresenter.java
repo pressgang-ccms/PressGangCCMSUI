@@ -79,7 +79,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.TOPIC_TAGS_TOPIC, HISTORY_TOKEN);
+        bindExtended();
         getTags();
     }
 
@@ -88,8 +88,8 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        super.bind(helpTopicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
     }
 
     /**

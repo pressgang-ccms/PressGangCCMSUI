@@ -96,8 +96,8 @@ public abstract class BaseSearchFilterFilteredResultsPresenter extends BaseFilte
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        super.bindFilteredResults(topicId, pageId, queryString, display);
+    public void bindExtendedFilteredResults(@NotNull final String queryString) {
+        super.bindFilteredResults(queryString, display);
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchFilterFilteredResultsPresenter.bindExtendedFilteredResults()");

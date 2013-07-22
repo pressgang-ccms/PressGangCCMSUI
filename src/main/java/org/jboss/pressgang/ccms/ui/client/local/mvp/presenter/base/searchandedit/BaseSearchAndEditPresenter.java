@@ -78,13 +78,11 @@ abstract public class BaseSearchAndEditPresenter<
      * @param topicId the help topic for the page
      * @param pageId  The history token of the page
      */
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
+    public void bindExtended() {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindSearchAndEdit() instead.");
     }
 
     /**
-     * @param topicId                    The topic ID used for this views help link
-     * @param pageId                     The id of the page, used when submitting feedback
      * @param mainSplitSizePreferenceKey The storage key that holds the position of the split panel
      * @param firstDisplayedView         The view to display first when an entity is first selected
      * @param entityPropertiesView       The view that displays the entity fields
@@ -94,8 +92,6 @@ abstract public class BaseSearchAndEditPresenter<
      * @param waitDisplay                The view that displays the wait dialog
      */
     protected void bindSearchAndEdit(
-            final int topicId,
-            @NotNull final String pageId,
             @NotNull final String mainSplitSizePreferenceKey,
             @NotNull final BaseTemplateViewInterface firstDisplayedView,
             @NotNull final BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView,
@@ -107,7 +103,7 @@ abstract public class BaseSearchAndEditPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindSearchAndEdit()");
 
-            super.bind(topicId, pageId, display);
+            super.bind(display);
 
             this.entityPropertiesView = entityPropertiesView;
             this.filteredResultsDisplay = filteredResultsDisplay;
@@ -200,7 +196,7 @@ abstract public class BaseSearchAndEditPresenter<
             } else {
                 /* If we just created a new entity, refresh the list of entities from the database */
 
-                filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
+                filteredResultsComponent.bindExtendedFilteredResults(filteredResultsComponent.getQuery());
 
                 /*
                  * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

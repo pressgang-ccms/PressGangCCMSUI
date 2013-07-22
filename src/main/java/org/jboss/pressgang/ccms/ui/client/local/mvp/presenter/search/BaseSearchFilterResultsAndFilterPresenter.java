@@ -76,7 +76,7 @@ public abstract class BaseSearchFilterResultsAndFilterPresenter extends BaseSear
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
@@ -117,11 +117,9 @@ public abstract class BaseSearchFilterResultsAndFilterPresenter extends BaseSear
             }
         };
 
-        searchFilterPresenter.bindExtended(topicId, pageId);
-        getSearchFilterFilteredResultsPresenter().bindExtendedFilteredResults(topicId, pageId, queryString);
+        searchFilterPresenter.bindExtended();
+        getSearchFilterFilteredResultsPresenter().bindExtendedFilteredResults(queryString);
         super.bindSearchAndEdit(
-                topicId,
-                pageId,
                 Preferences.FILTER_VIEW_MAIN_SPLIT_WIDTH,
                 searchFilterPresenter.getDisplay(),
                 searchFilterPresenter.getDisplay(),

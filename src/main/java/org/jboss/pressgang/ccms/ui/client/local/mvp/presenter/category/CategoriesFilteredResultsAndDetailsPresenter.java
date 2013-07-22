@@ -133,7 +133,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.CATEGORY_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
        /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
@@ -161,14 +161,11 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             }
         };
 
+        categoryPresenter.bindExtended();
+        categoryTagPresenter.bindDetailedChildrenExtended();
+        filteredResultsPresenter.bindExtendedFilteredResults(queryString);
 
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
-
-        categoryPresenter.bindExtended(ServiceConstants.CATEGORY_DETAIL_HELP_TOPIC, pageId);
-        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.CATEGORY_TAG_HELP_TOPIC, pageId);
-        filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, pageId, queryString);
-
-        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
+        super.bindSearchAndEdit(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
 
         bindExistingChildrenAddAndRemoveButtons();
@@ -535,7 +532,6 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         enableAndDisableActionButtons(displayedView);
-        setHelpTopicForView(displayedView);
         displayedView.setViewShown(true);
     }
 
@@ -547,14 +543,6 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
         } else if (displayedView == this.categoryTagPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
-        }
-    }
-
-    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == categoryPresenter.getDisplay()) {
-            setHelpTopicId(categoryPresenter.getHelpTopicId());
-        } else if (view == categoryTagPresenter.getDisplay()) {
-            setHelpTopicId(categoryTagPresenter.getHelpTopicId());
         }
     }
 

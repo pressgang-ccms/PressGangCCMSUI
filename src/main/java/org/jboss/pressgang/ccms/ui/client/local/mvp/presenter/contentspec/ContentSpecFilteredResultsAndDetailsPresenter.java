@@ -735,7 +735,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTextContentSpecV1> getNewEntityCallback = new GetNewEntityCallback<RESTTextContentSpecV1>() {
 
@@ -758,18 +758,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         };
 
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
-
-        contentSpecDetailsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        contentSpecPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
-        contentSpecErrorsPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
-        filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        contentSpecTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        contentSpecDetailsPresenter.bindExtended();
+        contentSpecPresenter.bindExtended();
+        contentSpecErrorsPresenter.bindExtended();
+        filteredResultsPresenter.bindExtendedFilteredResults(queryString);
+        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended();
+        contentSpecTagsPresenter.bindExtended();
 
         contentSpecTagsPresenter.getTags();
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
+        super.bindSearchAndEdit(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
                 contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
                 getNewEntityCallback);
 
@@ -1100,7 +1098,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -1123,7 +1121,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
 
             enableAndDisableActionButtons(displayedView);
-            setHelpTopicForView(displayedView);
 
             /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
             if (displayedView != null) {
@@ -1170,14 +1167,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrors().removeStyleName(CSSConstants.Common.WARNING);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
-        }
-    }
-
-    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == contentSpecDetailsPresenter.getDisplay()) {
-            setHelpTopicId(contentSpecDetailsPresenter.getHelpTopicId());
-        } else if (view == contentSpecPresenter.getDisplay()) {
-            setHelpTopicId(contentSpecPresenter.getHelpTopicId());
         }
     }
 

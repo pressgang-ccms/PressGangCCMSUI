@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,15 +20,19 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpOverlay;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
@@ -70,6 +76,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTemplatePresenter.class.getName());
 
+    @Inject
+    private HelpOverlay helpOverlay;
+
+    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
+
     /**
      * The GWT event bus.
      */
@@ -80,27 +91,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * The display that holds the UI elements the user interacts with.
      */
     private BaseTemplateViewInterface display;
-
-    /**
-     * The help topic that will be displayed when the help link is clicked.
-     */
-    private int helpTopicId = ServiceConstants.DEFAULT_HELP_TOPIC;
-
-    /**
-     * @return The topic of the ID to be used for the help dialog
-     */
-    @Override
-    public int getHelpTopicId() {
-        return helpTopicId;
-    }
-
-    /**
-     * @param helpTopicId The topic of the ID to be used for the help dialog
-     */
-    @Override
-    public void setHelpTopicId(final int helpTopicId) {
-        this.helpTopicId = helpTopicId;
-    }
 
     @Override
     public boolean isOKToProceed() {
@@ -467,17 +457,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * <p/>
      * The display methods are used to display the actual data.
      *
-     * @param topicId The help topic associated with the view
-     * @param pageId  The id of the view
      * @param display The view that this presenter is associated with
      */
-    protected void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
+    protected void bind(@NotNull final BaseTemplateViewInterface display) {
         this.display = display;
-        this.helpTopicId = topicId;
 
-        setFeedbackLink(pageId);
         bindStandardButtons();
         bindServerSelector();
+        buildHelpDatabase();
 
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {
@@ -489,38 +476,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
-
-        /* Add handlers for the help link */
-        final ClickHandler openHelpClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                display.getHelpDialog().show(helpTopicId, display);
-            }
-        };
-
-        final ClickHandler okClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                display.getHelpDialog().getDialogBox().hide();
-            }
-        };
-
-        final ClickHandler editClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants
-                                    .TOPIC_IDS_FILTER_VAR + "=" + helpTopicId,
-                            false));
-                    display.getHelpDialog().getDialogBox().hide();
-                }
-            }
-        };
-
-        display.getHelp().addClickHandler(openHelpClickHandler);
-        display.getHelpDialog().getOK().addClickHandler(okClickHandler);
-        display.getHelpDialog().getEdit().addClickHandler(editClickHandler);
 
         this.eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
             @Override
@@ -535,14 +490,51 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+
+        display.getHelpMode().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                toggleHelpOverlay(new HashMap<Widget, HelpData>());
+            }
+        });
+
+        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
+                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE && helpOverlay.isHelpOverlayEnabled()) {
+                    toggleHelpOverlay(new HashMap<Widget, HelpData>());
+                }
+            }
+        });
     }
 
-    /**
-     * Set the feedback URL for the page.
-     *
-     * @param pageId The id of the page
-     */
-    protected void setFeedbackLink(@NotNull final String pageId) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
+    protected void addHelpDataToMap(@NotNull final Map<Widget, HelpData> helpDataHashMap, @NotNull final HelpData helpData) {
+        helpDataHashMap.put(helpData.getWidget(), helpData);
+    }
+
+    private void buildHelpDatabase() {
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId(), 7));
+
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId(), 7));
+
+
+    }
+
+    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
+        if (helpOverlay.isHelpOverlayEnabled()) {
+            helpOverlay.hideOverlay();
+        } else {
+            helpDataHashMap.putAll(helpDatabase);
+            helpOverlay.showOver(helpDataHashMap);
+        }
     }
 }

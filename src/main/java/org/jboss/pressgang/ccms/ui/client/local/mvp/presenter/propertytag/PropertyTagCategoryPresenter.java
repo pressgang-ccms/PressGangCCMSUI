@@ -66,7 +66,7 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -75,8 +75,8 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
     }
 
     @Override
-    public void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
-        super.bindChildren(topicId, pageId, display);
+    public void bindChildrenExtended() {
+        super.bindChildren(display);
     }
 
     @Override

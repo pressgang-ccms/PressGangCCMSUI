@@ -65,187 +65,30 @@ public final class ServiceConstants {
     /*
         *************** TOPIC CONSTANTS ***************
      */
+    public static enum HELP_TOPICS {
+        WELCOME_VIEW_CONTENT_TOPIC(12556),
+        SHOW_HIDE_SEARCH_RESULTS_TOPIC(21174),
+        HOME_VIEW_TOPIC(21175),
+        DOCBUILDER_VIEW_TOPIC(21176),
+        CREATE_TOPIC_VIEW_TOPIC(21177),
+        SEARCH_TOPICS_VIEW(21178),
+        SEARCH_TRANSLATIONS_VIEW(21179),
+        IMAGES_VIEW(21180),
+        TAGS_VIEW(21181),
+        CATEGORIES_VIEW(21182),
+        PROJECTS_VIEW(21183),
+        REPORTS(21184),
+        CREATE_BUG(21185);
 
-    /**
-     * The help topics for the content spec text edit screen
-     */
-    public static final int CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC = 14591;
+        private final int id;
+        public int getId() {
+            return id;
+        }
+        HELP_TOPICS(final int id) {
+            this.id = id;
+        }
+    }
 
-    /**
-     * The help topic for the search screen.
-     */
-    public static final int SEARCH_VIEW_HELP_TOPIC = 12505;
-    /**
-     * The topic that is displayed in the welcome view.
-     */
-    public static final int WELCOME_VIEW_CONTENT_TOPIC = 12556;
-    /**
-     * The topic that is displayed in the welcome view.
-     */
-    public static final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
-    /**
-     * The help topic for the xml edit view.
-     */
-    public static final int TOPIC_XML_EDIT_TOPIC = 12683;
-    /**
-     * The help topic for the validation errors view.
-     */
-    public static final int TOPIC_VALIDATION_ERRORS_TOPIC = 12559;
-    /**
-     * The help topic for the properties view.
-     */
-    public static final int TOPIC_PROPERTIES_TOPIC = 12560;
-    /**
-     * The help topic for the tags view.
-     */
-    public static final int TOPIC_TAGS_TOPIC = 12587;
-    /**
-     * The help topic for the revisions view.
-     */
-    public static final int TOPIC_REVISIONS_TOPIC = 12588;
-    /**
-     * The help topic for the revisions view.
-     */
-    public static final int TOPIC_BUGS_TOPIC = 12589;
-    /**
-     * The help topic for the images view.
-     */
-    public static final int IMAGES_TOPIC = 12592;
-    /**
-     * The default "No help is available" topic.
-     */
-    public static final int DEFAULT_HELP_TOPIC = 12558;
-    /**
-     * The help topic for the search filters screen.
-     */
-    public static final int FILTERS_HELP_TOPIC = 13434;
-
-    /**
-     * The help topic for the project details view.
-     */
-    public static final int PROJECT_DETAILS_HELP_TOPIC = 13581;
-
-    /**
-     * The help topic for the project tags view.
-     */
-    public static final int PROJECT_TAGS_HELP_TOPIC = 13582;
-    /**
-     * The help topic for the project view.
-     */
-    public static final int PROJECT_HELP_TOPIC = 13583;
-    /**
-     * The help topic for the property tag details view.
-     */
-    public static final int PROPERTY_TAG_DETAILS_HELP_TOPIC = 13663;
-
-    /**
-     * The help topic for the property tag tags view.
-     */
-    public static final int PROPERTY_TAG_CATEGORIES_HELP_TOPIC = 13664;
-    /**
-     * The help topic for the property tag view.
-     */
-    public static final int PROPERTY_TAG_HELP_TOPIC = 13665;
-
-    /**
-     * The help topic for the property category view.
-     */
-    public static final int PROPERTY_CATEGORY_HELP_TOPIC = 13742;
-
-    /**
-     * The help topic for the property category details view.
-     */
-    public static final int PROPERTY_CATEGORY_DETAILS_HELP_TOPIC = 13743;
-
-    /**
-     * The help topic for the property tag tags view.
-     */
-    public static final int PROPERTY_CATEGORY_TAGS_HELP_TOPIC = 13744;
-
-    /**
-     * The help topic for the string constants view.
-     */
-    public static final int STRING_CONSTANT_HELP_TOPIC = 13598;
-
-    /**
-     * The help topic for the string constants details view.
-     */
-    public static final int STRING_CONSTANT_DETAILS_HELP_TOPIC = 13600;
-
-    /**
-     * The help topic for the category view.
-     */
-    public static final int CATEGORY_HELP_TOPIC = 13584;
-
-    /**
-     * The help topic for the category detail view.
-     */
-    public static final int CATEGORY_DETAIL_HELP_TOPIC = 13585;
-
-    /**
-     * The help topic for the category tag view.
-     */
-    public static final int CATEGORY_TAG_HELP_TOPIC = 13586;
-
-    /**
-     * The help topic for the image view.
-     */
-    public static final int IMAGE_HELP_TOPIC = 13587;
-
-    /**
-     * The help topic for the tag view.
-     */
-    public static final int TAG_HELP_TOPIC = 13588;
-
-    /**
-     * The help topic for the tag projects view.
-     */
-    public static final int TAG_PROJECTS_HELP_TOPIC = 13589;
-
-    /**
-     * The help topic for the tag categories view.
-     */
-    public static final int TAG_CATEGORIES_HELP_TOPIC = 13590;
-
-    /**
-     * The help topic for the tag details view.
-     */
-    public static final int TAG_DETAIL_HELP_TOPIC = 13591;
-
-    /**
-     * The help topic for the search fields view.
-     */
-    public static final int SEARCH_FIELDS_HELP_TOPIC = 13592;
-
-    /**
-     * The help topic for the search locales view.
-     */
-    public static final int SEARCH_LOCALES_HELP_TOPIC = 13593;
-
-    /**
-     * The help topic for the topics source url view.
-     */
-    public static final int TOPIC_SOURCE_URLS_HELP_TOPIC = 13594;
-
-    /**
-     * The help topic for the topics extended properties view.
-     */
-    public static final int TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC = 13595;
-
-    /**
-     * The help topic for the home view.
-     */
-    public static final int HOME_HELP_TOPIC = 13596;
-
-    /**
-     * The help topic for the integer constants view.
-     */
-    public static final int INTEGER_CONSTANT_HELP_TOPIC = 13653;
-
-    /**
-     * The help topic for the blob constants view.
-     */
-    public static final int BLOB_CONSTANT_HELP_TOPIC = 13654;
 
     /**
      * A private constructor to prevent instantiation.

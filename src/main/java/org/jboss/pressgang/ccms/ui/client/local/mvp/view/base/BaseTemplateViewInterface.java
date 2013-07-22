@@ -137,12 +137,6 @@ public interface BaseTemplateViewInterface {
     SimplePanel getTopActionGrandParentPanel();
 
     /**
-     * @return The link that opens the help page
-     */
-    @NotNull
-    Anchor getHelp();
-
-    /**
      * @return The list of available servers.
      */
     @NotNull
@@ -172,13 +166,6 @@ public interface BaseTemplateViewInterface {
     void setViewShown(boolean isViewShown);
 
     /**
-     * Sets the link on the feedback anchor.
-     *
-     * @param link A link to a survey
-     */
-    void setFeedbackLink(String link);
-
-    /**
      * @return the button used to perform a quick search
      */
     @NotNull
@@ -190,6 +177,9 @@ public interface BaseTemplateViewInterface {
      */
     @NotNull
     TextBox getQuickSearchQuery();
+
+    @NotNull
+    PushButton getHelpMode();
 
     /**
      * Replaces a widget in the top action panel with another widget.

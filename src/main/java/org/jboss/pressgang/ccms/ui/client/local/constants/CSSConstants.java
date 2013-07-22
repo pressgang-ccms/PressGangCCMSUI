@@ -8,6 +8,29 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface HelpOverlay {
+        /**
+         * Style applied to the dimmer panel as the base of the help overlay.
+         */
+        String HELP_OVERLAY_DIMMER_PANEL = "HelpOverlayDimmerPanel";
+        /**
+         * Style applied to the panel that covers the screen to disable mouse events
+         */
+        String HELP_OVERLAY_MOUSE_LOCK_PANEL = "HelpOverlayMouseLockPanel";
+
+        String TOP_ARROW = "TopArrow";
+        String BOTTOM_ARROW = "BottomArrow";
+        String LEFT_ARROW = "LeftArrow";
+        String RIGHT_ARROW = "RightArrow";
+        String HELP_CALLOUT_IFRAME = "HelpCalloutIFrame";
+        String HELP_CALLOUT = "HelpCallout";
+        String ARROW_CELL = "ArrowCell";
+        String CONTENT_CELL = "ContentCell";
+        String CLOSE_BUTTON = "CloseButton";
+        String CLOSE_AND_EDIT_BUTTONS_PARENT = "CloseAndEditButtonsParent";
+        String CLOSE_AND_EDIT_BUTTONS_PARENT_CELL = "CloseAndEditButtonsParentCell";
+    }
+
     /**
      * Styles applied to the base template.
      */

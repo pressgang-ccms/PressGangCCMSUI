@@ -41,11 +41,8 @@ public interface BaseChildrenPresenterInterface<
     /**
      * Classes extending BaseChildrenPresenter need to implement this method to initialize the object, making sure to
      * call bindChildren().
-     *
-     * @param helpTopicId the help topic for the page
-     * @param pageId      The history token of the page
      */
-    void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId);
+    void bindChildrenExtended();
 
     /**
      * Display the data held by parent. This methods must call displayChildren().

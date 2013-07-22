@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
@@ -68,6 +69,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicFilteredResultsAndDetailsPresenter.class.getName());
+
+    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /**
      * The global event bus.
@@ -189,7 +192,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, getDisplay());
-            bindSearchAndEditExtended(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, queryString);
+            bindSearchAndEditExtended(queryString);
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.go()");
@@ -202,20 +205,20 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
+    public void bindSearchAndEditExtended(@Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
-        getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        topicTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
-        topicXMLComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        getSearchResultsComponent().bindExtendedFilteredResults(queryString);
+        topicTagsPresenter.bindExtended();
+        topicPropertyTagPresenter.bindDetailedChildrenExtended();
+        topicSourceURLsPresenter.bindChildrenExtended();
+        topicXMLComponent.bindExtended();
         /*topicBugsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicRenderedPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicXMLErrorsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId); */
 
         bindSplitPanelResize();
 
-        postBindSearchAndEditExtended(topicId, pageId, queryString);
+        postBindSearchAndEditExtended(queryString);
 
         /*
             Display the split panes. This is done after the call to postBindSearchAndEditExtended to ensure that the
@@ -229,11 +232,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * Called by bindSearchAndEditExtended(). Overriding classes should perform any additional initialization in this
      * method.
      *
-     * @param topicId     The help topic for this view
-     * @param pageId      The id for this view
      * @param queryString The query for this view
      */
-    abstract protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
+    abstract protected void postBindSearchAndEditExtended(@Nullable final String queryString);
 
     /**
      * @return true if all the data that is required to be loaded before the first
@@ -514,8 +515,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 this.topicXMLComponent.getDisplay().getDriver().flush();
             }
 
-            setHelpTopicForView(this, displayedView);
-
             postAfterSwitchView(displayedView);
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.afterSwitchView()");
@@ -776,7 +775,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
-                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), false);
+                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */
@@ -932,32 +931,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     /**
-     * Set the help link topic ids.
-     */
-    private void setHelpTopicForView(@NotNull final BaseTemplatePresenterInterface component, @NotNull final BaseTemplateViewInterface view) {
-
-        if (view instanceof TopicXMLErrorsPresenter.Display) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC);
-        } else if (view instanceof TopicPresenter.Display) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_PROPERTIES_TOPIC);
-        } else if (view instanceof TopicTagsPresenter.Display) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_TAGS_TOPIC);
-        } else if (view instanceof TopicRevisionsPresenter.Display) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_REVISIONS_TOPIC);
-        } else if (view instanceof TopicBIRTBugsPresenter.Display) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
-        } else if (view instanceof TopicXMLView) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
-        } else if (view instanceof TopicSourceURLsView) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC);
-        } else if (view instanceof CommonExtendedPropertiesPresenter) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC);
-        } else {
-            component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
-        }
-    }
-
-    /**
      * The presenter used to display the topic's rendered view..
      */
     public TopicRenderedPresenter getTopicRenderedPresenter() {
@@ -1079,5 +1052,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
          */
         @NotNull
         PushButton getShowHideSearchResults();
+    }
+
+    private void buildHelpDatabase() {
+        final HelpData docBuilderHelp = new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 7);
+
+        this.helpDatabase.put(getDisplay().getShortcuts().getDocBuilderButton(), docBuilderHelp);
+    }
+
+    @Override
+    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
+        helpDataHashMap.putAll(helpDatabase);
+        super.toggleHelpOverlay(helpDataHashMap);
     }
 }

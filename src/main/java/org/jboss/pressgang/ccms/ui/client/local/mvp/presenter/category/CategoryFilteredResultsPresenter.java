@@ -71,7 +71,7 @@ public class CategoryFilteredResultsPresenter extends BaseFilteredResultsPresent
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString);
+        bindExtendedFilteredResults(this.queryString);
     }
 
     @Override
@@ -84,10 +84,10 @@ public class CategoryFilteredResultsPresenter extends BaseFilteredResultsPresent
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindExtendedFilteredResults(@NotNull final String queryString) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
-            super.bindFilteredResults(topicId, pageId, queryString, display);
+            super.bindFilteredResults(queryString, display);
             display.setProvider(generateListProvider(queryString, display));
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoryFilteredResultsPresenter.bind()");

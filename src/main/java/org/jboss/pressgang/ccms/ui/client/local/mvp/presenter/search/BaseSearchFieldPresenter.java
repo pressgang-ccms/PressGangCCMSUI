@@ -28,8 +28,8 @@ public abstract class BaseSearchFieldPresenter extends BaseTemplatePresenter imp
     public abstract Display getDisplay();
 
     @Override
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        bind(helpTopicId, pageId, getDisplay());
+    public void bindExtended() {
+        bind(getDisplay());
     }
 
     @Override

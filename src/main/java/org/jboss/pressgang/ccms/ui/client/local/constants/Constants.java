@@ -9,7 +9,17 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307171249";
+    public static final String VERSION = "201307221657";
+
+    /**
+     * The size of the arrows in the help overlay callout
+     */
+    public static final int CALLOUT_ARROW_SIZE = 20;
+
+    /**
+     * The zindex of the widgets promoted above the help overlay dimmer
+     */
+    public static final Integer HELP_OVERLAY_ITEM_ZINDEX = 10001;
 
     /**
      * The JSON Key for a recently failed failed server id
@@ -161,7 +171,7 @@ public final class Constants {
     /**
      * The height of the footer.
      */
-    public static final int FOOTER_HEIGHT = 32;
+    public static final int FOOTER_HEIGHT = 40;
     /**
      * The maximum number of results to return in a search result.
      */
@@ -198,6 +208,11 @@ public final class Constants {
      * The reference to the XSL file that will post back the rendered HTML, to be added to any XML being rendered by the browser
      */
     public static final String DOCBOOK_DIFF_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-diff.xsl'?>";
+
+    /**
+     * The reference to the XSL file that will post back the rendered HTML, to be added to any XML being rendered by the browser
+     */
+    public static final String DOCBOOK_RENDER_ONLY_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-renderonly.xsl'?>";
 
     /**
      * The reference to the XSL file with placeholder images, to be added to any XML being rendered by the browser

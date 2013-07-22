@@ -92,7 +92,7 @@ public class TagCategoriesPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindDetailedChildrenExtended();
     }
 
     @Override
@@ -101,8 +101,8 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    public void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId) {
-        super.bindDetailedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
+    public void bindDetailedChildrenExtended() {
+        super.bindDetailedChildren(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
         // display.setExistingChildrenProvider(generateExistingProvider());
         initLifecycleBindPossibleChildrenRowClick();
     }

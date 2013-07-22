@@ -63,7 +63,7 @@ public interface BaseDetailedChildrenPresenterInterface<
      * @param topicId The help topic id for this view.
      * @param pageId  The history token of the page
      */
-    void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId);
+    void bindDetailedChildrenExtended();
 
     /**
      * Display the data held in parent. Must call displayDetailedChildren();

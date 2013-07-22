@@ -112,13 +112,12 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
 
         display.setViewShown(true);
 
-        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
 
-        getTagsPresenter().bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
-        fieldsPresenter.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
-        getLocalePresenter().bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
-        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN,
-                Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
+        getTagsPresenter().bindExtended();
+        fieldsPresenter.bindExtended();
+        getLocalePresenter().bindExtended();
+        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
         fieldsPresenter.getDisplay().display(null, false);
 
