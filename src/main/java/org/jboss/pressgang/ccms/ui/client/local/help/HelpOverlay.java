@@ -93,12 +93,13 @@ public class HelpOverlay {
         checkState(helpOverlayEnabled, "Overlay is not shown");
         checkState(helpDatabase != null, "If the overlay is being hidden, the help database should not null");
 
-        helpDatabase = null;
-        helpOverlayEnabled = false;
         removeEventListenersOnHelpWidgets();
         unstyleHelpWidgets();
         demoteHelpWidgets();
         removeDimmerPanel();
+
+        helpDatabase = null;
+        helpOverlayEnabled = false;
     }
 
     private void addDimmerPanel() {
