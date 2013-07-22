@@ -70,7 +70,15 @@ public final class ServiceConstants {
         SHOW_HIDE_SEARCH_RESULTS_TOPIC(21174),
         HOME_VIEW_TOPIC(21175),
         DOCBUILDER_VIEW_TOPIC(21176),
-        CREATE_TOPIC_VIEW_TOPIC(21177);
+        CREATE_TOPIC_VIEW_TOPIC(21177),
+        SEARCH_TOPICS_VIEW(21178),
+        SEARCH_TRANSLATIONS_VIEW(21179),
+        IMAGES_VIEW(21180),
+        TAGS_VIEW(21181),
+        CATEGORIES_VIEW(21182),
+        PROJECTS_VIEW(21183),
+        REPORTS(21184),
+        CREATE_BUG(21185);
 
         private final int id;
         public int getId() {

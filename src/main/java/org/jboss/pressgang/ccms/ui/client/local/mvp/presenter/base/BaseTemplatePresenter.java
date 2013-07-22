@@ -508,9 +508,25 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         });
     }
 
+    protected void addHelpDataToMap(@NotNull final Map<Widget, HelpData> helpDataHashMap, @NotNull final HelpData helpData) {
+        helpDataHashMap.put(helpData.getWidget(), helpData);
+    }
+
     private void buildHelpDatabase() {
-        this.helpDatabase.put(display.getShortcuts().getDocBuilderButton(), new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
-        this.helpDatabase.put(display.getShortcuts().getHomeButton(), new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId(), 7));
+
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId(), 7));
+
+
     }
 
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
