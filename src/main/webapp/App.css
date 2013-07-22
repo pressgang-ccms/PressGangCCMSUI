@@ -5,8 +5,9 @@
     font-size: xx-large;
 }
 
-.CloseAndEditButtonsParent {
+.CloseAndEditButtonsParentCell {
     background-color: white;
+    padding: 8px;
 }
 
 .LeftArrow {
@@ -45,12 +46,11 @@
     width: 400px;
     height: 300px;
     border: 0px none transparent;
-    background-color: white;
     padding: 8px;
 }
 
 .ContentCell {
-
+    background-color: white;
 }
 
 .HelpCallout td {

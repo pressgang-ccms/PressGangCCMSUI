@@ -86,10 +86,12 @@ public class HelpCallout extends FlexTable {
 
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.addStyleName(CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT);
+        horizontalPanel.setSpacing(2);
         horizontalPanel.add(edit);
         horizontalPanel.add(close);
         this.setWidget(this.getRowCount(), this.getCellCount(this.getRowCount() - 1) - 1, horizontalPanel);
         this.getFlexCellFormatter().setHorizontalAlignment(this.getRowCount() - 1, this.getCellCount(this.getRowCount() - 2) - 1, HasHorizontalAlignment.ALIGN_RIGHT);
+        this.getFlexCellFormatter().addStyleName(this.getRowCount() - 1, this.getCellCount(this.getRowCount() - 2) - 1, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
     }
 
     public Frame getiFrame() {
