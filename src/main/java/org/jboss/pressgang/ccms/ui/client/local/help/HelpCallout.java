@@ -74,12 +74,13 @@ public class HelpCallout extends FlexTable {
 
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.ARROW_CELL);
+            this.getFlexCellFormatter().setRowSpan(0, 1, 2);
 
             this.setWidget(1, 0, horizontalPanel);
             this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
             this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
 
-            this.getFlexCellFormatter().setRowSpan(0, 1, 2);
+
         }  else if (helpData.getDirection() == 4) {
             this.setWidget(0, 0, iFrame);
             arrow.addStyleName(CSSConstants.HelpOverlay.RIGHT_ARROW);
@@ -88,12 +89,13 @@ public class HelpCallout extends FlexTable {
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.ARROW_CELL);
             this.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_BOTTOM);
+            this.getFlexCellFormatter().setRowSpan(0, 1, 2);
 
             this.setWidget(1, 0, horizontalPanel);
             this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
             this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
 
-            this.getFlexCellFormatter().setRowSpan(0, 1, 2);
+
         } else if (helpData.getDirection() == 5) {
             this.setWidget(0, 0, iFrame);
             arrow.addStyleName(CSSConstants.HelpOverlay.BOTTOM_ARROW);
@@ -112,13 +114,14 @@ public class HelpCallout extends FlexTable {
 
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
+            this.getFlexCellFormatter().setRowSpan(0, 0, 2);
             this.getFlexCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_BOTTOM);
 
-            this.setWidget(1, 1, horizontalPanel);
-            this.getFlexCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
-            this.getFlexCellFormatter().addStyleName(1, 1, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
+            this.setWidget(1, 0, horizontalPanel);
+            this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+            this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
 
-            this.getFlexCellFormatter().setRowSpan(0, 0, 2);
+
         }  else if (helpData.getDirection() == 7) {
             this.setWidget(0, 1, iFrame);
             arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
@@ -126,12 +129,13 @@ public class HelpCallout extends FlexTable {
 
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
-
-            this.setWidget(1, 1, horizontalPanel);
-            this.getFlexCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
-            this.getFlexCellFormatter().addStyleName(1, 1, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
-
             this.getFlexCellFormatter().setRowSpan(0, 0, 2);
+
+            this.setWidget(1, 0, horizontalPanel);
+            this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+            this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
+
+
         }
     }
 
