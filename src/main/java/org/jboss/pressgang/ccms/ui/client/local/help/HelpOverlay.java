@@ -133,12 +133,16 @@ public class HelpOverlay {
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                close.getElement().getStyle().setRight(8, Style.Unit.PX);
-                close.getElement().getStyle().setTop(8, Style.Unit.PX);
-                close.getElement().getStyle().setProperty("left", "");
-                close.getElement().getStyle().setProperty("bottom", "");
+                positionCloseButtonDirect();
             }
         });
+    }
+
+    private void positionCloseButtonDirect() {
+        close.getElement().getStyle().setRight(8, Style.Unit.PX);
+        close.getElement().getStyle().setTop(8, Style.Unit.PX);
+        close.getElement().getStyle().setProperty("left", "");
+        close.getElement().getStyle().setProperty("bottom", "");
     }
 
     private void positionCallout() {
@@ -155,6 +159,8 @@ public class HelpOverlay {
                     helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
                 }
+
+                positionCloseButtonDirect();
             }
         });
 
