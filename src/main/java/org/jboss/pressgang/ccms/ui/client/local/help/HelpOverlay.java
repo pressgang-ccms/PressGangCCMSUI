@@ -4,15 +4,18 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -35,6 +38,8 @@ public class HelpOverlay {
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(HelpOverlay.class.getName());
+    @Inject
+    private HandlerManager eventBus;
     private static final float UNFOCUSED_HELP_WIDGET_OPACITY = 0.7f;
     private static final float FOCUSED_HELP_WIDGET_OPACITY = 1f;
     private boolean helpOverlayEnabled = false;
@@ -47,6 +52,27 @@ public class HelpOverlay {
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
+
+    private ClickHandler editClickHandler = new ClickHandler() {
+        @Override
+        public void onClick(@NotNull final ClickEvent event) {
+            if (lastWidget != null) {
+                eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
+                    Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + lastWidget.getTopicID(), true));
+            }
+        }
+    };
+
+    private ClickHandler closeClickHandler = new ClickHandler() {
+        @Override
+        public void onClick(@NotNull final ClickEvent event) {
+            if (helpCallout != null) {
+                helpCallout.removeFromParent();
+                helpCallout = null;
+                lastWidget = null;
+            }
+        }
+    };
 
     public boolean isHelpOverlayEnabled() {
         return helpOverlayEnabled;
@@ -94,6 +120,8 @@ public class HelpOverlay {
                                         }
 
                                         helpCallout = new HelpCallout(helpDatabase.get(widget));
+                                        helpCallout.getEdit().addClickHandler(editClickHandler);
+                                        helpCallout.getClose().addClickHandler(closeClickHandler);
                                         RootLayoutPanel.get().add(helpCallout);
                                         positionCallout();
 
@@ -101,7 +129,8 @@ public class HelpOverlay {
                                                 FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
                                                 new RESTCallBack<RESTTopicV1>() {
                                                     public void success(@NotNull final RESTTopicV1 value) {
-                                                        final String xml = Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
+                                                        // TODO: Change the XSL when the prod server gets the render only xsl
+                                                        final String xml = /*Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE*/ Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
                                                         failOverRESTCall.performRESTCall(
                                                                 FailOverRESTCallDatabase.holdXML(xml),
                                                                 new RESTCallBack<IntegerWrapper>() {

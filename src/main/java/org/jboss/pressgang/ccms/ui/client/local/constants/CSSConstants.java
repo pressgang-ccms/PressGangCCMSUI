@@ -27,6 +27,7 @@ public interface CSSConstants {
         String ARROW_CELL = "ArrowCell";
         String CONTENT_CELL = "ContentCell";
         String CLOSE_BUTTON = "CloseButton";
+        String CLOSE_AND_EDIT_BUTTONS_PARENT = "CloseAndEditButtonsParent";
     }
 
     /**

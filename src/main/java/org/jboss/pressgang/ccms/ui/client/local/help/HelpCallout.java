@@ -1,10 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -14,6 +13,8 @@ public class HelpCallout extends FlexTable {
 
     private final Frame iFrame = new Frame();
     private final HTML arrow = new HTML();
+    private final PushButton edit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Edit());
+    private final PushButton close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
 
 
     /**
@@ -82,6 +83,13 @@ public class HelpCallout extends FlexTable {
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
         }
+
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.addStyleName(CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT);
+        horizontalPanel.add(edit);
+        horizontalPanel.add(close);
+        this.setWidget(this.getRowCount(), this.getCellCount(this.getRowCount() - 1) - 1, horizontalPanel);
+        this.getFlexCellFormatter().setHorizontalAlignment(this.getRowCount() - 1, this.getCellCount(this.getRowCount() - 2) - 1, HasHorizontalAlignment.ALIGN_RIGHT);
     }
 
     public Frame getiFrame() {
@@ -90,5 +98,13 @@ public class HelpCallout extends FlexTable {
 
     public HTML getArrow() {
         return arrow;
+    }
+
+    public PushButton getEdit() {
+        return edit;
+    }
+
+    public PushButton getClose() {
+        return close;
     }
 }

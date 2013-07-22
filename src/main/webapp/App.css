@@ -5,6 +5,10 @@
     font-size: xx-large;
 }
 
+.CloseAndEditButtonsParent {
+    background-color: white;
+}
+
 .LeftArrow {
     width: 0px;
     height: 0px;
