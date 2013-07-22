@@ -9,7 +9,12 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307221317";
+    public static final String VERSION = "201307221342";
+
+    /**
+     * The size of the arrows in the help overlay callout
+     */
+    public static final int CALLOUT_ARROW_SIZE = 20;
 
     /**
      * The zindex of the widgets promoted above the help overlay dimmer
@@ -166,7 +171,7 @@ public final class Constants {
     /**
      * The height of the footer.
      */
-    public static final int FOOTER_HEIGHT = 32;
+    public static final int FOOTER_HEIGHT = 40;
     /**
      * The maximum number of results to return in a search result.
      */

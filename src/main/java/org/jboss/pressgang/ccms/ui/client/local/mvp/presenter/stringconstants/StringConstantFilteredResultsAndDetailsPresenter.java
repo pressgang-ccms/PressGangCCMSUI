@@ -230,7 +230,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
             LOGGER.log(Level.INFO, "ENTER StringConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
 
             /* A call back used to get a fresh copy of the entity that was selected */
-            @NotNull final GetNewEntityCallback<RESTStringConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTStringConstantV1>() {
+            final GetNewEntityCallback<RESTStringConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTStringConstantV1>() {
 
                 @Override
                 public void getNewEntity(@NotNull final RESTStringConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTStringConstantV1> displayCallback) {
@@ -240,8 +240,6 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                     displayCallback.displayNewEntity(selectedEntity);
                 }
             };
-
-            display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
             stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
             stringConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);

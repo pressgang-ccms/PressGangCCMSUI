@@ -161,9 +161,6 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             }
         };
 
-
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
-
         categoryPresenter.bindExtended(ServiceConstants.CATEGORY_DETAIL_HELP_TOPIC, pageId);
         categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.CATEGORY_TAG_HELP_TOPIC, pageId);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, pageId, queryString);

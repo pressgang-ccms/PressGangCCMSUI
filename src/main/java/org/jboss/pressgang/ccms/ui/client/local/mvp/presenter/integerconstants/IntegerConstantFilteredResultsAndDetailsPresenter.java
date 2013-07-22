@@ -224,9 +224,6 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
             }
         };
 
-
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-
         integerConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
         integerConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
         super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, integerConstantPresenter.getDisplay(), integerConstantPresenter.getDisplay(),

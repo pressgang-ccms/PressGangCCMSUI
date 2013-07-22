@@ -477,7 +477,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
                     /* A call back used to get a fresh copy of the entity that was selected */
-        @NotNull final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
+        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
             @Override
             public void getNewEntity(@NotNull final RESTTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
@@ -493,8 +493,6 @@ public class TagsFilteredResultsAndDetailsPresenter
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
             }
         };
-
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
                 Preferences.INSTANCE.getDouble(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);

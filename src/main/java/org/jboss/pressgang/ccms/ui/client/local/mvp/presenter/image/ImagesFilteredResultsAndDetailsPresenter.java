@@ -169,7 +169,6 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         imageComponent.bindExtended(ServiceConstants.IMAGE_HELP_TOPIC, pageId);
         imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);

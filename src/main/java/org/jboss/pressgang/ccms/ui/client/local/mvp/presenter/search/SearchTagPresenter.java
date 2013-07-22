@@ -60,7 +60,6 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
 
     @Override
     public void go(@NotNull final HasWidgets container) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);

@@ -149,7 +149,63 @@ public class HelpOverlay {
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                if (lastWidget.getDirection() == 7) {
+
+                if (lastWidget.getDirection() == 0) {
+
+                    final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+                    final double widgetBottom = lastWidget.getWidget().getElement().getAbsoluteBottom();
+
+                    helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 1) {
+
+                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetBottom = lastWidget.getWidget().getElement().getAbsoluteBottom();
+                    final double widgetWidth = lastWidget.getWidget().getElement().getClientWidth();
+                    final double calloutWidth = helpCallout.getElement().getClientWidth();
+
+                    helpCallout.getElement().getStyle().setLeft(widgetLeft + (widgetWidth / 2) - (calloutWidth / 2), Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetBottom, Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 2) {
+
+                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetBottom = lastWidget.getWidget().getElement().getAbsoluteBottom();
+
+                    helpCallout.getElement().getStyle().setRight(widgetLeft, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 3) {
+
+                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+                    final double widgetHeight = lastWidget.getWidget().getElement().getClientHeight();
+                    final double calloutHeight = helpCallout.getElement().getClientHeight();
+
+                    helpCallout.getElement().getStyle().setRight(widgetLeft, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 4) {
+
+                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+
+                    helpCallout.getElement().getStyle().setRight(widgetLeft, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 5) {
+
+                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+                    final double widgetWidth = lastWidget.getWidget().getElement().getClientWidth();
+                    final double calloutWidth = helpCallout.getElement().getClientWidth();
+
+                    helpCallout.getElement().getStyle().setLeft(widgetLeft + (widgetWidth / 2) - (calloutWidth / 2), Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setBottom(widgetTop, Style.Unit.PX);
+                } else if (lastWidget.getDirection() == 6) {
+
+                    final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+                    final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+
+                    helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                }  else if (lastWidget.getDirection() == 7) {
 
                     final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
                     final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();

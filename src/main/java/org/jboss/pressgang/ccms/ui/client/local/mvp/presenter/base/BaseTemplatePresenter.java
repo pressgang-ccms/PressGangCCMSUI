@@ -486,7 +486,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         this.display = display;
         this.helpTopicId = topicId;
 
-        setFeedbackLink(pageId);
         bindStandardButtons();
         bindServerSelector();
         buildHelpDatabase();
@@ -501,38 +500,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
-
-        /* Add handlers for the help link */
-        final ClickHandler openHelpClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                display.getHelpDialog().show(helpTopicId, display);
-            }
-        };
-
-        final ClickHandler okClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                display.getHelpDialog().getDialogBox().hide();
-            }
-        };
-
-        final ClickHandler editClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants
-                                    .TOPIC_IDS_FILTER_VAR + "=" + helpTopicId,
-                            false));
-                    display.getHelpDialog().getDialogBox().hide();
-                }
-            }
-        };
-
-        display.getHelp().addClickHandler(openHelpClickHandler);
-        display.getHelpDialog().getOK().addClickHandler(okClickHandler);
-        display.getHelpDialog().getEdit().addClickHandler(editClickHandler);
 
         this.eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
             @Override
@@ -578,14 +545,5 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             helpDataHashMap.putAll(helpDatabase);
             helpOverlay.showOver(helpDataHashMap);
         }
-    }
-
-    /**
-     * Set the feedback URL for the page.
-     *
-     * @param pageId The id of the page
-     */
-    protected void setFeedbackLink(@NotNull final String pageId) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

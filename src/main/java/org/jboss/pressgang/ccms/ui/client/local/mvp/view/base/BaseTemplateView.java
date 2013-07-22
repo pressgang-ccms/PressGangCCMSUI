@@ -149,17 +149,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final FlexTable footerPanel = new FlexTable();
 
-    /**
-     * The feedback link.
-     */
-    private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
-    /**
-     * The help link.
-     */
-    private final Anchor help = new Anchor(PressGangCCMSUI.INSTANCE.Help());
-    /**
-     * The version label.
-     */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
     /**
@@ -296,11 +285,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private HelpDialog helpDialog = new HelpDialogImpl();
 
-    @NotNull
-    @Override
-    public Anchor getHelp() {
-        return help;
-    }
 
     @NotNull
     @Override
@@ -499,10 +483,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), help);
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), feedback);
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), helpMode);
 
         /* Add the content panel */
@@ -635,11 +615,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     protected void hideWaiting() {
         // Do nothing by default
-    }
-
-    @Override
-    public void setFeedbackLink(@NotNull final String link) {
-        feedback.setHref(link);
     }
 
 }

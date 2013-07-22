@@ -174,7 +174,6 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         fileComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         fileFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);

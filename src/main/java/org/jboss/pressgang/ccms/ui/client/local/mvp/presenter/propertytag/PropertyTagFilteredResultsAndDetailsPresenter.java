@@ -150,8 +150,6 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             }
         };
 
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-
         filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, pageId, queryString);
         resultComponent.bindExtended(ServiceConstants.PROPERTY_TAG_DETAILS_HELP_TOPIC, pageId);
         categoryPresenter.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);

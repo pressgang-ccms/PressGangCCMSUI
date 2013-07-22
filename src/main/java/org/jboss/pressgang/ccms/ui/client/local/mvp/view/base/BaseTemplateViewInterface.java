@@ -137,12 +137,6 @@ public interface BaseTemplateViewInterface {
     SimplePanel getTopActionGrandParentPanel();
 
     /**
-     * @return The link that opens the help page
-     */
-    @NotNull
-    Anchor getHelp();
-
-    /**
      * @return The list of available servers.
      */
     @NotNull
@@ -170,13 +164,6 @@ public interface BaseTemplateViewInterface {
      * @param isViewShown true when the view is being shown to the user, false otherwise
      */
     void setViewShown(boolean isViewShown);
-
-    /**
-     * Sets the link on the feedback anchor.
-     *
-     * @param link A link to a survey
-     */
-    void setFeedbackLink(String link);
 
     /**
      * @return the button used to perform a quick search
