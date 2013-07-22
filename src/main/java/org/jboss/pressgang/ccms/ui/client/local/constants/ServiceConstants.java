@@ -69,6 +69,10 @@ public final class ServiceConstants {
 
     public static final Integer SHOW_HIDE_SEARCH_RESULTS_TOPIC = 21174;
 
+    public static final Integer HOME_VIEW_TOPIC = 21175;
+
+    public static final Integer DOCBUILDER_VIEW_TOPIC = 21176;
+
     /**
      * A private constructor to prevent instantiation.
      */
