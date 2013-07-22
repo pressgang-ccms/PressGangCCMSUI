@@ -80,6 +80,7 @@ public class HelpOverlay {
 
                                         if (helpCallout != null) {
                                             helpCallout.removeFromParent();
+                                            helpCallout = null;
                                         }
 
                                         helpCallout = new HelpCallout(helpDatabase.get(widget));
@@ -113,6 +114,7 @@ public class HelpOverlay {
 
                                     if (helpCallout != null) {
                                         helpCallout.removeFromParent();
+                                        helpCallout = null;
                                     }
                                 }
                             }
@@ -126,11 +128,14 @@ public class HelpOverlay {
 
     private void positionCallout() {
         if (lastWidget.getDirection() == 7) {
-            helpCallout.getElement().getStyle().setLeft(lastWidget.getWidget().getElement().getAbsoluteLeft() + lastWidget.getWidget().getElement().getClientWidth(), Style.Unit.PX);
-            helpCallout.getElement().getStyle().setTop(lastWidget.getWidget().getElement().getAbsoluteTop() +
-                    (lastWidget.getWidget().getElement().getClientHeight() / 2) -
-                    (helpCallout.getElement().getClientHeight() / 2),
-                    Style.Unit.PX);
+
+            final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+            final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+            final double widgetHeight = lastWidget.getWidget().getElement().getClientHeight();
+            final double calloutHeight = helpCallout.getElement().getClientHeight();
+
+            helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
+            helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
         }
     }
 
