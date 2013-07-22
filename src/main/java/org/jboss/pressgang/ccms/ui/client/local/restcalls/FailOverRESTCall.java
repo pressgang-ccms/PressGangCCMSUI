@@ -66,6 +66,10 @@ public final class FailOverRESTCall {
         performRESTCall(restCall, callback, display, disableDefaultFailureAction, new ArrayList<Integer>());
     }
 
+    public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, final boolean disableDefaultFailureAction) {
+        performRESTCall(restCall, callback, null, disableDefaultFailureAction, new ArrayList<Integer>());
+    }
+
     private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
 
         /*

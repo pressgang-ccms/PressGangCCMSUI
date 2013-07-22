@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.Widget;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * The help data associated with a widget.
  */
@@ -22,22 +24,48 @@ public class HelpData {
     private HandlerRegistration mouseOverHandler;
     private HandlerRegistration mouseOutHandler;
     private final boolean staticCss;
+    private final int direction;
 
-    public HelpData(@NotNull final FocusWidget widget,
-                    @NotNull final Integer topicID)
-    {
-        this(widget, topicID, null, null);
-    }
-
+    /**
+     *  The direction is a number from 0 to 7, and signifies a direction using the diagram below.
+     *  0   1   2
+     *  7       3
+     *  6   5   4
+     * @param widget The widget this help data relates to
+     * @param topicID The topic that will be displayed for this widget
+     * @param direction The direction that the help topic callout should appear
+     */
     public HelpData(@NotNull final FocusWidget widget,
                     @NotNull final Integer topicID,
+                    final int direction)
+    {
+        this(widget, topicID, direction, null, null);
+    }
+
+    /**
+     *  The direction is a number from 0 to 7, and signifies a direction using the diagram below.
+     *  0   1   2
+     *  7       3
+     *  6   5   4
+     * @param widget The widget this help data relates to
+     * @param topicID The topic that will be displayed for this widget
+     * @param direction The direction that the help topic callout should appear
+     * @param topicRevision The topic revision
+     * @param newSinceBuild When this feature was introduced
+     */
+    public HelpData(@NotNull final FocusWidget widget,
+                    @NotNull final Integer topicID,
+                    final int direction,
                     @Nullable final Integer topicRevision,
                     @Nullable final Integer newSinceBuild) {
+
+        checkArgument(direction >= 0 && direction <= 7, "direction should be greater than or equal to 0, and less than or equal to 7.");
 
         this.widget = widget;
         this.topicID = topicID;
         this.topicRevision = topicRevision;
         this.newSinceBuild = newSinceBuild;
+        this.direction = direction;
 
         Integer zIndexParsed;
         try {
@@ -125,5 +153,9 @@ public class HelpData {
 
     public boolean isStatic() {
         return staticCss;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 }

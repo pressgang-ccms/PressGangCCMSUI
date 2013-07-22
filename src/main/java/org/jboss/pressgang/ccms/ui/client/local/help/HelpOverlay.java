@@ -6,10 +6,20 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -29,6 +39,11 @@ public class HelpOverlay {
     private final Widget dimmerPanel = new HTML();
     private final Widget mouseLockPanel = new HTML();
     private Map<Widget, HelpData> helpDatabase;
+    private HelpCallout helpCallout;
+    private HelpData lastWidget;
+
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     public boolean isHelpOverlayEnabled() {
         return helpOverlayEnabled;
@@ -47,6 +62,7 @@ public class HelpOverlay {
 
                             checkState(helpDatabase != null, "If the overlay is enabled, the help database should not be null");
 
+                            boolean found = false;
                             for (final Widget widget : helpDatabase.keySet()) {
                                 /*
                                     Collision detection
@@ -56,9 +72,48 @@ public class HelpOverlay {
                                         widget.getElement().getAbsoluteTop() <= event.getNativeEvent().getClientY() &&
                                         widget.getElement().getAbsoluteBottom() >= event.getNativeEvent().getClientY()) {
 
-                                    LOGGER.info("Mouse is over a help widget");
+                                    found = true;
 
-                                    break;
+                                    if (helpDatabase.get(widget) != lastWidget) {
+
+                                        lastWidget = helpDatabase.get(widget);
+
+                                        if (helpCallout != null) {
+                                            helpCallout.removeFromParent();
+                                        }
+
+                                        helpCallout = new HelpCallout(helpDatabase.get(widget));
+                                        positionCallout();
+                                        RootLayoutPanel.get().add(helpCallout);
+
+                                        failOverRESTCall.performRESTCall(
+                                                FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
+                                                new RESTCallBack<RESTTopicV1>() {
+                                                    public void success(@NotNull final RESTTopicV1 value) {
+                                                        final String xml = Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
+                                                        failOverRESTCall.performRESTCall(
+                                                                FailOverRESTCallDatabase.holdXML(xml),
+                                                                new RESTCallBack<IntegerWrapper>() {
+                                                                    public void success(@NotNull final IntegerWrapper value) {
+                                                                        helpCallout.getiFrame().setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value);
+                                                                    }
+                                                                },
+                                                                true
+                                                        );
+                                                    }
+                                                }
+                                        );
+
+                                        break;
+                                   }
+                                }
+
+                                if (!found) {
+                                    lastWidget = null;
+
+                                    if (helpCallout != null) {
+                                        helpCallout.removeFromParent();
+                                    }
                                 }
                             }
                             break;
@@ -67,6 +122,16 @@ public class HelpOverlay {
                 }
             }
         );
+    }
+
+    private void positionCallout() {
+        if (lastWidget.getDirection() == 7) {
+            helpCallout.getElement().getStyle().setLeft(lastWidget.getWidget().getElement().getAbsoluteLeft() + lastWidget.getWidget().getElement().getClientWidth(), Style.Unit.PX);
+            helpCallout.getElement().getStyle().setTop(lastWidget.getWidget().getElement().getAbsoluteTop() +
+                    (lastWidget.getWidget().getElement().getClientHeight() / 2) -
+                    (helpCallout.getElement().getClientHeight() / 2),
+                    Style.Unit.PX);
+        }
     }
 
     /**

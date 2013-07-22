@@ -17,6 +17,15 @@ public interface CSSConstants {
          * Style applied to the panel that covers the screen to disable mouse events
          */
         String HELP_OVERLAY_MOUSE_LOCK_PANEL = "HelpOverlayMouseLockPanel";
+
+        String TOP_ARROW = "TopArrow";
+        String BOTTOM_ARROW = "BottomArrow";
+        String LEFT_ARROW = "LeftArrow";
+        String RIGHT_ARROW = "RightArrow";
+        String HELP_CALLOUT_IFRAME = "HelpCalloutIFrame";
+        String HELP_CALLOUT = "HelpCallout";
+        String ARROW_CELL = "ArrowCell";
+        String CONTENT_CELL = "ContentCell";
     }
 
     /**

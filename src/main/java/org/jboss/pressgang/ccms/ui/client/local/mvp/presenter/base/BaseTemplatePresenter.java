@@ -566,7 +566,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void buildHelpDatabase() {
-        final HelpData docBuilderHelp = new HelpData(display.getShortcuts().getDocBuilderButton(), 14007);
+        final HelpData docBuilderHelp = new HelpData(display.getShortcuts().getDocBuilderButton(), 14007, 7);
 
         this.helpDatabase.put(display.getShortcuts().getDocBuilderButton(), docBuilderHelp);
     }
