@@ -164,6 +164,8 @@ public class HelpOverlay {
         removeDimmerPanel();
         removeCallout();
 
+        lastWidget = null;
+
         helpDatabase = null;
         helpOverlayEnabled = false;
     }
