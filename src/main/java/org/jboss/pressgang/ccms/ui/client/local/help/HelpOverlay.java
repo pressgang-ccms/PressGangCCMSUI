@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -42,7 +43,7 @@ public class HelpOverlay {
     private Map<Widget, HelpData> helpDatabase;
     private HelpCallout helpCallout;
     private HelpData lastWidget;
-    private final PushButton close = new PushButton(new Image("images/close.png", 0, 0, 32, 32));
+    private final PushButton close = new PushButton(PressGangCCMSUI.INSTANCE.Close());
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -55,6 +56,15 @@ public class HelpOverlay {
         dimmerPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_DIMMER_PANEL);
         mouseLockPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_MOUSE_LOCK_PANEL);
         close.addStyleName(CSSConstants.HelpOverlay.CLOSE_BUTTON);
+
+        close.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (isHelpOverlayEnabled()) {
+                    hideOverlay();
+                }
+            }
+        });
 
         final HandlerRegistration handler = Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
             public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {
@@ -96,7 +106,9 @@ public class HelpOverlay {
                                                                 FailOverRESTCallDatabase.holdXML(xml),
                                                                 new RESTCallBack<IntegerWrapper>() {
                                                                     public void success(@NotNull final IntegerWrapper value) {
-                                                                        helpCallout.getiFrame().setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value);
+                                                                        if (helpCallout != null) {
+                                                                            helpCallout.getiFrame().setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value);
+                                                                        }
                                                                     }
                                                                 },
                                                                 true
@@ -115,6 +127,18 @@ public class HelpOverlay {
                 }
             }
         );
+    }
+
+    private void positionCloseButton() {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                close.getElement().getStyle().setRight(8, Style.Unit.PX);
+                close.getElement().getStyle().setTop(8, Style.Unit.PX);
+                close.getElement().getStyle().setProperty("left", "");
+                close.getElement().getStyle().setProperty("bottom", "");
+            }
+        });
     }
 
     private void positionCallout() {
@@ -183,11 +207,14 @@ public class HelpOverlay {
         final RootLayoutPanel root = RootLayoutPanel.get();
         root.add(dimmerPanel);
         root.add(mouseLockPanel);
+        root.add(close);
+        positionCloseButton();
     }
 
     private void removeDimmerPanel() {
         dimmerPanel.removeFromParent();
         mouseLockPanel.removeFromParent();
+        close.removeFromParent();
     }
 
     private void promoteHelpWidgets() {

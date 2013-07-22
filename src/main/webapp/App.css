@@ -1,8 +1,8 @@
 .CloseButton {
     z-index: 10003;
-    top: 0;
-    right: 0;
     position: absolute;
+    color: white;
+    font-size: xx-large;
 }
 
 .LeftArrow {
