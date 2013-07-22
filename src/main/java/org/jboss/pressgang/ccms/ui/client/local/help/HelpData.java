@@ -57,7 +57,8 @@ public class HelpData {
 
         opacity = zIndexParsed;
 
-        staticCss = widget.getElement().getStyle().getPosition() == Style.Position.STATIC.getCssName();
+        staticCss = widget.getElement().getStyle().getPosition() == Style.Position.STATIC.getCssName() ||
+                widget.getElement().getStyle().getPosition().isEmpty();
     }
 
 

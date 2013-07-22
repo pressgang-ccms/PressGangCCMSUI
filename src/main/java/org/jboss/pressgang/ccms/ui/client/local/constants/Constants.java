@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307220946";
+    public static final String VERSION = "201307221001";
 
     /**
      * The zindex of the widgets promoted above the help overlay dimmer

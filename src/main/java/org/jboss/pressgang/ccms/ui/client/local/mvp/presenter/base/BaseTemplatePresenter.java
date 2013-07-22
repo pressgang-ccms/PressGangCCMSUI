@@ -572,8 +572,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-        helpOverlay.toggleOverlay(helpDataHashMap);
+        if (helpOverlay.isHelpOverlayEnabled()) {
+            helpOverlay.hideOverlay();
+        } else {
+            helpDataHashMap.putAll(helpDatabase);
+            helpOverlay.showOver(helpDataHashMap);
+        }
     }
 
     /**
