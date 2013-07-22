@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.GwtEvent;
@@ -62,7 +63,6 @@ public class HelpOverlay {
 
                             checkState(helpDatabase != null, "If the overlay is enabled, the help database should not be null");
 
-                            boolean found = false;
                             for (final Widget widget : helpDatabase.keySet()) {
                                 /*
                                     Collision detection
@@ -71,8 +71,6 @@ public class HelpOverlay {
                                         widget.getElement().getAbsoluteRight() >= event.getNativeEvent().getClientX() &&
                                         widget.getElement().getAbsoluteTop() <= event.getNativeEvent().getClientY() &&
                                         widget.getElement().getAbsoluteBottom() >= event.getNativeEvent().getClientY()) {
-
-                                    found = true;
 
                                     if (helpDatabase.get(widget) != lastWidget) {
 
@@ -84,8 +82,8 @@ public class HelpOverlay {
                                         }
 
                                         helpCallout = new HelpCallout(helpDatabase.get(widget));
-                                        positionCallout();
                                         RootLayoutPanel.get().add(helpCallout);
+                                        positionCallout();
 
                                         failOverRESTCall.performRESTCall(
                                                 FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
@@ -108,15 +106,6 @@ public class HelpOverlay {
                                         break;
                                    }
                                 }
-
-                                if (!found) {
-                                    lastWidget = null;
-
-                                    if (helpCallout != null) {
-                                        helpCallout.removeFromParent();
-                                        helpCallout = null;
-                                    }
-                                }
                             }
                             break;
                         }
@@ -127,16 +116,22 @@ public class HelpOverlay {
     }
 
     private void positionCallout() {
-        if (lastWidget.getDirection() == 7) {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                if (lastWidget.getDirection() == 7) {
 
-            final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
-            final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
-            final double widgetHeight = lastWidget.getWidget().getElement().getClientHeight();
-            final double calloutHeight = helpCallout.getElement().getClientHeight();
+                    final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+                    final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+                    final double widgetHeight = lastWidget.getWidget().getElement().getClientHeight();
+                    final double calloutHeight = helpCallout.getElement().getClientHeight();
 
-            helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
-            helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
-        }
+                    helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
+                }
+            }
+        });
+
     }
 
     /**
@@ -167,9 +162,17 @@ public class HelpOverlay {
         unstyleHelpWidgets();
         demoteHelpWidgets();
         removeDimmerPanel();
+        removeCallout();
 
         helpDatabase = null;
         helpOverlayEnabled = false;
+    }
+
+    private void removeCallout() {
+        if (helpCallout != null) {
+            helpCallout.removeFromParent();
+            helpCallout = null;
+        }
     }
 
     private void addDimmerPanel() {
