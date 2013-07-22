@@ -123,7 +123,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
 
@@ -150,10 +150,10 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             }
         };
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, pageId, queryString);
-        resultComponent.bindExtended(ServiceConstants.PROPERTY_TAG_DETAILS_HELP_TOPIC, pageId);
-        categoryPresenter.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        filteredResultsComponent.bindExtendedFilteredResults(queryString);
+        resultComponent.bindExtended();
+        categoryPresenter.bindChildrenExtended();
+        super.bindSearchAndEdit(Preferences.PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
@@ -422,9 +422,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
-
         this.enableAndDisableActionButtons(displayedView);
-        setHelpTopicForView(displayedView);
     }
 
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
@@ -458,13 +456,5 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             categoryPresenter.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
-    }
-
-    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == categoryPresenter.getDisplay()) {
-            setHelpTopicId(categoryPresenter.getHelpTopicId());
-        } else if (view == resultComponent.getDisplay()) {
-            setHelpTopicId(resultComponent.getHelpTopicId());
-        }
     }
 }

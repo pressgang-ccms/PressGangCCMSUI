@@ -122,7 +122,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.PROJECT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
@@ -149,10 +149,10 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             }
         };
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        resultComponent.bindExtended(ServiceConstants.PROJECT_DETAILS_HELP_TOPIC, pageId);
-        tagComponent.bindChildrenExtended(ServiceConstants.PROJECT_TAGS_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        filteredResultsComponent.bindExtendedFilteredResults(queryString);
+        resultComponent.bindExtended();
+        tagComponent.bindChildrenExtended();
+        super.bindSearchAndEdit(Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
@@ -416,7 +416,6 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
-        setHelpTopicForView(displayedView);
     }
 
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
@@ -450,13 +449,5 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
-    }
-
-    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == tagComponent.getDisplay()) {
-            setHelpTopicId(tagComponent.getHelpTopicId());
-        } else if (view == resultComponent.getDisplay()) {
-            setHelpTopicId(resultComponent.getHelpTopicId());
-        }
     }
 }

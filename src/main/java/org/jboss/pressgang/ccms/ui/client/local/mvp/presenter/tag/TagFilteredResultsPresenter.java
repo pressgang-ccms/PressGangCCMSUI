@@ -63,7 +63,7 @@ public class TagFilteredResultsPresenter extends BaseFilteredResultsPresenter<RE
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindExtendedFilteredResults(queryString);
     }
 
     @Override
@@ -71,10 +71,11 @@ public class TagFilteredResultsPresenter extends BaseFilteredResultsPresenter<RE
 
     }
 
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    @Override
+    public void bindExtendedFilteredResults(@NotNull final String queryString) {
         display.setProvider(generateListProvider(queryString, display));
         displayQueryElements(queryString);
-        super.bindFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        super.bindFilteredResults(queryString, display);
     }
 
     @Override

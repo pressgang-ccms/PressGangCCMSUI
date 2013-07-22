@@ -91,7 +91,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
+    protected void postBindSearchAndEditExtended(@Nullable final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTranslatedTopicV1>() {
 
@@ -125,7 +125,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
         };
 
-        bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
+        bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
 

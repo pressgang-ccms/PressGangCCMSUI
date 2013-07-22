@@ -84,7 +84,7 @@ public class CommonExtendedPropertiesPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindDetailedChildrenExtended(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC, HISTORY_TOKEN);
+        bindDetailedChildrenExtended();
     }
 
     @Override
@@ -93,8 +93,8 @@ public class CommonExtendedPropertiesPresenter
     }
 
     @Override
-    public void bindDetailedChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
-        super.bindDetailedChildren(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, display);
+    public void bindDetailedChildrenExtended() {
+        super.bindDetailedChildren(Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, display);
     }
 
     @Override

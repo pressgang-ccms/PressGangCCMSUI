@@ -62,7 +62,7 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
     public void go(@NotNull final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -70,8 +70,8 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
 
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        bind(helpTopicId, pageId, display);
+    public void bindExtended() {
+        bind(display);
     }
 
     @Override

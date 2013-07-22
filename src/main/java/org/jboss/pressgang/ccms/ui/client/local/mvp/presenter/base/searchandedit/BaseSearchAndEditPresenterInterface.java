@@ -14,9 +14,7 @@ public interface BaseSearchAndEditPresenterInterface {
     /**
      * Must call bindSearchAndEdit().
      *
-     * @param topicId     The help topic id
-     * @param pageId      The page identifier
      * @param queryString The query string used to load the filtered results list
      */
-    void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString);
+    void bindSearchAndEditExtended(@NotNull final String queryString);
 }

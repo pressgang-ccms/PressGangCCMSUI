@@ -41,10 +41,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -61,6 +58,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
@@ -115,6 +113,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicV1BasicDetailsEditor> {
 
     @Inject private FailOverRESTCall failOverRESTCall;
+
+
 
     /*
         True when the XML elements dialog is opened for the first time, and the
@@ -273,7 +273,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     @Override
-    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
+    protected void postBindSearchAndEditExtended(@Nullable final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
 
@@ -310,11 +310,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(),
+        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(),
                 topicViewComponent.getDisplay(), getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(),
                 getDisplay(), getNewEntityCallback);
 
-        topicRevisionsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicRevisionsComponent.bindExtended();
 
         bindTagButtons();
 
@@ -3080,6 +3080,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         void setLoaded();
 
     }
+
+
 
 
 }

@@ -51,7 +51,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -59,8 +59,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         display.removeListener();
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    public void bindExtended() {
+        super.bind( display);
     }
 
     public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {

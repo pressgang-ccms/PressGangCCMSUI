@@ -79,7 +79,7 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
         getTags();
     }
 
@@ -87,8 +87,8 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
     public void close() {
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        super.bind(helpTopicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
     }
 
     /**

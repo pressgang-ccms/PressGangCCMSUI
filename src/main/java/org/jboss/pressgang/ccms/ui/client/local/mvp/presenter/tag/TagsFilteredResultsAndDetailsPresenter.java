@@ -463,7 +463,7 @@ public class TagsFilteredResultsAndDetailsPresenter
             LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, display);
-            bindSearchAndEditExtended(ServiceConstants.TAG_HELP_TOPIC, HISTORY_TOKEN, queryString);
+            bindSearchAndEditExtended(queryString);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.go()");
         }
@@ -475,7 +475,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
                     /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
@@ -497,13 +497,13 @@ public class TagsFilteredResultsAndDetailsPresenter
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
                 Preferences.INSTANCE.getDouble(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        projectsComponent.bindChildrenExtended(ServiceConstants.TAG_PROJECTS_HELP_TOPIC, pageId);
-        categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.TAG_CATEGORIES_HELP_TOPIC, pageId);
-        resultComponent.bindExtended(ServiceConstants.TAG_DETAIL_HELP_TOPIC, pageId);
-        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        filteredResultsComponent.bindExtendedFilteredResults(queryString);
+        projectsComponent.bindChildrenExtended();
+        categoriesComponent.bindDetailedChildrenExtended();
+        resultComponent.bindExtended();
+        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended();
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        super.bindSearchAndEdit(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         bindCategoryColumnButtons();
@@ -816,7 +816,6 @@ public class TagsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
         this.enableAndDisableActionButtons(displayedView);
-        setHelpTopicForView(displayedView);
 
         /* save any changes to the tag details */
         if (lastDisplayedView == this.resultComponent.getDisplay()) {
@@ -959,16 +958,6 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
             commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedTag, false);
-        }
-    }
-
-    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == projectsComponent.getDisplay()) {
-            setHelpTopicId(projectsComponent.getHelpTopicId());
-        } else if (view == categoriesComponent.getDisplay()) {
-            setHelpTopicId(categoriesComponent.getHelpTopicId());
-        } else if (view == resultComponent.getDisplay()) {
-            setHelpTopicId(resultComponent.getHelpTopicId());
         }
     }
 

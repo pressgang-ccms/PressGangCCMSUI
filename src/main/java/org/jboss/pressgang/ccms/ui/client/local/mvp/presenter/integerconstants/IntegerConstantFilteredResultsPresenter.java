@@ -117,8 +117,8 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        super.bindFilteredResults(topicId, pageId, queryString, display);
+    public void bindExtendedFilteredResults(@NotNull final String queryString) {
+        super.bindFilteredResults(queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }
 
@@ -130,7 +130,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindExtendedFilteredResults(queryString);
     }
 
     @Override

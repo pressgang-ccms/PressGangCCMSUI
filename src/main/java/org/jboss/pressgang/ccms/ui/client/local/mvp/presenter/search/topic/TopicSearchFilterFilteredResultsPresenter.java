@@ -25,6 +25,6 @@ public class TopicSearchFilterFilteredResultsPresenter extends BaseSearchFilterF
 
     @Override
     public void go(@NotNull final HasWidgets container) {
-        bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, getQuery());
+        bindExtendedFilteredResults(getQuery());
     }
 }

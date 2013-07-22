@@ -47,7 +47,7 @@ public class TopicSearchFilterResultsAndFilterPresenter extends BaseSearchFilter
             LOGGER.log(Level.INFO, "ENTER TopicSearchFilterResultsAndFilterPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, getDisplay());
-            bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX +
+            bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX +
                     CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
         } finally {

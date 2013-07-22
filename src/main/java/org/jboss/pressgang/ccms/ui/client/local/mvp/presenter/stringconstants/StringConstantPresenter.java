@@ -42,14 +42,14 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
     }
 
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override

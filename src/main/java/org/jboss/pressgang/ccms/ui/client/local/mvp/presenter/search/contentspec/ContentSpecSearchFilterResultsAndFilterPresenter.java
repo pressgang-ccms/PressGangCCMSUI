@@ -47,7 +47,7 @@ public class ContentSpecSearchFilterResultsAndFilterPresenter extends BaseSearch
             LOGGER.log(Level.INFO, "ENTER ContentSpecSearchFilterResultsAndFilterPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, getDisplay());
-            bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX +
+            bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX +
                     CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_CONTENT_SPEC);
 
         } finally {

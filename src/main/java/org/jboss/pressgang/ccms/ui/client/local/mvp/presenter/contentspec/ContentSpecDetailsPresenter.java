@@ -55,7 +55,7 @@ public class ContentSpecDetailsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
 
     }
 
@@ -63,7 +63,7 @@ public class ContentSpecDetailsPresenter extends BaseTemplatePresenter {
     public void close() {
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        bind(helpTopicId, pageId, display);
+    public void bindExtended() {
+        bind(display);
     }
 }

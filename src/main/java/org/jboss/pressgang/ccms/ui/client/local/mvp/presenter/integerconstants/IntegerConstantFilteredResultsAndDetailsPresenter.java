@@ -211,7 +211,7 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTIntegerConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTIntegerConstantV1>() {
 
@@ -224,9 +224,9 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
             }
         };
 
-        integerConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
-        integerConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, integerConstantPresenter.getDisplay(), integerConstantPresenter.getDisplay(),
+        integerConstantFilteredResultsPresenter.bindExtendedFilteredResults( queryString);
+        integerConstantPresenter.bindExtended();
+        super.bindSearchAndEdit(Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, integerConstantPresenter.getDisplay(), integerConstantPresenter.getDisplay(),
                 integerConstantFilteredResultsPresenter.getDisplay(), integerConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
     }
 
@@ -241,7 +241,7 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.INTEGER_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(queryString);
     }
 
     @Override

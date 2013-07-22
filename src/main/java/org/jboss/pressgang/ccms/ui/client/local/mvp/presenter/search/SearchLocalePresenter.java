@@ -47,14 +47,14 @@ public class SearchLocalePresenter extends BaseTemplatePresenter implements Base
     }
 
     @Override
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        bind(topicId, pageId, display);
+    public void bindExtended() {
+        bind(display);
     }
 
     @Override
     public void go(@NotNull final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override

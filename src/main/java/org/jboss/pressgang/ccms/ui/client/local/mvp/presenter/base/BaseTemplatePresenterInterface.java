@@ -27,11 +27,8 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
      * Other presenter base types may need additional parameters, in which case
      * they will provide an empty implementation of this method, and then create
      * and overloaded method.
-     *
-     * @param topicId the help topic for the page
-     * @param pageId  The history token of the page
      */
-    void bindExtended(final int topicId, @NotNull final String pageId);
+    void bindExtended();
 
     /**
      * @return false if the view has unsaved changes that the user wishes to save (i.e. don't continue with a navigation event),
@@ -46,15 +43,5 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
      * @return true if there are unsaved changes, and false otherwise
      */
     boolean hasUnsavedChanges();
-
-    /**
-     * @return The topic of the ID to be used for the help dialog
-     */
-    int getHelpTopicId();
-
-    /**
-     * @param helpTopicId The topic of the ID to be used for the help dialog
-     */
-    void setHelpTopicId(int helpTopicId);
 
 }

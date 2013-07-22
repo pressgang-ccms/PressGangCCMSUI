@@ -53,8 +53,8 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         return eventBus;
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        bind(helpTopicId, pageId, getDisplay());
+    public void bindExtended() {
+        bind(getDisplay());
     }
 
     protected void loadSearchLocales() {
@@ -139,8 +139,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void displayLocales() {
-        this.setHelpTopicId(localePresenter.getHelpTopicId());
-
         getDisplay().getPanel().clear();
         getDisplay().getPanel().setWidget(localePresenter.getDisplay().getPanel());
         resetTopActionButtons();
@@ -153,8 +151,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void displayTags() {
-        setHelpTopicId(tagsPresenter.getHelpTopicId());
-
         getDisplay().getPanel().clear();
         getDisplay().getPanel().setWidget(tagsPresenter.getDisplay().getPanel());
         resetTopActionButtons();
@@ -167,8 +163,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void displayFilters() {
-        setHelpTopicId(getSearchFilterResultsAndFilterPresenter().getHelpTopicId());
-
         getDisplay().getPanel().clear();
         getDisplay().getPanel().setWidget(getSearchFilterResultsAndFilterPresenter().getDisplay().getPanel());
         resetTopActionButtons();
@@ -184,8 +178,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void displayFields() {
-        this.setHelpTopicId(getFieldsPresenter().getHelpTopicId());
-
         getDisplay().getPanel().clear();
         getDisplay().getPanel().setWidget(getFieldsPresenter().getDisplay().getPanel());
         resetTopActionButtons();

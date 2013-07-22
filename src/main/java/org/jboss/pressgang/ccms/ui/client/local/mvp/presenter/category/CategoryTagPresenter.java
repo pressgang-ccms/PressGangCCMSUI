@@ -90,7 +90,7 @@ public class CategoryTagPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
-        bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindDetailedChildrenExtended();
     }
 
     @Override
@@ -98,8 +98,9 @@ public class CategoryTagPresenter
 
     }
 
-    public void bindDetailedChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
-        super.bindDetailedChildren(helpTopicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display);
+    @Override
+    public void bindDetailedChildrenExtended() {
+        super.bindDetailedChildren(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display);
     }
 
     @Override

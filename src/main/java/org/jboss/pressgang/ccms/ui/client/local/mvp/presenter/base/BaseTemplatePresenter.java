@@ -92,27 +92,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     private BaseTemplateViewInterface display;
 
-    /**
-     * The help topic that will be displayed when the help link is clicked.
-     */
-    private int helpTopicId = ServiceConstants.DEFAULT_HELP_TOPIC;
-
-    /**
-     * @return The topic of the ID to be used for the help dialog
-     */
-    @Override
-    public int getHelpTopicId() {
-        return helpTopicId;
-    }
-
-    /**
-     * @param helpTopicId The topic of the ID to be used for the help dialog
-     */
-    @Override
-    public void setHelpTopicId(final int helpTopicId) {
-        this.helpTopicId = helpTopicId;
-    }
-
     @Override
     public boolean isOKToProceed() {
         return !hasUnsavedChanges() || Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
@@ -478,13 +457,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * <p/>
      * The display methods are used to display the actual data.
      *
-     * @param topicId The help topic associated with the view
-     * @param pageId  The id of the view
      * @param display The view that this presenter is associated with
      */
-    protected void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
+    protected void bind(@NotNull final BaseTemplateViewInterface display) {
         this.display = display;
-        this.helpTopicId = topicId;
 
         bindStandardButtons();
         bindServerSelector();

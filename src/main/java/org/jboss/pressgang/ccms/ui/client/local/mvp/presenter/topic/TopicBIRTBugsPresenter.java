@@ -31,7 +31,7 @@ public class TopicBIRTBugsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.TOPIC_BUGS_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -39,8 +39,8 @@ public class TopicBIRTBugsPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
     }
 
     @Override

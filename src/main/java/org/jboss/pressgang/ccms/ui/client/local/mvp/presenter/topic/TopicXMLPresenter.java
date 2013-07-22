@@ -166,7 +166,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.TOPIC_XML_EDIT_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -174,8 +174,8 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
-        super.bind(helpTopicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
         //bindAceEditorButtons();
 
         final int splitHeight = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_XML_ERRORS_SPLIT_WIDTH, Constants.XML_ERRORS_SPLIT_PANEL_SIZE);

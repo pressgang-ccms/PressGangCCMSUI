@@ -80,12 +80,12 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
 
         display.setViewShown(true);
 
-        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
 
-        getTagsPresenter().bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
-        getFieldsPresenter().bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
-        getLocalePresenter().bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
-        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN,
+        getTagsPresenter().bindExtended();
+        getFieldsPresenter().bindExtended();
+        getLocalePresenter().bindExtended();
+        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(
                 Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants
                         .FILTER_CONTENT_SPEC);
 

@@ -225,7 +225,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    public void bindSearchAndEditExtended(@NotNull final String queryString) {
         try {
             LOGGER.log(Level.INFO, "ENTER StringConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
 
@@ -241,9 +241,9 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                 }
             };
 
-            stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
-            stringConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
-            super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, stringConstantPresenter.getDisplay(), stringConstantPresenter.getDisplay(),
+            stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(queryString);
+            stringConstantPresenter.bindExtended();
+            super.bindSearchAndEdit(Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, stringConstantPresenter.getDisplay(), stringConstantPresenter.getDisplay(),
                     stringConstantFilteredResultsPresenter.getDisplay(), stringConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
         } finally {
             LOGGER.log(Level.INFO, "EXIT StringConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
@@ -263,7 +263,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
         try {
             LOGGER.log(Level.INFO, "ENTER StringConstantFilteredResultsAndDetailsPresenter.go()");
             clearContainerAndAddTopLevelPanel(container, display);
-            bindSearchAndEditExtended(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+            bindSearchAndEditExtended(queryString);
         } finally {
             LOGGER.log(Level.INFO, "EXIT StringConstantFilteredResultsAndDetailsPresenter.go()");
         }

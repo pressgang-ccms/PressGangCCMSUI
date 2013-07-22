@@ -59,27 +59,22 @@ abstract public class BaseDetailedChildrenPresenter<
     /**
      * An empty implementation of the extended bind method. Classes extending BaseDetailedChildrenPresenter should implement
      * bindChildrenExtended().
-     *
-     * @param topicId The help topic for the view
-     * @param pageId  The history token of the page
      */
-    public void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
+    public void bindChildrenExtended() {
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
     }
 
     /**
      * Initialize this presenter.
      *
-     * @param topicId        The help topic id for this view.
-     * @param pageId         The id for this page, used for the survey link.
      * @param preferencesKey The key that saves the width of the split panel which separates the childen and their details.
      * @param display        The view to display the wait dialog.
      */
-    protected void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
+    protected void bindDetailedChildren(@NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
-        super.bindChildren(topicId, pageId, display);
+        super.bindChildren(display);
         loadChildSplitResize(preferencesKey);
         bindChildSplitResize(preferencesKey);
     }

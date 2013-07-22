@@ -33,7 +33,7 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     public void go(@NotNull final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -42,8 +42,8 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     }
 
     @Override
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    public void bindExtended() {
+        super.bind(display);
         display.display(id);
     }
 

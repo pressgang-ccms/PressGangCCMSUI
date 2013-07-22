@@ -38,7 +38,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void go(@NotNull final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.HOME_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended();
     }
 
     @Override
@@ -46,8 +46,9 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
 
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId, display);
+    @Override
+    public void bindExtended() {
+        super.bind(display);
 
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopic(ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC),
