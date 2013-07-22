@@ -42,6 +42,7 @@ public class HelpOverlay {
     private Map<Widget, HelpData> helpDatabase;
     private HelpCallout helpCallout;
     private HelpData lastWidget;
+    private final PushButton close = new PushButton(new Image("images/close.png", 0, 0, 32, 32));
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -53,6 +54,7 @@ public class HelpOverlay {
     public HelpOverlay() {
         dimmerPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_DIMMER_PANEL);
         mouseLockPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_MOUSE_LOCK_PANEL);
+        close.addStyleName(CSSConstants.HelpOverlay.CLOSE_BUTTON);
 
         final HandlerRegistration handler = Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
             public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {

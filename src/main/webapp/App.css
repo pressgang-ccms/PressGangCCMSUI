@@ -1,3 +1,10 @@
+.CloseButton {
+    z-index: 10003;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+
 .LeftArrow {
     width: 0px;
     height: 0px;
@@ -47,7 +54,7 @@
 }
 
 .HelpCallout {
-    z-index: 10003;
+    z-index: 10004;
     position: absolute;
     border-spacing: 0px;
 }

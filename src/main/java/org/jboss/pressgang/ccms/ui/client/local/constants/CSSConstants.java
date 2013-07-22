@@ -26,6 +26,7 @@ public interface CSSConstants {
         String HELP_CALLOUT = "HelpCallout";
         String ARROW_CELL = "ArrowCell";
         String CONTENT_CELL = "ContentCell";
+        String CLOSE_BUTTON = "CloseButton";
     }
 
     /**
