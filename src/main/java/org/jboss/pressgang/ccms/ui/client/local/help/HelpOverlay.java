@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -37,29 +38,35 @@ public class HelpOverlay {
         dimmerPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_DIMMER_PANEL);
         mouseLockPanel.addStyleName(CSSConstants.HelpOverlay.HELP_OVERLAY_MOUSE_LOCK_PANEL);
 
-        final HandlerRegistration handler = mouseLockPanel.addHandler(new MouseMoveHandler() {
-            @Override
-            public void onMouseMove(@NotNull final MouseMoveEvent event) {
-                if (helpOverlayEnabled) {
-                    checkState(helpDatabase != null, "If the overlay is enabled, the help database should not be null");
+        final HandlerRegistration handler = Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+            public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {
+                final int eventType = event.getTypeInt();
+                switch (eventType) {
+                    case Event.ONMOUSEMOVE:
+                        if (isHelpOverlayEnabled()) {
 
-                    for (final Widget widget : helpDatabase.keySet()) {
-                        /*
-                            Collision detection
-                         */
-                        if (widget.getElement().getAbsoluteLeft() <= event.getClientX() &&
-                                widget.getElement().getAbsoluteRight() >= event.getClientX() &&
-                                widget.getElement().getAbsoluteTop() <= event.getClientY() &&
-                                widget.getElement().getAbsoluteBottom() >= event.getClientY()) {
+                            checkState(helpDatabase != null, "If the overlay is enabled, the help database should not be null");
 
-                            LOGGER.info("Mouse is over a help widget");
+                            for (final Widget widget : helpDatabase.keySet()) {
+                                /*
+                                    Collision detection
+                                */
+                                if (widget.getElement().getAbsoluteLeft() <= event.getNativeEvent().getClientX() &&
+                                        widget.getElement().getAbsoluteRight() >= event.getNativeEvent().getClientX() &&
+                                        widget.getElement().getAbsoluteTop() <= event.getNativeEvent().getClientY() &&
+                                        widget.getElement().getAbsoluteBottom() >= event.getNativeEvent().getClientY()) {
 
+                                    LOGGER.info("Mouse is over a help widget");
+
+                                    break;
+                                }
+                            }
                             break;
                         }
                     }
                 }
             }
-        }, new GwtEvent.Type<MouseMoveHandler>());
+        );
     }
 
     /**
@@ -72,7 +79,7 @@ public class HelpOverlay {
 
     public void showOver(@NotNull final Map<Widget, HelpData> helpDatabase) {
         checkState(!helpOverlayEnabled, "Overlay is already shown");
-        checkState(helpDatabase != null, "If the overlay is enabled, the help database should not be null");
+        checkState(this.helpDatabase == null, "If the overlay is being enabled, the help database should be null");
 
         this.helpDatabase = helpDatabase;
         helpOverlayEnabled = true;
@@ -84,7 +91,7 @@ public class HelpOverlay {
 
     public void hideOverlay() {
         checkState(helpOverlayEnabled, "Overlay is not shown");
-        checkState(helpDatabase == null, "If the overlay is not enabled, the help database should not null");
+        checkState(helpDatabase != null, "If the overlay is being hidden, the help database should not null");
 
         helpDatabase = null;
         helpOverlayEnabled = false;
