@@ -51,7 +51,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
         super.bind(display);
 
         failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopic(ServiceConstants.WELCOME_VIEW_CONTENT_TOPIC),
+                FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 value) {
                         final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());

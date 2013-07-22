@@ -1055,7 +1055,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     private void buildHelpDatabase() {
-        final HelpData docBuilderHelp = new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.SHOW_HIDE_SEARCH_RESULTS_TOPIC, 7);
+        final HelpData docBuilderHelp = new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 7);
 
         this.helpDatabase.put(getDisplay().getShortcuts().getDocBuilderButton(), docBuilderHelp);
     }

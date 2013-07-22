@@ -65,13 +65,22 @@ public final class ServiceConstants {
     /*
         *************** TOPIC CONSTANTS ***************
      */
-    public static final Integer WELCOME_VIEW_CONTENT_TOPIC = 12556;
+    public static enum HELP_TOPICS {
+        WELCOME_VIEW_CONTENT_TOPIC(12556),
+        SHOW_HIDE_SEARCH_RESULTS_TOPIC(21174),
+        HOME_VIEW_TOPIC(21175),
+        DOCBUILDER_VIEW_TOPIC(21176),
+        CREATE_TOPIC_VIEW_TOPIC(21177);
 
-    public static final Integer SHOW_HIDE_SEARCH_RESULTS_TOPIC = 21174;
+        private final int id;
+        public int getId() {
+            return id;
+        }
+        HELP_TOPICS(final int id) {
+            this.id = id;
+        }
+    }
 
-    public static final Integer HOME_VIEW_TOPIC = 21175;
-
-    public static final Integer DOCBUILDER_VIEW_TOPIC = 21176;
 
     /**
      * A private constructor to prevent instantiation.

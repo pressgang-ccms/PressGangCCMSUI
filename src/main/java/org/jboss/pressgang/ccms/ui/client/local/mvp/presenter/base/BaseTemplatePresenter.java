@@ -509,8 +509,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void buildHelpDatabase() {
-        this.helpDatabase.put(display.getShortcuts().getDocBuilderButton(), new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.DOCBUILDER_VIEW_TOPIC, 7));
-        this.helpDatabase.put(display.getShortcuts().getHomeButton(), new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HOME_VIEW_TOPIC, 7));
+        this.helpDatabase.put(display.getShortcuts().getDocBuilderButton(), new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
+        this.helpDatabase.put(display.getShortcuts().getHomeButton(), new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
     }
 
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
