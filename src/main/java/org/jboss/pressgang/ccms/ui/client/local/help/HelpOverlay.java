@@ -136,7 +136,10 @@ public class HelpOverlay {
                                                                 new RESTCallBack<IntegerWrapper>() {
                                                                     public void success(@NotNull final IntegerWrapper value) {
                                                                         if (helpCallout != null) {
-                                                                            helpCallout.getiFrame().setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value);
+                                                                            helpCallout.getiFrame().setUrl(
+                                                                                    ServerDetails.getSavedServer().getRestEndpoint() +
+                                                                                            Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" +
+                                                                                            Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
                                                                         }
                                                                     }
                                                                 },
