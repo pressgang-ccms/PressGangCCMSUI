@@ -97,6 +97,10 @@ public interface CSSConstants {
          * Assigned to a padding element that pushing the remaining buttons to the right.
          */
         String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
+        /**
+         * The style applied to the version label.
+          */
+        String VERSION_LABEL = "VersionLabel";
 
 
         /**

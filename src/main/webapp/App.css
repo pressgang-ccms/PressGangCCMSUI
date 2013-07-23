@@ -1,3 +1,7 @@
+.VersionLabel {
+    background-color: white;
+}
+
 .CloseButton {
     z-index: 10003;
     position: absolute;

@@ -495,6 +495,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
 
         /* Add the version */
+        version.addStyleName(CSSConstants.Template.VERSION_LABEL);
         footerPanel.setWidget(0, 0, version);
 
         /* Add the REST server */
