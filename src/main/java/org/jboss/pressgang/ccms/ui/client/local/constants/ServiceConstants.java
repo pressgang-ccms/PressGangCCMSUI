@@ -80,7 +80,18 @@ public final class ServiceConstants {
         REPORTS(21184),
         CREATE_BUG(21185),
         FILES(21200),
-        ENTITIES(21201);
+        ENTITIES(21201),
+        ADVANCED(21186),
+        SEARCH(21202),
+        SEARCH_CONTENT_SPECS(21203),
+        CREATE_CONTENT_SPEC(21204),
+        BULK_TAGGING(21206),
+        STRING_CONSTANTS(21208),
+        BLOB_CONSTANTS(21209),
+        INTEGER_CONSTANTS(21210),
+        EXTENDED_PROPERTIES(21211),
+        EXTENDED_PROPERTY_CATEGORIES(21212),
+        MONITORING(21213);
 
         private final int id;
         public int getId() {

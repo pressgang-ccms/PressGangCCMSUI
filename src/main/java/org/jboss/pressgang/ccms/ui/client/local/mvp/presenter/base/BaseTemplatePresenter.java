@@ -526,7 +526,19 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu(), ServiceConstants.HELP_TOPICS.ENTITIES.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId(), 7));
+
 
 
     }
