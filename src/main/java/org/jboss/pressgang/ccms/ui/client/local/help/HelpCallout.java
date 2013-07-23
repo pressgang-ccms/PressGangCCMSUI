@@ -47,6 +47,7 @@ public class HelpCallout extends FlexTable {
 
         iFrame.addStyleName(CSSConstants.HelpOverlay.HELP_CALLOUT_IFRAME);
         contentParent.addStyleName(CSSConstants.HelpOverlay.HELP_CALLOUT_CONTENT_PARENT);
+        spinner.addStyleName(CSSConstants.HelpOverlay.HELP_CALLOUT_SPINNER);
 
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.addStyleName(CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT);

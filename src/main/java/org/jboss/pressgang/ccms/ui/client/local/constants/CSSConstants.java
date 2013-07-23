@@ -24,6 +24,7 @@ public interface CSSConstants {
         String RIGHT_ARROW = "RightArrow";
         String HELP_CALLOUT_IFRAME = "HelpCalloutIFrame";
         String HELP_CALLOUT_CONTENT_PARENT = "HelpCalloutContentParent";
+        String HELP_CALLOUT_SPINNER = "HelpCalloutSpinner";
         String HELP_CALLOUT = "HelpCallout";
         String ARROW_CELL = "ArrowCell";
         String CONTENT_CELL = "ContentCell";
