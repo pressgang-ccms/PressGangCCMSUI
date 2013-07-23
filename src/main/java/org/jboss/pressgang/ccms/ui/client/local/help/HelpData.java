@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * The help data associated with a widget.
  */
 public class HelpData {
-    private final FocusWidget widget;
+    private final Widget widget;
     private final Integer topicID;
     private final Integer topicRevision;
     private final Integer newSinceBuild;
@@ -35,7 +35,7 @@ public class HelpData {
      * @param topicID The topic that will be displayed for this widget
      * @param direction The direction that the help topic callout should appear
      */
-    public HelpData(@NotNull final FocusWidget widget,
+    public HelpData(@NotNull final Widget widget,
                     @NotNull final Integer topicID,
                     final int direction)
     {
@@ -53,7 +53,7 @@ public class HelpData {
      * @param topicRevision The topic revision
      * @param newSinceBuild When this feature was introduced
      */
-    public HelpData(@NotNull final FocusWidget widget,
+    public HelpData(@NotNull final Widget widget,
                     @NotNull final Integer topicID,
                     final int direction,
                     @Nullable final Integer topicRevision,
@@ -95,7 +95,7 @@ public class HelpData {
      *
      * @return The widget that this help data is associated with
      */
-    public FocusWidget getWidget() {
+    public Widget getWidget() {
         return widget;
     }
 

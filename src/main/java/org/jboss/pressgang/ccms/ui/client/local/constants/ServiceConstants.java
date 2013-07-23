@@ -78,7 +78,9 @@ public final class ServiceConstants {
         CATEGORIES_VIEW(21182),
         PROJECTS_VIEW(21183),
         REPORTS(21184),
-        CREATE_BUG(21185);
+        CREATE_BUG(21185),
+        FILES(21200),
+        ENTITIES(21201);
 
         private final int id;
         public int getId() {

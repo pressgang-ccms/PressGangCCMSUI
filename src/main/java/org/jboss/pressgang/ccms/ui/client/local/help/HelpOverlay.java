@@ -340,25 +340,7 @@ public class HelpOverlay {
     }
 
     private void addEventListenersOnHelpWidgets() {
-        for (final HelpData helpData : helpDatabase.values()) {
-            helpData.setMouseOverHandler(
-                helpData.getWidget().addMouseOverHandler(new MouseOverHandler() {
-                    @Override
-                    public void onMouseOver(@NotNull final MouseOverEvent event) {
-                        helpData.getWidget().getElement().getStyle().setOpacity(FOCUSED_HELP_WIDGET_OPACITY);
-                    }
-                })
-            );
 
-            helpData.setMouseOutHandler(
-                helpData.getWidget().addMouseOutHandler(new MouseOutHandler() {
-                    @Override
-                    public void onMouseOut(@NotNull final MouseOutEvent event) {
-                        helpData.getWidget().getElement().getStyle().setOpacity(UNFOCUSED_HELP_WIDGET_OPACITY);
-                    }
-                })
-            );
-        }
     }
 
     private void removeEventListenersOnHelpWidgets() {
