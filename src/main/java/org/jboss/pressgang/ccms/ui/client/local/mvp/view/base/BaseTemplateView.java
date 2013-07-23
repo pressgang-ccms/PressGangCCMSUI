@@ -153,6 +153,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     private final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
 
+    private final HorizontalPanel quickSearchPanel = new HorizontalPanel();
+
     /**
      * The text box where a quick search is entered.
      */
@@ -203,6 +205,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public HorizontalPanel getQuickSearchParentPanel() {
         return quickSearchParentPanel;
+    }
+
+    @Override
+    @NotNull
+    public HorizontalPanel getQuickSearchPanel() {
+        return quickSearchPanel;
     }
 
     /**
@@ -439,7 +447,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         quickSearchQuery.addStyleName(CSSConstants.Template.QUICK_SEARCH_TEXT_BOX);
 
-        final HorizontalPanel quickSearchPanel = new HorizontalPanel();
+
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         quickSearchPanel.add(quickSearchQuery);
         quickSearchPanel.add(getQuickSearch());
