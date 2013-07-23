@@ -172,7 +172,7 @@ public class HelpCallout extends FlexTable {
     }
 
     private void displayIFrame() {
-        contentParent.setWidget(iFrame);
+        //contentParent.setWidget(iFrame);
     }
 
     /**

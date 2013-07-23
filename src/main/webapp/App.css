@@ -43,10 +43,9 @@
 }
 
 .HelpCalloutIFrame {
-    width: 400px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     border: 0px none transparent;
-    padding: 8px;
 }
 
 .ContentCell {
@@ -84,11 +83,12 @@
 .HelpCalloutContentParent {
     width: 400px;
     height: 300px;
+    padding: 8px;
 }
 
 .ContextMenuIFrameParent {
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    height: 300px;
     cursor: default;
 }
 
@@ -165,7 +165,17 @@ div[class^='badword'] {
     background-color: rgba(245, 255, 0, 0.2);
 }
 
-.TopicTagViewSpinner, .TopicRevisionViewSpinner, .HelpCalloutSpinner {
+.HelpCalloutSpinner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -64px;
+    top: 50%;
+}
+
+.TopicTagViewSpinner, .TopicRevisionViewSpinner {
     position: relative;
     margin: auto;
     top: 0;
