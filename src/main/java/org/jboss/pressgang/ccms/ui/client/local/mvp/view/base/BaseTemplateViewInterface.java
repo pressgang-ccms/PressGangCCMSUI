@@ -165,6 +165,9 @@ public interface BaseTemplateViewInterface {
      */
     void setViewShown(boolean isViewShown);
 
+    @NotNull
+    HorizontalPanel getQuickSearchParentPanel();
+
     /**
      * @return the button used to perform a quick search
      */

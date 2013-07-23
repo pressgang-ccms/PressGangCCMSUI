@@ -539,8 +539,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId(), 7));
 
-
-
+        addHelpDataToMap(this.helpDatabase, new HelpData(display.getQuickSearchParentPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId(), 2));
     }
 
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {

@@ -200,10 +200,13 @@ public class HelpOverlay {
                     helpCallout.getElement().getStyle().setTop(widgetBottom, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 2) {
 
-                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+                    final double widgetWidth = lastWidget.getWidget().getElement().getClientWidth();
                     final double widgetBottom = lastWidget.getWidget().getElement().getAbsoluteBottom();
 
-                    helpCallout.getElement().getStyle().setRight(widgetLeft, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().clearLeft();
+                    helpCallout.getElement().getStyle().clearBottom();
+                    helpCallout.getElement().getStyle().setRight(widgetRight + widgetWidth, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 3) {
 

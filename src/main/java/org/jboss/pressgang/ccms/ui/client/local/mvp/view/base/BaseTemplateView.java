@@ -151,6 +151,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
+    private final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
+
     /**
      * The text box where a quick search is entered.
      */
@@ -174,10 +176,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton helpMode = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Help());
 
     @Override
+    @NotNull
     public HorizontalPanel getHiddenAttachmentArea() {
         return hiddenAttachmentArea;
     }
 
+    @Override
     @NotNull
     public ListBox getServers() {
         return servers;
@@ -187,8 +191,18 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * Enable the help overlay.
      */
     @Override
+    @NotNull
     public PushButton getHelpMode() {
         return helpMode;
+    }
+
+    /**
+     * The container holding the quick search ui elements
+      */
+    @Override
+    @NotNull
+    public HorizontalPanel getQuickSearchParentPanel() {
+        return quickSearchParentPanel;
     }
 
     /**
@@ -421,7 +435,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         pageTitleParentLayoutPanel.add(pageTitle);
 
         /* Add the quick search box */
-        final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
         quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         quickSearchQuery.addStyleName(CSSConstants.Template.QUICK_SEARCH_TEXT_BOX);

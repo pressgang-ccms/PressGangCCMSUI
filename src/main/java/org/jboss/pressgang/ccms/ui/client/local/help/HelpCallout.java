@@ -80,9 +80,9 @@ public class HelpCallout extends FlexTable {
             this.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
             this.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
         } else if (helpData.getDirection() == 2) {
-            this.setWidget(1, 0, contentParent);
+            this.setWidget(0, 0, contentParent);
             arrow.addStyleName(CSSConstants.HelpOverlay.RIGHT_ARROW);
-            this.setWidget(0, 0, arrow);
+            this.setWidget(0, 1, arrow);
 
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.ARROW_CELL);
