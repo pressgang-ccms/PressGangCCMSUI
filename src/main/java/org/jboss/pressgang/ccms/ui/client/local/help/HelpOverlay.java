@@ -271,14 +271,12 @@ public class HelpOverlay {
         addDimmerPanel();
         promoteHelpWidgets();
         styleHelpWidgets();
-        addEventListenersOnHelpWidgets();
     }
 
     public void hideOverlay() {
         checkState(helpOverlayEnabled, "Overlay is not shown");
         checkState(helpDatabase != null, "If the overlay is being hidden, the help database should not null");
 
-        removeEventListenersOnHelpWidgets();
         unstyleHelpWidgets();
         demoteHelpWidgets();
         removeDimmerPanel();
@@ -336,19 +334,6 @@ public class HelpOverlay {
             if (helpData.isStatic()) {
                 helpData.getWidget().getElement().getStyle().setPosition(Style.Position.STATIC);
             }
-        }
-    }
-
-    private void addEventListenersOnHelpWidgets() {
-
-    }
-
-    private void removeEventListenersOnHelpWidgets() {
-        for (final HelpData helpData : helpDatabase.values()) {
-            helpData.getMouseOutHandler().removeHandler();
-            helpData.getMouseOverHandler().removeHandler();
-            helpData.setMouseOutHandler(null);
-            helpData.setMouseOverHandler(null);
         }
     }
 

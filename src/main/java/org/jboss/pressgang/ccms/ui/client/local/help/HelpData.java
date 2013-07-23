@@ -21,8 +21,6 @@ public class HelpData {
     private final Integer newSinceBuild;
     private final Integer zIndex;
     private final Integer opacity;
-    private HandlerRegistration mouseOverHandler;
-    private HandlerRegistration mouseOutHandler;
     private final boolean staticCss;
     private final int direction;
 
@@ -129,22 +127,6 @@ public class HelpData {
      */
     public Integer getzIndex() {
         return zIndex;
-    }
-
-    public HandlerRegistration getMouseOverHandler() {
-        return mouseOverHandler;
-    }
-
-    public void setMouseOverHandler(@NotNull final HandlerRegistration mouseOverHandler) {
-        this.mouseOverHandler = mouseOverHandler;
-    }
-
-    public HandlerRegistration getMouseOutHandler() {
-        return mouseOutHandler;
-    }
-
-    public void setMouseOutHandler(@NotNull final HandlerRegistration mouseOutHandler) {
-        this.mouseOutHandler = mouseOutHandler;
     }
 
     public Integer getOpacity() {
