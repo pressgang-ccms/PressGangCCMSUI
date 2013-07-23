@@ -171,8 +171,11 @@ public class HelpCallout extends FlexTable {
         hiddenPanel.setWidget(iFrame);
     }
 
+    /**
+     * Swap the spinner for the iframe.
+     */
     private void displayIFrame() {
-        //contentParent.setWidget(iFrame);
+        contentParent.setWidget(iFrame);
     }
 
     /**
