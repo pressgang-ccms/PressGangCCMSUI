@@ -134,7 +134,7 @@ public class HelpCallout extends FlexTable {
         }  else if (helpData.getDirection() == 6) {
             this.setWidget(0, 1, contentParent);
             arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
-            this.setWidget(1, 0, arrow);
+            this.setWidget(0, 0, arrow);
 
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);

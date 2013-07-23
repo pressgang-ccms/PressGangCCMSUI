@@ -92,7 +92,10 @@ public final class ServiceConstants {
         EXTENDED_PROPERTIES(21211),
         EXTENDED_PROPERTY_CATEGORIES(21212),
         MONITORING(21213),
-        SIMPLE_SEARCH(21214);
+        SIMPLE_SEARCH(21214),
+        HELP_MODE(21226),
+        SERVER_SELECTION(21227),
+        BUILD_LABEL(21228);
 
         private final int id;
         public int getId() {

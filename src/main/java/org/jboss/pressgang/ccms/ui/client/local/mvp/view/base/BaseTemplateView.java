@@ -213,6 +213,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return quickSearchPanel;
     }
 
+    @Override
+    @NotNull
+    public Label getVersion() {
+        return version;
+    }
+
     /**
      * Defines the help dialog box, which is displayed when the help link is clicked.
      *

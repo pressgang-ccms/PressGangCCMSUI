@@ -112,43 +112,7 @@ public class HelpOverlay {
 
                                     if (helpDatabase.get(widget) != lastWidget) {
 
-                                        lastWidget = helpDatabase.get(widget);
-
-                                        if (helpCallout != null) {
-                                            helpCallout.removeFromParent();
-                                            helpCallout = null;
-                                        }
-
-                                        helpCallout = new HelpCallout(helpDatabase.get(widget));
-                                        helpCallout.getEdit().addClickHandler(editClickHandler);
-                                        helpCallout.getClose().addClickHandler(closeClickHandler);
-                                        RootLayoutPanel.get().add(helpCallout);
-                                        positionCallout();
-
-                                        failOverRESTCall.performRESTCall(
-                                                FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
-                                                new RESTCallBack<RESTTopicV1>() {
-                                                    public void success(@NotNull final RESTTopicV1 value) {
-                                                        // TODO: Change the XSL when the prod server gets the render only xsl
-                                                        final String xml = /*Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE*/ Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
-                                                        failOverRESTCall.performRESTCall(
-                                                                FailOverRESTCallDatabase.holdXML(xml),
-                                                                new RESTCallBack<IntegerWrapper>() {
-                                                                    public void success(@NotNull final IntegerWrapper value) {
-                                                                        if (helpCallout != null) {
-                                                                            helpCallout.getiFrame().setUrl(
-                                                                                    ServerDetails.getSavedServer().getRestEndpoint() +
-                                                                                            Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" +
-                                                                                            Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-                                                                        }
-                                                                    }
-                                                                },
-                                                                true
-                                                        );
-                                                    }
-                                                }
-                                        );
-
+                                        showCallout(widget);
                                         break;
                                    }
                                 }
@@ -158,6 +122,45 @@ public class HelpOverlay {
                     }
                 }
             }
+        );
+    }
+
+    private void showCallout(@NotNull final Widget widget) {
+        lastWidget = helpDatabase.get(widget);
+
+        if (helpCallout != null) {
+            helpCallout.removeFromParent();
+            helpCallout = null;
+        }
+
+        helpCallout = new HelpCallout(helpDatabase.get(widget));
+        helpCallout.getEdit().addClickHandler(editClickHandler);
+        helpCallout.getClose().addClickHandler(closeClickHandler);
+        RootLayoutPanel.get().add(helpCallout);
+        positionCallout();
+
+        failOverRESTCall.performRESTCall(
+                FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
+                new RESTCallBack<RESTTopicV1>() {
+                    public void success(@NotNull final RESTTopicV1 value) {
+                        // TODO: Change the XSL when the prod server gets the render only xsl
+                        final String xml = /*Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE*/ Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
+                        failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.holdXML(xml),
+                                new RESTCallBack<IntegerWrapper>() {
+                                    public void success(@NotNull final IntegerWrapper value) {
+                                        if (helpCallout != null) {
+                                            helpCallout.getiFrame().setUrl(
+                                                    ServerDetails.getSavedServer().getRestEndpoint() +
+                                                            Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" +
+                                                            Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+                                        }
+                                    }
+                                },
+                                true
+                        );
+                    }
+                }
         );
     }
 
@@ -199,7 +202,6 @@ public class HelpOverlay {
                     helpCallout.getElement().getStyle().setLeft(widgetLeft + (widgetWidth / 2) - (calloutWidth / 2), Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetBottom, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 2) {
-
                     final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
                     final double widgetWidth = lastWidget.getWidget().getElement().getClientWidth();
                     final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
@@ -221,11 +223,17 @@ public class HelpOverlay {
                     helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 4) {
 
-                    final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
+                    final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
+                    final double widgetWidth = lastWidget.getWidget().getElement().getClientWidth();
                     final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+                    final double calloutWidth = helpCallout.getElement().getClientWidth();
+                    final double calloutHeight = helpCallout.getElement().getClientHeight();
 
-                    helpCallout.getElement().getStyle().setRight(widgetLeft, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().clearRight();
+                    helpCallout.getElement().getStyle().clearBottom();
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - widgetWidth - calloutWidth, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+
                 } else if (lastWidget.getDirection() == 5) {
 
                     final double widgetLeft = lastWidget.getWidget().getElement().getAbsoluteLeft();
@@ -239,9 +247,14 @@ public class HelpOverlay {
 
                     final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
                     final double widgetTop = lastWidget.getWidget().getElement().getAbsoluteTop();
+                    final double calloutWidth = helpCallout.getElement().getClientWidth();
+                    final double calloutHeight = helpCallout.getElement().getClientHeight();
 
+                    helpCallout.getElement().getStyle().clearRight();
+                    helpCallout.getElement().getStyle().clearBottom();
                     helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+
                 }  else if (lastWidget.getDirection() == 7) {
 
                     final double widgetRight = lastWidget.getWidget().getElement().getAbsoluteRight();
@@ -276,6 +289,19 @@ public class HelpOverlay {
         addDimmerPanel();
         promoteHelpWidgets();
         styleHelpWidgets();
+        showHelpCallout();
+    }
+
+    /**
+     * When entering the help overlay mode, we initially display the help for the help button.
+     */
+    private void showHelpCallout() {
+        for (final HelpData helpData : helpDatabase.values()) {
+            if (helpData.getTopicID() == ServiceConstants.HELP_TOPICS.HELP_MODE.getId()) {
+                showCallout(helpData.getWidget());
+                return;
+            }
+        }
     }
 
     public void hideOverlay() {

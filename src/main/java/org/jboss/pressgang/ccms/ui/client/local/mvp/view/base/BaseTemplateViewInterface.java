@@ -57,6 +57,13 @@ public interface BaseTemplateViewInterface {
     }
 
     /**
+     *
+     * @return The label that holds the build number.
+     */
+    @NotNull
+    Label getVersion();
+
+    /**
      * @return The help dialog box.
      */
     @NotNull
