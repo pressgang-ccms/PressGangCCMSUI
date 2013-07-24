@@ -1,5 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -10,10 +14,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.bas
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * The view that combines the topic search results with the individual topic views
@@ -37,10 +37,12 @@ public class TopicFilteredResultsAndDetailsView extends
      * The revisions button.
      */
     private final PushButton history;
+    private final PushButton csps;
     /**
      * The label used to represent the history button in a down state.
      */
     private final Label historyDown;
+    private final Label cspsDown;
 
     /**
      * The bulk import dialog box.
@@ -86,16 +88,31 @@ public class TopicFilteredResultsAndDetailsView extends
         return save;
     }
 
+    @NotNull
+    @Override
+    public PushButton getCsps() {
+        return csps;
+    }
+
+    @NotNull
+    @Override
+    public Label getCspsDown() {
+        return cspsDown;
+    }
+
     public TopicFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
         /* Build the action bar icons */
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
         history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+        csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
 
         historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+        cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications());
 
-        this.addActionButton(history);
-        this.addActionButton(save);
+        addActionButton(csps);
+        addActionButton(history);
+        addActionButton(save);
     }
 }

@@ -41,11 +41,15 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
@@ -58,13 +62,14 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicContentSpecsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -146,19 +151,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         elements are loaded.
      */
     private boolean allTagsLoadInitiated = false;
-
     /*
         True when the tags tab is opened for the first time, and the
         elements are loaded.
      */
     private boolean tagsLoadInitiated = false;
+    /*
+        True when the content specs tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean contentSpecsLoadInitiated = false;
 
+    /**
+     * The presenter used to display the topic content specs.
+     */
     @Inject
-    private TopicFilteredResultsPresenter searchResultsComponent;
+    private TopicContentSpecsPresenter topicContentSpecsPresenter;
     @Inject
-    private TopicPresenter topicViewComponent;
+    private TopicFilteredResultsPresenter searchResultPresenter;
     @Inject
-    private TopicRevisionsPresenter topicRevisionsComponent;
+    private TopicPresenter topicViewPresenter;
+    @Inject
+    private TopicRevisionsPresenter topicRevisionsPresenter;
     @Inject
     private Display display;
 
@@ -204,7 +218,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     final Timer timer = new Timer() {
         @Override
         public void run() {
-            if (lastDisplayedView == getTopicXMLComponent().getDisplay()) {
+            if (lastDisplayedView == getTopicXMLPresenter().getDisplay()) {
                 refreshSplitRenderedView(false);
             }
         }
@@ -264,8 +278,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @NotNull
     @Override
-    protected BaseFilteredResultsPresenter<RESTTopicCollectionItemV1> getSearchResultsComponent() {
-        return searchResultsComponent;
+    protected BaseFilteredResultsPresenter<RESTTopicCollectionItemV1> getSearchResultPresenter() {
+        return searchResultPresenter;
+    }
+
+    @NotNull
+    protected TopicContentSpecsPresenter getTopicContentSpecsPresenter() {
+        return topicContentSpecsPresenter;
     }
 
     public TopicFilteredResultsAndDetailsPresenter() {
@@ -310,13 +329,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(),
-                topicViewComponent.getDisplay(), getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(),
+        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(),
+                topicViewPresenter.getDisplay(), getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(),
                 getDisplay(), getNewEntityCallback);
 
-        topicRevisionsComponent.bindExtended();
+        topicContentSpecsPresenter.bindChildrenExtended();
+        topicRevisionsPresenter.bindExtended();
 
         bindTagButtons();
+
+        bindContentSpecViewButtons();
 
         /* Bind logic to the revisions buttons */
         bindViewTopicRevisionButton();
@@ -324,7 +346,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         bindRenderedViewClicks();
 
         /* When the topics have been loaded, display the first one */
-        getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
+        getSearchResultPresenter().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
             public void onCollectionReceived(@NotNull final RESTTopicCollectionV1 topics) {
                 try {
@@ -365,16 +387,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         }, display, failOverRESTCall);
 
-        addKeyboardShortcutEventHandler(this.getTopicXMLComponent().getDisplay(), this.getDisplay(), new GetCurrentTopic() {
+        addKeyboardShortcutEventHandler(this.getTopicXMLPresenter().getDisplay(), this.getDisplay(), new GetCurrentTopic() {
 
             @Override
             public RESTTopicV1 getCurrentlyEditedTopic() {
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                         "There should be a displayed collection item.");
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                         "The displayed collection item to reference a valid entity.");
 
-                return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
             }
         });
     }
@@ -390,10 +412,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          */
         getTopicRenderedPresenter().close();
         getTopicSplitPanelRenderedPresenter().close();
-        getSearchResultsComponent().close();
+        getSearchResultPresenter().close();
         getTopicPropertyTagPresenter().close();
         getTopicTagsPresenter().close();
-        getTopicXMLComponent().close();
+        getTopicXMLPresenter().close();
     }
 
     private void bindRenderedViewClicks() {
@@ -412,7 +434,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         if (lineNumber != null) {
                             try {
                                 final Integer lineNumberInt = Integer.parseInt(lineNumber);
-                                getTopicXMLComponent().getDisplay().getEditor().gotoLine(lineNumberInt);
+                                getTopicXMLPresenter().getDisplay().getEditor().gotoLine(lineNumberInt);
                                 LOGGER.log(Level.INFO, "Moved to line number " + lineNumberInt);
                             } catch (@NotNull final NumberFormatException ex) {
                                 // do nothing
@@ -433,13 +455,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             @NotNull
             @Override
             public RESTTopicV1 getTopic() {
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                         "There should be a displayed collection item.");
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                         "The displayed collection item to reference a valid entity.");
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getTags() != null,
                         "The displayed collection item to reference a valid entity and have a valid tags collection.");
-                return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
             }
         }, new ReturnReadOnlyMode() {
             @Override
@@ -482,6 +504,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         }, display.getBulkImport().getTagsView()
         ), display.getBulkImport().getTagsView());
+    }
+
+    private void bindContentSpecViewButtons() {
+        getTopicContentSpecsPresenter().getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
+                    @Override
+                    public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
+                        if (isOKToProceed()) {
+                            checkState(object != null && object.getItem() != null, "The refrenced column should have a valid " +
+                                    "content spec reference");
+
+                            eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
+                                    Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" +
+                                            object.getItem().getId(),
+                                    false));
+                        }
+                    }
+                });
     }
 
     /**
@@ -564,7 +604,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected void preLoadAdditionalDisplayedItemData() {
-        final RESTTopicCollectionItemV1 displayedItem = this.getSearchResultsComponent().getProviderData().getDisplayedItem();
+        final RESTTopicCollectionItemV1 displayedItem = this.getSearchResultPresenter().getProviderData().getDisplayedItem();
 
         checkState(displayedItem != null, "A collection item should be selected");
         checkState(displayedItem.getItem() != null, "A collection item should be selected and have a valid item");
@@ -581,6 +621,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         revisionsLoadInitiated = false;
         tagsLoadInitiated = false;
         propertyTagsLoadInitiated = false;
+        contentSpecsLoadInitiated = false;
     }
 
     /**
@@ -593,9 +634,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private void loadTags() {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadTags()");
 
-            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
             final RESTTopicV1 displayedTopic = getDisplayedTopic();
 
             /* If this is a new topic, the selectedItem will be null, and there will not be any tags to get */
@@ -612,7 +653,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
 
                             /*
                                 There is a small chance that in between loading the topic's details and
@@ -636,7 +677,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
                         } finally {
-                            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
                         }
                     }
                 };
@@ -644,7 +685,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags()");
         }
     }
 
@@ -656,7 +697,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             Check to see if there is any view data associated with this topic
          */
 
-        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
 
         /*
             If this is a new topic, there will be no selected item.
@@ -679,17 +720,68 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                              If that is the case, we need to redisplay the list to reflect the fact that we are displaying
                              a new revision.
                          */
-                        if (topicRevisionsComponent.getProviderData().isValid()) {
-                            topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(
-                                    topicRevisionsComponent.getProviderData().getItems(),
-                                    topicRevisionsComponent.getProviderData().getSize(),
-                                    topicRevisionsComponent.getProviderData().getStartRow());
+                        if (topicRevisionsPresenter.getProviderData().isValid()) {
+                            topicRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                    topicRevisionsPresenter.getProviderData().getItems(),
+                                    topicRevisionsPresenter.getProviderData().getSize(),
+                                    topicRevisionsPresenter.getProviderData().getStartRow());
                         }
                     }
                 };
 
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
             }
+        }
+    }
+
+    /**
+     * The content specs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
+     * topic is displayed.
+     * <p/>
+     * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
+     * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
+     * the empty entity and then loading the collections.
+     */
+    private void loadContentSpecs() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs()");
+
+            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
+            final RESTTopicV1 displayedTopic = getDisplayedTopic();
+
+            /* If this is a new topic, the selectedItem will be null, and there will not be any content specs to get */
+            if (!contentSpecsLoadInitiated && selectedItem != null) {
+                contentSpecsLoadInitiated = true;
+
+                /* Initiate the REST calls */
+                final Integer id = displayedTopic.getId();
+                final Integer revision = displayedTopic.getRevision();
+
+                /* A callback to respond to a request for a topic with the content specs expanded */
+                final RESTCallBack<RESTTopicV1> topicWithContentSpecsCallback = new RESTCallBack<RESTTopicV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTopicV1 retValue) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
+                                    "topicWithContentSpecsCallback.doSuccessAction()");
+
+                            // copy the revisions into the displayed Topic
+                            getDisplayedTopic().setContentSpecs_OTM(retValue.getContentSpecs_OTM());
+
+                            /* update the view */
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
+                                    "topicWithContentSpecsCallback.doSuccessAction()");
+                        }
+                    }
+                };
+
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(id, revision),
+                        topicWithContentSpecsCallback, getTopicContentSpecsPresenter().getDisplay());
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs()");
         }
     }
 
@@ -705,12 +797,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * the property tags assigned to the latest revision of the topic (and set propertyTagsLoadInitiated to true).
      */
     private void loadPropertyTags() {
-        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a selected collection item.");
-        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There should be a selected collection item.");
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
-        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
-        final RESTTopicV1 displayedItem = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
+        final RESTTopicV1 displayedItem = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
         final RESTTopicV1 displayedTopic = getDisplayedTopic();
              /* Are we displaying the latest version of the topic i.e. the one that doesn't have its tags loaded? */
         final boolean displayingLatest = displayedItem == displayedTopic;
@@ -725,12 +817,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (!propertyTagsLoadInitiated && displayingLatest) {
             propertyTagsLoadInitiated = true;
 
-            /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
+            /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
             if (selectedItem != null) {
 
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() != null,
                         "The displayed collection item to reference a valid entity with a valid ID.");
-                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision() != null,
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision() != null,
                         "The displayed collection item to reference a valid entity with a valid revision.");
 
                 final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
@@ -739,11 +831,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         checkArgument(retValue.getProperties().getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getProperties().getSize() != null, "Returned collection should have a valid size.");
 
-                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setProperties(
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setProperties(
                                 retValue.getProperties());
 
                         Collections.sort(
-                                getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties()
+                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getProperties()
                                         .getItems(),
                                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
@@ -753,8 +845,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                final Integer id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId();
-                final Integer revision = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                final Integer id = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId();
+                final Integer revision = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
             }
         }
@@ -767,18 +859,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (!revisionsLoadInitiated) {
             revisionsLoadInitiated = true;
 
-            /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
-            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
+            /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
+            if (this.getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
 
-                checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
                         "There should be a selected collection item.");
-                checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null,
+                checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
                         "The selected collection item to reference a valid entity.");
-                checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId() != null,
+                checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getId() != null,
                         "The selected collection item to reference a valid entity with a valid ID.");
 
-                this.topicRevisionsComponent.getDisplay().setProvider(this.topicRevisionsComponent.generateListProvider(
-                        getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId(), display));
+                this.topicRevisionsPresenter.getDisplay().setProvider(this.topicRevisionsPresenter.generateListProvider(
+                        getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getId(), display));
             }
         }
     }
@@ -791,10 +883,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             RESTTopicV1 sourceTopic = null;
 
-            if (topicRevisionsComponent.getDisplay().getRevisionTopic() != null) {
-                sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic();
-            } else if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                sourceTopic = this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+            if (topicRevisionsPresenter.getDisplay().getRevisionTopic() != null) {
+                sourceTopic = topicRevisionsPresenter.getDisplay().getRevisionTopic();
+            } else if (this.getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                sourceTopic = this.getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
             }
 
             return sourceTopic;
@@ -810,11 +902,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
+            this.getDisplay().replaceTopActionButton(this.getDisplay().getCspsDown(), getDisplay().getCsps());
 
-            if (displayedView == this.topicViewComponent.getDisplay()) {
+            if (displayedView == this.topicViewPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
-            } else if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+            } else if (displayedView == this.topicRevisionsPresenter.getDisplay()) {
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
+            } else if (displayedView == getTopicContentSpecsPresenter().getDisplay()) {
+                getDisplay().replaceTopActionButton(getDisplay().getCsps(), getDisplay().getCspsDown());
             }
 
             if (isReadOnlyMode()) {
@@ -835,7 +930,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
 
 
-            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+            if (displayedView == this.topicRevisionsPresenter.getDisplay()) {
                 /*
                     Load the initial set of revisions.
                 */
@@ -844,7 +939,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 /*
                     Otherwise switch back to the view of revisions.
                 */
-                this.topicRevisionsComponent.getDisplay().displayRevisions();
+                this.topicRevisionsPresenter.getDisplay().displayRevisions();
             }
 
             /* Set the projects combo box as the focused element */
@@ -857,12 +952,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
 
+            if (displayedView == this.getTopicContentSpecsPresenter().getDisplay()) {
+                loadContentSpecs();
+            }
+
             if (displayedView == this.getTopicPropertyTagPresenter().getDisplay()) {
                 loadPropertyTags();
             }
 
                 /* While editing the XML, we need to setup a refresh of the rendered view */
-            if (displayedView == this.getTopicXMLComponent().getDisplay()) {
+            if (displayedView == this.getTopicXMLPresenter().getDisplay()) {
                 if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
                     timer.scheduleRepeating(Constants.REFRESH_RATE);
                 }
@@ -890,46 +989,46 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
 
-            topicRevisionsComponent.getDisplay().getDone().addClickHandler(new ClickHandler() {
+            topicRevisionsPresenter.getDisplay().getDone().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem()
+                    if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
                             .getRevision()) {
-                        checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "mergely should not be null");
-                        final String lhs = topicRevisionsComponent.getDisplay().getMergely().getLhs();
-                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setXml(lhs);
-                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLComponent().getDisplay()}));
+                        checkState(topicRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
+                        final String lhs = topicRevisionsPresenter.getDisplay().getMergely().getLhs();
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(lhs);
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay()}));
                     }
-                    topicRevisionsComponent.getDisplay().displayRevisions();
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
                     getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
                 }
             });
 
-            topicRevisionsComponent.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
+            topicRevisionsPresenter.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    topicRevisionsComponent.getDisplay().displayRevisions();
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
                     getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
                 }
             });
 
-            topicRevisionsComponent.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
+            topicRevisionsPresenter.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    final String query = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() + ";" +
+                    final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
                         getRenderedDiffRevision() + ";" +
-                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
 
                     eventBus.fireEvent(new RenderedDiffEvent(query,GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             });
 
-            topicRevisionsComponent.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+            topicRevisionsPresenter.getDisplay().getCancel().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    topicRevisionsComponent.getDisplay().displayRevisions();
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
                     getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
                 }
@@ -945,15 +1044,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() saveClickHandler.onClick()");
 
                         if (hasUnsavedChanges()) {
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                                     "There should be a displayed collection item.");
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                     "The displayed collection item to reference a valid entity.");
 
                             /*
                                 Default to using the major change for new topics
                              */
-                            if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && getSearchResultsComponent()
+                            if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
                                     .getProviderData().getDisplayedItem().returnIsAddItem()) {
                                 display.getMessageLogDialog().getMajorChange().setValue(true);
                                 display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
@@ -981,11 +1080,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         LOGGER.log(Level.INFO,
                                 "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
-                        if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                        if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
 
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                                     "There should be a displayed collection item.");
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                     "The displayed collection item to reference a valid entity.");
 
                             final String user = display.getMessageLogDialog().getUsername().getText().trim();
@@ -1008,7 +1107,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                              * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
                              * the data into JSON.
                              */
-                            final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                            final RESTTopicV1 sourceTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
                             final RESTTopicV1 newTopic = new RESTTopicV1();
 
@@ -1043,7 +1142,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetTitle(sourceTopic.getTitle());
                             newTopic.explicitSetXml(sourceTopic.getXml());
 
-                            if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
+                            if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
 
                                 final RESTCallBack<RESTTopicV1> addCallback = new RESTCallBack<RESTTopicV1>() {
                                     @Override
@@ -1059,7 +1158,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             topicCollectionItem.setItem(retValue);
 
                                             /* Update the displayed topic */
-                                            getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
+                                            getSearchResultPresenter().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
 
                                             /*
                                                 Two things can happen to the selected item at this point. Either we are in the
@@ -1072,14 +1171,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 or it will remain referencing the returned value here if the query doesn't actually
                                                 return the topic that was saved.
                                              */
-                                            getSearchResultsComponent().setSelectedItem(topicCollectionItem);
+                                            getSearchResultPresenter().setSelectedItem(topicCollectionItem);
 
                                             lastXML = null;
 
                                             if (startWithNewTopic) {
                                                 LOGGER.log(Level.INFO, "Adding new topic to static list");
-                                                getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
-                                                getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
+                                                getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
+                                                getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
                                                 updateDisplayWithNewEntityData(false);
                                             } else {
                                                 /* Update the selected topic */
@@ -1088,12 +1187,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             }
 
                                             LOGGER.log(Level.INFO, "Refreshing editor");
-                                            if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                            if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
+                                                getTopicXMLPresenter().getDisplay().getEditor().redisplay();
                                                 /*
                                                     This forces the xml validation to rehighlight the invalid rows
                                                  */
-                                                getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
+                                                getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                             }
 
                                             Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
@@ -1104,11 +1203,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                     @Override
                                     public void failed() {
-                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                        getTopicXMLPresenter().getDisplay().getEditor().redisplay();
                                         /*
                                             This forces the xml validation to rehighlight the invalid rows
                                          */
-                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
+                                        getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                     }
                                 };
 
@@ -1122,7 +1221,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
                                             boolean overwroteChanges = false;
-                                            final Integer originalRevision = getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getRevision();
+                                            final Integer originalRevision = getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getRevision();
 
                                             if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
                                                 Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
@@ -1167,9 +1266,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             }
 
                                             /* Update the displayed topic */
-                                            retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(), true);
+                                            retValue.cloneInto(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), true);
                                             /* Update the selected topic */
-                                            retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
+                                            retValue.cloneInto(getSearchResultPresenter().getProviderData().getSelectedItem().getItem(), true);
 
                                             lastXML = null;
 
@@ -1177,7 +1276,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                             if (overwroteChanges) {
                                                 /* Take the user to the revisions view so they can review any overwritten changes */
-                                                switchView(topicRevisionsComponent.getDisplay());
+                                                switchView(topicRevisionsPresenter.getDisplay());
                                                 Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                             } else {
                                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
@@ -1186,23 +1285,23 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             LOGGER.log(Level.INFO,
                                                     "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
-                                            if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                            if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
+                                                getTopicXMLPresenter().getDisplay().getEditor().redisplay();
                                                         /*
                                                             This forces the xml validation to rehighlight the invalid rows
                                                          */
-                                                getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
+                                                getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                             }
                                         }
                                     }
 
                                     @Override
                                     public void failed() {
-                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                        getTopicXMLPresenter().getDisplay().getEditor().redisplay();
                                         /*
                                             This forces the xml validation to rehighlight the invalid rows
                                          */
-                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
+                                        getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                     }
                                 };
 
@@ -1239,17 +1338,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final ClickHandler topicViewClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                        switchView(topicViewComponent.getDisplay());
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicViewPresenter.getDisplay());
                     }
                 }
             };
 
-            final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
+            final ClickHandler topicRevisionsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                        switchView(topicRevisionsComponent.getDisplay());
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicRevisionsPresenter.getDisplay());
                     }
                 }
             };
@@ -1327,6 +1426,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
+            final ClickHandler cspsClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(getTopicContentSpecsPresenter().getDisplay());
+                    }
+                }
+            };
+
+            getDisplay().getCsps().addClickHandler(cspsClickHandler);
+
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
             display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
@@ -1336,13 +1446,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             display.getBulkOverwrite().getOK().addClickHandler(bulkOverwriteOK);
             display.getBulkOverwrite().getCancel().addClickHandler(bulkOverwriteCancel);
 
-            searchResultsComponent.getDisplay().getBulkImport().addClickHandler(bulkImport);
-            searchResultsComponent.getDisplay().getBulkOverwrite().addClickHandler(bulkOverwrite);
+            searchResultPresenter.getDisplay().getBulkImport().addClickHandler(bulkImport);
+            searchResultPresenter.getDisplay().getBulkOverwrite().addClickHandler(bulkOverwrite);
             getDisplay().getSave().addClickHandler(saveClickHandler);
-            getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
+            getDisplay().getHistory().addClickHandler(topicRevisionsClickHandler);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
 
-            addKeyboardShortcutEvents(getTopicXMLComponent().getDisplay(), display);
+            addKeyboardShortcutEvents(getTopicXMLPresenter().getDisplay(), display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
         }
@@ -1461,8 +1571,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     topicCollectionItem.setItem(retValue);
                                     topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                    getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
-                                    getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
+                                    getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
+                                    getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
                                 }
 
                                 createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
@@ -1551,7 +1661,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 	}-*/;
 
     private native void checkXML() /*-{
-		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLPresenter()();
 		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 
 		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker == null) {
@@ -1638,13 +1748,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postInitializeViews()");
 
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                     "There should be a displayed collection item.");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                     "The displayed collection item to reference a valid entity.");
 
-            if (viewIsInFilter(filter, topicViewComponent.getDisplay())) {
-                topicViewComponent.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
+            if (viewIsInFilter(filter, topicViewPresenter.getDisplay())) {
+                topicViewPresenter.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
             }
 
             /*
@@ -1655,11 +1765,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /*
+                refresh the list of content specs
+             */
+            if (viewIsInFilter(filter, getTopicContentSpecsPresenter().getDisplay())) {
+                getTopicContentSpecsPresenter().getDisplay().display(getDisplayedTopic(), isReadOnlyMode());
+                getTopicContentSpecsPresenter().displayChildrenExtended(getDisplayedTopic(), isReadOnlyMode());
+            }
+
+            /*
                 The revision display always displays details from the main topic, and not the selected revision.
             */
-            if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
+            if (viewIsInFilter(filter, topicRevisionsPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-                topicRevisionsComponent.getDisplay().display(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
+                topicRevisionsPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode());
             }
 
@@ -1677,14 +1795,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected boolean isReadOnlyMode() {
-        return this.topicRevisionsComponent.getDisplay().getRevisionTopic() != null;
+        return this.topicRevisionsPresenter.getDisplay().getRevisionTopic() != null;
     }
 
     @Override
     protected void bindFilteredResultsButtons() {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
-            getSearchResultsComponent().getDisplay().getCreate().addClickHandler(new ClickHandler() {
+            getSearchResultPresenter().getDisplay().getCreate().addClickHandler(new ClickHandler() {
 
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
@@ -1692,7 +1810,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             });
 
-            searchResultsComponent.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
+            searchResultPresenter.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/atom/" + getQueryString() + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D", "", "");
@@ -1812,10 +1930,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
 
             try {
-                getTopicXMLComponent().getDisplay().getDriver().flush();
+                getTopicXMLPresenter().getDisplay().getDriver().flush();
             } catch (@NotNull final IllegalStateException ex) {
                 LOGGER.log(Level.WARNING,
-                        "getTopicXMLComponent().getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened "
+                        "getTopicXMLPresenter().getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened "
                                 + "because the rendered view was refreshed before the XML editor was bound.");
             }
 
@@ -1858,16 +1976,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             When switching from the revisions view, make sure there are no unsaved changes.
          */
-        if (displayedView != topicRevisionsComponent.getDisplay() &&
-                lastDisplayedView == topicRevisionsComponent.getDisplay() &&
-                !topicRevisionsComponent.getDisplay().isDisplayingRevisions()) {
+        if (displayedView != topicRevisionsPresenter.getDisplay() &&
+                lastDisplayedView == topicRevisionsPresenter.getDisplay() &&
+                !topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
 
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
-            if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
-                if (topicRevisionsComponent.getDisplay().getMergely() != null &&
-                        !topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
+            if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision()) {
+                if (topicRevisionsPresenter.getDisplay().getMergely() != null &&
+                        !topicRevisionsPresenter.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
@@ -1876,7 +1994,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 If the user moved away from the revisions screen, return to the revision list. This is a safety net
                 in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
              */
-            topicRevisionsComponent.getDisplay().displayRevisions();
+            topicRevisionsPresenter.getDisplay().displayRevisions();
         }
 
         flushChanges();
@@ -1946,17 +2064,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     @Override
                                     public RESTTopicV1 getTopic() {
 
-                                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                                                 "There should be a displayed collection item.");
-                                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                                 "The displayed collection item to reference a valid entity.");
                                         checkState(
-                                                getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() !=
+                                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getTags() !=
                                                         null,
                                                 "The displayed collection item to reference a valid entity and have a valid tags " +
                                                         "collection.");
 
-                                        return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                                        return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
                                     }
                                 }, new ReturnReadOnlyMode() {
                                     @Override
@@ -2046,10 +2164,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
 
-            topicRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+            topicRevisionsPresenter.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
-                    topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
+                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
 
                     final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                         @Override
@@ -2060,10 +2178,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 It is possible to switch away from the view while this request was loading. If we
                                 have done so, don't show the merge view.
                              */
-                            if (lastDisplayedView == topicRevisionsComponent.getDisplay()) {
-                                final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                            if (lastDisplayedView == topicRevisionsPresenter.getDisplay()) {
+                                final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                topicRevisionsComponent.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
+                                topicRevisionsPresenter.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
 
                                 /*
                                     We can't save while merging.
@@ -2071,18 +2189,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 getDisplay().getSave().setEnabled(false);
                             }
 
-                            topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                         }
                     };
 
 
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
+                            revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay());
 
                 }
             });
 
-            topicRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+            topicRevisionsPresenter.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
@@ -2090,17 +2209,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         LOGGER.log(Level.INFO,
                                 "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
 
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null,
+                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                                 "There should be a displayed collection item.");
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null,
+                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                 "The displayed collection item to reference a valid entity.");
                         checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                         displayRevision(revisionTopic.getItem());
 
-                        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(
-                                topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(),
-                                topicRevisionsComponent.getProviderData().getStartRow());
+                        topicRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                topicRevisionsPresenter.getProviderData().getItems(), topicRevisionsPresenter.getProviderData().getSize(),
+                                topicRevisionsPresenter.getProviderData().getStartRow());
                     } finally {
                         LOGGER.log(Level.INFO,
                                 "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
@@ -2108,11 +2227,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             });
 
-            topicRevisionsComponent.getDisplay().getHTMLDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+            topicRevisionsPresenter.getDisplay().getHTMLDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
-                    topicRevisionsComponent.getDisplay().setButtonsEnabled(false);
+                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
 
                     final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                         @Override
@@ -2131,16 +2250,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     FailOverRESTCallDatabase.holdXML(xml2),
                                                     new RESTCallBack<IntegerWrapper>() {
                                                         public void success(@NotNull final IntegerWrapper value2) {
-                                                            topicRevisionsComponent.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
-                                                            topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                                                            topicRevisionsPresenter.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
+                                                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                                                         }
                                                     },
-                                                    topicRevisionsComponent.getDisplay(),
+                                                    topicRevisionsPresenter.getDisplay(),
                                                     true
                                             );
                                         }
                                     },
-                                    topicRevisionsComponent.getDisplay(),
+                                    topicRevisionsPresenter.getDisplay(),
                                     true
                             );
                         }
@@ -2151,7 +2270,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     */
                     setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision()), callback, topicRevisionsComponent.getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
+                            revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay());
 
                 }
             });
@@ -2176,9 +2296,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             viewLatestTopicRevision();
 
             if (!revisionTopic.getRevision().equals(
-                    getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+                    getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
-                topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+                topicRevisionsPresenter.getDisplay().setRevisionTopic(revisionTopic);
             }
 
             /* Initialize the views with the new topic being displayed */
@@ -2188,8 +2308,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             this.tagsLoadInitiated = false;
             loadTags();
 
+            // Load the content specs
+            loadContentSpecs();
+
             /* Display the revisions view (which will also update buttons like Save) */
-            switchView(topicRevisionsComponent.getDisplay());
+            switchView(topicRevisionsPresenter.getDisplay());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayRevision()");
@@ -2202,14 +2325,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.hasUnsavedChanges()");
 
             /* No topic selected, so no changes need to be saved */
-            if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() == null) {
+            if (this.getSearchResultPresenter().getProviderData().getDisplayedItem() == null) {
                 return false;
             }
 
             /* Save any pending changes */
             flushChanges();
 
-            final RESTTopicV1 displayedTopic = this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+            final RESTTopicV1 displayedTopic = this.getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
              /*
                 If there are any modified tags in newTopic, we have unsaved changes.
@@ -2231,7 +2354,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
 
-            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() == null) {
+            if (this.getSearchResultPresenter().getProviderData().getSelectedItem() == null) {
 
                 /* if there is no selected item, we are trying to save a new topic */
 
@@ -2251,7 +2374,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 /* compare the displayed topics to the selected topic */
 
-                final RESTTopicV1 selectedTopic = this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem();
+                final RESTTopicV1 selectedTopic = this.getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
 
                 /*
                  * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
@@ -2278,11 +2401,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * topicRevisionsComponent.getDisplay().getRevisionTopic() is used to indicate which revision
+     * topicRevisionsPresenter.getDisplay().getRevisionTopic() is used to indicate which revision
      * of a topic we are looking at. Setting it to null means that we are not looking at a revision.
      */
     private void viewLatestTopicRevision() {
-        topicRevisionsComponent.getDisplay().setRevisionTopic(null);
+        topicRevisionsPresenter.getDisplay().setRevisionTopic(null);
     }
 
     /**
@@ -2319,10 +2442,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     // the topic won't show up in the list of topics until it is saved, so the
                     // selected item is null
-                    getSearchResultsComponent().setSelectedItem(null);
+                    getSearchResultPresenter().setSelectedItem(null);
 
                     // the new topic is being displayed though, so we set the displayed item
-                    getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem);
+                    getSearchResultPresenter().getProviderData().setDisplayedItem(topicCollectionItem);
 
                     updateViewsAfterNewEntityLoaded();
                 }
@@ -3046,6 +3169,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         @NotNull
         BulkOverwrite getBulkOverwrite();
 
+        /**
+         * @return The button this is used show csps
+         */
+        PushButton getCsps();
+
+        /**
+         * @return The label this is used to show csps
+         */
+        Label getCspsDown();
     }
 
     /**
@@ -3080,8 +3212,4 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         void setLoaded();
 
     }
-
-
-
-
 }

@@ -738,6 +738,9 @@ public interface PressGangCCMSUI extends Constants {
     String TopicSourceUrls();
 
     @NotNull
+    String TopicContentSpecs();
+
+    @NotNull
     String URLTitle();
 
     @NotNull

@@ -179,7 +179,7 @@ div[class^='badword'] {
     top: 50%;
 }
 
-.TopicTagViewSpinner, .TopicRevisionViewSpinner {
+.TopicTagViewSpinner, .TopicRevisionViewSpinner, .TopicContentSpecViewSpinner {
     position: relative;
     margin: auto;
     top: 0;

@@ -86,7 +86,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @NotNull
     @Override
-    protected BaseFilteredResultsPresenter<RESTTranslatedTopicCollectionItemV1> getSearchResultsComponent() {
+    protected BaseFilteredResultsPresenter<RESTTranslatedTopicCollectionItemV1> getSearchResultPresenter() {
         return translatedTopicsFilteredResultsPresenter;
     }
 
@@ -125,13 +125,13 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
         };
 
-        bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
-                getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
+        bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(), translatedTopicPresenter.getDisplay(),
+                getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(), getDisplay(), getNewEntityCallback);
 
 
 
         /* When the topics have been loaded, display the first one */
-        getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
+        getSearchResultPresenter().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
             @Override
             public void onCollectionReceived(@NotNull final RESTTranslatedTopicCollectionV1 topics) {
                 displayInitialTopic(getNewEntityCallback);
@@ -164,12 +164,12 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         try {
             LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
 
-            this.getTopicPropertyTagPresenter().refreshExistingChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
+            this.getTopicPropertyTagPresenter().refreshExistingChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of property tags */
-            this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
+            this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
-            Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+            Collections.sort(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
             /* Initiate the REST calls */
@@ -223,7 +223,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     @Nullable
     @Override
     protected RESTTranslatedTopicV1 getDisplayedTopic() {
-        final RESTTranslatedTopicCollectionItemV1 displayedItem = this.getSearchResultsComponent().getProviderData().getDisplayedItem();
+        final RESTTranslatedTopicCollectionItemV1 displayedItem = this.getSearchResultPresenter().getProviderData().getDisplayedItem();
         return displayedItem == null ? null : displayedItem.getItem();
     }
 
@@ -247,7 +247,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         @NotNull final ClickHandler topicViewClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                     switchView(translatedTopicPresenter.getDisplay());
                 }
             }

@@ -523,6 +523,10 @@ public interface CSSConstants {
          * Assigned to the spinner used for the loading widget
          */
         String TOPIC_TAG_VIEW_SPINNER = "TopicTagViewSpinner";
+        /**
+         * Assigned to the spinner used for the loading widget
+         */
+        String TOPIC_CONTENT_SPEC_VIEW_SPINNER = "TopicContentSpecViewSpinner";
     }
 
     /**

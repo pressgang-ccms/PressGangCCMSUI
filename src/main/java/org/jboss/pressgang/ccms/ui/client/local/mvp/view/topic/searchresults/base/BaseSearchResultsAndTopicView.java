@@ -42,7 +42,6 @@ public abstract class BaseSearchResultsAndTopicView<
     private final PushButton rendered;
     private final PushButton topicTags;
     private final PushButton bugs;
-    private final PushButton csps;
     private final PushButton urls;
 
     private final Label fieldsDown;
@@ -84,12 +83,6 @@ public abstract class BaseSearchResultsAndTopicView<
     @Override
     public Label getUrlsDown() {
         return urlsDown;
-    }
-
-    @NotNull
-    @Override
-    public PushButton getCsps() {
-        return csps;
     }
 
     @NotNull
@@ -231,7 +224,6 @@ public abstract class BaseSearchResultsAndTopicView<
         extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
         topicTags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
         bugs = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Bugs());
-        csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
         urls = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
         fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties());
@@ -383,7 +375,5 @@ public abstract class BaseSearchResultsAndTopicView<
         addActionButton(this.getUrls());
         addActionButton(this.getTopicTags());
         addActionButton(this.getBugs());
-        //addActionButton(this.getCsps());
     }
-
 }

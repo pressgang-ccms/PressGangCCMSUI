@@ -17,7 +17,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
@@ -27,8 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -86,7 +83,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private String queryString;
 
     @Inject
-    private TopicXMLPresenter topicXMLComponent;
+    private TopicXMLPresenter topicXMLPresenter;
     /**
      * The rendered topic view display in a split panel
      */
@@ -144,12 +141,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract Display getDisplay();
 
     @NotNull
-    protected TopicXMLPresenter getTopicXMLComponent() {
-        return topicXMLComponent;
+    protected TopicXMLPresenter getTopicXMLPresenter() {
+        return topicXMLPresenter;
     }
 
     @NotNull
-    protected abstract BaseFilteredResultsPresenter<V> getSearchResultsComponent();
+    protected abstract BaseFilteredResultsPresenter<V> getSearchResultPresenter();
 
     @NotNull
     protected TopicTagsPresenter getTopicTagsPresenter() {
@@ -160,7 +157,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected CommonExtendedPropertiesPresenter getTopicPropertyTagPresenter() {
         return topicPropertyTagPresenter;
     }
-
 
     @NotNull
     protected TopicRenderedPresenter getTopicSplitPanelRenderedPresenter() {
@@ -207,11 +203,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     @Override
     public void bindSearchAndEditExtended(@Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
-        getSearchResultsComponent().bindExtendedFilteredResults(queryString);
+        getSearchResultPresenter().bindExtendedFilteredResults(queryString);
         topicTagsPresenter.bindExtended();
         topicPropertyTagPresenter.bindDetailedChildrenExtended();
         topicSourceURLsPresenter.bindChildrenExtended();
-        topicXMLComponent.bindExtended();
+        topicXMLPresenter.bindExtended();
         /*topicBugsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicRenderedPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicXMLErrorsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId); */
@@ -250,12 +246,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
-            checkState(getSearchResultsComponent().getProviderData() != null, "getSearchResultsComponent().getProviderData() should not return null");
+            checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
 
             if (isInitialTopicReadyToBeLoaded() &&
-                    getSearchResultsComponent().getProviderData().getItems() != null &&
-                    getSearchResultsComponent().getProviderData().getItems().size() == 1) {
-                loadNewEntity(getNewEntityCallback, getSearchResultsComponent().getProviderData().getItems().get(0));
+                    getSearchResultPresenter().getProviderData().getItems() != null &&
+                    getSearchResultPresenter().getProviderData().getItems().size() == 1) {
+                loadNewEntity(getNewEntityCallback, getSearchResultPresenter().getProviderData().getItems().get(0));
                 setSearchResultsVisible(false);
             }
         } finally {
@@ -270,8 +266,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.setXMLEditorButtonsToEditorState()");
 
-            topicXMLComponent.getDisplay().getLineWrap().setDown(topicXMLComponent.getDisplay().getEditor().getUserWrapMode());
-            topicXMLComponent.getDisplay().getShowInvisibles().setDown(topicXMLComponent.getDisplay().getEditor().getShowInvisibles());
+            topicXMLPresenter.getDisplay().getLineWrap().setDown(topicXMLPresenter.getDisplay().getEditor().getUserWrapMode());
+            topicXMLPresenter.getDisplay().getShowInvisibles().setDown(topicXMLPresenter.getDisplay().getEditor().getShowInvisibles());
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.setXMLEditorButtonsToEditorState()");
         }
@@ -348,8 +344,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     try {
                         LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
 
-                        if (topicXMLComponent.getDisplay().getEditor() != null) {
-                            topicXMLComponent.getDisplay().getEditor().redisplay();
+                        if (topicXMLPresenter.getDisplay().getEditor() != null) {
+                            topicXMLPresenter.getDisplay().getEditor().redisplay();
                         }
 
                         if (topicSplitPanelRenderedPresenter.getDisplay().getPanel().isAttached()) {
@@ -390,12 +386,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             initializeSplitViewButtons();
 
             /* Display the property tags that are added to the category */
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
 
             /* Display the list of property tags */
-            topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
+            topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
             postLoadAdditionalDisplayedItemData();
 
@@ -439,7 +435,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             this.getDisplay().replaceTopActionButton(this.getDisplay().getTopicTagsDown(), getDisplay().getTopicTags());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getUrlsDown(), getDisplay().getUrls());
 
-            if (displayedView == this.topicXMLComponent.getDisplay()) {
+            if (displayedView == this.topicXMLPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getXml(), getDisplay().getXmlDown());
             } else if (displayedView == this.topicBugsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getBugs(), getDisplay().getBugsDown());
@@ -473,8 +469,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.updatePageTitle()");
 
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
             final StringBuilder id = new StringBuilder(getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
@@ -483,7 +479,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Test to see if we are looking at a specific revision. If so, add the revision to the page title.
              */
             if (getDisplayedTopic().getRevision() != null &&
-                    !getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+                    !getDisplayedTopic().getRevision().equals(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
                 id.append("-" + getDisplayedTopic().getRevision());
             }
 
@@ -492,7 +488,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 displayTitle = displayTitle.substring(0, Constants.MAX_PAGE_TITLE_LENGTH - 3) + "...";
             }
 
-            if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+            if (this.getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                 title.append(": " + displayTitle + " [" + id.toString() + "]");
             }
             getDisplay().getPageTitle().setText(title.toString());
@@ -511,8 +507,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             updatePageTitle(displayedView);
 
             /* Save any changes to the xml editor */
-            if (lastDisplayedView == this.topicXMLComponent.getDisplay()) {
-                this.topicXMLComponent.getDisplay().getDriver().flush();
+            if (lastDisplayedView == this.topicXMLPresenter.getDisplay()) {
+                this.topicXMLPresenter.getDisplay().getDriver().flush();
             }
 
             postAfterSwitchView(displayedView);
@@ -531,7 +527,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicPropertyTagPresenter.getDisplay());
                     }
                 }
@@ -540,7 +536,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicSourceURLsPresenter.getDisplay());
                     }
                 }
@@ -549,8 +545,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                        switchView(topicXMLComponent.getDisplay());
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicXMLPresenter.getDisplay());
 
                     }
                 }
@@ -559,7 +555,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicRenderedClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicRenderedPresenter.getDisplay());
                     }
                 }
@@ -568,7 +564,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicTagsPresenter.getDisplay());
                     }
                 }
@@ -577,7 +573,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler topicBugsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicBugsPresenter.getDisplay());
                     }
                 }
@@ -618,7 +614,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     initializeSplitViewButtons();
 
                     if (lastDisplayedView == topicRenderedPresenter.getDisplay()) {
-                        switchView(topicXMLComponent.getDisplay());
+                        switchView(topicXMLPresenter.getDisplay());
                         showRenderedSplitPanelMenu();
                     }
                 }
@@ -634,7 +630,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     initializeSplitViewButtons();
 
                     if (lastDisplayedView == topicRenderedPresenter.getDisplay()) {
-                        switchView(topicXMLComponent.getDisplay());
+                        switchView(topicXMLPresenter.getDisplay());
                         showRenderedSplitPanelMenu();
                     }
                 }
@@ -647,27 +643,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler cspsHandler = new ClickHandler() {
-
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && isOKToProceed()) {
-
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
-
-                        final RESTBaseTopicV1<?, ?, ?> topic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
-
-                        eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                                + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
-                                + topic.getTitle() + " [" + topic.getId() + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND",
-                                GWTUtilities.isEventToOpenNewWindow(event)));
-                    }
-
-                }
-            };
-
             /* Hook up the click listeners */
             getDisplay().getRenderedSplit().addClickHandler(splitMenuHandler);
             getDisplay().getExtendedProperties().addClickHandler(topicPropertyTagsClickHandler);
@@ -675,7 +650,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getRendered().addClickHandler(topicRenderedClickHandler);
             getDisplay().getTopicTags().addClickHandler(topicTagsClickHandler);
             getDisplay().getBugs().addClickHandler(topicBugsClickHandler);
-            getDisplay().getCsps().addClickHandler(cspsHandler);
             getDisplay().getUrls().addClickHandler(topicSourceUrlsClickHandler);
 
             getDisplay().getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
@@ -687,17 +661,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getShowHideSearchResults().addClickHandler(showHideSearchResults);
 
             /* Hook up the xml editor buttons */
-            topicXMLComponent.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
+            topicXMLPresenter.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    topicXMLComponent.getDisplay().getEditor().setUseWrapMode(topicXMLComponent.getDisplay().getLineWrap().isDown());
+                    topicXMLPresenter.getDisplay().getEditor().setUseWrapMode(topicXMLPresenter.getDisplay().getLineWrap().isDown());
                 }
             });
 
-            topicXMLComponent.getDisplay().getShowInvisibles().addClickHandler(new ClickHandler() {
+            topicXMLPresenter.getDisplay().getShowInvisibles().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    topicXMLComponent.getDisplay().getEditor().setShowInvisibles(topicXMLComponent.getDisplay().getShowInvisibles().isDown());
+                    topicXMLPresenter.getDisplay().getEditor().setShowInvisibles(
+                            topicXMLPresenter.getDisplay().getShowInvisibles().isDown());
                 }
             });
 
@@ -755,7 +730,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 or topic revision
             */
             final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
-            displayableViews.add(topicXMLComponent.getDisplay());
+            displayableViews.add(topicXMLPresenter.getDisplay());
             displayableViews.add(topicTagsPresenter.getDisplay());
             displayableViews.add(topicBugsPresenter.getDisplay());
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
@@ -778,11 +753,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
-            /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */
-            if (viewIsInFilter(filter, topicXMLComponent.getDisplay())) {
+            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the initialize method was called above */
+            if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
                 setXMLEditorButtonsToEditorState();
-                topicXMLComponent.getDisplay().getEditor().redisplay();
+                topicXMLPresenter.getDisplay().getEditor().redisplay();
             }
 
             LOGGER.log(Level.INFO, "\tInitializing topic presenters");
@@ -1023,11 +998,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
          * @return The button that is used to switch to the bugs view
          */
         Label getBugsDown();
-
-        /**
-         * @return The button this is used to match topics to csps
-         */
-        PushButton getCsps();
 
         /**
          * Show the rendered split view menu
