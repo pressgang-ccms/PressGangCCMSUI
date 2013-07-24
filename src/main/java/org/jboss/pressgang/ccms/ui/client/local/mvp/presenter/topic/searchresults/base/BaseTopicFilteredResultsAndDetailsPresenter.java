@@ -1059,7 +1059,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 2));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId(), 0));
 
-
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_ADD_SOURCE_URL.getId(), 7));
     }
 
     @Override

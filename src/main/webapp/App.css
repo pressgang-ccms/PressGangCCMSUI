@@ -1,6 +1,6 @@
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
 .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField, .TopicViewLocaleField,
-.TopicViewDescriptionField {
+.TopicViewDescriptionField, .PossibleChildrenResultsPanel {
     background-color: white;
 }
 
@@ -292,6 +292,7 @@ div[class^='badword'] {
 
 .OrderedChildrenListPanel {
     margin-right: 8px;
+    background-color: white;
 }
 
 .FooterPanel {

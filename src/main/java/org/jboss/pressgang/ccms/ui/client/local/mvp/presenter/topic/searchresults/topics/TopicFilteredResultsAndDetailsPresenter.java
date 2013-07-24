@@ -2962,10 +2962,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             Property ui elements
         */
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERT_TITLE.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERT_TITLE.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_DESCRIPTION.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().localeEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_LOCALE.getId(), 7));
+
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId(), 3));
+
+
+
+
 
     }
 

@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -92,6 +93,8 @@ abstract public class BaseChildrenView<
      */
     public BaseChildrenView(@NotNull final String applicationName, @NotNull final String pageName) {
         super(applicationName, pageName);
+
+        possibleChildrenResultsPanel.addStyleName(CSSConstants.BaseChildrenView.POSSIBLE_CHILDREN_RESULTS_PANEL);
 
         this.possibleChildrenPager.setDisplay(this.possibleChildrenResults);
 

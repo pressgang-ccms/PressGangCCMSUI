@@ -8,6 +8,10 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface BaseChildrenView {
+        String POSSIBLE_CHILDREN_RESULTS_PANEL = "PossibleChildrenResultsPanel";
+    }
+
     interface HelpOverlay {
         /**
          * Style applied to the dimmer panel as the base of the help overlay.
