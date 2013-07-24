@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +56,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
     }
 
     public RESTLanguageImageCollectionV1Editor() {
-        super(2, Unit.EM);
+        super(Constants.TAB_PANEL_HEIGHT, Unit.EM);
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB_PANEL);
     }
 }

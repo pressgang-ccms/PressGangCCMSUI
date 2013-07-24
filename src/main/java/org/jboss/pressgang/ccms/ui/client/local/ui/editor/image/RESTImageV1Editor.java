@@ -1,11 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,17 +30,15 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final FlexTable imageDetails = new FlexTable();
 
-    private final TextArea xmlTemplate = new TextArea();
+    private final Label templateLabel =  new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplates());
 
-    private final Label xmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
+    private final TextArea xmlTemplate = new TextArea();
 
     private final TextArea inlineXmlTemplate = new TextArea();
 
-    private final Label inlineXmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
-
     private final TextArea bareXmlTemplate = new TextArea();
 
-    private final Label bareXmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
+    private final TabLayoutPanel tabPanel = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
 
     /**
      * The editor representing a collection of language image editors.
@@ -73,28 +73,20 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         imageDetails.setWidget(0, 1, id);
         imageDetails.setWidget(1, 0, descriptionLabel);
         imageDetails.setWidget(1, 1, description);
-        imageDetails.setWidget(2, 0, xmlTemplateLabel);
-        imageDetails.setWidget(2, 1, xmlTemplate);
 
-        imageDetails.setWidget(3, 0, inlineXmlTemplateLabel);
-        imageDetails.setWidget(3, 1, inlineXmlTemplate);
-        imageDetails.setWidget(4, 0, bareXmlTemplateLabel);
-        imageDetails.setWidget(4, 1, bareXmlTemplate);
-        imageDetails.setWidget(5, 0, docbookFileNameLabel);
-        imageDetails.setWidget(5, 1, docbookFileName);
+        imageDetails.setWidget(2, 0, templateLabel);
+        imageDetails.setWidget(2, 1, tabPanel);
+
+        tabPanel.add(xmlTemplate, PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
+        tabPanel.add(bareXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
+        tabPanel.add(inlineXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
         imageDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_CELL);
         imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_CELL);
-        imageDetails.getCellFormatter().addStyleName(3, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(3, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_CELL);
-        imageDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(4, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_CELL);
-        imageDetails.getCellFormatter().addStyleName(5, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(5, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
+
 
         this.add(imageDetails, DockPanel.NORTH);
         this.add(languageImages_OTM, DockPanel.CENTER);

@@ -791,7 +791,13 @@ html {
     overflow: auto !important;
 }
 
-.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText, .FileViewDescriptionText {
+.ImageViewTemplateText {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ImageViewDescriptionText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText, .FileViewDescriptionText {
     width: 100%;
     height: 5em;
     box-sizing: border-box;
