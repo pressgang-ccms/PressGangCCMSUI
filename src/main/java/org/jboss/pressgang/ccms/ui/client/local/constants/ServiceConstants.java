@@ -97,7 +97,17 @@ public final class ServiceConstants {
         SERVER_SELECTION(21227),
         BUILD_LABEL(21228),
         TOPIC_SEARCH_RESULTS(21229),
-        XML_EDITOR(21230);
+        XML_EDITOR(21230),
+        TOPIC_XML_EDITOR(21233),
+        TOPIC_PROPERTIES(21234),
+        TOPIC_EXTENDED_PROPERTIES(21235),
+        TOPIC_SOURCE_URLS(21236),
+        TOPIC_TAGS(21237),
+        TOPIC_BUGS(21238),
+        TOPIC_REVISIONS(21239),
+        TOPIC_SAVE(21240),
+        TOPIC_LINE_WRAP(21241),
+        TOPIC_HIDDEN_CHARACTERS(21242);
 
         private final int id;
         public int getId() {
