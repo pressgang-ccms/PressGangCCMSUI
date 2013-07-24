@@ -62,6 +62,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         inlineXmlTemplate.setReadOnly(true);
         bareXmlTemplate.setReadOnly(true);
 
+        tabPanel.addStyleName(CSSConstants.ImageView.IMAGE_TEMPLATES_TAB_PANEL);
         imageDetails.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DETAILS_TABLE);
         descriptionLabel.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL);
         description.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT);

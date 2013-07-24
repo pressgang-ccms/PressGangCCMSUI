@@ -664,6 +664,8 @@ public interface CSSConstants {
          * Assigned to the cell that holds the image upload buttons.
          */
         String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL = "ImageViewLanguageImageUploadButtonsCell";
+
+        String IMAGE_TEMPLATES_TAB_PANEL = "ImageTemplatesTabPanel";
     }
 
     /**

@@ -791,6 +791,10 @@ html {
     overflow: auto !important;
 }
 
+.ImageTemplatesTabPanel {
+    min-height: 7em;
+}
+
 .ImageViewTemplateText {
     height: 100%;
     width: 100%;
