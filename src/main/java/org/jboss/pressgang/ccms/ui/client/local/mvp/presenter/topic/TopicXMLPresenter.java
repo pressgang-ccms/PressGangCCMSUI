@@ -113,6 +113,8 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
         HandlerSplitLayoutPanel getVerticalPanel();
 
+        SimplePanel getEditorParent();
+
         /**
          * Build the split panel with the supplied height
          *

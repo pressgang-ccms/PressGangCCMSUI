@@ -56,7 +56,7 @@ public class HelpCallout extends FlexTable {
         horizontalPanel.add(close);
 
         if (helpData.getDirection() == 0) {
-            this.setWidget(1, 1, contentParent);
+            this.setWidget(0, 1, contentParent);
             arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
             this.setWidget(0, 0, arrow);
 
@@ -126,7 +126,7 @@ public class HelpCallout extends FlexTable {
             this.setWidget(1, 0, arrow);
 
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.CONTENT_CELL);
-            this.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.HelpOverlay.ARROW_CELL);
+            this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.ARROW_CELL);
 
             this.setWidget(1, 0, horizontalPanel);
             this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
