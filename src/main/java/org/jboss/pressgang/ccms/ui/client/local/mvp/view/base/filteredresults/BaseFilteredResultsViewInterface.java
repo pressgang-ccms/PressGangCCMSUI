@@ -4,6 +4,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -47,6 +48,9 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
      */
     @NotNull
     FlexTable getTabPanel();
+
+    @NotNull
+    VerticalPanel getSearchResultsPanel();
 
     /**
      * @param provider The provider used to populate the cell table

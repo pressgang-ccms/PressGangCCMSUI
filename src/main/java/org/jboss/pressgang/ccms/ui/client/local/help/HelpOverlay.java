@@ -139,17 +139,21 @@ public class HelpOverlay {
         RootLayoutPanel.get().add(helpCallout);
         positionCallout();
 
+        final HelpCallout currentHelpCallout = helpCallout;
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopic(helpDatabase.get(widget).getTopicID()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 value) {
-                        // TODO: Change the XSL when the prod server gets the render only xsl
-                        final String xml = /*Constants.DOCBOOK_RENDER_ONLY_XSL_REFERENCE*/ Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
+                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
                         failOverRESTCall.performRESTCall(
                                 FailOverRESTCallDatabase.holdXML(xml),
                                 new RESTCallBack<IntegerWrapper>() {
                                     public void success(@NotNull final IntegerWrapper value) {
-                                        if (helpCallout != null) {
+                                        /*
+                                            It is possible that the callout was changed or closed by the time we get
+                                            to this call.
+                                         */
+                                        if (helpCallout == currentHelpCallout) {
                                             helpCallout.getiFrame().setUrl(
                                                     ServerDetails.getSavedServer().getRestEndpoint() +
                                                             Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" +

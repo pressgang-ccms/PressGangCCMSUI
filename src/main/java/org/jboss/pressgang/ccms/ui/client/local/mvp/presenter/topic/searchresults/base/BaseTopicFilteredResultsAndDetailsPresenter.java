@@ -226,6 +226,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             can be called.
         */
         initializeDisplay();
+
+        buildHelpDatabase();
     }
 
     /**
@@ -1055,9 +1057,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     private void buildHelpDatabase() {
-        final HelpData docBuilderHelp = new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 7);
 
-        this.helpDatabase.put(getDisplay().getShortcuts().getDocBuilderButton(), docBuilderHelp);
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 6));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getSearchResultsComponent().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId(), 7));
+
     }
 
     @Override

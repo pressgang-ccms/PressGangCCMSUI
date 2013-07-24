@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307240648";
+    public static final String VERSION = "201307241005";
 
     /**
      * The size of the arrows in the help overlay callout

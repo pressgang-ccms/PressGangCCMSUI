@@ -123,6 +123,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @return The table that holds the filter fields
      */
     @NotNull
+    @Override
     public VerticalPanel getSearchResultsPanel() {
         return searchResultsPanel;
     }
