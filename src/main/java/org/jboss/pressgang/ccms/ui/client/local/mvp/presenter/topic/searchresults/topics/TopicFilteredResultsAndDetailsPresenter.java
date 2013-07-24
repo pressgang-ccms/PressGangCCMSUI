@@ -41,10 +41,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -62,6 +59,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -119,7 +117,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Inject private FailOverRESTCall failOverRESTCall;
 
-
+    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /*
         True when the XML elements dialog is opened for the first time, and the
@@ -399,6 +397,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
             }
         });
+
+        buildHelpDatabase();
     }
 
     @Override
@@ -2944,6 +2944,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
 
+    }
+
+    /**
+     * Assign help info to the UI elements exposed by this presenter.
+     */
+    private void buildHelpDatabase() {
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistory(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistoryDown(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 2));
+    }
+
+    @Override
+    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
+        helpDataHashMap.putAll(helpDatabase);
+        super.toggleHelpOverlay(helpDataHashMap);
     }
 
     /**

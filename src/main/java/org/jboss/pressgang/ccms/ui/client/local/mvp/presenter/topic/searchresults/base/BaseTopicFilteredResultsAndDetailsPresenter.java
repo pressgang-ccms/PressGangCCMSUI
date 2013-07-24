@@ -1026,6 +1026,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         PushButton getShowHideSearchResults();
     }
 
+    /**
+     * Assign help info to the UI elements exposed by this presenter.
+     */
     private void buildHelpDatabase() {
 
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 0));
@@ -1043,8 +1046,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getBugsDown(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXml(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXmlDown(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId(), 0));
     }
 
     @Override

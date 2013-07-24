@@ -98,6 +98,7 @@ public final class ServiceConstants {
         BUILD_LABEL(21228),
         TOPIC_SEARCH_RESULTS(21229),
         XML_EDITOR(21230),
+        RENDERED_PREVIEW(21231),
         TOPIC_XML_EDITOR(21233),
         TOPIC_PROPERTIES(21234),
         TOPIC_EXTENDED_PROPERTIES(21235),
@@ -107,7 +108,8 @@ public final class ServiceConstants {
         TOPIC_REVISIONS(21239),
         TOPIC_SAVE(21240),
         TOPIC_LINE_WRAP(21241),
-        TOPIC_HIDDEN_CHARACTERS(21242);
+        TOPIC_HIDDEN_CHARACTERS(21242),
+        TOPIC_RENDERED_PANE(21232);
 
         private final int id;
         public int getId() {
