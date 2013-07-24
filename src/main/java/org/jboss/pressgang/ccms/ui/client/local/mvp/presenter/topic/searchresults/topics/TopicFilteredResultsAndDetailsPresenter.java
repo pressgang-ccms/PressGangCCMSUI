@@ -416,6 +416,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         getTopicPropertyTagPresenter().close();
         getTopicTagsPresenter().close();
         getTopicXMLPresenter().close();
+        getTopicContentSpecsPresenter().close();
     }
 
     private void bindRenderedViewClicks() {
