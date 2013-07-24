@@ -112,10 +112,16 @@ public class HelpOverlay {
                                         widget.getElement().getAbsoluteBottom() >= event.getNativeEvent().getClientY()) {
 
                                     if (helpDatabase.get(widget) != lastWidget) {
+                                        if (!(helpCallout != null &&
+                                            helpCallout.getElement().getAbsoluteLeft() <= event.getNativeEvent().getClientX() &&
+                                            helpCallout.getElement().getAbsoluteRight()  >= event.getNativeEvent().getClientX() &&
+                                            helpCallout.getElement().getAbsoluteTop() <= event.getNativeEvent().getClientY() &&
+                                            helpCallout.getElement().getAbsoluteBottom() >= event.getNativeEvent().getClientY())) {
 
-                                        showCallout(widget);
-                                        break;
-                                   }
+                                            showCallout(widget);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             break;
