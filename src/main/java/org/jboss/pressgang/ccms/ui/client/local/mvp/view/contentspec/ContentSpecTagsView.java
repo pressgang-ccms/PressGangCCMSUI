@@ -1,9 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import javax.enterprise.context.Dependent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
@@ -13,6 +20,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -22,12 +30,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Dependent
 public class ContentSpecTagsView extends BaseTemplateView implements ContentSpecTagsPresenter.Display {
@@ -50,6 +52,10 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     private final ValueListBox<SearchUIProject> projects;
     private final ValueListBox<SearchUICategory> categories;
     private final ValueListBox<SearchUITag> myTags;
+    /**
+     * The image to display in the waiting dialog.
+     */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     public interface ContentSpecTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
@@ -152,8 +158,10 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
 
             this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
             this.getPanel().setWidget(layout);
+
+            spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicTagsView()");
+            LOGGER.log(Level.INFO, "EXIT ContentSpecTagsView()");
         }
     }
 
@@ -258,5 +266,15 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
             /* Add the projects */
             layout.setWidget(layout.getRowCount(), 0, editor);
         }
+    }
+
+    @Override
+    protected void showWaiting() {
+        this.getPanel().setWidget(spinner);
+    }
+
+    @Override
+    protected void hideWaiting() {
+        this.getPanel().setWidget(layout);
     }
 }

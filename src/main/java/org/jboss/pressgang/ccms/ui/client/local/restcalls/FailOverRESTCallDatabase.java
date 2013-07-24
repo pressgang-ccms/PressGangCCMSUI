@@ -165,8 +165,7 @@ public final class FailOverRESTCallDatabase {
     /**
      * Content specifications need the extended properties expanded
      */
-    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
@@ -246,7 +245,37 @@ public final class FailOverRESTCallDatabase {
 
             @Override
             public boolean isRepeatable() {
-                return false;
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall getContentSpecRevisionWithTags(@NotNull final Integer id, @NotNull final Integer revision) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+                restService.getJSONTextContentSpecRevision(id, revision, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall getContentSpecRevisionWithProperties(@NotNull final Integer id, @NotNull final Integer revision) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + TOPIC_PROPERTIES_EXPANSION + "]}";
+                restService.getJSONTextContentSpecRevision(id, revision, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
             }
         };
     }
@@ -317,9 +346,9 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String revisionExpand = "{\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                        "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
                         "\"branches\":[" +
-                        CONTENT_SPEC_ITEM_EXPANSION +
+                            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
                         "]}" +
                         "]}";
                 restService.getJSONTextContentSpec(id, revisionExpand);

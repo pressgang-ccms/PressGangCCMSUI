@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -85,6 +86,32 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     @Inject private FailOverRESTCall failOverRESTCall;
 
+    /*
+        True when the property tags tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean propertyTagsLoadInitiated = false;
+    /*
+        True when the property tags tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean allPropertyTagsLoadInitiated = false;
+    /*
+        True when the tags tab or bulk import dialogis opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean allTagsLoadInitiated = false;
+    /*
+        True when the tags tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean tagsLoadInitiated = false;
+    /*
+        True when the revisions tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean revisionsLoadInitiated = false;
+
     /**
      * true if this presenter should be opened with a fresh topic, and false otherwise
      */
@@ -129,7 +156,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     @Inject
     private CommonExtendedPropertiesPresenter commonExtendedPropertiesPresenter;
     @Inject
-    private ContentSpecRevisionsPresenter contentSpecRevisionsComponent;
+    private ContentSpecRevisionsPresenter contentSpecRevisionsPresenter;
     @Inject
     private ContentSpecTagsPresenter contentSpecTagsPresenter;
     @Inject
@@ -168,18 +195,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
             RESTTextContentSpecCollectionItemV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
-            checkState(displayedItem != null,
-                    "There should be a displayed collection item.");
-            checkState(displayedItem.getItem() != null,
-                    "The displayed collection item to reference a valid entity.");
-            checkState(
-                    displayedItem.returnIsAddItem() || displayedItem.getItem().getId() != null,
+            checkState(displayedItem != null, "There should be a displayed collection item.");
+            checkState(displayedItem.getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(displayedItem.returnIsAddItem() || displayedItem.getItem().getId() != null,
                     "The displayed collection item to reference a valid entity with a valid ID.");
 
             // Make the window title display the id of the content spec
             if (displayedItem.getItem().getId() != null) {
-                GWTUtilities.setBrowserWindowTitle("CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE
-                        .PressGangCCMS());
+                GWTUtilities.setBrowserWindowTitle(
+                        "CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             } else {
                 GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             }
@@ -187,38 +211,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
-            final RESTTextContentSpecV1 displayedContentSpec = displayedItem.getItem();
-            final RESTTextContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
-
-            /*
-                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
-                lead to the properties collection being null.
-            */
-            if (displayedContentSpec.getProperties() != null) {
-                Collections.sort(displayedContentSpec.getProperties().getItems(),
-                        new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedContentSpec);
-            }
-
-            /* Get a new collection of property tags. */
-            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedContentSpec);
-
-            displayPropertyTags();
-
-            /* set the revisions to show the loading widget */
-            if (contentSpecRevisionsComponent.getDisplay().getProvider() != null) {
-                contentSpecRevisionsComponent.getDisplay().getProvider().resetProvider();
-            }
-
-            /*
-                If this is not a new item (i.e. the selected item is not null), load some revisions.
-             */
-            if (selectedCollectionItem != null) {
-                this.contentSpecRevisionsComponent.getDisplay().setProvider(
-                        this.contentSpecRevisionsComponent.generateListProvider(selectedCollectionItem.getItem().getId(), display));
-            }
-
-            loadTags();
+            revisionsLoadInitiated = false;
+            tagsLoadInitiated = false;
+            propertyTagsLoadInitiated = false;
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
         }
@@ -237,8 +232,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
 
             if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
-                contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(),
-                        locales);
+                contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(), locales);
             }
 
             if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
@@ -251,19 +245,21 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
                 contentSpecTagsPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
+                bindTagEditingButtons();
             }
 
             if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
                 commonExtendedPropertiesPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
                 commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedItem, isReadOnlyMode());
+                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
             }
 
             /*
                 The revision display always displays details from the main topic, and not the selected revision.
             */
-            if (viewIsInFilter(filter, contentSpecRevisionsComponent.getDisplay())) {
+            if (viewIsInFilter(filter, contentSpecRevisionsPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-                contentSpecRevisionsComponent.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                contentSpecRevisionsPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode());
             }
         } finally {
@@ -344,7 +340,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void onClick(final ClickEvent event) {
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
-                    switchView(contentSpecRevisionsComponent.getDisplay());
+                    switchView(contentSpecRevisionsPresenter.getDisplay());
                 }
             }
         };
@@ -352,14 +348,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler revisionDoneClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (getDisplayedContentSpec().getRevision() == filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision
-                        ()) {
-                    checkState(contentSpecRevisionsComponent.getDisplay().getMergely() != null, "mergely should not be null");
-                    final String lhs = contentSpecRevisionsComponent.getDisplay().getMergely().getLhs();
+                if (getDisplayedContentSpec().getRevision() == filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                        .getRevision()) {
+                    checkState(contentSpecRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
+                    final String lhs = contentSpecRevisionsPresenter.getDisplay().getMergely().getLhs();
                     filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(lhs);
                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
                 }
-                contentSpecRevisionsComponent.getDisplay().displayRevisions();
+                contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
                 getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
@@ -368,7 +364,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler revisionCancelClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                contentSpecRevisionsComponent.getDisplay().displayRevisions();
+                contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
                 getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
@@ -402,6 +398,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             : ServiceConstants.MAJOR_CHANGE);
 
                     final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                    final RESTTextContentSpecV1 selectedEntity;
+                    if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
+                        selectedEntity = filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
+                    } else {
+                        selectedEntity = null;
+                    }
                     final Integer id = displayedEntity.getId();
 
                     // Copy out the text
@@ -409,14 +411,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     // create the object to be saved
                     final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
-                    updatedSpec.explicitSetText(displayedEntity.getText());
+                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(displayedEntity
+                            .getText())) {
+                        updatedSpec.explicitSetText(displayedEntity.getText());
+                    }
                     updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
 
                     if (displayedEntity.getProperties() != null) {
                         updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
                         updatedSpec.getProperties().setItems(displayedEntity.getProperties().getItems());
                     }
-
 
                     if (displayedEntity.getTags() != null) {
                         updatedSpec.explicitSetTags(new RESTTagCollectionV1());
@@ -497,13 +501,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.createContentSpec(
-                                updatedSpec,
-                                message.toString(),
-                                flag,
-                                ServiceConstants.NULL_USER_ID.toString())
-                        ,addCallback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -581,7 +580,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 if (overwroteChanges) {
                                     // Take the user to the revisions view so they can review any overwritten changes
-                                    switchView(contentSpecRevisionsComponent.getDisplay());
+                                    switchView(contentSpecRevisionsPresenter.getDisplay());
                                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else {
                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
@@ -589,13 +588,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.updateContentSpec(
-                                        updatedSpec,
-                                        message.toString(),
-                                        flag,
-                                        ServiceConstants.NULL_USER_ID.toString()),
-                                updateCallback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
@@ -629,8 +623,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
-        contentSpecRevisionsComponent.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
-        contentSpecRevisionsComponent.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
+        contentSpecRevisionsPresenter.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
+        contentSpecRevisionsPresenter.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
         display.getMessageLogDialog().getCancel().addClickHandler(logMessageCancelClickHandler);
         getDisplay().getShowHideSearchResults().addClickHandler(showHideSearchResults);
     }
@@ -650,12 +644,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 @Override
                 public void execute() {
                     try {
-                        LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" +
-                                ".execute()");
+                        LOGGER.log(Level.INFO,
+                                "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" + ".execute()");
                         getDisplay().getSplitPanel().onResize();
                     } finally {
-                        LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" +
-                                ".execute()");
+                        LOGGER.log(Level.INFO,
+                                "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand" + ".execute()");
                     }
                 }
             });
@@ -669,7 +663,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.initializeDisplay()");
 
-            final double searchResultsWidth = Preferences.INSTANCE.getDouble(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+            final double searchResultsWidth = Preferences.INSTANCE.getDouble(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH,
+                    Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
             getDisplay().initialize(isDisplayingSearchResults(), searchResultsWidth);
@@ -746,7 +741,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
                     @Override
                     public void success(@NotNull final RESTTextContentSpecV1 retValue) {
-                        checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
 
                         ComponentContentSpecV1.fixDisplayedText(retValue);
@@ -764,8 +758,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         filteredResultsPresenter.bindExtendedFilteredResults(queryString);
         commonExtendedPropertiesPresenter.bindDetailedChildrenExtended();
         contentSpecTagsPresenter.bindExtended();
-
-        contentSpecTagsPresenter.getTags();
 
         super.bindSearchAndEdit(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
                 contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
@@ -866,7 +858,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton()");
 
-            contentSpecRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(
+            contentSpecRevisionsPresenter.getDisplay().getDiffButton().setFieldUpdater(
                     new FieldUpdater<RESTTextContentSpecCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionContentSpec,
@@ -881,36 +873,33 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         It is possible to switch away from the view while this request was loading. If we
                                         have done so, don't show the merge view.
                                      */
-                                    if (lastDisplayedView == contentSpecRevisionsComponent.getDisplay()) {
-                                        final boolean rhsReadonly = getDisplayedContentSpec().getRevision() !=
-                                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                                        .getRevision();
+                                    if (lastDisplayedView == contentSpecRevisionsPresenter.getDisplay()) {
+                                        final boolean rhsReadonly = getDisplayedContentSpec().getRevision() != filteredResultsPresenter
+                                                .getProviderData().getDisplayedItem().getItem().getRevision();
 
                                         // Fix the displayed text up
                                         ComponentContentSpecV1.fixDisplayedText(retValue);
 
                                         // Display the diffs
-                                        contentSpecRevisionsComponent.getDisplay().displayDiff(retValue.getText(),
-                                                rhsReadonly, getDisplayedContentSpec().getText());
+                                        contentSpecRevisionsPresenter.getDisplay().displayDiff(retValue.getText(), rhsReadonly,
+                                                getDisplayedContentSpec().getText());
 
                                         // We can't save while merging.
                                         getDisplay().getSave().setEnabled(false);
                                         getDisplay().getPermissiveSave().setEnabled(false);
                                     }
 
-                                    contentSpecRevisionsComponent.getDisplay().setButtonsEnabled(true);
+                                    contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                                 }
                             };
 
                             failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.getContentSpecRevision(
-                                            revisionContentSpec.getItem().getId(),
-                                            revisionContentSpec.getItem().getRevision()),
-                                    callback, display);
+                                    FailOverRESTCallDatabase.getContentSpecRevision(revisionContentSpec.getItem().getId(),
+                                            revisionContentSpec.getItem().getRevision()), callback, display);
                         }
                     });
 
-            contentSpecRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(
+            contentSpecRevisionsPresenter.getDisplay().getViewButton().setFieldUpdater(
                     new FieldUpdater<RESTTextContentSpecCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionTopic,
@@ -918,8 +907,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                             try {
                                 LOGGER.log(Level.INFO,
-                                        "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() FieldUpdater"
-                                                + ".update()");
+                                        "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() " +
+                                                "FieldUpdater" + ".update()");
 
                                 checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
                                         "There should be a displayed collection item.");
@@ -929,14 +918,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 displayRevision(revisionTopic.getItem());
 
-                                contentSpecRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(
-                                        contentSpecRevisionsComponent.getProviderData().getItems(),
-                                        contentSpecRevisionsComponent.getProviderData().getSize(),
-                                        contentSpecRevisionsComponent.getProviderData().getStartRow());
+                                contentSpecRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                        contentSpecRevisionsPresenter.getProviderData().getItems(),
+                                        contentSpecRevisionsPresenter.getProviderData().getSize(),
+                                        contentSpecRevisionsPresenter.getProviderData().getStartRow());
                             } finally {
                                 LOGGER.log(Level.INFO,
-                                        "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() FieldUpdater" +
-                                                ".update()");
+                                        "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() " +
+                                                "FieldUpdater" + ".update()");
                             }
                         }
                     });
@@ -964,20 +953,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
              */
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
-                contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
+                contentSpecRevisionsPresenter.getDisplay().setRevisionContentSpec(revisionSpec);
             }
 
             /* Initialize the views with the new topic being displayed */
             initializeViews();
 
-            /* Load the tags and bugs */
+            // Load the tags
+            tagsLoadInitiated = false;
             loadTags();
 
-            /* Redisplay the list of property tags */
-            displayPropertyTags();
-
             /* Display the revisions view (which will also update buttons like Save) */
-            switchView(contentSpecRevisionsComponent.getDisplay());
+            switchView(contentSpecRevisionsPresenter.getDisplay());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayRevision()");
@@ -985,39 +972,75 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     /**
-     * topicRevisionsComponent.getDisplay().getRevisionTopic() is used to indicate which revision
-     * of a topic we are looking at. Setting it to null means that we are not looking at a revision.
+     * contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() is used to indicate which revision
+     * of a content spec we are looking at. Setting it to null means that we are not looking at a revision.
      */
     private void viewLatestSpecRevision() {
-        contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(null);
+        contentSpecRevisionsPresenter.getDisplay().setRevisionContentSpec(null);
     }
 
-    private void displayPropertyTags() {
+//    private void displayPropertyTags() {
+//        try {
+//            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
+//
+//            final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
+//
+//            checkState(displayedItem.getProperties() != null,
+//                    "The displayed entity or revision needs to have a valid properties collection");
+//
+//            /*
+//                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
+//                lead to the properties collection being null.
+//            */
+//            Collections.sort(displayedItem.getProperties().getItems(),
+//                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+//            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+//
+//        } finally {
+//            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
+//        }
+//    }
+
+    /**
+     * Gets the tags, so they can be displayed and added to topics. Unlike the ContentSpecTagsPresenter.getTags() method,
+     * here we populate both the tags view, and the tags view in the bulk topic import dialog.
+     */
+    private void loadAllTags() {
         try {
-            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAllTags()");
 
-            final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
+            if (!allTagsLoadInitiated) {
+                allTagsLoadInitiated = true;
 
-            checkState(displayedItem.getProperties() != null,
-                    "The displayed entity or revision needs to have a valid properties collection");
 
-            /*
-                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
-                lead to the properties collection being null.
-            */
+                final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTagCollectionV1 retValue) {
+                        try {
+                            LOGGER.log(Level.INFO,
+                                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
 
-            Collections.sort(displayedItem.getProperties().getItems(),
-                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
+                            contentSpecTagsPresenter.getDisplay().initializeNewTags(retValue);
+                        } finally {
+                            LOGGER.log(Level.INFO,
+                                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
+                        }
+                    }
+                };
+
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, contentSpecTagsPresenter.getDisplay());
+            }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadAllTags()");
         }
     }
 
     /**
-     * The tags and bugs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
-     * topic is displayed.
+     * The tags for a content spec are loaded as separate operations to minimize the amount of data initially sent when a
+     * content spec is displayed.
      * <p/>
      * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
      * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
@@ -1027,27 +1050,32 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags()");
 
-            // Initiate the REST calls
-            final Integer id = getDisplayedContentSpec().getId();
-            final Integer revision = getDisplayedContentSpec().getRevision();
+            final RESTTextContentSpecCollectionItemV1 selectedItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+            final RESTTextContentSpecV1 displayedTopic = getDisplayedContentSpec();
 
-            // If this is a new topic, the id will be null, and there will not be any tags to get
-            if (id != null) {
+            /* If this is a new topic, the selectedItem will be null, and there will not be any tags to get */
+            if (!tagsLoadInitiated && selectedItem != null) {
 
-                // A callback to respond to a request for a topic with the tags expanded
-                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
+                tagsLoadInitiated = true;
+
+                /* Initiate the REST calls */
+                final Integer id = displayedTopic.getId();
+                final Integer revision = displayedTopic.getRevision();
+
+                /* A callback to respond to a request for a topic with the tags expanded */
+                final RESTCallBack<RESTTextContentSpecV1> contentSpecWithTagsCallback = new RESTCallBack<RESTTextContentSpecV1>() {
                     @Override
                     public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO,
-                                    "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback" +
-                                            ".doSuccessAction()");
+                                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction" +
+                                            "()");
 
                             /*
-                                There is a small chance that in between loading the topic's details and
+                                There is a small chance that in between loading the content spec's details and
                                 loading its tags, a new revision was created.
 
-                                So, what do we do? If changes are made to the topic, then
+                                So, what do we do? If changes are made to the content spec, then
                                 the user will be warned that they have overwritten a revision created
                                 in the mean time. In fact seeing the latest tag relationships could
                                 mean that the user doesn't try to add conflicting tags (like adding
@@ -1056,13 +1084,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                 This check is left in comments just to show that a conflict is possible.
                             */
                             /*if (!retValue.getRevision().equals(revision)) {
-                                Window.alert("The topics details and tags are not in sync.");
+                                Window.alert("The content spec details and tags are not in sync.");
                             }*/
 
-                            // copy the revisions into the displayed Topic */
+                            /* copy the revisions into the displayed Topic */
                             getDisplayedContentSpec().setTags(retValue.getTags());
 
-                            // update the view
+                            /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
                         } finally {
                             LOGGER.log(Level.INFO,
@@ -1072,10 +1100,91 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecWithTags(id), callback, contentSpecTagsPresenter.getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
+                        contentSpecWithTagsCallback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags()");
+        }
+    }
+
+    /**
+     * This method will load the complete list of property tags (and set allPropertyTagsLoadInitiated to true), and load
+     * the property tags assigned to the latest revision of the topic (and set propertyTagsLoadInitiated to true).
+     */
+    private void loadPropertyTags() {
+        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a selected collection item.");
+        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                "The displayed collection item to reference a valid entity.");
+
+        final RESTTextContentSpecCollectionItemV1 selectedItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+        final RESTTextContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+        final RESTTextContentSpecV1 displayedContentSpec = getDisplayedContentSpec();
+        // Are we displaying the latest version of the content spec i.e. the one that doesn't have its tags loaded? */
+        final boolean displayingLatest = displayedItem == displayedContentSpec;
+
+        if (!allPropertyTagsLoadInitiated) {
+            allPropertyTagsLoadInitiated = true;
+
+            // Get a new collection of property tags
+            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+        }
+
+        if (!propertyTagsLoadInitiated && displayingLatest) {
+            propertyTagsLoadInitiated = true;
+
+            // if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new content spec
+            if (selectedItem != null) {
+
+                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null,
+                        "The displayed collection item to reference a valid entity with a valid ID.");
+                checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision() != null,
+                        "The displayed collection item to reference a valid entity with a valid revision.");
+
+                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                        checkArgument(retValue.getProperties().getItems() != null,
+                                "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getProperties().getSize() != null, "Returned collection should have a valid size.");
+
+                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
+
+                        Collections.sort(
+                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+
+                        // We have new data to display
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{commonExtendedPropertiesPresenter.getDisplay()}));
+                    }
+                };
+
+                final Integer id = displayedItem.getId();
+                final Integer revision = displayedItem.getRevision();
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithProperties(id, revision), callback,
+                        commonExtendedPropertiesPresenter.getDisplay());
+            }
+        }
+    }
+
+    /**
+     * This is called when the revisions tab is opened for the first time.
+     */
+    private void loadRevisions() {
+        if (!revisionsLoadInitiated) {
+            revisionsLoadInitiated = true;
+
+            /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new content spec */
+            if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
+
+                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null,
+                        "The selected collection item to reference a valid entity.");
+                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId() != null,
+                        "The selected collection item to reference a valid entity with a valid ID.");
+
+                contentSpecRevisionsPresenter.getDisplay().setProvider(contentSpecRevisionsPresenter.generateListProvider(
+                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId(), display));
+            }
         }
     }
 
@@ -1108,7 +1217,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         /*
             Allow the child components to close.
          */
-        contentSpecRevisionsComponent.close();
+        contentSpecRevisionsPresenter.close();
         filteredResultsPresenter.close();
         commonExtendedPropertiesPresenter.close();
         contentSpecTagsPresenter.close();
@@ -1125,6 +1234,32 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
             if (displayedView != null) {
                 displayedView.setViewShown(true);
+            }
+
+            // Load the tags as needed
+            if (displayedView == contentSpecTagsPresenter.getDisplay() && contentSpecTagsPresenter.getDisplay().getProjectsList()
+                    .isAttached()) {
+
+                loadTags();
+                loadAllTags();
+                // Set the projects combo box as the focused element
+                contentSpecTagsPresenter.getDisplay().getProjectsList().getElement().focus();
+            }
+
+            if (displayedView == commonExtendedPropertiesPresenter.getDisplay()) {
+                loadPropertyTags();
+            }
+
+            if (displayedView == contentSpecRevisionsPresenter.getDisplay()) {
+                /*
+                    Load the initial set of revisions.
+                */
+                loadRevisions();
+            } else {
+                /*
+                    Otherwise switch back to the view of revisions.
+                */
+                this.contentSpecRevisionsPresenter.getDisplay().displayRevisions();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
@@ -1145,7 +1280,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             this.display.replaceTopActionButton(this.display.getText(), this.display.getTextDown());
         } else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
-        } else if (displayedView == this.contentSpecRevisionsComponent.getDisplay()) {
+        } else if (displayedView == this.contentSpecRevisionsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getHistory(), this.display.getHistoryDown());
         } else if (displayedView == this.contentSpecTagsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getContentSpecTags(), this.display.getContentSpecTagsDown());
@@ -1154,7 +1289,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
 
         final RESTTextContentSpecV1 displayedContentSpec = getDisplayedContentSpec();
-        if (displayedContentSpec!= null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty() &&
+        if (displayedContentSpec != null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty() &&
                 (displayedContentSpec.getErrors().contains("ERROR") || displayedContentSpec.getErrors().contains("WARN"))) {
             if (displayedContentSpec.getErrors().contains("ERROR")) {
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.ERROR);
@@ -1178,8 +1313,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             RESTTextContentSpecV1 source = null;
 
-            if (contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec() != null) {
-                source = contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec();
+            if (contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null) {
+                source = contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec();
             } else if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                 source = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
             }
@@ -1191,7 +1326,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private boolean isReadOnlyMode() {
-        return this.contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec() != null;
+        return this.contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null;
     }
 
     /**
@@ -1202,6 +1337,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.flushChanges()");
 
             if (lastDisplayedView == null || !(lastDisplayedView instanceof BasePopulatedEditorViewInterface)) {
+                return;
+            }
+
+            /* These are read only views */
+            if (lastDisplayedView == contentSpecTagsPresenter.getDisplay()) {
                 return;
             }
 
@@ -1229,7 +1369,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             final RESTTextContentSpecCollectionItemV1 selectedEntityCollectionItem = filteredResultsPresenter.getProviderData()
                     .getSelectedItem();
 
-
              /*
                 If there are any modified tags in newContentSpec, we have unsaved changes.
                 If getTags() is null, the tags have not been loaded yet (and can't have been modified).
@@ -1238,9 +1377,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 return true;
             }
 
-            /* If there are any modified property tags in newTopic, we have unsaved changes */
-            if (!displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
-                LOGGER.log(Level.INFO, "Unsaved properties");
+            /* If there are any modified property tags in the new ContentSpec, we have unsaved changes */
+            if (displayedEntity.getProperties() != null && !displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems()
+                    .isEmpty()) {
                 return true;
             }
 
@@ -1592,7 +1731,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      *
      * @author Matthew Casperson
      */
-    public interface Display extends BaseSearchAndEditViewInterface<RESTTextContentSpecV1, RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTTextContentSpecV1, RESTTextContentSpecCollectionV1,
+            RESTTextContentSpecCollectionItemV1> {
         PushButton getText();
 
         PushButton getErrors();

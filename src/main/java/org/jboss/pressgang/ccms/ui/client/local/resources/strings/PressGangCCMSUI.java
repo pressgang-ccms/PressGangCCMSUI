@@ -1012,4 +1012,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Entities();
+
+    @NotNull
+    String SameText();
+
+    @NotNull
+    String NoText();
 }

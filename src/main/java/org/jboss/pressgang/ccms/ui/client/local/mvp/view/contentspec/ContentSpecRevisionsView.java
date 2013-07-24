@@ -232,11 +232,11 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
                     if (object.getItem().getText() == null || object.getItem().getText().trim().isEmpty()) {
                         /* Diffs don't work if there is no text to compare to */
                         diffButtonCell.setEnabled(false);
-                        return PressGangCCMSUI.INSTANCE.NoXML();
+                        return PressGangCCMSUI.INSTANCE.NoText();
                     } else if (object.getItem().getText().trim().equals(fixedViewingXML)) {
                         /* The text is the same */
                         diffButtonCell.setEnabled(false);
-                        return PressGangCCMSUI.INSTANCE.SameXML();
+                        return PressGangCCMSUI.INSTANCE.SameText();
                     } else {
                         return PressGangCCMSUI.INSTANCE.Diff();
                     }
