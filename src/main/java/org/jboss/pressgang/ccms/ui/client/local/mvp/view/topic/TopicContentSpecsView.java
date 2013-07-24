@@ -156,6 +156,15 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
          */
         final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
         getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
+
+        getPossibleChildrenResultsPanel().addStyleName(CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_PANEL);
+        getPossibleChildrenResults().addStyleName(CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_RESULTS);
+
+        getPossibleChildrenResults().addColumnStyleName(0, CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_ID_COLUMN);
+        getPossibleChildrenResults().addColumnStyleName(1, CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_TITLE_COLUMN);
+        getPossibleChildrenResults().addColumnStyleName(2, CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_PRODUCT_COLUMN);
+        getPossibleChildrenResults().addColumnStyleName(3, CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_VERSION_COLUMN);
+        getPossibleChildrenResults().addColumnStyleName(4, CSSConstants.TopicContentSpecView.TOPIC_CONTENT_SPEC_VIEW_BUTTON_COLUMN);
     }
 
     @Override

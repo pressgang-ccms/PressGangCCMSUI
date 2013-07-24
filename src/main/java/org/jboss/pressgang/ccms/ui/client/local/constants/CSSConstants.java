@@ -413,6 +413,16 @@ public interface CSSConstants {
         String TOPIC_REVISION_VIEW_SPINNER = "TopicRevisionViewSpinner";
     }
 
+    interface TopicContentSpecView {
+        String TOPIC_CONTENT_SPEC_VIEW_PANEL = "TopicContentSpecViewPanel";
+        String TOPIC_CONTENT_SPEC_VIEW_RESULTS = "TopicContentSpecViewResults";
+        String TOPIC_CONTENT_SPEC_VIEW_ID_COLUMN = "TopicContentSpecViewIDColumn";
+        String TOPIC_CONTENT_SPEC_VIEW_TITLE_COLUMN = "TopicContentSpecViewTitleColumn";
+        String TOPIC_CONTENT_SPEC_VIEW_PRODUCT_COLUMN = "TopicContentSpecViewProductColumn";
+        String TOPIC_CONTENT_SPEC_VIEW_VERSION_COLUMN = "TopicContentSpecViewVersionColumn";
+        String TOPIC_CONTENT_SPEC_VIEW_BUTTON_COLUMN = "TopicContentSpecViewButtonColumn";
+    }
+
     /**
      * Holds the styles that are applied to the topic's views.
      */
