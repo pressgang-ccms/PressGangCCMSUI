@@ -1032,10 +1032,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private void buildHelpDatabase() {
 
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 0));
+
+        /*
+            Content UI elements
+         */
         addHelpDataToMap(this.helpDatabase, new HelpData(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId(), 5));
 
+        /*
+            Common action buttons
+         */
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFields(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFieldsDown(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getExtendedProperties(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId(), 1));
@@ -1051,6 +1058,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 2));
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 2));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId(), 0));
+
+
     }
 
     @Override

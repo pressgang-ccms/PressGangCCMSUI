@@ -28,6 +28,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
         void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<String> locales);
+        RESTTopicV1BasicDetailsEditor getEditor();
     }
 
     @Nullable

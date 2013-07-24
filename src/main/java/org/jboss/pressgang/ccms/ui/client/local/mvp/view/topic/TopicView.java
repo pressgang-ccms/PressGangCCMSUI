@@ -21,6 +21,8 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
      */
     private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);
 
+    private final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor();
+
     @Override
     public TopicPresenterDriver getDriver() {
         return driver;
@@ -40,7 +42,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     @Override
     public void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<String> locales) {
         /* SearchUIProjectsEditor is a grid */
-        @NotNull final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly, locales);
+        editor.initialize(readOnly, locales);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
@@ -49,4 +51,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
         this.getPanel().setWidget(editor);
     }
 
+    public RESTTopicV1BasicDetailsEditor getEditor() {
+        return editor;
+    }
 }

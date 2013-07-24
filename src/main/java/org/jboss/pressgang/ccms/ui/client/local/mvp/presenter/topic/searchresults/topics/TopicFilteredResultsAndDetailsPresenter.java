@@ -2959,6 +2959,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCsps(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCspsDown(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
 
+        /*
+            Property ui elements
+        */
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERT_TITLE.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId(), 1));
+
     }
 
     @Override

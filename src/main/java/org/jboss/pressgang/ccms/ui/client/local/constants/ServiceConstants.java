@@ -111,7 +111,11 @@ public final class ServiceConstants {
         TOPIC_HIDDEN_CHARACTERS(21242),
         TOPIC_RENDERED_PANE(21232),
         TOPIC_CONTENT_SPECS(21335),
-        TOPIC_XML_VALIDATION(21336);
+        TOPIC_XML_VALIDATION(21336),
+        TOPIC_PROPERT_TITLE(21351),
+        TOPIC_PROPERTY_REST_ENDPOINT(21352),
+        TOPIC_PROPERTY_REST_XML_ENDPOINT(21353),
+        TOPIC_PROPERTY_WEBDAV_URL(21354);
 
         private final int id;
         public int getId() {

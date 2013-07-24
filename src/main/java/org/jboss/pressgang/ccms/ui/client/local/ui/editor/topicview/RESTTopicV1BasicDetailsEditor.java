@@ -79,18 +79,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         return id;
     }
 
-    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
+    public RESTTopicV1BasicDetailsEditor() {
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);
-
-        title.setReadOnly(readOnly);
-        /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
-        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
-        /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
-        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
-        description.setReadOnly(readOnly);
 
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
@@ -151,6 +143,16 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_CELL);
     }
 
+    public void initialize(final boolean readOnly, @Nullable final List<String> locales) {
+        title.setReadOnly(readOnly);
+        /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
+        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
+        /* http://stackoverflow.com/a/11176707/157605 */
+        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
+        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
+        description.setReadOnly(readOnly);
+    }
+
     @Override
     public void setValue(@NotNull final RESTTopicV1 value) {
         this.value = value;
@@ -190,5 +192,20 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         value.setLocale(locale.getValue());
         value.setDescription(description.getValue());
         return value;
+    }
+
+    @NotNull
+    public Anchor getRestTopicDetails() {
+        return restTopicDetails;
+    }
+
+    @NotNull
+    public Anchor getRestTopicXML() {
+        return restTopicXML;
+    }
+
+    @NotNull
+    public Label getRestTopicWebDav() {
+        return restTopicWebDav;
     }
 }
