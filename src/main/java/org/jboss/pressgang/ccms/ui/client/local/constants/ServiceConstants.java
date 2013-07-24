@@ -120,7 +120,7 @@ public final class ServiceConstants {
         TOPIC_PROPERTY_LOCALE(21356),
         TOPIC_AVAILABLE_EXTENDED_PROPERTIES(21357),
         TOPIC_EXISTING_EXTENDED_PROPERTIES(21358),
-        TOPIC_SOURCE_URLS(21359),
+        TOPIC_SOURCE_URLS_LIST(21359),
         TOPIC_ADD_SOURCE_URL(21360);
 
         private final int id;
