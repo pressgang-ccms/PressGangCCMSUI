@@ -67,6 +67,12 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         return verticalPanel;
     }
 
+    @NotNull
+    @Override
+    public SimplePanel getEditorParent() {
+        return editorParent;
+    }
+
     public final static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -408,7 +414,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         LOGGER.info("ENTER TopicXMLView()");
 
         this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_PANEL);
-
+        this.editorParent.addStyleName(CSSConstants.TopicView.ACE_EDITOR_PARENT);
 
         this.getXmlErrors().setReadOnly(true);
         this.getXmlErrors().addStyleName(CSSConstants.TopicView.TOPIC_XML_ERRORS);

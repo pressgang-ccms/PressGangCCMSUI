@@ -450,6 +450,7 @@ public interface CSSConstants {
         String TOPIC_XML_ERRORS_VIEW_PANEL = "TopicXMLErrorsViewPanel";
         String TOPIC_XML_ERRORS_VIEW_FIELD = "TopicXMLErrorsViewField";
         String TOPIC_VIEW_TAG_LABEL = "TopicViewTagLabel";
+        String ACE_EDITOR_PARENT = "AceEditorParent";
         /**
          * Assigned to the FlexTable rows that list a category in the topic tags view.
          */
