@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -33,6 +34,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         void clear();
 
         void removeListener();
+
+        FlexTable getiFrameParent();
     }
 
     @Inject private FailOverRESTCall failOverRESTCall;

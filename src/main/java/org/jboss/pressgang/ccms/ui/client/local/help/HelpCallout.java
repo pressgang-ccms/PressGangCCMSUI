@@ -156,6 +156,7 @@ public class HelpCallout extends FlexTable {
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
             this.getFlexCellFormatter().setRowSpan(0, 0, 2);
+            this.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
 
             this.setWidget(1, 0, horizontalPanel);
             this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);

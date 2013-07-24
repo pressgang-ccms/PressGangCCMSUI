@@ -1026,11 +1026,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         PushButton getShowHideSearchResults();
     }
 
+    /**
+     * Assign help info to the UI elements exposed by this presenter.
+     */
     private void buildHelpDatabase() {
 
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 0));
         addHelpDataToMap(this.helpDatabase, new HelpData(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId(), 5));
+
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFields(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFieldsDown(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getExtendedProperties(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId(), 1));
@@ -1043,13 +1048,26 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getBugsDown(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXml(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXmlDown(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId(), 0));
     }
 
     @Override
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
         helpDataHashMap.putAll(helpDatabase);
+
+        /*
+            This is an example of a help data item that can only be generated at runtime. The position of
+            the callout depends on the location of the rendered pane, which can be changed at runtime.
+         */
+        helpDataHashMap.put(
+                getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
+                new HelpData(
+                        getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
+                        ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId(),
+                        split == SplitType.HORIZONTAL ? 5 : 3));
+
         super.toggleHelpOverlay(helpDataHashMap);
     }
 }
