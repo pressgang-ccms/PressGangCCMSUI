@@ -11,7 +11,7 @@ public class ServerDetails {
     /**
      * The production server in Brisbane.
      */
-    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(Constants.DEFAULT_SERVER, "Brisbane Production", "http://skynet.usersys.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production);
+    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://skynet.usersys.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production);
     /**
      * The development server in Brisbane.
      */
