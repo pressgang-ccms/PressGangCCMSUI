@@ -1154,7 +1154,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
 
         final RESTTextContentSpecV1 displayedContentSpec = getDisplayedContentSpec();
-        if (displayedContentSpec!= null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty()) {
+        if (displayedContentSpec!= null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty() &&
+                (displayedContentSpec.getErrors().contains("ERROR") || displayedContentSpec.getErrors().contains("WARN"))) {
             if (displayedContentSpec.getErrors().contains("ERROR")) {
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.ERROR);
                 getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.ERROR);
