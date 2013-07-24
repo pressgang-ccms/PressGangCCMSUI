@@ -805,20 +805,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
         final RESTTopicV1 displayedItem = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
         final RESTTopicV1 displayedTopic = getDisplayedTopic();
-             /* Are we displaying the latest version of the topic i.e. the one that doesn't have its tags loaded? */
+        // Are we displaying the latest version of the topic i.e. the one that doesn't have its tags loaded?
         final boolean displayingLatest = displayedItem == displayedTopic;
 
         if (!allPropertyTagsLoadInitiated) {
             allPropertyTagsLoadInitiated = true;
 
-            /* Get a new collection of property tags */
-            this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+            // Get a new collection of property tags
+            getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
         }
 
         if (!propertyTagsLoadInitiated && displayingLatest) {
             propertyTagsLoadInitiated = true;
 
-            /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
+            // if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new topic
             if (selectedItem != null) {
 
                 checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() != null,
@@ -840,7 +840,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         .getItems(),
                                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
-                                /* We have new data to display */
+                        // We have new data to display
                         initializeViews(
                                 Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
                     }
@@ -2306,10 +2306,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             initializeViews();
 
             /* Load the tags and bugs */
-            this.tagsLoadInitiated = false;
+            tagsLoadInitiated = false;
             loadTags();
 
             // Load the content specs
+            contentSpecsLoadInitiated = false;
             loadContentSpecs();
 
             /* Display the revisions view (which will also update buttons like Save) */
