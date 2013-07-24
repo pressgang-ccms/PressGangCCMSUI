@@ -96,7 +96,8 @@ public final class ServiceConstants {
         HELP_MODE(21226),
         SERVER_SELECTION(21227),
         BUILD_LABEL(21228),
-        TOPIC_SEARCH_RESULTS(21229);
+        TOPIC_SEARCH_RESULTS(21229),
+        XML_EDITOR(21230);
 
         private final int id;
         public int getId() {

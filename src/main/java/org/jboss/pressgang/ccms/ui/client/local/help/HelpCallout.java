@@ -56,7 +56,7 @@ public class HelpCallout extends FlexTable {
         horizontalPanel.add(close);
 
         if (helpData.getDirection() == 0) {
-            this.setWidget(1, 1, contentParent);
+            this.setWidget(0, 1, contentParent);
             arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
             this.setWidget(0, 0, arrow);
 
