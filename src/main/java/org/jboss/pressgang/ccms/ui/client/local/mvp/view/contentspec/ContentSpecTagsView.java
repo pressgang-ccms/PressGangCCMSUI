@@ -45,7 +45,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
      * The GWT Editor Driver
      */
     private final ContentSpecTagsPresenterDriver driver = GWT.create(ContentSpecTagsPresenterDriver.class);
-    private TopicTagViewProjectsEditor editor;
+    private TopicTagViewProjectsEditor editor = new TopicTagViewProjectsEditor();
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
@@ -258,7 +258,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
             /* Build up a hierarchy of tags assigned to the topic */
             final SearchUIProjects projects = new SearchUIProjects(contentSpec.getTags());
             /* SearchUIProjectsEditor is a simple panel */
-            editor = new TopicTagViewProjectsEditor(readOnly);
+            editor.setReadOnly(readOnly);
             /* Initialize the driver with the top-level editor */
             driver.initialize(editor);
             /* Copy the data in the object into the UI */

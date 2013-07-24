@@ -121,7 +121,12 @@ public final class ServiceConstants {
         TOPIC_AVAILABLE_EXTENDED_PROPERTIES(21357),
         TOPIC_EXISTING_EXTENDED_PROPERTIES(21358),
         TOPIC_SOURCE_URLS_LIST(21359),
-        TOPIC_ADD_SOURCE_URL(21360);
+        TOPIC_ADD_SOURCE_URL(21360),
+        TOPIC_TAG_PROJECTS_LIST(21364),
+        TOPIC_TAG_CATEGORIES_LIST(21365),
+        TOPIC_TAG_TAGS_LIST(21366),
+        TOPIC_TAG_EXISTING(21368),
+        TOPIC_TAG_ADD(21369);
 
         private final int id;
         public int getId() {

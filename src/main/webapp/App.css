@@ -1,6 +1,6 @@
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
 .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField, .TopicViewLocaleField,
-.TopicViewDescriptionField, .PossibleChildrenResultsPanel {
+.TopicViewDescriptionField, .PossibleChildrenResultsPanel, .TopicTagViewParentProjectsTable {
     background-color: white;
 }
 
