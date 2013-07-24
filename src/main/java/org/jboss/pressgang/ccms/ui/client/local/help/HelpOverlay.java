@@ -232,7 +232,7 @@ public class HelpOverlay {
                     helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
                 }  else if (lastWidget.getDirection() == 7) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetLeft - calloutWidth, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
                 }
 

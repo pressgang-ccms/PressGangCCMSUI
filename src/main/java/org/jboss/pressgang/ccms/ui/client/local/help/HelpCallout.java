@@ -149,13 +149,13 @@ public class HelpCallout extends FlexTable {
 
 
         }  else if (helpData.getDirection() == 7) {
-            this.setWidget(0, 1, contentParent);
-            arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
-            this.setWidget(0, 0, arrow);
+            this.setWidget(0, 0, contentParent);
+            arrow.addStyleName(CSSConstants.HelpOverlay.RIGHT_ARROW);
+            this.setWidget(0, 1, arrow);
 
-            this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
-            this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
-            this.getFlexCellFormatter().setRowSpan(0, 0, 2);
+            this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.CONTENT_CELL);
+            this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.ARROW_CELL);
+            this.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
 
             this.setWidget(1, 0, horizontalPanel);
             this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);

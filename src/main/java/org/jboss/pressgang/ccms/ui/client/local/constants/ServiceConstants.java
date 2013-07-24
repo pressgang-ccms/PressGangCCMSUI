@@ -109,7 +109,9 @@ public final class ServiceConstants {
         TOPIC_SAVE(21240),
         TOPIC_LINE_WRAP(21241),
         TOPIC_HIDDEN_CHARACTERS(21242),
-        TOPIC_RENDERED_PANE(21232);
+        TOPIC_RENDERED_PANE(21232),
+        TOPIC_CONTENT_SPECS(21335),
+        TOPIC_XML_VALIDATION(21336);
 
         private final int id;
         public int getId() {
