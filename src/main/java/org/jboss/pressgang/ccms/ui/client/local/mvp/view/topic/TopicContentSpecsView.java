@@ -133,7 +133,8 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
      * Constructor. Sets the page and title name.
      */
     public TopicContentSpecsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicContentSpecs());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE
+                .TopicContentSpecs());
 
         LOGGER.info("ENTER TopicContentSpecsView()");
 
