@@ -2952,8 +2952,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private void buildHelpDatabase() {
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistory(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistoryDown(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 2));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 2));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCsps(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCspsDown(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
 

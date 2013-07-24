@@ -1033,7 +1033,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 0));
         addHelpDataToMap(this.helpDatabase, new HelpData(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 0));
+        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId(), 5));
 
         addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFields(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
@@ -1066,7 +1066,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 new HelpData(
                         getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
                         ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId(),
-                        split == SplitType.HORIZONTAL ? 5 : 7));
+                        split == SplitType.HORIZONTAL ? 5 : 3));
 
         super.toggleHelpOverlay(helpDataHashMap);
     }

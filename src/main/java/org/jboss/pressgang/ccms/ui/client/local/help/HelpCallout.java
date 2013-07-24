@@ -150,16 +150,17 @@ public class HelpCallout extends FlexTable {
 
         }  else if (helpData.getDirection() == 7) {
             this.setWidget(0, 1, contentParent);
-            arrow.addStyleName(CSSConstants.HelpOverlay.RIGHT_ARROW);
+            arrow.addStyleName(CSSConstants.HelpOverlay.LEFT_ARROW);
             this.setWidget(0, 0, arrow);
 
             this.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.HelpOverlay.CONTENT_CELL);
             this.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.HelpOverlay.ARROW_CELL);
+            this.getFlexCellFormatter().setRowSpan(0, 0, 2);
             this.getFlexCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
 
-            this.setWidget(1, 1, horizontalPanel);
-            this.getFlexCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_RIGHT);
-            this.getFlexCellFormatter().addStyleName(1, 1, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
+            this.setWidget(1, 0, horizontalPanel);
+            this.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+            this.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.HelpOverlay.CLOSE_AND_EDIT_BUTTONS_PARENT_CELL);
         }
 
         contentParent.setWidget(spinner);

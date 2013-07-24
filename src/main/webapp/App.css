@@ -10,7 +10,7 @@
 }
 
 .CloseAndEditButtonsParentCell {
-    background-color: rgb(211, 212, 231);
+    background-color: rgb(74, 91, 136);
     padding: 8px;
 }
 
@@ -19,7 +19,7 @@
     height: 0px;
     border-style: solid;
     border-width: 10px 17.3px 10px 0;
-    border-color: transparent rgb(211, 212, 231) transparent transparent;
+    border-color: transparent rgb(74, 91, 136) transparent transparent;
 }
 
 .RightArrow {
@@ -27,7 +27,7 @@
     height: 0px;
     border-style: solid;
     border-width: 10px 0 10px 17.3px;
-    border-color: transparent transparent transparent rgb(211, 212, 231);
+    border-color: transparent transparent transparent rgb(74, 91, 136);
 }
 
 .TopArrow {
@@ -35,7 +35,7 @@
     height: 0px;
     border-style: solid;
     border-width: 0 10px 17.3px 10px;
-    border-color: transparent transparent rgb(211, 212, 231) transparent;
+    border-color: transparent transparent rgb(74, 91, 136) transparent;
 }
 
 .BottomArrow {
@@ -43,7 +43,7 @@
     height: 0px;
     border-style: solid;
     border-width: 17.3px 10px 0 10px;
-    border-color: rgb(211, 212, 231) transparent transparent transparent;
+    border-color: rgb(74, 91, 136) transparent transparent transparent;
 }
 
 .HelpCalloutIFrame {
@@ -54,7 +54,7 @@
 
 .ContentCell {
     background-color: white;
-    border-color: rgb(211, 212, 231);
+    border-color: rgb(74, 91, 136);
     border-width: 8px;
     border-style: solid;
 }
