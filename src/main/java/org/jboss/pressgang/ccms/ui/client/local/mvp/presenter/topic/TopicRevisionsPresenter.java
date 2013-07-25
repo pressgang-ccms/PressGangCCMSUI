@@ -93,6 +93,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         void showWaitingFromRenderedDiff();
 
         VerticalPanel getSearchResultsPanel();
+
+        SimpleLayoutPanel getDiffParent();
     }
 
     /**

@@ -1667,10 +1667,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 	}-*/;
 
     private native void checkXML() /*-{
-		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLPresenter()();
+        var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLPresenter()();
 		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker == null) {
+		var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()();
+
+
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker == null) {
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = new Worker('javascript/xmllint/xmllint.js');
 			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.addEventListener('message', function (me) {
 				return function (e) {
@@ -1685,21 +1688,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (theseErrors == "" && oldErrors == "") {
 						errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
                     } else if (oldErrors != theseErrors) {
-						// "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
+						var entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.match(/\n/g).length;
+
+                        // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
 						// message, and is removed before being displayed.
 						var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
-						if (errorMessage.length == 0) {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
-						} else {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
-						}
 
-						var errorLineRegex = /topic.xml:(\d+):/g;
+						var errorLineRegex = /topic\.xml:(\d+):/g;
 						var match = null;
 						var lineNumbers = [];
 						while (match = errorLineRegex.exec(theseErrors)) {
 							if (match.length >= 1) {
-								var line = parseInt(match[1]) - 1;
+                                var line = parseInt(match[1]) - entitiesLines - 1;
+								// We need to match the line numbers in the editor with those in the topic, which
+                                // means subtracting all the entities we added during validation.
+								errorMessage = errorMessage.replace("topic.xml:" + match[1], "topic.xml:" + line);
 								var found = false;
 								for (var i = 0, lineNumbersLength = lineNumbers.length; i < lineNumbersLength; ++i) {
 									if (lineNumbers[i] == line) {
@@ -1711,6 +1714,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 									lineNumbers.push(line);
 								}
 							}
+						}
+
+						if (errorMessage.length == 0) {
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
+						} else {
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
 						}
 
 						if (editor != null) {
@@ -1729,8 +1738,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 // Add the doctype that include the standard docbook entities
-                text = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()() +
-                    @org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities::removeAllPreabmle(Ljava/lang/String;)(text);
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities::removeAllPreabmle(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
@@ -2967,7 +2975,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             Property ui elements
         */
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERT_TITLE.getId(), 7));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_TITLE.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId(), 7));
@@ -2985,8 +2993,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId(), 5));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDone(), ServiceConstants.HELP_TOPICS.DIFF_DONE.getId(), 6));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getCancel(), ServiceConstants.HELP_TOPICS.DIFF_CANCEL.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId(), 6));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDiffParent(), ServiceConstants.HELP_TOPICS.TOPIC_DIFF_PANE.getId(), 5));
     }
 
     @Override

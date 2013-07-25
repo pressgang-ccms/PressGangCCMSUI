@@ -415,6 +415,8 @@ public interface CSSConstants {
          * Assigned to the spinner used for the loading widget
          */
         String TOPIC_REVISION_VIEW_SPINNER = "TopicRevisionViewSpinner";
+        String TOPIC_REVISION_DIFF_PARENT_PANEL = "TopicRevisionDiffParentPanel";
+        String TOPIC_REVISION_DIFF = "TopicRevisionDiff";
     }
 
     interface TopicContentSpecView {

@@ -15,15 +15,7 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.DisableableButtonCell;
-import com.google.gwt.user.client.ui.DisableableCheckboxCell;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -81,9 +73,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * Holds the mergely elements and the ok/cancel buttons
      */
     private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
-    /**
-     * The parent for the mergely elements. Needs to be a layout panel so resize events are propogated.
-     */
     private final SimpleLayoutPanel diffParent = new SimpleLayoutPanel();
     /**
      * The done button.
@@ -343,6 +332,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         LOGGER.info("ENTER TopicRevisionsView()");
 
+
+
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
         results.addColumn(htmlDiffButton, PressGangCCMSUI.INSTANCE.HTMLDiff());
@@ -372,6 +363,9 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         /*
             Setup the mergely container
          */
+        diffParent.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PARENT_PANEL);
+
+
         final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         buttonPanel.add(done);
@@ -473,9 +467,13 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public void displayDiff(@NotNull final String lhs, boolean rhsReadOnly, @NotNull final String rhs) {
         diffParent.setWidget(null);
+
         mergely = new Mergely(lhs, true, rhs, rhsReadOnly, true, Constants.XML_MIME_TYPE, false);
-        this.getPanel().setWidget(diffPanel);
+        mergely.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF);
+
         diffParent.setWidget(mergely);
+        this.getPanel().setWidget(diffPanel);
+
         isDisplayingRevisions = false;
     }
 
@@ -560,5 +558,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @NotNull
     public VerticalPanel getSearchResultsPanel() {
         return searchResultsPanel;
+    }
+
+    /**
+     * The parent for the mergely elements. Needs to be a layout panel so resize events are propogated.
+     */
+    public SimpleLayoutPanel getDiffParent() {
+        return diffParent;
     }
 }

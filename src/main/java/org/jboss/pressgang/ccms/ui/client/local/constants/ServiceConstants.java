@@ -116,7 +116,7 @@ public final class ServiceConstants {
         TOPIC_RENDERED_PANE(21232),
         TOPIC_CONTENT_SPECS(21335),
         TOPIC_XML_VALIDATION(21336),
-        TOPIC_PROPERT_TITLE(21351),
+        TOPIC_PROPERTY_TITLE(21351),
         TOPIC_PROPERTY_REST_ENDPOINT(21352),
         TOPIC_PROPERTY_REST_XML_ENDPOINT(21353),
         TOPIC_PROPERTY_WEBDAV_URL(21354),
@@ -139,7 +139,8 @@ public final class ServiceConstants {
         DIFF_DONE(21400),
         DIFF_CANCEL(21401),
         RENDERED_DIFF_DONE(21402),
-        RENDERED_DIFF_NEW_WINDOW(21403);
+        RENDERED_DIFF_NEW_WINDOW(21403),
+        TOPIC_DIFF_PANE(21404);
 
         private final int id;
         public int getId() {
