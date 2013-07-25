@@ -61,6 +61,10 @@ public final class ServiceConstants {
      * The String Constant ID of the basic section template.
       */
     public static final Integer BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID = 59;
+    /**
+     * The String Constant ID of the basic content spec template.
+     */
+    public static final Integer BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID = 71;
 
     /*
         *************** TOPIC CONSTANTS ***************

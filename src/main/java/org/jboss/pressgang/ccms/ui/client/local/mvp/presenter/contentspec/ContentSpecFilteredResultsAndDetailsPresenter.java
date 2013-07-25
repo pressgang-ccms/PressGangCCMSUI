@@ -36,6 +36,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextCSProcessingOptionsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -705,25 +706,34 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 return;
             }
 
-            // Create the topic wrapper
-            final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTTextContentSpecCollectionItemV1();
-            contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+            // Set the initial text from a template defined in a string constant.
+            final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                @Override
+                public void success(@NotNull final RESTStringConstantV1 retValue) {
+                    // Create the content spec wrapper
+                    final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTTextContentSpecCollectionItemV1();
+                    contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
-            // create the topic, and add to the wrapper
-            final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
-            newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
-            newEntity.setText("");
-            newEntity.setLocale(defaultLocale);
-            contentSpecCollectionItem.setItem(newEntity);
+                    // create the content spec, and add to the wrapper
+                    final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
+                    newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
+                    newEntity.setText(retValue.getValue());
+                    newEntity.setLocale(defaultLocale);
+                    contentSpecCollectionItem.setItem(newEntity);
 
-            // the topic won't show up in the list of topics until it is saved, so the
-            // selected item is null
-            filteredResultsPresenter.setSelectedItem(null);
+                    // the content spec won't show up in the list of content specs until it is saved, so the
+                    // selected item is null
+                    filteredResultsPresenter.setSelectedItem(null);
 
-            // the new topic is being displayed though, so we set the displayed item
-            filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);
+                    // the new content spec is being displayed though, so we set the displayed item
+                    filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);
 
-            updateViewsAfterNewEntityLoaded();
+                    updateViewsAfterNewEntityLoaded();
+                }
+            };
+
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants
+                    .BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
