@@ -106,9 +106,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private boolean buttonsEnabled = true;
 
-    /**
-     * The panel that holds the table and pager.
-     */
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     /**
      * The pager used to page over the table results.
@@ -554,5 +551,14 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public PushButton getHtmlOpenDiff() {
         return htmlOpenDiff;
+    }
+
+    /**
+     * The panel that holds the table and pager.
+     */
+    @Override
+    @NotNull
+    public VerticalPanel getSearchResultsPanel() {
+        return searchResultsPanel;
     }
 }

@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307250838";
+    public static final String VERSION = "201307250940";
 
     /**
      * The height of the tabs in a tab panel, in EMs
@@ -20,6 +20,11 @@ public final class Constants {
      * The size of the arrows in the help overlay callout
      */
     public static final int CALLOUT_ARROW_SIZE = 20;
+
+    /**
+     * How much the help callout should overlap with the widget it is related to
+     */
+    public static final int HELP_CALLOUT_OVERLAP = CALLOUT_ARROW_SIZE / 2;
 
     /**
      * The zindex of the widgets promoted above the help overlay dimmer

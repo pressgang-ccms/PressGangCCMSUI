@@ -1067,6 +1067,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getCategoriesList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId(), 1));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId(), 7));
+
+
+
     }
 
     @Override

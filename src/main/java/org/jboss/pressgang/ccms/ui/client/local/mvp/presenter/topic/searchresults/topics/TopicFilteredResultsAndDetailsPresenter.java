@@ -2972,10 +2972,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId(), 7));
         addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId(), 3));
 
+        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.TOPIC_CREATE_TOPIC.getId(), 0));
+        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getBulkImport(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_IMPORT.getId(), 0));
+        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getBulkOverwrite(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_OVERWRITE.getId(), 0));
+        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getAtomFeed(), ServiceConstants.HELP_TOPICS.TOPIC_ATOM_FEED.getId(), 1));
 
-
-
-
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId(), 5));
     }
 
     @Override

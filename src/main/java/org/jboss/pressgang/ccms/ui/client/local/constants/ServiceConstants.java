@@ -126,7 +126,12 @@ public final class ServiceConstants {
         TOPIC_TAG_CATEGORIES_LIST(21365),
         TOPIC_TAG_TAGS_LIST(21366),
         TOPIC_TAG_EXISTING(21368),
-        TOPIC_TAG_ADD(21369);
+        TOPIC_TAG_ADD(21369),
+        BULK_TOPIC_IMPORT(21375),
+        BULK_TOPIC_OVERWRITE(21376),
+        TOPIC_ATOM_FEED(21380),
+        TOPIC_CREATE_TOPIC(21398),
+        TOPIC_REVISION_TABLE(21399);
 
         private final int id;
         public int getId() {
