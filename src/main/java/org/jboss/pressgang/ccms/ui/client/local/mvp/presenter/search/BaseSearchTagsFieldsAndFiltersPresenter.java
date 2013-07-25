@@ -2,7 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,12 +32,12 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchTagPresenter tagsPresenter;
     @Inject
     private SearchLocalePresenter localePresenter;
-    @Inject
-    private HandlerManager eventBus;
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
+    private EventBus eventBus;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -57,7 +57,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         return localePresenter;
     }
 
-    protected HandlerManager getEventBus() {
+    protected EventBus getEventBus() {
         return eventBus;
     }
 

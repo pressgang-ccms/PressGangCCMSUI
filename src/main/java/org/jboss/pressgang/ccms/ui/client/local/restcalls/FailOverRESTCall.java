@@ -1,6 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
-import com.google.gwt.event.shared.HandlerManager;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
@@ -25,13 +32,6 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
-
 /**
  * This class holds a number of preconfigured REST calls that can fail over to another server
  * if the call failed.
@@ -43,7 +43,7 @@ public final class FailOverRESTCall {
      * The GWT event bus.
      */
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
 
     /**
      * A logger.

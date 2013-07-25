@@ -17,7 +17,7 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Event;
@@ -85,7 +85,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * The GWT event bus.
      */
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
 
     /**
      * The display that holds the UI elements the user interacts with.

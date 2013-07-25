@@ -1,6 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file;
 
-import com.google.gwt.event.shared.HandlerManager;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
@@ -9,7 +15,6 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -20,13 +25,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTFileCollectionItemV1> implements
@@ -63,12 +61,10 @@ public class FileFilteredResultsPresenter extends BaseFilteredResultsPresenter<R
     @Inject
     private Display display;
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     private String queryString;
-
-    @Inject
-    private HandlerManager eventBus;
 
     @NotNull
     public Display getDisplay() {

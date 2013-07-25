@@ -34,14 +34,18 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -115,7 +119,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicCollectionItemV1,
         RESTTopicV1BasicDetailsEditor> {
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
@@ -191,7 +196,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * The global event bus.
      */
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
 
 
     /**

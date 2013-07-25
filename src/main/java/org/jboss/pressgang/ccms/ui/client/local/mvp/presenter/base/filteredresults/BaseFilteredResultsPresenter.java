@@ -1,8 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
-import com.google.gwt.event.shared.HandlerManager;
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -14,11 +20,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @see BaseFilteredResultsPresenterInterface
@@ -39,14 +40,15 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     /**
      * Used to distribute events, such as when the list of entities has been loaded.
      */
-    final private HandlerManager handlerManager = new HandlerManager(this);
+    @Inject
+    private EventBus eventBus;
 
     /**
      * Manages event registration and notification.
      */
     @NotNull
-    public HandlerManager getHandlerManager() {
-        return handlerManager;
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
     @Override
@@ -63,7 +65,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     public void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
-            handlerManager.addHandler(EntityListReceived.getType(), handler);
+            eventBus.addHandler(EntityListReceived.getType(), handler);
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
         }

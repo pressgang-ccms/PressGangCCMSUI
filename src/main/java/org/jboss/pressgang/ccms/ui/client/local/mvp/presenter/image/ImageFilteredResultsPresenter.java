@@ -1,6 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
-import com.google.gwt.event.shared.HandlerManager;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
@@ -9,7 +15,6 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -20,13 +25,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class ImageFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTImageCollectionItemV1> implements
@@ -60,16 +58,13 @@ public class ImageFilteredResultsPresenter extends BaseFilteredResultsPresenter<
      */
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
 
     private String queryString;
-
-    @Inject
-    private HandlerManager eventBus;
-
     @NotNull
     public Display getDisplay() {
         return display;

@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -148,7 +149,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     private String[] locales;
 
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
 
     @Inject
     private Display display;
