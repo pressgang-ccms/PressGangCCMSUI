@@ -1,7 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local;
 
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -15,11 +21,6 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * The entry point to the GWT application.
  *
@@ -31,7 +32,7 @@ public class App {
      * The Errai event bus.
      */
     @NotNull
-    private final HandlerManager eventBus = new HandlerManager(null);
+    private final EventBus eventBus = new SimpleEventBus();
 
     /**
      * The controller that handles the transitions between views.
@@ -92,7 +93,7 @@ public class App {
 
     @NotNull
     @Produces
-    private HandlerManager produceEventBus() {
+    private EventBus produceEventBus() {
         return this.eventBus;
     }
 }

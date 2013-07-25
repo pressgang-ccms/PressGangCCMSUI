@@ -1,9 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local;
 
+import javax.enterprise.context.ApplicationScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.common.base.Optional;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -11,7 +15,32 @@ import com.google.inject.Inject;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BulkTagSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.IntegerConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyTagFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ViewOpenEventHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ViewOpenWithQueryEventHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -53,10 +82,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 
-import javax.enterprise.context.ApplicationScoped;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * This class watches the event bus for page change requests, and instructs the appropriate presenters
  * to display when a page change event is received.
@@ -67,7 +92,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     private IOCBeanManager manager;
 
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
 
     private HasWidgets container;
 

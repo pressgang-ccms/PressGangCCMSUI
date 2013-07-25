@@ -1,14 +1,23 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import javax.inject.Inject;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -25,12 +34,6 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * A help overlay system for displaying in place help contents for any view.
  */
@@ -40,7 +43,7 @@ public class HelpOverlay {
      */
     private static final Logger LOGGER = Logger.getLogger(HelpOverlay.class.getName());
     @Inject
-    private HandlerManager eventBus;
+    private EventBus eventBus;
     private static final float UNFOCUSED_HELP_WIDGET_OPACITY = 0.7f;
     private static final float FOCUSED_HELP_WIDGET_OPACITY = 1f;
     private boolean helpOverlayEnabled = false;

@@ -1,8 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import javax.inject.Inject;
+import java.util.List;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -15,9 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
-import java.util.List;
-
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
  * presenters.
@@ -28,8 +28,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     @Inject
     private SearchLocalePresenter localePresenter;
     @Inject
-    private HandlerManager eventBus;
-    @Inject private FailOverRESTCall failOverRESTCall;
+    private EventBus eventBus;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -49,7 +50,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         return localePresenter;
     }
 
-    protected HandlerManager getEventBus() {
+    protected EventBus getEventBus() {
         return eventBus;
     }
 

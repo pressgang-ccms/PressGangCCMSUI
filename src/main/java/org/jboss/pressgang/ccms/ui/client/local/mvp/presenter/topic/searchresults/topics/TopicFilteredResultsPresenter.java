@@ -1,12 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics;
 
-import com.google.gwt.event.shared.HandlerManager;
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
@@ -18,13 +23,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTTopicCollectionItemV1>
@@ -43,16 +41,14 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
 
     @Nullable
     private String queryString;
-
-    @Inject
-    private HandlerManager eventBus;
 
     @NotNull
     public Display getDisplay() {
@@ -142,7 +138,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
-                            getHandlerManager().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
+                            getEventBus().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
                         }
                     }
                 };
