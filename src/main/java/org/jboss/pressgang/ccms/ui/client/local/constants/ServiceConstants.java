@@ -140,7 +140,12 @@ public final class ServiceConstants {
         DIFF_CANCEL(21401),
         RENDERED_DIFF_DONE(21402),
         RENDERED_DIFF_NEW_WINDOW(21403),
-        TOPIC_DIFF_PANE(21404);
+        TOPIC_DIFF_PANE(21404),
+        SEARCH_DOWNLOAD_ZIP(21434),
+        SEARCH_DOWNLOAD_CSV(21435),
+        SEARCH_PROJECTS_COLUMN(21436),
+        SEARCH_CATEGORIES_COLUMN(21437),
+        SEARCH_TAGS_TABLE(21438);
 
         private final int id;
         public int getId() {

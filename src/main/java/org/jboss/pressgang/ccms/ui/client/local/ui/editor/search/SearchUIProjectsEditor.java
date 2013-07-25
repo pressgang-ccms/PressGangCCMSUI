@@ -21,10 +21,29 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
 
     private final SearchPresenterDriver driver;
     final SearchUIProjects searchUIProjects;
-    private final boolean showBulkTags;
+    private boolean showBulkTags;
     final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
     private final FlexTable projectButtonPanel = new FlexTable();
     private final ScrollPanel scrollPanel = new ScrollPanel();
+    private SearchUIProjectEditor selectedProject;
+
+    public boolean isShowBulkTags() {
+        return showBulkTags;
+    }
+
+    public void setShowBulkTags(boolean showBulkTags) {
+        this.showBulkTags = showBulkTags;
+    }
+
+    @Ignore
+    public FlexTable getProjectButtonPanel() {
+        return projectButtonPanel;
+    }
+
+    @Ignore
+    public SearchUIProjectEditor getSelectedProject() {
+        return selectedProject;
+    }
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
@@ -35,12 +54,14 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
         @NotNull
         @Override
         public SearchUIProjectEditor create(final int index) {
-            @NotNull final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects, showBulkTags);
+            final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects, showBulkTags);
             projectButtonPanel.setWidget(index, 0, subEditor.summary);
 
             subEditor.summary.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
+                    selectedProject = subEditor;
+
                     if (SearchUIProjectsEditor.this.getCenter() != null) {
                         SearchUIProjectsEditor.this.remove(SearchUIProjectsEditor.this.getCenter());
                     }
@@ -73,12 +94,11 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
         }
     }
 
-    public SearchUIProjectsEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjects searchUIProjects, final boolean showBulkTags) {
+    public SearchUIProjectsEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjects searchUIProjects) {
         super(Style.Unit.EM);
 
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
-        this.showBulkTags = showBulkTags;
 
         this.addStyleName(CSSConstants.TagListProjectsView.PROJECTS_LAYOUT);
         projectButtonPanel.addStyleName(CSSConstants.TagListProjectsView.PROJECTS_BUTTONS_LAYOUT);
