@@ -138,7 +138,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
-                            getEventBus().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
                         }
                     }
                 };

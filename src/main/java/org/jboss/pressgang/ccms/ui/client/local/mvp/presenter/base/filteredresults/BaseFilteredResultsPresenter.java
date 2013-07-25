@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
@@ -42,6 +43,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      */
     @Inject
     private EventBus eventBus;
+    private HandlerManager handlerManager = new HandlerManager(this);
 
     /**
      * Manages event registration and notification.
@@ -49,6 +51,11 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     @NotNull
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    @NotNull
+    protected HandlerManager getHandlerManager() {
+        return handlerManager;
     }
 
     @Override
@@ -65,7 +72,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
     public void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
-            eventBus.addHandler(EntityListReceived.getType(), handler);
+            handlerManager.addHandler(EntityListReceived.getType(), handler);
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
         }

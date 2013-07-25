@@ -208,7 +208,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
-                            getEventBus().fireEvent(new EntityListReceived<RESTTranslatedTopicCollectionV1>(retValue));
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTranslatedTopicCollectionV1>(retValue));
                         }
                     }
 
