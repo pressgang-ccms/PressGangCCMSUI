@@ -131,7 +131,11 @@ public final class ServiceConstants {
         BULK_TOPIC_OVERWRITE(21376),
         TOPIC_ATOM_FEED(21380),
         TOPIC_CREATE_TOPIC(21398),
-        TOPIC_REVISION_TABLE(21399);
+        TOPIC_REVISION_TABLE(21399),
+        DIFF_DONE(21400),
+        DIFF_CANCEL(21401),
+        RENDERED_DIFF_DONE(21402),
+        RENDERED_DIFF_NEW_WINDOW(21403);
 
         private final int id;
         public int getId() {
