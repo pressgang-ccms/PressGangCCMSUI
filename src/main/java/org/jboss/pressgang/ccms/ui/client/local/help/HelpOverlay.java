@@ -211,28 +211,28 @@ public class HelpOverlay {
                 final double calloutHeight = helpCallout.getElement().getClientHeight();
 
                 if (lastWidget.getDirection() == 0) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 1) {
                     helpCallout.getElement().getStyle().setLeft(widgetLeft + (widgetWidth / 2) - (calloutWidth / 2), Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetBottom - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 2) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight - widgetWidth - calloutWidth + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop + widgetHeight - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - widgetWidth - calloutWidth + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop + widgetHeight - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 3) {
-                    helpCallout.getElement().getStyle().setLeft(widgetLeft - calloutWidth + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetLeft - calloutWidth + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 4) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight - widgetWidth - calloutWidth + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - widgetWidth - calloutWidth + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 5) {
                     helpCallout.getElement().getStyle().setLeft(widgetLeft + (widgetWidth / 2) - (calloutWidth / 2), Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 } else if (lastWidget.getDirection() == 6) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
-                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setTop(widgetTop - calloutHeight + Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                 }  else if (lastWidget.getDirection() == 7) {
-                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.CALLOUT_ARROW_SIZE, Style.Unit.PX);
+                    helpCallout.getElement().getStyle().setLeft(widgetRight - Constants.HELP_CALLOUT_OVERLAP, Style.Unit.PX);
                     helpCallout.getElement().getStyle().setTop(widgetTop + (widgetHeight / 2) - (calloutHeight / 2), Style.Unit.PX);
                 }
 

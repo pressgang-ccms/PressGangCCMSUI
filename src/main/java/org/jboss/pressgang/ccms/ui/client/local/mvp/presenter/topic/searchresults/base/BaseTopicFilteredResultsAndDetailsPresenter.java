@@ -1061,6 +1061,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS_LIST.getId(), 5));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_ADD_SOURCE_URL.getId(), 7));
+
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_ADD.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getProjectsList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_PROJECTS_LIST.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getCategoriesList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId(), 7));
+
+
+
     }
 
     @Override

@@ -11,10 +11,18 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jetbrains.annotations.NotNull;
 
 public final class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects> {
-    private final boolean readOnly;
+    private boolean readOnly;
     private final FlexTable projectLabelPanel = new FlexTable();
     public final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor
             .of(new TopicTagViewProjectEditorSource());
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
@@ -25,7 +33,7 @@ public final class TopicTagViewProjectsEditor extends SimplePanel implements Edi
         @NotNull
         @Override
         public TopicTagViewProjectEditor create(final int index) {
-            @NotNull final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(readOnly);
+            final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(readOnly);
             projectLabelPanel.setWidget(index, 0, subEditor);
 
             return subEditor;
@@ -42,10 +50,9 @@ public final class TopicTagViewProjectsEditor extends SimplePanel implements Edi
         }
     }
 
-    public TopicTagViewProjectsEditor(final boolean readOnly) {
-        this.readOnly = readOnly;
+    public TopicTagViewProjectsEditor() {
         projectLabelPanel.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_PROJECT_STABLE);
-        this.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_PARENT_PROJECT_STABLE);
+        this.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_PARENT_PROJECTS_TABLE);
         this.setWidget(projectLabelPanel);
     }
 }

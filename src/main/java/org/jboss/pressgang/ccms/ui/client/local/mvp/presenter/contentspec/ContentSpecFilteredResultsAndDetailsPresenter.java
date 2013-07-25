@@ -714,18 +714,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTTextContentSpecCollectionItemV1();
                     contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
-                    // create the topic, and add to the wrapper
+                    // create the content spec, and add to the wrapper
                     final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
                     newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
                     newEntity.setText(retValue.getValue());
                     newEntity.setLocale(defaultLocale);
                     contentSpecCollectionItem.setItem(newEntity);
 
-                    // the topic won't show up in the list of topics until it is saved, so the
+                    // the content spec won't show up in the list of content specs until it is saved, so the
                     // selected item is null
                     filteredResultsPresenter.setSelectedItem(null);
 
-                    // the new topic is being displayed though, so we set the displayed item
+                    // the new content spec is being displayed though, so we set the displayed item
                     filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);
 
                     updateViewsAfterNewEntityLoaded();

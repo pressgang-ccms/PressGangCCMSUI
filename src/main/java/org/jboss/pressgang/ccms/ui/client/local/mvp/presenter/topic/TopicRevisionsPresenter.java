@@ -5,10 +5,7 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -94,6 +91,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         void setButtonsEnabled(boolean buttonsEnabled);
 
         void showWaitingFromRenderedDiff();
+
+        VerticalPanel getSearchResultsPanel();
     }
 
     /**

@@ -480,7 +480,7 @@ public interface CSSConstants {
         /**
          * Assigned to the panel that holds all the TOPIC_TAG_VIEW_PROJECT_STABLE element in the topic tags view.
          */
-        String TOPIC_TAG_VIEW_PARENT_PROJECT_STABLE = "TopicTagViewParentProjectsTable";
+        String TOPIC_TAG_VIEW_PARENT_PROJECTS_TABLE = "TopicTagViewParentProjectsTable";
         /**
          * Assigned to the table that holds all the projects, categories and tags in the topic tags view.
          */

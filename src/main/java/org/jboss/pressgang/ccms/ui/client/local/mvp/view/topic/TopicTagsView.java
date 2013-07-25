@@ -41,7 +41,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
      * The GWT Editor Driver
      */
     private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
-    private TopicTagViewProjectsEditor editor;
+    private TopicTagViewProjectsEditor editor = new TopicTagViewProjectsEditor();
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
@@ -254,7 +254,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             /* Build up a hierarchy of tags assigned to the topic */
             final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
             /* SearchUIProjectsEditor is a simple panel */
-            editor = new TopicTagViewProjectsEditor(readOnly);
+            editor.setReadOnly(readOnly);
             /* Initialize the driver with the top-level editor */
             driver.initialize(editor);
             /* Copy the data in the object into the UI */
