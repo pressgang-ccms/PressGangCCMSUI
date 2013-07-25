@@ -2980,8 +2980,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId(), 5));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDone(), ServiceConstants.HELP_TOPICS.DIFF_DONE.getId(), 6));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getCancel(), ServiceConstants.HELP_TOPICS.DIFF_CANCEL.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId(), 6));
         addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId(), 5));
+        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDiffParent(), ServiceConstants.HELP_TOPICS.TOPIC_DIFF_PANE.getId(), 5));
     }
 
     @Override

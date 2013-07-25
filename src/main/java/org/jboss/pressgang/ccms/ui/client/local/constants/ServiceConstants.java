@@ -135,7 +135,8 @@ public final class ServiceConstants {
         DIFF_DONE(21400),
         DIFF_CANCEL(21401),
         RENDERED_DIFF_DONE(21402),
-        RENDERED_DIFF_NEW_WINDOW(21403);
+        RENDERED_DIFF_NEW_WINDOW(21403),
+        TOPIC_DIFF_PANE(21404);
 
         private final int id;
         public int getId() {
