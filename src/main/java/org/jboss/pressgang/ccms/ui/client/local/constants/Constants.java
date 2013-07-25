@@ -189,7 +189,7 @@ public final class Constants {
     /**
      * The ID of the default server, as defined in the ServerDetails.SERVERS collection.
      */
-    public static final int DEFAULT_SERVER = 1;
+    public static final int DEFAULT_SERVER = 2;
     /**
      * The report that run a report with no other options.
      */
