@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class contains helper methods for creating and managing UI elements.
@@ -25,17 +26,27 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createPushButton(final String text) {
+    public static PushButton createPushButton(@NotNull final String text) {
         return createPushButton(text, false, false);
     }
 
     @NotNull
-    public static PushButton createPushButton(final String text, final boolean subMenu) {
+    public static PushButton createPushButton(@NotNull final String text, @NotNull final String id) {
+        return createPushButton(text, false, false, id);
+    }
+
+    @NotNull
+    public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu) {
         return createPushButton(text, subMenu, false);
     }
 
     @NotNull
-    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+    public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
+        return createPushButton(text, subMenu, externalLink, null);
+    }
+
+    @NotNull
+    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
         @NotNull final PushButton retValue = new PushButton(text);
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
@@ -43,6 +54,10 @@ final public class UIUtilities {
             retValue.addStyleName(CSSConstants.Common.SUB_MENU);
         } else if (externalLink) {
             retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
+        if (id != null) {
+            retValue.getElement().setId(id);
         }
 
         return retValue;
@@ -73,13 +88,21 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static ToggleButton createLeftSideTabToggleButton(final String text) {
-        return createLeftSideTabToggleButton(text, false);
+    public static ToggleButton createLeftSideTabToggleButton(@NotNull final String text, @NotNull final String id) {
+        return createLeftSideTabToggleButton(text, false, id);
     }
 
     @NotNull
-    public static ToggleButton createLeftSideTabToggleButton(final String text, final boolean subMenu) {
-        @NotNull final ToggleButton retValue = createToggleButton(text, subMenu);
+    public static ToggleButton createLeftSideTabToggleButton(@NotNull final String text) {
+        return createLeftSideTabToggleButton(text, false, null);
+    }
+
+    @NotNull
+    public static ToggleButton createLeftSideTabToggleButton(final String text, final boolean subMenu, @Nullable final String id) {
+        final ToggleButton retValue = createToggleButton(text, subMenu);
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
         retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
         return retValue;
     }

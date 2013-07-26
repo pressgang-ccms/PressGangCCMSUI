@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.user.client.ui.ToggleButton;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -9,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShortcutSearchPanel extends ShortcutDisclosurePanel {
 
-    private final ToggleButton searchTopics = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTopics());
-    private final ToggleButton searchContentSpecs = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
-    private final ToggleButton searchTranslations = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
+    private final ToggleButton searchTopics = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTopics(), Constants.SEARCH_TOPICS_NAVIGATION_BUTTON_ID);
+    private final ToggleButton searchContentSpecs = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs(), Constants.SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID);
+    private final ToggleButton searchTranslations = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTranslations(), Constants.SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID);
 
     public ShortcutSearchPanel(final String header) {
         super(header);
