@@ -173,8 +173,6 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 
-            displayWelcomeMessage();
-
             this.container = container;
             this.bind();
 
@@ -193,17 +191,6 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     @Override
     public void close() {
 
-    }
-
-    /**
-     * Display a message if we are using an updated version
-     */
-    private void displayWelcomeMessage() {
-        final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
-        if (lastBuild == null || lastBuild.compareTo(Constants.VERSION) < 0) {
-            Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
-            Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
-        }
     }
 
     @Override
