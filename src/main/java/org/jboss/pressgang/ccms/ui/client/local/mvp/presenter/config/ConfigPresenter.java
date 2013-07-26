@@ -22,6 +22,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
     This presenter is a debug page used to override the configuration of the app
     via the token. End users won't have a need to use this page.
+
+    When testing in cargo, you'll visit this page first to set the REST url to the
+    local test server. e.g.
+
+    #ConfigView;%7B%22servers%22%3A%5B%7B%22id%22%3A100%2C%22name%22%3A%22Cargo%20Server%22%2C%22restUrl%22%3A%22http%3A%2F%2Flocalhost%3A9898%2Fpressgang-ccms%22%2C%22reportUrl%22%3Anull%2C%22monitoringUrl%22%3A%22http%3A%2F%2Flocalhost%3A9898%2Fpressgang-ccms%2Fmonitoring%22%2C%22serverType%22%3A%22test%22%2C%22defaultServerFlag%22%3Atrue%7D%5D%7D
  */
 @Dependent
 public class ConfigPresenter extends BaseTemplatePresenter {

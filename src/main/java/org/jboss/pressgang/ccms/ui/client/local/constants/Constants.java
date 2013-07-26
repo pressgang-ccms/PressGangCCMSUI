@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307261323";
+    public static final String VERSION = "201307261447";
 
     /**
      * The height of the tabs in a tab panel, in EMs
