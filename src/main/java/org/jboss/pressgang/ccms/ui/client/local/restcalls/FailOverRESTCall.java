@@ -206,7 +206,7 @@ public final class FailOverRESTCall {
         /*
             Which group did this server belong to.
         */
-        final ServerTypes serverType = serverDetails.getServerType();
+        final String serverType = serverDetails.getServerType();
 
         /*
             Often there are concurrent requests. To save time we need to make a note of any failed servers so the next
