@@ -7,7 +7,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -43,9 +42,6 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
 
     @Nullable
     private String queryString;
-
-    @Inject
-    private EventBus eventBus;
 
     @NotNull
     public Display getDisplay() {
@@ -134,7 +130,7 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
                             relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
-                            getEventBus().fireEvent(new EntityListReceived<RESTTextContentSpecCollectionV1>(retValue));
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTextContentSpecCollectionV1>(retValue));
                         }
                     }
                 };
