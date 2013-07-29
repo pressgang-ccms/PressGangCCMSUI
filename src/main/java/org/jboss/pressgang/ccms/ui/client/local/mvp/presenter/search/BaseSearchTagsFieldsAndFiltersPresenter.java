@@ -1,5 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -18,11 +23,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
  * presenters.
@@ -34,7 +34,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchLocalePresenter localePresenter;
 
     private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
-
+    @Inject
     private EventBus eventBus;
     @Inject
     private FailOverRESTCall failOverRESTCall;
