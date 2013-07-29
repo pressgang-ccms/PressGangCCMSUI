@@ -165,7 +165,8 @@ public final class FailOverRESTCallDatabase {
     /**
      * Content specifications need the extended properties expanded
      */
-    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
