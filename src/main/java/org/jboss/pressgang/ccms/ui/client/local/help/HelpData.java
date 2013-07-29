@@ -1,15 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.help;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * The help data associated with a widget.
@@ -26,9 +22,10 @@ public class HelpData {
 
     /**
      *  The direction is a number from 0 to 7, and signifies a direction using the diagram below.
+     *  <pre>
      *  0   1   2
      *  7       3
-     *  6   5   4
+     *  6   5   4</pre>
      * @param widget The widget this help data relates to
      * @param topicID The topic that will be displayed for this widget
      * @param direction The direction that the help topic callout should appear
@@ -42,9 +39,10 @@ public class HelpData {
 
     /**
      *  The direction is a number from 0 to 7, and signifies a direction using the diagram below.
+     *  <pre>
      *  0   1   2
      *  7       3
-     *  6   5   4
+     *  6   5   4</pre>
      * @param widget The widget this help data relates to
      * @param topicID The topic that will be displayed for this widget
      * @param direction The direction that the help topic callout should appear
