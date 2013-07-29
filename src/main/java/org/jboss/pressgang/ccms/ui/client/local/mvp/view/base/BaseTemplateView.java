@@ -498,14 +498,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         version.addStyleName(CSSConstants.Template.VERSION_LABEL);
         footerPanel.setWidget(0, 0, version);
 
-        /* Add the REST server */
-        for (final ServerDetails serverDetails : ServerDetails.SERVERS) {
-            servers.addItem(serverDetails.getName(), serverDetails.getId() + "");
-            if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
-                servers.setSelectedIndex(servers.getItemCount() - 1);
-            }
-        }
-
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
 

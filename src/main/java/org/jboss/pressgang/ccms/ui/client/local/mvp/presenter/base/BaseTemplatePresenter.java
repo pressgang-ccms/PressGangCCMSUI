@@ -102,25 +102,46 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         return false;
     }
 
+    /**
+     * Populate the list of servers.
+     */
+    protected void buildServersList() {
+        /* Add the REST server */
+        display.getServers().clear();
+        for (final ServerDetails serverDetails : ServerDetails.SERVERS) {
+            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
+            if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
+                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
+            }
+        }
+    }
+
     private void bindServerSelector() {
         display.getServers().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(@NotNull final ChangeEvent event) {
                 final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
 
-                final String serverIdString = display.getServers().getValue(display.getServers().getSelectedIndex());
-                Preferences.INSTANCE.saveSetting(Preferences.SERVER, serverIdString);
-
-                final ServerDetails newServerSettings = ServerDetails.getSavedServer();
-
-                RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
+                final ServerDetails newServerSettings = saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
 
                 if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().name().replaceAll("_", " ")).replace("$2", newServerSettings.getServerType().name().replaceAll("_", " ")));
+                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().replaceAll("_", " ")).replace("$2", newServerSettings.getServerType().replaceAll("_", " ")));
                     Window.Location.reload();
                 }
             }
         });
+    }
+
+    /**
+     * Saves the server id as the default, and changes the REST endpoint
+     * @param id The new server id
+     * @return The ServerDetails instance that matches the ID
+     */
+    protected ServerDetails saveServer(@NotNull final String id) {
+        Preferences.INSTANCE.saveSetting(Preferences.SERVER, id);
+        final ServerDetails newServerSettings = ServerDetails.getSavedServer();
+        RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
+        return newServerSettings;
     }
 
     /**
@@ -465,6 +486,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         bindStandardButtons();
         bindServerSelector();
         buildHelpDatabase();
+        buildServersList();
 
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {

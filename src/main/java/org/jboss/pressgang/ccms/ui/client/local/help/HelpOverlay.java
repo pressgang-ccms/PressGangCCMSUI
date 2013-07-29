@@ -31,6 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +53,7 @@ public class HelpOverlay {
     private Map<Widget, HelpData> helpDatabase;
     private HelpCallout helpCallout;
     private HelpData lastWidget;
-    private final PushButton close = new PushButton(PressGangCCMSUI.INSTANCE.Close());
+    private final PushButton close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -187,11 +188,21 @@ public class HelpOverlay {
         });
     }
 
+    /**
+     * The close button should be in the same position as the help button, should
+     * obscure it completely, but should allow the help button callout to be
+     * displayed when the mouse moves over it.
+     */
     private void positionCloseButtonDirect() {
+
+        close.getElement().getStyle().clearProperty("left");
+        close.getElement().getStyle().clearProperty("top");
+
         close.getElement().getStyle().setRight(8, Style.Unit.PX);
-        close.getElement().getStyle().setTop(8, Style.Unit.PX);
-        close.getElement().getStyle().setProperty("left", "");
-        close.getElement().getStyle().setProperty("bottom", "");
+        close.getElement().getStyle().setBottom(10, Style.Unit.PX);
+
+        close.getElement().getStyle().setHeight(18, Style.Unit.PX);
+
     }
 
     private void positionCallout() {

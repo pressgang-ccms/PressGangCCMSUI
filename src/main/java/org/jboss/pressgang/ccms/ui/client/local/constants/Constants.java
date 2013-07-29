@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307251428";
+    public static final String VERSION = "201307261447";
 
     /**
      * The height of the tabs in a tab panel, in EMs
@@ -313,6 +313,50 @@ public final class Constants {
      * This is the value for the category logic option "or", as passed by the query strings.
      */
     public static final String OR_LOGIC_QUERY_STRING_VALUE = "Or";
+
+    /*
+        Navigation Button ID's
+     */
+
+    public static final String HOME_NAVIGATION_BUTTON_ID = "HomeNavigationButton";
+    public static final String DOCBUILDER_NAVIGATION_BUTTON_ID = "DocBuilderNavigationButton";
+    public static final String CREATE_TOPIC_NAVIGATION_BUTTON_ID = "CreateTopicBuilderNavigationButton";
+    public static final String CREATE_SPEC_NAVIGATION_BUTTON_ID = "CreateSpecNavigationButton";
+    public static final String REPORTS_NAVIGATION_BUTTON_ID = "ReportsNavigationButton";
+    public static final String CREATE_BUG_NAVIGATION_BUTTON_ID = "CreateBugNavigationButton";
+    public static final String SEARCH_NAVIGATION_BUTTON_ID = "SearchNavigationButton";
+    public static final String SEARCH_TOPICS_NAVIGATION_BUTTON_ID = "SearchTopicsNavigationButton";
+    public static final String SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID = "SearchContentSpecsNavigationButton";
+    public static final String SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID = "SearchTranslationsNavigationButton";
+    public static final String ENTITIES_NAVIGATION_BUTTON_ID = "SearchTranslationsNavigationButton";
+    public static final String IMAGES_NAVIGATION_BUTTON_ID = "ImagesNavigationButton";
+    public static final String FILES_NAVIGATION_BUTTON_ID = "FilesNavigationButton";
+    public static final String TAGS_NAVIGATION_BUTTON_ID = "TagsNavigationButton";
+    public static final String CATEGORIES_NAVIGATION_BUTTON_ID = "CategoriesNavigationButton";
+    public static final String PROJECTS_NAVIGATION_BUTTON_ID = "ProjectsNavigationButton";
+    public static final String ADVANCED_NAVIGATION_BUTTON_ID = "AdvancedNavigationButton";
+    public static final String BULK_TAGGING_NAVIGATION_BUTTON_ID = "BulkTaggingNavigationButton";
+    public static final String BLOB_CONSTANTS_NAVIGATION_BUTTON_ID = "BlobConstantsNavigationButton";
+    public static final String INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID = "IntegerConstantsNavigationButton";
+    public static final String STRING_CONSTANTS_NAVIGATION_BUTTON_ID = "StringConstantsNavigationButton";
+    public static final String EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID = "ExtendedPropertiesNavigationButton";
+    public static final String EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID = "ExtendedPropertyCategoriesNavigationButton";
+    public static final String MONITORING_NAVIGATION_BUTTON_ID = "MonitoringNavigationButton";
+
+    /*
+        Save message dialog IDs
+     */
+    public static final String USERNAME_SAVE_DIALOG = "UsernameSaveDialog";
+    public static final String MESSAGE_SAVE_DIALOG = "MessageSaveDialog";
+    public static final String MAJOR_CHANGE_SAVE_DIALOG = "MajorChangeSaveDialog";
+    public static final String MINOR_CHANGE_SAVE_DIALOG = "MinorChangeSaveDialog";
+    public static final String OK_SAVE_DIALOG = "OKSaveDialog";
+    public static final String CANCEL_SAVE_DIALOG = "CancelSaveDialog";
+
+    /*
+        Search reults action buttons IDs
+     */
+    public static final String TOPIC_SEARCH_RESULTS_SAVE_ID = "TopicSearchResultsSave";
 
     /**
      * A private constructor to prevent instantiation.

@@ -28,6 +28,8 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
         void displayExtended(@NotNull final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly, final boolean showBulkTags);
 
         SearchUIProjects getSearchUIProjects();
+
+        SearchUIProjectsEditor getEditor();
     }
 
     public static final String HISTORY_TOKEN = "SearchView";

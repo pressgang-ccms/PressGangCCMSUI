@@ -30,10 +30,21 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
     private final FlexTable categoriesButtonPanel = new FlexTable();
     private final ScrollPanel scroll = new ScrollPanel();
+    private SearchUICategoryEditor selectedCategory;
 
     @NotNull
     public SearchUIProject getValue() {
         return value;
+    }
+
+    @Ignore
+    public FlexTable getCategoriesButtonPanel() {
+        return categoriesButtonPanel;
+    }
+
+    @Ignore
+    public SearchUICategoryEditor getSelectedCategory() {
+        return selectedCategory;
     }
 
     /**
@@ -45,13 +56,15 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         @NotNull
         @Override
         public SearchUICategoryEditor create(final int index) {
-            @NotNull final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this, showBulkTags);
+            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this, showBulkTags);
 
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 
             subEditor.summary.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
+                    selectedCategory = subEditor;
+
                     if (SearchUIProjectEditor.this.getCenter() != null) {
                         SearchUIProjectEditor.this.remove(SearchUIProjectEditor.this.getCenter());
                     }

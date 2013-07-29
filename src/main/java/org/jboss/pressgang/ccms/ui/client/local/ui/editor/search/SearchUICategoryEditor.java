@@ -37,9 +37,20 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
     final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
     private final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
+    private SearchUITagEditor selectedCategory;
 
     public ListEditor<SearchUITag, SearchUITagEditor> myTagsEditor() {
         return myTags;
+    }
+
+    @Ignore
+    public FlexTable getTagsTable() {
+        return tagsTable;
+    }
+
+    @Ignore
+    public SearchUITagEditor getSelectedCategory() {
+        return selectedCategory;
     }
 
     /**
@@ -68,6 +79,8 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             subEditor.bulkTagStateEditor().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
+                    selectedCategory = subEditor;
+
                     /*
                         If this tag is in a mutually exclusive category, then unselect any other selected tags.
                     */

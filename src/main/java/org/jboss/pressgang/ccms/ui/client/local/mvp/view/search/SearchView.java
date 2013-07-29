@@ -26,6 +26,8 @@ public class SearchView extends BaseTemplateView implements SearchTagPresenter.D
      */
     private final WaitingDialog waiting = new WaitingDialog();
 
+    private final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects);
+
     @NotNull
     @Override
     public SearchUIProjects getSearchUIProjects() {
@@ -52,8 +54,7 @@ public class SearchView extends BaseTemplateView implements SearchTagPresenter.D
         /* Construct a hierarchy of tags from the tag collection */
         searchUIProjects.initialize(tagCollection, filter);
 
-        /* SearchUIProjectsEditor is a grid */
-        @NotNull final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects, showBulkTags);
+        editor.setShowBulkTags(showBulkTags);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
@@ -71,5 +72,9 @@ public class SearchView extends BaseTemplateView implements SearchTagPresenter.D
     @Override
     protected void hideWaiting() {
         waiting.hide();
+    }
+
+    public SearchUIProjectsEditor getEditor() {
+        return editor;
     }
 }

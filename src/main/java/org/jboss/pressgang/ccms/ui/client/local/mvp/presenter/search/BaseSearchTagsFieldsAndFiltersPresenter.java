@@ -1,14 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
-import javax.inject.Inject;
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -17,6 +17,11 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The presenter used to display the search screen, including the child tags, fields, locales and filters
@@ -27,7 +32,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchTagPresenter tagsPresenter;
     @Inject
     private SearchLocalePresenter localePresenter;
-    @Inject
+
+    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
+
     private EventBus eventBus;
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -56,6 +63,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
 
     public void bindExtended() {
         bind(getDisplay());
+        buildHelpDatabase();
     }
 
     protected void loadSearchLocales() {
@@ -197,6 +205,31 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     public void setShowBulkTags(boolean showBulkTags) {
         this.showBulkTags = showBulkTags;
     }
+
+    /**
+     * Assign help info to the UI elements exposed by this presenter.
+     */
+    private void buildHelpDatabase() {
+        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getDownloadZip(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_ZIP.getId(), 1));
+        addHelpDataToMap(this.helpDatabase, new HelpData(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId(), 7));
+    }
+
+    @Override
+    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
+        helpDataHashMap.putAll(helpDatabase);
+
+        if (tagsPresenter.getDisplay().getEditor().getSelectedProject() != null) {
+            addHelpDataToMap(helpDataHashMap, new HelpData(tagsPresenter.getDisplay().getEditor().getSelectedProject().getCategoriesButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_CATEGORIES_COLUMN.getId(), 7));
+
+            if (tagsPresenter.getDisplay().getEditor().getSelectedProject().getSelectedCategory() != null) {
+                addHelpDataToMap(helpDataHashMap, new HelpData(tagsPresenter.getDisplay().getEditor().getSelectedProject().getSelectedCategory().getTagsTable(), ServiceConstants.HELP_TOPICS.SEARCH_TAGS_TABLE.getId(), 3));
+            }
+        }
+
+
+        super.toggleHelpOverlay(helpDataHashMap);
+    }
+
 
     public interface Display extends BaseTemplateViewInterface {
 

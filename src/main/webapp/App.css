@@ -7,9 +7,6 @@
 
 .CloseButton {
     z-index: 10003;
-    position: absolute;
-    color: white;
-    font-size: xx-large;
 }
 
 .CloseAndEditButtonsParentCell {
@@ -500,6 +497,7 @@ html {
 
 .ProjectsButtonsLayout, .CategoriesButtonsLayout, .CategoryTagLayout {
     margin-right: 16px;
+    background-color: white;
 }
 
 .ProjectsButtonsLayout td {

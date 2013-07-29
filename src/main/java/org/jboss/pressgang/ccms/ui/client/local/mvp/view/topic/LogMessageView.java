@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -68,6 +69,13 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
     }
 
     public LogMessageView() {
+        message.getElement().setId(Constants.MESSAGE_SAVE_DIALOG);
+        username.getElement().setId(Constants.USERNAME_SAVE_DIALOG);
+        minorChange.getElement().setId(Constants.MINOR_CHANGE_SAVE_DIALOG);
+        majorChange.getElement().setId(Constants.MAJOR_CHANGE_SAVE_DIALOG);
+        cancel.getElement().setId(Constants.CANCEL_SAVE_DIALOG);
+        ok.getElement().setId(Constants.OK_SAVE_DIALOG);
+
         this.setGlassEnabled(true);
         this.setText(PressGangCCMSUI.INSTANCE.SaveLog());
 
@@ -87,7 +95,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MajorChange()));
         layout.setWidget(row, 1, majorChange);
 
-        @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+        final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
         buttonPanel.add(cancel);
         buttonPanel.add(ok);

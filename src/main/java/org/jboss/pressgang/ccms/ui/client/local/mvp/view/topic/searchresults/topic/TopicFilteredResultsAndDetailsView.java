@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base.BaseSearchResultsAndTopicView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -104,7 +105,7 @@ public class TopicFilteredResultsAndDetailsView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
         /* Build the action bar icons */
-        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.TOPIC_SEARCH_RESULTS_SAVE_ID);
         history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
         csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
 
