@@ -261,6 +261,16 @@ pressgang_website_callback = function(data) {
 		var displaying = false;
 		var zIndexDiff = 0;
 		
+		/*
+		 * Resizing could invalidate the position of the callout. So we close
+		 * the callouts if the window is resized.
+		 */
+		window.addEventListener("resize", function() {
+			if (displaying) {
+				pressgang_website_close_callout();	
+			}
+		});
+		
 		/**
 		 * Enabled the help overlay.
 		 */

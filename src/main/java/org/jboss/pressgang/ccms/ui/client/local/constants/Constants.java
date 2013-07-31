@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201307311315";
+    public static final String VERSION = "201307311323";
 
     public static final String PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR = "data-pressgangtopic";
 
