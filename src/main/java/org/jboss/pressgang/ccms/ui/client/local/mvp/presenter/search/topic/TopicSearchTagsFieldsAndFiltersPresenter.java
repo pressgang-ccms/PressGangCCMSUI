@@ -86,8 +86,6 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
      */
     private static final Logger LOGGER = Logger.getLogger(TopicSearchTagsFieldsAndFiltersPresenter.class.getName());
 
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
-
     @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
@@ -562,13 +560,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseSearchTagsFiel
      * Assign help info to the UI elements exposed by this presenter.
      */
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getDownloadCSV(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_CSV.getId(), 1));
-    }
-
-    @Override
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-        super.toggleHelpOverlay(helpDataHashMap);
+        setDataAttribute(getDisplay().getDownloadCSV(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_CSV.getId());
     }
 
     public interface Display extends BaseSearchTagsFieldsAndFiltersPresenter.Display {

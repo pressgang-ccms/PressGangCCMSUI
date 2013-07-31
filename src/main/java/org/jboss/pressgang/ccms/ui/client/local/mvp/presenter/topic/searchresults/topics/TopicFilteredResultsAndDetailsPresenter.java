@@ -122,8 +122,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Inject
     private FailOverRESTCall failOverRESTCall;
 
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
-
     /*
         True when the XML elements dialog is opened for the first time, and the
         elements are loaded.
@@ -2965,43 +2963,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * Assign help info to the UI elements exposed by this presenter.
      */
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistory(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getHistoryDown(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCsps(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getCspsDown(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId(), 1));
+        setDataAttribute(getDisplay().getHistory(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId());
+        setDataAttribute(getDisplay().getHistoryDown(), ServiceConstants.HELP_TOPICS.TOPIC_REVISIONS.getId());
+        setDataAttribute(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId());
+        setDataAttribute(getDisplay().getSave(), ServiceConstants.HELP_TOPICS.TOPIC_SAVE.getId());
+        setDataAttribute(getDisplay().getCsps(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId());
+        setDataAttribute(getDisplay().getCspsDown(), ServiceConstants.HELP_TOPICS.TOPIC_CONTENT_SPECS.getId());
 
         /*
             Property ui elements
         */
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_TITLE.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_DESCRIPTION.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicViewPresenter.getDisplay().getEditor().localeEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_LOCALE.getId(), 7));
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_TITLE.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_DESCRIPTION.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().localeEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_LOCALE.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId(), 3));
+        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId());
+        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.TOPIC_CREATE_TOPIC.getId(), 0));
-        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getBulkImport(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_IMPORT.getId(), 0));
-        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getBulkOverwrite(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_OVERWRITE.getId(), 0));
-        addHelpDataToMap(this.helpDatabase, new HelpData(searchResultPresenter.getDisplay().getAtomFeed(), ServiceConstants.HELP_TOPICS.TOPIC_ATOM_FEED.getId(), 1));
+        setDataAttribute(searchResultPresenter.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.TOPIC_CREATE_TOPIC.getId());
+        setDataAttribute(searchResultPresenter.getDisplay().getBulkImport(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_IMPORT.getId());
+        setDataAttribute(searchResultPresenter.getDisplay().getBulkOverwrite(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_OVERWRITE.getId());
+        setDataAttribute(searchResultPresenter.getDisplay().getAtomFeed(), ServiceConstants.HELP_TOPICS.TOPIC_ATOM_FEED.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDone(), ServiceConstants.HELP_TOPICS.DIFF_DONE.getId(), 6));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getCancel(), ServiceConstants.HELP_TOPICS.DIFF_CANCEL.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId(), 6));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicRevisionsPresenter.getDisplay().getDiffParent(), ServiceConstants.HELP_TOPICS.TOPIC_DIFF_PANE.getId(), 5));
-    }
-
-    @Override
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-        super.toggleHelpOverlay(helpDataHashMap);
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getDone(), ServiceConstants.HELP_TOPICS.DIFF_DONE.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getCancel(), ServiceConstants.HELP_TOPICS.DIFF_CANCEL.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getDiffParent(), ServiceConstants.HELP_TOPICS.TOPIC_DIFF_PANE.getId());
     }
 
     /**

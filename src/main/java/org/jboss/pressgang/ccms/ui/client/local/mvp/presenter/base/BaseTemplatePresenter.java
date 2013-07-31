@@ -76,10 +76,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTemplatePresenter.class.getName());
 
-    @Inject
-    private HelpOverlay helpOverlay;
-
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /**
      * The GWT event bus.
@@ -560,15 +556,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId());
         setDataAttribute(display.getServers(), ServiceConstants.HELP_TOPICS.SERVER_SELECTION.getId());
         setDataAttribute(display.getVersion(), ServiceConstants.HELP_TOPICS.BUILD_LABEL.getId());
-    }
-
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        if (helpOverlay.isHelpOverlayEnabled()) {
-            helpOverlay.hideOverlay();
-        } else {
-            helpDataHashMap.putAll(helpDatabase);
-            helpOverlay.showOver(helpDataHashMap);
-        }
     }
 
     /**

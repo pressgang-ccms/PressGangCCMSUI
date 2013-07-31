@@ -32,8 +32,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchTagPresenter tagsPresenter;
     @Inject
     private SearchLocalePresenter localePresenter;
-
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
     @Inject
     private EventBus eventBus;
     @Inject
@@ -210,24 +208,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      * Assign help info to the UI elements exposed by this presenter.
      */
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getDownloadZip(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_ZIP.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId(), 7));
-    }
-
-    @Override
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-
-        if (tagsPresenter.getDisplay().getEditor().getSelectedProject() != null) {
-            addHelpDataToMap(helpDataHashMap, new HelpData(tagsPresenter.getDisplay().getEditor().getSelectedProject().getCategoriesButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_CATEGORIES_COLUMN.getId(), 7));
-
-            if (tagsPresenter.getDisplay().getEditor().getSelectedProject().getSelectedCategory() != null) {
-                addHelpDataToMap(helpDataHashMap, new HelpData(tagsPresenter.getDisplay().getEditor().getSelectedProject().getSelectedCategory().getTagsTable(), ServiceConstants.HELP_TOPICS.SEARCH_TAGS_TABLE.getId(), 3));
-            }
-        }
-
-
-        super.toggleHelpOverlay(helpDataHashMap);
+        setDataAttribute(getDisplay().getDownloadZip(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_ZIP.getId());
+        setDataAttribute(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
+        setDataAttribute(tagsPresenter.getDisplay().getEditor().getSelectedProject().getCategoriesButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
     }
 
 
