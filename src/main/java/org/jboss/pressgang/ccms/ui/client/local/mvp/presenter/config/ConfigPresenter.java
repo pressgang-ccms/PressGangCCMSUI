@@ -102,7 +102,6 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                     defaultServerFlag = serverDetails.get("defaultServerFlag").isBoolean();
                                 }
 
-
                                 if (id != null && name != null && restUrl != null && monitoringUrl != null && serverType != null) {
                                     LOGGER.info("Found server config:\n" +
                                         "\tID:" + id.doubleValue() + "\n" +

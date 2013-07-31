@@ -515,18 +515,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getHelpMode().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                toggleHelpOverlay(new HashMap<Widget, HelpData>());
-            }
-        });
-
-        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
-            @Override
-            public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
-                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE && helpOverlay.isHelpOverlayEnabled()) {
-                    toggleHelpOverlay(new HashMap<Widget, HelpData>());
+            public native void onClick(ClickEvent event) /*-{
+				if ($wnd.pressgang_website_enable) {
+					$wnd.pressgang_website_enable();
+				} else {
+                    $wnd.alert("Help overlay is not available.")
                 }
-            }
+            }-*/;
         });
     }
 
@@ -535,36 +530,36 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId(), 7));
+        setDataAttribute(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
+        setDataAttribute(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
+        setDataAttribute(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId(), 7));
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
+        setDataAttribute(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
+        setDataAttribute(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId(), 2));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId(), 4));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getServers(), ServiceConstants.HELP_TOPICS.SERVER_SELECTION.getId(), 6));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getVersion(), ServiceConstants.HELP_TOPICS.BUILD_LABEL.getId(), 6));
+        setDataAttribute(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId());
+        setDataAttribute(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId());
+        setDataAttribute(display.getServers(), ServiceConstants.HELP_TOPICS.SERVER_SELECTION.getId());
+        setDataAttribute(display.getVersion(), ServiceConstants.HELP_TOPICS.BUILD_LABEL.getId());
     }
 
     protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
@@ -574,5 +569,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             helpDataHashMap.putAll(helpDatabase);
             helpOverlay.showOver(helpDataHashMap);
         }
+    }
+
+    /**
+     * Adds the data attribute that identifies the widget to the help overlay system
+     * @param widget The widget to be modified
+     * @param id The help topic id
+     */
+    protected void setDataAttribute(@NotNull final Widget widget, @NotNull final Integer id) {
+        widget.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());
     }
 }
