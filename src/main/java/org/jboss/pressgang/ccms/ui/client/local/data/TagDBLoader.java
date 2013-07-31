@@ -1,23 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.data;
 
 import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONObject;
 import edu.ycp.cs.dh.acegwt.client.tagdb.GetRESTServerCallback;
+import edu.ycp.cs.dh.acegwt.client.tagdb.TagDB;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
-import edu.ycp.cs.dh.acegwt.client.tagdb.TagDB;
 
 import javax.inject.Inject;
 import java.util.logging.Level;

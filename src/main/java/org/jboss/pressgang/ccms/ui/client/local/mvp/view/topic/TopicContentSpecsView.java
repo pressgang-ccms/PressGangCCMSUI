@@ -1,8 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import javax.enterprise.context.Dependent;
-import java.util.logging.Logger;
-
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -21,6 +18,9 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.enterprise.context.Dependent;
+import java.util.logging.Logger;
 
 /**
  * The view that displays the source urls.

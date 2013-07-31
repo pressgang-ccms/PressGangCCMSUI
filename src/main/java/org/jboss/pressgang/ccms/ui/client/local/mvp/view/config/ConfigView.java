@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.config;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.config.ConfigPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jetbrains.annotations.NotNull;
 
 /**
  *

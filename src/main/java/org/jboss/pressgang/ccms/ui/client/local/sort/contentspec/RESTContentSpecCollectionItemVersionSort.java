@@ -1,11 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort.contentspec;
 
-import java.util.Comparator;
-
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Comparator;
 
 /**
  * Sorts RESTContentSpecCollectionItemV1 objects based on their version.
