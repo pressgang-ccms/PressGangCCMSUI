@@ -206,7 +206,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private void buildHelpDatabase() {
         setDataAttribute(getDisplay().getDownloadZip(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_ZIP.getId());
         setDataAttribute(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
-        setDataAttribute(tagsPresenter.getDisplay().getEditor().getSelectedProject().getCategoriesButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
     }
 
 

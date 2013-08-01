@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
@@ -65,7 +67,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
-            @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
+            final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
             tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.nameEditor());
             tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.stateEditor());
             tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagStateEditor());
@@ -122,6 +124,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         this.summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
         tagsTable.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_LAYOUT);
+        tagsTable.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.SEARCH_TAGS_TABLE.getId() + "");
         this.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_SCROLL);
 
         this.setWidget(tagsTable);
