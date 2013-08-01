@@ -9,29 +9,22 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308011652";
+    public static final String VERSION = "201308020739";
 
+    /**
+     * The attribute that is used by the help overlay system
+     */
     public static final String PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR = "data-pressgangtopic";
+
+    /**
+     * The default ace editor theme
+     */
+    public static final String DEFAULT_THEME = "eclipse";
 
     /**
      * The height of the tabs in a tab panel, in EMs
      */
     public static final float TAB_PANEL_HEIGHT = 2;
-
-    /**
-     * The size of the arrows in the help overlay callout
-     */
-    public static final int CALLOUT_ARROW_SIZE = 20;
-
-    /**
-     * How much the help callout should overlap with the widget it is related to
-     */
-    public static final int HELP_CALLOUT_OVERLAP = CALLOUT_ARROW_SIZE / 2;
-
-    /**
-     * The zindex of the widgets promoted above the help overlay dimmer
-     */
-    public static final Integer HELP_OVERLAY_ITEM_ZINDEX = 10001;
 
     /**
      * The JSON Key for a recently failed failed server id

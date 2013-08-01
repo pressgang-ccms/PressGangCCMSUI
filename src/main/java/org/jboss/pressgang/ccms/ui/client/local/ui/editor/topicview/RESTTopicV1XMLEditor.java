@@ -8,6 +8,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
 
 public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
@@ -17,6 +18,7 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
      * editor uses relative positioning, and the AceEditor needs to be constructed with false.
      */
     public final AceEditor xml;
+
 
     /**
      * @param readOnly           true if the UI created by this editor should be readonly, and false otherwise
@@ -35,7 +37,7 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
 
         xml.setReadOnly(readOnly);
         xml.setMode(AceEditorMode.XML);
-        xml.setTheme(AceEditorTheme.ECLIPSE);
+        xml.setThemeByName(Constants.DEFAULT_THEME);
 
         this.setWidget(xml);
     }

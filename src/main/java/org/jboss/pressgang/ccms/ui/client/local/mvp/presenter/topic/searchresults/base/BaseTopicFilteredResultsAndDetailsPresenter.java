@@ -752,10 +752,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
-            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the initialize method was called above */
+            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called above */
             if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
                 setXMLEditorButtonsToEditorState();
+                topicXMLPresenter.getDisplay().getEditor().setThemeByName(Preferences.INSTANCE.getString(Preferences.EDITOR_THEME, Constants.DEFAULT_THEME));
                 topicXMLPresenter.getDisplay().getEditor().redisplay();
             }
 
