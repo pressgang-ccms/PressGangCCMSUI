@@ -195,6 +195,27 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 getNewEntityCallback);
 
         populateLocales();
+        buildHelpDatabase();
+    }
+
+    private void buildHelpDatabase() {
+        setDataAttribute(imageComponent.getDisplay().getAddLocale(), ServiceConstants.HELP_TOPICS.IMAGE_ADD_LOCALE.getId());
+        setDataAttribute(imageComponent.getDisplay().getRemoveLocale(), ServiceConstants.HELP_TOPICS.IMAGE_REMOVE_LOCALE.getId());
+        setDataAttribute(imageComponent.getDisplay().getViewImage(), ServiceConstants.HELP_TOPICS.IMAGE_VIEW_IMAGE.getId());
+        setDataAttribute(imageComponent.getDisplay().getFindTopics(), ServiceConstants.HELP_TOPICS.IMAGE_FIND_TOPICS.getId());
+        setDataAttribute(imageComponent.getDisplay().getSave(), ServiceConstants.HELP_TOPICS.IMAGE_SAVE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_FIELD.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getId(), ServiceConstants.HELP_TOPICS.IMAGE_ID_FIELD.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getImageTemplateTable(), ServiceConstants.HELP_TOPICS.IMAGE_DOCBOOK_IMAGE_TEMPLATES_TABLE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getLanguageImages_OTM(), ServiceConstants.HELP_TOPICS.IMAGE_DETAILS_TABLE.getId());
+
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getEntitySearch(), ServiceConstants.HELP_TOPICS.IMAGE_SEARCH.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getBulkUpload(), ServiceConstants.HELP_TOPICS.IMAGE_BULK_IMAGE_UPLOAD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.IMAGE_CREATE_IMAGE.getId());
+
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageDescriptionFilter(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageIdFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ID_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageOriginalFileNameFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD.getId());
     }
 
     @Override

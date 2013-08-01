@@ -19,12 +19,12 @@ import org.jetbrains.annotations.NotNull;
 public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseTemplateViewInterface {
     /**
-     * @return The button that initiates a new search
+     * @return The button that creates a new entity
      */
     PushButton getCreate();
 
     /**
-     * @return The button that creates a new entity
+     * @return The button that initiates a new search
      */
     PushButton getEntitySearch();
 

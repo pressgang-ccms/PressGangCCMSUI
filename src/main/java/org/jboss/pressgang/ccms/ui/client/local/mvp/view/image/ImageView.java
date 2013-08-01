@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
 
-    private RESTImageV1Editor editor;
+    private RESTImageV1Editor editor = new RESTImageV1Editor();
     private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
 
     private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
@@ -160,7 +160,6 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         }
 
         /* SearchUIProjectsEditor is a grid */
-        editor = new RESTImageV1Editor(); /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
         driver.edit(image);

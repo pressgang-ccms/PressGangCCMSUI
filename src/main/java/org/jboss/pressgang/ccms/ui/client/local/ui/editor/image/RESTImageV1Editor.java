@@ -17,9 +17,6 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ImageID());
 
     private final SimpleIntegerLabel id = new SimpleIntegerLabel();
-    /**
-     * A text area to represent the description field.
-     */
     private final TextArea description = new TextArea();
 
     private final Label docbookFileName = new Label();
@@ -38,11 +35,8 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final TextArea bareXmlTemplate = new TextArea();
 
-    private final TabLayoutPanel tabPanel = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
+    private final TabLayoutPanel imageTemplateTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
 
-    /**
-     * The editor representing a collection of language image editors.
-     */
     private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
 
     @NotNull
@@ -62,13 +56,14 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         inlineXmlTemplate.setReadOnly(true);
         bareXmlTemplate.setReadOnly(true);
 
-        tabPanel.addStyleName(CSSConstants.ImageView.IMAGE_TEMPLATES_TAB_PANEL);
+        imageTemplateTable.addStyleName(CSSConstants.ImageView.IMAGE_TEMPLATES_TAB_PANEL);
         imageDetails.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DETAILS_TABLE);
         descriptionLabel.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL);
         description.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT);
         xmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
         inlineXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
         bareXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        id.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_ID_TEXT);
 
         imageDetails.setWidget(0, 0, idLabel);
         imageDetails.setWidget(0, 1, id);
@@ -76,11 +71,11 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         imageDetails.setWidget(1, 1, description);
 
         imageDetails.setWidget(2, 0, templateLabel);
-        imageDetails.setWidget(2, 1, tabPanel);
+        imageDetails.setWidget(2, 1, imageTemplateTable);
 
-        tabPanel.add(xmlTemplate, PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
-        tabPanel.add(bareXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
-        tabPanel.add(inlineXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
+        imageTemplateTable.add(xmlTemplate, PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
+        imageTemplateTable.add(bareXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
+        imageTemplateTable.add(inlineXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
@@ -94,7 +89,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     }
 
     @Override
-    public void setDelegate(final EditorDelegate<RESTImageV1> delegate) {
+    public void setDelegate(@NotNull final EditorDelegate<RESTImageV1> delegate) {
 
     }
 
@@ -104,13 +99,13 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     }
 
     @Override
-    public void onPropertyChange(final String... paths) {
+    public void onPropertyChange(@NotNull final String... paths) {
 
 
     }
 
     @Override
-    public void setValue(final RESTImageV1 value) {
+    public void setValue(@NotNull final RESTImageV1 value) {
         this.value = value;
         this.id.setValue(value.getId());
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
@@ -120,4 +115,39 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         this.bareXmlTemplate.setText(ComponentImageV1.getBareXMLTemplate(value));
     }
 
+    @Ignore
+    public SimpleIntegerLabel getId() {
+        return id;
+    }
+
+    /**
+     * A text area to represent the description field.
+     */
+    @Ignore
+    public TextArea getDescription() {
+        return description;
+    }
+
+    @Ignore
+    public Label getDocbookFileName() {
+        return docbookFileName;
+    }
+
+    @Ignore
+    public FlexTable getImageDetails() {
+        return imageDetails;
+    }
+
+    @Ignore
+    public TabLayoutPanel getImageTemplateTable() {
+        return imageTemplateTable;
+    }
+
+    /**
+     * The editor representing a collection of language image editors.
+     */
+    @Ignore
+    public RESTLanguageImageCollectionV1Editor getLanguageImages_OTM() {
+        return languageImages_OTM;
+    }
 }

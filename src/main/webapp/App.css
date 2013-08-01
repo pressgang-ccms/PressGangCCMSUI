@@ -755,6 +755,10 @@ html {
     vertical-align: middle !important;
 }
 
+.ImageViewIDText {
+    background-color: white;
+}
+
 .ImageViewParentDockPanel {
     height: 100%;
     width: 100%;
@@ -767,6 +771,7 @@ html {
 .ImageViewLanguageImageTabPanel {
     height: 100%;
     width: 100%;
+    background-color: white;
 }
 
 .ImageViewLanguageImageTab {
