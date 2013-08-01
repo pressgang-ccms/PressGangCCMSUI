@@ -45,8 +45,8 @@ pressgang_website_doc_base = "";
 /**
  * @return the name of the current html page 
  */
-pressgang_website_get_page_name = function() {
-	var pathArray = window.location.pathname.split( '/' );
+pressgang_website_get_page_name = function(pathname) {
+	var pathArray = pathname.split( '/' );
 	var file = pathArray[pathArray.length - 1];
 	var hashIndex = file.indexOf("#");
 	if (hashIndex != -1) {
@@ -60,6 +60,41 @@ pressgang_website_get_page_name = function() {
 		file = file.substr(0, file.length - 5);
 	}
 	return file;
+}
+
+/**
+ * Passes a message to the iframe, and waits for the URL to be returned
+ * @param iframe the iframe to pass the message to
+ * @param success the function to call with the iframe URL
+ */
+pressgang_website_get_iframe_url = function(iframe, success) {
+	return function() {
+		var returned = false;
+		var listener = function(event) {
+			try {
+				var payload = JSON.parse(event.data);
+				if (payload.message == "pressgang_website_url") {
+					success(pressgang_website_get_page_name(payload.data));
+					returned = true;
+					window.removeEventListener("message", arguments.callee);
+				}
+			} catch (ex) {
+				
+			}				
+		}
+		
+		window.addEventListener("message", listener, false);		
+		iframe.contentWindow.postMessage('{"message":"url"}', "*");
+		
+		/*
+		 * Don't wait forever for a response
+		 */
+		setTimeout(function() {
+			if (!returned) {
+				window.removeEventListener("message", listener);
+			}
+		}, 2000);
+	}
 }
 
 /**
@@ -160,13 +195,14 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	
 	bookIcon.src = "book.png";
 	bookIcon.style.width = bookIcon.style.height = "16px";
-	bookLink.href = pressgang_website_doc_base + "#" + pressgang_website_get_page_name();
-	bookLink.target = "_blank";	
 	bookLink.style.top = "4px";
 	bookLink.style.right = "24px";	
 	bookLink.style.zIndex = 2;
 	bookLink.appendChild(bookIcon);			
 	contentDiv.appendChild(bookLink);
+	bookLink.onclick = pressgang_website_get_iframe_url(iframe, function(name) {
+		window.open(pressgang_website_doc_base + "#" + name);
+	});
 	
 	closeIcon.src = "close.png";
 	closeIcon.style.width = closeIcon.style.height = "16px";
