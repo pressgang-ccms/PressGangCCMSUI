@@ -43,6 +43,26 @@ pressgang_website_base = "";
 pressgang_website_doc_base = "";
 
 /**
+ * @return the name of the current html page 
+ */
+pressgang_website_get_page_name = function() {
+	var pathArray = window.location.pathname.split( '/' );
+	var file = pathArray[pathArray.length - 1];
+	var hashIndex = file.indexOf("#");
+	if (hashIndex != -1) {
+		file = file.substr(0, hashIndex);
+	}
+	var questionMarkIndex = file.indexOf("?");
+	if (questionMarkIndex != -1) {
+		file = file.substr(0, questionMarkIndex);
+	}
+	if (file.length >= 5 && file.substr(file.length - 5) == ".html") {
+		file = file.substr(0, file.length - 5);
+	}
+	return file;
+}
+
+/**
  * Closes the help overlay when escape is pressed
  * @param e the event data
  */
@@ -121,38 +141,26 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	var bookLink = document.createElement("a");
 	var closeIcon = document.createElement("img");
 	var closeLink = document.createElement("a");
-	var forwardIcon = document.createElement("img");
-	var forwardLink = document.createElement("a");
-	var backIcon = document.createElement("img");
-	var backLink = document.createElement("a");
+	var startIcon = document.createElement("img");
+	var startLink = document.createElement("a");
 	
-	bookLink.style.position = closeLink.style.position = forwardLink.style.position = backLink.style.position = "absolute";
+	bookLink.style.position = closeLink.style.position = startLink.style.position = "absolute";
 	
-	backIcon.src = "back.png";
-	backIcon.style.width = backIcon.style.height = "16px";
-	backLink.style.top = "4px";
-	backLink.style.right = "64px";	
-	backLink.style.zIndex = 2;
-	backLink.appendChild(backIcon);			
-	contentDiv.appendChild(backLink);
-	backLink.onclick = function() {
-		iframe.contentWindow.postMessage('{"message":"back"}', "*");
-	}
 	
-	forwardIcon.src = "forward.png";
-	forwardIcon.style.width = forwardIcon.style.height = "16px";
-	forwardLink.style.top = "4px";
-	forwardLink.style.right = "44px";	
-	forwardLink.style.zIndex = 2;
-	forwardLink.appendChild(forwardIcon);			
-	contentDiv.appendChild(forwardLink);
-	forwardLink.onclick = function() {
-		iframe.contentWindow.postMessage('{"message":"forward"}', "*");
+	startIcon.src = "start.png";
+	startIcon.style.width = startIcon.style.height = "16px";
+	startLink.style.top = "4px";
+	startLink.style.right = "44px";	
+	startLink.style.zIndex = 2;
+	startLink.appendChild(startIcon);			
+	contentDiv.appendChild(startLink);
+	startLink.onclick = function() {
+		iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 	}
 	
 	bookIcon.src = "book.png";
 	bookIcon.style.width = bookIcon.style.height = "16px";
-	bookLink.href = pressgang_website_doc_base + "#" + elementTopicData.target;
+	bookLink.href = pressgang_website_doc_base + "#" + pressgang_website_get_page_name();
 	bookLink.target = "_blank";	
 	bookLink.style.top = "4px";
 	bookLink.style.right = "24px";	
