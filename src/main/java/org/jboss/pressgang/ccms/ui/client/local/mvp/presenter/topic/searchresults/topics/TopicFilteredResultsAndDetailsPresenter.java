@@ -1060,6 +1060,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final ClickHandler messageLogDialogOK = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
+                    final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+                    if (user.isEmpty()) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                        return;
+                    }
+
                     try {
                         LOGGER.log(Level.INFO,
                                 "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
@@ -1071,7 +1078,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                     "The displayed collection item to reference a valid entity.");
 
-                            final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
                             final StringBuilder message = new StringBuilder();
