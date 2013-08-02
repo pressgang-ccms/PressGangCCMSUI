@@ -146,18 +146,18 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      */
     protected void displayInitialTopic(@NotNull final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+            LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
             checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultPresenter().getProviderData().getItems() != null &&
-                    getSearchResultPresenter().getProviderData().getItems().size() >= 1
+                    getSearchResultPresenter().getProviderData().getItems().size() == 1
                     ) {
                 loadNewEntity(getNewEntityCallback, getSearchResultPresenter().getProviderData().getItems().get(0));
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+            LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
         }
     }
 

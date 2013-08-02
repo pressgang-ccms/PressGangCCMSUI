@@ -408,21 +408,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     protected void displayInitialTopic(@NotNull final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
             checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultPresenter().getProviderData().getItems() != null &&
-                    getSearchResultPresenter().getProviderData().getItems().size() >= 1) {
+                    getSearchResultPresenter().getProviderData().getItems().size() == 1) {
                 loadNewEntity(getNewEntityCallback, getSearchResultPresenter().getProviderData().getItems().get(0));
-
-                if (getSearchResultPresenter().getProviderData().getItems().size() == 1) {
-                    setSearchResultsVisible(false);
-                }
+                setSearchResultsVisible(false);
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
         }
     }
 
