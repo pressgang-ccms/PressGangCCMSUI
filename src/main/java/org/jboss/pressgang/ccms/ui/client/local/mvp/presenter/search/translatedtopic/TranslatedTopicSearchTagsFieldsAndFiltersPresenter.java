@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.translatedtopic;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -12,16 +12,16 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseTopicSe
  * presenters.
  */
 @Dependent
-public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTopicSearchTagsFieldsAndFiltersPresenter {
+public class TranslatedTopicSearchTagsFieldsAndFiltersPresenter extends BaseTopicSearchTagsFieldsAndFiltersPresenter {
 
     /**
      * The presenter used to display the list of filters
      */
     @Inject
-    private TopicSearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+    private TranslatedTopicSearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
 
     @Inject
-    private TopicSearchFieldPresenter fieldsPresenter;
+    private TranslatedTopicSearchFieldPresenter fieldsPresenter;
 
     @Inject
     private Display display;

@@ -51,4 +51,25 @@ public interface ImageResources extends ClientBundle {
     @Source("minus32.png")
     ImageResource minus32();
 
+    /**
+     * @return Used to indicate tristate checkbox in a non-selected state
+     */
+    @NotNull
+    @Source("round16.png")
+    ImageResource round16();
+
+    /**
+     * @return Used to indicate a selected tristate checkbox
+     */
+    @NotNull
+    @Source("plus16.png")
+    ImageResource plus16();
+
+    /**
+     * @return Used to indicate an unselected tristate checkbox
+     */
+    @NotNull
+    @Source("minus16.png")
+    ImageResource minus16();
+
 }
