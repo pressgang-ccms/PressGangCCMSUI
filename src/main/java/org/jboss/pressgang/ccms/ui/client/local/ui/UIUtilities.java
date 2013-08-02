@@ -84,7 +84,7 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @NotNull final String id) {
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
         @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         if (id != null) {
@@ -143,20 +143,40 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static Label createDownLabel(final String text) {
+    public static Label createDownLabel(@NotNull final String text) {
+        return createDownLabel(text, null);
+    }
+
+    @NotNull
+    public static Label createDownLabel(@NotNull final String text, @Nullable final String id) {
         @NotNull final Label retValue = new Label(text);
         retValue.addStyleName(CSSConstants.Common.DOWN_LABEL);
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
         return retValue;
     }
 
     @NotNull
     public static Label createTopTabDownLabel(final String text) {
-        return createTopTabDownLabel(text, false);
+        return createTopTabDownLabel(text, false, null);
+    }
+
+    @NotNull
+    public static Label createTopTabDownLabel(final String text, @NotNull final String id) {
+        return createTopTabDownLabel(text, false, id);
     }
 
     @NotNull
     public static Label createTopTabDownLabel(final String text, final boolean subMenu) {
-        @NotNull final Label retValue = createDownLabel(text);
+        @NotNull final Label retValue = createDownLabel(text, null);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createTopTabDownLabel(final String text, final boolean subMenu, @NotNull final String id) {
+        @NotNull final Label retValue = createDownLabel(text, id);
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         return retValue;
     }
@@ -168,7 +188,7 @@ final public class UIUtilities {
 
     @NotNull
     public static Label createLeftSideTabDownLabel(final String text, final boolean subMenu) {
-        @NotNull final Label retValue = createDownLabel(text);
+        @NotNull final Label retValue = createDownLabel(text, null);
         retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
 
         if (subMenu) {
