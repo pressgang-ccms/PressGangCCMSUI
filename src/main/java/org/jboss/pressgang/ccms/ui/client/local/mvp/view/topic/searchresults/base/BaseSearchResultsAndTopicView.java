@@ -226,13 +226,13 @@ public abstract class BaseSearchResultsAndTopicView<
         bugs = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Bugs(), Constants.ElementIDs.BUGS_TOPIC_EDIT_BUTTON_ID.getId());
         urls = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls(), Constants.ElementIDs.SOURCE_URLS_TOPIC_EDIT_BUTTON_ID.getId());
 
-        fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties());
-        xmlDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
-        renderedDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
-        tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
-        bugsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
-        extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
-        urlsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+        fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties(), Constants.ElementIDs.PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
+        xmlDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing(), Constants.ElementIDs.XML_EDITING_TOPIC_EDIT_BUTTON_ID.getId());
+        renderedDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.RenderedView(), Constants.ElementIDs.RENDERED_VIEW_TOPIC_EDIT_BUTTON_ID.getId());
+        tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicTags(), Constants.ElementIDs.TAGS_TOPIC_EDIT_BUTTON_ID.getId());
+        bugsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Bugs(), Constants.ElementIDs.BUGS_TOPIC_EDIT_BUTTON_ID.getId());
+        extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.ElementIDs.EXTENDED_PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
+        urlsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls(), Constants.ElementIDs.SOURCE_URLS_TOPIC_EDIT_BUTTON_ID.getId());
 
         renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());

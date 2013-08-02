@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308021010";
+    public static final String VERSION = "201308021255";
 
     /**
      * The attribute that is used by the help overlay system
@@ -354,8 +354,8 @@ public final class Constants {
         TAGS_TOPIC_EDIT_BUTTON_ID("TagsTopicEditButton"),
         BUGS_TOPIC_EDIT_BUTTON_ID("BugsTopicEditButton"),
         CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID("ContentSpecTopicEditButton"),
-        REVISIONS_TOPIC_EDIT_BUTTON_ID("RevisionsTopicEditButton"),
         SAVE_TOPIC_EDIT_BUTTON_ID("SaveTopicEditButton"),
+        REVISIONS_TOPIC_EDIT_BUTTON_ID("SaveTopicEditButton"),
         TOPIC_TITLE_PROPERTIES_VIEW_FIELD_ID("TopicTitlePropertiesViewField"),
         TOPIC_DESCRIPTION_PROPERTIES_VIEW_FIELD_ID("TopicDescriptionPropertiesViewField"),
         TOPIC_LOCALE_PROPERTIES_VIEW_FIELD_ID("TopicLocalePropertiesViewField");

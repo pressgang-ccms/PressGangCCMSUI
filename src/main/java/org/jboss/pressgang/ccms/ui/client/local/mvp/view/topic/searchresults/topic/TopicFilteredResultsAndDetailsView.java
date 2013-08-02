@@ -106,11 +106,11 @@ public class TopicFilteredResultsAndDetailsView extends
 
         /* Build the action bar icons */
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
-        history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
-        csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
+        history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
-        historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
-        cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications());
+        historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
         addActionButton(csps);
         addActionButton(history);
