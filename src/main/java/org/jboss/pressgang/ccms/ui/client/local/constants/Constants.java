@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This class contains a number of constants used throughout the application.
  *
@@ -9,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308020739";
+    public static final String VERSION = "201308021006";
 
     /**
      * The attribute that is used by the help overlay system
@@ -312,46 +314,62 @@ public final class Constants {
     /*
         Navigation Button ID's
      */
+    public enum ElementIDs {
+        HOME_NAVIGATION_BUTTON_ID("HomeNavigationButton"),
+        DOCBUILDER_NAVIGATION_BUTTON_ID("DocBuilderNavigationButton"),
+        CREATE_TOPIC_NAVIGATION_BUTTON_ID("CreateTopicBuilderNavigationButton"),
+        CREATE_SPEC_NAVIGATION_BUTTON_ID("CreateSpecNavigationButton"),
+        REPORTS_NAVIGATION_BUTTON_ID("ReportsNavigationButton"),
+        CREATE_BUG_NAVIGATION_BUTTON_ID("CreateBugNavigationButton"),
+        SEARCH_NAVIGATION_BUTTON_ID("SearchNavigationButton"),
+        SEARCH_TOPICS_NAVIGATION_BUTTON_ID("SearchTopicsNavigationButton"),
+        SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID("SearchContentSpecsNavigationButton"),
+        SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID("SearchTranslationsNavigationButton"),
+        ENTITIES_NAVIGATION_BUTTON_ID("EntitiesNavigationButton"),
+        IMAGES_NAVIGATION_BUTTON_ID("ImagesNavigationButton"),
+        FILES_NAVIGATION_BUTTON_ID("FilesNavigationButton"),
+        TAGS_NAVIGATION_BUTTON_ID("TagsNavigationButton"),
+        CATEGORIES_NAVIGATION_BUTTON_ID("CategoriesNavigationButton") ,
+        PROJECTS_NAVIGATION_BUTTON_ID("ProjectsNavigationButton"),
+        ADVANCED_NAVIGATION_BUTTON_ID("AdvancedNavigationButton"),
+        BULK_TAGGING_NAVIGATION_BUTTON_ID("BulkTaggingNavigationButton"),
+        BLOB_CONSTANTS_NAVIGATION_BUTTON_ID("BlobConstantsNavigationButton"),
+        INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID("IntegerConstantsNavigationButton"),
+        STRING_CONSTANTS_NAVIGATION_BUTTON_ID("StringConstantsNavigationButton"),
+        EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID("ExtendedPropertiesNavigationButton"),
+        EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID("ExtendedPropertyCategoriesNavigationButton"),
+        MONITORING_NAVIGATION_BUTTON_ID("MonitoringNavigationButton"),
+        USERNAME_SAVE_DIALOG("UsernameSaveDialog"),
+        MESSAGE_SAVE_DIALOG("MessageSaveDialog"),
+        MAJOR_CHANGE_SAVE_DIALOG("MajorChangeSaveDialog"),
+        MINOR_CHANGE_SAVE_DIALOG("MinorChangeSaveDialog"),
+        OK_SAVE_DIALOG("OKSaveDialog"),
+        CANCEL_SAVE_DIALOG("CancelSaveDialog"),
+        RENDERED_PANE_TOPIC_EDIT_BUTTON_ID("RenderedPaneTopicEditButton"),
+        RENDERED_VIEW_TOPIC_EDIT_BUTTON_ID("RenderedViewTopicEditButton"),
+        XML_EDITING_TOPIC_EDIT_BUTTON_ID("XMLEditingTopicEditButton"),
+        PROPERTIES_TOPIC_EDIT_BUTTON_ID("PropertiesTopicEditButton"),
+        EXTENDED_PROPERTIES_TOPIC_EDIT_BUTTON_ID("ExtendedPropertiesTopicEditButton"),
+        SOURCE_URLS_TOPIC_EDIT_BUTTON_ID("SourceURLsTopicEditButton"),
+        TAGS_TOPIC_EDIT_BUTTON_ID("TagsTopicEditButton"),
+        BUGS_TOPIC_EDIT_BUTTON_ID("BugsTopicEditButton"),
+        CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID("ContentSpecTopicEditButton"),
+        REVISIONS_TOPIC_EDIT_BUTTON_ID("RevisionsTopicEditButton"),
+        SAVE_TOPIC_EDIT_BUTTON_ID("SaveTopicEditButton"),
+        TOPIC_TITLE_PROPERTIES_VIEW_FIELD_ID("TopicTitlePropertiesViewField"),
+        TOPIC_DESCRIPTION_PROPERTIES_VIEW_FIELD_ID("TopicDescriptionPropertiesViewField"),
+        TOPIC_LOCALE_PROPERTIES_VIEW_FIELD_ID("TopicLocalePropertiesViewField");
 
-    public static final String HOME_NAVIGATION_BUTTON_ID = "HomeNavigationButton";
-    public static final String DOCBUILDER_NAVIGATION_BUTTON_ID = "DocBuilderNavigationButton";
-    public static final String CREATE_TOPIC_NAVIGATION_BUTTON_ID = "CreateTopicBuilderNavigationButton";
-    public static final String CREATE_SPEC_NAVIGATION_BUTTON_ID = "CreateSpecNavigationButton";
-    public static final String REPORTS_NAVIGATION_BUTTON_ID = "ReportsNavigationButton";
-    public static final String CREATE_BUG_NAVIGATION_BUTTON_ID = "CreateBugNavigationButton";
-    public static final String SEARCH_NAVIGATION_BUTTON_ID = "SearchNavigationButton";
-    public static final String SEARCH_TOPICS_NAVIGATION_BUTTON_ID = "SearchTopicsNavigationButton";
-    public static final String SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID = "SearchContentSpecsNavigationButton";
-    public static final String SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID = "SearchTranslationsNavigationButton";
-    public static final String ENTITIES_NAVIGATION_BUTTON_ID = "SearchTranslationsNavigationButton";
-    public static final String IMAGES_NAVIGATION_BUTTON_ID = "ImagesNavigationButton";
-    public static final String FILES_NAVIGATION_BUTTON_ID = "FilesNavigationButton";
-    public static final String TAGS_NAVIGATION_BUTTON_ID = "TagsNavigationButton";
-    public static final String CATEGORIES_NAVIGATION_BUTTON_ID = "CategoriesNavigationButton";
-    public static final String PROJECTS_NAVIGATION_BUTTON_ID = "ProjectsNavigationButton";
-    public static final String ADVANCED_NAVIGATION_BUTTON_ID = "AdvancedNavigationButton";
-    public static final String BULK_TAGGING_NAVIGATION_BUTTON_ID = "BulkTaggingNavigationButton";
-    public static final String BLOB_CONSTANTS_NAVIGATION_BUTTON_ID = "BlobConstantsNavigationButton";
-    public static final String INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID = "IntegerConstantsNavigationButton";
-    public static final String STRING_CONSTANTS_NAVIGATION_BUTTON_ID = "StringConstantsNavigationButton";
-    public static final String EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID = "ExtendedPropertiesNavigationButton";
-    public static final String EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID = "ExtendedPropertyCategoriesNavigationButton";
-    public static final String MONITORING_NAVIGATION_BUTTON_ID = "MonitoringNavigationButton";
+                
+        private final String id;
+        private ElementIDs(@NotNull final String id) {
+            this.id = id;
+        }
 
-    /*
-        Save message dialog IDs
-     */
-    public static final String USERNAME_SAVE_DIALOG = "UsernameSaveDialog";
-    public static final String MESSAGE_SAVE_DIALOG = "MessageSaveDialog";
-    public static final String MAJOR_CHANGE_SAVE_DIALOG = "MajorChangeSaveDialog";
-    public static final String MINOR_CHANGE_SAVE_DIALOG = "MinorChangeSaveDialog";
-    public static final String OK_SAVE_DIALOG = "OKSaveDialog";
-    public static final String CANCEL_SAVE_DIALOG = "CancelSaveDialog";
-
-    /*
-        Search reults action buttons IDs
-     */
-    public static final String TOPIC_SEARCH_RESULTS_SAVE_ID = "TopicSearchResultsSave";
+        public String getId() {
+            return id;
+        }
+    }
 
     /**
      * A private constructor to prevent instantiation.

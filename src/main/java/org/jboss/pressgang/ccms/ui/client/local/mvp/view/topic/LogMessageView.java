@@ -69,12 +69,12 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
     }
 
     public LogMessageView() {
-        message.getElement().setId(Constants.MESSAGE_SAVE_DIALOG);
-        username.getElement().setId(Constants.USERNAME_SAVE_DIALOG);
-        minorChange.getElement().setId(Constants.MINOR_CHANGE_SAVE_DIALOG);
-        majorChange.getElement().setId(Constants.MAJOR_CHANGE_SAVE_DIALOG);
-        cancel.getElement().setId(Constants.CANCEL_SAVE_DIALOG);
-        ok.getElement().setId(Constants.OK_SAVE_DIALOG);
+        message.getElement().setId(Constants.ElementIDs.MESSAGE_SAVE_DIALOG.getId());
+        username.getElement().setId(Constants.ElementIDs.USERNAME_SAVE_DIALOG.getId());
+        minorChange.getElement().setId(Constants.ElementIDs.MINOR_CHANGE_SAVE_DIALOG.getId());
+        majorChange.getElement().setId(Constants.ElementIDs.MAJOR_CHANGE_SAVE_DIALOG.getId());
+        cancel.getElement().setId(Constants.ElementIDs.CANCEL_SAVE_DIALOG.getId());
+        ok.getElement().setId(Constants.ElementIDs.OK_SAVE_DIALOG.getId());
 
         this.setGlassEnabled(true);
         this.setText(PressGangCCMSUI.INSTANCE.SaveLog());

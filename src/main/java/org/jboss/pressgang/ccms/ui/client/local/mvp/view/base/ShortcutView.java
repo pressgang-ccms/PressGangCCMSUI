@@ -26,12 +26,12 @@ public class ShortcutView extends ShortcutPanel {
      */
     private final ShortcutSearchPanel searchShortcutPanel = new ShortcutSearchPanel(PressGangCCMSUI.INSTANCE.Search());
 
-    private final ToggleButton home = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Home(), Constants.HOME_NAVIGATION_BUTTON_ID);
-    private final ToggleButton docbuilder = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.DocBuilder(), Constants.DOCBUILDER_NAVIGATION_BUTTON_ID);
-    private final ToggleButton createTopic = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateTopic(), Constants.CREATE_TOPIC_NAVIGATION_BUTTON_ID);
-    private final ToggleButton createContentSpec = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(), Constants.CREATE_SPEC_NAVIGATION_BUTTON_ID);
-    private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true, Constants.CREATE_BUG_NAVIGATION_BUTTON_ID);
-    private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true, Constants.REPORTS_NAVIGATION_BUTTON_ID);
+    private final ToggleButton home = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.Home(), Constants.ElementIDs.HOME_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton docbuilder = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.DocBuilder(), Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton createTopic = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateTopic(), Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton createContentSpec = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(), Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
+    private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true, Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
+    private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true, Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
     private boolean spacerEnabled = false;
     private SimplePanel spacer = new SimplePanel();

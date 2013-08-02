@@ -105,7 +105,7 @@ public class TopicFilteredResultsAndDetailsView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
         /* Build the action bar icons */
-        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.TOPIC_SEARCH_RESULTS_SAVE_ID);
+        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
         history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
         csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
 

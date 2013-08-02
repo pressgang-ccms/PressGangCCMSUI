@@ -1,4 +1,4 @@
-62786
+62740
 0/nm
 1/n1
 2/nm
@@ -62118,7 +62118,6 @@ zydeco/S
 zygote/SM
 zygotic
 zymurgy/S
-personal_ws-1.1 en 377
 accessor
 ACPI
 AES
@@ -62153,6 +62152,8 @@ cacerts
 CAS
 cd
 charset
+checkbox
+checkboxes
 CheckIn
 chkconfig
 Chunked
@@ -62560,7 +62561,7 @@ RSA
 RSS
 RTL
 ruleset
-runlevel/S
+runlevels
 Runtime
 sbin
 screenshot
@@ -62738,50 +62739,3 @@ awk
 sed
 grep
 Skynet
-built-in
-command-driven
-cross-site
-cross-platform
-dial-up
-double-click
-dual-boot
-gray-scale
-high-availability
-left-click
-menu-driven
-MS-DOS
-peer-to-peer
-plug-in
-pop-up
-pseudo-ops
-read-only
-s-record
-token-ring
-GTK
-hard-coded
-GPL
-GNOME
-GIMP
-GRUB
-I/O
-LPAR
-PDA
-PHP
-PaaS
-POSIX
-PPP
-auto-detect
-back-end
-bpp
-client-side
-comma-delimited
-user-space
-real-time
-submenu
-boot loader
-bit rate
-bug fix
-check box
-chip set
-toolbar
-right-click

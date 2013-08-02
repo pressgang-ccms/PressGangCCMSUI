@@ -217,14 +217,14 @@ public abstract class BaseSearchResultsAndTopicView<
         renderedSplitViewMenu.addStyleName(CSSConstants.TopicView.RENDERED_SPLIT_VIEW_MENU_TABLE);
 
         /* Build the action bar icons */
-        renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-        rendered = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
-        xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
-        fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties());
-        extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
-        topicTags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
-        bugs = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Bugs());
-        urls = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+        renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true, Constants.ElementIDs.RENDERED_PANE_TOPIC_EDIT_BUTTON_ID.getId());
+        rendered = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.RenderedView(), Constants.ElementIDs.RENDERED_VIEW_TOPIC_EDIT_BUTTON_ID.getId());
+        xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing(), Constants.ElementIDs.XML_EDITING_TOPIC_EDIT_BUTTON_ID.getId());
+        fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties(), Constants.ElementIDs.PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
+        extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.ElementIDs.EXTENDED_PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
+        topicTags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicTags(), Constants.ElementIDs.TAGS_TOPIC_EDIT_BUTTON_ID.getId());
+        bugs = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Bugs(), Constants.ElementIDs.BUGS_TOPIC_EDIT_BUTTON_ID.getId());
+        urls = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls(), Constants.ElementIDs.SOURCE_URLS_TOPIC_EDIT_BUTTON_ID.getId());
 
         fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties());
         xmlDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
