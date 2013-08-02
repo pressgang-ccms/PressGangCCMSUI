@@ -238,27 +238,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     abstract protected boolean isInitialTopicReadyToBeLoaded();
 
     /**
-     * When the locales and the topic list have been loaded we can display the first topic if only
-     * one was returned.
-     */
-    protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
-        try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
-
-            checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
-
-            if (isInitialTopicReadyToBeLoaded() &&
-                    getSearchResultPresenter().getProviderData().getItems() != null &&
-                    getSearchResultPresenter().getProviderData().getItems().size() == 1) {
-                loadNewEntity(getNewEntityCallback, getSearchResultPresenter().getProviderData().getItems().get(0));
-                setSearchResultsVisible(false);
-            }
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
-        }
-    }
-
-    /**
      * Reflect the state of the editor with the XML editor toggle buttons
      */
     private void setXMLEditorButtonsToEditorState() {
@@ -681,7 +660,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         }
     }
 
-    private void setSearchResultsVisible(final boolean visible) {
+    protected void setSearchResultsVisible(final boolean visible) {
         if (visible != isDisplayingSearchResults()) {
             setDisplayingSearchResults(visible);
             initializeDisplay();

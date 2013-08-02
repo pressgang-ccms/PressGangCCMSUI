@@ -1,5 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -24,17 +36,6 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagColl
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * Extends the BaseTopicFilteredResultsAndDetailsPresenter class to provide the functionality required to
@@ -137,6 +138,27 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 displayInitialTopic(getNewEntityCallback);
             }
         });
+    }
+
+    /**
+     * When the locales and the topic list have been loaded we can display the first topic if only
+     * one was returned.
+     */
+    protected void displayInitialTopic(@NotNull final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+
+            checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
+
+            if (isInitialTopicReadyToBeLoaded() &&
+                    getSearchResultPresenter().getProviderData().getItems() != null &&
+                    getSearchResultPresenter().getProviderData().getItems().size() >= 1
+                    ) {
+                loadNewEntity(getNewEntityCallback, getSearchResultPresenter().getProviderData().getItems().get(0));
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
+        }
     }
 
     @NotNull
