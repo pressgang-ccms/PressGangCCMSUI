@@ -1,9 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import static com.google.common.base.Preconditions.checkState;
-
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.IFrameElement;
@@ -31,6 +27,10 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A MVP view for displaying a topic's revision history.

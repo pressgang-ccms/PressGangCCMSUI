@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -9,7 +11,6 @@ import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -113,7 +114,9 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
         HandlerSplitLayoutPanel getVerticalPanel();
 
-        SimplePanel getEditorParent();
+        DockLayoutPanel getEditorParent();
+
+        ListBox getThemes();
 
         /**
          * Build the split panel with the supplied height
@@ -184,6 +187,31 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
         display.initialize(splitHeight);
 
         bindSplitPanelResize();
+        bindThemesChange();
+        loadTheme();
+    }
+
+    public void loadTheme() {
+        final String theme = Preferences.INSTANCE.getString(Preferences.EDITOR_THEME, Constants.DEFAULT_THEME);
+        for (int i = 0; i < display.getThemes().getItemCount(); ++i) {
+            if (display.getThemes().getValue(i) == theme) {
+                display.getThemes().setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
+    private void bindThemesChange() {
+        display.getThemes().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(@NotNull final ChangeEvent event) {
+                if (display.getEditor() != null && display.getThemes().getSelectedIndex() != -1) {
+                    final String theme = display.getThemes().getValue(display.getThemes().getSelectedIndex());
+                    display.getEditor().setThemeByName(theme);
+                    Preferences.INSTANCE.saveSetting(Preferences.EDITOR_THEME, theme);
+                }
+            }
+        });
     }
 
     /**

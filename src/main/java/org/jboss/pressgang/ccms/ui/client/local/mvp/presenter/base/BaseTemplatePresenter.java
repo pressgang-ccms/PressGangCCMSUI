@@ -1,18 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -20,7 +8,6 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -31,28 +18,9 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
-import org.jboss.pressgang.ccms.ui.client.local.help.HelpOverlay;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BulkTagSearchTagsFieldsAndFiltersViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchTagsFieldsAndFiltersViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.IntegerConstantFilteredResultsAndDetailsViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyTagFilteredResultsAndDetailsViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchTagsFieldsAndFiltersViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchTagsFieldsAndFiltersViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -61,6 +29,11 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Provides the basic functionality added to a template view defined in BaseTemplateViewInterface.
@@ -76,10 +49,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTemplatePresenter.class.getName());
 
-    @Inject
-    private HelpOverlay helpOverlay;
-
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /**
      * The GWT event bus.
@@ -515,64 +484,55 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getHelpMode().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                toggleHelpOverlay(new HashMap<Widget, HelpData>());
-            }
-        });
-
-        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
-            @Override
-            public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
-                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE && helpOverlay.isHelpOverlayEnabled()) {
-                    toggleHelpOverlay(new HashMap<Widget, HelpData>());
+            public native void onClick(ClickEvent event) /*-{
+				if ($wnd.pressgang_website_enable) {
+					$wnd.pressgang_website_enable();
+				} else {
+                    $wnd.alert("Help overlay is not available.")
                 }
-            }
+            }-*/;
         });
-    }
-
-    protected void addHelpDataToMap(@NotNull final Map<Widget, HelpData> helpDataHashMap, @NotNull final HelpData helpData) {
-        helpDataHashMap.put(helpData.getWidget(), helpData);
     }
 
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId(), 7));
+        setDataAttribute(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
+        setDataAttribute(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
+        setDataAttribute(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId(), 7));
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId());
+        setDataAttribute(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
+        setDataAttribute(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId());
+        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
+        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
+        setDataAttribute(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
+        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId(), 2));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId(), 4));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getServers(), ServiceConstants.HELP_TOPICS.SERVER_SELECTION.getId(), 6));
-        addHelpDataToMap(this.helpDatabase, new HelpData(display.getVersion(), ServiceConstants.HELP_TOPICS.BUILD_LABEL.getId(), 6));
+        setDataAttribute(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId());
+        setDataAttribute(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId());
+        setDataAttribute(display.getServers(), ServiceConstants.HELP_TOPICS.SERVER_SELECTION.getId());
+        setDataAttribute(display.getVersion(), ServiceConstants.HELP_TOPICS.BUILD_LABEL.getId());
     }
 
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        if (helpOverlay.isHelpOverlayEnabled()) {
-            helpOverlay.hideOverlay();
-        } else {
-            helpDataHashMap.putAll(helpDatabase);
-            helpOverlay.showOver(helpDataHashMap);
-        }
+    /**
+     * Adds the data attribute that identifies the widget to the help overlay system
+     * @param widget The widget to be modified
+     * @param id The help topic id
+     */
+    protected void setDataAttribute(@NotNull final Widget widget, @NotNull final Integer id) {
+        widget.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());
     }
 }

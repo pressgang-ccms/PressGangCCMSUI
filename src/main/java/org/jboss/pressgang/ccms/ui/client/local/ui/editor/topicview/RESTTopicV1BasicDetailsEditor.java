@@ -7,6 +7,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
@@ -92,6 +93,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         restTopicWebDav.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD);
         locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
         description.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
+
+        title.getElement().setId(Constants.ElementIDs.TOPIC_TITLE_PROPERTIES_VIEW_FIELD_ID.getId());
+        description.getElement().setId(Constants.ElementIDs.TOPIC_DESCRIPTION_PROPERTIES_VIEW_FIELD_ID.getId());
+        locale.getElement().setId(Constants.ElementIDs.TOPIC_LOCALE_PROPERTIES_VIEW_FIELD_ID.getId());
 
         int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));

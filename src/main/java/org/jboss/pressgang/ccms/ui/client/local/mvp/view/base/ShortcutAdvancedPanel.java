@@ -10,13 +10,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.shortcut.ShortcutDisclosurePa
 import org.jetbrains.annotations.NotNull;
 
 public class ShortcutAdvancedPanel extends ShortcutDisclosurePanel {
-    private final ToggleButton bulkTagging = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BulkTagging(), Constants.BULK_TAGGING_NAVIGATION_BUTTON_ID);
-    private final ToggleButton stringConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.StringConstants(), Constants.STRING_CONSTANTS_NAVIGATION_BUTTON_ID);
-    private final ToggleButton blobConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BlobConstants(), Constants.BLOB_CONSTANTS_NAVIGATION_BUTTON_ID);
-    private final ToggleButton integerConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.IntegerConstants(), Constants.INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID);
-    private final ToggleButton propertyTags = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID);
-    private final ToggleButton propertyTagCategories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), Constants.EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID);
-    private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true, Constants.MONITORING_NAVIGATION_BUTTON_ID);
+    private final ToggleButton bulkTagging = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BulkTagging(), Constants.ElementIDs.BULK_TAGGING_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton stringConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.StringConstants(), Constants.ElementIDs.STRING_CONSTANTS_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton blobConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.BlobConstants(), Constants.ElementIDs.BLOB_CONSTANTS_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton integerConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.IntegerConstants(), Constants.ElementIDs.INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton propertyTags = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.ElementIDs.EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton propertyTagCategories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), Constants.ElementIDs.EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID.getId());
+    private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true, Constants.ElementIDs.MONITORING_NAVIGATION_BUTTON_ID.getId());
 
     public ShortcutAdvancedPanel(final String header) {
         super(header);

@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.topic.TopicSearchFieldUIEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.TopicSearchUIFields;

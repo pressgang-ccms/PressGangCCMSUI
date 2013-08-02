@@ -18,7 +18,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
-import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
@@ -43,7 +42,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -79,8 +77,6 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicSearchTagsFieldsAndFiltersPresenter.class.getName());
-
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -543,13 +539,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
      * Assign help info to the UI elements exposed by this presenter.
      */
     private void buildHelpDatabase() {
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getDownloadCSV(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_CSV.getId(), 1));
-    }
-
-    @Override
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-        super.toggleHelpOverlay(helpDataHashMap);
+        setDataAttribute(getDisplay().getDownloadCSV(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_CSV.getId());
     }
 
     public interface Display extends BaseSearchTagsFieldsAndFiltersPresenter.Display {

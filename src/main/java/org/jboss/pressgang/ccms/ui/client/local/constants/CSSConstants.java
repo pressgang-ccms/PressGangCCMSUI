@@ -643,6 +643,10 @@ public interface CSSConstants {
          */
         String IMAGE_VIEW_DESCRIPTION_TEXT = "ImageViewDescriptionText";
         /**
+         * Assigned to the image id text.
+         */
+        String IMAGE_VIEW_ID_TEXT = "ImageViewIDText";
+        /**
          * Assigned to the image template text.
          */
         String IMAGE_VIEW_TEMPLATE_TEXT = "ImageViewTemplateText";

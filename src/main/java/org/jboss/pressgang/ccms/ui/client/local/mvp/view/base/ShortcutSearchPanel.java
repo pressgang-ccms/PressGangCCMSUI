@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShortcutSearchPanel extends ShortcutDisclosurePanel {
 
-    private final ToggleButton searchTopics = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTopics(), Constants.SEARCH_TOPICS_NAVIGATION_BUTTON_ID);
-    private final ToggleButton searchContentSpecs = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs(), Constants.SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID);
-    private final ToggleButton searchTranslations = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTranslations(), Constants.SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID);
+    private final ToggleButton searchTopics = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTopics(), Constants.ElementIDs.SEARCH_TOPICS_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton searchContentSpecs = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs(), Constants.ElementIDs.SEARCH_CONTENT_SPECS_NAVIGATION_BUTTON_ID.getId());
+    private final ToggleButton searchTranslations = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.SearchTranslations(), Constants.ElementIDs.SEARCH_TRANSLATIONS_NAVIGATION_BUTTON_ID.getId());
 
     public ShortcutSearchPanel(final String header) {
         super(header);

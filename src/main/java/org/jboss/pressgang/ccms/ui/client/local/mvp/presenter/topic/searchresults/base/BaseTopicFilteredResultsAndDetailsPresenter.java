@@ -1,16 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,30 +9,19 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.help.HelpData;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -53,6 +31,17 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * This class provides the common functionality shared between the topic and
@@ -76,8 +65,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicFilteredResultsAndDetailsPresenter.class.getName());
-
-    private final Map<Widget, HelpData> helpDatabase = new HashMap<Widget, HelpData>();
 
     /**
      * The global event bus.
@@ -765,10 +752,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
-            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the initialize method was called above */
+            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called above */
             if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
                 setXMLEditorButtonsToEditorState();
+                topicXMLPresenter.getDisplay().getEditor().setThemeByName(Preferences.INSTANCE.getString(Preferences.EDITOR_THEME, Constants.DEFAULT_THEME));
                 topicXMLPresenter.getDisplay().getEditor().redisplay();
             }
 
@@ -1041,62 +1029,44 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     private void buildHelpDatabase() {
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId(), 0));
+        setDataAttribute(getDisplay().getShowHideSearchResults(), ServiceConstants.HELP_TOPICS.SHOW_HIDE_SEARCH_RESULTS_TOPIC.getId());
 
         /*
             Content UI elements
          */
-        addHelpDataToMap(this.helpDatabase, new HelpData(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId(), 7));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId(), 5));
+        setDataAttribute(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId());
+        setDataAttribute(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId());
+        setDataAttribute(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId());
 
         /*
             Common action buttons
          */
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFields(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getFieldsDown(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getExtendedProperties(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getExtendedPropertiesDown(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getUrls(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getUrlsDown(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getTopicTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAGS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getTopicTagsDown(), ServiceConstants.HELP_TOPICS.TOPIC_TAGS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getBugs(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getBugsDown(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXml(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getXmlDown(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId(), 2));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId(), 2));
-        addHelpDataToMap(this.helpDatabase, new HelpData(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId(), 0));
+        setDataAttribute(getDisplay().getFields(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId());
+        setDataAttribute(getDisplay().getFieldsDown(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTIES.getId());
+        setDataAttribute(getDisplay().getExtendedProperties(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId());
+        setDataAttribute(getDisplay().getExtendedPropertiesDown(), ServiceConstants.HELP_TOPICS.TOPIC_EXTENDED_PROPERTIES.getId());
+        setDataAttribute(getDisplay().getUrls(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS.getId());
+        setDataAttribute(getDisplay().getUrlsDown(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS.getId());
+        setDataAttribute(getDisplay().getTopicTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAGS.getId());
+        setDataAttribute(getDisplay().getTopicTagsDown(), ServiceConstants.HELP_TOPICS.TOPIC_TAGS.getId());
+        setDataAttribute(getDisplay().getBugs(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId());
+        setDataAttribute(getDisplay().getBugsDown(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId());
+        setDataAttribute(getDisplay().getXml(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId());
+        setDataAttribute(getDisplay().getXmlDown(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId());
+        setDataAttribute(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId());
+        setDataAttribute(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId());
+        setDataAttribute(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS_LIST.getId(), 5));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicSourceURLsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_ADD_SOURCE_URL.getId(), 7));
+        setDataAttribute(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS_LIST.getId());
+        setDataAttribute(topicSourceURLsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_ADD_SOURCE_URL.getId());
 
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_ADD.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getProjectsList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_PROJECTS_LIST.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getCategoriesList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId(), 1));
-        addHelpDataToMap(this.helpDatabase, new HelpData(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId(), 7));
+        setDataAttribute(topicTagsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_ADD.getId());
+        setDataAttribute(topicTagsPresenter.getDisplay().getProjectsList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_PROJECTS_LIST.getId());
+        setDataAttribute(topicTagsPresenter.getDisplay().getCategoriesList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId());
+        setDataAttribute(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId());
+        setDataAttribute(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId());
 
+        setDataAttribute( getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(), ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId());
 
-
-    }
-
-    @Override
-    protected void toggleHelpOverlay(@NotNull final Map<Widget, HelpData> helpDataHashMap) {
-        helpDataHashMap.putAll(helpDatabase);
-
-        /*
-            This is an example of a help data item that can only be generated at runtime. The position of
-            the callout depends on the location of the rendered pane, which can be changed at runtime.
-         */
-        helpDataHashMap.put(
-                getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
-                new HelpData(
-                        getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
-                        ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId(),
-                        split == SplitType.HORIZONTAL ? 5 : 3));
-
-        super.toggleHelpOverlay(helpDataHashMap);
     }
 }

@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -101,7 +100,6 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                 if (serverDetails.containsKey("defaultServerFlag")) {
                                     defaultServerFlag = serverDetails.get("defaultServerFlag").isBoolean();
                                 }
-
 
                                 if (id != null && name != null && restUrl != null && monitoringUrl != null && serverType != null) {
                                     LOGGER.info("Found server config:\n" +

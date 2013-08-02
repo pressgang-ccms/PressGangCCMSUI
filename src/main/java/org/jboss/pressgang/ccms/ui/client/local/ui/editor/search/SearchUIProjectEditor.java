@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
@@ -108,6 +110,11 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
 
         categoriesButtonPanel.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_BUTTONS_LAYOUT);
+        /*
+            Usually the help overlay data attribute is set by the presenter. But in this case the element
+            only exists at runtime, so we add it here instead.
+         */
+        categoriesButtonPanel.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.SEARCH_CATEGORIES_COLUMN.getId() + "");
         scroll.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_SCROLL_PANEL);
 
         scroll.setWidget(categoriesButtonPanel);

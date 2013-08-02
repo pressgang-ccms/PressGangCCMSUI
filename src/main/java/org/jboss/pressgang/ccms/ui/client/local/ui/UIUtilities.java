@@ -41,6 +41,11 @@ final public class UIUtilities {
     }
 
     @NotNull
+    public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
+        return createPushButton(text, subMenu, false, id);
+    }
+
+    @NotNull
     public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
         return createPushButton(text, subMenu, externalLink, null);
     }
@@ -69,9 +74,22 @@ final public class UIUtilities {
     }
 
     @NotNull
+    public static PushButton createTopTabPushButton(final String text, @NotNull final String id) {
+        return createTopTabPushButton(text, false, false, id);
+    }
+
+    @NotNull
     public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+        return createTopTabPushButton(text, false, externalLink, null);
+    }
+
+    @NotNull
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @NotNull final String id) {
         @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
         return retValue;
     }
 

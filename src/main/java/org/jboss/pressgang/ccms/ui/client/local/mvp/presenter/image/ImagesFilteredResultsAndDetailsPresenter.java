@@ -1,23 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -66,6 +49,19 @@ import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.ErrorHandler;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter used to add logic to the image search and edit view.
@@ -199,6 +195,27 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 getNewEntityCallback);
 
         populateLocales();
+        buildHelpDatabase();
+    }
+
+    private void buildHelpDatabase() {
+        setDataAttribute(imageComponent.getDisplay().getAddLocale(), ServiceConstants.HELP_TOPICS.IMAGE_ADD_LOCALE.getId());
+        setDataAttribute(imageComponent.getDisplay().getRemoveLocale(), ServiceConstants.HELP_TOPICS.IMAGE_REMOVE_LOCALE.getId());
+        setDataAttribute(imageComponent.getDisplay().getViewImage(), ServiceConstants.HELP_TOPICS.IMAGE_VIEW_IMAGE.getId());
+        setDataAttribute(imageComponent.getDisplay().getFindTopics(), ServiceConstants.HELP_TOPICS.IMAGE_FIND_TOPICS.getId());
+        setDataAttribute(imageComponent.getDisplay().getSave(), ServiceConstants.HELP_TOPICS.IMAGE_SAVE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_FIELD.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getId(), ServiceConstants.HELP_TOPICS.IMAGE_ID_FIELD.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getImageTemplateTable(), ServiceConstants.HELP_TOPICS.IMAGE_DOCBOOK_IMAGE_TEMPLATES_TABLE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getLanguageImages_OTM(), ServiceConstants.HELP_TOPICS.IMAGE_DETAILS_TABLE.getId());
+
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getEntitySearch(), ServiceConstants.HELP_TOPICS.IMAGE_SEARCH.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getBulkUpload(), ServiceConstants.HELP_TOPICS.IMAGE_BULK_IMAGE_UPLOAD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.IMAGE_CREATE_IMAGE.getId());
+
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageDescriptionFilter(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageIdFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ID_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageOriginalFileNameFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD.getId());
     }
 
     @Override
