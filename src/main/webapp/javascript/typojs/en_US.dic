@@ -62118,6 +62118,7 @@ zydeco/S
 zygote/SM
 zygotic
 zymurgy/S
+personal_ws-1.1 en 377
 accessor
 ACPI
 AES
@@ -62135,32 +62136,42 @@ asterix
 ATM
 Augeas
 auth
+auto-detect
 autofs
+awk
+back-end
 bashrc
 BIND
 BIOS
+BIRT
 birthdate
+bit rate
 blktrace
 blog
 boolean
 bootable
-bootloader
+boot loader
 Bridgelets
+bug fix
 Bugzilla
+built-in
 BZ
 cacerts
 CAS
+CCMS
 cd
 charset
-checkbox
-checkboxes
+check box
+check boxes
 CheckIn
+chip set
 chkconfig
 Chunked
 CIFS
 Classname
 classpath
 CLI
+client-side
 CloudForms
 CLV
 CMAN
@@ -62168,6 +62179,8 @@ CMOS
 CN
 codebase
 combinations
+comma-delimited
+command-driven
 concat
 conf
 config
@@ -62175,7 +62188,10 @@ ConnectionFactory
 cp
 CPUs
 cron
+cross-platform
+cross-site
 CSP
+CSProcessor
 css
 CSV
 Ctrl
@@ -62196,8 +62212,10 @@ destkeystore
 devel
 Dexo
 DHCP
+dial-up
 dialogue
 Dialogues
+diff
 distro
 Distro
 dmraid
@@ -62206,8 +62224,12 @@ dname
 DNS
 docbook
 DocBook
+DocBuilder
+double-click
+drag-and-drop
 ds
 DTD
+dual-boot
 EAP
 EchoBean
 EchoHome
@@ -62221,6 +62243,7 @@ ent
 enum
 estoppel
 ESX
+Errai
 exabyte
 ExClient
 exe
@@ -62258,13 +62281,19 @@ Gigabit
 glock
 GlusterFS
 GMail
+GNOME
 Google
 GPG
-greyed
+gray-scale
+grep
+GRUB
 GSS
 GSSAPI
+GTK
 guestfish
 Guestfish
+hard-coded
+high-availability
 hivex
 HornetQ
 hostname
@@ -62308,6 +62337,7 @@ Inline
 inode
 inodes
 Inotify
+I/O
 IOMMU
 IP
 iPod
@@ -62326,7 +62356,7 @@ JasperServer
 javac
 Javadoc
 JavaDocs
-javascript
+JavaScript
 javascripts
 JavaServer
 JAX
@@ -62364,6 +62394,7 @@ jpg
 jre
 js
 JSF
+JSON
 jsp
 jsps
 jspx
@@ -62395,6 +62426,7 @@ kofax
 KSM
 KVM
 LDAP
+left-click
 libguestfs
 Libguestfs
 libvirt
@@ -62406,6 +62438,7 @@ logins
 logout
 lookup
 loopback
+LPAR
 LSB
 lucene
 luci
@@ -62421,6 +62454,7 @@ mbean
 MBR
 md
 mdraid
+menu-driven
 metadata
 MetaMatrix
 Microcontainer
@@ -62431,6 +62465,7 @@ MongoDB
 MPM
 MPMs
 MRG
+MS-DOS
 mss
 mstypes
 multi
@@ -62461,6 +62496,7 @@ nodeType
 NPIV
 NUMA
 numactl
+offline
 online
 ons
 OpenDS
@@ -62476,6 +62512,7 @@ Orderable
 OU
 overcommitting
 Overcommitting
+PaaS
 PAE
 Paginator
 param
@@ -62486,19 +62523,24 @@ passphrase
 passphrases
 passthrough
 PCI
+PDA
 pdf
+peer-to-peer
 persister
 PgSQL
+PHP
 PicketLink
 PID
 plaintext
 Pluggable
-plugin
+plug-in
+plug-ins
 png
 podcast
 Podcasts
 pointcut
 policyClass
+pop-up
 portlet
 PortletBridge
 PortletMode
@@ -62506,15 +62548,19 @@ portlets
 portlet's
 PortletSession
 portmap
+POSIX
 PostgreSQL
 PostgresSQL
 PostScript
 PowerPC
 ppc
+PPP
+pseudo-ops
 pre
 Preallocated
 Preboot
 preservations
+PressGang
 printviewer
 profiler
 programmatically
@@ -62531,6 +62577,8 @@ RAC
 RDB
 RDBMS
 RDBMSs
+read-only
+real-time
 redhat
 reinstallation
 reinstalls
@@ -62555,20 +62603,23 @@ RHUI
 ricci
 RichFaces
 richFacesPortlet
+right-click
 RPC
 RPMs
 RSA
 RSS
 RTL
 ruleset
-runlevels
+runlevel/S
 Runtime
 sbin
+screencast
 screenshot
 SCV
 SDK
 SDKs
 securityDomain
+sed
 SELinux
 SEO
 Sep
@@ -62582,6 +62633,7 @@ SHA
 Shadowman
 SimplestHelloWorldPortlet
 sitemap
+Skynet
 SMTP
 SNMP
 Solaris
@@ -62589,6 +62641,7 @@ SPM
 SPNEGO
 SQL
 SQLJ
+s-record
 src
 srckeystore
 SSH
@@ -62607,6 +62660,7 @@ stylesheets
 subclassing
 subdirectory
 subfolder
+submenu
 subnet
 subnode
 Subnodes
@@ -62634,6 +62688,7 @@ TCP
 templating
 Templating
 TFTP
+third-party
 Timeline
 timestamp
 Timestamp
@@ -62641,6 +62696,9 @@ TLS
 tmp
 Todo
 tokenizes
+token-ring
+toolbar
+toolbars
 traceback
 TRACEBACK
 Tracebacks
@@ -62650,6 +62708,7 @@ Tracepoints
 truststore
 truststores
 txt
+Ubuntu
 UCS
 UDB
 udp
@@ -62660,7 +62719,10 @@ Uncomment
 unencrypted
 unicast
 Unicast
+uninstall
 Uninstall
+uninstalled
+uninstaller
 Unmount
 unsubscribe
 unsubscribed
@@ -62671,6 +62733,7 @@ upd
 URI
 USB
 username
+user-space
 usr
 UTC
 UTF
@@ -62699,6 +62762,7 @@ WCM
 webapp
 webapps
 webDAV
+WebDAV
 webinar
 webui
 Wiki
@@ -62725,17 +62789,3 @@ XSD
 XSL
 xvf
 Zimbra
-PressGang
-WebDAV
-DocBuilder
-CCMS
-CSProcessor
-BIRT
-Errai
-JSON
-screencast
-diff
-awk
-sed
-grep
-Skynet
