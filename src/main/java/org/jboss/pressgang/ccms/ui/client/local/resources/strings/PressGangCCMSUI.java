@@ -1036,4 +1036,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String NoText();
+
+    @NotNull
+    String UnknownError();
+
+    @NotNull
+    String InternalServerError();
 }

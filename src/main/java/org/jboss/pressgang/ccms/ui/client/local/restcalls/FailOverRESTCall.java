@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -23,13 +30,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class holds a number of preconfigured REST calls that can fail over to another server
@@ -115,30 +115,69 @@ public final class FailOverRESTCall {
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
-                                } else if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
-                                    /*
-                                        A bad request means invalid input, like a duplicated name. This does not indicate a
-                                        failure of the REST server.
-                                    */
-
-                                    if (!disableDefaultFailureAction) {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + responseText);
-                                    }
-
-                                    if (display != null) {
-                                        display.removeWaitOperation();
-                                    }
-                                    callback.failed();
                                 } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
                                     /*
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
                                      */
                                     LOGGER.info("Failing over due unrecognised HTTP response");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR || ex.getResponse()
+                                        .getStatusCode() == Response.SC_BAD_REQUEST) {
+                                    if (!disableDefaultFailureAction) {
+                                        final String prefix;
+                                        if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                                            /*
+                                                A bad request means invalid input, like a duplicated name. This does not indicate a
+                                                failure of the REST server.
+                                            */
+                                            prefix = PressGangCCMSUI.INSTANCE.InvalidInput();
+                                        } else {
+                                            /*
+                                                An Internal Server Error likely means it is a bug in the server and therefore will have
+                                                to have a bug logged, so no point failing over.
+                                             */
+                                            prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
+                                        }
+                                        Window.alert(prefix + responseText == null ? "" : ("\n\n" + responseText));
+                                    }
+
+                                    if (display != null) {
+                                        display.removeWaitOperation();
+                                    }
+                                    callback.failed();
+                                } else {
+                                    /*
+                                        Any other possible responses that could happen should fail over is possible otherwise display an
+                                        unlnown error message.
+                                     */
+                                    if (restCall.isRepeatable()) {
+                                        LOGGER.info("Failing over due to error");
+                                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                    } else {
+                                        if (!disableDefaultFailureAction) {
+                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + responseText == null ? "" : ("\n\n" + responseText));
+                                        }
+
+                                        if (display != null) {
+                                            display.removeWaitOperation();
+                                        }
+                                        callback.failed();
+                                    }
                                 }
                             } else {
-                                LOGGER.info("Failing over due to error");
-                                failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                if (restCall.isRepeatable()) {
+                                    LOGGER.info("Failing over due to error");
+                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                } else {
+                                    if (!disableDefaultFailureAction) {
+                                        Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
+                                    }
+
+                                    if (display != null) {
+                                        display.removeWaitOperation();
+                                    }
+                                    callback.failed();
+                                }
                             }
                         }
 
