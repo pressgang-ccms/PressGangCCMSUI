@@ -19,7 +19,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -663,14 +662,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected void setSearchResultsVisible(final boolean visible) {
         if (visible != isDisplayingSearchResults()) {
             setDisplayingSearchResults(visible);
-            initializeDisplay();
+            if (visible) {
+                getDisplay().showSearchResults();
+            } else {
+                getDisplay().hideSearchResults();
+            }
 
-                        /*
-                            Elements like the ace editor and mergely diff viewer need to get
-                            an onResize event so they can be sized appropriately. For reasons that
-                            I have not yet worked out, this can only be done after control has been
-                            handed back to the browser loop (which is when scheduleDeferred runs).
-                         */
+            /*
+                Elements like the ace editor and mergely diff viewer need to get
+                an onResize event so they can be sized appropriately. For reasons that
+                I have not yet worked out, this can only be done after control has been
+                handed back to the browser loop (which is when scheduleDeferred runs).
+             */
             Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                 @Override
                 public void execute() {

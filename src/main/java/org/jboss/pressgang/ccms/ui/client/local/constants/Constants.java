@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308021255";
+    public static final String VERSION = "201308021513";
 
     /**
      * The attribute that is used by the help overlay system

@@ -1,5 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -55,17 +70,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
@@ -177,7 +181,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
         } else {
             getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
-
         }
     }
 
@@ -629,7 +632,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private void setSearchResultsVisible(final boolean visible) {
         if (visible != isDisplayingSearchResults()) {
             setDisplayingSearchResults(visible);
-            initializeDisplay();
+            if (visible) {
+                getDisplay().showSearchResults();
+            } else {
+                getDisplay().hideSearchResults();
+            }
 
             /*
                 Elements like the ace editor and mergely diff viewer need to get
