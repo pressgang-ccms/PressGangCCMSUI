@@ -337,6 +337,10 @@ public final class FailOverRESTCall {
         /*
             There are no more servers left to call, so remove the wait operation and call the failed callback.
          */
+        if (!disableDefaultFailureAction) {
+            Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
+        }
+
         if (display != null) {
             display.removeWaitOperation();
         }
