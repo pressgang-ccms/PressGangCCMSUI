@@ -147,8 +147,8 @@ public final class FailOverRESTCall {
                                     callback.failed();
                                 } else {
                                     /*
-                                        Any other possible responses that could happen should fail over is possible otherwise display an
-                                        unlnown error message.
+                                        Any other possible responses that could happen should fail over if possible otherwise display an
+                                        unknown error message.
                                      */
                                     if (restCall.isRepeatable()) {
                                         LOGGER.info("Failing over due to error");
