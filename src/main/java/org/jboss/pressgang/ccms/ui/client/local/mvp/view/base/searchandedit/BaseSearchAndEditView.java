@@ -167,11 +167,10 @@ abstract public class BaseSearchAndEditView<
     }
 
     protected void initialize(final boolean displaySearchResults, final double searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
-
-        final double fixedSearchResultsWidth = searchResultsWidth < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : searchResultsWidth;
-
         splitPanel.clear();
         if (displaySearchResults) {
+            final double fixedSearchResultsWidth = searchResultsWidth < Constants.MINIMUM_SPLIT_SIZE ? Constants.MINIMUM_SPLIT_SIZE : searchResultsWidth;
+
             splitPanel.addWest(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
             splitPanel.setWidgetMinSize(resultsViewLayoutPanel, Constants.MINIMUM_SPLIT_SIZE);
 
@@ -187,6 +186,15 @@ abstract public class BaseSearchAndEditView<
         splitPanel.add(viewLayoutPanel);
     }
 
+    @Override
+    public void hideSearchResults() {
+        splitPanel.setWidgetHidden(resultsViewLayoutPanel, true);
+    }
+
+    @Override
+    public void showSearchResults() {
+        splitPanel.setWidgetHidden(resultsViewLayoutPanel, false);
+    }
 
     @Override
     protected void showWaiting() {
