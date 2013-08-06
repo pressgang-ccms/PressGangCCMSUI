@@ -876,39 +876,30 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         @Override
                         public void update(final int index, @NotNull final RESTTextContentSpecCollectionItemV1 revisionContentSpec,
                                 final String value) {
+                            checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
+                            final RESTTextContentSpecV1 contentSpec = revisionContentSpec.getItem();
 
-                            final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
-                                @Override
-                                public void success(@NotNull final RESTTextContentSpecV1 retValue) {
-                                    checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
+                            /*
+                                It is possible to switch away from the view while this request was loading. If we
+                                have done so, don't show the merge view.
+                             */
+                            if (lastDisplayedView == contentSpecRevisionsPresenter.getDisplay()) {
+                                final boolean rhsReadonly = getDisplayedContentSpec().getRevision() != filteredResultsPresenter
+                                        .getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                    /*
-                                        It is possible to switch away from the view while this request was loading. If we
-                                        have done so, don't show the merge view.
-                                     */
-                                    if (lastDisplayedView == contentSpecRevisionsPresenter.getDisplay()) {
-                                        final boolean rhsReadonly = getDisplayedContentSpec().getRevision() != filteredResultsPresenter
-                                                .getProviderData().getDisplayedItem().getItem().getRevision();
+                                // Fix the displayed text up
+                                ComponentContentSpecV1.fixDisplayedText(contentSpec);
 
-                                        // Fix the displayed text up
-                                        ComponentContentSpecV1.fixDisplayedText(retValue);
+                                // Display the diffs
+                                contentSpecRevisionsPresenter.getDisplay().displayDiff(contentSpec.getText(), rhsReadonly,
+                                        getDisplayedContentSpec().getText());
 
-                                        // Display the diffs
-                                        contentSpecRevisionsPresenter.getDisplay().displayDiff(retValue.getText(), rhsReadonly,
-                                                getDisplayedContentSpec().getText());
+                                // We can't save while merging.
+                                getDisplay().getSave().setEnabled(false);
+                                getDisplay().getPermissiveSave().setEnabled(false);
+                            }
 
-                                        // We can't save while merging.
-                                        getDisplay().getSave().setEnabled(false);
-                                        getDisplay().getPermissiveSave().setEnabled(false);
-                                    }
-
-                                    contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                }
-                            };
-
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.getContentSpecRevision(revisionContentSpec.getItem().getId(),
-                                            revisionContentSpec.getItem().getRevision()), callback, display);
+                            contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                         }
                     });
 

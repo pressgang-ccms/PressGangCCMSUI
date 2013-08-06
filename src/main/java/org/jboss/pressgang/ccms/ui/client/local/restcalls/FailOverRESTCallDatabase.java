@@ -350,6 +350,7 @@ public final class FailOverRESTCallDatabase {
                 final String revisionExpand = "{\"branches\":[" +
                         "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
                         "\"branches\":[" +
+                            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
                             "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
                         "]}" +
                         "]}";
