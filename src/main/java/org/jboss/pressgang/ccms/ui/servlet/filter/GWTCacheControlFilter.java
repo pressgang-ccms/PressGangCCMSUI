@@ -16,7 +16,6 @@ import java.io.IOException;
  * See also http://palizine.plynt.com/issues/2008Jul/cache-control-attributes/
  * @author See Wah Cheng
  * @author Sean Flanigan <sflaniga@redhat.com>
- * @created 24 Feb 2009
  */
 public class GWTCacheControlFilter implements Filter {
 
