@@ -28,6 +28,10 @@ pressgang_website_initial_calloutID = "pressgang_website_initial_callout";
  */
 pressgang_website_callout_offset_size = 6;
 /**
+ * The callouts are offset slightly against the widget they are assoicted with
+ */
+pressgang_website_diagonal_callout_offset_size = 22;
+/**
  * The last element that displayed a callout.
  */
 pressgang_website_lastSelectedElement = null;
@@ -242,14 +246,258 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	    x = w.innerWidth || e.clientWidth || g.clientWidth,
 	    y = w.innerHeight|| e.clientHeight|| g.clientHeight,
 	    hy = y/2,
-	    hx = x/2;
+	    hx = x/2,
+	    ty = y/3,
+	    tx = x/3;
 	
 	/*
 	 * Get the elements position
 	 */
 	var elementPosition = element.getBoundingClientRect();
 	
-	if (elementPosition.left < hx) {
+	if (elementPosition.left < tx) {
+
+		if (elementPosition.top < ty) {
+			contentDiv.className = "pressgang_websites_divContainerUp";
+			outerArrowDiv.className = "pressgang_websites_calloutUp";
+			innerArrowDiv.className = "pressgang_websites_calloutUp2";
+			calloutDiv.appendChild(outerArrowDiv);
+			calloutDiv.appendChild(contentDiv);	
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */					
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				
+				var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;				
+				calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+				
+				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+				
+			}, 0);
+		} else if (elementPosition.top > ty * 2) {
+			/*
+		 	 * The element is on the bottom of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerDown";
+			outerArrowDiv.className = "pressgang_websites_calloutDown";
+			innerArrowDiv.className = "pressgang_websites_calloutDown2";
+			calloutDiv.appendChild(contentDiv);
+			calloutDiv.appendChild(outerArrowDiv);
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */					
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				
+				var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
+				calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+				
+				var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";			
+			}, 0);			
+		} else {
+			/*
+		 	 * The element is in the middle of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerLeft";
+			outerArrowDiv.className = "pressgang_websites_calloutLeft";
+			innerArrowDiv.className = "pressgang_websites_calloutLeft2";
+			calloutDiv.appendChild(outerArrowDiv);	
+			calloutDiv.appendChild(contentDiv);	
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */					
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+										
+				
+				
+				var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+				
+				/*
+				 * In the event that the callout is higher than a 3rd of the screen,
+				 * display a callout over the top or underneath of the element
+				 */				
+				if (idealTop + calloutPosition.height > y) {
+					if (elementPosition.top > hy) {
+						contentDiv.className = "pressgang_websites_divContainerDown";
+						outerArrowDiv.className = "pressgang_websites_calloutDown";
+						innerArrowDiv.className = "pressgang_websites_calloutDown2";
+					
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+					
+						calloutDiv.appendChild(contentDiv);
+						calloutDiv.appendChild(outerArrowDiv);
+						
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
+						calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+						
+						var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+					} else {
+						contentDiv.className = "pressgang_websites_divContainerUp";
+						outerArrowDiv.className = "pressgang_websites_calloutUp";
+						innerArrowDiv.className = "pressgang_websites_calloutUp2";
+						
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+						
+						calloutDiv.appendChild(outerArrowDiv);
+						calloutDiv.appendChild(contentDiv);	
+
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+						
+						var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+					}			
+				} else {
+					calloutDiv.style.top = idealTop + "px"
+					
+					var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
+					calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+				}
+			}, 0);	
+		}	
+	} else if (elementPosition.left > tx * 2) {
+		/*
+		 * The element is on the right hand side of the screen
+		 */
+	 	 if (elementPosition.top < ty) {
+	 	 	/*
+		 	 * The element is on the top of the screen
+		 	 */
+			contentDiv.className = "pressgang_websites_divContainerUp";
+			outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+			innerArrowDiv.className = "pressgang_websites_calloutUp2";				
+			calloutDiv.appendChild(outerArrowDiv);						
+			calloutDiv.appendChild(contentDiv);		
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();				
+				
+				var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+				calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+				
+				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";				
+								
+			}, 0);					
+
+		 			
+	 	 } else if (elementPosition.top > ty * 2){
+	 	 	/*
+		 	 * The element is on the bottom of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerDown";
+			outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+			innerArrowDiv.className = "pressgang_websites_calloutDown2";
+			calloutDiv.appendChild(contentDiv);
+			calloutDiv.appendChild(outerArrowDiv);			
+								
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				
+				var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+				calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+				
+				var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";				
+			}, 0);									
+	 	 } else {
+			/*
+		 	 * The element is in the middle of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerRight";
+			outerArrowDiv.className = "pressgang_websites_calloutRight";
+			innerArrowDiv.className = "pressgang_websites_calloutRight2";
+			calloutDiv.appendChild(contentDiv);	
+			calloutDiv.appendChild(outerArrowDiv);						
+			calloutDiv.style.top = elementPosition.top + "px";
+			calloutDiv.style.left = (elementPosition.right - pressgang_website_callout_offset_size) + "px";
+			
+			setTimeout(function() {
+				
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				
+				var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+				calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+				
+				var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+				
+				/*
+				 * In the event that the callout is higher than a 3rd of the screen,
+				 * display a callout over the top of the element
+				 */				
+				if (idealTop + calloutPosition.height > y) {
+					if (elementPosition.top > hy) {
+						contentDiv.className = "pressgang_websites_divContainerDown";
+						outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+						innerArrowDiv.className = "pressgang_websites_calloutDown2";
+											
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+					
+						calloutDiv.appendChild(contentDiv);
+						calloutDiv.appendChild(outerArrowDiv);
+						
+	
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+						
+						var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";	
+					} else {
+						contentDiv.className = "pressgang_websites_divContainerUp";
+						outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+						innerArrowDiv.className = "pressgang_websites_calloutUp2";				
+						
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+						
+						calloutDiv.appendChild(outerArrowDiv);						
+						calloutDiv.appendChild(contentDiv);		
+						
+						var calloutPosition = calloutDiv.getBoundingClientRect();				
+						
+						var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+						
+						var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";				
+	
+					}		
+				} else {
+					calloutDiv.style.top = idealTop + "px"
+				}			
+						
+			}, 0);			
+	 	 }	
+	} else {
+		if (elementPosition.left < hx) {
 		/*
 	 	 * The element is on the left hand side of the screen
 	 	 */	
@@ -272,19 +520,9 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				
 				calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
 				
-				/*
-				 * Don't go off the bottom of the screen
-				 */
-				if (elementPosition.bottom + calloutPosition.height > y) {
-					calloutDiv.style.top = (y - calloutPosition.height) + "px";
-				} else {
-					calloutDiv.style.top = (elementPosition.bottom - pressgang_website_callout_offset_size) + "px";					
-				}
-				
-			}, 0);
-
-
-		 			
+				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";				
+			}, 0);			
 	 	 } else {
 	 	 	/*
 		 	 * The element is on the bottom of the screen
@@ -301,7 +539,10 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 */					
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();
-				calloutDiv.style.top = (elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size) + "px";
+				
+				var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+				
 				calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";					
 			}, 0);
 			
@@ -326,16 +567,10 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 */
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();				
-				calloutDiv.style.left = (elementPosition.right - calloutPosition.width - pressgang_website_callout_offset_size) + "px";
+				calloutDiv.style.left = (elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
 				
-				/*
-				 * Don't go off the bottom of the screen
-				 */
-				if (elementPosition.bottom + calloutPosition.height > y) {
-					calloutDiv.style.top = (y - calloutPosition.height) + "px";
-				} else {
-					calloutDiv.style.top = (elementPosition.bottom - pressgang_website_callout_offset_size) + "px";					
-				}
+				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";	
 								
 			}, 0);					
 
@@ -352,11 +587,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 								
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();
-				calloutDiv.style.top = (elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size) + "px";
-				calloutDiv.style.left = (elementPosition.right - calloutPosition.width - pressgang_website_callout_offset_size) + "px";				
+				
+				var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+				calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+				
+				calloutDiv.style.left = (elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";				
 			}, 0);									
 	 	 }			
-	}					
+		}			
+	}				
 }
 
 /**
