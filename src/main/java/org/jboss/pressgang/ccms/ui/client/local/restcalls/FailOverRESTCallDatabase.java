@@ -350,6 +350,7 @@ public final class FailOverRESTCallDatabase {
                 final String revisionExpand = "{\"branches\":[" +
                         "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
                         "\"branches\":[" +
+                            "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
                             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
                             "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
                         "]}" +
@@ -715,7 +716,8 @@ public final class FailOverRESTCallDatabase {
      * @para id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static RESTCall getTopicWithRevisions(@NotNull final Integer id) {
+    public static RESTCall
+    getTopicWithRevisions(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
