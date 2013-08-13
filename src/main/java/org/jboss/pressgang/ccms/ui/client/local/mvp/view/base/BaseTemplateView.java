@@ -7,7 +7,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.TopShortcutView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -100,10 +99,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final Label pageTitle = new Label();
     /**
-     * The panel that holds the vertical shortcut buttons on the left hand side of the screen.
+     * The panel that holds the shortbut buttons
      */
-    //private final ShortcutView shortcuts = new ShortcutView();
-
     private final TopShortcutView topShortcutView = new TopShortcutView();
     /**
      * This is where the page specific content is held.
@@ -344,12 +341,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         this.isViewShown = isViewShown;
         updateDisplay();
     }
-
-    /*@NotNull
-    @Override
-    public ShortcutView getShortcuts() {
-        return shortcuts;
-    }*/
 
     @NotNull
     @Override

@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.*;
@@ -42,6 +42,8 @@ public class TopShortcutView extends HorizontalPanel {
 
 
     public TopShortcutView() {
+        menus.setAutoOpen(true);
+
         final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
         final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
         final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);

@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.TopShortcutView;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -125,12 +124,6 @@ public interface BaseTemplateViewInterface {
      */
     @NotNull
     String getApplicationName();
-
-    /**
-     * @return The panel that holds the standard and advanced shortcut panels
-     */
-    //@NotNull
-    //ShortcutView getShortcuts();
 
     @NotNull
     TopShortcutView getTopShortcutView();
