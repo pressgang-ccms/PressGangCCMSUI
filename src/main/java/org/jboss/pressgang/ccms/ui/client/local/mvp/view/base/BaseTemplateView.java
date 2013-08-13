@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.TopShortcutView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -89,7 +90,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The panel that holds the PressGang logo.
      */
-    private final SimplePanel headingBanner = new SimplePanel();
+    private final FlexTable headingBanner = new FlexTable();
     /**
      * The panel that holds the page title label.
      */
@@ -411,7 +412,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Set the heading */
         headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
-        headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
+        final Image pgImage = new Image(ImageResources.INSTANCE.headingBanner());
+        pgImage.addStyleName(CSSConstants.Template.PRESSGANG_HEADER_IMAGE);
+        headingBanner.setWidget(0, 0, pgImage);
 
         topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
@@ -500,6 +503,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     protected void initialiseShortcuts() {
         shortcuts.initialise();
+        headingBanner.setWidget(0, 1, new TopShortcutView());
+        headingBanner.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.Template.TOP_SHORTCUT_PANEL_CELL);
     }
 
     @Override
