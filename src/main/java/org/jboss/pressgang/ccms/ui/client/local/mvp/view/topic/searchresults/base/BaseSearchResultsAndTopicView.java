@@ -243,8 +243,6 @@ public abstract class BaseSearchResultsAndTopicView<
         renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
         renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
-        getShortcuts().setSpacerButton(showHideSearchResults);
-
         // add the filtered results panel
         getSplitPanel().clear();
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);

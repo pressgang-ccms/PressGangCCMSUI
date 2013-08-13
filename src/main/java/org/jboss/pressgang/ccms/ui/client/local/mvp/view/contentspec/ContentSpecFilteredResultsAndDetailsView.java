@@ -123,7 +123,6 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     public ContentSpecFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
         populateTopActionBar();
-        getShortcuts().setSpacerButton(showHideSearchResults);
         super.initialize(true);
     }
 

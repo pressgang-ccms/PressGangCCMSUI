@@ -102,7 +102,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The panel that holds the vertical shortcut buttons on the left hand side of the screen.
      */
-    private final ShortcutView shortcuts = new ShortcutView();
+    //private final ShortcutView shortcuts = new ShortcutView();
+
+    private final TopShortcutView topShortcutView = new TopShortcutView();
     /**
      * This is where the page specific content is held.
      */
@@ -202,6 +204,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public Label getVersion() {
         return version;
+    }
+
+    /**
+     * The panel that holds the shortcut buttons at the top of the page
+     */
+    @Override
+    @NotNull
+    public TopShortcutView getTopShortcutView() {
+        return topShortcutView;
     }
 
     /**
@@ -334,11 +345,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         updateDisplay();
     }
 
-    @NotNull
+    /*@NotNull
     @Override
     public ShortcutView getShortcuts() {
         return shortcuts;
-    }
+    }*/
 
     @NotNull
     @Override
@@ -478,7 +489,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
-        thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
+        //thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
 
 
         /* Add the version */
@@ -502,8 +513,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     protected void initialiseShortcuts() {
-        shortcuts.initialise();
-        headingBanner.setWidget(0, 1, new TopShortcutView());
+        //shortcuts.initialise();
+        headingBanner.setWidget(0, 1, topShortcutView);
         headingBanner.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.Template.TOP_SHORTCUT_PANEL_CELL);
     }
 

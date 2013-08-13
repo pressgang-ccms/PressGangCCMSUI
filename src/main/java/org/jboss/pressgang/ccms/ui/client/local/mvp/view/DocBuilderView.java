@@ -26,7 +26,6 @@ public class DocBuilderView extends BaseTemplateView implements DocBuilderPresen
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getDocBuilderButton().setDown(true);
     }
 
     public void display(@Nullable final Integer id) {

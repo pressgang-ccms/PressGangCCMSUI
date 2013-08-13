@@ -54,9 +54,6 @@ public class PropertyCategoryFilteredResultsAndDetailsView extends BaseSearchAnd
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

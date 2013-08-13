@@ -88,4 +88,100 @@ public class TopShortcutView extends HorizontalPanel {
         entitiesSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
         advancedSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
     }
+
+    public PushButton getHome() {
+        return home;
+    }
+
+    public PushButton getDocbuilder() {
+        return docbuilder;
+    }
+
+    public PushButton getCreateTopic() {
+        return createTopic;
+    }
+
+    public PushButton getCreateContentSpec() {
+        return createContentSpec;
+    }
+
+    public PushButton getBug() {
+        return bug;
+    }
+
+    public PushButton getReports() {
+        return reports;
+    }
+
+    public MenuItem getBulkTagging() {
+        return bulkTagging;
+    }
+
+    public MenuItem getStringConstants() {
+        return stringConstants;
+    }
+
+    public MenuItem getIntegerConstants() {
+        return integerConstants;
+    }
+
+    public MenuItem getBlobConstants() {
+        return blobConstants;
+    }
+
+    public MenuItem getPropertyTags() {
+        return propertyTags;
+    }
+
+    public MenuItem getPropertyTagCategories() {
+        return propertyTagCategories;
+    }
+
+    public MenuItem getMonitoring() {
+        return monitoring;
+    }
+
+    public MenuItem getImages() {
+        return images;
+    }
+
+    public MenuItem getFiles() {
+        return files;
+    }
+
+    public MenuItem getTags() {
+        return tags;
+    }
+
+    public MenuItem getCategories() {
+        return categories;
+    }
+
+    public MenuItem getProjects() {
+        return projects;
+    }
+
+    public MenuItem getSearchTopics() {
+        return searchTopics;
+    }
+
+    public MenuItem getSearchContentSpec() {
+        return searchContentSpec;
+    }
+
+    public MenuItem getSearchTranslations() {
+        return searchTranslations;
+    }
+
+    public MenuBar getSearch() {
+        return search;
+    }
+
+    public MenuBar getEntities() {
+        return entities;
+    }
+
+    public MenuBar getAdvanced() {
+        return advanced;
+    }
 }

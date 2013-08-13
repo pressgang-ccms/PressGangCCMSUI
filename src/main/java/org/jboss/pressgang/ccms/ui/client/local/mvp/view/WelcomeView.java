@@ -25,7 +25,6 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getHomeButton().setDown(true);
     }
 
     @Override

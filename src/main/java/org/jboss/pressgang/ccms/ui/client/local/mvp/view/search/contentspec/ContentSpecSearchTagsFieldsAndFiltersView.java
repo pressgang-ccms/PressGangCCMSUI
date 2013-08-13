@@ -47,8 +47,6 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getSearchSubMenu().getSearchContentSpecsButton().setDown(true);
-        getShortcuts().getSearchSubMenu().setOpen(true);
     }
 
     @Override

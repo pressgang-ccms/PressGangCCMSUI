@@ -55,9 +55,6 @@ public class PropertyTagFilteredResultsAndDetailsView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getAdvancedSubMenu().getPropertyTagsButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

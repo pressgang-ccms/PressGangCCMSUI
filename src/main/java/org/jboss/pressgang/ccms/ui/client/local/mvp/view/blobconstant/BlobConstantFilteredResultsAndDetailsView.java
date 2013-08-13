@@ -33,9 +33,6 @@ public class BlobConstantFilteredResultsAndDetailsView extends BaseSearchAndEdit
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getAdvancedSubMenu().getBlobConstantsButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

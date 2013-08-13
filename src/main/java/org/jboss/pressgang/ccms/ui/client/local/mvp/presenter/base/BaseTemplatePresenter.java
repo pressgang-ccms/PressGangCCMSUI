@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,6 +19,7 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -181,51 +183,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void bindDefaultShortcutButtons() {
-        // Sub menu open/close handlers
-        display.getShortcuts().getEntitiesSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
-            @Override
-            public void onClose(CloseEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, false);
-            }
-        });
-
-        display.getShortcuts().getSearchSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
-            @Override
-            public void onClose(CloseEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, false);
-            }
-        });
-
-        display.getShortcuts().getAdvancedSubMenu().addCloseHandler(new CloseHandler<DisclosurePanel>() {
-            @Override
-            public void onClose(CloseEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, false);
-            }
-        });
-
-        display.getShortcuts().getEntitiesSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
-            @Override
-            public void onOpen(OpenEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ENTITIES_MENU_OPEN, true);
-            }
-        });
-
-        display.getShortcuts().getSearchSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
-            @Override
-            public void onOpen(OpenEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_SEARCH_MENU_OPEN, true);
-            }
-        });
-
-        display.getShortcuts().getAdvancedSubMenu().addOpenHandler(new OpenHandler<DisclosurePanel>() {
-            @Override
-            public void onOpen(OpenEvent<DisclosurePanel> event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHORTCUT_ADVANCED_MENU_OPEN, true);
-            }
-        });
-
         // Shortcut button menus
-        display.getShortcuts().getHomeButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getHome().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -234,7 +193,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getDocBuilderButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getDocbuilder().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -245,34 +204,34 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getSearchSubMenu().getSearchTopicsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getSearchTopics().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new TopicSearchTagsFieldsAndFiltersViewEvent());
                 }
             }
         });
 
-        display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getSearchTranslations().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new ContentSpecSearchTagsFieldsAndFiltersViewEvent());
                 }
             }
         });
 
-        display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getSearchTranslations().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new TranslatedSearchTagsFieldsAndFiltersViewEvent());
                 }
             }
         });
 
-        display.getShortcuts().getCreateTopicButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 /* don't try and launch the page again */
@@ -287,7 +246,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getCreateContentSpecButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getCreateContentSpec().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 /* don't try and launch the page again */
@@ -303,130 +262,122 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getShortcuts().getBugButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 Window.open(Constants.BUGZILLA_URL, "_blank", "");
             }
         });
 
-        display.getShortcuts().getReportsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 Window.open(ServerDetails.getSavedServer().getReportUrl(), "_blank", "");
             }
         });
 
-        display.getShortcuts().getEntitiesSubMenu().getImagesButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getImages().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getEntitiesSubMenu().getFilesButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getFiles().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getEntitiesSubMenu().getTagsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getTags().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getEntitiesSubMenu().getCategoriesButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getCategories().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getEntitiesSubMenu().getProjectsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getProjects().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                        GWTUtilities.isEventToOpenNewWindow(event)));
+            public void execute() {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
+                }
             }
         });
     }
 
     private void bindAdvancedShortcutButtons() {
-        display.getShortcuts().getAdvancedSubMenu().getMonitoringButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getMonitoring().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 Window.open(ServerDetails.getSavedServer().getMonitoringUrl(), "_blank", "");
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getStringConstants().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getIntegerConstants().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getBlobConstants().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getPropertyTags().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new PropertyTagFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new PropertyTagFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getPropertyTagCategories().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX,
-                            GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton().addClickHandler(new ClickHandler() {
+        display.getTopShortcutView().getBulkTagging().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
+            public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new BulkTagSearchTagsFieldsAndFiltersViewEvent());
                 }
@@ -523,31 +474,31 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void buildHelpDatabase() {
-        setDataAttribute(display.getShortcuts().getDocBuilderButton(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
-        setDataAttribute(display.getShortcuts().getHomeButton(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
-        setDataAttribute(display.getShortcuts().getCreateTopicButton(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
+        setDataAttribute(display.getTopShortcutView().getDocbuilder(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
+        setDataAttribute(display.getTopShortcutView().getHome(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
+        setDataAttribute(display.getTopShortcutView().getCreateTopic(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
-        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTopicsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchTranslationsButton(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getImagesButton(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getTagsButton(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getCategoriesButton(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getProjectsButton(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId());
-        setDataAttribute(display.getShortcuts().getReportsButton(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
-        setDataAttribute(display.getShortcuts().getBugButton(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getFilesButton(), ServiceConstants.HELP_TOPICS.FILES.getId());
-        setDataAttribute(display.getShortcuts().getEntitiesSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
-        setDataAttribute(display.getShortcuts().getSearchSubMenu().getHeader(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
-        setDataAttribute(display.getShortcuts().getSearchSubMenu().getSearchContentSpecsButton(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
-        setDataAttribute(display.getShortcuts().getCreateContentSpecButton(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBulkTaggingButton(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getStringConstantsButton(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getBlobConstantsButton(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagsButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getPropertyTagCategoriesButton(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
-        setDataAttribute(display.getShortcuts().getAdvancedSubMenu().getMonitoringButton(), ServiceConstants.HELP_TOPICS.MONITORING.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchTopics().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchTranslations().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getImages().getElement(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getTags().getElement(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getCategories().getElement(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getProjects().getElement(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getReports().getElement(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
+        setDataAttribute(display.getTopShortcutView().getBug().getElement(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
+        setDataAttribute(display.getTopShortcutView().getFiles().getElement(), ServiceConstants.HELP_TOPICS.FILES.getId());
+        setDataAttribute(display.getTopShortcutView().getEntities(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
+        setDataAttribute(display.getTopShortcutView().getAdvanced(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
+        setDataAttribute(display.getTopShortcutView().getSearch(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchContentSpec().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
+        setDataAttribute(display.getTopShortcutView().getCreateContentSpec().getElement(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
+        setDataAttribute(display.getTopShortcutView().getBulkTagging().getElement(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());
+        setDataAttribute(display.getTopShortcutView().getStringConstants().getElement(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
+        setDataAttribute(display.getTopShortcutView().getBlobConstants().getElement(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId());
+        setDataAttribute(display.getTopShortcutView().getIntegerConstants().getElement(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
+        setDataAttribute(display.getTopShortcutView().getPropertyTags().getElement(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
+        setDataAttribute(display.getTopShortcutView().getPropertyTagCategories().getElement(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
+        setDataAttribute(display.getTopShortcutView().getMonitoring().getElement(), ServiceConstants.HELP_TOPICS.MONITORING.getId());
 
         setDataAttribute(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId());
         setDataAttribute(display.getHelpMode(), ServiceConstants.HELP_TOPICS.HELP_MODE.getId());
@@ -561,6 +512,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @param id The help topic id
      */
     protected void setDataAttribute(@NotNull final Widget widget, @NotNull final Integer id) {
-        widget.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());
+        setDataAttribute(widget.getElement(), id);
+    }
+
+    /**
+     * Adds the data attribute that identifies the widget to the help overlay system
+     * @param element The widget to be modified
+     * @param id The help topic id
+     */
+    protected void setDataAttribute(@NotNull final Element element, @NotNull final Integer id) {
+        element.setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());
     }
 }
