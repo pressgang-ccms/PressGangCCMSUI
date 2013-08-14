@@ -42,6 +42,31 @@ public interface CSSConstants {
      */
     interface Template {
         /**
+         * The style applied to the header image
+         */
+        String PRESSGANG_HEADER_IMAGE = "PressGangHeaderImage";
+
+        /**
+         * The style added to the panel that holds the top shortcut buttons and menus
+         */
+        String TOP_SHORTCUT_PANEL = "TopShortcutPanel";
+        /**
+         * The style added to the cell that holds the shortcut panel
+         */
+        String TOP_SHORTCUT_PANEL_CELL = "TopShortcutPanelCell";
+        /**
+         * The style applied to the top level menu
+         */
+        String TOP_SHORTCUT_MENU = "TopShortcutMenu";
+        /**
+         * The style applied to the top level menu items
+         */
+        String TOP_SHORTCUT_MENU_ITEM = "TopShortcutMenuItem";
+        /**
+         * The style applied to the top level sub menu items
+         */
+        String TOP_SHORTCUT_SUB_MENU = "TopShortcutSubMenu";
+        /**
          * Style applied to the label that identifies the ui as working with a production server.
          */
         String SERVER_TYPE_PRODUCTION = "ServerTypeProduction";

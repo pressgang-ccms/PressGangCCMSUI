@@ -1,3 +1,62 @@
+td {
+    /*
+       Remove the default padding in table cells
+    */
+    padding: 0px;
+}
+
+.PressGangHeaderImage {
+    /*
+       Remove the space around the image in a <TD>
+    */
+    display:block;
+}
+
+.TopShortcutPanel {
+    height: 55px;
+    border-spacing: 0px;
+}
+
+.TopShortcutPanel td {
+    /*
+        This is required so DIVs in the TD can also use
+        height: 100%
+    */
+    height: 100%;
+}
+
+.TopShortcutPanelCell {
+    width:100%;
+}
+
+.TopShortcutMenu {
+    border-spacing: 0px;
+    height:100%;
+}
+
+.TopShortcutMenu table {
+    border-spacing: 0px;
+    height: 100%;
+}
+
+.TopShortcutMenuItem {
+    background-color: #00C618;
+    border: 1px solid #009200;
+    color: white;
+    padding: 8px;
+    height: 100%;
+    vertical-align: top;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.TopShortcutSubMenu {
+    background-color: #00C618;
+    border: 1px solid #009200;
+    color: white;
+    padding:8px;
+}
+
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
 .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField, .TopicViewLocaleField,
 .TopicViewDescriptionField, .PossibleChildrenResultsPanel, .TopicTagViewParentProjectsTable, .SearchResultsPanel,
@@ -368,7 +427,7 @@ html {
 }
 
 .TopActionGrandParentPanel {
-    margin-left: 110px;
+
 }
 
 .FilteredResultsTabMenu {

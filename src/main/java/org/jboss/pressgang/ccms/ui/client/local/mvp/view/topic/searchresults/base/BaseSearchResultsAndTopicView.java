@@ -243,8 +243,6 @@ public abstract class BaseSearchResultsAndTopicView<
         renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
         renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
-        getShortcuts().setSpacerButton(showHideSearchResults);
-
         // add the filtered results panel
         getSplitPanel().clear();
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
@@ -303,13 +301,13 @@ public abstract class BaseSearchResultsAndTopicView<
         /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
         if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
             if (this.getRendered().getParent() == null) {
-                this.getTopActionPanel().insertCell(0, 1);
-                this.getTopActionPanel().setWidget(0, 1, this.getRendered());
+                this.getTopActionPanel().insertCell(0, 2);
+                this.getTopActionPanel().setWidget(0, 2, this.getRendered());
             }
         } else {
             if (this.getRendered().getParent() != null) {
                 this.getTopActionPanel().remove(this.getRendered());
-                this.getTopActionPanel().removeCell(0, 1);
+                this.getTopActionPanel().removeCell(0, 2);
             }
 
         }
@@ -367,6 +365,7 @@ public abstract class BaseSearchResultsAndTopicView<
     private void populateTopActionBar() {
         this.getTopActionPanel().removeAllRows();
 
+        addActionButton(this.getShowHideSearchResults());
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());

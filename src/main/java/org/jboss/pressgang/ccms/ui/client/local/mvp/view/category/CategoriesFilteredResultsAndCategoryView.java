@@ -55,9 +55,6 @@ public class CategoriesFilteredResultsAndCategoryView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getEntitiesSubMenu().getCategoriesButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

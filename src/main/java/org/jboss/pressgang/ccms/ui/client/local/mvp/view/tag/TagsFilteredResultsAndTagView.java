@@ -77,9 +77,6 @@ public class TagsFilteredResultsAndTagView
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getEntitiesSubMenu().getTagsButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

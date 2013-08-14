@@ -55,9 +55,6 @@ public class ProjectsFilteredResultsAndProjectView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getEntitiesSubMenu().getProjectsButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

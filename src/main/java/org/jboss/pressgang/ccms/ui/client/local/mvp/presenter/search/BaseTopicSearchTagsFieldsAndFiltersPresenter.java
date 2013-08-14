@@ -120,15 +120,6 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
          */
         if (!isShowBulkTags()) {
             getDisplay().removeTopActionButton(getDisplay().getApplyBulkTags());
-            if (!doingTranslatedSearch) {
-                getDisplay().getShortcuts().getSearchSubMenu().getSearchTopicsButton().setDown(true);
-            } else {
-                getDisplay().getShortcuts().getSearchSubMenu().getSearchTranslationsButton().setDown(true);
-            }
-            getDisplay().getShortcuts().getSearchSubMenu().setOpen(true);
-        } else {
-            getDisplay().getShortcuts().getAdvancedSubMenu().setOpen(true);
-            getDisplay().getShortcuts().getAdvancedSubMenu().getBulkTaggingButton().setDown(true);
         }
 
         displayTags();

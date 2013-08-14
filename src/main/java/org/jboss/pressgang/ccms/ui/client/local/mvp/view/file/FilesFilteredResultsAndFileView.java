@@ -76,7 +76,7 @@ public class FilesFilteredResultsAndFileView extends
             description.addStyleName(CSSConstants.BulkFileUploadDialog.DESCRIPTION_FIELD);
             filePath.addStyleName(CSSConstants.BulkFileUploadDialog.FILE_PATH_FIELD);
 
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -105,8 +105,5 @@ public class FilesFilteredResultsAndFileView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getEntitiesSubMenu().getFilesButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getEntitiesSubMenu().setOpen(true);
     }
 }

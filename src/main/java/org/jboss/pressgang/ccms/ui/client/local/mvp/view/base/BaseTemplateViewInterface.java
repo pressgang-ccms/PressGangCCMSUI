@@ -125,11 +125,8 @@ public interface BaseTemplateViewInterface {
     @NotNull
     String getApplicationName();
 
-    /**
-     * @return The panel that holds the standard and advanced shortcut panels
-     */
     @NotNull
-    ShortcutView getShortcuts();
+    TopShortcutView getTopShortcutView();
 
     /**
      * @return The panel that holds the top action buttons

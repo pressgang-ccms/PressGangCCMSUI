@@ -34,9 +34,6 @@ public class IntegerConstantFilteredResultsAndDetailsView extends
     @Override
     protected void initialiseShortcuts() {
         super.initialiseShortcuts();
-        getShortcuts().getAdvancedSubMenu().getIntegerConstantsButton().setDown(true);
-        getShortcuts().setSpacerEnabled(true);
-        getShortcuts().getAdvancedSubMenu().setOpen(true);
     }
 
     private void populateTopActionBar() {

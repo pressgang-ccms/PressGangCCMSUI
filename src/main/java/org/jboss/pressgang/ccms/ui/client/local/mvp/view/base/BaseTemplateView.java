@@ -89,7 +89,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The panel that holds the PressGang logo.
      */
-    private final SimplePanel headingBanner = new SimplePanel();
+    private final FlexTable headingBanner = new FlexTable();
     /**
      * The panel that holds the page title label.
      */
@@ -99,9 +99,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final Label pageTitle = new Label();
     /**
-     * The panel that holds the vertical shortcut buttons on the left hand side of the screen.
+     * The panel that holds the shortbut buttons
      */
-    private final ShortcutView shortcuts = new ShortcutView();
+    private final TopShortcutView topShortcutView = new TopShortcutView();
     /**
      * This is where the page specific content is held.
      */
@@ -201,6 +201,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public Label getVersion() {
         return version;
+    }
+
+    /**
+     * The panel that holds the shortcut buttons at the top of the page
+     */
+    @Override
+    @NotNull
+    public TopShortcutView getTopShortcutView() {
+        return topShortcutView;
     }
 
     /**
@@ -335,12 +344,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public ShortcutView getShortcuts() {
-        return shortcuts;
-    }
-
-    @NotNull
-    @Override
     public Label getPageTitle() {
         return pageTitle;
     }
@@ -411,7 +414,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Set the heading */
         headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
-        headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
+        final Image pgImage = new Image(ImageResources.INSTANCE.headingBanner());
+        pgImage.addStyleName(CSSConstants.Template.PRESSGANG_HEADER_IMAGE);
+        headingBanner.setWidget(0, 0, pgImage);
 
         topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
@@ -475,7 +480,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
-        thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
+        //thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
 
 
         /* Add the version */
@@ -499,7 +504,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     protected void initialiseShortcuts() {
-        shortcuts.initialise();
+        //shortcuts.initialise();
+        headingBanner.setWidget(0, 1, topShortcutView);
+        headingBanner.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.Template.TOP_SHORTCUT_PANEL_CELL);
     }
 
     @Override
