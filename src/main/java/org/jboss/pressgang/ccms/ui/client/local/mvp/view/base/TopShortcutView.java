@@ -17,10 +17,16 @@ public class TopShortcutView extends HorizontalPanel {
     private final PushButton createContentSpec = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(), Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
     private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true, Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
     private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true, Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
+
     private final MenuBar menus = new MenuBar();
+
     private final MenuBar search = new MenuBar(true);
     private final MenuBar entities = new MenuBar(true);
     private final MenuBar advanced = new MenuBar(true);
+
+    private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
+    private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
+    private final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);
 
     private final MenuItem bulkTagging = new MenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command)null);
     private final MenuItem stringConstants = new MenuItem(PressGangCCMSUI.INSTANCE.StringConstants(), false, (Command)null);
@@ -42,11 +48,7 @@ public class TopShortcutView extends HorizontalPanel {
 
 
     public TopShortcutView() {
-        menus.setAutoOpen(true);
 
-        final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
-        final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
-        final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);
 
         menus.addItem(searchSubMenu);
         menus.addItem(entitiesSubMenu);
@@ -185,5 +187,17 @@ public class TopShortcutView extends HorizontalPanel {
 
     public MenuBar getAdvanced() {
         return advanced;
+    }
+
+    public MenuItem getSearchSubMenu() {
+        return searchSubMenu;
+    }
+
+    public MenuItem getEntitiesSubMenu() {
+        return entitiesSubMenu;
+    }
+
+    public MenuItem getAdvancedSubMenu() {
+        return advancedSubMenu;
     }
 }

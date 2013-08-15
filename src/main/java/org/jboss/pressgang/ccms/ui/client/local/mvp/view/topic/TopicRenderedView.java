@@ -77,10 +77,16 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      * So here we remove the listener.
      */
     public native void removeListener() /*-{
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener != null) {
-			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener = null;
-		}
+		try {
+			if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener != null) {
+				$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener);
+				this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::listener = null;
+			}
+		} catch (ex) {
+            console.log(ex);
+            throw ex;
+        }
+
 	}-*/;
 
     private native void createEventListener() /*-{
