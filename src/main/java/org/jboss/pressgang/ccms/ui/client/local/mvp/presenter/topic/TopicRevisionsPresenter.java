@@ -387,10 +387,12 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                         {
                             var dataObject = JSON.parse(event.data);
 
-                            if (dataObject.href == currentXMLHREF) {
-                                me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = dataObject.html;
-                            } else if (dataObject.href == comparedXMLHREF) {
-                                me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = dataObject.html;
+                            if (dataObject.href) {
+                                if (dataObject.href == currentXMLHREF) {
+                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = dataObject.html;
+                                } else if (dataObject.href == comparedXMLHREF) {
+                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = dataObject.html;
+                                }
                             }
                         } catch (exception) {
                             // event.data used to be just the html. If the old XSL files are in the browsers cache, the JSON.parse will fail.
