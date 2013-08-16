@@ -332,8 +332,13 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
             if (renderedHTML1 != null && renderedHTML2 != null && !display.isDisplayingRevisions()) {
                 final String diff = diffHTML(renderedHTML1, renderedHTML2);
 
-                currentXML.removeFromParent();
-                comparedXML.removeFromParent();
+                if (currentXML != null) {
+                    currentXML.removeFromParent();
+                }
+
+                if (comparedXML != null) {
+                    comparedXML.removeFromParent();
+                }
 
                 renderedHTML1 = renderedHTML2 = null;
                 currentXML = comparedXML = null;
@@ -388,11 +393,15 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                                 me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = dataObject.html;
                             }
                         } catch (exception) {
-                            // event.data used to be just the html. So if JSON.parse fails, fall back to reading the HTML
-                            if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 == null) {
-								me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
-                            } else if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 == null) {
-								me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
+                            // event.data used to be just the html. If the old XSL files are in the browsers cache, the JSON.parse will fail.
+                            // In that case fall back to reading the HTML from the data directly.
+                            // Note that the live rendering used a data property called "loaded", so we check for that here.
+                            if (event.data != 'loaded') {
+                                if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 == null) {
+                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
+                                } else if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 == null) {
+                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
+                                }
                             }
                         }
 
