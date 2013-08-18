@@ -17,13 +17,13 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
 
     /**
      * Bind behaviour to the UI elements in the display.
-     * <p/>
+     *
      * When a view (and its associated presenter) is added to the screen directly,
      * the go() method will be called. The go() method should then call bindExtended().
-     * <p/>
+     *
      * When a view (and its associated presenter) is part of a composite parent
      * view, the bindExtended() will be called by the parent presenters go() method.
-     * <p/>
+     *
      * Other presenter base types may need additional parameters, in which case
      * they will provide an empty implementation of this method, and then create
      * and overloaded method.

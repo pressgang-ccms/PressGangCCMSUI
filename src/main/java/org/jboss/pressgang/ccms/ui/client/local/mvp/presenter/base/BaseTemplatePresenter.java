@@ -423,10 +423,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     /**
      * Binding is done when the view is loaded. The code here doesn't reference the data in a selected entity (it is
      * quite possible that an entity has not been selected yet).
-     * <p/>
+     *
      * Binding is done once.
-     * <p/>
-     * The display methods are used to display the actual data.
+     *
+     * The display methods (see the interfaces like BaseChildrenPresenterInterface) are used to display the actual
+     * data once an entity has been selected.
      *
      * @param display The view that this presenter is associated with
      */

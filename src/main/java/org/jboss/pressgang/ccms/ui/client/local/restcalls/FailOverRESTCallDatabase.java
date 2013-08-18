@@ -716,8 +716,7 @@ public final class FailOverRESTCallDatabase {
      * @para id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static RESTCall
-    getTopicWithRevisions(@NotNull final Integer id) {
+    public static RESTCall getTopicWithRevisions(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {

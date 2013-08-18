@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -34,17 +35,17 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicRevisionsPresenter extends BaseTemplatePresenter {
+public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
 
-    public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTTopicV1> {
+    public interface Display extends BaseRenderedDiffPresenter.Display, BaseCustomViewInterface<RESTTopicV1> {
 
         EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
+        void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
 
-        CellTable<RESTTopicCollectionItemV1> getResults();
+        @NotNull CellTable<RESTTopicCollectionItemV1> getResults();
 
-        SimplePager getPager();
+        @NotNull SimplePager getPager();
 
         Column<RESTTopicCollectionItemV1, String> getViewButton();
 
@@ -55,28 +56,26 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         /**
          * @return The currently selected revision topic.
          */
-        RESTTopicV1 getRevisionTopic();
+        @Nullable RESTTopicV1 getRevisionTopic();
 
         /**
          * @param revisionTopic The currently selected revision topic.
          */
-        void setRevisionTopic(RESTTopicV1 revisionTopic);
+        void setRevisionTopic(@Nullable final RESTTopicV1 revisionTopic);
 
-        PushButton getDone();
+        @NotNull PushButton getDone();
 
-        PushButton getCancel();
+        @NotNull PushButton getCancel();
 
-        PushButton getHTMLDone();
+        @NotNull PushButton getHTMLDone();
 
-        PushButton getHtmlOpenDiff();
+        @NotNull PushButton getHtmlOpenDiff();
 
         Mergely getMergely();
 
         void displayRevisions();
 
-        void displayDiff(String lhs, boolean rhsReadOnly, String rhs);
-
-        void displayHtmlDiff(String htmlDiff);
+        void displayDiff(@NotNull final String lhs, final boolean rhsReadOnly, @NotNull final String rhs);
 
         /**
          *
@@ -89,11 +88,9 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
         void setButtonsEnabled(boolean buttonsEnabled);
 
-        void showWaitingFromRenderedDiff();
+        @NotNull VerticalPanel getSearchResultsPanel();
 
-        VerticalPanel getSearchResultsPanel();
-
-        SimpleLayoutPanel getDiffParent();
+        @NotNull SimpleLayoutPanel getDiffParent();
     }
 
     /**
@@ -106,36 +103,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "TopicHistoryView";
 
-    /**
-     * The start of the IDs assigned to the iFrames that are used to render the XML.
-     */
-    private static final String FRAME_ID_PREFIX = "TempRenderingFrame";
-    private static final String CURRENT_FRAME_ID_PREFIX = "Current" + FRAME_ID_PREFIX;
-    private static final String COMPARE_FRAME_ID_PREFIX = "Compare" + FRAME_ID_PREFIX;
-
-    private static int tempIFrameCount = 0;
-
-    @Inject private FailOverRESTCall failOverRESTCall;
-
-    /**
-     * The message listener for HTML5 message passing
-     */
-    private JavaScriptObject listener;
-
-    /**
-     * Saves the html rendered by the XML frames when diffing the rendered html of two revisions
-     */
-    private String renderedHTML1, renderedHTML2;
-
-    /**
-     * The frames that will host the XML to be converted to HTML.
-     */
-    private Frame currentXML, comparedXML;
-
-    /**
-     * The URLs used to return the rendered XML
-     */
-    private String currentXMLHREF, comparedXMLHREF;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -159,7 +128,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended();
+        bindRenderedDiff(display);
 
         /*
             When this presenter is used a sa standalone presenter to display the rendered diff
@@ -172,14 +141,14 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void close() {
-        removeListener();
-    }
-
-    public void bindExtended() {
-        super.bind(display);
-        createEventListener();
-        addEventListener();
+    protected void displayRenderedHTML() {
+        /*
+            Check isDisplayingRevisions() here because the user may have
+            moved off the view.
+        */
+        if (!display.isDisplayingRevisions()) {
+            super.displayRenderedHTML();
+        }
     }
 
     @Override
@@ -197,44 +166,6 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         } catch (final NumberFormatException ex) {
             // invalid data supplied on the url. do nothing
         }
-    }
-
-    private void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision) {
-        final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
-            @Override
-            public void success(@NotNull final RESTTopicV1 retValue1) {
-                final RESTCallBack<RESTTopicV1> callback2 = new RESTCallBack<RESTTopicV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTopicV1 retValue2) {
-
-                        final RESTCallBack<IntegerWrapper> hold1 = new RESTCallBack<IntegerWrapper>() {
-                            @Override
-                            public void success(@NotNull final IntegerWrapper holdValue1) {
-                                final RESTCallBack<IntegerWrapper> hold2 = new RESTCallBack<IntegerWrapper>() {
-                                    @Override
-                                    public void success(@NotNull final IntegerWrapper holdValue2) {
-                                        renderXML(holdValue1.value, holdValue2.value, display.getHiddenAttachmentArea());
-                                    }
-                                };
-
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display);
-                            }
-                        };
-
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display);
-
-                    }
-                };
-
-                if (secondRevision == null) {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback2, display);
-                } else {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, secondRevision), callback2, display);
-                }
-            }
-        };
-
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback, display);
     }
 
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final Integer id, @NotNull final BaseTemplateViewInterface waitDisplay) {
@@ -275,148 +206,6 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         return provider;
     }
 
-    /**
-     * Creates some iFrames to render the XML.
-     * @param echo1 The id to used when building the URL to the echo xml endpoint
-     * @param echo2 The id to used when building the URL to the echo xml endpoint
-     * @param hiddenAttach A panel where hidden iframes can be attached.
-     */
-    public void renderXML(@NotNull final Integer echo1, @NotNull final Integer echo2, @NotNull final Panel hiddenAttach) {
-        display.showWaitingFromRenderedDiff();
 
-        /*
-            Clean up the temporary data if they weren't cleaned up in displayRenderedHTML() (which could happen
-            if the user switches away from the revisions view before the rendered diff is displayed).
-         */
-        renderedHTML1 = renderedHTML2 = null;
-        if (currentXML != null) {
-            currentXML.removeFromParent();
-        }
-
-        if (comparedXML != null) {
-            comparedXML.removeFromParent();
-        }
-
-        currentXML = new Frame();
-        comparedXML = new Frame();
-
-        /*
-            iFrames have to be attached to the DOM to load their pages
-         */
-        hiddenAttach.add(currentXML);
-        hiddenAttach.add(comparedXML);
-
-        final IFrameElement currentXMLIFrameElement = currentXML.getElement().cast();
-        final IFrameElement comparedXMLXMLIFrameElement = comparedXML.getElement().cast();
-
-        ++tempIFrameCount;
-
-        currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
-        comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
-
-        currentXMLHREF =  ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
-        comparedXMLHREF = ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
-
-        currentXML.setUrl(currentXMLHREF);
-        comparedXML.setUrl(comparedXMLHREF);
-    }
-
-    private void displayRenderedHTML() {
-        try {
-            LOGGER.info("ENTER TopicRevisionsView.displayRenderedHTML()");
-
-            /*
-                Check isDisplayingRevisions() here because the user may have
-                moved off the view.
-             */
-            if (renderedHTML1 != null && renderedHTML2 != null && !display.isDisplayingRevisions()) {
-                final String diff = diffHTML(renderedHTML1, renderedHTML2);
-
-                if (currentXML != null) {
-                    currentXML.removeFromParent();
-                }
-
-                if (comparedXML != null) {
-                    comparedXML.removeFromParent();
-                }
-
-                renderedHTML1 = renderedHTML2 = null;
-                currentXML = comparedXML = null;
-
-                display.displayHtmlDiff(diff);
-            }
-        } finally {
-            LOGGER.info("EXIT TopicRevisionsView.displayRenderedHTML()");
-        }
-    }
-
-    @NotNull
-    private native String diffHTML(@NotNull final String html1, @NotNull final String html2) /*-{
-		var diff = $wnd.htmldiff(html1, html2);
-		return diff;
-	}-*/;
-
-    /**
-     * The listener hold a reference to this, which will prevent it from being reclaimed by the GC.
-     * So here we remove the listener.
-     */
-    public native void removeListener() /*-{
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener != null) {
-			$wnd.removeEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener);
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener = null;
-		}
-	}-*/;
-
-    private native void createEventListener() /*-{
-		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener =
-			function (me) {
-				return function displayAfterLoaded(event) {
-                    console.log("ENTER TopicRevisionsView.createEventListener() TopicRevisionsView.displayAfterLoaded()");
-
-                    // Make sure the iframe sending the data is from an expected source
-                    var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
-					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
-                    if (serverHost.indexOf(event.origin) == 0) {
-                        // Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
-                        // This ensures that the diff ordering is correct
-
-                        var comparedXMLHREF = me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::comparedXMLHREF;
-                        var currentXMLHREF = me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::currentXMLHREF;
-
-                        try
-                        {
-                            var dataObject = JSON.parse(event.data);
-
-                            if (dataObject.href) {
-                                if (dataObject.href == currentXMLHREF) {
-                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = dataObject.html;
-                                } else if (dataObject.href == comparedXMLHREF) {
-                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = dataObject.html;
-                                }
-                            }
-                        } catch (exception) {
-                            // event.data used to be just the html. If the old XSL files are in the browsers cache, the JSON.parse will fail.
-                            // In that case fall back to reading the HTML from the data directly.
-                            // Note that the live rendering used a data property called "loaded", so we check for that here.
-                            if (event.data != 'loaded') {
-                                if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 == null) {
-                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML1 = event.data;
-                                } else if (me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 == null) {
-                                    me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::renderedHTML2 = event.data;
-                                }
-                            }
-                        }
-
-                        me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::displayRenderedHTML()();
-                    }
-
-					console.log("EXIT TopicRevisionsView.createEventListener() TopicRevisionsView.displayAfterLoaded()");
-				};
-			}(this);
-	}-*/;
-
-    private native void addEventListener() /*-{
-		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter::listener);
-	}-*/;
 
 }
