@@ -1,0 +1,108 @@
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
+
+import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicReviewPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * The view to display a topic review
+ */
+public class TopicReviewView extends BaseTemplateView implements TopicReviewPresenter.Display {
+
+    private final PushButton startReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.StartReview());
+    private final PushButton endAndAcceptReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EndAndAcceptReview());
+    private final PushButton endAndRejectReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EndAndRejectReview());
+    private final VerticalPanel verticalPanel = new VerticalPanel();
+    private final HorizontalPanel buttonPanel = new HorizontalPanel();
+    private final HTML renderedDiff = new HTML();
+    private final Frame content = new Frame();
+
+    /**
+     * The image to display in the waiting dialog.
+     */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+
+    /**
+     * The constructor is used to piece the template together.
+     */
+    public TopicReviewView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
+            + PressGangCCMSUI.INSTANCE.RenderedView());
+
+        verticalPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_LAYOUT_PANEL);
+        renderedDiff.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_RENDERED_DIFF);
+        spinner.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
+
+        this.getPanel().setWidget(verticalPanel);
+    }
+
+    @NotNull
+    @Override
+    public PushButton getStartReview() {
+        return startReview;
+    }
+
+    @NotNull
+    @Override
+    public PushButton getEndAndAcceptReview() {
+        return endAndAcceptReview;
+    }
+
+    @NotNull
+    @Override
+    public PushButton getEndAndRejectReview() {
+        return endAndRejectReview;
+    }
+
+    @Override
+    public void showWaitingFromRenderedDiff() {
+        this.addWaitOperation();
+    }
+
+    @Override
+    public void displayHtmlDiff(@NotNull final String htmlDiff) {
+        this.removeWaitOperation();
+        buttonPanel.clear();
+        verticalPanel.clear();
+
+        verticalPanel.add(renderedDiff);
+        verticalPanel.add(buttonPanel);
+
+
+        buttonPanel.add(endAndAcceptReview);
+        buttonPanel.add(endAndRejectReview);
+        renderedDiff.setHTML(htmlDiff);
+    }
+
+    @Override
+    public void showHelpTopic(@NotNull final Integer helpTopic) {
+        buttonPanel.clear();
+        verticalPanel.clear();
+
+        verticalPanel.add(content);
+        verticalPanel.add(buttonPanel);
+
+        content.setUrl(ServerDetails.getSavedServer().getRestEndpoint() +
+                Constants.ECHO_ENDPOINT + "?id=" + helpTopic + "&" +
+                Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+        buttonPanel.add(startReview);
+    }
+
+    @Override
+    protected void showWaiting() {
+        this.getPanel().setWidget(spinner);
+    }
+
+    @Override
+    protected void hideWaiting() {
+        this.getPanel().setWidget(verticalPanel);
+    }
+}

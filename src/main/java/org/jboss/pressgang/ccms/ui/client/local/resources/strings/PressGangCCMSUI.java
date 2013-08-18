@@ -342,6 +342,9 @@ public interface PressGangCCMSUI extends Constants {
     String RenderedView();
 
     @NotNull
+    String RevisionView();
+
+    @NotNull
     String XMLEditing();
 
     @NotNull
@@ -1045,4 +1048,13 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String NoServersError();
+
+    @NotNull
+    String StartReview();
+
+    @NotNull
+    String EndAndAcceptReview();
+
+    @NotNull
+    String EndAndRejectReview();
 }

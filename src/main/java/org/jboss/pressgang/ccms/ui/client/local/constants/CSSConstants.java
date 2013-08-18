@@ -12,6 +12,12 @@ public interface CSSConstants {
         String POSSIBLE_CHILDREN_RESULTS_PANEL = "PossibleChildrenResultsPanel";
     }
 
+    interface TopicReviewView {
+        String TOPIC_REVIEW_LAYOUT_PANEL = "TopicReviewLayoutPanel";
+        String TOPIC_REVIEW_RENDERED_DIFF = "TopicReviewRenderedDiff";
+        String TOPIC_REVIEW_VIEW_SPINNER = "TopicReviewSpinner";
+    }
+
     interface HelpOverlay {
         /**
          * Style applied to the dimmer panel as the base of the help overlay.
