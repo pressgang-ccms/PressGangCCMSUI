@@ -51,15 +51,15 @@ public class TopicFilteredResultsAndDetailsView extends
     /**
      * The bulk import dialog box.
      */
-    private
     @Inject
+    private
     BulkImportImpl bulkImport;
 
     /**
      * The bulk overwrite dialog box.
      */
-    private
     @Inject
+    private
     BulkOverwriteImpl bulkOverwrite;
 
     @Override

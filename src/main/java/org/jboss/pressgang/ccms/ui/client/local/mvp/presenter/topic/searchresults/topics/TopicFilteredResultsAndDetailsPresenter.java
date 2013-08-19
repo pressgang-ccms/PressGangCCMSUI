@@ -62,6 +62,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -71,6 +72,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
@@ -92,6 +94,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -1072,38 +1075,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final ClickHandler saveClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-
-                    try {
-                        LOGGER.log(Level.INFO,
-                                "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() saveClickHandler.onClick()");
-
-                        if (hasUnsavedChanges()) {
-                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                                    "There should be a displayed collection item.");
-                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
-                                    "The displayed collection item to reference a valid entity.");
-
-                            /*
-                                Default to using the major change for new topics
-                             */
-                            if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
-                                    .getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                display.getMessageLogDialog().getMajorChange().setValue(true);
-                                display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
-                            }
-
-                            display.getMessageLogDialog().getUsername().setText(
-                                    Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-
-                            display.getMessageLogDialog().getDialogBox().center();
-                            display.getMessageLogDialog().getDialogBox().show();
-                        } else {
-                            Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                        }
-                    } finally {
-                        LOGGER.log(Level.INFO,
-                                "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() saveClickHandler.onClick()");
-                    }
+                    saveTopic();
                 }
             };
 
@@ -1486,6 +1458,27 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
+            final ClickHandler startReviewClickhandler = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    startReview();
+                }
+            };
+
+            final ClickHandler endAndAcceptReviewClickhandler = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    endReview(true);
+                }
+            };
+
+            final ClickHandler endAndRejectReviewClickhandler = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    endReview(false);
+                }
+            };
+
             getDisplay().getCsps().addClickHandler(cspsClickHandler);
 
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
@@ -1504,9 +1497,131 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
             getDisplay().getReview().addClickHandler(reviewClickHandler);
 
+            topicReviewPresenter.getDisplay().getStartReview().addClickHandler(startReviewClickhandler);
+            topicReviewPresenter.getDisplay().getEndAndAcceptReview().addClickHandler(endAndAcceptReviewClickhandler);
+            topicReviewPresenter.getDisplay().getEndAndRejectReview().addClickHandler(endAndRejectReviewClickhandler);
+
             addKeyboardShortcutEvents(getTopicXMLPresenter().getDisplay(), display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
+        }
+    }
+
+    /**
+     * Starting the review process means assigning the review tag, and saving the topic.
+     */
+    private void startReview() {
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                "There should be a displayed collection item.");
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                "The displayed collection item to reference a valid entity.");
+
+        final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+
+        /*
+            If the tags have not been loaded, the tags collection will be null.
+         */
+        if (displayedTopic.getTags() == null) {
+            displayedTopic.setTags(new RESTTagCollectionV1());
+        }
+
+        if (!EntityUtilities.topicHasTag(displayedTopic, ServiceConstants.REVIEW_PROPERTY_TAG)) {
+            final RESTTagV1 newTag = new RESTTagV1();
+            newTag.setId(ServiceConstants.REVIEW_PROPERTY_TAG);
+            displayedTopic.getTags().addNewItem(newTag);
+        }
+
+        saveTopic();
+    }
+
+    /**
+     * Stopping the review process means removing the review tag, and optionally rolling back the changes.
+     * @param accept true if the changes are accepted, and false if they should be reverted
+     */
+    private void endReview(final boolean accept) {
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                "There should be a displayed collection item.");
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                "The displayed collection item to reference a valid entity.");
+
+        final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+
+        /*
+            If the tags have not been loaded, the tags collection will be null.
+         */
+        if (displayedTopic.getTags() == null) {
+            displayedTopic.setTags(new RESTTagCollectionV1());
+        }
+
+        if (EntityUtilities.topicHasTag(displayedTopic, ServiceConstants.REVIEW_PROPERTY_TAG)) {
+            final RESTTagV1 newTag = new RESTTagV1();
+            newTag.setId(ServiceConstants.REVIEW_PROPERTY_TAG);
+            displayedTopic.getTags().addRemoveItem(newTag);
+        }
+
+        if (!accept) {
+            topicReviewPresenter.findReviewRevision(
+                displayedTopic,
+                new ReviewTopicStartRevisionFound() {
+                    @Override
+                    public void revisionFound(final int revision) {
+                        failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision),
+                                new RESTCallBack<RESTTopicV1>() {
+                                    public void success(@NotNull final RESTTopicV1 value) {
+                                        /*
+                                            Reset the XML and the title
+                                         */
+                                        displayedTopic.setXml(value.getXml());
+                                        displayedTopic.setTitle(value.getTitle());
+
+                                        saveTopic();
+                                    }
+                                },
+                                display
+                        );
+                    }
+
+                    @Override
+                    public void revisionNotFound() {
+                        // this shouldn't happen
+                    }
+                });
+        } else {
+            saveTopic();
+        }
+    }
+
+    private void saveTopic() {
+        try {
+            LOGGER.log(Level.INFO,
+                    "ENTER TopicFilteredResultsAndDetailsPresenter.saveTopic()");
+
+            if (hasUnsavedChanges()) {
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                        "There should be a displayed collection item.");
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                        "The displayed collection item to reference a valid entity.");
+
+                /*
+                    Default to using the major change for new topics
+                 */
+                if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
+                        .getProviderData().getDisplayedItem().returnIsAddItem()) {
+                    display.getMessageLogDialog().getMajorChange().setValue(true);
+                    display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
+                }
+
+                display.getMessageLogDialog().getUsername().setText(
+                        Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+
+                display.getMessageLogDialog().getDialogBox().center();
+                display.getMessageLogDialog().getDialogBox().show();
+            } else {
+                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.saveTopic()");
         }
     }
 

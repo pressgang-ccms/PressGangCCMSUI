@@ -10,7 +10,7 @@ public final class ServiceConstants {
     /**
      * The property tag that has the revision of a topic just before a review was requested
      */
-    public static final int REVIEW_PROPERTY_TAG = -1;
+    public static final int REVIEW_PROPERTY_TAG = 659;
 
     /**
      * Original file name property tag
