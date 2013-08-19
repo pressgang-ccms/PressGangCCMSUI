@@ -48,10 +48,6 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     private final ValueListBox<SearchUIProject> projects;
     private final ValueListBox<SearchUICategory> categories;
     private final ValueListBox<SearchUITag> myTags;
-    /**
-     * The image to display in the waiting dialog.
-     */
-    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
@@ -155,7 +151,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
             this.getPanel().setWidget(layout);
 
-            spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicTagsView()");
         }
@@ -266,6 +262,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
     @Override
     protected void showWaiting() {
+        final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+        spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
         this.getPanel().setWidget(spinner);
     }
 

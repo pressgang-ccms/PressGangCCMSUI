@@ -27,10 +27,6 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     private final Frame content = new Frame();
     private final Label info = new Label();
 
-    /**
-     * The image to display in the waiting dialog.
-     */
-    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     /**
      * The constructor is used to piece the template together.
@@ -41,7 +37,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
 
         verticalPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_LAYOUT_PANEL);
         buttonPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_BUTTON_LAYOUT_PANEL);
-        spinner.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
+
         content.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME);
 
         verticalPanel.setWidget(0, 0, content);
@@ -101,6 +97,8 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
 
     @Override
     protected void showWaiting() {
+        final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+        spinner.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
         this.getPanel().setWidget(spinner);
     }
 
