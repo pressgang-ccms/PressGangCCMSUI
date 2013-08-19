@@ -207,7 +207,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
                         if (hasReviewTag) {
                             revisionIds.remove(0);
-                            processRevision(topicId, value, revisionIds, callback);
+                            processRevision(topicId, value, revisionIds, waitDisplay, callback);
                         } else {
                             callback.revisionFound(lastRevisionWithTag.getRevision());
                         }
