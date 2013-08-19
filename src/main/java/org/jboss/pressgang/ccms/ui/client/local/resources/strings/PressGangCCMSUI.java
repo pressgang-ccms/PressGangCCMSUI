@@ -1075,4 +1075,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String StartReviewLogMessage();
+
+    @NotNull
+    String CanNotProceedWithUnsavedChanges();
 }

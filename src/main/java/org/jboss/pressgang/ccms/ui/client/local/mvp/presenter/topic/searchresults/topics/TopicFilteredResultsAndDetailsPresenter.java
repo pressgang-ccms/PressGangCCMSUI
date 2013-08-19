@@ -35,6 +35,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
@@ -159,6 +160,342 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         elements are loaded.
      */
     private boolean contentSpecsLoadInitiated = false;
+    /*
+        True when the review tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean revisionDiffLoadInitiated = false;
+    /**
+     * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
+     * topic or setting the review status. This variable allows us to remove the last assigned click handler in
+     * order to swap it out for the new one.
+     */
+    private HandlerRegistration messageLogOKHandler;
+    /**
+     * The REST callback called when a topic is updated
+     */
+    private final RESTCallBack<RESTTopicV1> updateCallback = new RESTCallBack<RESTTopicV1>() {
+        @Override
+        public void success(@NotNull final RESTTopicV1 retValue) {
+            try {
+                LOGGER.log(Level.INFO, "ENTER RESTCallBack.success()");
+
+                final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+                final RESTTopicV1 selectedTopic = getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
+
+                boolean overwroteChanges = false;
+                final Integer originalRevision = getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getRevision();
+
+                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                    Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+
+                    /*
+                        If no changes were made to the topic itself (i.e. we just update some children),
+                        then the revision number will not change. So if what is sent back has the same
+                        revision number as the topic we were editing, then we have not overwritten background
+                        changes.
+
+                        Note that this should not happen because we don't actually just update the property tags;
+                        any change to the property tag value results in the mapping being deleted and recreated.
+
+                        The code is left here as a reminder that some additional checking might be required with
+                        new children that are exposed through the UI.
+                    */
+                    if (retValue.getRevisions().getItems().size() >= 1) {
+                        final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+
+                        LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+
+                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                    }
+
+                    /*
+                        Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
+                     */
+                    if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
+                                                            /* Get the second last revision (the last one is the current one) */
+                        final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
+                        LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+
+                        /*
+                         * if the second last revision doesn't match the revision of the topic when editing was
+                         * started, then we have overwritten someone elses changes
+                         */
+                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                    }
+                }
+
+                /* Update the displayed topic */
+                retValue.cloneInto(displayedTopic, true);
+                /* Update the selected topic */
+                retValue.cloneInto(selectedTopic, true);
+
+                /*
+                    The temp topic we used to hold review status details is no longer needed.
+                 */
+                reviewUpdateTopic = null;
+
+                /*
+                    The XML will have been reformatted, so we need to reset this variable to
+                    trigger a fresh validation.
+                 */
+                lastXML = null;
+
+                /*
+                    The clone will clear out any previously loaded collections, so mark the
+                    as being required to be loaded again
+                 */
+                resetAllInitialLoads();
+
+                updateDisplayWithNewEntityData(false);
+
+                if (overwroteChanges) {
+                                                /* Take the user to the revisions view so they can review any overwritten changes */
+                    switchView(topicRevisionsPresenter.getDisplay());
+                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                }
+            } finally {
+                LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
+
+                if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
+                    getTopicXMLPresenter().getDisplay().getEditor().redisplay();
+                    /*
+                        This forces the xml validation to rehighlight the invalid rows
+                     */
+                    getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
+                }
+            }
+        }
+
+        @Override
+        public void failed() {
+            getTopicXMLPresenter().getDisplay().getEditor().redisplay();
+            /*
+                This forces the xml validation to rehighlight the invalid rows
+             */
+            getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
+        }
+    };
+
+    /**
+     * The click handler that saves changes to the topic.
+     */
+    private final ClickHandler messageLogDialogOK = new ClickHandler() {
+        @Override
+        public void onClick(@NotNull final ClickEvent event) {
+            final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+            if (user.isEmpty()) {
+                Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                return;
+            }
+
+            try {
+                LOGGER.log(Level.INFO, "ENTER messageLogDialogOK.onClick()");
+
+                if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                            "There should be a displayed collection item.");
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                            "The displayed collection item to reference a valid entity.");
+
+                    checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
+                            "There should be a selected collection item.");
+                    checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
+                            "The selected collection item to reference a valid entity.");
+
+                    final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+                    final RESTTopicV1 selectedTopic = getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
+
+                    Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
+
+                    final StringBuilder message = new StringBuilder();
+                    if (!user.isEmpty()) {
+                        message.append(user).append(": ");
+                    }
+                    message.append(display.getMessageLogDialog().getMessage().getText());
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
+                            .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+
+                            /* Sync any changes back to the underlying object */
+                    flushChanges();
+
+                     /*
+                     * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
+                     * do a clone or send the original object here because a full object will send back a whole lot of
+                     * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
+                     * the data into JSON.
+                     */
+                    final RESTTopicV1 sourceTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+
+                    final RESTTopicV1 newTopic = new RESTTopicV1();
+
+                            /*
+                                Only assign those modified children to the topic that is to be added/updated
+                            */
+                    LOGGER.log(Level.INFO, "Copying modified collections");
+                    if (sourceTopic.getProperties() != null && sourceTopic.getProperties().getItems() != null) {
+                        newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                        newTopic.getProperties().setItems(
+                                sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                    }
+
+                    if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
+                        newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+                        newTopic.getSourceUrls_OTM().setItems(
+                                sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                    }
+
+                    if (sourceTopic.getTags() != null && sourceTopic.getTags().getItems() != null) {
+                        newTopic.explicitSetTags(new RESTTagCollectionV1());
+                        newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
+                    }
+
+                    /*
+                        Assume all the text fields have been updated
+                    */
+                    LOGGER.log(Level.INFO, "Copying modified fields");
+                    newTopic.setId(sourceTopic.getId());
+                    newTopic.explicitSetDescription(sourceTopic.getDescription());
+                    newTopic.explicitSetLocale(sourceTopic.getLocale());
+                    newTopic.explicitSetTitle(sourceTopic.getTitle());
+                    newTopic.explicitSetXml(sourceTopic.getXml());
+
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
+
+                        final RESTCallBack<RESTTopicV1> addCallback = new RESTCallBack<RESTTopicV1>() {
+                            @Override
+                            public void success(@NotNull final RESTTopicV1 retValue) {
+                                try {
+                                    LOGGER.log(Level.INFO, "ENTER messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+
+                                    // Create the topic wrapper
+                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                    topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                                    // create the topic, and add to the wrapper
+                                    topicCollectionItem.setItem(retValue);
+
+                                    /* Update the displayed topic */
+                                    getSearchResultPresenter().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
+
+                                    /*
+                                        Two things can happen to the selected item at this point. Either we are in the
+                                        "create topic" mode, in which we simply add the new topics to the data provider, and
+                                        never refresh from the database. In this case, the selected item and the item
+                                        in the data provider are the same, and always linked.
+
+                                        The second mode is where we have created a topic when already displaying a query.
+                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                        or it will remain referencing the returned value here if the query doesn't actually
+                                        return the topic that was saved.
+                                     */
+                                    getSearchResultPresenter().setSelectedItem(topicCollectionItem);
+
+                                    lastXML = null;
+
+                                    if (startWithNewTopic) {
+                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                        getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
+                                        getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
+                                        updateDisplayWithNewEntityData(false);
+                                    } else {
+                                        /* Update the selected topic */
+                                        LOGGER.log(Level.INFO, "Redisplaying query");
+                                        updateDisplayWithNewEntityData(true);
+                                    }
+
+                                    LOGGER.log(Level.INFO, "Refreshing editor");
+                                    if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
+                                        getTopicXMLPresenter().getDisplay().getEditor().redisplay();
+                                        /*
+                                            This forces the xml validation to rehighlight the invalid rows
+                                         */
+                                        getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
+                                    }
+
+                                    Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                } finally {
+                                    LOGGER.log(Level.INFO, "EXIT messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                                }
+                            }
+
+                            @Override
+                            public void failed() {
+                                getTopicXMLPresenter().getDisplay().getEditor().redisplay();
+                                /*
+                                    This forces the xml validation to rehighlight the invalid rows
+                                 */
+                                getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
+                            }
+                        };
+
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
+                    } else {
+
+                        failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.saveTopic(
+                                        newTopic,
+                                        message.toString(),
+                                        flag,
+                                        ServiceConstants.NULL_USER_ID.toString()),
+                                updateCallback,
+                                display);
+                    }
+                }
+            } finally {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+
+                LOGGER.log(Level.INFO, "EXIT messageLogDialogOK.onClick()");
+            }
+        }
+    };
+
+    private final ClickHandler reviewMessageLogDialogOK = new ClickHandler() {
+
+        @Override
+        public void onClick(@NotNull ClickEvent event) {
+            checkState(reviewUpdateTopic != null, "reviewUpdateTopic cannot be null");
+
+            final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+            final StringBuilder message = new StringBuilder();
+            if (!user.isEmpty()) {
+                message.append(user).append(": ");
+            }
+            message.append(display.getMessageLogDialog().getMessage().getText());
+            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
+                    .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+
+            failOverRESTCall.performRESTCall(
+                FailOverRESTCallDatabase.saveTopic(
+                    reviewUpdateTopic,
+                    message.toString(),
+                    flag,
+                    ServiceConstants.NULL_USER_ID.toString()),
+                    updateCallback,
+                    display);
+        }
+    };
+    /**
+     * Changes to the revision status of a topic are saved through this
+     * topic object. This is done so that there are no changes done to the
+     * displayed topic.
+     *
+     * This is important because it is possible to cancel the process of changing
+     * the review status. If we made changes to the displayed topic and then
+     * cancelled the save process, the topic would be in an inconsistent state in the
+     * editor.
+     */
+    private RESTTopicV1 reviewUpdateTopic;
+
 
     /**
      * The presenter used to display the topic content specs.
@@ -643,10 +980,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* Disable the topic revision view */
         viewLatestTopicRevision();
 
+        resetAllInitialLoads();
+    }
+
+    private void resetAllInitialLoads() {
         revisionsLoadInitiated = false;
         tagsLoadInitiated = false;
         propertyTagsLoadInitiated = false;
         contentSpecsLoadInitiated = false;
+        revisionDiffLoadInitiated = false;
     }
 
     /**
@@ -1013,11 +1355,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 inline diff.
              */
             if (displayedView == topicReviewPresenter.getDisplay()) {
-                topicReviewPresenter.displayTopicReview(searchResultPresenter.getProviderData().getDisplayedItem().getItem(), display.getHiddenAttachmentArea());
+                loadReviewDiff();
+                topicReviewPresenter.getDisplay().reDisplayHtmlDiff();
             }
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
+        }
+    }
+
+    /**
+     * Load and transform the XML from the start of the revision to the end, or display the help page.
+     */
+    private void loadReviewDiff() {
+        if (!revisionDiffLoadInitiated) {
+            revisionDiffLoadInitiated = true;
+            topicReviewPresenter.displayTopicReview(display.getHiddenAttachmentArea());
         }
     }
 
@@ -1079,287 +1432,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            final ClickHandler messageLogDialogOK = new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    final String user = display.getMessageLogDialog().getUsername().getText().trim();
-
-                    if (user.isEmpty()) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
-                        return;
-                    }
-
-                    try {
-                        LOGGER.log(Level.INFO,
-                                "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-
-                        if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
-
-                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                                    "There should be a displayed collection item.");
-                            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
-                                    "The displayed collection item to reference a valid entity.");
-
-                            checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
-                                    "There should be a selected collection item.");
-                            checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
-                                    "The selected collection item to reference a valid entity.");
-
-                            final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
-                            final RESTTopicV1 selectedTopic = getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
-
-                            Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
-
-                            final StringBuilder message = new StringBuilder();
-                            if (!user.isEmpty()) {
-                                message.append(user).append(": ");
-                            }
-                            message.append(display.getMessageLogDialog().getMessage().getText());
-                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
-                                    .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-
-                            /* Sync any changes back to the underlying object */
-                            flushChanges();
-
-                             /*
-                             * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
-                             * do a clone or send the original object here because a full object will send back a whole lot of
-                             * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
-                             * the data into JSON.
-                             */
-                            final RESTTopicV1 sourceTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
-
-                            final RESTTopicV1 newTopic = new RESTTopicV1();
-
-                            /*
-                                Only assign those modified children to the topic that is to be added/updated
-                            */
-                            LOGGER.log(Level.INFO, "Copying modified collections");
-                            if (sourceTopic.getProperties() != null && sourceTopic.getProperties().getItems() != null) {
-                                newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
-                                newTopic.getProperties().setItems(
-                                        sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
-                            }
-
-                            if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
-                                newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-                                newTopic.getSourceUrls_OTM().setItems(
-                                        sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
-                            }
-
-                            if (sourceTopic.getTags() != null && sourceTopic.getTags().getItems() != null) {
-                                newTopic.explicitSetTags(new RESTTagCollectionV1());
-                                newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
-                            }
-
-                            /*
-                                Assume all the text fields have been updated
-                            */
-                            LOGGER.log(Level.INFO, "Copying modified fields");
-                            newTopic.setId(sourceTopic.getId());
-                            newTopic.explicitSetDescription(sourceTopic.getDescription());
-                            newTopic.explicitSetLocale(sourceTopic.getLocale());
-                            newTopic.explicitSetTitle(sourceTopic.getTitle());
-                            newTopic.explicitSetXml(sourceTopic.getXml());
-
-                            if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
-
-                                final RESTCallBack<RESTTopicV1> addCallback = new RESTCallBack<RESTTopicV1>() {
-                                    @Override
-                                    public void success(@NotNull final RESTTopicV1 retValue) {
-                                        try {
-                                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-
-                                            // Create the topic wrapper
-                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-
-                                            // create the topic, and add to the wrapper
-                                            topicCollectionItem.setItem(retValue);
-
-                                            /* Update the displayed topic */
-                                            getSearchResultPresenter().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
-
-                                            /*
-                                                Two things can happen to the selected item at this point. Either we are in the
-                                                "create topic" mode, in which we simply add the new topics to the data provider, and
-                                                never refresh from the database. In this case, the selected item and the item
-                                                in the data provider are the same, and always linked.
-
-                                                The second mode is where we have created a topic when already displaying a query.
-                                                In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                                or it will remain referencing the returned value here if the query doesn't actually
-                                                return the topic that was saved.
-                                             */
-                                            getSearchResultPresenter().setSelectedItem(topicCollectionItem);
-
-                                            lastXML = null;
-
-                                            if (startWithNewTopic) {
-                                                LOGGER.log(Level.INFO, "Adding new topic to static list");
-                                                getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
-                                                getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
-                                                updateDisplayWithNewEntityData(false);
-                                            } else {
-                                                /* Update the selected topic */
-                                                LOGGER.log(Level.INFO, "Redisplaying query");
-                                                updateDisplayWithNewEntityData(true);
-                                            }
-
-                                            LOGGER.log(Level.INFO, "Refreshing editor");
-                                            if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
-                                                getTopicXMLPresenter().getDisplay().getEditor().redisplay();
-                                                /*
-                                                    This forces the xml validation to rehighlight the invalid rows
-                                                 */
-                                                getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
-                                            }
-
-                                            Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
-                                        } finally {
-                                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-                                        }
-                                    }
-
-                                    @Override
-                                    public void failed() {
-                                        getTopicXMLPresenter().getDisplay().getEditor().redisplay();
-                                        /*
-                                            This forces the xml validation to rehighlight the invalid rows
-                                         */
-                                        getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
-                                    }
-                                };
-
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
-                            } else {
-
-                                final RESTCallBack<RESTTopicV1> updateCallback = new RESTCallBack<RESTTopicV1>() {
-                                    @Override
-                                    public void success(@NotNull final RESTTopicV1 retValue) {
-                                        try {
-                                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
-
-                                            boolean overwroteChanges = false;
-                                            final Integer originalRevision = getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getRevision();
-
-                                            if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
-                                                Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
-
-                                                /*
-                                                    If no changes were made to the topic itself (i.e. we just update some children),
-                                                    then the revision number will not change. So if what is sent back has the same
-                                                    revision number as the topic we were editing, then we have not overwritten background
-                                                    changes.
-
-                                                    Note that this should not happen because we don't actually just update the property tags;
-                                                    any change to the property tag value results in the mapping being deleted and recreated.
-
-                                                    The code is left here as a reminder that some additional checking might be required with
-                                                    new children that are exposed through the UI.
-                                                */
-                                                if (retValue.getRevisions().getItems().size() >= 1) {
-                                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                            .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
-
-                                                    LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
-
-                                                    overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                                }
-
-                                                /*
-                                                    Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
-                                                 */
-                                                if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
-                                                            /* Get the second last revision (the last one is the current one) */
-                                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                            .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
-
-                                                    LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
-
-                                                    /*
-                                                     * if the second last revision doesn't match the revision of the topic when editing was
-                                                     * started, then we have overwritten someone elses changes
-                                                     */
-                                                    overwroteChanges = !originalRevision.equals(overwriteRevision);
-                                                }
-                                            }
-
-                                            /* Update the displayed topic */
-                                            retValue.cloneInto(displayedTopic, true);
-                                            /* Update the selected topic */
-                                            retValue.cloneInto(selectedTopic, true);
-
-                                            lastXML = null;
-
-                                            /*
-                                                The clone will clear out any previously loaded collections, so mark the
-                                                as being required to be loaded again
-                                             */
-                                            tagsLoadInitiated = false;
-                                            revisionsLoadInitiated = false;
-                                            contentSpecsLoadInitiated = false;
-
-                                            updateDisplayWithNewEntityData(false);
-
-                                            if (overwroteChanges) {
-                                                /* Take the user to the revisions view so they can review any overwritten changes */
-                                                switchView(topicRevisionsPresenter.getDisplay());
-                                                Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                            } else {
-                                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                            }
-                                        } finally {
-                                            LOGGER.log(Level.INFO,
-                                                    "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
-
-                                            if (getTopicXMLPresenter().getDisplay().getEditor() != null) {
-                                                getTopicXMLPresenter().getDisplay().getEditor().redisplay();
-                                                        /*
-                                                            This forces the xml validation to rehighlight the invalid rows
-                                                         */
-                                                getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void failed() {
-                                        getTopicXMLPresenter().getDisplay().getEditor().redisplay();
-                                        /*
-                                            This forces the xml validation to rehighlight the invalid rows
-                                         */
-                                        getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
-                                    }
-                                };
-
-
-                                failOverRESTCall.performRESTCall(
-                                        FailOverRESTCallDatabase.saveTopic(
-                                                newTopic,
-                                                message.toString(),
-                                                flag,
-                                                ServiceConstants.NULL_USER_ID.toString()),
-                                        updateCallback,
-                                        display);
-                            }
-                        }
-                    } finally {
-                        display.getMessageLogDialog().reset();
-                        display.getMessageLogDialog().getDialogBox().hide();
-
-                        LOGGER.log(Level.INFO,
-                                "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-                    }
-                }
-            };
-
             final ClickHandler messageLogDialogCancel = new ClickHandler() {
 
                 @Override
                 public void onClick(final ClickEvent event) {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
+                    reviewUpdateTopic = null;
                 }
             };
 
@@ -1495,7 +1574,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             getDisplay().getCsps().addClickHandler(cspsClickHandler);
 
-            display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
             display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
             display.getBulkImport().getOK().addClickHandler(bulkImportOK);
@@ -1559,20 +1637,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
+        if (hasUnsavedChanges()) {
+            Window.alert(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+            reviewUpdateTopic = null;
+            return;
+        }
+
         final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
-        /*
-            If the tags have not been loaded, the tags collection will be null.
-         */
-        if (displayedTopic.getTags() == null) {
-            displayedTopic.setTags(new RESTTagCollectionV1());
-        }
+        reviewUpdateTopic = new RESTTopicV1();
+        reviewUpdateTopic.explicitSetTags(new RESTTagCollectionV1());
 
-        if (EntityUtilities.topicHasTag(displayedTopic, ServiceConstants.REVIEW_PROPERTY_TAG)) {
-            final RESTTagV1 newTag = new RESTTagV1();
-            newTag.setId(ServiceConstants.REVIEW_PROPERTY_TAG);
-            displayedTopic.getTags().addRemoveItem(newTag);
-        }
+        final RESTTagV1 newTag = new RESTTagV1();
+        newTag.setId(ServiceConstants.REVIEW_PROPERTY_TAG);
+        reviewUpdateTopic.getTags().addRemoveItem(newTag);
 
         if (!accept) {
             topicReviewPresenter.findReviewRevision(
@@ -1587,11 +1665,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         /*
                                             Reset the XML and the title
                                          */
-                                        displayedTopic.setXml(value.getXml());
-                                        displayedTopic.setTitle(value.getTitle());
+                                        reviewUpdateTopic.explicitSetXml(value.getXml());
+                                        reviewUpdateTopic.explicitSetTitle(value.getTitle());
 
                                         display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
-                                        saveTopic();
+                                        updateReviewStatus();
                                     }
                                 },
                                 display
@@ -1609,6 +1687,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    private void updateReviewStatus() {
+
+        if (messageLogOKHandler != null) {
+            messageLogOKHandler.removeHandler();
+            messageLogOKHandler = null;
+        }
+
+        messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(reviewMessageLogDialogOK);
+    }
+
     private void saveTopic() {
         try {
             LOGGER.log(Level.INFO,
@@ -1619,6 +1707,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         "There should be a displayed collection item.");
                 checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                         "The displayed collection item to reference a valid entity.");
+
+                if (messageLogOKHandler != null) {
+                    messageLogOKHandler.removeHandler();
+                    messageLogOKHandler = null;
+                }
+
+                messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
 
                 /*
                     Default to using the major change for new topics
@@ -1982,6 +2077,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic tags view");
                 bindTagEditingButtons();
+            }
+
+            if (viewIsInFilter(filter, topicReviewPresenter.getDisplay())) {
+                topicReviewPresenter.setTopic(searchResultPresenter.getProviderData().getDisplayedItem().getItem());
             }
         } finally {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postInitializeViews()");

@@ -26,6 +26,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
     private final Frame content = new Frame();
     private final Label info = new Label();
+    private String htmlDiff;
 
 
     /**
@@ -80,8 +81,22 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.add(endAndRejectReview);
         buttonPanel.add(info);
 
-        final IFrameElement iFrameElement = content.getElement().cast();
-        GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+        this.htmlDiff = htmlDiff;
+        reDisplayHtmlDiff();
+    }
+
+    /**
+     * The iFrame will lose its contents if it is detached, so here we redisplay the
+     * html diff that was generated and supplied to us through the displayHtmlDiff() method.
+     */
+    @Override
+    public void reDisplayHtmlDiff() {
+        if (htmlDiff != null) {
+            final IFrameElement iFrameElement = content.getElement().cast();
+            if (iFrameElement.getContentDocument() != null) {
+                GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+            }
+        }
     }
 
     @Override
@@ -105,6 +120,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     protected void hideWaiting() {
         this.getPanel().setWidget(verticalPanel);
+        reDisplayHtmlDiff();
     }
 
     @Override

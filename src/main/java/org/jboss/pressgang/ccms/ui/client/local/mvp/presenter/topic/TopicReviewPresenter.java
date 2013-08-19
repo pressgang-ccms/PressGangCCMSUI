@@ -50,6 +50,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
         @NotNull PushButton getEndAndRejectReview();
         @NotNull Label getInfo();
         void showHelpTopic(@NotNull final Integer helpTopic);
+        void reDisplayHtmlDiff();
     }
 
     @Inject
@@ -57,6 +58,8 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
+
+    private RESTTopicV1 topic;
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
@@ -70,11 +73,18 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     }
 
     /**
-     * Called to display the diff between when the revision period was started and
-     * now.
      * @param topic The topic whose reviews are to be displayed.
      */
-    public void displayTopicReview(@NotNull final RESTTopicV1 topic, @NotNull final Panel hiddenAttach) {
+    public void setTopic(@NotNull final RESTTopicV1 topic) {
+       this.topic = topic;
+    }
+
+    /**
+     * Called to display the diff between when the revision period was started and
+     * now.
+     *
+     */
+    public void displayTopicReview(@NotNull final Panel hiddenAttach) {
         findReviewRevision(topic, new ReviewTopicStartRevisionFound() {
             @Override
             public void revisionFound(int revision) {
