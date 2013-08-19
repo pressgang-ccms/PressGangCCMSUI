@@ -83,11 +83,12 @@ public final class FailOverRESTCall {
                     @Override
                     public void callback(final T retValue) {
                         if (!isTimedout() && !isReturned()) {
+
+                            callback.success(retValue);
+
                             if (display != null) {
                                 display.removeWaitOperation();
                             }
-
-                            callback.success(retValue);
                         }
 
                         setReturned(true);
@@ -141,10 +142,11 @@ public final class FailOverRESTCall {
                                         Window.alert(prefix + responseText == null ? "" : ("\n\n" + responseText));
                                     }
 
+                                    callback.failed();
+
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                    callback.failed();
                                 } else {
                                     /*
                                         Any other possible responses that could happen should fail over if possible otherwise display an
@@ -158,10 +160,11 @@ public final class FailOverRESTCall {
                                             Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + responseText == null ? "" : ("\n\n" + responseText));
                                         }
 
+                                        callback.failed();
+
                                         if (display != null) {
                                             display.removeWaitOperation();
                                         }
-                                        callback.failed();
                                     }
                                 }
                             } else {
@@ -173,10 +176,11 @@ public final class FailOverRESTCall {
                                         Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
                                     }
 
+                                    callback.failed();
+
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                    callback.failed();
                                 }
                             }
                         }
@@ -221,12 +225,12 @@ public final class FailOverRESTCall {
             restCall.call(restInterface);
             timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
         } catch (@NotNull final Exception ex) {
+            LOGGER.info("Failing over due to exception");
+            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+
             if (display != null) {
                 display.removeWaitOperation();
             }
-
-            LOGGER.info("Failing over due to exception");
-            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
         }
     }
 
@@ -341,9 +345,10 @@ public final class FailOverRESTCall {
             Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
         }
 
+        callback.failed();
+
         if (display != null) {
             display.removeWaitOperation();
         }
-        callback.failed();
     }
 }
