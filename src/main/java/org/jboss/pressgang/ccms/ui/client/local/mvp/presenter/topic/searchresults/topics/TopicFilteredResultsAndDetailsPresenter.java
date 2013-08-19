@@ -1663,6 +1663,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (!accept) {
             topicReviewPresenter.findReviewRevision(
                 displayedTopic,
+                display,
                 new ReviewTopicStartRevisionFound() {
                     @Override
                     public void revisionFound(final int revision) {

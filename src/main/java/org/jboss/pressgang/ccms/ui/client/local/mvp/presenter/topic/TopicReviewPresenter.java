@@ -82,10 +82,9 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     /**
      * Called to display the diff between when the revision period was started and
      * now.
-     *
      */
     public void displayTopicReview(@NotNull final Panel hiddenAttach) {
-        findReviewRevision(topic, new ReviewTopicStartRevisionFound() {
+        findReviewRevision(topic, display, new ReviewTopicStartRevisionFound() {
             @Override
             public void revisionFound(int revision) {
                 /*
@@ -127,9 +126,10 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     /**
      * Scans through the revisions looking for the highest revision where the review tag was added.
      * @param topic The topic to scan
+     * @param waitDisplay The view to display the waiting widget
      * @param callback The callback to call when the revision is found
      */
-    public void findReviewRevision(@NotNull final RESTTopicV1 topic, @NotNull final ReviewTopicStartRevisionFound callback) {
+    public void findReviewRevision(@NotNull final RESTTopicV1 topic, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopicWithTags(
                 topic.getId()),
@@ -170,10 +170,10 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                                                 }
                                             }
 
-                                            processRevision(topic.getId(), null, revisions, callback);
+                                            processRevision(topic.getId(), null, revisions, waitDisplay, callback);
                                         }
                                     },
-                                    display
+                                    waitDisplay
                             );
                         } else {
                             callback.revisionNotFound();
@@ -181,7 +181,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
                     }
                 },
-                display
+                waitDisplay
         );
     }
 
@@ -193,7 +193,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
      * @param lastRevisionWithTag The last topic to have the tag assigned to it. The revision that matches latestRevision will have the review tag.
      * @param revisionIds The list of ids left to process
      */
-    private void processRevision(final int topicId, @NotNull final RESTTopicV1 lastRevisionWithTag, @NotNull final List<Integer> revisionIds, @NotNull final ReviewTopicStartRevisionFound callback) {
+    private void processRevision(final int topicId, @NotNull final RESTTopicV1 lastRevisionWithTag, @NotNull final List<Integer> revisionIds, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
 
         if (!revisionIds.isEmpty()) {
             failOverRESTCall.performRESTCall(
@@ -214,7 +214,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                     }
 
                 },
-                display
+                waitDisplay
             );
         } else {
             // If we got here then the first revision of the topic was set for review.

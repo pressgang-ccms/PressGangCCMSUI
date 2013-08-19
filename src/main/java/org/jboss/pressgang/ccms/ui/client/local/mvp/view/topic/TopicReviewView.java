@@ -34,7 +34,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
      */
     public TopicReviewView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-            + PressGangCCMSUI.INSTANCE.RenderedView());
+            + PressGangCCMSUI.INSTANCE.RevisionView());
 
         verticalPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_LAYOUT_PANEL);
         buttonPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_BUTTON_LAYOUT_PANEL);
