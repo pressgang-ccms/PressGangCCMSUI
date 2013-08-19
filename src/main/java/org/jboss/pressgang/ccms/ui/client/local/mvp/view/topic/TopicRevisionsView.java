@@ -28,6 +28,7 @@ import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;

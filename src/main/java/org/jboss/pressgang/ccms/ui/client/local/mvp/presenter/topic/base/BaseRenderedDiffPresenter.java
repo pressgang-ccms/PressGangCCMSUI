@@ -84,7 +84,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
     /**
      * @param display The display
      */
-    protected void bindRenderedDiff(@NotNull final Display display) {
+    public void bindRenderedDiff(@NotNull final Display display) {
         this.display = display;
 
         super.bind(display);

@@ -1057,4 +1057,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String EndAndRejectReview();
+
+    @NotNull
+    String Review();
 }

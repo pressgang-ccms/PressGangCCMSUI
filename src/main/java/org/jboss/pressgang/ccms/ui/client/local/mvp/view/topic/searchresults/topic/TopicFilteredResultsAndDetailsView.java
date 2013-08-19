@@ -45,6 +45,9 @@ public class TopicFilteredResultsAndDetailsView extends
     private final Label historyDown;
     private final Label cspsDown;
 
+    private PushButton review = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Review());
+    private Label reviewDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Review());
+
     /**
      * The bulk import dialog box.
      */
@@ -58,6 +61,18 @@ public class TopicFilteredResultsAndDetailsView extends
     private
     @Inject
     BulkOverwriteImpl bulkOverwrite;
+
+    @Override
+    @NotNull
+    public PushButton getReview() {
+        return review;
+    }
+
+    @Override
+    @NotNull
+    public Label getReviewDown() {
+        return reviewDown;
+    }
 
     @Override
     @NotNull
@@ -114,6 +129,7 @@ public class TopicFilteredResultsAndDetailsView extends
 
         addActionButton(csps);
         addActionButton(history);
+        addActionButton(review);
         addActionButton(save);
     }
 }

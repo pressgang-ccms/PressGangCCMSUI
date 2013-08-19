@@ -4,8 +4,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -22,6 +22,7 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionIt
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import java.util.ArrayList;
@@ -35,7 +36,12 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 /**
  * The presenter used to add logic to the review view.
  */
+@Dependent
 public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
+
+    public Display getDisplay() {
+        return display;
+    }
 
     public interface Display extends BaseRenderedDiffPresenter.Display {
         @NotNull PushButton getStartReview();
@@ -67,69 +73,83 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
      */
     public void displayTopicReview(@NotNull final RESTTopicV1 topic) {
 
-        final boolean hasReviewTag = ComponentTopicV1.hasTag(topic, ServiceConstants.REVIEW_PROPERTY_TAG);
+        failOverRESTCall.performRESTCall(
+                FailOverRESTCallDatabase.getTopicWithTags(
+                    topic.getId()),
+                    new RESTCallBack<RESTTopicV1>() {
+                    public void success(@NotNull final RESTTopicV1 topicWithTags) {
 
-        if (hasReviewTag) {
-            failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopicWithRevisions(topic.getId()),
-                new RESTCallBack<Object>(){
-                    public void success(@NotNull final RESTTopicV1 value) {
+                        final boolean hasReviewTag = topicHasTag(topicWithTags, ServiceConstants.REVIEW_PROPERTY_TAG);
 
-                        /*
-                            Make sure the list of revisions is smallest to largest
-                        */
-                        Collections.sort(value.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
-                        /*
-                            And then reverse the list to go from largest to smallest
-                        */
-                        Collections.reverse(value.getRevisions().getItems());
+                        if (hasReviewTag) {
+                            failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.getTopicWithRevisions(topic.getId()),
+                                new RESTCallBack<Object>(){
+                                    public void success(@NotNull final RESTTopicV1 topicWithRevisions) {
 
-                        final List<Integer> ids = new ArrayList<Integer>();
-                        boolean foundLatest = false;
-                        for (@NotNull final RESTTopicCollectionItemV1 revision : value.getRevisions().getItems()) {
-                            /*
-                                On the off chance that a new revision was created between when this topic was
-                                selected and when the review diff is viewed, we ignore any revisions greater than
-                                the one assigned to the topic.
-                             */
-                            if (!foundLatest && revision.getItem().getRevision() == topic.getRevision()) {
-                                foundLatest = true;
-                            }
+                                        /*
+                                            Make sure the list of revisions is smallest to largest
+                                        */
+                                        Collections.sort(topicWithRevisions.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                                        /*
+                                            And then reverse the list to go from largest to smallest
+                                        */
+                                        Collections.reverse(topicWithRevisions.getRevisions().getItems());
 
-                            if (foundLatest) {
-                                ids.add(revision.getItem().getId());
-                            }
+                                        final List<Integer> ids = new ArrayList<Integer>();
+                                        boolean foundLatest = false;
+                                        for (@NotNull final RESTTopicCollectionItemV1 revision : topicWithRevisions.getRevisions().getItems()) {
+                                            /*
+                                                On the off chance that a new revision was created between when this topic was
+                                                selected and when the review diff is viewed, we ignore any revisions greater than
+                                                the one assigned to the topic.
+                                             */
+                                            if (!foundLatest && revision.getItem().getRevision() == topic.getRevision()) {
+                                                foundLatest = true;
+                                            }
+
+                                            if (foundLatest) {
+                                                ids.add(revision.getItem().getId());
+                                            }
+                                        }
+
+                                        processRevision(topic.getId(), topic.getRevision(), null, ids);
+                                    }
+                                },
+                                display
+                            );
+                        } else {
+
+                            failOverRESTCall.performRESTCall(
+                                FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
+                                new RESTCallBack<RESTTopicV1>() {
+                                    public void success(@NotNull final RESTTopicV1 value) {
+                                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
+                                        failOverRESTCall.performRESTCall(
+                                                FailOverRESTCallDatabase.holdXML(xml),
+                                                new RESTCallBack<IntegerWrapper>() {
+                                                    public void success(@NotNull final IntegerWrapper value) {
+                                                        display.showHelpTopic(value.value);
+                                                    }
+                                                },
+                                                display,
+                                                true
+                                        );
+                                    }
+                                },
+                                display
+                            );
+
+
                         }
 
-                        processRevision(topic.getId(), topic.getRevision(), null, ids);
                     }
                 },
                 display
-            );
-        } else {
-
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
-                    new RESTCallBack<RESTTopicV1>() {
-                        public void success(@NotNull final RESTTopicV1 value) {
-                            final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(value.getXml());
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.holdXML(xml),
-                                    new RESTCallBack<IntegerWrapper>() {
-                                        public void success(@NotNull final IntegerWrapper value) {
-                                            display.showHelpTopic(value.value);
-                                        }
-                                    },
-                                    display,
-                                    true
-                            );
-                        }
-                    },
-                    display
-            );
+        );
 
 
-        }
+
     }
 
     /**
@@ -149,7 +169,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                 new RESTCallBack<Object>(){
                     public void success(@NotNull final RESTTopicV1 value) {
 
-                        final boolean hasReviewTag = ComponentTopicV1.hasTag(value, ServiceConstants.REVIEW_PROPERTY_TAG);
+                        final boolean hasReviewTag = topicHasTag(value, ServiceConstants.REVIEW_PROPERTY_TAG);
 
                         checkState(lastRevisionWithTag != null || hasReviewTag, "The first revision should have the review tag. The database revisions may be in an inconsistent state.");
 
@@ -171,5 +191,17 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
             checkState(lastRevisionWithTag != null, "lastRevisionWithTag should not be null. The database revisions may be in an inconsistent state.");
             loadTopics(topicId, latestRevision, lastRevisionWithTag.getItem().getRevision());
         }
+    }
+
+    private boolean topicHasTag(@NotNull final RESTTopicV1 value, final int id) {
+        checkArgument(value.getTags() != null && value.getTags().getItems() != null, "Topic has to have a valid tags collection");
+
+        for (final RESTTagCollectionItemV1 tag : value.getTags().getItems()) {
+            if (tag.getItem().getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

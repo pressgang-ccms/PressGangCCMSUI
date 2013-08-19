@@ -903,6 +903,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             U extends RESTBaseCollectionV1<T, U, V>,
             V extends RESTBaseCollectionItemV1<T, U, V>> extends BaseSearchAndEditViewInterface<T, U, V> {
 
+
         FlexTable getRenderedSplitViewMenu();
 
         PushButton getRenderedSplitOpen();

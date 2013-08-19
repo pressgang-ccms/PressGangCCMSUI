@@ -69,11 +69,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicContentSpecsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
@@ -172,6 +168,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private TopicPresenter topicViewPresenter;
     @Inject
     private TopicRevisionsPresenter topicRevisionsPresenter;
+    @Inject
+    private TopicReviewPresenter topicReviewPresenter;
     @Inject
     private Display display;
 
@@ -333,7 +331,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getDisplay(), getNewEntityCallback);
 
         topicContentSpecsPresenter.bindChildrenExtended();
-        topicRevisionsPresenter.bindExtended();
+        topicRevisionsPresenter.bindRenderedDiff(topicRevisionsPresenter.getDisplay());
+        topicReviewPresenter.bindRenderedDiff(topicReviewPresenter.getDisplay());
 
         bindTagButtons();
 
@@ -926,6 +925,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getCspsDown(), getDisplay().getCsps());
+            this.getDisplay().replaceTopActionButton(this.getDisplay().getReviewDown(), getDisplay().getReview());
 
             if (displayedView == this.topicViewPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
@@ -933,6 +933,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
             } else if (displayedView == getTopicContentSpecsPresenter().getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getCsps(), getDisplay().getCspsDown());
+            } else if (displayedView == topicReviewPresenter.getDisplay()) {
+                getDisplay().replaceTopActionButton(getDisplay().getReview(), getDisplay().getReviewDown());
             }
 
             if (isReadOnlyMode()) {
@@ -1002,6 +1004,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
                 refreshRenderedView();
             }
+
+            /*
+                Load the revisions of the topic that mark the review boundaries and display the changes in an
+                inline diff.
+             */
+            if (displayedView == topicReviewPresenter.getDisplay()) {
+                topicReviewPresenter.displayTopicReview(searchResultPresenter.getProviderData().getDisplayedItem().getItem());
+            }
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
         }
@@ -1466,6 +1477,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
+            final ClickHandler reviewClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicReviewPresenter.getDisplay());
+                    }
+                }
+            };
+
             getDisplay().getCsps().addClickHandler(cspsClickHandler);
 
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
@@ -1482,6 +1502,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHandler);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
+            getDisplay().getReview().addClickHandler(reviewClickHandler);
 
             addKeyboardShortcutEvents(getTopicXMLPresenter().getDisplay(), display);
         } finally {
@@ -3252,12 +3273,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /**
          * @return The button this is used show csps
          */
+        @NotNull
         PushButton getCsps();
 
         /**
          * @return The label this is used to show csps
          */
+        @NotNull
         Label getCspsDown();
+
+        @NotNull
+        PushButton getReview();
+
+        @NotNull
+        Label getReviewDown();
     }
 
     /**

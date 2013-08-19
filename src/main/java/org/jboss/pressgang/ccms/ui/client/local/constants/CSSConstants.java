@@ -16,6 +16,9 @@ public interface CSSConstants {
         String TOPIC_REVIEW_LAYOUT_PANEL = "TopicReviewLayoutPanel";
         String TOPIC_REVIEW_RENDERED_DIFF = "TopicReviewRenderedDiff";
         String TOPIC_REVIEW_VIEW_SPINNER = "TopicReviewSpinner";
+        String TOPIC_REVIEW_HELP_IFRAME = "TopicReviewHelpIframe";
+        String TOPIC_REVIEW_HELP_IFRAME_PARENT = "TopicReviewHelpIframeParent";
+        String TOPIC_REVIEW_BUTTON_LAYOUT_PANEL = "TopicReviewButtonLayoutPanel";
     }
 
     interface HelpOverlay {

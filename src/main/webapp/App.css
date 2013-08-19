@@ -5,6 +5,19 @@ td {
     padding: 0px;
 }
 
+.TopicReviewLayoutPanel {
+    width: 100%;
+    height: 100%
+}
+
+.TopicReviewHelpIframeParent {
+    height: 100%;
+}
+
+.TopicReviewButtonLayoutPanel {
+    margin: 8px;
+}
+
 .PressGangHeaderImage {
     /*
        Remove the space around the image in a <TD>
@@ -179,7 +192,7 @@ td {
     background-color: white;
 }
 
-.TopicRenderedViewIFrame, .WelcomeViewIFrame, .TopicRevisionHTMLDiffFrame {
+.TopicRenderedViewIFrame, .WelcomeViewIFrame, .TopicRevisionHTMLDiffFrame, .TopicReviewHelpIframe {
     width: 100%;
     height: 100%;
     border: none;
@@ -242,7 +255,7 @@ div[class^='badword'] {
     top: 50%;
 }
 
-.TopicTagViewSpinner, .TopicRevisionViewSpinner, .TopicContentSpecViewSpinner {
+.TopicTagViewSpinner, .TopicRevisionViewSpinner, .TopicContentSpecViewSpinner, .TopicReviewSpinner {
     position: relative;
     margin: auto;
     top: 0;

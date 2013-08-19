@@ -20,7 +20,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     private final PushButton startReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.StartReview());
     private final PushButton endAndAcceptReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EndAndAcceptReview());
     private final PushButton endAndRejectReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EndAndRejectReview());
-    private final VerticalPanel verticalPanel = new VerticalPanel();
+    private final FlexTable verticalPanel = new FlexTable();
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
     private final HTML renderedDiff = new HTML();
     private final Frame content = new Frame();
@@ -38,8 +38,10 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
             + PressGangCCMSUI.INSTANCE.RenderedView());
 
         verticalPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_LAYOUT_PANEL);
+        buttonPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_BUTTON_LAYOUT_PANEL);
         renderedDiff.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_RENDERED_DIFF);
         spinner.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
+        content.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME);
 
         this.getPanel().setWidget(verticalPanel);
     }
@@ -73,9 +75,10 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.clear();
         verticalPanel.clear();
 
-        verticalPanel.add(renderedDiff);
-        verticalPanel.add(buttonPanel);
+        verticalPanel.setWidget(0, 0, renderedDiff);
+        verticalPanel.setWidget(1, 0, buttonPanel);
 
+        verticalPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME_PARENT);
 
         buttonPanel.add(endAndAcceptReview);
         buttonPanel.add(endAndRejectReview);
@@ -87,8 +90,10 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.clear();
         verticalPanel.clear();
 
-        verticalPanel.add(content);
-        verticalPanel.add(buttonPanel);
+        verticalPanel.setWidget(0, 0, content);
+        verticalPanel.setWidget(1, 0, buttonPanel);
+
+        verticalPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME_PARENT);
 
         content.setUrl(ServerDetails.getSavedServer().getRestEndpoint() +
                 Constants.ECHO_ENDPOINT + "?id=" + helpTopic + "&" +
