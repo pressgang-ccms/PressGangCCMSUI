@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import java.util.Date;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -426,4 +427,11 @@ final public class GWTUtilities {
         container.clear();
         container.add(display.getTopLevelPanel());
     }
+
+    public static native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
+		document.open('text/html', 'replace');
+		document.write(content);
+		document.close();
+
+	}-*/;
 }

@@ -83,7 +83,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.add(endAndRejectReview);
 
         final IFrameElement iFrameElement = content.getElement().cast();
-        writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+        GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
     }
 
     @Override
@@ -107,10 +107,5 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         this.getPanel().setWidget(verticalPanel);
     }
 
-    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
-		document.open('text/html', 'replace');
-		document.write(content);
-		document.close();
 
-	}-*/;
 }

@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -485,7 +486,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().setWidget(htmlDiffPanel);
 
         final IFrameElement iFrameElement = diffFrame.getElement().cast();
-        writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+        GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
 
         isDisplayingRevisions = false;
     }
@@ -495,13 +496,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().setWidget(spinner);
         this.isDisplayingRevisions = false;
     }
-
-    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
-		document.open('text/html', 'replace');
-		document.write(content);
-		document.close();
-
-	}-*/;
 
     @NotNull
     @Override
