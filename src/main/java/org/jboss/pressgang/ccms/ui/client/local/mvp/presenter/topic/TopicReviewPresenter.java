@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -73,11 +74,11 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
      * now.
      * @param topic The topic whose reviews are to be displayed.
      */
-    public void displayTopicReview(@NotNull final RESTTopicV1 topic) {
+    public void displayTopicReview(@NotNull final RESTTopicV1 topic, @NotNull final Panel hiddenAttach) {
         findReviewRevision(topic, new ReviewTopicStartRevisionFound() {
             @Override
             public void revisionFound(int revision) {
-                loadTopics(topic.getId(), topic.getRevision(), revision);
+                loadTopics(topic.getId(), revision, topic.getRevision(), hiddenAttach);
             }
 
             @Override

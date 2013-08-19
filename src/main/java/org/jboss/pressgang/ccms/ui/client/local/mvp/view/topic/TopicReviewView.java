@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -22,7 +24,6 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     private final PushButton endAndRejectReview = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EndAndRejectReview());
     private final FlexTable verticalPanel = new FlexTable();
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
-    private final HTML renderedDiff = new HTML();
     private final Frame content = new Frame();
 
     /**
@@ -39,9 +40,13 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
 
         verticalPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_LAYOUT_PANEL);
         buttonPanel.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_BUTTON_LAYOUT_PANEL);
-        renderedDiff.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_RENDERED_DIFF);
         spinner.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
         content.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME);
+
+        verticalPanel.setWidget(0, 0, content);
+        verticalPanel.setWidget(1, 0, buttonPanel);
+
+        verticalPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME_PARENT);
 
         this.getPanel().setWidget(verticalPanel);
     }
@@ -72,33 +77,24 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     public void displayHtmlDiff(@NotNull final String htmlDiff) {
         this.removeWaitOperation();
+
         buttonPanel.clear();
-        verticalPanel.clear();
-
-        verticalPanel.setWidget(0, 0, renderedDiff);
-        verticalPanel.setWidget(1, 0, buttonPanel);
-
-        verticalPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME_PARENT);
-
         buttonPanel.add(endAndAcceptReview);
         buttonPanel.add(endAndRejectReview);
-        renderedDiff.setHTML(htmlDiff);
+
+        final IFrameElement iFrameElement = content.getElement().cast();
+        writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
     }
 
     @Override
     public void showHelpTopic(@NotNull final Integer helpTopic) {
         buttonPanel.clear();
-        verticalPanel.clear();
-
-        verticalPanel.setWidget(0, 0, content);
-        verticalPanel.setWidget(1, 0, buttonPanel);
-
-        verticalPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicReviewView.TOPIC_REVIEW_HELP_IFRAME_PARENT);
+        buttonPanel.add(startReview);
 
         content.setUrl(ServerDetails.getSavedServer().getRestEndpoint() +
                 Constants.ECHO_ENDPOINT + "?id=" + helpTopic + "&" +
                 Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-        buttonPanel.add(startReview);
+
     }
 
     @Override
@@ -110,4 +106,11 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     protected void hideWaiting() {
         this.getPanel().setWidget(verticalPanel);
     }
+
+    private native void writeHTMLToIFrame(final JavaScriptObject document, final String content) /*-{
+		document.open('text/html', 'replace');
+		document.write(content);
+		document.close();
+
+	}-*/;
 }

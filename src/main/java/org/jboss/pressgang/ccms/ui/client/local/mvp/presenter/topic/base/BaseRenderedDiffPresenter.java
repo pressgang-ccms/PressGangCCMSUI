@@ -93,6 +93,10 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
     }
 
     public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision) {
+        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea());
+    }
+
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach) {
         final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
             @Override
             public void success(@NotNull final RESTTopicV1 retValue1) {
@@ -106,7 +110,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                 final RESTCallBack<IntegerWrapper> hold2 = new RESTCallBack<IntegerWrapper>() {
                                     @Override
                                     public void success(@NotNull final IntegerWrapper holdValue2) {
-                                        renderXML(holdValue1.value, holdValue2.value, display.getHiddenAttachmentArea());
+                                        renderXML(holdValue1.value, holdValue2.value, hiddenAttach);
                                     }
                                 };
 

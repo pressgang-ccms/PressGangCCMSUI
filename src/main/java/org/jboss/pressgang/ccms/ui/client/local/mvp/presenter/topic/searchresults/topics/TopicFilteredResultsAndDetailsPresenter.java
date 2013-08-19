@@ -1013,7 +1013,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 inline diff.
              */
             if (displayedView == topicReviewPresenter.getDisplay()) {
-                topicReviewPresenter.displayTopicReview(searchResultPresenter.getProviderData().getDisplayedItem().getItem());
+                topicReviewPresenter.displayTopicReview(searchResultPresenter.getProviderData().getDisplayedItem().getItem(), display.getHiddenAttachmentArea());
             }
 
         } finally {
