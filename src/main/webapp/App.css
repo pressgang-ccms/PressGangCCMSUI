@@ -15,7 +15,7 @@ td {
 }
 
 .TopicReviewButtonLayoutPanel {
-    margin: 8px;
+    border-spacing: 2px;
 }
 
 .PressGangHeaderImage {

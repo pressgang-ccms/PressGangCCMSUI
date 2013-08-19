@@ -1,10 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -17,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -50,13 +48,15 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
         @NotNull PushButton getStartReview();
         @NotNull PushButton getEndAndAcceptReview();
         @NotNull PushButton getEndAndRejectReview();
+        @NotNull Label getInfo();
         void showHelpTopic(@NotNull final Integer helpTopic);
     }
 
     @Inject
     private Display display;
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
@@ -78,6 +78,14 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
         findReviewRevision(topic, new ReviewTopicStartRevisionFound() {
             @Override
             public void revisionFound(int revision) {
+                /*
+                    Add some details about which revisions are being compared to what
+                 */
+                display.getInfo().setText(PressGangCCMSUI.INSTANCE.RevisionStartedAt() + " " + revision + " " +
+                        PressGangCCMSUI.INSTANCE.CurrentRevision() + " " + topic.getRevision());
+                /*
+                    Load the revisions and create a diff
+                 */
                 loadTopics(topic.getId(), revision, topic.getRevision(), hiddenAttach);
             }
 

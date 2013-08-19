@@ -25,6 +25,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     private final FlexTable verticalPanel = new FlexTable();
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
     private final Frame content = new Frame();
+    private final Label info = new Label();
 
     /**
      * The image to display in the waiting dialog.
@@ -81,6 +82,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.clear();
         buttonPanel.add(endAndAcceptReview);
         buttonPanel.add(endAndRejectReview);
+        buttonPanel.add(info);
 
         final IFrameElement iFrameElement = content.getElement().cast();
         GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
@@ -107,5 +109,9 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         this.getPanel().setWidget(verticalPanel);
     }
 
-
+    @Override
+    @NotNull
+    public Label getInfo() {
+        return info;
+    }
 }

@@ -1060,4 +1060,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Review();
+
+    @NotNull
+    String RevisionStartedAt();
+
+    @NotNull
+    String CurrentRevision();
 }
