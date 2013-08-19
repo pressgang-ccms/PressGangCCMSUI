@@ -462,26 +462,33 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @Override
         public void onClick(@NotNull ClickEvent event) {
-            checkState(reviewUpdateTopic != null, "reviewUpdateTopic cannot be null");
+            try {
+                checkState(reviewUpdateTopic != null, "reviewUpdateTopic cannot be null");
 
-            final String user = display.getMessageLogDialog().getUsername().getText().trim();
+                final String user = display.getMessageLogDialog().getUsername().getText().trim();
 
-            final StringBuilder message = new StringBuilder();
-            if (!user.isEmpty()) {
-                message.append(user).append(": ");
+                final StringBuilder message = new StringBuilder();
+                if (!user.isEmpty()) {
+                    message.append(user).append(": ");
+                }
+                message.append(display.getMessageLogDialog().getMessage().getText());
+                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
+                        .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+
+                failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.saveTopic(
+                        reviewUpdateTopic,
+                        message.toString(),
+                        flag,
+                        ServiceConstants.NULL_USER_ID.toString()),
+                        updateCallback,
+                        display);
+            } finally {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+
+                LOGGER.log(Level.INFO, "EXIT messageLogDialogOK.onClick()");
             }
-            message.append(display.getMessageLogDialog().getMessage().getText());
-            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
-                    .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-
-            failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.saveTopic(
-                    reviewUpdateTopic,
-                    message.toString(),
-                    flag,
-                    ServiceConstants.NULL_USER_ID.toString()),
-                    updateCallback,
-                    display);
         }
     };
     /**
@@ -1646,6 +1653,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
         reviewUpdateTopic = new RESTTopicV1();
+        reviewUpdateTopic.setId(displayedTopic.getId());
         reviewUpdateTopic.explicitSetTags(new RESTTagCollectionV1());
 
         final RESTTagV1 newTag = new RESTTagV1();
@@ -1695,6 +1703,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
 
         messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(reviewMessageLogDialogOK);
+
+        configureMessageDialog();
     }
 
     private void saveTopic() {
@@ -1715,26 +1725,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
 
-                /*
-                    Default to using the major change for new topics
-                 */
-                if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
-                        .getProviderData().getDisplayedItem().returnIsAddItem()) {
-                    display.getMessageLogDialog().getMajorChange().setValue(true);
-                    display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
-                }
-
-                display.getMessageLogDialog().getUsername().setText(
-                        Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-
-                display.getMessageLogDialog().getDialogBox().center();
-                display.getMessageLogDialog().getDialogBox().show();
+                configureMessageDialog();
             } else {
                 Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.saveTopic()");
         }
+    }
+
+    private void configureMessageDialog() {
+        /*
+            Default to using the major change for new topics
+         */
+        if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
+                .getProviderData().getDisplayedItem().returnIsAddItem()) {
+            display.getMessageLogDialog().getMajorChange().setValue(true);
+            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
+        }
+
+        display.getMessageLogDialog().getUsername().setText(
+                Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+
+        display.getMessageLogDialog().getDialogBox().center();
+        display.getMessageLogDialog().getDialogBox().show();
     }
 
     /**
