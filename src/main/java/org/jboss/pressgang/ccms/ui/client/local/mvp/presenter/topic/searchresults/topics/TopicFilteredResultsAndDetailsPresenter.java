@@ -1100,7 +1100,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                     "The displayed collection item to reference a valid entity.");
 
+                            checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
+                                    "There should be a selected collection item.");
+                            checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
+                                    "The selected collection item to reference a valid entity.");
 
+                            final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+                            final RESTTopicV1 selectedTopic = getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
 
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
@@ -1271,20 +1277,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                                     LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
-                                                            /*
-                                                             * if the second last revision doesn't match the revision of the topic when editing was
-                                                             * started, then we have overwritten someone elses changes
-                                                             */
+                                                    /*
+                                                     * if the second last revision doesn't match the revision of the topic when editing was
+                                                     * started, then we have overwritten someone elses changes
+                                                     */
                                                     overwroteChanges = !originalRevision.equals(overwriteRevision);
                                                 }
                                             }
 
                                             /* Update the displayed topic */
-                                            retValue.cloneInto(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), true);
+                                            retValue.cloneInto(displayedTopic, true);
                                             /* Update the selected topic */
-                                            retValue.cloneInto(getSearchResultPresenter().getProviderData().getSelectedItem().getItem(), true);
+                                            retValue.cloneInto(selectedTopic, true);
 
                                             lastXML = null;
+
+                                            /*
+                                                The clone will clear out any previously loaded collections, so mark the
+                                                as being required to be loaded again
+                                             */
+                                            tagsLoadInitiated = false;
+                                            revisionsLoadInitiated = false;
+                                            contentSpecsLoadInitiated = false;
 
                                             updateDisplayWithNewEntityData(false);
 
@@ -1531,6 +1545,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             displayedTopic.getTags().addNewItem(newTag);
         }
 
+        display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.StartReviewLogMessage());
         saveTopic();
     }
 
@@ -1575,6 +1590,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         displayedTopic.setXml(value.getXml());
                                         displayedTopic.setTitle(value.getTitle());
 
+                                        display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
                                         saveTopic();
                                     }
                                 },
@@ -1588,6 +1604,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 });
         } else {
+            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndAcceptLogMessage());
             saveTopic();
         }
     }
