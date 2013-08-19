@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -91,11 +92,9 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
      */
     @Override
     public void reDisplayHtmlDiff() {
-        if (htmlDiff != null) {
+        if (htmlDiff != null && content.isAttached()) {
             final IFrameElement iFrameElement = content.getElement().cast();
-            if (iFrameElement.getContentDocument() != null) {
-                GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
-            }
+            GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
         }
     }
 
@@ -120,7 +119,12 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     protected void hideWaiting() {
         this.getPanel().setWidget(verticalPanel);
-        reDisplayHtmlDiff();
+        //Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+         //   @Override
+          //  public void execute() {
+                reDisplayHtmlDiff();
+           // }
+        //});
     }
 
     @Override

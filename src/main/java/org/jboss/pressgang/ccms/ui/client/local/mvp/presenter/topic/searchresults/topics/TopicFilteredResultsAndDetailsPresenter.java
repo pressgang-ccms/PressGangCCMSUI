@@ -1692,7 +1692,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 });
         } else {
             display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndAcceptLogMessage());
-            saveTopic();
+            updateReviewStatus();
         }
     }
 
