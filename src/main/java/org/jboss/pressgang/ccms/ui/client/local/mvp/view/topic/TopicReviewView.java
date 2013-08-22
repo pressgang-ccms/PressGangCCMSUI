@@ -119,12 +119,12 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     protected void hideWaiting() {
         this.getPanel().setWidget(verticalPanel);
-        //Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-         //   @Override
-          //  public void execute() {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+         @Override
+          public void execute() {
                 reDisplayHtmlDiff();
-           // }
-        //});
+           }
+        });
     }
 
     @Override

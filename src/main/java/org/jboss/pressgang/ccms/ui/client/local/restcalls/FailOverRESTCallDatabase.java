@@ -754,6 +754,48 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     * @param queryString The query
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static RESTCall getTopicsFromQueryWithRevisionsWithTag(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"topics\"}, \"branches\":[{\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static RESTCall getTopicWithRevisionsWithTags(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"tags\"}}, {\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}";
+                restService.getJSONTopic(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -771,6 +813,8 @@ public final class FailOverRESTCallDatabase {
             }
         };
     }
+
+
 
     /**
      * Create a RESTCall object to call the REST getJSONTranslatedTopic method

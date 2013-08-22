@@ -131,7 +131,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
      */
     public void findReviewRevision(@NotNull final RESTTopicV1 topic, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
         failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopicWithTags(
+                FailOverRESTCallDatabase.getTopicWithRevisionsWithTags(
                 topic.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 topicWithTags) {
@@ -139,89 +139,57 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                         final boolean hasReviewTag = EntityUtilities.topicHasTag(topicWithTags, ServiceConstants.REVIEW_PROPERTY_TAG);
 
                         if (hasReviewTag) {
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.getTopicWithRevisions(topic.getId()),
-                                    new RESTCallBack<RESTTopicV1>(){
-                                        public void success(@NotNull final RESTTopicV1 topicWithRevisions) {
+                            /*
+                                Make sure the list of revisions is smallest to largest
+                            */
+                            Collections.sort(topicWithTags.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                            /*
+                                And then reverse the list to go from largest to smallest
+                            */
+                            Collections.reverse(topicWithTags.getRevisions().getItems());
 
-                                            /*
-                                                Make sure the list of revisions is smallest to largest
-                                            */
-                                            Collections.sort(topicWithRevisions.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
-                                            /*
-                                                And then reverse the list to go from largest to smallest
-                                            */
-                                            Collections.reverse(topicWithRevisions.getRevisions().getItems());
+                            boolean foundLatest = false;
+                            boolean foundEarliest = false;
+                            RESTTopicV1 lastRevisionWithTag = null;
+                            for (@NotNull final RESTTopicCollectionItemV1 revision : topicWithTags.getRevisions().getItems()) {
+                                /*
+                                    On the off chance that a new revision was created between when this topic was
+                                    selected and when the review diff is viewed, we ignore any revisions greater than
+                                    the one assigned to the topic.
+                                 */
+                                if (!foundLatest && revision.getItem().getRevision().equals(topic.getRevision())) {
+                                    foundLatest = true;
+                                }
 
-                                            final List<Integer> revisions = new ArrayList<Integer>();
-                                            boolean foundLatest = false;
-                                            for (@NotNull final RESTTopicCollectionItemV1 revision : topicWithRevisions.getRevisions().getItems()) {
-                                                /*
-                                                    On the off chance that a new revision was created between when this topic was
-                                                    selected and when the review diff is viewed, we ignore any revisions greater than
-                                                    the one assigned to the topic.
-                                                 */
-                                                if (!foundLatest && revision.getItem().getRevision().equals(topic.getRevision())) {
-                                                    foundLatest = true;
-                                                }
+                                if (foundLatest) {
+                                    final boolean revisionHasReviewTag = EntityUtilities.topicHasTag(revision.getItem(), ServiceConstants.REVIEW_PROPERTY_TAG);
 
-                                                if (foundLatest) {
-                                                    revisions.add(revision.getItem().getRevision());
-                                                }
-                                            }
+                                    checkState(lastRevisionWithTag != null || revisionHasReviewTag, "The first revision should have the review tag. The database revisions may be in an inconsistent state.");
 
-                                            processRevision(topic.getId(), null, revisions, waitDisplay, callback);
-                                        }
-                                    },
-                                    waitDisplay
-                            );
+                                    if (revisionHasReviewTag) {
+                                        lastRevisionWithTag = revision.getItem();
+                                    } else {
+                                        checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
+
+                                        callback.revisionFound(lastRevisionWithTag.getRevision());
+                                        foundEarliest = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundEarliest) {
+                                checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
+
+                                // If we got here then the first revision of the topic was set for review.
+                                callback.revisionFound(lastRevisionWithTag.getRevision());
+                            }
                         } else {
                             callback.revisionNotFound();
                         }
-
                     }
                 },
                 waitDisplay
         );
     }
-
-    /**
-     * A recursively called method that works through each revision looking for one that does not have the review tag.
-     * When this is found, or when the list of revisions is exhausted, the rendered diff between these revisions
-     * is displayed.
-     * @param topicId The topic id we are working with
-     * @param lastRevisionWithTag The last topic to have the tag assigned to it. The revision that matches latestRevision will have the review tag.
-     * @param revisionIds The list of ids left to process
-     */
-    private void processRevision(final int topicId, @NotNull final RESTTopicV1 lastRevisionWithTag, @NotNull final List<Integer> revisionIds, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
-
-        if (!revisionIds.isEmpty()) {
-            failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopicRevisionWithTags(topicId, revisionIds.get(0)),
-                new RESTCallBack<RESTTopicV1>(){
-                    public void success(@NotNull final RESTTopicV1 value) {
-
-                        final boolean hasReviewTag = EntityUtilities.topicHasTag(value, ServiceConstants.REVIEW_PROPERTY_TAG);
-
-                        checkState(lastRevisionWithTag != null || hasReviewTag, "The first revision should have the review tag. The database revisions may be in an inconsistent state.");
-
-                        if (hasReviewTag) {
-                            revisionIds.remove(0);
-                            processRevision(topicId, value, revisionIds, waitDisplay, callback);
-                        } else {
-                            callback.revisionFound(lastRevisionWithTag.getRevision());
-                        }
-                    }
-
-                },
-                waitDisplay
-            );
-        } else {
-            // If we got here then the first revision of the topic was set for review.
-            checkState(lastRevisionWithTag != null, "lastRevisionWithTag should not be null. The database revisions may be in an inconsistent state.");
-            callback.revisionFound(lastRevisionWithTag.getRevision());
-        }
-    }
-
-
 }
