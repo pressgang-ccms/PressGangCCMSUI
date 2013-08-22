@@ -76,6 +76,7 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     public void displayHtmlDiff(@NotNull final String htmlDiff) {
         this.removeWaitOperation();
+        reDisplayHtmlDiff();
 
         buttonPanel.clear();
         buttonPanel.add(endAndAcceptReview);
@@ -83,7 +84,6 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.add(info);
 
         this.htmlDiff = htmlDiff;
-        reDisplayHtmlDiff();
     }
 
     /**
@@ -92,10 +92,15 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
      */
     @Override
     public void reDisplayHtmlDiff() {
-        if (htmlDiff != null && content.isAttached()) {
-            final IFrameElement iFrameElement = content.getElement().cast();
-            GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
-        }
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                if (htmlDiff != null && content.isAttached()) {
+                    final IFrameElement iFrameElement = content.getElement().cast();
+                    GWTUtilities.writeHTMLToIFrame(iFrameElement.getContentDocument(), htmlDiff);
+                }
+            }
+        });
     }
 
     @Override
@@ -119,12 +124,6 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     @Override
     protected void hideWaiting() {
         this.getPanel().setWidget(verticalPanel);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-         @Override
-          public void execute() {
-                reDisplayHtmlDiff();
-           }
-        });
     }
 
     @Override
