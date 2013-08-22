@@ -1666,9 +1666,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 display,
                 new ReviewTopicStartRevisionFound() {
                     @Override
-                    public void revisionFound(final int revision) {
+                    public void revisionFound(@NotNull final RESTTopicV1 revision) {
                         failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision),
+                                FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision.getRevision()),
                                 new RESTCallBack<RESTTopicV1>() {
                                     public void success(@NotNull final RESTTopicV1 value) {
                                         /*

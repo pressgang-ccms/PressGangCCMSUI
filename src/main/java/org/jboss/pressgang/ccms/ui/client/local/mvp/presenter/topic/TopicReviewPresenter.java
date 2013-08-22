@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -86,16 +87,20 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     public void displayTopicReview(@NotNull final Panel hiddenAttach) {
         findReviewRevision(topic, display, new ReviewTopicStartRevisionFound() {
             @Override
-            public void revisionFound(int revision) {
+            public void revisionFound(@NotNull final RESTTopicV1 revision) {
                 /*
                     Add some details about which revisions are being compared to what
                  */
-                display.getInfo().setText(PressGangCCMSUI.INSTANCE.RevisionStartedAt() + " " + revision + " " +
-                        PressGangCCMSUI.INSTANCE.CurrentRevision() + " " + topic.getRevision());
+                display.getInfo().setText(PressGangCCMSUI.INSTANCE.RevisionStartedAt()
+                        + " " + revision.getRevision()
+                        + " (" + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM).format(revision.getLastModified()) + ") " +
+                        PressGangCCMSUI.INSTANCE.CurrentRevision()
+                        + " " + topic.getRevision()
+                        + " (" + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM).format(topic.getLastModified()) + ")");
                 /*
                     Load the revisions and create a diff
                  */
-                loadTopics(topic.getId(), revision, topic.getRevision(), hiddenAttach);
+                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach);
             }
 
             @Override
@@ -132,7 +137,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     public void findReviewRevision(@NotNull final RESTTopicV1 topic, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopicWithRevisionsWithTags(
-                topic.getId()),
+                        topic.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 topicWithTags) {
 
@@ -171,7 +176,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                                     } else {
                                         checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
 
-                                        callback.revisionFound(lastRevisionWithTag.getRevision());
+                                        callback.revisionFound(lastRevisionWithTag);
                                         foundEarliest = true;
                                         break;
                                     }
@@ -182,7 +187,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                                 checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
 
                                 // If we got here then the first revision of the topic was set for review.
-                                callback.revisionFound(lastRevisionWithTag.getRevision());
+                                callback.revisionFound(lastRevisionWithTag);
                             }
                         } else {
                             callback.revisionNotFound();
