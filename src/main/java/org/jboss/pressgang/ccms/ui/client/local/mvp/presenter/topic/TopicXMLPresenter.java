@@ -143,7 +143,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
 
     public TopicXMLPresenter() {
-
+        LOGGER.log(Level.INFO, "ENTER TopicXMLPresenter()");
     }
 
     /**

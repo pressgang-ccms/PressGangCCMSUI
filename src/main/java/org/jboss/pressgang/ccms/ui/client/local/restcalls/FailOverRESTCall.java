@@ -84,7 +84,12 @@ public final class FailOverRESTCall {
                     public void callback(final T retValue) {
                         if (!isTimedout() && !isReturned()) {
 
-                            callback.success(retValue);
+                            try {
+                                callback.success(retValue);
+                            } catch (@NotNull final RuntimeException ex) {
+                                LOGGER.info("Success method threw RuntimeException. Rethrowing");
+                                throw ex;
+                            }
 
                             if (display != null) {
                                 display.removeWaitOperation();
