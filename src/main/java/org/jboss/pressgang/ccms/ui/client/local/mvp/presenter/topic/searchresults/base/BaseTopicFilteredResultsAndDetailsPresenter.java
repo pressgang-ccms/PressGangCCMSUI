@@ -1,15 +1,34 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -20,7 +39,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -31,17 +55,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 /**
  * This class provides the common functionality shared between the topic and
  * translated topic screen.
@@ -51,12 +64,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * or translated topic screens.
  */
 public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
-        T extends RESTBaseTopicV1<T, U, V>,
-        U extends RESTBaseCollectionV1<T, U, V>,
-        V extends RESTBaseCollectionItemV1<T, U, V>,
-        Y extends Editor<T>>
-        extends BaseSearchAndEditPresenter<T, U, V, Y>
-        implements BaseTemplatePresenterInterface {
+        T extends RESTBaseTopicV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+        Y extends Editor<T>> extends BaseSearchAndEditPresenter<T, U, V, Y> implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
@@ -210,6 +219,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         bindSplitPanelResize();
 
+        addKeyboardShortcutEventHandler();
+
         postBindSearchAndEditExtended(queryString);
 
         /*
@@ -237,20 +248,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     abstract protected boolean isInitialTopicReadyToBeLoaded();
 
     /**
-     * Reflect the state of the editor with the XML editor toggle buttons
-     */
-    private void setXMLEditorButtonsToEditorState() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.setXMLEditorButtonsToEditorState()");
-
-            topicXMLPresenter.getDisplay().getLineWrap().setDown(topicXMLPresenter.getDisplay().getEditor().getUserWrapMode());
-            topicXMLPresenter.getDisplay().getShowInvisibles().setDown(topicXMLPresenter.getDisplay().getEditor().getShowInvisibles());
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.setXMLEditorButtonsToEditorState()");
-        }
-    }
-
-    /**
      * (Re)Initialize the main display with the rendered view split pane (if selected).
      */
     private void initializeDisplay() {
@@ -268,9 +265,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             double renderedPanelSize = Constants.SPLIT_PANEL_SIZE;
             if (this.split == SplitType.HORIZONTAL) {
-                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
+                        Constants.SPLIT_PANEL_SIZE);
             } else if (this.split == SplitType.VERTICAL) {
-                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+                renderedPanelSize = Preferences.INSTANCE.getDouble(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
+                        Constants.SPLIT_PANEL_SIZE);
             } else {
                 LOGGER.log(Level.INFO, "split not set");
             }
@@ -278,7 +277,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final double searchResultsWidth = Preferences.INSTANCE.getDouble(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedPresenter.getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
+            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedPresenter.getDisplay().getPanel(),
+                    searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
         } finally {
@@ -319,14 +319,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 @Override
                 public void onResize(@NotNull final ResizeEvent event) {
                     try {
-                        LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
+                        LOGGER.log(Level.INFO,
+                                "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
 
                         if (topicXMLPresenter.getDisplay().getEditor() != null) {
                             topicXMLPresenter.getDisplay().getEditor().redisplay();
                         }
 
                         if (topicSplitPanelRenderedPresenter.getDisplay().getPanel().isAttached()) {
-                            double splitSize = getDisplay().getSplitPanel().getSplitPosition(topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
+                            double splitSize = getDisplay().getSplitPanel().getSplitPosition(
+                                    topicSplitPanelRenderedPresenter.getDisplay().getPanel().getParent());
 
                             /*
                              * Saves the width of the split screen
@@ -340,7 +342,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             }
                         }
                     } finally {
-                        LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
+                        LOGGER.log(Level.INFO,
+                                "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindSplitPanelResize() ResizeHandler.onResize()");
                     }
                 }
             });
@@ -364,7 +367,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* Display the property tags that are added to the category */
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed item need to reference a valid entity");
 
 
             /* Display the list of property tags */
@@ -447,16 +451,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.updatePageTitle()");
 
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
-            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed item need to reference a valid entity");
 
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            final StringBuilder id = new StringBuilder(getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
+            final StringBuilder id = new StringBuilder(
+                    getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
 
             /*
                 Test to see if we are looking at a specific revision. If so, add the revision to the page title.
              */
-            if (getDisplayedTopic().getRevision() != null &&
-                    !getDisplayedTopic().getRevision().equals(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
+            if (getDisplayedTopic().getRevision() != null && !getDisplayedTopic().getRevision().equals(
+                    getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
                 id.append("-" + getDisplayedTopic().getRevision());
             }
 
@@ -638,20 +644,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getShowHideSearchResults().addClickHandler(showHideSearchResults);
 
             /* Hook up the xml editor buttons */
-            topicXMLPresenter.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
+            topicXMLPresenter.getDisplay().getEditorSettings().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    topicXMLPresenter.getDisplay().getEditor().setUseWrapMode(topicXMLPresenter.getDisplay().getLineWrap().isDown());
+                    if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown()
+                            && !isAnyDialogBoxesOpen(topicXMLPresenter.getDisplay())) {
+                        topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().center();
+                        topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().show();
+                    }
                 }
             });
 
-            topicXMLPresenter.getDisplay().getShowInvisibles().addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(final ClickEvent event) {
-                    topicXMLPresenter.getDisplay().getEditor().setShowInvisibles(
-                            topicXMLPresenter.getDisplay().getShowInvisibles().isDown());
-                }
-            });
 
             postBindActionButtons();
         } finally {
@@ -678,10 +681,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 @Override
                 public void execute() {
                     try {
-                        LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                        LOGGER.log(Level.INFO,
+                                "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
                         getDisplay().getSplitPanel().onResize();
                     } finally {
-                        LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
+                        LOGGER.log(Level.INFO,
+                                "EXIT BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons() ScheduledCommand.execute()");
                     }
                 }
             });
@@ -731,14 +736,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
-                topicSplitPanelRenderedPresenter.displayTopicRendered(addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
+                topicSplitPanelRenderedPresenter.displayTopicRendered(
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }
 
-            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called above */
+            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called
+            above */
             if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
-                setXMLEditorButtonsToEditorState();
-                topicXMLPresenter.getDisplay().getEditor().setThemeByName(Preferences.INSTANCE.getString(Preferences.EDITOR_THEME, Constants.DEFAULT_THEME));
+                topicXMLPresenter.loadEditorSettings();
                 topicXMLPresenter.getDisplay().getEditor().redisplay();
             }
 
@@ -894,14 +900,64 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         return topicRenderedPresenter;
     }
 
+    /**
+     * Add listeners for keyboard events
+     */
+    private void addKeyboardShortcutEventHandler() {
+        @NotNull final Event.NativePreviewHandler keyboardShortcutPreviewHandler = new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
+                final NativeEvent ne = event.getNativeEvent();
+
+                if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE) {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            if (getDisplay().getTopLevelPanel().isAttached() && topicXMLPresenter.getDisplay().isViewShown()) {
+                                if (topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().isShowing()) {
+                                    topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().hide();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
+    }
+
+    protected boolean isAnyDialogBoxesOpen(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
+        if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        if (topicXMLDisplay.getEditorSettingsDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * The interface that defines the top level topic list and edit view
      */
     public interface Display<
-            T extends RESTBaseEntityV1<T, U, V>,
-            U extends RESTBaseCollectionV1<T, U, V>,
-            V extends RESTBaseCollectionItemV1<T, U, V>> extends BaseSearchAndEditViewInterface<T, U, V> {
+            T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U,
+            V>> extends BaseSearchAndEditViewInterface<T, U, V> {
 
 
         FlexTable getRenderedSplitViewMenu();
@@ -998,7 +1054,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         SplitType getSplitType();
 
-        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel, final double searchResultsWidth, final double renderedPanelSize);
+        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel,
+                final double searchResultsWidth, final double renderedPanelSize);
 
         /**
          * @return The button used to show or hide the search results panel
@@ -1017,7 +1074,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         /*
             Content UI elements
          */
-        setDataAttribute(getSearchResultPresenter().getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId());
+        setDataAttribute(getSearchResultPresenter().getDisplay().getSearchResultsPanel(),
+                ServiceConstants.HELP_TOPICS.TOPIC_SEARCH_RESULTS.getId());
         setDataAttribute(getTopicXMLPresenter().getDisplay().getEditorParent(), ServiceConstants.HELP_TOPICS.XML_EDITOR.getId());
         setDataAttribute(getTopicXMLPresenter().getDisplay().getXmlErrors(), ServiceConstants.HELP_TOPICS.TOPIC_XML_VALIDATION.getId());
 
@@ -1036,20 +1094,24 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         setDataAttribute(getDisplay().getBugsDown(), ServiceConstants.HELP_TOPICS.TOPIC_BUGS.getId());
         setDataAttribute(getDisplay().getXml(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId());
         setDataAttribute(getDisplay().getXmlDown(), ServiceConstants.HELP_TOPICS.TOPIC_XML_EDITOR.getId());
-        setDataAttribute(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId());
-        setDataAttribute(getTopicXMLPresenter().getDisplay().getShowInvisibles(), ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId());
+//        setDataAttribute(getTopicXMLPresenter().getDisplay().getLineWrap(), ServiceConstants.HELP_TOPICS.TOPIC_LINE_WRAP.getId());
+//        setDataAttribute(getTopicXMLPresenter().getDisplay().getShowInvisibles(),
+//                ServiceConstants.HELP_TOPICS.TOPIC_HIDDEN_CHARACTERS.getId());
         setDataAttribute(getDisplay().getRenderedSplit(), ServiceConstants.HELP_TOPICS.TOPIC_RENDERED_PANE.getId());
 
-        setDataAttribute(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS_LIST.getId());
+        setDataAttribute(topicSourceURLsPresenter.getDisplay().getPossibleChildrenResultsPanel(),
+                ServiceConstants.HELP_TOPICS.TOPIC_SOURCE_URLS_LIST.getId());
         setDataAttribute(topicSourceURLsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_ADD_SOURCE_URL.getId());
 
         setDataAttribute(topicTagsPresenter.getDisplay().getAdd(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_ADD.getId());
         setDataAttribute(topicTagsPresenter.getDisplay().getProjectsList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_PROJECTS_LIST.getId());
-        setDataAttribute(topicTagsPresenter.getDisplay().getCategoriesList(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId());
+        setDataAttribute(topicTagsPresenter.getDisplay().getCategoriesList(),
+                ServiceConstants.HELP_TOPICS.TOPIC_TAG_CATEGORIES_LIST.getId());
         setDataAttribute(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId());
         setDataAttribute(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId());
 
-        setDataAttribute( getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(), ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId());
+        setDataAttribute(getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
+                ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId());
 
     }
 }

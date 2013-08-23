@@ -1078,4 +1078,13 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CanNotProceedWithUnsavedChanges();
+
+    @NotNull
+    String EditorSettings();
+
+    @NotNull
+    String EditorFontSize();
+
+    @NotNull
+    String EditorTheme();
 }

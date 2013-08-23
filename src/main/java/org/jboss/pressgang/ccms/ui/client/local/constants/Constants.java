@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308231035";
+    public static final String VERSION = "201308231838";
 
     /**
      * The attribute that is used by the help overlay system
@@ -22,6 +22,11 @@ public final class Constants {
      * The default ace editor theme
      */
     public static final String DEFAULT_THEME = "eclipse";
+
+    /**
+     * The default ace editor theme
+     */
+    public static final String DEFAULT_FONT_SIZE = "12px";
 
     /**
      * The height of the tabs in a tab panel, in EMs

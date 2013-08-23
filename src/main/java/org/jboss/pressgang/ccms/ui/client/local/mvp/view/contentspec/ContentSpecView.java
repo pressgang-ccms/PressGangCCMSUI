@@ -1,17 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.PushButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.EditorSettingsDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1TextEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * The view that displays the text content of a content spec
@@ -25,6 +28,9 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
      */
     public RESTTextContentSpecV1TextEditor editor;
 
+    private final EditorSettingsDialog editorSettingsDialog = new EditorSettingsDialog();
+    private final PushButton settings = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
+
     private final ContentSpecPresenter.ContentSpecTextPresenterDriver driver = GWT.create(ContentSpecPresenter.ContentSpecTextPresenterDriver.class);
 
     @Override
@@ -33,8 +39,22 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
         return editor.text;
     }
 
+    @NotNull
+    @Override
+    public EditorSettingsDialog getEditorSettingsDialog() {
+        return editorSettingsDialog;
+    }
+
+    @NotNull
+    @Override
+    public PushButton getEditorSettings() {
+        return settings;
+    }
+
     public ContentSpecView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecText());
+
+        addLocalActionButton(this.settings);
     }
 
     public void display(@Nullable final RESTTextContentSpecV1 contentSpec, final boolean readOnly) {
