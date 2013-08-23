@@ -4,7 +4,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -17,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
