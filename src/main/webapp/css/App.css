@@ -1062,13 +1062,13 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
     text-decoration: none;
 }
 
-/* The checkboxes and labels don't align, so this fixes that */
-.gwt-CheckBox {
+/* The checkboxes/radiobuttons and labels don't align, so this fixes that */
+.gwt-CheckBox, .gwt-RadioButton {
     display: table;
     border-collapse: collapse
 }
 
-.gwt-CheckBox > label {
+.gwt-CheckBox > label, .gwt-RadioButton > label {
     display: table-cell;
     vertical-align: middle;
     padding-left: 1px;
