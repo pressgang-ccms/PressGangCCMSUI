@@ -16,5 +16,8 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
 
     public TranslatedTopicResultsAndTranslatedTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+
+        // Remove the action button bar since we have none to display
+        getResultsActionButtonsParentPanelScroll().removeFromParent();
     }
 }
