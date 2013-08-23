@@ -1061,3 +1061,15 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 .gwt-DisclosurePanel a {
     text-decoration: none;
 }
+
+/* The checkboxes and labels don't align, so this fixes that */
+.gwt-CheckBox {
+    display: table;
+    border-collapse: collapse
+}
+
+.gwt-CheckBox > label {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 1px;
+}
