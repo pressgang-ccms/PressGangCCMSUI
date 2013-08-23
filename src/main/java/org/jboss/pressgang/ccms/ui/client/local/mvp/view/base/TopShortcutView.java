@@ -48,7 +48,8 @@ public class TopShortcutView extends HorizontalPanel {
 
 
     public TopShortcutView() {
-
+        menus.setAutoOpen(true);
+        menus.setAnimationEnabled(true);
 
         menus.addItem(searchSubMenu);
         menus.addItem(entitiesSubMenu);

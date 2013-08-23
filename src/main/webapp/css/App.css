@@ -67,7 +67,6 @@ td {
     background-color: #00C618;
     border: 1px solid #009200;
     color: white;
-    padding:8px;
 }
 
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
