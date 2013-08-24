@@ -121,7 +121,7 @@ public final class FailOverRESTCall {
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
-                                } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
                                     /*
                                         A 404 is not necessarily an error, as long as the PressGang header is present.
                                      */
@@ -144,7 +144,7 @@ public final class FailOverRESTCall {
                                              */
                                             prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
                                         }
-                                        Window.alert(prefix + responseText == null ? "" : ("\n\n" + responseText));
+                                        Window.alert(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
                                     }
 
                                     callback.failed();
@@ -162,7 +162,8 @@ public final class FailOverRESTCall {
                                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                     } else {
                                         if (!disableDefaultFailureAction) {
-                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + responseText == null ? "" : ("\n\n" + responseText));
+                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
+                                                    responseText)));
                                         }
 
                                         callback.failed();
