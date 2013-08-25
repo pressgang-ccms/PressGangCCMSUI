@@ -417,8 +417,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     public TopicXMLView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.XMLEditing());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.XMLEditing());
 
         LOGGER.info("ENTER TopicXMLView()");
 

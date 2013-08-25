@@ -1261,6 +1261,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             enableAndDisableActionButtons(displayedView);
 
+            updatePageTitle(displayedView);
+
             /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
             if (displayedView != null) {
                 displayedView.setViewShown(true);
@@ -1293,6 +1295,46 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
+        }
+    }
+
+    /**
+     * Update the page name.
+     *
+     * @param displayedView the currently displayed view.
+     */
+    private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.updatePageTitle()");
+
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed item need to reference a valid entity");
+
+            final StringBuilder title = new StringBuilder(
+                    filteredResultsPresenter.getDisplay().getPageName() + " - " + displayedView.getPageName());
+            final StringBuilder id = new StringBuilder(
+                    getDisplayedContentSpec().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedContentSpec().getId().toString());
+
+            /*
+                Test to see if we are looking at a specific revision. If so, add the revision to the page title.
+             */
+            if (getDisplayedContentSpec().getRevision() != null && !getDisplayedContentSpec().getRevision().equals(
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
+                id.append("-" + getDisplayedContentSpec().getRevision());
+            }
+
+            String displayTitle = getDisplayedContentSpec().getTitle() == null ? "" : getDisplayedContentSpec().getTitle();
+            if (displayTitle.length() > Constants.MAX_PAGE_TITLE_LENGTH) {
+                displayTitle = displayTitle.substring(0, Constants.MAX_PAGE_TITLE_LENGTH - 3) + "...";
+            }
+
+            if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+                title.append(": " + displayTitle + " [" + id.toString() + "]");
+            }
+            getDisplay().getPageTitle().setText(title.toString());
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.updatePageTitle()");
         }
     }
 

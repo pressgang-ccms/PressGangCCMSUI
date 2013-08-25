@@ -92,7 +92,7 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
     }
 
     public ContentSpecTagsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.ContentSpecTags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecTags());
 
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecTagsView()");

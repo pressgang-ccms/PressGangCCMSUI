@@ -454,7 +454,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                     "The displayed item need to reference a valid entity");
 
-            final StringBuilder title = new StringBuilder(displayedView.getPageName());
+            final StringBuilder title = new StringBuilder(
+                    getSearchResultPresenter().getDisplay().getPageName() + " - " + displayedView.getPageName());
             final StringBuilder id = new StringBuilder(
                     getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
 
@@ -647,8 +648,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             topicXMLPresenter.getDisplay().getEditorSettings().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown()
-                            && !isAnyDialogBoxesOpen(topicXMLPresenter.getDisplay())) {
+                    if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown() && !isAnyDialogBoxesOpen(
+                            topicXMLPresenter.getDisplay())) {
                         topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().center();
                         topicXMLPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().show();
                     }

@@ -15,7 +15,7 @@ public class ContentSpecErrorView extends BaseTemplateView implements ContentSpe
     private final TextArea errors = new TextArea();
 
     public ContentSpecErrorView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecText());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecErrors());
         errors.setReadOnly(true);
         this.getPanel().setWidget(errors);
     }

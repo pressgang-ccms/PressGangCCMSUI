@@ -131,8 +131,8 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         this.addActionButton(this.getText());
         this.addActionButton(this.getErrors());
         this.addActionButton(this.getDetails());
-        this.addActionButton(this.getContentSpecTags());
         this.addActionButton(this.getExtendedProperties());
+        this.addActionButton(this.getContentSpecTags());
         this.addActionButton(this.getHistory());
         this.addActionButton(this.getSave());
         this.addActionButton(this.getPermissiveSave());
