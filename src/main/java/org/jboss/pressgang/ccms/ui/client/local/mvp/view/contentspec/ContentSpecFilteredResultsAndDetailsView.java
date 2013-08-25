@@ -128,14 +128,15 @@ public class ContentSpecFilteredResultsAndDetailsView extends
 
 
     private void populateTopActionBar() {
-        this.addActionButton(this.getText());
-        this.addActionButton(this.getErrors());
-        this.addActionButton(this.getDetails());
-        this.addActionButton(this.getExtendedProperties());
-        this.addActionButton(this.getContentSpecTags());
-        this.addActionButton(this.getHistory());
-        this.addActionButton(this.getSave());
-        this.addActionButton(this.getPermissiveSave());
+        addActionButton(getShowHideSearchResults());
+        addActionButton(getText());
+        addActionButton(getErrors());
+        addActionButton(getDetails());
+        addActionButton(getExtendedProperties());
+        addActionButton(getContentSpecTags());
+        addActionButton(getHistory());
+        addActionButton(getSave());
+        addActionButton(getPermissiveSave());
     }
 
     @Override
