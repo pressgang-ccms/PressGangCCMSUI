@@ -11,31 +11,25 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308271458";
+    public static final String VERSION = "201308271229";
 
     /**
      * Monospaced web safe fonts
      */
     public static final String[] MONOSPACED_FONTS = new String[] {
             "Consolas",
+            "Andale Mono WT",
             "Andale Mono",
             "Lucida Console",
             "Lucida Sans Typewriter",
+            "DejaVu Sans Mono",
+            "Bitstream Vera Sans Mono",
+            "Liberation Mono",
+            "Nimbus Mono L",
             "Monaco",
             "Courier New",
-    };
-
-    public static final String DEFAULT_MONOSPACED_FONT = "monospace";
-
-    public static final String[] FONT_SIZES = new String[] {
-        "10px",
-        "11px",
-        "12px",
-        "13px",
-        "14px",
-        "16px",
-        "18px",
-        "20px"
+            "Courier",
+            "monospace"
     };
 
     /**
