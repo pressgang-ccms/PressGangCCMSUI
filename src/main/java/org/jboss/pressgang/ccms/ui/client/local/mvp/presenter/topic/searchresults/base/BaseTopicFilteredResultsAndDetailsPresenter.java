@@ -30,8 +30,10 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -278,14 +280,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
             failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(
-                        getDisplayedTopic().getId(),
-                        getDisplayedTopic().getRevision()),
-                        new RESTCallBack<RESTTopicV1>() {
+                    FailOverRESTCallDatabase.getCSNodesFromQuery("query;" + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + getDisplayedTopic().getId()),
+                        new RESTCallBack<RESTCSNodeCollectionV1>() {
                             @Override
-                            public void success(@NotNull final RESTTopicV1 retValue) {
-                                checkArgument(retValue.getContentSpecs_OTM() != null, "The returned topic should have an expanded content spec collection");
-                                checkArgument(retValue.getContentSpecs_OTM().getItems() != null, "The returned topic should have an expanded content spec collection");
+                            public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
+                                checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
 
                                 getTopicRenderedPresenter().getDisplay().getConditions().clear();
                                 getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
@@ -293,10 +292,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 getTopicRenderedPresenter().getDisplay().getConditions().addItem("");
                                 getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem("");
 
-                                for (final RESTContentSpecCollectionItemV1 spec : retValue.getContentSpecs_OTM().getItems()) {
+                                final List<String> conditions = new ArrayList<String>();
+
+                                for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
+                                    checkState(node.getItem().getContentSpec() != null, "The content spec node should have an expanded content spec property");
 
                                     String title = "";
-                                    for (final RESTCSNodeCollectionItemV1 csNode : spec.getItem().getChildren_OTM().getItems()) {
+                                    for (final RESTCSNodeCollectionItemV1 csNode : node.getItem().getContentSpec().getChildren_OTM().getItems()) {
                                         if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
                                                 csNode.getItem().getTitle().equals("Title")) {
                                             title = csNode.getItem().getAdditionalText();
@@ -304,15 +306,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                         }
                                     }
 
-                                    final String condition = spec.getItem().getCondition();
+                                    final String condition = node.getItem().getInheritedCondition();
 
                                     if (condition != null) {
-                                        final String conditionName = condition + " - " + title + " (CS" + spec.getItem().getId() + ")";
+                                        final String conditionName = condition + " - " + title + " (CS" + node.getItem().getContentSpec().getId() + ")";
 
-                                        LOGGER.log(Level.INFO, "\tFound Condition: " + condition);
-
-                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
-                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
+                                        if (!conditions.contains(conditionName)) {
+                                            conditions.add(conditionName);
+                                            getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
+                                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
+                                        }
                                     }
                                 }
 

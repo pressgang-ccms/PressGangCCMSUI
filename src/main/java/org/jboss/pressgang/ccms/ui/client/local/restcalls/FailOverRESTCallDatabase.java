@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
@@ -36,6 +37,19 @@ import org.jetbrains.annotations.NotNull;
  * A collection of REST calls.
  */
 public final class FailOverRESTCallDatabase {
+    /**
+     * The required expansion details for the content spec node.
+     */
+    private static final String CSNODE_EXPAND =
+        "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}, \"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INHERITED_CONDITION_NAME + "\"}}, " +
+                "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.CONTENT_SPEC_NAME + "\"}, \"branches\":[" + "" +
+                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}" +
+                "]}" +
+            "]}" +
+        "]}";
+
     /**
      * The required expansion details for the tags.
      */
@@ -55,20 +69,20 @@ public final class FailOverRESTCallDatabase {
      * We only need the last 2 revisions to check for save conflicts.
      */
     private static final String TOPIC_EXPANSION =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
-                    "]}";
+        "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
+        "]}";
 
     /**
      * A topic with expanded revisions
      */
     private static final String TOPIC_REVISIONS_EXPANSION =
-            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-                    "]}";
+        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+        "]}";
 
     /**
      * A topic with expanded property tags
@@ -1073,6 +1087,25 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.getJSONFilter(id, FILTER_EXPANSION);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONContentSpecNodesWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONContentSpecNodesWithQuery method
+     */
+    public static RESTCall getCSNodesFromQuery(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONContentSpecNodesWithQuery(new PathSegmentImpl(queryString), CSNODE_EXPAND);
             }
 
             @Override
