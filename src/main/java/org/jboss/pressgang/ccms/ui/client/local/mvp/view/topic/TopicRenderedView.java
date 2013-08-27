@@ -1,9 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 
+import java.util.Arrays;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -13,9 +15,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * This view maintains a kind of double buffer. IFrames are loaded into hidden table cells, and then
@@ -28,13 +27,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final String LOADED_IFRAME = "LoadedIFrame";
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable iFrameParent = new FlexTable();
-    private int displayingRow = 0;
+    private final ListBox conditions = new ListBox(false);
+    private int displayingRow = 1;
     private JavaScriptObject listener;
 
     private Frame loadingiframe;
     private Frame loadediframe;
     private int scrollTopPosition = 0, scrollLeftPosition = 0;
     private String echoServer;
+
 
     /**
      * The GWT scrolling functions don't work in Firefox in a window that contains
@@ -59,17 +60,25 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 	}-*/;
 
     public TopicRenderedView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.RenderedView());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.RenderedView());
+
+        LOGGER.info("ENTER TopicRenderedView()");
+
         this.getPanel().setWidget(iFrameParent);
         iFrameParent.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
-        iFrameParent.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        iFrameParent.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
+        horizontalPanel.add(conditions);
+
+        iFrameParent.setWidget(0, 0, horizontalPanel);
+
+        iFrameParent.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        iFrameParent.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
         createEventListener();
         addEventListener();
-
-        LOGGER.info("ENTER TopicRenderedView()");
     }
 
     /**
@@ -122,7 +131,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private void displayRendered() {
         if (loadingiframe != null) {
-            final int next = displayingRow == 0 ? 1 : 0;
+            final int next = displayingRow == 1 ? 2 : 1;
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
@@ -156,7 +165,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     @Override
     public void clear() {
-        final int next = displayingRow == 0 ? 1 : 0;
+        final int next = displayingRow == 1 ? 2 : 1;
         iFrameParent.setWidget(next, 0, null);
     }
 
@@ -187,5 +196,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @NotNull
     public FlexTable getiFrameParent() {
         return iFrameParent;
+    }
+
+    @Override
+    @NotNull
+    public ListBox getConditions() {
+        return conditions;
     }
 }

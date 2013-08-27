@@ -20,6 +20,9 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
         this.getPanel().setWidget(content);
 
         content.addStyleName(CSSConstants.WelcomeView.WELCOME_VIEW_IFRAME);
+
+        // Remove the action bar since it's not needed
+        getTopActionGrandParentPanel().removeFromParent();
     }
 
     @Override

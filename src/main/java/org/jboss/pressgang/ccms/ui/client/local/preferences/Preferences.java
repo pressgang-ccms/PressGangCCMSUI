@@ -122,6 +122,9 @@ final public class Preferences {
     public static final String SHORTCUT_ENTITIES_MENU_OPEN = "ShortcutEntitiesMenuOpen";
     public static final String SHORTCUT_ADVANCED_MENU_OPEN = "ShortcutAdvancedMenuOpen";
     public static final String EDITOR_THEME = "EditorTheme";
+    public static final String EDITOR_FONT_SIZE = "EditorFontSize";
+    public static final String EDITOR_FONT = "EditorFont";
+    public static final String TOPIC_CONDITION = "TopicCondition";
 
     /**
      * A singelton instance of this class.

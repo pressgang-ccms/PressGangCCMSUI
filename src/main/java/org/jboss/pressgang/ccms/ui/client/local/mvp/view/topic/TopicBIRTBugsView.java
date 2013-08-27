@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Frame;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -9,8 +11,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.logging.Logger;
 
 /**
  * A MVP view for displaying a topic's Bugzilla Bugs. This view simply displays an iFrame
@@ -26,8 +26,7 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     private static final Logger LOGGER = Logger.getLogger(TopicBIRTBugsView.class.getName());
 
     public TopicBIRTBugsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.Bugs());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Bugs());
 
         LOGGER.info("ENTER TopicBIRTBugsView()");
 

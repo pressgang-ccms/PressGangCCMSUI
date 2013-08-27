@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import javax.enterprise.context.Dependent;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -19,15 +22,12 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
-import java.util.logging.Logger;
-
 /**
  * The view that displays the source urls.
  */
 @Dependent
-public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTContentSpecCollectionItemV1, RESTContentSpecV1, RESTContentSpecCollectionV1, RESTContentSpecCollectionItemV1>
-        implements TopicContentSpecsPresenter.Display {
+public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTContentSpecCollectionItemV1, RESTContentSpecV1,
+        RESTContentSpecCollectionV1, RESTContentSpecCollectionItemV1> implements TopicContentSpecsPresenter.Display {
 
     private static final Logger LOGGER = Logger.getLogger(TopicContentSpecsView.class.getName());
 
@@ -133,8 +133,7 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
      * Constructor. Sets the page and title name.
      */
     public TopicContentSpecsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE
-                .TopicContentSpecs());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicContentSpecs());
 
         LOGGER.info("ENTER TopicContentSpecsView()");
 

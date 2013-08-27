@@ -1,7 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.xml.client.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -35,6 +38,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         void removeListener();
 
         FlexTable getiFrameParent();
+
+        ListBox getConditions();
     }
 
     @Inject private FailOverRESTCall failOverRESTCall;
@@ -67,7 +72,14 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
 
-        final String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(topicXML);
+        String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(topicXML);
+
+        if (display.getConditions().getSelectedIndex() != -1) {
+            final String condition = display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
+            if (!condition.isEmpty()) {
+                xml = removeConditions(xml, RegExp.compile(condition));
+            }
+        }
 
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.holdXML(xml),
@@ -79,6 +91,45 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                 display,
                 true
         );
+    }
+
+    /**
+     * Remove any XML elements that don't match the supplied condition
+     * @param xml The XML to be parsed
+     * @param condition The condition to be met
+     * @return The XML with the elements removed
+     */
+    private String removeConditions(@NotNull final String xml, @NotNull final RegExp condition) {
+        try {
+            // parse the XML document into a DOM
+            final Document messageDom = XMLParser.parse(xml);
+
+            removeConditions(messageDom.getDocumentElement(), condition);
+
+            return messageDom.toString();
+
+        } catch (@NotNull final DOMException e) {
+            // fall through to return statement below
+        }
+
+        return xml;
+    }
+
+    private void removeConditions(@NotNull final Element element, @NotNull final RegExp condition) {
+        if (element.hasAttribute(Constants.CONDITION_ATTRIBUTE)) {
+            final String elementCondition = element.getAttribute(Constants.CONDITION_ATTRIBUTE);
+            if (!condition.test(elementCondition)) {
+                element.getParentNode().removeChild(element);
+                return;
+            }
+        }
+
+        for (int i = 0, length = element.getChildNodes().getLength(); i < length; ++i) {
+            final Node childNode = element.getChildNodes().item(i);
+            if (childNode instanceof Element) {
+                removeConditions((Element)childNode, condition);
+            }
+        }
     }
 
     @Override

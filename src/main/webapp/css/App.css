@@ -270,6 +270,7 @@ div[class^='badword'] {
 .TopicXMLErrors {
     margin-top: 8px;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
     border: none;
     font-family: sans-serif;
     width: 100%;
@@ -279,6 +280,7 @@ div[class^='badword'] {
 .ImportDialogMessage {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .ImportDialogMessagePanel {
@@ -662,11 +664,13 @@ html {
     height: 100%;
     min-height: 5em;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .TopicViewTitleField, .FilterViewNameField, .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .TopicViewPanel, .StringConstantViewPanel {
@@ -732,6 +736,7 @@ html {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .TopicSearchTopicViewDetailsPanel {
@@ -875,17 +880,22 @@ html {
     height: 100%;
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    resize: none;
+    outline: none;
 }
 
 .ImageViewDescriptionText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText, .FileViewDescriptionText {
     width: 100%;
     height: 5em;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .ImageViewLanguageImageFilenameText {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsParentPanel, .EntitySearchTagsResultButtonsParentPanel {
@@ -963,6 +973,7 @@ html {
 .FileViewFilenameText, .FileViewFilePathText, .FileViewLanguageFileFilenameText {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .FilteredResultsPanel {
@@ -977,16 +988,19 @@ html {
 .TagViewNameText, .CategoryViewNameText, .ProjectViewNameText, .PropertyTagViewNameField, .PropertyCategoryViewNameField {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .PropertyTagViewRegexField {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .ContentSpecViewDetailsEndpointField, .ContentSpecViewTextEndpointField {
     width: 100%;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 tr.FilteredResultsTableSelectedRow {
@@ -1060,4 +1074,16 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 
 .gwt-DisclosurePanel a {
     text-decoration: none;
+}
+
+/* The checkboxes/radiobuttons and labels don't align, so this fixes that */
+.gwt-CheckBox, .gwt-RadioButton {
+    display: table;
+    border-collapse: collapse
+}
+
+.gwt-CheckBox > label, .gwt-RadioButton > label {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 1px;
 }

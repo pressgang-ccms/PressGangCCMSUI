@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -8,9 +11,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 public class TopicView extends BaseTemplateView implements TopicPresenter.Display {
 
@@ -29,8 +29,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     }
 
     public TopicView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.Properties());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Properties());
         LOGGER.info("ENTER TopicView()");
     }
 

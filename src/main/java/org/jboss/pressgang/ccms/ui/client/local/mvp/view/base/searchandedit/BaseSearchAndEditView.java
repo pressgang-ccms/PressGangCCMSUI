@@ -117,6 +117,10 @@ abstract public class BaseSearchAndEditView<
         return viewActionButtonsParentPanel;
     }
 
+    @NotNull
+    protected ScrollPanel getResultsActionButtonsParentPanelScroll() {
+        return resultsActionButtonsParentPanelScroll;
+    }
 
     public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName) {
         this(applicationName, pageName, true);

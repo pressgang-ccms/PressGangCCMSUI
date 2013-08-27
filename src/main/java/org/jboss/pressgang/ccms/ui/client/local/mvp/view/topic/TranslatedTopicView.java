@@ -22,8 +22,7 @@ public class TranslatedTopicView extends BaseTemplateView implements TranslatedT
     private final TranslatedTopicPresenterDriver driver = GWT.create(TranslatedTopicPresenterDriver.class);
 
     public TranslatedTopicView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.Properties());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Properties());
 
     }
 

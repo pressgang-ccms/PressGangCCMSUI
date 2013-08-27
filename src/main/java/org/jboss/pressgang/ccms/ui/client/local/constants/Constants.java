@@ -11,7 +11,53 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308280832";
+    public static final String VERSION = "201308271723";
+
+    /**
+     * Monospaced web safe fonts
+     */
+    public static final String[] MONOSPACED_FONTS = new String[] {
+
+        "\"Andale Mono WT\"",
+        "\"Andale Mono\"",
+        "\"Bitstream Vera Sans Mono\"",
+        "Consolas",
+        "\"Courier New\"",
+        "Courier",
+        "\"DejaVu Sans Mono\"",
+        "\"Droid Sans Mono\"",
+        "Inconsolata",
+        "\"Liberation Mono\"",
+        "\"Lucida Console\"",
+        "\"Lucida Sans Typewriter\"",
+        "Monaco",
+        "\"Nimbus Mono L\"",
+        "\"PT Mono\""
+    };
+
+    /**
+     * The default fallback for all font selections
+     */
+    public static final String DEFAULT_MONOSPACED_FONT = "monospace";
+
+    /**
+     * The available font sizes
+     */
+    public static final String[] FONT_SIZES = new String[] {
+        "10px",
+        "11px",
+        "12px",
+        "13px",
+        "14px",
+        "16px",
+        "18px",
+        "20px"
+    };
+
+    /**
+     * The attribute that holds a DocBook condition
+     */
+    public static final String CONDITION_ATTRIBUTE = "condition";
 
     /**
      * The attribute that is used by the help overlay system
@@ -22,6 +68,11 @@ public final class Constants {
      * The default ace editor theme
      */
     public static final String DEFAULT_THEME = "eclipse";
+
+    /**
+     * The default ace editor theme
+     */
+    public static final String DEFAULT_FONT_SIZE = "12px";
 
     /**
      * The height of the tabs in a tab panel, in EMs
@@ -62,7 +113,7 @@ public final class Constants {
      * The minimum size of the split size panels, to prevent them from being
      * resized to 0.
      */
-    public static final int MINIMUM_SPLIT_SIZE = 100;
+    public static final int MINIMUM_SPLIT_SIZE = 50;
 
     /**
      * The query parameter to append to the echo xml endpoint, which will allow the returned XML

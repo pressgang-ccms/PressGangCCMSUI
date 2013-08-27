@@ -1,10 +1,24 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -14,18 +28,13 @@ import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.EditorSettingsDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
 
@@ -53,11 +62,6 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final TextArea xmlErrors = new TextArea();
     private final DockLayoutPanel editorParent = new DockLayoutPanel(Style.Unit.PX);
 
-    private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
-    private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
-
-    private final ListBox themes = new ListBox();
-
     @NotNull
     @Override
     public TextArea getXmlErrors() {
@@ -74,12 +78,6 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     @Override
     public DockLayoutPanel getEditorParent() {
         return editorParent;
-    }
-
-    @NotNull
-    @Override
-    public ListBox getThemes() {
-        return themes;
     }
 
     public final static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
@@ -367,6 +365,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final XmlTemplatesDialog xmlTemplatesDialog = new XmlTemplatesDialog();
     private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
     private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
+    private final EditorSettingsDialog editorSettingsDialog = new EditorSettingsDialog();
+    private final PushButton settings = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
 
     @NotNull
     @Override
@@ -393,8 +393,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public ToggleButton getShowInvisibles() {
-        return this.showInvisibles;
+    public EditorSettingsDialog getEditorSettingsDialog() {
+        return this.editorSettingsDialog;
     }
 
     @Override
@@ -403,8 +403,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public ToggleButton getLineWrap() {
-        return this.lineWrap;
+    public PushButton getEditorSettings() {
+        return this.settings;
     }
 
     @Nullable
@@ -417,8 +417,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     public TopicXMLView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.XMLEditing());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.XMLEditing());
 
         LOGGER.info("ENTER TopicXMLView()");
 
@@ -428,39 +427,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         this.getXmlErrors().setReadOnly(true);
         this.getXmlErrors().addStyleName(CSSConstants.TopicView.TOPIC_XML_ERRORS);
 
-        addLocalActionButton(this.lineWrap);
-        addLocalActionButton(this.showInvisibles);
-
-        themes.addItem("Chrome", "chrome");
-        themes.addItem("Clouds", "clouds");
-        themes.addItem("Crimson Editor", "crimson_editor");
-        themes.addItem("Dawn", "dawn");
-        themes.addItem("Dreamweaver", "dreamweaver");
-        themes.addItem("Eclipse", "eclipse");
-        themes.addItem("GitHub", "github");
-        themes.addItem("Solarized Light", "solarized_light");
-        themes.addItem("TextMate", "textmate");
-        themes.addItem("Tomorrow", "tomorrow");
-        themes.addItem("XCode", "xcode");
-        themes.addItem("Ambiance", "ambiance");
-        themes.addItem("Chaos", "chaos");
-        themes.addItem("Clouds Midnight", "clouds_midnight");
-        themes.addItem("Cobalt", "cobalt");
-        themes.addItem("idleFingers", "idle_fingers");
-        themes.addItem("krTheme", "kr_theme");
-        themes.addItem("Merbivore", "merbivore");
-        themes.addItem("Merbivore Soft", "merbivore_soft");
-        themes.addItem("Mono Industrial", "mono_industrial");
-        themes.addItem("Monokai", "monokai");
-        themes.addItem("Pastel on dark", "pastel_on_dark");
-        themes.addItem("Solarized Dark", "solarized_dark");
-        themes.addItem("Terminal", "terminal");
-        themes.addItem("Tomorrow Night", "tomorrow_night");
-        themes.addItem("Tomorrow Night Blue", "tomorrow_night_blue");
-        themes.addItem("Tomorrow Night Bright", "tomorrow_night_bright");
-        themes.addItem("Tomorrow Night 80s", "tomorrow_night_eighties");
-        themes.addItem("Twilight", "twilight");
-        themes.addItem("Vibrant Ink", "vibrant_ink");
+        addLocalActionButton(this.settings);
 
         /* Add the projects */
         this.getPanel().setWidget(verticalPanel);
@@ -484,7 +451,6 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         this.driver.edit(topic);
 
         editorParent.clear();
-        editorParent.addNorth(themes, 25);
         editorParent.add(this.editor);
     }
 

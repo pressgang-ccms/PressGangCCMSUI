@@ -957,6 +957,9 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecText();
 
     @NotNull
+    String ContentSpecErrors();
+
+    @NotNull
     String ContentSpecTags();
 
     @NotNull
@@ -1078,4 +1081,25 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CanNotProceedWithUnsavedChanges();
+
+    @NotNull
+    String EditorSettings();
+
+    @NotNull
+    String EditorFontSize();
+
+    @NotNull
+    String EditorFont();
+
+    @NotNull
+    String EditorTheme();
+
+    @NotNull
+    String NotFound();
+
+    @NotNull
+    String Condition();
+
+    @NotNull
+    String FromSpec();
 }
