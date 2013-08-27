@@ -42,7 +42,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextCSProcessingOptionsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -330,24 +329,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         };
 
-        final ClickHandler permissiveSaveClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hasUnsavedChanges()) {
-                    display.getMessageLogDialog().getUsername().setText(
-                            Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-                    display.getMessageLogDialog().reset();
-                    display.getMessageLogDialog().getDialogBox().center();
-
-                    final RESTTextCSProcessingOptionsV1 processingOptions = new RESTTextCSProcessingOptionsV1();
-                    processingOptions.setPermissive(true);
-                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProcessingOptions(processingOptions);
-                } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                }
-            }
-        };
-
         final ClickHandler revisionsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -369,7 +350,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
-                getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
         };
 
@@ -378,7 +358,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void onClick(@NotNull final ClickEvent event) {
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 getDisplay().getSave().setEnabled(!isReadOnlyMode());
-                getDisplay().getPermissiveSave().setEnabled(!isReadOnlyMode());
             }
         };
 
@@ -643,7 +622,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         });
 
         display.getSave().addClickHandler(saveClickHandler);
-        display.getPermissiveSave().addClickHandler(permissiveSaveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
@@ -922,7 +900,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 // We can't save while merging.
                                 getDisplay().getSave().setEnabled(false);
-                                getDisplay().getPermissiveSave().setEnabled(false);
                             }
 
                             contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
@@ -1849,8 +1826,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         PushButton getDetails();
 
         PushButton getSave();
-
-        PushButton getPermissiveSave();
 
         PushButton getHistory();
 
