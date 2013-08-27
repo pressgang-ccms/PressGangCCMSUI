@@ -143,6 +143,18 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
                 }
             }
         });
+
+        display.getEditorSettingsDialog().getFonts().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                if (display.getEditor() != null && display.getEditorSettingsDialog().getFonts().getSelectedIndex() != -1) {
+                    final String font = display.getEditorSettingsDialog().getFonts().getValue(
+                            display.getEditorSettingsDialog().getFonts().getSelectedIndex());
+                    display.getEditor().setFontFamily(font);
+                    Preferences.INSTANCE.saveSetting(Preferences.EDITOR_FONT, font);
+                }
+            }
+        });
     }
 
     // Empty interface declaration, similar to UiBinder

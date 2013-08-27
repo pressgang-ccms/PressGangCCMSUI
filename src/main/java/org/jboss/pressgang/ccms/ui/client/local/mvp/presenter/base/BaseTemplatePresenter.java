@@ -69,7 +69,7 @@ import org.jetbrains.annotations.NotNull;
 abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView {
 
     private static final RegExp ID_SEARCH = RegExp.compile(",*(\\s*\\d+\\s*,+)*\\s*\\d+\\s*,*");
-    private static final RegExp CS_ID_SEARCH = RegExp.compile(",*(\\s*CS\\s*\\d+\\s*,+)*\\s*CS\\s*\\d+\\s*,*");
+    private static final RegExp CS_ID_SEARCH = RegExp.compile(",*(\\s*CS\\s*\\d+\\s*,+)*\\s*CS\\s*\\d+\\s*,*", "i");
 
     /**
      * A Logger

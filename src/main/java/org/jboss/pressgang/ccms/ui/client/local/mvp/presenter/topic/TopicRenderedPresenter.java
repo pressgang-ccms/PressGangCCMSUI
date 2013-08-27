@@ -93,6 +93,12 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         );
     }
 
+    /**
+     * Remove any XML elements that don't match the supplied condition
+     * @param xml The XML to be parsed
+     * @param condition The condition to be met
+     * @return The XML with the elements removed
+     */
     private String removeConditions(@NotNull final String xml, @NotNull final RegExp condition) {
         try {
             // parse the XML document into a DOM
