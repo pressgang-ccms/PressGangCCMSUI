@@ -248,6 +248,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         getTopicRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                if (getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
+                    final String conditionValue = getTopicRenderedPresenter().getDisplay().getConditions().getValue(getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
+                }
+
                 getTopicRenderedPresenter().displayTopicRendered(
                         addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
             }
@@ -256,6 +261,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
+                if (getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
+                    final String conditionValue = getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getValue(getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
+                }
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(
                         addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
             }
@@ -270,32 +279,34 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
             failOverRESTCall.performRESTCall(
                     FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(
-                            getDisplayedTopic().getId(),
-                            getDisplayedTopic().getRevision()),
-                            new RESTCallBack<RESTTopicV1>() {
-                                @Override
-                                public void success(@NotNull final RESTTopicV1 retValue) {
-                                    checkArgument(retValue.getContentSpecs_OTM() != null, "The returned topic should have an expanded content spec collection");
-                                    checkArgument(retValue.getContentSpecs_OTM().getItems() != null, "The returned topic should have an expanded content spec collection");
+                        getDisplayedTopic().getId(),
+                        getDisplayedTopic().getRevision()),
+                        new RESTCallBack<RESTTopicV1>() {
+                            @Override
+                            public void success(@NotNull final RESTTopicV1 retValue) {
+                                checkArgument(retValue.getContentSpecs_OTM() != null, "The returned topic should have an expanded content spec collection");
+                                checkArgument(retValue.getContentSpecs_OTM().getItems() != null, "The returned topic should have an expanded content spec collection");
 
-                                    getTopicRenderedPresenter().getDisplay().getConditions().clear();
-                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
+                                getTopicRenderedPresenter().getDisplay().getConditions().clear();
+                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
 
-                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem("");
-                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem("");
+                                getTopicRenderedPresenter().getDisplay().getConditions().addItem("");
+                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem("");
 
-                                    for (final RESTContentSpecCollectionItemV1 spec : retValue.getContentSpecs_OTM().getItems()) {
+                                for (final RESTContentSpecCollectionItemV1 spec : retValue.getContentSpecs_OTM().getItems()) {
 
-                                        String title = "";
-                                        for (final RESTCSNodeCollectionItemV1 csNode : spec.getItem().getChildren_OTM().getItems()) {
-                                            if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
-                                                    csNode.getItem().getTitle().equals("Title")) {
-                                                title = csNode.getItem().getAdditionalText();
-                                                break;
-                                            }
+                                    String title = "";
+                                    for (final RESTCSNodeCollectionItemV1 csNode : spec.getItem().getChildren_OTM().getItems()) {
+                                        if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
+                                                csNode.getItem().getTitle().equals("Title")) {
+                                            title = csNode.getItem().getAdditionalText();
+                                            break;
                                         }
+                                    }
 
-                                        final String condition = spec.getItem().getCondition();
+                                    final String condition = spec.getItem().getCondition();
+
+                                    if (condition != null) {
                                         final String conditionName = condition + " - " + title + " (CS" + spec.getItem().getId() + ")";
 
                                         LOGGER.log(Level.INFO, "\tFound Condition: " + condition);
@@ -304,7 +315,26 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                         getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
                                     }
                                 }
+
+                                final String key = Preferences.TOPIC_CONDITION + getDisplayedTopic().getId();
+                                final String savedValue =  Preferences.INSTANCE.getString(key, "");
+
+                                for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getConditions().getItemCount(); i < length; ++i) {
+                                    if (getTopicRenderedPresenter().getDisplay().getConditions().getValue(i).equals(savedValue)) {
+                                        getTopicRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
+                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
+
+                                        getTopicRenderedPresenter().displayTopicRendered(
+                                                addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+
+                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(
+                                                addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
+
+                                        break;
+                                    }
+                                }
                             }
+                        }
             );
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
@@ -811,15 +841,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             }
 
             /* We display the rendered view with images */
-            if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
+            /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
+            /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
                 topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml()), isReadOnlyMode(), true);
-            }
+            }*/
 
             /* We initially display the split pane rendered view without images */
-            if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
+            /*if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
                 topicSplitPanelRenderedPresenter.displayTopicRendered(
                         addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
-            }
+            }*/
 
             /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called
             above */

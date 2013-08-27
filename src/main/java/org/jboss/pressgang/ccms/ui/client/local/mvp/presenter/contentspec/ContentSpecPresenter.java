@@ -91,6 +91,15 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
                 break;
             }
         }
+
+        final String font = Preferences.INSTANCE.getString(Preferences.EDITOR_FONT, Constants.DEFAULT_MONOSPACED_FONT);
+        display.getEditor().setFontFamily(font);
+        for (int i = 0; i < display.getEditorSettingsDialog().getFonts().getItemCount(); ++i) {
+            if (display.getEditorSettingsDialog().getFonts().getValue(i).equals(font)) {
+                display.getEditorSettingsDialog().getFonts().setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
     /**
