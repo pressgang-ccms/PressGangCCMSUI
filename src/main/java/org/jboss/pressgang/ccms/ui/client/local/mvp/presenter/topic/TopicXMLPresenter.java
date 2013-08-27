@@ -205,7 +205,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
         final String theme = Preferences.INSTANCE.getString(Preferences.EDITOR_THEME, Constants.DEFAULT_THEME);
         display.getEditor().setThemeByName(theme);
         for (int i = 0; i < display.getEditorSettingsDialog().getThemes().getItemCount(); ++i) {
-            if (display.getEditorSettingsDialog().getThemes().getValue(i) == theme) {
+            if (display.getEditorSettingsDialog().getThemes().getValue(i).equals(theme)) {
                 display.getEditorSettingsDialog().getThemes().setSelectedIndex(i);
                 break;
             }
@@ -214,8 +214,17 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
         final String fontSize = Preferences.INSTANCE.getString(Preferences.EDITOR_FONT_SIZE, Constants.DEFAULT_FONT_SIZE);
         display.getEditor().setFontSize(fontSize);
         for (int i = 0; i < display.getEditorSettingsDialog().getFontSizes().getItemCount(); ++i) {
-            if (display.getEditorSettingsDialog().getFontSizes().getValue(i) == fontSize) {
+            if (display.getEditorSettingsDialog().getFontSizes().getValue(i).equals(fontSize)) {
                 display.getEditorSettingsDialog().getFontSizes().setSelectedIndex(i);
+                break;
+            }
+        }
+
+        final String font = Preferences.INSTANCE.getString(Preferences.EDITOR_FONT, Constants.DEFAULT_MONOSPACED_FONT);
+        display.getEditor().setFontFamily(font);
+        for (int i = 0; i < display.getEditorSettingsDialog().getFonts().getItemCount(); ++i) {
+            if (display.getEditorSettingsDialog().getFonts().getValue(i).equals(font)) {
+                display.getEditorSettingsDialog().getFonts().setSelectedIndex(i);
                 break;
             }
         }
@@ -291,6 +300,18 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
                             display.getEditorSettingsDialog().getFontSizes().getSelectedIndex());
                     display.getEditor().setFontSize(fontSize);
                     Preferences.INSTANCE.saveSetting(Preferences.EDITOR_FONT_SIZE, fontSize);
+                }
+            }
+        });
+
+        display.getEditorSettingsDialog().getFonts().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                if (display.getEditor() != null && display.getEditorSettingsDialog().getFonts().getSelectedIndex() != -1) {
+                    final String font = display.getEditorSettingsDialog().getFonts().getValue(
+                            display.getEditorSettingsDialog().getFonts().getSelectedIndex());
+                    display.getEditor().setFontFamily(font);
+                    Preferences.INSTANCE.saveSetting(Preferences.EDITOR_FONT, font);
                 }
             }
         });

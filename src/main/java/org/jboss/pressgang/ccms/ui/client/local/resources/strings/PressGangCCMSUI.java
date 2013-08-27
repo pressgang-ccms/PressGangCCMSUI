@@ -1089,6 +1089,9 @@ public interface PressGangCCMSUI extends Constants {
     String EditorFontSize();
 
     @NotNull
+    String EditorFont();
+
+    @NotNull
     String EditorTheme();
 
     @NotNull

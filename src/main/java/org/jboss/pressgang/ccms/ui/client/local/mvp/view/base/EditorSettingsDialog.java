@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 public class EditorSettingsDialog extends ClosablePopup {
@@ -14,23 +15,25 @@ public class EditorSettingsDialog extends ClosablePopup {
     private final CheckBox showInvisibles = new CheckBox(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
     private final ListBox fontSizes = new ListBox();
     private final ListBox themes = new ListBox();
+    private final ListBox fonts = new ListBox();
 
     private final FlexTable layout = new FlexTable();
     private final Label fontSizesLabel = new Label(PressGangCCMSUI.INSTANCE.EditorFontSize());
     private final Label themesLabel = new Label(PressGangCCMSUI.INSTANCE.EditorTheme());
+    private final Label fontsLabel = new Label(PressGangCCMSUI.INSTANCE.EditorFont());
 
     public EditorSettingsDialog() {
         super(PressGangCCMSUI.INSTANCE.EditorSettings(), true);
         setGlassEnabled(true);
 
-        fontSizes.addItem("10px");
-        fontSizes.addItem("11px");
-        fontSizes.addItem("12px");
-        fontSizes.addItem("13px");
-        fontSizes.addItem("14px");
-        fontSizes.addItem("16px");
-        fontSizes.addItem("18px");
-        fontSizes.addItem("20px");
+        for (final String font : Constants.MONOSPACED_FONTS) {
+            fonts.addItem(font, font + "," + Constants.DEFAULT_MONOSPACED_FONT);
+        }
+        fonts.addItem(Constants.DEFAULT_MONOSPACED_FONT);
+
+        for (final String fontSize : Constants.FONT_SIZES) {
+            fontSizes.addItem(fontSize);
+        }
 
         themes.addItem("Chrome", "chrome");
         themes.addItem("Clouds", "clouds");
@@ -65,10 +68,12 @@ public class EditorSettingsDialog extends ClosablePopup {
 
         layout.setWidget(0, 0, themesLabel);
         layout.setWidget(1, 0, themes);
-        layout.setWidget(2, 0, fontSizesLabel);
-        layout.setWidget(3, 0, fontSizes);
-        layout.setWidget(4, 0, lineWrap);
-        layout.setWidget(5, 0, showInvisibles);
+        layout.setWidget(2, 0, fontsLabel);
+        layout.setWidget(3, 0, fonts);
+        layout.setWidget(4, 0, fontSizesLabel);
+        layout.setWidget(5, 0, fontSizes);
+        layout.setWidget(6, 0, lineWrap);
+        layout.setWidget(7, 0, showInvisibles);
 
         add(this.layout);
     }
@@ -91,5 +96,9 @@ public class EditorSettingsDialog extends ClosablePopup {
 
     public DialogBox getDialogBox() {
         return this;
+    }
+
+    public ListBox getFonts() {
+        return fonts;
     }
 }
