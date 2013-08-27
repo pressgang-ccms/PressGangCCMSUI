@@ -30,10 +30,13 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.base.RESTBaseCSNodeV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -282,8 +285,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                     getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem("");
 
                                     for (final RESTContentSpecCollectionItemV1 spec : retValue.getContentSpecs_OTM().getItems()) {
+
+                                        String title = "";
+                                        for (final RESTCSNodeCollectionItemV1 csNode : spec.getItem().getChildren_OTM().getItems()) {
+                                            if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
+                                                    csNode.getItem().getTitle().equals("Title")) {
+                                                title = csNode.getItem().getAdditionalText();
+                                                break;
+                                            }
+                                        }
+
                                         final String condition = spec.getItem().getCondition();
-                                        final String conditionName = condition + " - " + PressGangCCMSUI.INSTANCE.FromSpec() + " CS" + spec.getItem().getId();
+                                        final String conditionName = condition + " - " + title + " (CS" + spec.getItem().getId() + ")";
 
                                         LOGGER.log(Level.INFO, "\tFound Condition: " + condition);
 
