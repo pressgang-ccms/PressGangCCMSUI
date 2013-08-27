@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
@@ -14,9 +15,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -31,6 +30,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -50,6 +51,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -73,6 +77,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicFilteredResultsAndDetailsPresenter.class.getName());
+
+    @Inject private FailOverRESTCall failOverRESTCall;
 
     /**
      * The global event bus.
@@ -231,6 +237,65 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         initializeDisplay();
 
         buildHelpDatabase();
+
+        bindConditionSelection();
+    }
+
+    private void bindConditionSelection() {
+        getTopicRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                getTopicRenderedPresenter().displayTopicRendered(
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+            }
+        });
+
+        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                getTopicSplitPanelRenderedPresenter().displayTopicRendered(
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+            }
+        });
+    }
+
+    /**
+     * Get all the content specs associated with this topic and list their conditions
+     */
+    private void findAndDisplayConditions() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(
+                            getDisplayedTopic().getId(),
+                            getDisplayedTopic().getRevision()),
+                            new RESTCallBack<RESTTopicV1>() {
+                                @Override
+                                public void success(@NotNull final RESTTopicV1 retValue) {
+                                    checkArgument(retValue.getContentSpecs_OTM() != null, "The returned topic should have an expanded content spec collection");
+                                    checkArgument(retValue.getContentSpecs_OTM().getItems() != null, "The returned topic should have an expanded content spec collection");
+
+                                    getTopicRenderedPresenter().getDisplay().getConditions().clear();
+                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
+
+                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem("");
+                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem("");
+
+                                    for (final RESTContentSpecCollectionItemV1 spec : retValue.getContentSpecs_OTM().getItems()) {
+                                        final String condition = spec.getItem().getCondition();
+                                        final String conditionName = condition + " - " + PressGangCCMSUI.INSTANCE.FromSpec() + " CS" + spec.getItem().getId();
+
+                                        LOGGER.log(Level.INFO, "\tFound Condition: " + condition);
+
+                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
+                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditionName, condition);
+                                    }
+                                }
+                            }
+            );
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
+        }
     }
 
     /**
@@ -373,6 +438,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* Display the list of property tags */
             topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
+
+            findAndDisplayConditions();
 
             postLoadAdditionalDisplayedItemData();
 
@@ -732,7 +799,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We display the rendered view with images */
             if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.displayTopicRendered(topicToDisplay.getXml(), isReadOnlyMode(), true);
+                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml()), isReadOnlyMode(), true);
             }
 
             /* We initially display the split pane rendered view without images */

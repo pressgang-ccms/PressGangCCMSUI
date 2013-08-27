@@ -14,6 +14,30 @@ public final class Constants {
     public static final String VERSION = "201308270852";
 
     /**
+     * Monospaced web safe fonts
+     */
+    public static final String[] MONOSPACED_FONTS = new String[] {
+            "Consolas",
+            "Andale Mono WT",
+            "Andale Mono",
+            "Lucida Console",
+            "Lucida Sans Typewriter",
+            "DejaVu Sans Mono",
+            "Bitstream Vera Sans Mono",
+            "Liberation Mono",
+            "Nimbus Mono L",
+            "Monaco",
+            "Courier New",
+            "Courier",
+            "monospace"
+    };
+
+    /**
+     * The attribute that holds a DocBook condition
+     */
+    public static final String CONDITION_ATTRIBUTE = "condition";
+
+    /**
      * The attribute that is used by the help overlay system
      */
     public static final String PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR = "data-pressgangtopic";
