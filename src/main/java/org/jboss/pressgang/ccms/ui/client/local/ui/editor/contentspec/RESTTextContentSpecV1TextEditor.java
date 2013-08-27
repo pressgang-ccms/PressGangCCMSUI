@@ -21,7 +21,7 @@ public final class RESTTextContentSpecV1TextEditor extends SimplePanel implement
         text.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_TEXT_VIEW_TEXT_FIELD);
 
         text.setReadOnly(readOnly);
-        text.setModeByName("csp");
+        text.setMode(AceEditorMode.TEXT);
         text.setTheme(AceEditorTheme.ECLIPSE);
         text.setUseSoftTabs(true);
         text.setTabSize(2);
