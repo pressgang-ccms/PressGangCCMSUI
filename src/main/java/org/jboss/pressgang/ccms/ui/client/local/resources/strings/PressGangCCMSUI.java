@@ -1090,4 +1090,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String EditorTheme();
+
+    @NotNull
+    String NotFound();
 }
