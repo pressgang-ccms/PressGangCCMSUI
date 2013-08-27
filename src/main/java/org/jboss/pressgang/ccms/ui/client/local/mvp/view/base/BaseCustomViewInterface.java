@@ -8,6 +8,9 @@ public interface BaseCustomViewInterface<T> extends BaseTemplateViewInterface {
      * Populate the UI with the details from the supplied entity. If additional data is required by the view,
      * it is usually defined in a method called initialize.
      *
+     * Since this is a method on a view, no logic is done here other than to copy out the information in
+     * the entity and display it in the view.
+     *
      * @param entity   The entity that contains the data to be displayed
      * @param readonly true if the UI should be read only, and false otherwise
      */

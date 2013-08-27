@@ -73,9 +73,6 @@ abstract public class BaseSearchAndEditPresenter<
 
     /**
      * Unsupported method. Call bindSearchAndEdit() instead.
-     *
-     * @param topicId the help topic for the page
-     * @param pageId  The history token of the page
      */
     public void bindExtended() {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindSearchAndEdit() instead.");

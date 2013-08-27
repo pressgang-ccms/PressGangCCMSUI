@@ -62,7 +62,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     }
 
     public void bindExtended() {
-        super.bind( display);
+        super.bind(display);
     }
 
     public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {

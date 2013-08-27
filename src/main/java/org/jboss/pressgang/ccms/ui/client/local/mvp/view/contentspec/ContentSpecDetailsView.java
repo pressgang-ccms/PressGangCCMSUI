@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecDetailsPresenter;
@@ -7,8 +9,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class ContentSpecDetailsView extends BaseTemplateView implements ContentSpecDetailsPresenter.Display {
 
@@ -23,8 +23,7 @@ public class ContentSpecDetailsView extends BaseTemplateView implements ContentS
     }
 
     public ContentSpecDetailsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.Properties());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Properties());
 
     }
 

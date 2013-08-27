@@ -3,8 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -28,19 +27,19 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     /**
      * The integer text box that displays the translated topic id
      */
-    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     /**
      * The integer text box that display the topic revision.
      */
-    private final SimpleIntegerBox topicRevision = new SimpleIntegerBox();
+    private final SimpleIntegerLabel topicRevision = new SimpleIntegerLabel();
     /**
      * The integer text box that displays the topic id
      */
-    private final SimpleIntegerBox topicId = new SimpleIntegerBox();
+    private final SimpleIntegerLabel topicId = new SimpleIntegerLabel();
     /**
      * The text box that displays the translation locale
      */
-    private final TextBox locale = new TextBox();
+    private final Label locale = new Label();
 
     /**
      * The property used by the editor framework to bind the locale to the ui element.
@@ -48,7 +47,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * @return The locale ui element
      */
     @NotNull
-    public TextBox localeEditor() {
+    public Label localeEditor() {
         return locale;
     }
 
@@ -58,7 +57,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * @return The topic id ui element
      */
     @NotNull
-    public SimpleIntegerBox topicIdEditor() {
+    public SimpleIntegerLabel topicIdEditor() {
         return topicId;
     }
 
@@ -68,7 +67,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * @return The revision ui element
      */
     @NotNull
-    public SimpleIntegerBox topicRevisionEditor() {
+    public SimpleIntegerLabel topicRevisionEditor() {
         return topicRevision;
     }
 
@@ -78,7 +77,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * @return The translated topic id ui element
      */
     @NotNull
-    public SimpleIntegerBox idEditor() {
+    public SimpleIntegerLabel idEditor() {
         return id;
     }
 
@@ -89,12 +88,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TranslatedTopicView.TRANSLATED_TOPIC_VIEW_PANEL);
-
-        topicId.setReadOnly(readOnly);
-        topicRevision.setReadOnly(readOnly);
-        locale.setReadOnly(readOnly);
-        id.setReadOnly(true);
-
 
         int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TranslatedTopicID()));

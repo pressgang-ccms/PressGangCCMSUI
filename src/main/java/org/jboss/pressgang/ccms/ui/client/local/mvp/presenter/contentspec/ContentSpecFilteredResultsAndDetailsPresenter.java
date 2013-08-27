@@ -20,10 +20,14 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -261,6 +265,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
                 contentSpecRevisionsPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode());
+            }
+
+            /* Redisplay the editor. contentSpecPresenter.getDisplay().getEditor() will be not null after the display method was called
+            above */
+            if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
+                LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
+                contentSpecPresenter.loadEditorSettings();
+                contentSpecPresenter.getDisplay().getEditor().redisplay();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.initializeViews()");
@@ -618,6 +630,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         };
 
+        // Hook up the xml editor settings button
+        contentSpecPresenter.getDisplay().getEditorSettings().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown()
+                        && !isAnyDialogBoxesOpen(contentSpecPresenter.getDisplay())) {
+                    contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().center();
+                    contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().show();
+                }
+            }
+        });
+
         display.getSave().addClickHandler(saveClickHandler);
         display.getPermissiveSave().addClickHandler(permissiveSaveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
@@ -779,6 +803,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         bindTagButtons();
 
         bindViewContentSpecRevisionButton();
+
+        addKeyboardShortcutEventHandler();
 
         /* When the topics have been loaded, display the first one */
         filteredResultsPresenter.addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTextContentSpecCollectionV1>() {
@@ -1235,6 +1261,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             enableAndDisableActionButtons(displayedView);
 
+            updatePageTitle(displayedView);
+
             /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
             if (displayedView != null) {
                 displayedView.setViewShown(true);
@@ -1267,6 +1295,46 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
+        }
+    }
+
+    /**
+     * Update the page name.
+     *
+     * @param displayedView the currently displayed view.
+     */
+    private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.updatePageTitle()");
+
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null,
+                    "The displayed item need to reference a valid entity");
+
+            final StringBuilder title = new StringBuilder(
+                    filteredResultsPresenter.getDisplay().getPageName() + " - " + displayedView.getPageName());
+            final StringBuilder id = new StringBuilder(
+                    getDisplayedContentSpec().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedContentSpec().getId().toString());
+
+            /*
+                Test to see if we are looking at a specific revision. If so, add the revision to the page title.
+             */
+            if (getDisplayedContentSpec().getRevision() != null && !getDisplayedContentSpec().getRevision().equals(
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
+                id.append("-" + getDisplayedContentSpec().getRevision());
+            }
+
+            String displayTitle = getDisplayedContentSpec().getTitle() == null ? "" : getDisplayedContentSpec().getTitle();
+            if (displayTitle.length() > Constants.MAX_PAGE_TITLE_LENGTH) {
+                displayTitle = displayTitle.substring(0, Constants.MAX_PAGE_TITLE_LENGTH - 3) + "...";
+            }
+
+            if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+                title.append(": " + displayTitle + " [" + id.toString() + "]");
+            }
+            getDisplay().getPageTitle().setText(title.toString());
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.updatePageTitle()");
         }
     }
 
@@ -1728,6 +1796,41 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             tagDisplay.display(returnCurrentContentSpec.getContentSpec(), returnReadOnlyMode.getReadOnlyMode());
             bindRemoveButtons.bindRemoveButtons();
         }
+    }
+
+    /**
+     * Add listeners for keyboard events
+     */
+    private void addKeyboardShortcutEventHandler() {
+        @NotNull final Event.NativePreviewHandler keyboardShortcutPreviewHandler = new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
+                final NativeEvent ne = event.getNativeEvent();
+
+                if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE) {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            if (getDisplay().getTopLevelPanel().isAttached() && contentSpecPresenter.getDisplay().isViewShown()) {
+                                if (contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().isShowing()) {
+                                    contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().hide();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
+    }
+
+    protected boolean isAnyDialogBoxesOpen(@NotNull final ContentSpecPresenter.Display contentSpecTextDisplay) {
+        if (contentSpecTextDisplay.getEditorSettingsDialog().getDialogBox().isShowing()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

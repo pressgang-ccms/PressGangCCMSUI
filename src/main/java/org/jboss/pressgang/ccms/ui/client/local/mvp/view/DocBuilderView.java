@@ -21,6 +21,9 @@ public class DocBuilderView extends BaseTemplateView implements DocBuilderPresen
         iFrame.setHeight("100%");
         iFrame.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
         this.getPanel().add(iFrame);
+
+        // Hide the action bar since it's not needed
+        getTopActionGrandParentPanel().removeFromParent();
     }
 
     @Override

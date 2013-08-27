@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
@@ -8,8 +10,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.logging.Logger;
 
 public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErrorsPresenter.Display {
 
@@ -26,8 +26,7 @@ public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErro
     }
 
     public TopicXMLErrorsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         LOGGER.info("ENTER TopicXMLErrorsView()");
     }
 

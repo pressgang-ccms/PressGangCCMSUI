@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class ServiceConstants {
 
     /**
+     * The property tag that has the revision of a topic just before a review was requested
+     */
+    public static final int REVIEW_PROPERTY_TAG = 659;
+
+    /**
      * Original file name property tag
      */
     public static final int ORIGINAL_FILE_NAME_PROPERTY_TAG = 28;

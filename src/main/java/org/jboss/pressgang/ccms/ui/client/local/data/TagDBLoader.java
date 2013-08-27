@@ -5,7 +5,6 @@ import edu.ycp.cs.dh.acegwt.client.tagdb.GetRESTServerCallback;
 import edu.ycp.cs.dh.acegwt.client.tagdb.TagDB;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -14,8 +13,10 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,9 +41,13 @@ public class TagDBLoader {
     private FailOverRESTCall failOverRESTCall;
 
     public TagDBLoader() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER TagDBLoader()");
+        LOGGER.log(Level.INFO, "ENTER TagDBLoader()");
+    }
 
+    @PostConstruct
+    public void postConstruct() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TagDBLoader.postConstruct()");
 
             final String query = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.PROPERTY_TAG_EXISTS + ServiceConstants.TAG_STYLE_PROPERTY_TAG + "=true";
             failOverRESTCall.performRESTCall(
@@ -50,8 +55,10 @@ public class TagDBLoader {
                     new RESTCallBack<RESTTopicCollectionV1>() {
                         public void success(@NotNull final RESTTopicCollectionV1 value) {
                             for (final RESTTopicCollectionItemV1 restTopicV1 : value.getItems())  {
-                                final RESTAssignedPropertyTagV1 property = ComponentTopicV1.returnProperty(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
-                                tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                final RESTAssignedPropertyTagV1 property = EntityUtilities.returnProperty(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
+                                if (property.getValue() != null) {
+                                    tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                }
                             }
 
                             /*

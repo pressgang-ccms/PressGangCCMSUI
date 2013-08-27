@@ -711,13 +711,15 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+
+
+
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
      * @para id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
-    public static RESTCall
-    getTopicWithRevisions(@NotNull final Integer id) {
+    public static RESTCall getTopicWithRevisions(@NotNull final Integer id) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -755,6 +757,48 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     * @param queryString The query
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static RESTCall getTopicsFromQueryWithRevisionsWithTag(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"topics\"}, \"branches\":[{\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONTopic method
+     */
+    public static RESTCall getTopicWithRevisionsWithTags(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"tags\"}}, {\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}";
+                restService.getJSONTopic(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopic method
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -772,6 +816,8 @@ public final class FailOverRESTCallDatabase {
             }
         };
     }
+
+
 
     /**
      * Create a RESTCall object to call the REST getJSONTranslatedTopic method
@@ -1081,6 +1127,28 @@ public final class FailOverRESTCallDatabase {
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
      * @param queryString The query to use to get the filters
+     * @param start The start of the results
+     * @param end The end of the results
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static RESTCall getTopicsWithLogMessagesFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[{\"trunk\":{\"name\": \"logDetails\"}}]}]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
     public static RESTCall getTopicsFromQuery(@NotNull final String queryString) {
@@ -1211,6 +1279,8 @@ public final class FailOverRESTCallDatabase {
             }
         };
     }
+
+
 
     /**
      * Create a RESTCall object to call the REST getJSONTagsWithQuery method

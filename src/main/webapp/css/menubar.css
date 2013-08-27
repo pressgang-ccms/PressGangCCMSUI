@@ -1,0 +1,24 @@
+.gwt-MenuBar {
+    cursor: default;
+}
+
+.gwt-MenuBar.gwt-MenuItem {
+    cursor: default;
+}
+
+.gwt-MenuItem.gwt-MenuItem-selected {
+    background: #009200;
+}
+
+.gwt-MenuBar-vertical {
+    margin-top: 0px;
+    margin-left: 0px;
+    background: #00C618;
+}
+.gwt-MenuBar-vertical table {
+    border-collapse: collapse;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem {
+    padding: 3px 8px 3px 8px;
+}

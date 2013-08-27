@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,6 +21,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -213,7 +215,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getTopShortcutView().getSearchTranslations().setScheduledCommand(new Command() {
+        display.getTopShortcutView().getSearchContentSpec().setScheduledCommand(new Command() {
             @Override
             public void execute() {
                 if (isOKToProceed()) {
@@ -421,10 +423,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     /**
      * Binding is done when the view is loaded. The code here doesn't reference the data in a selected entity (it is
      * quite possible that an entity has not been selected yet).
-     * <p/>
+     *
      * Binding is done once.
-     * <p/>
-     * The display methods are used to display the actual data.
+     *
+     * The display methods (see the interfaces like BaseChildrenPresenterInterface) are used to display the actual
+     * data once an entity has been selected.
      *
      * @param display The view that this presenter is associated with
      */
@@ -463,15 +466,19 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getHelpMode().addClickHandler(new ClickHandler() {
             @Override
-            public native void onClick(ClickEvent event) /*-{
-				if ($wnd.pressgang_website_enable) {
-					$wnd.pressgang_website_enable();
-				} else {
-                    $wnd.alert("Help overlay is not available.")
-                }
-            }-*/;
+            public void onClick(@NotNull final ClickEvent event) {
+                enableHelpOverlay();
+            };
         });
     }
+
+    private native void enableHelpOverlay() /*-{
+		if ($wnd.pressgang_website_enable) {
+			$wnd.pressgang_website_enable();
+		} else {
+			$wnd.alert("Help overlay is not available.")
+		}
+    }-*/;
 
     private void buildHelpDatabase() {
         setDataAttribute(display.getTopShortcutView().getDocbuilder(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
@@ -487,9 +494,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(display.getTopShortcutView().getReports().getElement(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
         setDataAttribute(display.getTopShortcutView().getBug().getElement(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
         setDataAttribute(display.getTopShortcutView().getFiles().getElement(), ServiceConstants.HELP_TOPICS.FILES.getId());
-        setDataAttribute(display.getTopShortcutView().getEntities(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
-        setDataAttribute(display.getTopShortcutView().getAdvanced(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
-        setDataAttribute(display.getTopShortcutView().getSearch(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
+
+        setDataAttribute(display.getTopShortcutView().getEntitiesSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
+        setDataAttribute(display.getTopShortcutView().getAdvancedSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchSubMenu().getElement(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
+
         setDataAttribute(display.getTopShortcutView().getSearchContentSpec().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
         setDataAttribute(display.getTopShortcutView().getCreateContentSpec().getElement(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
         setDataAttribute(display.getTopShortcutView().getBulkTagging().getElement(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());

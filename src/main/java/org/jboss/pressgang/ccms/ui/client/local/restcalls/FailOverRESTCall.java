@@ -83,11 +83,17 @@ public final class FailOverRESTCall {
                     @Override
                     public void callback(final T retValue) {
                         if (!isTimedout() && !isReturned()) {
+
+                            try {
+                                callback.success(retValue);
+                            } catch (@NotNull final RuntimeException ex) {
+                                LOGGER.info("Success method threw RuntimeException. Rethrowing");
+                                throw ex;
+                            }
+
                             if (display != null) {
                                 display.removeWaitOperation();
                             }
-
-                            callback.success(retValue);
                         }
 
                         setReturned(true);
@@ -115,12 +121,16 @@ public final class FailOverRESTCall {
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
                                     failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
-                                } else if (ex.getResponse().getStatusCode() != Response.SC_NOT_FOUND) {
-                                    /*
-                                        A 404 is not necessarily an error, as long as the PressGang header is present.
-                                     */
-                                    LOGGER.info("Failing over due unrecognised HTTP response");
-                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
+                                    if (!disableDefaultFailureAction) {
+                                        Window.alert(PressGangCCMSUI.INSTANCE.NotFound());
+                                    }
+
+                                    callback.failed();
+
+                                    if (display != null) {
+                                        display.removeWaitOperation();
+                                    }
                                 } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR || ex.getResponse()
                                         .getStatusCode() == Response.SC_BAD_REQUEST) {
                                     if (!disableDefaultFailureAction) {
@@ -138,13 +148,14 @@ public final class FailOverRESTCall {
                                              */
                                             prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
                                         }
-                                        Window.alert(prefix + responseText == null ? "" : ("\n\n" + responseText));
+                                        Window.alert(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
                                     }
+
+                                    callback.failed();
 
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                    callback.failed();
                                 } else {
                                     /*
                                         Any other possible responses that could happen should fail over if possible otherwise display an
@@ -155,13 +166,15 @@ public final class FailOverRESTCall {
                                         failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                     } else {
                                         if (!disableDefaultFailureAction) {
-                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + responseText == null ? "" : ("\n\n" + responseText));
+                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
+                                                    responseText)));
                                         }
+
+                                        callback.failed();
 
                                         if (display != null) {
                                             display.removeWaitOperation();
                                         }
-                                        callback.failed();
                                     }
                                 }
                             } else {
@@ -173,10 +186,11 @@ public final class FailOverRESTCall {
                                         Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
                                     }
 
+                                    callback.failed();
+
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                    callback.failed();
                                 }
                             }
                         }
@@ -221,12 +235,12 @@ public final class FailOverRESTCall {
             restCall.call(restInterface);
             timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
         } catch (@NotNull final Exception ex) {
+            LOGGER.info("Failing over due to exception");
+            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+
             if (display != null) {
                 display.removeWaitOperation();
             }
-
-            LOGGER.info("Failing over due to exception");
-            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
         }
     }
 
@@ -341,9 +355,10 @@ public final class FailOverRESTCall {
             Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
         }
 
+        callback.failed();
+
         if (display != null) {
             display.removeWaitOperation();
         }
-        callback.failed();
     }
 }

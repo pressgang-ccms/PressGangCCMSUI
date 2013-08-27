@@ -2,7 +2,15 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.file;
 
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -134,7 +142,9 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         id.setValue(value.getId());
         fileName.setText(value.getFileName());
         filePath.setText(value.getFilePath());
-        fullFilePath.setText("files/" + (value.getFilePath() == null ? "" : value.getFilePath()) + value.getFileName());
+        fullFilePath.setText(
+                "files/" + (value.getFilePath() == null ? "" : value.getFilePath()) + (value.getFileName() == null ? "" : value
+                        .getFileName()));
         if (ComponentFileV1.isArchive(value)) {
             explodeArchive.setEnabled(true);
             explodeArchive.setValue(value.getExplodeArchive());

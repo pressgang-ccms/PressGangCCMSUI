@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +11,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.inject.Inject;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
@@ -298,6 +298,9 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     lastPresenter = presenter.get();
                 }
             }
+        } catch(@NotNull final RuntimeException ex) {
+            LOGGER.log(Level.INFO, ex.toString());
+            throw ex;
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.onValueChange()");
         }

@@ -342,6 +342,9 @@ public interface PressGangCCMSUI extends Constants {
     String RenderedView();
 
     @NotNull
+    String RevisionView();
+
+    @NotNull
     String XMLEditing();
 
     @NotNull
@@ -954,6 +957,9 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecText();
 
     @NotNull
+    String ContentSpecErrors();
+
+    @NotNull
     String ContentSpecTags();
 
     @NotNull
@@ -1045,4 +1051,46 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String NoServersError();
+
+    @NotNull
+    String StartReview();
+
+    @NotNull
+    String EndAndAcceptReview();
+
+    @NotNull
+    String EndAndRejectReview();
+
+    @NotNull
+    String Review();
+
+    @NotNull
+    String RevisionStartedAt();
+
+    @NotNull
+    String CurrentRevision();
+
+    @NotNull
+    String EndAndRejectLogMessage();
+
+    @NotNull
+    String EndAndAcceptLogMessage();
+
+    @NotNull
+    String StartReviewLogMessage();
+
+    @NotNull
+    String CanNotProceedWithUnsavedChanges();
+
+    @NotNull
+    String EditorSettings();
+
+    @NotNull
+    String EditorFontSize();
+
+    @NotNull
+    String EditorTheme();
+
+    @NotNull
+    String NotFound();
 }

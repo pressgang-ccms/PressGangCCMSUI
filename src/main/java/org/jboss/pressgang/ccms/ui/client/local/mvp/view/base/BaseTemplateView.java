@@ -627,5 +627,4 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     protected void hideWaiting() {
         // Do nothing by default
     }
-
 }

@@ -1,8 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import javax.enterprise.context.Dependent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -20,12 +30,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Dependent
 public class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
@@ -48,10 +52,6 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     private final ValueListBox<SearchUIProject> projects;
     private final ValueListBox<SearchUICategory> categories;
     private final ValueListBox<SearchUITag> myTags;
-    /**
-     * The image to display in the waiting dialog.
-     */
-    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
@@ -92,7 +92,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     public TopicTagsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.TopicTags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicTags());
 
         try {
             LOGGER.log(Level.INFO, "ENTER TopicTagsView()");
@@ -155,7 +155,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
             this.getPanel().setWidget(layout);
 
-            spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicTagsView()");
         }
@@ -266,6 +266,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
     @Override
     protected void showWaiting() {
+        final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+        spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
         this.getPanel().setWidget(spinner);
     }
 
