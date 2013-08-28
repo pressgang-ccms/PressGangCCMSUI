@@ -55,7 +55,7 @@ define(
 			"start" : [
 				{
 					token: "comment",
-					regex: /^\\s*#.*$/
+					regex: /^#.*$/
 				}, {
 					// tokens that define metadata
 					token: "keyword",
@@ -76,7 +76,8 @@ define(
 				},  {
 					// tokens that appear in brackets as values
 					token : "constant.language",
-					regex : "Test Topic|Concept|Reference|Task|condition\\s*=|writer\\s*=|URL\\s*=|Description\\s*=|rev:"
+                    regex : "condition\\s*=|writer\\s*=|URL\\s*=|Description\\s*=|rev:"
+//					regex : "Test Topic|Concept|Reference|Task|condition\\s*=|writer\\s*=|URL\\s*=|Description\\s*=|rev:"
 				},
 			]
 		};
