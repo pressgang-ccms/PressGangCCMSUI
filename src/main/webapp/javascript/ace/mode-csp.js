@@ -61,7 +61,7 @@ define(
 					token: "keyword",
 					regex: "^CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Abstract\\s*=|^Product\\s*=|^Version\\s*=|^Edition\\s*=" +
 						"|^DTD\\s*=|^Copyright Holder\\s*=|^Brand\\s*=|^publican\\.cfg\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=" +
-						"|^Pubsnumber\\s*=|^Bug Links\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Type\\s*=" +
+						"|^Pubsnumber\\s*=|^Bug Links On|^Bug Links Off|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Type\\s*=" +
 						"|^Book Version\\s*=|^Copyright\\s*=|^Output Style\\s*=|^BZServer\\s*=|^JIRAServer\\s*=|^JIRAProject\\s*=" +
 						"|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*="
 				}, {
