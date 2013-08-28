@@ -1347,9 +1347,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         if (displayedContentSpec != null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty() &&
                 (displayedContentSpec.getErrors().contains("ERROR") || displayedContentSpec.getErrors().contains("WARN"))) {
             if (displayedContentSpec.getErrors().contains("ERROR")) {
+                getDisplay().getErrors().removeStyleName(CSSConstants.Common.WARNING);
+                getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.ERROR);
                 getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.ERROR);
             } else if (displayedContentSpec.getErrors().contains("WARN")) {
+                getDisplay().getErrors().removeStyleName(CSSConstants.Common.ERROR);
+                getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.WARNING);
                 getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.WARNING);
             }
