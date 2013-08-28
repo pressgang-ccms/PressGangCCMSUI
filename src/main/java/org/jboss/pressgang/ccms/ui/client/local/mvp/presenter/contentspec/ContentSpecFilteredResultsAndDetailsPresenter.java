@@ -1359,6 +1359,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
         }
+
+        getDisplay().getSave().setEnabled(!isReadOnlyMode());
     }
 
     @Nullable
