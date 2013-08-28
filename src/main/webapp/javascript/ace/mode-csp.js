@@ -59,11 +59,7 @@ define(
 				}, {
 					// tokens that define metadata
 					token: "keyword",
-					regex: "^CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Abstract\\s*=|^Product\\s*=|^Version\\s*=|^Edition\\s*=" +
-						"|^DTD\\s*=|^Copyright Holder\\s*=|^Brand\\s*=|^publican\\.cfg\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=" +
-						"|^Pubsnumber\\s*=|^Bug Links\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Type\\s*=" +
-						"|^Book Version\\s*=|^Copyright\\s*=|^Output Style\\s*=|^BZServer\\s*=|^JIRAServer\\s*=|^JIRAProject\\s*=" +
-						"|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*="
+					regex: "CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Edition\\s*=|^Book Version\\s*=|^Pubsnumber\\s*=|^Product\\s*=|^Abstract\\s*=|^Description\\s*=|^Copyright Holder\\s*=|^Copyright Year\\s*=|^Version\\s*=|^Brand\\s*=|^Bug Links\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=|^BZKeywords\\s*=|^BZServer\\s*=|^BZURL\\s*=|^Type\\s*=|^Brand Logo\\s*=|^publican.cfg\\s*=|^Inline Injection\\s*=|^DTD\\s*=|^Revision History\\s*=|^Feedback\\s*=|^Legal Notice\\s*=|^BZ Assignee\\s*=|^GroupId\\s*=|^ArtifactId\\s*=|^Additional Files\\s*=|^Files\\s*=|^JIRAProject\\s*=|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*=|^JIRAServer\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*="
 				}, {
 					// tokens that define structure
 					token: "constant.language",
