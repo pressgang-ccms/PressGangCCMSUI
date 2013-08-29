@@ -124,6 +124,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Inject
     private FailOverRESTCall failOverRESTCall;
 
+    /**
+     * When a new topic is created, it is populated with a default template. The
+     * default template is saved in this property, which is then used to
+     * determine if any changes were made.
+     */
+    private String lastNewTopicTemplate;
+
     /*
         True when the XML elements dialog is opened for the first time, and the
         elements are loaded.
@@ -2682,7 +2689,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 /* if there is no selected item, we are trying to save a new topic */
 
-                if (displayedTopic.getXml() != null && !displayedTopic.getXml().trim().isEmpty()) {
+                if (displayedTopic.getXml() != null && !displayedTopic.getXml().trim().equals(lastNewTopicTemplate)) {
                     return true;
                 }
 
@@ -2761,8 +2768,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     restTopic.setRevisions(new RESTTopicCollectionV1());
                     restTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
                     restTopic.setLocale(defaultLocale);
-                    restTopic.setXml(retValue.getValue());
+                    restTopic.setXml(retValue.getValue().trim());
                     topicCollectionItem.setItem(restTopic);
+
+                    // make a note of the default template. this is used to ensure that if
+                    // no changes are made to the template, the unsaved changes warning
+                    // does not appear.
+                    lastNewTopicTemplate = retValue.getValue().trim();
 
                     // the topic won't show up in the list of topics until it is saved, so the
                     // selected item is null
