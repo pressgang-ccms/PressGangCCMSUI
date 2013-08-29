@@ -331,7 +331,7 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTFileV1.LANGUAGE_FILES_NAME + "\"}}]}";
-                restService.createJSONFile(expand, file);
+                restService.updateJSONFile(expand, file);
             }
 
             @Override
