@@ -100,6 +100,14 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
                 break;
             }
         }
+
+        final boolean wrap = Preferences.INSTANCE.getBoolean(Preferences.LINE_WRAPPING, true);
+        display.getEditor().setUseWrapMode(wrap);
+        display.getEditorSettingsDialog().getLineWrap().setValue(wrap);
+
+        final boolean hidden = Preferences.INSTANCE.getBoolean(Preferences.SHOW_HIDDEN_CHARACTERS, false);
+        display.getEditor().setShowInvisibles(hidden);
+        display.getEditorSettingsDialog().getShowInvisibles().setValue(hidden);
     }
 
     /**
@@ -110,6 +118,7 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
                 display.getEditor().setUseWrapMode(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.LINE_WRAPPING, event.getValue());
             }
         });
 
@@ -117,6 +126,7 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
                 display.getEditor().setShowInvisibles(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_HIDDEN_CHARACTERS, event.getValue());
             }
         });
 

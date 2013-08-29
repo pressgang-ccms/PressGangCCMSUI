@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308291616";
+    public static final String VERSION = "201308300700";
 
     /**
      * Monospaced web safe fonts
