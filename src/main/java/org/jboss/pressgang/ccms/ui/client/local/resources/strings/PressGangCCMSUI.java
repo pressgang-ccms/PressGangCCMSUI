@@ -1114,4 +1114,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String OldContentSpec2();
+
+    @NotNull
+    String OldContentSpec3();
 }

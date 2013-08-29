@@ -1173,13 +1173,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             If we are viewing a topic that has the content spec tag assigned to it, then warn the user that the topic has been
             migrated to a content spec entity.
          */
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(";query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
             new RESTCallBack<RESTTopicCollectionV1>() {
                 public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                     if (retValue.getSize() != 0) {
-                        if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2())) {
+                        if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
                             eventBus.fireEvent(
-                                    new ContentSpecSearchResultsAndContentSpecViewEvent(";query;contentSpecIds=" + getDisplayedTopic().getId(), false));
+                                    new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
                         }
                     }
                 }
