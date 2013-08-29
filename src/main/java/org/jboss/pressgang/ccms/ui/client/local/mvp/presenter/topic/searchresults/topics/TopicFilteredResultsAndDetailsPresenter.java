@@ -1168,6 +1168,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         loadTopicRevision();
         getTopicRenderedPresenter().getDisplay().clear();
         getTopicSplitPanelRenderedPresenter().getDisplay().clear();
+
+        /*
+            If we are viewing a topic that has the content spec tag assigned to it, then warn the user that the topic has been
+            migrated to a content spec entity.
+         */
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(";query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
+            new RESTCallBack<RESTTopicCollectionV1>() {
+                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                    if (retValue.getSize() != 0) {
+                        if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2())) {
+                            eventBus.fireEvent(
+                                    new ContentSpecSearchResultsAndContentSpecViewEvent(";query;contentSpecIds=" + getDisplayedTopic().getId(), false));
+                        }
+                    }
+                }
+            });
     }
 
     /**
