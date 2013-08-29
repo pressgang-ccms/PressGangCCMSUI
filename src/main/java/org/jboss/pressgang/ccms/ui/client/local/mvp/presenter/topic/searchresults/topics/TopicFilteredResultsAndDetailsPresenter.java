@@ -309,14 +309,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                             "The displayed collection item to reference a valid entity.");
 
-                    checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
-                            "There should be a selected collection item.");
-                    checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
-                            "The selected collection item to reference a valid entity.");
-
-                    final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
-                    final RESTTopicV1 selectedTopic = getSearchResultPresenter().getProviderData().getSelectedItem().getItem();
-
                     Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
                     final StringBuilder message = new StringBuilder();
@@ -1168,6 +1160,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         loadTopicRevision();
         getTopicRenderedPresenter().getDisplay().clear();
         getTopicSplitPanelRenderedPresenter().getDisplay().clear();
+
+        /*
+            If we are viewing an existing topic that has the content spec tag assigned to it, then warn the user that the topic has been
+            migrated to a content spec entity.
+         */
+        if (getDisplayedTopic().getId() != null) {
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
+                new RESTCallBack<RESTTopicCollectionV1>() {
+                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                        if (retValue.getSize() != 0) {
+                            if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
+                                eventBus.fireEvent(
+                                        new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
+                            }
+                        }
+                    }
+                });
+        }
     }
 
     /**

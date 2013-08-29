@@ -467,7 +467,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
 
                                     if (startWithNewSpec) {
-                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                        LOGGER.log(Level.INFO, "Adding new content spec to static list");
 
                                         // We need to swap the text with the invalid text
                                         ComponentContentSpecV1.fixDisplayedText(
