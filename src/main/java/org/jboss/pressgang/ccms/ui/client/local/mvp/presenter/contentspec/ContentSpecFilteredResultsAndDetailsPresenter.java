@@ -467,7 +467,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
 
                                     if (startWithNewSpec) {
-                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                        LOGGER.log(Level.INFO, "Adding new content spec to static list");
 
                                         // We need to swap the text with the invalid text
                                         ComponentContentSpecV1.fixDisplayedText(
@@ -731,6 +731,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     newEntity.setText(retValue.getValue());
                     newEntity.setLocale(defaultLocale);
                     contentSpecCollectionItem.setItem(newEntity);
+
+                    // the content spec won't show up in the list of content specs until it is saved, so the
+                    // selected item is null
+                    filteredResultsPresenter.setSelectedItem(null);
+
+                    // the new content spec is being displayed though, so we set the displayed item
+                    filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);
 
                     // the content spec won't show up in the list of content specs until it is saved, so the
                     // selected item is null
@@ -1347,9 +1354,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         if (displayedContentSpec != null && displayedContentSpec.getErrors() != null && !displayedContentSpec.getErrors().isEmpty() &&
                 (displayedContentSpec.getErrors().contains("ERROR") || displayedContentSpec.getErrors().contains("WARN"))) {
             if (displayedContentSpec.getErrors().contains("ERROR")) {
+                getDisplay().getErrors().removeStyleName(CSSConstants.Common.WARNING);
+                getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.ERROR);
                 getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.ERROR);
             } else if (displayedContentSpec.getErrors().contains("WARN")) {
+                getDisplay().getErrors().removeStyleName(CSSConstants.Common.ERROR);
+                getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
                 getDisplay().getErrors().addStyleName(CSSConstants.Common.WARNING);
                 getDisplay().getErrorsDown().addStyleName(CSSConstants.Common.WARNING);
             }
@@ -1359,6 +1370,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
         }
+
+        getDisplay().getSave().setEnabled(!isReadOnlyMode());
     }
 
     @Nullable
