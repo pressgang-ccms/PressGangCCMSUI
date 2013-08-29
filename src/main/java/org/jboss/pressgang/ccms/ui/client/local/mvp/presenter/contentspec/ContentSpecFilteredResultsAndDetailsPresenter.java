@@ -378,6 +378,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
                     final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+                    if (user.isEmpty()) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                        return;
+                    }
+
                     Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
                     final StringBuilder message = new StringBuilder();
