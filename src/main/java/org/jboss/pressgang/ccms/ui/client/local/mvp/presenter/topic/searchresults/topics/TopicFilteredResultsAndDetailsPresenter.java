@@ -2772,8 +2772,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     topicCollectionItem.setItem(restTopic);
 
                     // make a note of the default template. this is used to ensure that if
-                    // no changes are made to the template, the unsaved changes warning
-                    // does not appear.
+                    // no changes are made to the topic beyond the default template, the unsaved
+                    // changes warning does not appear.
                     lastNewTopicTemplate = retValue.getValue().trim();
 
                     // the topic won't show up in the list of topics until it is saved, so the

@@ -59,7 +59,7 @@ define(
 				}, {
 					// tokens that define metadata
 					token: "keyword",
-					regex: "CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Edition\\s*=|^Book Version\\s*=|^Pubsnumber\\s*=|^Product\\s*=|^Abstract\\s*=|^Description\\s*=|^Copyright Holder\\s*=|^Copyright Year\\s*=|^Version\\s*=|^Brand\\s*=|^Bug Links\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=|^BZKeywords\\s*=|^BZServer\\s*=|^BZURL\\s*=|^Type\\s*=|^Brand Logo\\s*=|^publican.cfg\\s*=|^Inline Injection\\s*=|^DTD\\s*=|^Revision History\\s*=|^Feedback\\s*=|^Legal Notice\\s*=|^BZ Assignee\\s*=|^GroupId\\s*=|^ArtifactId\\s*=|^Additional Files\\s*=|^Files\\s*=|^JIRAProject\\s*=|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*=|^JIRAServer\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Output Style\\s*=|^spaces\\s*=|^Debug\\s*="
+					regex: "CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Edition\\s*=|^Book Version\\s*=|^Pubsnumber\\s*=|^Product\\s*=|^Abstract\\s*=|^Description\\s*=|^Copyright Holder\\s*=|^Copyright Year\\s*=|^Version\\s*=|^Brand\\s*=|^Bug Links\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=|^BZKeywords\\s*=|^BZServer\\s*=|^BZURL\\s*=|^Type\\s*=|^Brand Logo\\s*=|^publican.cfg\\s*=|^Inline Injection\\s*=|^DTD\\s*=|^Revision History\\s*=|^Feedback\\s*=|^Legal Notice\\s*=|^BZ Assignee\\s*=|^GroupId\\s*=|^ArtifactId\\s*=|^Additional Files\\s*=|^Files\\s*=|^JIRAProject\\s*=|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*=|^JIRAServer\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Output Style\\s*=|^spaces\\s*=|^Debug\\s*=|^Created By\\s*="
 				}, {
 					// tokens that define structure
 					token: "constant.language",
