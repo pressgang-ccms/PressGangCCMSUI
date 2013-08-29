@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class ServiceConstants {
 
     /**
+     * The fixed url property tag id.
+     */
+    public static final int FIXED_URL_PROPERT_TAG = 20;
+
+    /**
      * The property tag that has the revision of a topic just before a review was requested
      */
     public static final int REVIEW_PROPERTY_TAG = 659;

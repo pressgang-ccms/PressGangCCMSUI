@@ -53,6 +53,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -65,6 +66,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
@@ -894,6 +896,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     }
                 });
+
+        /*
+            Open the topic in the docbuilder book.
+         */
+        getTopicContentSpecsPresenter().getDisplay().getDocbuilderColumn().setFieldUpdater(new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
+            @Override
+            public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
+                if (isOKToProceed()) {
+                    checkState(object != null && object.getItem() != null, "The referenced column should have a valid " +
+                            "content spec reference");
+
+                    failOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.getTopicRevisionWithProperties(getDisplayedTopic().getId(), getDisplayedTopic().getRevision()),
+                            new RESTCallBack<RESTTopicV1>() {
+                                @Override
+                                public void success(@NotNull final RESTTopicV1 retValue) {
+                                    checkArgument(retValue.getProperties() != null, "The returned topic should have an expanded properties collection");
+
+                                    for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
+                                        if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERT_TAG) {
+                                            Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
+                                            break;
+                                        }
+                                    }
+
+
+                                }
+                            });
+                }
+            }
+        });
     }
 
     /**
