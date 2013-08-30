@@ -215,7 +215,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     Run an additional query to get the title of the spec
                  */
                 failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getCSNodesFromQuery("query;" +
+                    FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
                             CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_METADATA_TYPE + ";" +
                             CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_TITLE_METADATA_NAME + ";" +
                             CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + displayedItem.getItem().getId()),

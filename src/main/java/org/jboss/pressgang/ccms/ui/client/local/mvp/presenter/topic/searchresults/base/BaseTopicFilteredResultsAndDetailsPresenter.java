@@ -29,12 +29,9 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.base.RESTBaseCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -285,7 +282,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
              */
             if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
                 failOverRESTCall.performRESTCall(
-                        FailOverRESTCallDatabase.getCSNodesFromQuery("query;" + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + getDisplayedTopic().getId()),
+                        FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery("query;" + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + getDisplayedTopic().getId()),
                             new RESTCallBack<RESTCSNodeCollectionV1>() {
                                 @Override
                                 public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
