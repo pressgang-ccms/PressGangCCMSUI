@@ -129,7 +129,7 @@ public class TopicFilteredResultsAndDetailsView extends
 
         addActionButton(csps);
         addActionButton(history);
-        addActionButton(review);
+        //addActionButton(review);
         addActionButton(save);
     }
 }

@@ -280,6 +280,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getTopicRenderedPresenter().getDisplay().getConditions().clear();
             getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
 
+            /*
+                Don't attempt to find conditions on new topics
+             */
             if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
                 failOverRESTCall.performRESTCall(
                         FailOverRESTCallDatabase.getCSNodesFromQuery("query;" + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + getDisplayedTopic().getId()),
@@ -287,8 +290,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 @Override
                                 public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
                                     checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
-
-
 
                                     boolean foundNullCondition = false;
                                     final Map<String, String> conditions = new TreeMap<String, String>();
@@ -393,6 +394,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             } else {
                 getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
                 getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
+
+                /*
+                    Trigger the initial render
+                 */
+                getTopicRenderedPresenter().displayTopicRendered(
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+
+                getTopicSplitPanelRenderedPresenter().displayTopicRendered(
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");

@@ -57,6 +57,11 @@ public class TopicContentSpecsPresenter extends BaseChildrenPresenter<RESTTopicV
          * @return The column that holds the Content Spec Version
          */
         Column<RESTContentSpecCollectionItemV1, String> getVersionColumn();
+
+        /**
+         * @return The column that holds the link to the book on docbuilder
+         */
+        Column<RESTContentSpecCollectionItemV1, String> getDocbuilderColumn();
     }
 
     /**
