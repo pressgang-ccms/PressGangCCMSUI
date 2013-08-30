@@ -146,6 +146,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private boolean contentSpecListLoaded = false;
 
     /**
+     * When a new topic is created, it is populated with a default template. The
+     * default template is saved in this property, which is then used to
+     * determine if any changes were made.
+     */
+    private String lastNewContentSpecTemplate;
+
+    /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
     @Inject
@@ -761,9 +768,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     // create the content spec, and add to the wrapper
                     final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
                     newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
-                    newEntity.setText(retValue.getValue());
+                    newEntity.setText(retValue.getValue().trim());
                     newEntity.setLocale(defaultLocale);
                     contentSpecCollectionItem.setItem(newEntity);
+
+                    // make a note of the default template. this is used to ensure that if
+                    // no changes are made to the topic beyond the default template, the unsaved
+                    // changes warning does not appear.
+                    lastNewContentSpecTemplate = retValue.getValue().trim();
 
                     // the content spec won't show up in the list of content specs until it is saved, so the
                     // selected item is null
@@ -1497,11 +1509,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     return true;
                 }
             } else {
-                /*
-                    If there has been any text added, we have unsaved changes.
-                 */
-                LOGGER.log(Level.INFO, "Text is not empty");
-                return !displayedEntity.getText().trim().isEmpty();
+                // If there has been any text added, we have unsaved changes.
+                return displayedEntity.getText() != null && displayedEntity.getText().trim().equals(lastNewContentSpecTemplate);
             }
 
             return false;
