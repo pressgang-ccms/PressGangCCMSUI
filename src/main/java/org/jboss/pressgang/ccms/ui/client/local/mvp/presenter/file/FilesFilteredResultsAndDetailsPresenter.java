@@ -386,6 +386,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     }
                                     if (sourceFile.getFileName() == null || sourceFile.getFileName().trim().isEmpty()) {
                                         updateFile.explicitSetFileName(file.getName());
+                                    } else {
+                                        updateFile.explicitSetFileName(sourceFile.getFileName());
                                     }
                                     updateFile.explicitSetFilePath(sourceFile.getFilePath());
 
