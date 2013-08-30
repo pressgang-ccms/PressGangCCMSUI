@@ -454,6 +454,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
+
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
