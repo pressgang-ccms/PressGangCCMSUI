@@ -36,6 +36,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
@@ -223,11 +224,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
                             checkArgument(retValue.getItems() != null, "The returned collection should have expanded items");
 
-                            if (retValue.getItems().size() != 0) {
-                                GWTUtilities.setBrowserWindowTitle(
-                                        "CS " + displayedItem.getItem().getId() + " - " +
-                                        retValue.getItems().get(0).getItem().getTitle() + " - " +
-                                        PressGangCCMSUI.INSTANCE.PressGangCCMS());
+                            /*
+                                The query may return title and subtitle
+                             */
+                            for (final RESTCSNodeCollectionItemV1 node : retValue.getItems())  {
+                                if (node.getItem().getTitle().equalsIgnoreCase(ServiceConstants.CS_NODE_TITLE_METADATA_NAME)) {
+                                    GWTUtilities.setBrowserWindowTitle(
+                                            "CS " + displayedItem.getItem().getId() + " - " +
+                                                    node.getItem().getAdditionalText() + " - " +
+                                                    PressGangCCMSUI.INSTANCE.PressGangCCMS());
+                                    break;
+                                }
                             }
                         }
                     }
