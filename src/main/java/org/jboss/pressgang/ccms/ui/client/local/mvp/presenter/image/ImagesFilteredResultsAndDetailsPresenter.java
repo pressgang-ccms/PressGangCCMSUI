@@ -1,6 +1,23 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
-import com.google.gwt.event.dom.client.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -49,19 +66,6 @@ import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.ErrorHandler;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter used to add logic to the image search and edit view.
@@ -186,13 +190,13 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback, display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback,
+                        display);
             }
         };
 
-        super.bindSearchAndEdit(Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(),
-                imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(), imageFilteredResultsComponent, display, display,
-                getNewEntityCallback);
+        super.bindSearchAndEdit(Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(),
+                imageFilteredResultsComponent.getDisplay(), imageFilteredResultsComponent, display, display, getNewEntityCallback);
 
         populateLocales();
         buildHelpDatabase();
@@ -204,18 +208,25 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         setDataAttribute(imageComponent.getDisplay().getViewImage(), ServiceConstants.HELP_TOPICS.IMAGE_VIEW_IMAGE.getId());
         setDataAttribute(imageComponent.getDisplay().getFindTopics(), ServiceConstants.HELP_TOPICS.IMAGE_FIND_TOPICS.getId());
         setDataAttribute(imageComponent.getDisplay().getSave(), ServiceConstants.HELP_TOPICS.IMAGE_SAVE.getId());
-        setDataAttribute(imageComponent.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_FIELD.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().descriptionEditor(),
+                ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_FIELD.getId());
         setDataAttribute(imageComponent.getDisplay().getEditor().getId(), ServiceConstants.HELP_TOPICS.IMAGE_ID_FIELD.getId());
-        setDataAttribute(imageComponent.getDisplay().getEditor().getImageTemplateTable(), ServiceConstants.HELP_TOPICS.IMAGE_DOCBOOK_IMAGE_TEMPLATES_TABLE.getId());
-        setDataAttribute(imageComponent.getDisplay().getEditor().getLanguageImages_OTM(), ServiceConstants.HELP_TOPICS.IMAGE_DETAILS_TABLE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getImageTemplateTable(),
+                ServiceConstants.HELP_TOPICS.IMAGE_DOCBOOK_IMAGE_TEMPLATES_TABLE.getId());
+        setDataAttribute(imageComponent.getDisplay().getEditor().getLanguageImages_OTM(),
+                ServiceConstants.HELP_TOPICS.IMAGE_DETAILS_TABLE.getId());
 
         setDataAttribute(imageFilteredResultsComponent.getDisplay().getEntitySearch(), ServiceConstants.HELP_TOPICS.IMAGE_SEARCH.getId());
-        setDataAttribute(imageFilteredResultsComponent.getDisplay().getBulkUpload(), ServiceConstants.HELP_TOPICS.IMAGE_BULK_IMAGE_UPLOAD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getBulkUpload(),
+                ServiceConstants.HELP_TOPICS.IMAGE_BULK_IMAGE_UPLOAD.getId());
         setDataAttribute(imageFilteredResultsComponent.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.IMAGE_CREATE_IMAGE.getId());
 
-        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageDescriptionFilter(), ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_SEARCH_FIELD.getId());
-        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageIdFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ID_SEARCH_FIELD.getId());
-        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageOriginalFileNameFilter(), ServiceConstants.HELP_TOPICS.IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageDescriptionFilter(),
+                ServiceConstants.HELP_TOPICS.IMAGE_DESCRIPTION_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageIdFilter(),
+                ServiceConstants.HELP_TOPICS.IMAGE_ID_SEARCH_FIELD.getId());
+        setDataAttribute(imageFilteredResultsComponent.getDisplay().getImageOriginalFileNameFilter(),
+                ServiceConstants.HELP_TOPICS.IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD.getId());
     }
 
     @Override
@@ -239,7 +250,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
         // If the displayed item isn't a new image then load the additional data
         if (!imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-            checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity and have a valid id");
+            checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null,
+                    "The displayed collection item to reference a valid entity and have a valid id");
 
             final RESTCallBack<RESTImageV1> callback = new RESTCallBack<RESTImageV1>() {
                 @Override
@@ -256,7 +268,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()),
+                    callback, display);
         }
     }
 
@@ -337,7 +351,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback,
+                display);
     }
 
     /**
@@ -383,14 +398,16 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                                     /* Flush any changes */
                                     imageComponent.getDisplay().getDriver().flush();
+
+                                    final RESTImageV1 sourceImage = imageFilteredResultsComponent.getProviderData().getDisplayedItem()
+                                            .getItem();
                                     
                                     /*
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
-                                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                                    updateImage.explicitSetDescription(
-                                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+                                    updateImage.setId(sourceImage.getId());
+                                    updateImage.explicitSetDescription(sourceImage.getDescription());
 
                                     // Create the language image item
                                     final RESTLanguageImageCollectionItemV1 updatedLanguageImageItem = editor.self.clone(false);
@@ -401,18 +418,30 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     updatedLanguageImage.explicitSetLocale(editor.self.getItem().getLocale());
                                     updatedLanguageImage.explicitSetImageData(buffer);
                                     updatedLanguageImage.explicitSetFilename(file.getName());
+                                    // If the state is unchanged then it means it already exists, so we just want to update the data
+                                    if (updatedLanguageImageItem.getState().equals(RESTBaseCollectionItemV1.UNCHANGED_STATE)) {
+                                        updatedLanguageImageItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                                    }
                                     updatedLanguageImageItem.setItem(updatedLanguageImage);
 
                                     /* Add the language image */
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().getItems().add(updatedLanguageImageItem);
 
-                                    if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(true), display);
-                                    } else {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(false), display);
+                                    // Add any language images that have been added or removed
+                                    for (final RESTLanguageImageCollectionItemV1 languageImage : sourceImage.getLanguageImages_OTM()
+                                            .returnDeletedAndAddedCollectionItems()) {
+                                        updateImage.getLanguageImages_OTM().getItems().add(languageImage);
                                     }
-                                    
+
+                                    if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
+                                                getDefaultImageRestCallback(true), display);
+                                    } else {
+                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
+                                                getDefaultImageRestCallback(false), display);
+                                    }
+
                                 } finally {
                                     display.removeWaitOperation();
                                 }
@@ -505,13 +534,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         updateImage.getLanguageImages_OTM().setItems(
                                 sourceImage.getLanguageImages_OTM().returnDeletedAddedAndUpdatedCollectionItems());
                     }
-                    
+
                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage), getDefaultImageRestCallback(true), display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
+                                getDefaultImageRestCallback(true), display);
                     } else {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage), getDefaultImageRestCallback(false), display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
+                                getDefaultImageRestCallback(false), display);
                     }
-                    
+
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
@@ -653,7 +684,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                     Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
                             imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage
-                            .getItem().getLocale(), null, null);
+                            .getItem().getLocale(),
+                            null, null);
                 }
             }
         });
@@ -691,8 +723,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             public void onBeforeSelection(final BeforeSelectionEvent<Integer> event) {
                 final int curSelectedIndex = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().getSelectedIndex();
                 if (curSelectedIndex >= 0) {
-                    final RESTLanguageImageV1Editor editor = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor()
-                            .getEditors().get(curSelectedIndex);
+                    final RESTLanguageImageV1Editor editor = imageComponent.getDisplay().getEditor().languageImages_OTMEditor()
+                            .itemsEditor().getEditors().get(
+                            curSelectedIndex);
 
                     if (editor.getUpload().getFiles() != null && editor.getUpload().getFiles().getLength() > 0) {
                         if (!Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedImageUploadPrompt())) {
@@ -791,7 +824,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
+                            callback, display);
                 }
             }
         });
@@ -823,17 +857,13 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         @Override
                         public void success(@NotNull final RESTStringConstantV1 retValue) {
                             checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                            createNewImage(
-                                    display.getBulkUploadDialog().getDescription().getText(), 
-                                    retValue.getValue(), 
-                                    0,
-                                    display.getBulkUploadDialog().getFiles().getFiles(), 
-                                    new ArrayList<Integer>(),
-                                    new ArrayList<String>());
+                            createNewImage(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(), 0,
+                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
+                            callback, display);
                 }
             }
         });
