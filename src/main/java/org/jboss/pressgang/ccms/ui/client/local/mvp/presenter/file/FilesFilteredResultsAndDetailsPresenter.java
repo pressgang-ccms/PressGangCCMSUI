@@ -376,7 +376,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                             .getItem();
 
                                     /*
-                                     * Create the file to be modified. This is so we don't send off unnessessary data.
+                                     * Create the file to be modified. This is so we don't send off unnecessary data.
                                      */
                                     final RESTFileV1 updateFile = new RESTFileV1();
                                     updateFile.setId(sourceFile.getId());
@@ -386,6 +386,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     }
                                     if (sourceFile.getFileName() == null || sourceFile.getFileName().trim().isEmpty()) {
                                         updateFile.explicitSetFileName(file.getName());
+                                    } else {
+                                        updateFile.explicitSetFileName(sourceFile.getFileName());
                                     }
                                     updateFile.explicitSetFilePath(sourceFile.getFilePath());
 
@@ -398,11 +400,21 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     updatedLanguageFile.explicitSetLocale(editor.self.getItem().getLocale());
                                     updatedLanguageFile.explicitSetFileData(buffer);
                                     updatedLanguageFile.explicitSetFilename(file.getName());
+                                    // If the state is unchanged then it means it already exists, so we just want to update the data
+                                    if (updatedLanguageFileItem.getState().equals(RESTBaseCollectionItemV1.UNCHANGED_STATE)) {
+                                        updatedLanguageFileItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                                    }
                                     updatedLanguageFileItem.setItem(updatedLanguageFile);
 
                                     // Add the language file
                                     updateFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
                                     updateFile.getLanguageFiles_OTM().getItems().add(updatedLanguageFileItem);
+
+                                    // Add any language files that have been added or removed
+                                    for (final RESTLanguageFileCollectionItemV1 languageFile : sourceFile.getLanguageFiles_OTM()
+                                            .returnDeletedAndAddedCollectionItems()) {
+                                        updateFile.getLanguageFiles_OTM().getItems().add(languageFile);
+                                    }
 
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
                                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(updateFile), getDefaultFileRestCallback(true), display);
@@ -559,7 +571,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             selectedTab);
 
                     Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/file/get/raw/" +
-                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedFile
+                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
                             .getItem().getLocale(),
                             null, null);
                 }
