@@ -428,10 +428,13 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().getItems().add(updatedLanguageImageItem);
 
-                                    // Add any language images that have been added or removed
+                                    // Add any other language images that have been added or removed
                                     for (final RESTLanguageImageCollectionItemV1 languageImage : sourceImage.getLanguageImages_OTM()
                                             .returnDeletedAndAddedCollectionItems()) {
-                                        updateImage.getLanguageImages_OTM().getItems().add(languageImage);
+                                        // Make sure we don't add the current selection
+                                        if (!languageImage.getItem().getLocale().equalsIgnoreCase(editor.self.getItem().getLocale())) {
+                                            updateImage.getLanguageImages_OTM().getItems().add(languageImage);
+                                        }
                                     }
 
                                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {

@@ -410,10 +410,13 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     updateFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
                                     updateFile.getLanguageFiles_OTM().getItems().add(updatedLanguageFileItem);
 
-                                    // Add any language files that have been added or removed
+                                    // Add any other language files that have been added or removed
                                     for (final RESTLanguageFileCollectionItemV1 languageFile : sourceFile.getLanguageFiles_OTM()
                                             .returnDeletedAndAddedCollectionItems()) {
-                                        updateFile.getLanguageFiles_OTM().getItems().add(languageFile);
+                                        // Make sure we don't add the current selection
+                                        if (!languageFile.getItem().getLocale().equalsIgnoreCase(editor.self.getItem().getLocale())) {
+                                            updateFile.getLanguageFiles_OTM().getItems().add(languageFile);
+                                        }
                                     }
 
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
