@@ -8,6 +8,16 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class ServiceConstants {
 
     /**
+     * The id for metadata cs nodes.
+     */
+    public static final int CS_NODE_METADATA_TYPE = 7;
+
+    /**
+     * The name for title metadata cs nodes.
+     */
+    public static final String CS_NODE_TITLE_METADATA_NAME = "Title";
+
+    /**
      * The fixed url property tag id.
      */
     public static final int FIXED_URL_PROPERT_TAG = 20;

@@ -34,12 +34,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -197,7 +200,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
-            RESTTextContentSpecCollectionItemV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
+            final RESTTextContentSpecCollectionItemV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
             checkState(displayedItem != null, "There should be a displayed collection item.");
             checkState(displayedItem.getItem() != null, "The displayed collection item to reference a valid entity.");
             checkState(displayedItem.returnIsAddItem() || displayedItem.getItem().getId() != null,
@@ -207,6 +210,36 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             if (displayedItem.getItem().getId() != null) {
                 GWTUtilities.setBrowserWindowTitle(
                         "CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+
+                /*
+                    Run an additional query to get the title of the spec
+                 */
+                failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
+                            CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_METADATA_TYPE + ";" +
+                            CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_TITLE_METADATA_NAME + ";" +
+                            CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + displayedItem.getItem().getId()),
+                    new RESTCallBack<RESTCSNodeCollectionV1>() {
+                        @Override
+                        public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
+                            checkArgument(retValue.getItems() != null, "The returned collection should have expanded items");
+
+                            /*
+                                The query may return title and subtitle
+                             */
+                            for (final RESTCSNodeCollectionItemV1 node : retValue.getItems())  {
+                                if (node.getItem().getTitle().equalsIgnoreCase(ServiceConstants.CS_NODE_TITLE_METADATA_NAME)) {
+                                    GWTUtilities.setBrowserWindowTitle(
+                                            "CS " + displayedItem.getItem().getId() + " - " +
+                                                    node.getItem().getAdditionalText() + " - " +
+                                                    PressGangCCMSUI.INSTANCE.PressGangCCMS());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                );
+
             } else {
                 GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             }

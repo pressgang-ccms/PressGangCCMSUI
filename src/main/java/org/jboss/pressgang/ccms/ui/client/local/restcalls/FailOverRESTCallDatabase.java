@@ -40,7 +40,7 @@ public final class FailOverRESTCallDatabase {
     /**
      * The required expansion details for the content spec node.
      */
-    private static final String CSNODE_EXPAND =
+    private static final String CSNODE_EXPAND_WITH_CONTENT_SPEC =
         "{\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}, \"branches\":[" +
                 "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INHERITED_CONDITION_NAME + "\"}}, " +
@@ -49,6 +49,8 @@ public final class FailOverRESTCallDatabase {
                 "]}" +
             "]}" +
         "]}";
+
+    private static final String CSNODE_EXPAND = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}}]}";
 
     /**
      * The required expansion details for the tags.
@@ -1101,7 +1103,26 @@ public final class FailOverRESTCallDatabase {
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONContentSpecNodesWithQuery method
      */
-    public static RESTCall getCSNodesFromQuery(@NotNull final String queryString) {
+    public static RESTCall getCSNodesWithContentSpecExpandedFromQuery(@NotNull final String queryString) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONContentSpecNodesWithQuery(new PathSegmentImpl(queryString), CSNODE_EXPAND_WITH_CONTENT_SPEC);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONContentSpecNodesWithQuery method
+     * @param queryString The query to use to get the filters
+     * @return A RESTCall that can call the REST getJSONContentSpecNodesWithQuery method
+     */
+    public static RESTCall getCSNodesWithFromQuery(@NotNull final String queryString) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
