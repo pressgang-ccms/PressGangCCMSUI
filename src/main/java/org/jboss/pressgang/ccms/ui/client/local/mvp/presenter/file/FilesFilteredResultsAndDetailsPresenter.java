@@ -413,7 +413,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     // Add any language files that have been added or removed
                                     for (final RESTLanguageFileCollectionItemV1 languageFile : sourceFile.getLanguageFiles_OTM()
                                             .returnDeletedAndAddedCollectionItems()) {
-                                        sourceFile.getLanguageFiles_OTM().getItems().add(languageFile);
+                                        updateFile.getLanguageFiles_OTM().getItems().add(languageFile);
                                     }
 
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
