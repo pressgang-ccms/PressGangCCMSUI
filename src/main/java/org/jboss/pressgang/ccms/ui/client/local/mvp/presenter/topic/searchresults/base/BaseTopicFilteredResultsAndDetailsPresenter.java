@@ -1287,7 +1287,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         setDataAttribute(topicTagsPresenter.getDisplay().getMyTags(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_TAGS_LIST.getId());
         setDataAttribute(topicTagsPresenter.getDisplay().getEditor(), ServiceConstants.HELP_TOPICS.TOPIC_TAG_EXISTING.getId());
 
-        setDataAttribute(getTopicSplitPanelRenderedPresenter().getDisplay().getiFrameParent(),
+        setDataAttribute(getTopicSplitPanelRenderedPresenter().getDisplay().getLayoutPanel(),
                 ServiceConstants.HELP_TOPICS.RENDERED_PREVIEW.getId());
 
     }

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -37,7 +38,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         void removeListener();
 
-        FlexTable getiFrameParent();
+        FlexTable getLayoutPanel();
 
         ListBox getConditions();
     }
@@ -50,6 +51,11 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
+    /**
+     * The condition set via the URL history token. Used when the view is used stand alone.
+     */
+    private String conditionOverride;
+
     @NotNull
     public Display getDisplay() {
         return display;
@@ -59,6 +65,11 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended();
+
+        /*
+            Don't display the conditions when this view is used stand alone.
+         */
+        display.getLayoutPanel().getFlexCellFormatter().setVisible(0, 0, false);
     }
 
     @Override
@@ -74,8 +85,15 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD.getDtdDoctype() + "\n" + GWTUtilities.removeAllPreabmle(topicXML);
 
-        if (display.getConditions().getSelectedIndex() != -1) {
-            final String condition = display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
+        if (display.getConditions().getSelectedIndex() != -1 || conditionOverride != null) {
+
+            /*
+                conditionOverride overrides any selection in the combo box
+             */
+            final String condition = conditionOverride != null ?
+                    conditionOverride :
+                    display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
+
             if (!condition.isEmpty()) {
                 xml = removeConditions(xml, RegExp.compile(condition));
             }
@@ -135,17 +153,35 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     @Override
     public void parseToken(@NotNull final String historyToken) {
         final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
+
+        /*
+            The history token is expected to be the topic id, optionally with a semicolon
+            and then an encoded condition.
+         */
+
         try {
-            final Integer topicId = Integer.parseInt(fixedToken);
+            final String[] tokens = fixedToken.split(";");
 
-            final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
-                @Override
-                public void success(@NotNull final RESTTopicV1 retValue) {
-                    displayTopicRendered(retValue.getXml(), true, true);
+            if (tokens.length > 0) {
+
+                /*
+                    Set the condition override if it is present.
+                 */
+                if (tokens.length > 1) {
+                    conditionOverride = URL.decode(tokens[1]);
                 }
-            };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+                final Integer topicId = Integer.parseInt(tokens[0]);
+
+                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                    @Override
+                    public void success(@NotNull final RESTTopicV1 retValue) {
+                        displayTopicRendered(retValue.getXml(), true, true);
+                    }
+                };
+
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+            }
 
         } catch (@NotNull final NumberFormatException ex) {
 
