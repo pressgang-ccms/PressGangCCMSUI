@@ -1015,7 +1015,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         checkState(displayedItem.getItem() != null, "A collection item should be selected and have a valid item");
 
         if (displayedItem.getItem().getId() != null) {
-            GWTUtilities.setBrowserWindowTitle(displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+            GWTUtilities.setBrowserWindowTitle(displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
         } else {
             GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
         }
