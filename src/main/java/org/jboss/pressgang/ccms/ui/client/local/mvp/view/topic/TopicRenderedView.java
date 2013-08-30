@@ -26,7 +26,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final String LOADING_IFRAME = "LoadingIFrame";
     private static final String LOADED_IFRAME = "LoadedIFrame";
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
-    private final FlexTable iFrameParent = new FlexTable();
+    private final FlexTable layoutPanel = new FlexTable();
     private final ListBox conditions = new ListBox(false);
     private int displayingRow = 1;
     private JavaScriptObject listener;
@@ -64,18 +64,18 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         LOGGER.info("ENTER TopicRenderedView()");
 
-        this.getPanel().setWidget(iFrameParent);
-        iFrameParent.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
+        this.getPanel().setWidget(layoutPanel);
+        layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
 
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
         horizontalPanel.add(conditions);
 
-        iFrameParent.setWidget(0, 0, horizontalPanel);
+        layoutPanel.setWidget(0, 0, horizontalPanel);
 
-        iFrameParent.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        iFrameParent.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
         createEventListener();
         addEventListener();
@@ -135,14 +135,14 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
-            if (Arrays.asList(iFrameParent.getFlexCellFormatter().getStyleName(displayingRow, 0).split(" ")).indexOf(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL) != -1) {
-                iFrameParent.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-                iFrameParent.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+            if (Arrays.asList(layoutPanel.getFlexCellFormatter().getStyleName(displayingRow, 0).split(" ")).indexOf(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL) != -1) {
+                layoutPanel.getFlexCellFormatter().removeStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+                layoutPanel.getFlexCellFormatter().addStyleName(displayingRow, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
             }
 
-            if (Arrays.asList(iFrameParent.getFlexCellFormatter().getStyleName(next, 0).split(" ")).indexOf(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL)  != -1) {
-                iFrameParent.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
-                iFrameParent.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+            if (Arrays.asList(layoutPanel.getFlexCellFormatter().getStyleName(next, 0).split(" ")).indexOf(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL)  != -1) {
+                layoutPanel.getFlexCellFormatter().removeStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+                layoutPanel.getFlexCellFormatter().addStyleName(next, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
             }
 
             setScroll(LOADING_IFRAME, scrollLeftPosition, scrollTopPosition);
@@ -166,7 +166,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @Override
     public void clear() {
         final int next = displayingRow == 1 ? 2 : 1;
-        iFrameParent.setWidget(next, 0, null);
+        layoutPanel.setWidget(next, 0, null);
     }
 
     @Override
@@ -187,15 +187,15 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         loadingiframe.getElement().setId(LOADING_IFRAME);
         loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
         loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-        iFrameParent.setWidget(displayingRow, 0, loadingiframe);
+        layoutPanel.setWidget(displayingRow, 0, loadingiframe);
 
         return true;
     }
 
     @Override
     @NotNull
-    public FlexTable getiFrameParent() {
-        return iFrameParent;
+    public FlexTable getLayoutPanel() {
+        return layoutPanel;
     }
 
     @Override

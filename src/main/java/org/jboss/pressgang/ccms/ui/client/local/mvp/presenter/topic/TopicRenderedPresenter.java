@@ -38,7 +38,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         void removeListener();
 
-        FlexTable getiFrameParent();
+        FlexTable getLayoutPanel();
 
         ListBox getConditions();
     }
@@ -69,7 +69,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         /*
             Don't display the conditions when this view is used stand alone.
          */
-        display.getConditions().setVisible(false);
+        display.getLayoutPanel().getFlexCellFormatter().setVisible(0, 0, false);
     }
 
     @Override
@@ -91,8 +91,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                 conditionOverride overrides any selection in the combo box
              */
             final String condition = conditionOverride != null ?
-                    display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim() :
-                    conditionOverride;
+                    conditionOverride :
+                    display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
 
             if (!condition.isEmpty()) {
                 xml = removeConditions(xml, RegExp.compile(condition));
@@ -153,11 +153,20 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     @Override
     public void parseToken(@NotNull final String historyToken) {
         final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
+
+        /*
+            The history token is expected to be the topic id, optionally with a semicolon
+            and then an encoded condition.
+         */
+
         try {
             final String[] tokens = fixedToken.split(";");
 
             if (tokens.length > 0) {
 
+                /*
+                    Set the condition override if it is present.
+                 */
                 if (tokens.length > 1) {
                     conditionOverride = URL.decode(tokens[1]);
                 }
