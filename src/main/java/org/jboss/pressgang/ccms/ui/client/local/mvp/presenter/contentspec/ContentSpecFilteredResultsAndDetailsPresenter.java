@@ -406,16 +406,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler logMessageOkClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+                if (user.isEmpty()) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                    return;
+                }
+
                 try {
                     LOGGER.log(Level.INFO,
                             "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-
-                    final String user = display.getMessageLogDialog().getUsername().getText().trim();
-
-                    if (user.isEmpty()) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
-                        return;
-                    }
 
                     Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
