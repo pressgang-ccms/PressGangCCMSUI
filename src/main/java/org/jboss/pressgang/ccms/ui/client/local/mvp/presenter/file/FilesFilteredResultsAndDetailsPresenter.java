@@ -559,7 +559,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             selectedTab);
 
                     Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/file/get/raw/" +
-                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedFile
+                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
                             .getItem().getLocale(),
                             null, null);
                 }
