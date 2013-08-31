@@ -19,6 +19,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -946,5 +948,21 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         bindFileUploadButtons();
         bindLanguageFileTabPanelEvents();
+        bindFileNameAndFilePathKeyEvents();
+    }
+
+    /**
+     * Binds the File Name and File Path TextBox's to capture key up events and update the full file path.
+     */
+    protected void bindFileNameAndFilePathKeyEvents() {
+        final KeyUpHandler handler = new KeyUpHandler() {
+            @Override
+            public void onKeyUp(KeyUpEvent event) {
+                fileComponent.getDisplay().getEditor().flush();
+                fileComponent.getDisplay().getEditor().updateFullFilePath();
+            }
+        };
+        fileComponent.getDisplay().getEditor().fileNameEditor().addKeyUpHandler(handler);
+        fileComponent.getDisplay().getEditor().filePathEditor().addKeyUpHandler(handler);
     }
 }
