@@ -1479,7 +1479,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
             } else {
                 // If there has been any text added, we have unsaved changes.
-                return displayedEntity.getText() != null && displayedEntity.getText().trim().equals(lastNewContentSpecTemplate);
+                return displayedEntity.getText() != null && !displayedEntity.getText().trim().equals(lastNewContentSpecTemplate);
             }
 
             return false;
