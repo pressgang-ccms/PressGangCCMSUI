@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -497,7 +498,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         add(contentSpecPresenter.getDisplay());
                                     }});
 
-                                    Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                    if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                        // Take the user to the errors view so they can review any error messages
+                                        switchView(contentSpecErrorsPresenter.getDisplay());
+                                        Window.alert(
+                                                PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
+                                                        ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                    } else {
+                                        Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                    }
                                 } finally {
                                     LOGGER.log(Level.INFO,
                                             "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK" +
@@ -587,6 +596,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     // Take the user to the revisions view so they can review any overwritten changes
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
                                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                    // Take the user to the errors view so they can review any error messages
+                                    switchView(contentSpecErrorsPresenter.getDisplay());
+                                    Window.alert(
+                                            PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
+                                                    .ContentSpecSaveSuccessWithErrorsPostFix());
                                 } else {
                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
@@ -1101,9 +1116,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO,
-                                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" +
-                                            ".doSuccessAction" + "()");
+                            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" +
+                                    ".doSuccessAction" + "()");
 
                             /*
                                 There is a small chance that in between loading the content spec's details and
