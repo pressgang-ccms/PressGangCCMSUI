@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -34,15 +35,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -146,6 +144,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private boolean contentSpecListLoaded = false;
 
     /**
+     * When a new topic is created, it is populated with a default template. The
+     * default template is saved in this property, which is then used to
+     * determine if any changes were made.
+     */
+    private String lastNewContentSpecTemplate;
+
+    /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
     @Inject
@@ -209,37 +214,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             // Make the window title display the id of the content spec
             if (displayedItem.getItem().getId() != null) {
                 GWTUtilities.setBrowserWindowTitle(
-                        "CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
-
-                /*
-                    Run an additional query to get the title of the spec
-                 */
-                failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
-                            CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_METADATA_TYPE + ";" +
-                            CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_TITLE_METADATA_NAME + ";" +
-                            CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + displayedItem.getItem().getId()),
-                    new RESTCallBack<RESTCSNodeCollectionV1>() {
-                        @Override
-                        public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
-                            checkArgument(retValue.getItems() != null, "The returned collection should have expanded items");
-
-                            /*
-                                The query may return title and subtitle
-                             */
-                            for (final RESTCSNodeCollectionItemV1 node : retValue.getItems())  {
-                                if (node.getItem().getTitle().equalsIgnoreCase(ServiceConstants.CS_NODE_TITLE_METADATA_NAME)) {
-                                    GWTUtilities.setBrowserWindowTitle(
-                                            "CS " + displayedItem.getItem().getId() + " - " +
-                                                    node.getItem().getAdditionalText() + " - " +
-                                                    PressGangCCMSUI.INSTANCE.PressGangCCMS());
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                );
-
+                        "CS " + displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI
+                                .INSTANCE.PressGangCCMS());
             } else {
                 GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             }
@@ -406,16 +382,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler logMessageOkClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+                if (user.isEmpty()) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                    return;
+                }
+
                 try {
                     LOGGER.log(Level.INFO,
                             "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-
-                    final String user = display.getMessageLogDialog().getUsername().getText().trim();
-
-                    if (user.isEmpty()) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
-                        return;
-                    }
 
                     Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
@@ -441,8 +417,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     // create the object to be saved
                     final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
-                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(displayedEntity
-                            .getText())) {
+                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(
+                            displayedEntity.getText())) {
                         updatedSpec.explicitSetText(displayedEntity.getText());
                     }
                     updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
@@ -522,7 +498,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         add(contentSpecPresenter.getDisplay());
                                     }});
 
-                                    Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                    if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                        // Take the user to the errors view so they can review any error messages
+                                        switchView(contentSpecErrorsPresenter.getDisplay());
+                                        Window.alert(
+                                                PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
+                                                        ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                    } else {
+                                        Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                    }
                                 } finally {
                                     LOGGER.log(Level.INFO,
                                             "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK" +
@@ -612,6 +596,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     // Take the user to the revisions view so they can review any overwritten changes
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
                                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                    // Take the user to the errors view so they can review any error messages
+                                    switchView(contentSpecErrorsPresenter.getDisplay());
+                                    Window.alert(
+                                            PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
+                                                    .ContentSpecSaveSuccessWithErrorsPostFix());
                                 } else {
                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
@@ -652,8 +642,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         contentSpecPresenter.getDisplay().getEditorSettings().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown()
-                        && !isAnyDialogBoxesOpen(contentSpecPresenter.getDisplay())) {
+                if (getDisplay().getTopLevelPanel().isAttached() && getDisplay().isViewShown() && !isAnyDialogBoxesOpen(
+                        contentSpecPresenter.getDisplay())) {
                     contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().center();
                     contentSpecPresenter.getDisplay().getEditorSettingsDialog().getDialogBox().show();
                 }
@@ -761,9 +751,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     // create the content spec, and add to the wrapper
                     final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
                     newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
-                    newEntity.setText(retValue.getValue());
+                    newEntity.setText(retValue.getValue().trim());
                     newEntity.setLocale(defaultLocale);
                     contentSpecCollectionItem.setItem(newEntity);
+
+                    // make a note of the default template. this is used to ensure that if
+                    // no changes are made to the topic beyond the default template, the unsaved
+                    // changes warning does not appear.
+                    lastNewContentSpecTemplate = retValue.getValue().trim();
 
                     // the content spec won't show up in the list of content specs until it is saved, so the
                     // selected item is null
@@ -783,8 +778,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants
-                    .BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID), callback,
+                    display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -1120,9 +1116,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO,
-                                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction" +
-                                            "()");
+                            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" +
+                                    ".doSuccessAction" + "()");
 
                             /*
                                 There is a small chance that in between loading the content spec's details and
@@ -1203,8 +1198,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
 
-                        Collections.sort(
-                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                        Collections.sort(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
                         // We have new data to display
@@ -1337,7 +1331,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             final StringBuilder title = new StringBuilder(
                     filteredResultsPresenter.getDisplay().getPageName() + " - " + displayedView.getPageName());
             final StringBuilder id = new StringBuilder(
-                    getDisplayedContentSpec().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedContentSpec().getId().toString());
+                    getDisplayedContentSpec().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedContentSpec().getId()
+                            .toString());
 
             /*
                 Test to see if we are looking at a specific revision. If so, add the revision to the page title.
@@ -1497,11 +1492,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     return true;
                 }
             } else {
-                /*
-                    If there has been any text added, we have unsaved changes.
-                 */
-                LOGGER.log(Level.INFO, "Text is not empty");
-                return !displayedEntity.getText().trim().isEmpty();
+                // If there has been any text added, we have unsaved changes.
+                return displayedEntity.getText() != null && !displayedEntity.getText().trim().equals(lastNewContentSpecTemplate);
             }
 
             return false;

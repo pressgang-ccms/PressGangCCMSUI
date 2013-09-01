@@ -261,6 +261,9 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecSaveSuccessWithID();
 
     @NotNull
+    String ContentSpecSaveSuccessWithErrorsPostFix();
+
+    @NotNull
     String OverwriteSuccess();
 
     @NotNull

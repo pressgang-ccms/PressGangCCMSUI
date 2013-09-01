@@ -59,6 +59,16 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
     }
 
     @NotNull
+    public TextBox fileNameEditor() {
+        return fileName;
+    }
+
+    @NotNull
+    public TextBox filePathEditor() {
+        return filePath;
+    }
+
+    @NotNull
     public RESTLanguageFileCollectionV1Editor languageFiles_OTMEditor() {
         return languageFiles_OTM;
     }
@@ -142,9 +152,7 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         id.setValue(value.getId());
         fileName.setText(value.getFileName());
         filePath.setText(value.getFilePath());
-        fullFilePath.setText(
-                "files/" + (value.getFilePath() == null ? "" : value.getFilePath()) + (value.getFileName() == null ? "" : value
-                        .getFileName()));
+        fullFilePath.setText(constructFullFilePath());
         if (ComponentFileV1.isArchive(value)) {
             explodeArchive.setEnabled(true);
             explodeArchive.setValue(value.getExplodeArchive());
@@ -153,4 +161,12 @@ public final class RESTFileV1Editor extends DockPanel implements ValueAwareEdito
         }
     }
 
+    public void updateFullFilePath() {
+        fullFilePath.setText(constructFullFilePath());
+    }
+
+    private String constructFullFilePath() {
+        return "files/" + (value.getFilePath() == null ? "" : value.getFilePath()) + (value.getFileName() == null ? "" : value
+                        .getFileName());
+    }
 }

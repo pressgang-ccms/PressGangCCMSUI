@@ -79,6 +79,9 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         createEventListener();
         addEventListener();
+
+        // Hide the action bar since it's not needed
+        getTopActionGrandParentPanel().removeFromParent();
     }
 
     /**

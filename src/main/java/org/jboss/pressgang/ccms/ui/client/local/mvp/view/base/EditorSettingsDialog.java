@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.FontDetector;
 
 public class EditorSettingsDialog extends ClosablePopup {
 
@@ -26,10 +27,17 @@ public class EditorSettingsDialog extends ClosablePopup {
         super(PressGangCCMSUI.INSTANCE.EditorSettings(), true);
         setGlassEnabled(true);
 
+        final FontDetector fontDetector = new FontDetector();
         for (final String font : Constants.MONOSPACED_FONTS) {
-            fonts.addItem(font, font + "," + Constants.DEFAULT_MONOSPACED_FONT);
+            if (font.equals("monospace")) {
+                fonts.addItem(font, font);
+            } else {
+                String fixedFont = font.contains(" ") ? ("\"" + font + "\"") : font;
+                if (fontDetector.detect(fixedFont)) {
+                    fonts.addItem(font, fixedFont + ", monospace");
+                }
+            }
         }
-        fonts.addItem(Constants.DEFAULT_MONOSPACED_FONT);
 
         for (final String fontSize : Constants.FONT_SIZES) {
             fontSizes.addItem(fontSize);
