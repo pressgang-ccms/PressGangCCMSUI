@@ -109,6 +109,10 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
     @Inject
     private Display display;
 
+    private Integer topicID = null;
+    private Integer firstRevision = null;
+    private Integer secondRevision = null;
+
     /**
      * Holds the data required to populate and refresh the tags list
      */
@@ -138,6 +142,9 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         display.getHtmlOpenDiff().setVisible(false);
         display.showWaitingFromRenderedDiff();
 
+        if (topicID != null) {
+            loadTopics(topicID, firstRevision, secondRevision);
+        }
     }
 
     @Override
@@ -157,14 +164,14 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
             final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
             final String[] topicDetails = fixedToken.split(";");
             if (topicDetails.length == 2 || topicDetails.length == 3) {
-                final Integer topicID = Integer.parseInt(topicDetails[0]);
-                final Integer firstRevision = Integer.parseInt(topicDetails[1]);
-                final Integer secondRevision = topicDetails.length == 3 ? Integer.parseInt(topicDetails[2]) : null;
-
-                loadTopics(topicID, firstRevision, secondRevision);
+                topicID = Integer.parseInt(topicDetails[0]);
+                firstRevision = Integer.parseInt(topicDetails[1]);
+                secondRevision = topicDetails.length == 3 ? Integer.parseInt(topicDetails[2]) : null;
             }
-        } catch (final NumberFormatException ex) {
-            // invalid data supplied on the url. do nothing
+        } catch (@NotNull final NumberFormatException ex) {
+            topicID = null;
+            firstRevision = null;
+            secondRevision = null;
         }
     }
 

@@ -290,7 +290,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                                     boolean foundNullCondition = false;
                                     final Map<String, String> conditions = new TreeMap<String, String>();
-                                    final Map<String, Integer> conditionCounts = new TreeMap<String, Integer>();
+                                    final Map<String, HashSet<Integer>> conditionCounts = new TreeMap<String, HashSet<Integer>>();
 
                                     for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
                                         checkState(node.getItem().getContentSpec() != null, "The content spec node should have an expanded content spec property");
@@ -313,9 +313,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                                         if (!conditions.containsKey(condition)) {
                                             conditions.put(condition, conditionName);
-                                            conditionCounts.put(condition, 1);
+                                            conditionCounts.put(condition, new HashSet<Integer>() {{add(node.getItem().getContentSpec().getId());}});
                                         } else {
-                                            conditionCounts.put(condition, conditionCounts.get(condition) + 1);
+                                            conditionCounts.get(condition).add(node.getItem().getContentSpec().getId());
                                         }
                                     }
 
@@ -338,12 +338,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                             */
                                             for (final String key : conditions.keySet()) {
                                                 if (key.isEmpty()) {
-                                                    if (conditionCounts.get(key) == 1) {
+                                                    if (conditionCounts.get(key).size() == 1) {
                                                         getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
                                                         getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
                                                     } else {
-                                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key) - 1) + ""), key);
-                                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key) - 1) + ""), key);
+                                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
+                                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
                                                     }
 
                                                     break;
@@ -356,12 +356,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                          */
                                         for (final String key : conditions.keySet()) {
                                             if (!key.isEmpty()) {
-                                                if (conditionCounts.get(key) == 1) {
+                                                if (conditionCounts.get(key).size() == 1) {
                                                     getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
                                                     getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
                                                 } else {
-                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key) - 1) + ""), key);
-                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key) - 1) + ""), key);
+                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
+                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
                                                 }
                                             }
                                         }

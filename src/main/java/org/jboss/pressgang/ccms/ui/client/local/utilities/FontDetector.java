@@ -3,6 +3,9 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
 import com.google.gwt.core.client.JavaScriptObject;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A java frontend to the script at http://www.lalit.org/lab/javascript-css-font-detect/
+ */
 public class FontDetector {
     private JavaScriptObject detector;
 
@@ -27,6 +30,10 @@ public class FontDetector {
      */
     public native boolean detect(@NotNull final String font) /*-{
         var detector = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.FontDetector::detector;
-        return detector.detect(font);
+        if (detector != null) {
+            return detector.detect(font);
+        }
+
+        return true;
     }-*/;
 }

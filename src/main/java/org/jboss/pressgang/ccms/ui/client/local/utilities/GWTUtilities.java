@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
@@ -84,18 +85,32 @@ final public class GWTUtilities {
 	}-*/;
 
     /**
-     * Writes out a stack trace into a string.
+     * Writes out a stack trace into a string. If the exception is an UmbrellaException,
+     * it will also write out the stack trace of the individual exceptions wrapped up by
+     * the UmbrellaException.
      *
      * @param ex The exception to process
      * @return A string version of the stack trace
      */
     @NotNull
     public static String convertExceptionStackToString(@NotNull final Throwable ex) {
-        @NotNull final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (@NotNull final StackTraceElement element : ex.getStackTrace()) {
             sb.append(element.toString());
             sb.append("\n");
         }
+
+        if (ex instanceof UmbrellaException) {
+            sb.append("Unwrapping UmbrellaException\n");
+            final UmbrellaException umbrellaException = (UmbrellaException)ex;
+            for (@NotNull final Throwable throwable: umbrellaException.getCauses() ) {
+                for (@NotNull final StackTraceElement element : throwable.getStackTrace()) {
+                    sb.append(element.toString());
+                    sb.append("\n");
+                }
+            }
+        }
+
         return sb.toString();
     }
 

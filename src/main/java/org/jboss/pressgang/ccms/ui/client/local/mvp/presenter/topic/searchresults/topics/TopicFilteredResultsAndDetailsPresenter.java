@@ -914,14 +914,31 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public void success(@NotNull final RESTTopicV1 retValue) {
                                     checkArgument(retValue.getProperties() != null, "The returned topic should have an expanded properties collection");
 
+                                    boolean found = false;
                                     for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                         if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERTY_TAG) {
                                             Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
+                                            found = true;
                                             break;
                                         }
                                     }
 
+                                    /*
+                                        The docbuilder won't set the fixed url. This is left until the book is built by
+                                        author with csprocessor to ensure that the title is set at the last possible
+                                        moment. This means it is possible for a topic to be in a book on the docbuilder
+                                        without having a FIXED URL property tag. In this case we guess the fixed url.
 
+                                        Worst case scenario is that this topic has the same title as another topic in
+                                        the book, and the user will be sent to the wrong topic.
+
+                                        Ideally the logic employed by the csprocessor to set the temp fixed url should
+                                        be exposed and used here.
+                                     */
+                                    if (!found) {
+                                        final String simulatedFixedURL = retValue.getTitle().replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
+                                        Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + simulatedFixedURL, "", "");
+                                    }
                                 }
                             });
                 }
