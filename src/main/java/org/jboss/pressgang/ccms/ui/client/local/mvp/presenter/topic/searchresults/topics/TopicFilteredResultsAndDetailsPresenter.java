@@ -66,7 +66,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
@@ -103,6 +102,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -915,7 +915,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     checkArgument(retValue.getProperties() != null, "The returned topic should have an expanded properties collection");
 
                                     for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
-                                        if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERT_TAG) {
+                                        if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERTY_TAG) {
                                             Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
                                             break;
                                         }
@@ -2083,7 +2083,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 // Add the doctype that include the standard docbook entities
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities::removeAllPreabmle(Ljava/lang/String;)(text);
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
@@ -2313,7 +2313,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
                     getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                            addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(this.getDisplayedTopic().getXml())), isReadOnlyMode(), isDisplayingImage);
+                            addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(this.getDisplayedTopic().getXml())), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();

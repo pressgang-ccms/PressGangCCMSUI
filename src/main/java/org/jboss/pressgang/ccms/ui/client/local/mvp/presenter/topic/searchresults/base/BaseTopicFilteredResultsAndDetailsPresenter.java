@@ -54,7 +54,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -250,7 +250,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
 
                 getTopicRenderedPresenter().displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
             }
         });
 
@@ -262,7 +262,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
                 }
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
             }
         });
     }
@@ -377,10 +377,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                             getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
 
                                             getTopicRenderedPresenter().displayTopicRendered(
-                                                    addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+                                                    addLineNumberAttributesToXML(
+                                                            XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
 
                                             getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                                                    addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
+                                                    addLineNumberAttributesToXML(
+                                                            XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
 
                                             break;
                                         }
@@ -396,10 +398,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     Trigger the initial render
                  */
                 getTopicRenderedPresenter().displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
 
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
+                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
@@ -910,13 +912,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /* We display the rendered view with images */
             /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
             /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml()), isReadOnlyMode(), true);
+                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreamble(topicToDisplay.getXml()), isReadOnlyMode(), true);
             }*/
 
             /* We initially display the split pane rendered view without images */
             /*if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
                 topicSplitPanelRenderedPresenter.displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreabmle(topicToDisplay.getXml())), isReadOnlyMode(), false);
+                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreamble(topicToDisplay.getXml())), isReadOnlyMode(), false);
             }*/
 
             /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import com.google.gwt.regexp.shared.RegExp;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,4 +68,30 @@ public class XMLUtilities {
 
 		return null;
 	}-*/;
+
+    /**
+     * Strips out the xml preamble. This is usually done before the XML
+     * is rendered in the UI
+     * @param xml The source xml
+     * @return the xml without the preamble
+     */
+    public static String removeXmlPreamble(@NotNull final String xml) {
+        final RegExp regExp = RegExp.compile("^\\s*<\\?[\\s\\S]*?\\?>");
+        return regExp.replace(xml, "");
+    }
+
+    /**
+     * Strips out the doctype preamble in XML. This is usually done before the XML
+     * is rendered in the UI
+     * @param xml The source xml
+     * @return the xml without the doctype preamble
+     */
+    public static String removeDoctypePreamble(@NotNull final String xml) {
+        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>");
+        return regExp.replace(xml, "");
+    }
+
+    public static String removeAllPreamble(@NotNull final String xml) {
+        return removeDoctypePreamble(removeXmlPreamble(xml));
+    }
 }

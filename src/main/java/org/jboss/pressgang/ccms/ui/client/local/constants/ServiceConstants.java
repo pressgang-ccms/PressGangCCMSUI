@@ -20,7 +20,7 @@ public final class ServiceConstants {
     /**
      * The fixed url property tag id.
      */
-    public static final int FIXED_URL_PROPERT_TAG = 20;
+    public static final int FIXED_URL_PROPERTY_TAG = 20;
 
     /**
      * The property tag that has the revision of a topic just before a review was requested

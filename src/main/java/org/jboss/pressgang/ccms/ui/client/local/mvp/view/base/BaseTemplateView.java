@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -281,7 +282,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
-                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +  GWTUtilities.removeAllPreabmle(retValue.getXml());
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +  XMLUtilities.removeAllPreamble(
+                            retValue.getXml());
 
                     failOverRESTCall.performRESTCall(
                             FailOverRESTCallDatabase.holdXML(xml),

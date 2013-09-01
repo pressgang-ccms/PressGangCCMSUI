@@ -11,28 +11,41 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201308312248";
+    public static final String VERSION = "201309010928";
 
     /**
      * Monospaced web safe fonts
      */
     public static final String[] MONOSPACED_FONTS = new String[] {
 
-        "\"Andale Mono WT\"",
-        "\"Andale Mono\"",
-        "\"Bitstream Vera Sans Mono\"",
+        "Andale Mono WT",
+        "Andale Mono",
+        "Bitstream Vera Sans Mono",
         "Consolas",
-        "\"Courier New\"",
+        "Courier New",
         "Courier",
-        "\"DejaVu Sans Mono\"",
-        "\"Droid Sans Mono\"",
+        "DejaVu Sans Mono",
+        "Droid Sans Mono",
+        "Everson Mono",
+        "Fixed",
+        "Fixedsys",
+        "FreeMono",
+        "HyperFont",
         "Inconsolata",
-        "\"Liberation Mono\"",
-        "\"Lucida Console\"",
-        "\"Lucida Sans Typewriter\"",
+        "Letter Gothic",
+        "Liberation Mono",
+        "Lucida Console",
+        "Lucida Sans Typewriter",
+        "Lucida Typewriter",
+        "Menlo",
         "Monaco",
-        "\"Nimbus Mono L\"",
-        "\"PT Mono\""
+        "monofur",
+        "monospace",
+        "Nimbus Mono L",
+        "Prestige Elite",
+        "ProFont",
+        "PT Mono",
+        "Ubuntu Mono"
     };
 
     /**
