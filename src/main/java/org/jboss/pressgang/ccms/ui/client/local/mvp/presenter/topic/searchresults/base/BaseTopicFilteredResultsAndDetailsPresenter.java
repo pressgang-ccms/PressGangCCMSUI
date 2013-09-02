@@ -5,14 +5,23 @@ import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -245,7 +254,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 if (getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
-                    final String conditionValue = getTopicRenderedPresenter().getDisplay().getConditions().getValue(getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
+                    final String conditionValue = getTopicRenderedPresenter().getDisplay().getConditions().getValue(
+                            getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
                 }
 
@@ -258,7 +268,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             @Override
             public void onChange(ChangeEvent event) {
                 if (getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
-                    final String conditionValue = getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getValue(getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
+                    final String conditionValue = getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getValue(
+                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
                 }
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(
@@ -281,115 +292,139 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Don't attempt to find conditions on new topics
              */
             if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
-                failOverRESTCall.performRESTCall(
-                        FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery("query;" + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + getDisplayedTopic().getId()),
-                            new RESTCallBack<RESTCSNodeCollectionV1>() {
-                                @Override
-                                public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
-                                    checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
+                        ServiceConstants.CS_NODE_TOPIC_TYPES_QUERY + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" +
+                                getDisplayedTopic().getId() + ";"),
+                        new RESTCallBack<RESTCSNodeCollectionV1>() {
+                            @Override
+                            public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
+                                checkArgument(retValue.getItems() != null,
+                                        "The returned node collection should have an expanded collection");
 
-                                    boolean foundNullCondition = false;
-                                    final Map<String, String> conditions = new TreeMap<String, String>();
-                                    final Map<String, HashSet<Integer>> conditionCounts = new TreeMap<String, HashSet<Integer>>();
+                                boolean foundNullCondition = false;
+                                final Map<String, String> conditions = new TreeMap<String, String>();
+                                final Map<String, HashSet<Integer>> conditionCounts = new TreeMap<String, HashSet<Integer>>();
 
-                                    for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
-                                        checkState(node.getItem().getContentSpec() != null, "The content spec node should have an expanded content spec property");
+                                for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
+                                    checkState(node.getItem().getContentSpec() != null,
+                                            "The content spec node should have an expanded content spec property");
 
-                                        String title = "";
-                                        for (final RESTCSNodeCollectionItemV1 csNode : node.getItem().getContentSpec().getChildren_OTM().getItems()) {
-                                            if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
-                                                    csNode.getItem().getTitle().equals("Title")) {
-                                                title = csNode.getItem().getAdditionalText();
-                                                break;
-                                            }
-                                        }
-
-                                        foundNullCondition = foundNullCondition || node.getItem().getInheritedCondition() == null;
-                                        final String condition = node.getItem().getInheritedCondition() == null ? "" : node.getItem().getInheritedCondition();
-
-
-                                        final String conditionName = (condition.isEmpty() ? PressGangCCMSUI.INSTANCE.NoCondition() : condition) +
-                                                " - " + title + " (CS" + node.getItem().getContentSpec().getId() + ")";
-
-                                        if (!conditions.containsKey(condition)) {
-                                            conditions.put(condition, conditionName);
-                                            conditionCounts.put(condition, new HashSet<Integer>() {{add(node.getItem().getContentSpec().getId());}});
-                                        } else {
-                                            conditionCounts.get(condition).add(node.getItem().getContentSpec().getId());
+                                    String title = "";
+                                    for (final RESTCSNodeCollectionItemV1 csNode : node.getItem().getContentSpec().getChildren_OTM()
+                                            .getItems()) {
+                                        if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA && csNode.getItem().getTitle()
+                                                .equals("Title")) {
+                                            title = csNode.getItem().getAdditionalText();
+                                            break;
                                         }
                                     }
 
-                                    if (conditions.size() == 0) {
-                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                                    foundNullCondition = foundNullCondition || node.getItem().getInheritedCondition() == null;
+                                    final String condition = node.getItem().getInheritedCondition() == null ? "" : node.getItem()
+                                            .getInheritedCondition();
+
+
+                                    final String conditionName = (condition.isEmpty() ? PressGangCCMSUI.INSTANCE.NoCondition() :
+                                            condition) +
+                                            " - " + title + " (CS" + node.getItem().getContentSpec().getId() + ")";
+
+                                    if (!conditions.containsKey(condition)) {
+                                        conditions.put(condition, conditionName);
+                                        conditionCounts.put(condition, new HashSet<Integer>() {{
+                                            add(node.getItem().getContentSpec().getId());
+                                        }});
                                     } else {
+                                        conditionCounts.get(condition).add(node.getItem().getContentSpec().getId());
+                                    }
+                                }
+
+                                if (conditions.size() == 0) {
+                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(),
+                                            "");
+                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                            PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                                } else {
                                         /*
                                             There is always the option to not use any conditions. This option may come from content specs
-                                            that don't define any conditions. If every spec has a condition, then foundNullCondition will be false,
+                                            that don't define any conditions. If every spec has a condition,
+                                            then foundNullCondition will be false,
                                             in which case we add the NONE option.
                                          */
 
-                                        if (!foundNullCondition) {
-                                            getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                                        } else {
+                                    if (!foundNullCondition) {
+                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(
+                                                PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                                PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                                    } else {
                                             /*
                                                 Otherwise display the empty condition first
                                             */
-                                            for (final String key : conditions.keySet()) {
-                                                if (key.isEmpty()) {
-                                                    if (conditionCounts.get(key).size() == 1) {
-                                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                                    } else {
-                                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
-                                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
-                                                    }
-
-                                                    break;
+                                        for (final String key : conditions.keySet()) {
+                                            if (key.isEmpty()) {
+                                                if (conditionCounts.get(key).size() == 1) {
+                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key),
+                                                            key);
+                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                                            conditions.get(key), key);
+                                                } else {
+                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(
+                                                            conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace(
+                                                                    "#", (conditionCounts.get(key).size() - 1) + ""), key);
+                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                                            conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace(
+                                                                    "#", (conditionCounts.get(key).size() - 1) + ""), key);
                                                 }
+
+                                                break;
                                             }
                                         }
+                                    }
 
                                         /*
                                             Other conditions are listed in sorted order
                                          */
-                                        for (final String key : conditions.keySet()) {
-                                            if (!key.isEmpty()) {
-                                                if (conditionCounts.get(key).size() == 1) {
-                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                                } else {
-                                                    getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
-                                                    getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#", (conditionCounts.get(key).size() - 1) + ""), key);
-                                                }
+                                    for (final String key : conditions.keySet()) {
+                                        if (!key.isEmpty()) {
+                                            if (conditionCounts.get(key).size() == 1) {
+                                                getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
+                                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                                        conditions.get(key), key);
+                                            } else {
+                                                getTopicRenderedPresenter().getDisplay().getConditions().addItem(
+                                                        conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
+                                                                (conditionCounts.get(key).size() - 1) + ""), key);
+                                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
+                                                        conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
+                                                                (conditionCounts.get(key).size() - 1) + ""), key);
                                             }
                                         }
-
                                     }
 
-                                    final String key = Preferences.TOPIC_CONDITION + getDisplayedTopic().getId();
-                                    final String savedValue =  Preferences.INSTANCE.getString(key, "");
+                                }
 
-                                    for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getConditions().getItemCount(); i < length; ++i) {
-                                        if (getTopicRenderedPresenter().getDisplay().getConditions().getValue(i).equals(savedValue)) {
-                                            getTopicRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
-                                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
+                                final String key = Preferences.TOPIC_CONDITION + getDisplayedTopic().getId();
+                                final String savedValue = Preferences.INSTANCE.getString(key, "");
 
-                                            getTopicRenderedPresenter().displayTopicRendered(
-                                                    addLineNumberAttributesToXML(
-                                                            XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
+                                for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getConditions().getItemCount(); i <
+                                        length; ++i) {
+                                    if (getTopicRenderedPresenter().getDisplay().getConditions().getValue(i).equals(savedValue)) {
+                                        getTopicRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
+                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
 
-                                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                                                    addLineNumberAttributesToXML(
-                                                            XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
+                                        getTopicRenderedPresenter().displayTopicRendered(
+                                                addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())),
+                                                isReadOnlyMode(), true);
 
-                                            break;
-                                        }
+                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(
+                                                addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())),
+                                                isReadOnlyMode(), false);
+
+                                        break;
                                     }
                                 }
                             }
-                );
+                        });
             } else {
                 getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
                 getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
@@ -401,7 +436,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                         addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), true);
 
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(), false);
+                        addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(getDisplayedTopic().getXml())), isReadOnlyMode(),
+                        false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
@@ -912,7 +948,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /* We display the rendered view with images */
             /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
             /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreamble(topicToDisplay.getXml()), isReadOnlyMode(), true);
+                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreamble(topicToDisplay.getXml()), isReadOnlyMode(),
+                true);
             }*/
 
             /* We initially display the split pane rendered view without images */

@@ -1,22 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
+import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
+
 /**
  * This class holds constants that relate to the underlying REST service.
  *
  * @author Matthew Casperson
  */
 public final class ServiceConstants {
-
-    /**
-     * The id for metadata cs nodes.
-     */
-    public static final int CS_NODE_METADATA_TYPE = 7;
-
-    /**
-     * The name for title metadata cs nodes.
-     */
-    public static final String CS_NODE_TITLE_METADATA_NAME = "Title";
-
     /**
      * The fixed url property tag id.
      */
@@ -59,6 +51,8 @@ public final class ServiceConstants {
     /*
         *************** STRING CONSTANTS ***************
      */
+    public static String CS_NODE_TOPIC_TYPES_QUERY = "query;" + CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" +
+            CommonConstants.CS_NODE_TOPIC + "," + CommonConstants.CS_NODE_INNER_TOPIC + "," + CommonConstants.CS_NODE_META_DATA_TOPIC +";";
 
     /**
      * The StringConstant that holds the locales.

@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -20,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,8 +79,8 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
                  */
             failOverRESTCall.performRESTCall(
                     FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
-                            CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_METADATA_TYPE + ";" +
-                            CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + ServiceConstants.CS_NODE_TITLE_METADATA_NAME
+                            CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + CommonConstants.CS_NODE_META_DATA + ";" +
+                            CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + CommonConstants.CS_TITLE_TITLE
                             + ";" +
                             CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + id),
                     new RESTCallBack<RESTCSNodeCollectionV1>() {
@@ -92,7 +92,7 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
                                 The query may return title and subtitle
                              */
                             for (final RESTCSNodeCollectionItemV1 node : retValue.getItems())  {
-                                if (node.getItem().getTitle().equalsIgnoreCase(ServiceConstants.CS_NODE_TITLE_METADATA_NAME)) {
+                                if (node.getItem().getTitle().equalsIgnoreCase(CommonConstants.CS_TITLE_TITLE)) {
                                     GWTUtilities.setBrowserWindowTitle(node.getItem().getAdditionalText() + " - " +
                                                     PressGangCCMSUI.INSTANCE.PressGangCCMS());
                                     break;
