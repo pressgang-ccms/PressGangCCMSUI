@@ -533,6 +533,11 @@ html {
     border-color: #009200;
 }
 
+.TextButton.ExternalLink:hover {
+    background-color: rgb(49, 0, 99);
+    border-color: rgb(49, 0, 99);
+}
+
 .TextButton.gwt-PushButton-up-disabled {
     background-color: #B4B4B4;
 }
