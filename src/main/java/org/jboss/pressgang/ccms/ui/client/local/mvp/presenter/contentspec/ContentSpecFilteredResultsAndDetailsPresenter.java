@@ -212,7 +212,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     "The displayed collection item to reference a valid entity with a valid ID.");
 
             // Make the window title display the id of the content spec
-            if (displayedItem.getItem().getId() != null) {
+            if (displayedItem.getItem().getId() != null && displayedItem.getItem().getTitle() != null) {
                 GWTUtilities.setBrowserWindowTitle(
                         "CS " + displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI
                                 .INSTANCE.PressGangCCMS());
