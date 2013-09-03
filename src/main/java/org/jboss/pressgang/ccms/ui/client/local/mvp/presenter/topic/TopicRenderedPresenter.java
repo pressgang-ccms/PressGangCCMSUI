@@ -96,7 +96,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                     display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
 
             if (!condition.isEmpty()) {
-                xml = removeConditions(xml, RegExp.compile(condition));
+                xml = removeConditions(xml, condition);
             }
         }
 
@@ -118,10 +118,13 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
      * @param condition The condition to be met
      * @return The XML with the elements removed
      */
-    private String removeConditions(@NotNull final String xml, @NotNull final RegExp condition) {
+    private String removeConditions(@NotNull final String xml, @NotNull final String condition) {
         try {
             // parse the XML document into a DOM
             final Document messageDom = XMLParser.parse(xml);
+
+            // test the the regex is valid
+            RegExp.compile(condition);
 
             removeConditions(messageDom.getDocumentElement(), condition);
 
@@ -129,15 +132,17 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
         } catch (@NotNull final DOMException e) {
             // fall through to return statement below
+        } catch (@NotNull final RuntimeException ex) {
+            // regex did not compile. fall through to return statement below
         }
 
         return xml;
     }
 
-    private void removeConditions(@NotNull final Element element, @NotNull final RegExp condition) {
+    private void removeConditions(@NotNull final Element element, @NotNull final String condition) {
         if (element.hasAttribute(Constants.CONDITION_ATTRIBUTE)) {
             final String elementCondition = element.getAttribute(Constants.CONDITION_ATTRIBUTE);
-            if (!condition.test(elementCondition)) {
+            if (!elementCondition.matches(condition)) {
                 element.getParentNode().removeChild(element);
                 return;
             }

@@ -849,8 +849,21 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
 
+            /*
+                Get a comma separated list of the IDs of the files that were uploaded.
+                This will be displayed to the user, and also used to list the files
+                as a search result.
+             */
+            final StringBuilder idsQuery = new StringBuilder();
+            for (final Integer id : ids) {
+                if (!idsQuery.toString().isEmpty()) {
+                    idsQuery.append(",");
+                }
+                idsQuery.append(id);
+            }
+
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully());
+                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -864,20 +877,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             }
 
 
-            final StringBuilder idsQuery = new StringBuilder();
-            for (final Integer id : ids) {
-                if (!idsQuery.toString().isEmpty()) {
-                    idsQuery.append(",");
-                }
-                idsQuery.append(id);
-            }
             eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
             display.addWaitOperation();
 
-
-            @NotNull final FileReader reader = new FileReader();
+            final FileReader reader = new FileReader();
 
             reader.addErrorHandler(new ErrorHandler() {
                 @Override
@@ -896,12 +901,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                          /* When we have the default locale, create a new file */
-                        @NotNull final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
+                        final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
                         langFile.explicitSetLocale(locale);
                         langFile.explicitSetFileData(buffer);
                         langFile.explicitSetFilename(files.getItem(index).getName());
 
-                        @NotNull final RESTFileV1 newFile = new RESTFileV1();
+                        final RESTFileV1 newFile = new RESTFileV1();
                         newFile.explicitSetDescription(description);
                         newFile.explicitSetFileName(files.getItem(index).getName());
                         newFile.explicitSetFilePath(filePath);
