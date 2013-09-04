@@ -146,7 +146,23 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     private void removeConditions(@NotNull final Element element, @NotNull final String condition) {
         if (element.hasAttribute(Constants.CONDITION_ATTRIBUTE)) {
             final String elementCondition = element.getAttribute(Constants.CONDITION_ATTRIBUTE);
-            if (!elementCondition.matches(condition)) {
+
+            /*
+                The condition attribute value is split using one of three characters. See
+                 DocBookUtilities.getConditionNodes() for the code that does this with
+                 the content spec processor.
+             */
+            final String[] individualConditions =  elementCondition.split("\\s*(;|,)\\s*");
+
+            boolean match = false;
+            for (@NotNull final String individualCondition : individualConditions)  {
+                if (individualCondition.matches(condition)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            if (!match) {
                 element.getParentNode().removeChild(element);
                 return;
             }
