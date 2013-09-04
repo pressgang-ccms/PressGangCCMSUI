@@ -46,6 +46,11 @@ public final class ServiceConstants {
      * (https://issues.jboss.org/browse/ERRAI-433).
      */
     public static final Integer NULL_USER_ID = 89;
+    /**
+     * When a spec has no conditions defined, it will actually match a special condition
+     * called "default".
+     */
+    public static final String DEFAULT_CONDITION = "default";
     //public static final Integer NULL_USER_ID = null;
 
     /*

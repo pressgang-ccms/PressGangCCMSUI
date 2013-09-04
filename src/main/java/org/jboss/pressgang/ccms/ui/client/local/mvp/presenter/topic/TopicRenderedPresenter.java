@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -95,9 +96,12 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                     conditionOverride :
                     display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
 
-            if (!condition.isEmpty()) {
-                xml = removeConditions(xml, condition);
-            }
+            /*
+                Apply some special rules when no condition is specified
+             */
+            final String actualCondition =  condition.isEmpty() ? ServiceConstants.DEFAULT_CONDITION : condition;
+
+            xml = removeConditions(xml, actualCondition);
         }
 
         failOverRESTCall.performRESTCall(

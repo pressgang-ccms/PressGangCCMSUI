@@ -876,7 +876,6 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 Window.alert(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
-
             eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
