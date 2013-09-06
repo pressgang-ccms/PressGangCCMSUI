@@ -686,7 +686,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             selectedTab);
 
                     Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
-                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?" + selectedImage
+                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedImage
                             .getItem().getLocale(),
                             null, null);
                 }
