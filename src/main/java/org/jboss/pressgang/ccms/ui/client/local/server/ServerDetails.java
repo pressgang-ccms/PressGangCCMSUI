@@ -41,13 +41,13 @@ public class ServerDetails {
      */
     private static final  ServerDetails HATEST4 = new  ServerDetails(7, "HA Test Server 4", "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
 
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
+    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {/*BNE_PRODUCTION, */BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION/*, BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4*/};
 
     /**
      * This is the list we work from, which may be modified through the config page.
