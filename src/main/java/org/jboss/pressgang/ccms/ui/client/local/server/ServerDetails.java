@@ -11,11 +11,11 @@ public class ServerDetails {
     /**
      * The production server in Brisbane.
      */
-    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://skynet.usersys.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production.name());
+    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production.name());
     /**
      * The development server in Brisbane.
      */
-    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(2, "Brisbane Development", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(2, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
     /**
      * A local server.
      */
@@ -47,7 +47,7 @@ public class ServerDetails {
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION/*, BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4*/};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {/*BNE_PRODUCTION, */BNE_DEVELOPMENT/*, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4*/};
 
     /**
      * This is the list we work from, which may be modified through the config page.
