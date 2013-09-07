@@ -216,6 +216,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 GWTUtilities.setBrowserWindowTitle(
                         "CS " + displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI
                                 .INSTANCE.PressGangCCMS());
+            } else if (displayedItem.getItem().getId() != null) {
+                GWTUtilities.setBrowserWindowTitle(
+                        "CS " + displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             } else {
                 GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             }
@@ -501,9 +504,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
                                         // Take the user to the errors view so they can review any error messages
                                         switchView(contentSpecErrorsPresenter.getDisplay());
-                                        Window.alert(
-                                                PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
-                                                        ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                        Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
+                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
                                     } else {
                                         Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                     }
