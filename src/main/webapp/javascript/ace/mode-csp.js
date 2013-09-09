@@ -55,7 +55,7 @@ define(
 			"start" : [
 				{
 					token: "comment",
-					regex: /^#.*$/
+					regex: "^\\s*#.*$"
 				}, {
 					// tokens that define metadata
 					token: "keyword",
