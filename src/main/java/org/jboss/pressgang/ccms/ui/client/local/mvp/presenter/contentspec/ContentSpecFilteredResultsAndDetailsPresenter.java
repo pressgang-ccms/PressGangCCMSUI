@@ -273,9 +273,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 The revision display always displays details from the main topic, and not the selected revision.
             */
             if (viewIsInFilter(filter, contentSpecRevisionsPresenter.getDisplay())) {
-                LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
+                LOGGER.log(Level.INFO, "\tInitializing content spec revisions view");
                 contentSpecRevisionsPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode());
+                // make sure the revisions list is displayed and not the diff view if it ws previously open
+                if (!contentSpecRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
+                    contentSpecRevisionsPresenter.getDisplay().displayRevisions();
+                }
             }
 
             /* Redisplay the editor. contentSpecPresenter.getDisplay().getEditor() will be not null after the display method was called
