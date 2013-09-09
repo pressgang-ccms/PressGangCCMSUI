@@ -25,6 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -143,7 +146,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         return xml;
     }
 
-    private void removeConditions(@NotNull final Element element, @NotNull final String condition) {
+    private boolean removeConditions(@NotNull final Element element, @NotNull final String condition) {
         if (element.hasAttribute(Constants.CONDITION_ATTRIBUTE)) {
             final String elementCondition = element.getAttribute(Constants.CONDITION_ATTRIBUTE);
 
@@ -163,17 +166,26 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
             }
 
             if (!match) {
-                element.getParentNode().removeChild(element);
-                return;
+                return false;
             }
         }
 
-        for (int i = 0, length = element.getChildNodes().getLength(); i < length; ++i) {
-            final Node childNode = element.getChildNodes().item(i);
+        final List<Element> removedElements = new ArrayList<Element>();
+        final NodeList children = element.getChildNodes();
+        for (int i = 0, length = children.getLength(); i < length; ++i) {
+            final Node childNode = children.item(i);
             if (childNode instanceof Element) {
-                removeConditions((Element)childNode, condition);
+                if (!removeConditions((Element)childNode, condition)) {
+                    removedElements.add((Element)childNode);
+                }
             }
         }
+
+        for (@NotNull final Element removedElement : removedElements) {
+            element.removeChild(removedElement);
+        }
+
+        return true;
     }
 
     @Override
