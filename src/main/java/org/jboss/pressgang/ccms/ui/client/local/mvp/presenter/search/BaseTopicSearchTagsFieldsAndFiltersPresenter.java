@@ -96,6 +96,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
     @Override
     public void go(@NotNull final HasWidgets container) {
+        final RESTFilterCollectionItemV1 filterItem = new RESTFilterCollectionItemV1();
+        filterItem.setItem(new RESTFilterV1());
 
         clearContainerAndAddTopLevelPanel(container, getDisplay());
 
@@ -108,7 +110,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getLocalePresenter().bindExtended();
         getSearchFilterResultsAndFilterPresenter().bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        getFieldsPresenter().getDisplay().display(null, false);
+        getFieldsPresenter().getDisplay().display(filterItem.getItem(), false);
 
         bindSearchButtons();
         loadSearchTags();
@@ -123,6 +125,10 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         }
 
         displayTags();
+
+        // Set a blank filter as the current displayed item
+        getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
+                .getProviderData().setDisplayedItem(filterItem);
     }
 
     @Override
@@ -175,28 +181,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         */
         final RESTFilterV1 filter = new RESTFilterV1();
 
-        final ClickHandler createFilter = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                try {
-                    LOGGER.log(Level.INFO, "ENTER TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
-
-                    /* Setting the ID to null indicates that this is a new filter */
-                    filter.setId(null);
-                    /* The collections are new for a new filter */
-                    filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
-                    filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
-                    filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
-                    filter.explicitSetType(RESTFilterTypeV1.TOPIC);
-
-                    saveFilterDialog.getDialogBox().show();
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
-                }
-            }
-        };
-
-        final ClickHandler overwriteFilter = new ClickHandler() {
+        final ClickHandler saveFilter = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -213,6 +198,11 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 /* Setting the id to the value of the displayed filter is the indication that this is an updated filter */
                 filter.setId(displayedFilter.getId());
+
+                // If the displayed filter has no id, it's new so set the type
+                if (displayedFilter.getId() == null) {
+                    filter.explicitSetType(RESTFilterTypeV1.TOPIC);
+                }
 
                 /* An overwritten filter will delete any existing children before adding new ones */
                 filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
@@ -313,8 +303,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
         getSearchFilterResultsAndFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHandler);
         getSearchFilterResultsAndFilterPresenter().getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().addClickHandler(overwriteFilter);
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().addClickHandler(createFilter);
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().addClickHandler(saveFilter);
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().addClickHandler(saveFilter);
         saveFilterDialog.getOk().addClickHandler(saveOKHandler);
         saveFilterDialog.getCancel().addClickHandler(saveCancelHandler);
     }
