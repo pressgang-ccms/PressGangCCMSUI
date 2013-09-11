@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -180,6 +181,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private String queryString;
 
     private boolean displayingSearchResults = true;
+
+    /**
+     * A web worker that is used to check the age of each topic and highlight
+     * them in the gutter.
+     */
+    private JavaScriptObject lastEditWorker;
+    /**
+     * A reference to any pending timeout call to update the text in the workers.
+      */
+    private JavaScriptObject textUpdaterTimeout;
 
 
     public boolean isDisplayingSearchResults() {
@@ -874,6 +885,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 displayNewContentSpec();
             }
         }, display, failOverRESTCall);
+
+        createWorkers();
     }
 
     /**
@@ -1263,9 +1276,149 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         bindSearchAndEditExtended(queryString);
     }
 
+    /**
+     * Create the web works required to highlight the topics.
+     */
+    private native void createWorkers() /*-{
+
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = new Worker("javascript/highlighters/age.js");
+		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker;
+		var textEditorPresenter = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::contentSpecPresenter;
+		var textEditorDisplay = textEditorPresenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter::getDisplay()();
+        var lastText = null;
+
+		worker.addEventListener('message', function(e) {
+            try {
+                var message = JSON.parse(e.data);
+
+                if (message.event == 'topicDetails') {
+
+					console.log("Recieved topicDetails message");
+
+                    var cache = message.data;
+
+                    var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
+
+                    // The keys in this dictionary represent the css styles that are applied to the gutter
+					var highlights = {dayOld: [], weekOld: [], monthOld: [], yearOld: [], older: []};
+
+					// clear the gutter
+					for(var key in highlights)
+					{
+						if(highlights.hasOwnProperty(key))
+						{
+					        aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearGutterDecoration(Ljava/lang/String;)(key);
+                        }
+                    }
+
+					for(var key in cache)
+					{
+						if(cache.hasOwnProperty(key))
+						{
+							var date = $wnd.moment(cache[key].date);
+
+							if ($wnd.moment().subtract('day', 1).isBefore(date)) {
+								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+									var line = cache[key].lines[lineIndex];
+									highlights.dayOld.push(line);
+								}
+							} else if ($wnd.moment().subtract('week', 1).isBefore(date)) {
+								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+									var line = cache[key].lines[lineIndex];
+									highlights.weekOld.push(line);
+								}
+							} else if ($wnd.moment().subtract('month', 1).isBefore(date)) {
+								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+									var line = cache[key].lines[lineIndex];
+									highlights.monthOld.push(line);
+								}
+							} else if ($wnd.moment().subtract('year', 1).isBefore(date)) {
+								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+									var line = cache[key].lines[lineIndex];
+									highlights.yearOld.push(line);
+								}
+							} else {
+								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+									var line = cache[key].lines[lineIndex];
+									highlights.older.push(line);
+								}
+                            }
+						}
+                    }
+
+					for(var key in highlights)
+					{
+						if(highlights.hasOwnProperty(key))
+						{
+							if (highlights[key].length != 0) {
+                                aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::addGutterDecoration([ILjava/lang/String;)(highlights[key], key);
+                            }
+						}
+                    }
+
+                    // recursivly call the function until some text has changed
+                    var checkText = function() {
+						// the editior may have changed if we saved the content spec
+                        var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
+                        var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                        if (!lastText || lastText != text) {
+							// some text has changed, so post it to the worker
+                            lastText = text;
+                            var json = JSON.stringify({event: "text", data: text});
+							worker.postMessage(json);
+							return;
+						} else {
+							// otherwise call this function again in a second
+                            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+								$wnd.setTimeout(checkText, 1000);
+                        }
+                    }
+
+                    // in 1 second, run checktext to see if there were any changes to the text
+					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+						$wnd.setTimeout(checkText, 1000);
+                }
+            } catch (ex) {
+
+            }
+		});
+
+        var sendText = function() {
+            var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
+            if (aceEditor) {
+                var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                var json = JSON.stringify({event: "text", data: text});
+                worker.postMessage(json);
+                return;
+            }
+
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+				$wnd.setTimeout(sendText, 1000);
+        }
+
+		sendText();
+	}-*/;
+
+    /**
+     * Terminate any web workers before moving off the page
+     */
+    private native void cleanUpWorkers() /*-{
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout) {
+			$wnd.clearTimeout(this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout);
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout = null;
+        }
+
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker != null) {
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker.terminate();
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = null;
+		}
+    }-*/;
+
     @Override
     public void close() {
         GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
+
+        cleanUpWorkers();
 
         /*
             Allow the child components to close.

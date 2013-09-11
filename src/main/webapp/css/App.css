@@ -208,6 +208,56 @@ td {
     height: 100%;
 }
 
+.dayOld {
+    background-color: rgba(0, 0, 255, 0.20);
+}
+
+.ace_marker-layer .dayOld {
+    position: absolute;
+    z-index: -2;
+    background-color: rgba(0, 0, 255, 0.20);
+}
+
+.weekOld {
+    background-color: rgba(0, 255, 0, 0.20);
+}
+
+.ace_marker-layer .weekOld {
+    position: absolute;
+    z-index: -2;
+    background-color: rgba(0, 255, 0, 0.20);
+}
+
+.monthOld {
+    background-color: rgba(255, 255, 0, 0.20);
+}
+
+.ace_marker-layer .monthOld {
+    position: absolute;
+    z-index: -2;
+    background-color: rgba(255, 255, 0, 0.20);
+}
+
+.yearOld {
+    background-color: rgba(255, 127, 63, 0.20);
+}
+
+.ace_marker-layer .yearOld {
+    position: absolute;
+    z-index: -2;
+    background-color: rgba(255, 127, 63, 0.20);
+}
+
+.older {
+    background-color: rgba(255, 0, 0, 0.20);
+}
+
+.ace_marker-layer .older {
+    position: absolute;
+    z-index: -2;
+    background-color: rgba(255, 0, 0, 0.20);
+}
+
 .xmlerror {
     background-color: rgba(255, 87, 0, 0.20);
 }

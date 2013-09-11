@@ -34,9 +34,11 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
     private final ContentSpecPresenter.ContentSpecTextPresenterDriver driver = GWT.create(ContentSpecPresenter.ContentSpecTextPresenterDriver.class);
 
     @Override
-    @NotNull
+    @Nullable
     public AceEditor getEditor() {
-        return editor.text;
+        if (editor != null)
+            return editor.text;
+        return null;
     }
 
     @NotNull
