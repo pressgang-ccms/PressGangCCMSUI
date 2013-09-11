@@ -48,6 +48,8 @@ self.addEventListener('message', function(e) {
 
 					if (!TOPIC_DETAILS_CACHE[topicID]) {
 						TOPIC_DETAILS_CACHE[topicID] = {date: null, lines: []};
+					} else {
+						TOPIC_DETAILS_CACHE[topicID].lines = [];
 					}
 
 					TOPIC_DETAILS_CACHE[topicID].lines.push(linesIndex);
