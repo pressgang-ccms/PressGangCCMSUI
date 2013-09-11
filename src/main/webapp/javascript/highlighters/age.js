@@ -85,7 +85,7 @@ self.addEventListener('message', function(e) {
 				if(TOPIC_DETAILS_CACHE.hasOwnProperty(key))
 				{
 					if (TOPIC_DETAILS_CACHE[key].date == null) {
-						var url = "http://topika.ecs.eng.bne.redhat.com/:8080/pressgang-ccms/rest/1/topic/get/json/" + key;
+						var url = "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms/rest/1/topic/get/json/" + key;
 
 						ajax(url, function(key) {
 							return function(text) {
