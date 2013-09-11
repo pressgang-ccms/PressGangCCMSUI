@@ -1286,6 +1286,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 		var textEditorPresenter = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::contentSpecPresenter;
 		var textEditorDisplay = textEditorPresenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter::getDisplay()();
         var lastText = null;
+        var lastEditor = null;
 
 		worker.addEventListener('message', function(e) {
             try {
@@ -1358,14 +1359,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 						}
                     }
 
-                    // recursivly call the function until some text has changed
+                    // recursilevly call the function until some text has changed
                     var checkText = function() {
 						// the editior may have changed if we saved the content spec
                         var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
                         var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
-                        if (!lastText || lastText != text) {
+                        if (!lastText || lastText != text || !lastEditor || lastEditor !== aceEditor) {
 							// some text has changed, so post it to the worker
                             lastText = text;
+							lastEditor = aceEditor;
                             var json = JSON.stringify({event: "text", data: text});
 							worker.postMessage(json);
 							return;

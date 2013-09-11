@@ -38,6 +38,15 @@ self.addEventListener('message', function(e) {
 		var message = JSON.parse(e.data);
 		if (message.event == "text") {
 
+			// clear the old lines
+			for(var key in TOPIC_DETAILS_CACHE)
+			{
+				if(TOPIC_DETAILS_CACHE.hasOwnProperty(key))
+				{
+					TOPIC_DETAILS_CACHE[key].lines = [];
+				}
+			}
+
 			var lines = message.data.split("\n");
 
 			for (var linesIndex = 0, linesCount = lines.length; linesIndex < linesCount; ++linesIndex) {
@@ -48,8 +57,6 @@ self.addEventListener('message', function(e) {
 
 					if (!TOPIC_DETAILS_CACHE[topicID]) {
 						TOPIC_DETAILS_CACHE[topicID] = {date: null, lines: []};
-					} else {
-						TOPIC_DETAILS_CACHE[topicID].lines = [];
 					}
 
 					TOPIC_DETAILS_CACHE[topicID].lines.push(linesIndex);
