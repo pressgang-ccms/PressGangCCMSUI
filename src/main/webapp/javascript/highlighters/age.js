@@ -1,5 +1,7 @@
 var TOPIC_ID_RE = /\[\s*(\d+)/g;
 var TOPIC_DETAILS_CACHE = {};
+var TOPIC_DETAILS_MESSAGE = 'topicDetails';
+var TEXT_EVENT = 'text';
 
 /**
  * Making an AJAX call old style (because we can't use jQuery in a WebWorker)
@@ -36,7 +38,7 @@ function ajax(url, done, error) {
 self.addEventListener('message', function(e) {
 	try {
 		var message = JSON.parse(e.data);
-		if (message.event == "text") {
+		if (message.event == TEXT_EVENT) {
 
 			// clear the old lines
 			for(var key in TOPIC_DETAILS_CACHE)
@@ -63,30 +65,7 @@ self.addEventListener('message', function(e) {
 				}
 			}
 
-			var newTopicCount = 0;
-			var processedTopics = 0;
-
-			finished = function() {
-				if (newTopicCount == processedTopics) {
-					self.postMessage(JSON.stringify({event: 'topicDetails', data: TOPIC_DETAILS_CACHE}));
-				}
-			}
-
-			// find out how many topics we need to get data on
-			for(var key in TOPIC_DETAILS_CACHE)
-			{
-				if(TOPIC_DETAILS_CACHE.hasOwnProperty(key))
-				{
-					if (TOPIC_DETAILS_CACHE[key].date == null) {
-						++newTopicCount;
-					}
-				}
-			}
-
-			// nothing has changed, so just post the message back
-			if (newTopicCount == 0) {
-				finished();
-			}
+			var topicsIds = "";
 
 			// get the topic details
 			for(var key in TOPIC_DETAILS_CACHE)
@@ -94,24 +73,41 @@ self.addEventListener('message', function(e) {
 				if(TOPIC_DETAILS_CACHE.hasOwnProperty(key))
 				{
 					if (TOPIC_DETAILS_CACHE[key].date == null) {
-						var url = "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms/rest/1/topic/get/json/" + key;
 
-						ajax(url, function(key) {
-							return function(text) {
-								++processedTopics;
-								var topicDetails = JSON.parse(text);
-								TOPIC_DETAILS_CACHE[key].date = new Date(topicDetails.lastModified);
-								finished();
-							}
-						}(key), function(text) {
-							++processedTopics;
-							finished();
-						});
+						if (topicsIds.length != 0) {
+							topicsIds += ",";
+						}
+
+						topicsIds += key;
 					}
 				}
 			}
 
+			// nothing changed, so just post back what we have already
+			if (topicsIds.length == 0) {
+				self.postMessage(JSON.stringify({event: TOPIC_DETAILS_MESSAGE, data: TOPIC_DETAILS_CACHE}));
+				return;
+			}
 
+			var url = "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms/rest/1/topics/get/json/query;topicIds=" + topicsIds + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D";
+
+			ajax(url, function(text) {
+					try {
+						var topicDetails = JSON.parse(text);
+
+						for (var topicIndex = 0, topicCount = topicDetails.items.length; topicIndex < topicCount; ++topicIndex) {
+							var topic =  topicDetails.items[topicIndex].item;
+							TOPIC_DETAILS_CACHE[topic.id].date = new Date(topic.lastModified);
+						}
+					} catch (ex) {
+						// on the off chance the server returns something that isn't JSON
+					}
+
+					self.postMessage(JSON.stringify({event: TOPIC_DETAILS_MESSAGE, data: TOPIC_DETAILS_CACHE}));
+				}, function(text) {
+					self.postMessage(JSON.stringify({event: TOPIC_DETAILS_MESSAGE, data: TOPIC_DETAILS_CACHE}));
+				}
+			);
 		}
 	} catch (ex) {
 		//probably a message that was not valid JSON
