@@ -1315,33 +1315,35 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 					{
 						if(cache.hasOwnProperty(key))
 						{
-							var date = $wnd.moment(cache[key].date);
+							if (cache[key].date) {
+                                var date = $wnd.moment(cache[key].date);
 
-							if ($wnd.moment().subtract('day', 1).isBefore(date)) {
-								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
-									var line = cache[key].lines[lineIndex];
-									highlights.dayOld.push(line);
-								}
-							} else if ($wnd.moment().subtract('week', 1).isBefore(date)) {
-								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
-									var line = cache[key].lines[lineIndex];
-									highlights.weekOld.push(line);
-								}
-							} else if ($wnd.moment().subtract('month', 1).isBefore(date)) {
-								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
-									var line = cache[key].lines[lineIndex];
-									highlights.monthOld.push(line);
-								}
-							} else if ($wnd.moment().subtract('year', 1).isBefore(date)) {
-								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
-									var line = cache[key].lines[lineIndex];
-									highlights.yearOld.push(line);
-								}
-							} else {
-								for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
-									var line = cache[key].lines[lineIndex];
-									highlights.older.push(line);
-								}
+                                if ($wnd.moment().subtract('day', 1).isBefore(date)) {
+                                    for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+                                        var line = cache[key].lines[lineIndex];
+                                        highlights.dayOld.push(line);
+                                    }
+                                } else if ($wnd.moment().subtract('week', 1).isBefore(date)) {
+                                    for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+                                        var line = cache[key].lines[lineIndex];
+                                        highlights.weekOld.push(line);
+                                    }
+                                } else if ($wnd.moment().subtract('month', 1).isBefore(date)) {
+                                    for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+                                        var line = cache[key].lines[lineIndex];
+                                        highlights.monthOld.push(line);
+                                    }
+                                } else if ($wnd.moment().subtract('year', 1).isBefore(date)) {
+                                    for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+                                        var line = cache[key].lines[lineIndex];
+                                        highlights.yearOld.push(line);
+                                    }
+                                } else {
+                                    for (var lineIndex = 0, lineCount = cache[key].lines.length; lineIndex < lineCount; ++lineIndex) {
+                                        var line = cache[key].lines[lineIndex];
+                                        highlights.older.push(line);
+                                    }
+                                }
                             }
 						}
                     }
