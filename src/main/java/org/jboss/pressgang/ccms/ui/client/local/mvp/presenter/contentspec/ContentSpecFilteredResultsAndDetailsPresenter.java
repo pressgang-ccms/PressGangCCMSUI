@@ -767,6 +767,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     // create the content spec, and add to the wrapper
                     final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
+                    newEntity.setTags(new RESTTagCollectionV1());
                     newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
                     newEntity.setText(retValue.getValue().trim());
                     newEntity.setLocale(defaultLocale);
