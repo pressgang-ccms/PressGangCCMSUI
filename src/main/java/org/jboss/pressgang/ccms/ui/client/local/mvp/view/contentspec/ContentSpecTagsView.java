@@ -1,8 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import javax.enterprise.context.Dependent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -20,12 +30,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Dependent
 public class ContentSpecTagsView extends BaseTemplateView implements ContentSpecTagsPresenter.Display {
@@ -181,22 +185,10 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
              * the item that was set via setValue().
              */
             final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
-            clonedCategories.remove(category);
 
             categories.setAcceptableValues(clonedCategories);
 
-            final List<SearchUITag> listTags = category.getMyTags();
-
-            if (!listTags.isEmpty()) {
-                final SearchUITag tag = listTags.get(0);
-
-                myTags.setValue(tag);
-
-                @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-                cloneTags.remove(tag);
-
-                myTags.setAcceptableValues(cloneTags);
-            }
+            updateNewTagTagDisplay();
         }
     }
 
@@ -210,7 +202,6 @@ public class ContentSpecTagsView extends BaseTemplateView implements ContentSpec
             myTags.setValue(tag);
 
             @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-            cloneTags.remove(tag);
 
             myTags.setAcceptableValues(cloneTags);
         }
