@@ -1,5 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.flipthebird.gwthashcodeequals.EqualsBuilder;
+import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -9,14 +19,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * This class represents a single project, with child categories.
@@ -171,12 +173,20 @@ public final class SearchUIProject extends SearchUIBase {
 
     @Override
     public boolean equals(final Object other) {
-        return super.equals(other);
+        if (!(other instanceof SearchUIProject)) {
+            return false;
+        } else if (categories == null || categories.isEmpty()) {
+            return super.equals(other);
+        } else {
+            return new EqualsBuilder()
+                    .append(getName(), ((SearchUIProject) other).getName())
+                    .append(categories, ((SearchUIProject) other).getCategories()).build();
+        }
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return new HashCodeBuilder().append(getName()).append(categories).hashCode();
     }
 
     /**

@@ -162,6 +162,12 @@
             <version>${guava.gwt.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.flipthebird.gwt-hashcode-equals</groupId>
+            <artifactId>gwt-hashcode-equals</artifactId>
+            <version>0.1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Testing Libraries -->
         <dependency>
