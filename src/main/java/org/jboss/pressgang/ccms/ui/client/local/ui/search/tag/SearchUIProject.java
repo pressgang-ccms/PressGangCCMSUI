@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 
 import com.flipthebird.gwthashcodeequals.EqualsBuilder;
 import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -97,7 +100,8 @@ public final class SearchUIProject extends SearchUIBase {
      * @param tags    The tags that will be populated under this project
      * @param filter  The filter that defines the state of the tags
      */
-    public void populateCategories(@NotNull final RESTProjectCollectionItemV1 project, @NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
+    public void populateCategories(@NotNull final RESTProjectCollectionItemV1 project, @NotNull final RESTTagCollectionV1 tags,
+            @Nullable final RESTFilterV1 filter) {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
@@ -105,11 +109,23 @@ public final class SearchUIProject extends SearchUIBase {
 
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
-                if (tag.getItem().getProjects().getItems().contains(project)) {
+                final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind(tag.getItem().getProjects().getItems(),
+                        new Predicate<RESTProjectCollectionItemV1>() {
+                            @Override
+                            public boolean apply(@Nullable final RESTProjectCollectionItemV1 arg) {
+                                if (arg == null) {
+                                    return false;
+                                }
+                                return arg.getItem().getId().equals(project.getItem().getId());
+                            }
+                        });
+
+                if (matchingProject.isPresent()) {
 
                     checkState(tag.getItem().getCategories().getItems() != null, "tag.getItem().getCategories().getItems() cannot be null");
 
-                    for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
+                    for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
+                            .returnExistingAndAddedCollectionItems()) {
                         @NotNull final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                         if (!this.categories.contains(searchUICategory)) {
                             searchUICategory.populateCategories(project, category, tags, filter);
@@ -178,9 +194,8 @@ public final class SearchUIProject extends SearchUIBase {
         } else if (categories == null || categories.isEmpty()) {
             return super.equals(other);
         } else {
-            return new EqualsBuilder()
-                    .append(getName(), ((SearchUIProject) other).getName())
-                    .append(categories, ((SearchUIProject) other).getCategories()).build();
+            return new EqualsBuilder().append(getName(), ((SearchUIProject) other).getName()).append(categories,
+                    ((SearchUIProject) other).getCategories()).build();
         }
     }
 
