@@ -1,6 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.xml.client.Comment;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,5 +101,40 @@ public class XMLUtilities {
 
     public static String removeAllPreamble(@NotNull final String xml) {
         return removeDoctypePreamble(removeXmlPreamble(xml));
+    }
+
+    public static Document convertStringToDocument(final String xml) {
+        try {
+            return XMLParser.parse(xml);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String resolveInjections(@NotNull final String xml) {
+        final Document doc = convertStringToDocument(xml);
+        if (doc == null) {
+            return xml;
+        } else {
+            InjectionResolver.resolveInjections(doc);
+            return doc.toString();
+        }
+    }
+
+    public static List<Comment> getComments(final Document doc) {
+        final List<Comment> retValue = new ArrayList<Comment>();
+        getComments(doc.getDocumentElement(), retValue);
+        return retValue;
+    }
+
+    private static void getComments(final Node node, final List<Comment> comments) {
+        final NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); ++i) {
+            final Node childNode = children.item(i);
+            if (childNode.getNodeName().equals("#comment")) {
+                comments.add((Comment) childNode);
+            }
+            getComments(childNode, comments);
+        }
     }
 }

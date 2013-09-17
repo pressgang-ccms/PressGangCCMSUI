@@ -1,11 +1,23 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.xml.client.*;
+import com.google.gwt.xml.client.DOMException;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -18,18 +30,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TopicRenderedPresenter extends BaseTemplatePresenter {
@@ -87,63 +91,61 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
 
     public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
 
-        String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(
-                topicXML);
+        String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
+                .getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(topicXML);
 
-        if (display.getConditions().getSelectedIndex() != -1 || conditionOverride != null) {
+        final Document doc = XMLUtilities.convertStringToDocument(xml);
+        if (doc != null) {
+            // Apply the conditions
+            if (display.getConditions().getSelectedIndex() != -1 || conditionOverride != null) {
 
-            /*
-                conditionOverride overrides any selection in the combo box
-             */
-            final String condition = conditionOverride != null ?
-                    conditionOverride :
-                    display.getConditions().getValue(display.getConditions().getSelectedIndex()).trim();
+                /*
+                    conditionOverride overrides any selection in the combo box
+                 */
+                final String condition = conditionOverride != null ? conditionOverride : display.getConditions().getValue(
+                        display.getConditions().getSelectedIndex()).trim();
 
-            /*
-                Apply some special rules when no condition is specified
-             */
-            final String actualCondition =  condition.isEmpty() ? ServiceConstants.DEFAULT_CONDITION : condition;
+                /*
+                    Apply some special rules when no condition is specified
+                 */
+                final String actualCondition = condition.isEmpty() ? ServiceConstants.DEFAULT_CONDITION : condition;
 
-            xml = removeConditions(xml, actualCondition);
+                removeConditions(doc, actualCondition);
+            }
+
+            // Resolve any injections
+            InjectionResolver.resolveInjections(doc);
+
+            xml = doc.toString();
         }
 
-        failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.holdXML(xml),
-                new RESTCallBack<IntegerWrapper>() {
-                    public void success(@NotNull final IntegerWrapper value) {
-                        display.displayTopicRendered(value.value, readOnly, showImages);
-                    }
-                },
-                display,
-                true
-        );
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+            public void success(@NotNull final IntegerWrapper value) {
+                display.displayTopicRendered(value.value, readOnly, showImages);
+            }
+        }, display, true);
     }
 
     /**
      * Remove any XML elements that don't match the supplied condition
-     * @param xml The XML to be parsed
+     *
+     * @param xml       The XML to be parsed
      * @param condition The condition to be met
      * @return The XML with the elements removed
      */
-    private String removeConditions(@NotNull final String xml, @NotNull final String condition) {
+    private void removeConditions(@NotNull final Document doc, @NotNull final String condition) {
         try {
-            // parse the XML document into a DOM
-            final Document messageDom = XMLParser.parse(xml);
 
             // test the the regex is valid
             RegExp.compile(condition);
 
-            removeConditions(messageDom.getDocumentElement(), condition);
-
-            return messageDom.toString();
+            removeConditions(doc.getDocumentElement(), condition);
 
         } catch (@NotNull final DOMException e) {
             // fall through to return statement below
         } catch (@NotNull final RuntimeException ex) {
             // regex did not compile. fall through to return statement below
         }
-
-        return xml;
     }
 
     private boolean removeConditions(@NotNull final Element element, @NotNull final String condition) {
@@ -155,10 +157,10 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                  DocBookUtilities.getConditionNodes() for the code that does this with
                  the content spec processor.
              */
-            final String[] individualConditions =  elementCondition.split("\\s*(;|,)\\s*");
+            final String[] individualConditions = elementCondition.split("\\s*(;|,)\\s*");
 
             boolean match = false;
-            for (@NotNull final String individualCondition : individualConditions)  {
+            for (@NotNull final String individualCondition : individualConditions) {
                 if (individualCondition.matches(condition)) {
                     match = true;
                     break;
@@ -175,8 +177,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         for (int i = 0, length = children.getLength(); i < length; ++i) {
             final Node childNode = children.item(i);
             if (childNode instanceof Element) {
-                if (!removeConditions((Element)childNode, condition)) {
-                    removedElements.add((Element)childNode);
+                if (!removeConditions((Element) childNode, condition)) {
+                    removedElements.add((Element) childNode);
                 }
             }
         }

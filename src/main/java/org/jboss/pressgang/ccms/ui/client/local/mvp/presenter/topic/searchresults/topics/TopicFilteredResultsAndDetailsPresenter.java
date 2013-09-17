@@ -2100,7 +2100,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 // Add the doctype that include the standard docbook entities
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
+                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
                         return function(){
