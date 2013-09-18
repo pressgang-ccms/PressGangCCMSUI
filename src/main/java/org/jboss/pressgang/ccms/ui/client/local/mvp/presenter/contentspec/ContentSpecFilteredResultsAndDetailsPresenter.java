@@ -182,6 +182,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     private boolean displayingSearchResults = true;
 
+    private Integer lastVisibleRow = null;
+
     /**
      * A web worker that is used to check the age of each topic and highlight
      * them in the gutter.
@@ -308,6 +310,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.beforeSwitchView()");
         flushChanges();
+        if (lastDisplayedView == contentSpecPresenter.getDisplay()) {
+            lastVisibleRow = contentSpecPresenter.getDisplay().getEditor().getFirstVisibleRow();
+        }
         LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.beforeSwitchView()");
         return true;
     }
@@ -1461,6 +1466,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             if (displayedView == commonExtendedPropertiesPresenter.getDisplay()) {
                 loadPropertyTags();
+            }
+
+            if (displayedView == contentSpecPresenter.getDisplay()) {
+                if (lastVisibleRow != null) {
+                    contentSpecPresenter.getDisplay().getEditor().focus();
+                    contentSpecPresenter.getDisplay().getEditor().scrollToRow(lastVisibleRow);
+                }
             }
 
             if (displayedView == contentSpecRevisionsPresenter.getDisplay()) {
