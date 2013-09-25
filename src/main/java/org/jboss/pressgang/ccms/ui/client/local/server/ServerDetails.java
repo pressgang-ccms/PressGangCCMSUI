@@ -21,28 +21,8 @@ public class ServerDetails {
      */
     private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name());
 
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST1 = new  ServerDetails(4, "HA Test Server 1", "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST2 = new  ServerDetails(5, "HA Test Server 2", "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST4 = new  ServerDetails(7, "HA Test Server 4", "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
+    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
