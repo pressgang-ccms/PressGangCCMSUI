@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,9 +56,11 @@ public class TagDBLoader {
                     new RESTCallBack<RESTTopicCollectionV1>() {
                         public void success(@NotNull final RESTTopicCollectionV1 value) {
                             for (final RESTTopicCollectionItemV1 restTopicV1 : value.getItems())  {
-                                final RESTAssignedPropertyTagV1 property = EntityUtilities.returnProperty(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
-                                if (property.getValue() != null) {
-                                    tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                final List<RESTAssignedPropertyTagV1> properties = EntityUtilities.returnProperties(restTopicV1.getItem(), ServiceConstants.TAG_STYLE_PROPERTY_TAG);
+                                for (final RESTAssignedPropertyTagV1 property : properties) {
+                                    if (property.getValue() != null) {
+                                        tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                    }
                                 }
                             }
 
