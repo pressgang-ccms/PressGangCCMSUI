@@ -1080,6 +1080,8 @@ snippet substeps\n\
 	</substeps>\n\
 snippet xiinclude\n\
 	<xi:include xmlns:xi='http://www.w3.org/2001/XInclude'' href='${1:path_to_file}'/>\n\
+snippet /para\n\
+	</para><para>\n\
 ";
 });
 

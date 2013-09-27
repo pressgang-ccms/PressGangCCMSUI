@@ -1,11 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -25,8 +31,15 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
 
     public static final String HISTORY_TOKEN = "WelcomeView";
 
+    /**
+     * The GWT event bus.
+     */
+    @Inject
+    private EventBus eventBus;
+
     public interface Display extends BaseTemplateViewInterface {
         void displayTopicRendered(final Integer topicXMLHoldID);
+        PushButton getEdit();
     }
 
     @Inject private FailOverRESTCall failOverRESTCall;
@@ -49,6 +62,14 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     @Override
     public void bindExtended() {
         super.bind(display);
+
+        display.getEdit().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent clickEvent) {
+                eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX +
+                        CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId(), false));
+            }
+        });
 
         failOverRESTCall.performRESTCall(
                 FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),

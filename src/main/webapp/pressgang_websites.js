@@ -215,7 +215,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     closeLink.style.zIndex = 2;
     closeLink.appendChild(closeIcon);
     contentDiv.appendChild(closeLink);
-    closeLink.onclick = pressgang_website_close_callout;
+    closeLink.onclick =  pressgang_website_disable;
 
     iframe.className = "pressgang_websites_contentIFrame";
     calloutDiv.className = "pressgang_websites_callout";
@@ -853,6 +853,7 @@ pressgang_website_callback = function(data) {
             callout.parentNode.removeChild(callout);
         }
         pressgang_website_lastSelectedElement = null;
+
     }
 
     pressgang_website_close_initial_callout = function() {
