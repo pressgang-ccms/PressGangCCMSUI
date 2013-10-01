@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -45,12 +48,35 @@ public final class FailOverRESTCall {
     private EventBus eventBus;
 
     /**
+     * true if the application has been closed
+     */
+    private boolean closed = false;
+
+    /**
+     * The last time the failed messages was displayed.
+     */
+    private static Date lastMessage = null;
+
+    /**
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FailOverRESTCall.class.getName());
 
     public FailOverRESTCall () {
 
+    }
+
+    @PostConstruct
+    private void postCreate() {
+        /*
+            Watch for page close events, because these will instantly cancel any pending requests.
+         */
+        Window.addCloseHandler(new CloseHandler<Window>() {
+            @Override
+            public void onClose(@NotNull final CloseEvent<Window> event) {
+                closed = true;
+            }
+        });
     }
 
     public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback) {
@@ -251,6 +277,14 @@ public final class FailOverRESTCall {
     private <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback,
                               @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction,
                               @NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
+
+        /*
+            If the application has been closed, just fail any calls.
+         */
+        if (closed) {
+            callback.failed();
+        }
+
         /*
             We know this server has failed.
          */
@@ -351,7 +385,8 @@ public final class FailOverRESTCall {
         /*
             There are no more servers left to call, so remove the wait operation and call the failed callback.
          */
-        if (!disableDefaultFailureAction) {
+        if (!disableDefaultFailureAction && (lastMessage == null || new Date().getTime() - lastMessage.getTime() > Constants.REST_SERVER_ERROR_MESSAGE_DELAY)) {
+            lastMessage = new Date();
             Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
         }
 

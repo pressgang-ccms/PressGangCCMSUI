@@ -11,7 +11,12 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201310011712";
+    public static final String VERSION = "201310020934";
+
+    /**
+     * Time, in milliseonds, between messages that say the client could not access the REST server
+     */
+    public static final int REST_SERVER_ERROR_MESSAGE_DELAY = 10000;
 
     /**
      * Monospaced web safe fonts
