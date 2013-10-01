@@ -6,6 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityWithProperti
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -35,6 +36,23 @@ public final class EntityUtilities {
             for (final RESTAssignedPropertyTagV1 property : properties) {
                 if (property.getId().equals(propertyTagId)) return property;
             }
+        }
+
+        return null;
+    }
+
+    public static List<RESTAssignedPropertyTagV1> returnProperties(final RESTBaseEntityWithPropertiesV1<?, ?, ?> source, final Integer propertyTagId) {
+        checkArgument(source != null, "The source parameter can not be null");
+
+        if (source.getProperties() != null && source.getProperties().getItems() != null) {
+            final List<RESTAssignedPropertyTagV1> retValue = new ArrayList<RESTAssignedPropertyTagV1>();
+            final List<RESTAssignedPropertyTagV1> properties = source.getProperties().returnItems();
+            for (final RESTAssignedPropertyTagV1 property : properties) {
+                if (property.getId().equals(propertyTagId)) {
+                    retValue.add(property);
+                }
+            }
+            return retValue;
         }
 
         return null;

@@ -168,6 +168,7 @@ public interface CSSConstants {
 
     interface WelcomeView {
         String WELCOME_VIEW_IFRAME = "WelcomeViewIFrame";
+        String WELCOME_VIEW_PANEL = "WelcomeViewPanel";
     }
 
     /**

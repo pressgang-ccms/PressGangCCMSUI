@@ -40,6 +40,20 @@ self.addEventListener('message', function (e) {
                 }
             }
 
+            // match comments (specifically injection comments)
+            var commentRe = /(<!--\s*)(.*?):.*?-->/g;
+            var commentMatch = null;
+            while (commentMatch = commentRe.exec(line)) {
+                var comment = commentMatch[2];
+
+                if (tags.indexOf(comment) != -1) {
+                    var prefix = commentMatch[1];
+                    var start = commentMatch.index + prefix.length;
+                    var end = start + comment.length;
+                    tagDetails.push([start, end]);
+                }
+            }
+
             retValue.push(tagDetails);
         }
 
