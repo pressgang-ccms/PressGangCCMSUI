@@ -333,6 +333,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     /**
+     * The image to display if the rendered diff could not be created
+     */
+    private final Image bigError = new Image(ImageResources.INSTANCE.bigError());
+
+    /**
      * Builds the UI.
      */
     public TopicRevisionsView() {
@@ -398,6 +403,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().setWidget(searchResultsPanel);
 
         spinner.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_SPINNER);
+        bigError.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_SPINNER);
     }
 
     @NotNull
@@ -501,6 +507,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public void showWaitingFromRenderedDiff() {
         this.getPanel().setWidget(spinner);
         this.isDisplayingRevisions = false;
+    }
+
+    @Override
+    public void showRenderedDiffError() {
+        this.getPanel().setWidget(bigError);
+        isDisplayingRevisions = false;
     }
 
     @NotNull

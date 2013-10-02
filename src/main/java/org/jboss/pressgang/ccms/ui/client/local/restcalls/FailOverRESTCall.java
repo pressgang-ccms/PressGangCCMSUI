@@ -95,6 +95,15 @@ public final class FailOverRESTCall {
         performRESTCall(restCall, callback, null, disableDefaultFailureAction, new ArrayList<Integer>());
     }
 
+    /**
+     *
+     * @param restCall The wrapper around the actual REST call
+     * @param callback The callback to call when when the REST call succeeds or fails
+     * @param display The display used to show the waiting action, or null if no display should be used
+     * @param disableDefaultFailureAction true if no messages should be displayed. This is useful if it is expected that a call might fail.
+     * @param failedRESTServers
+     * @param <T>
+     */
     private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
 
         /*

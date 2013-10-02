@@ -24,6 +24,13 @@ public interface ImageResources extends ClientBundle {
     ImageResource spinner();
 
     /**
+     * @return A big red cross
+     */
+    @NotNull
+    @Source("big_error.png")
+    ImageResource bigError();
+
+    /**
      * @return The application banner
      */
     @NotNull

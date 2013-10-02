@@ -1487,7 +1487,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onClick(@NotNull final ClickEvent event) {
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
                         getRenderedDiffRevision() + ";" +
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
+                        getDisplayedTopic().getRevision();
 
                     eventBus.fireEvent(new RenderedDiffEvent(query,GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -2638,6 +2638,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             topicRevisionsPresenter.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
                                                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                                                         }
+
+                                                        @Override
+                                                        public void failed() {
+                                                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
+                                                            Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                                        }
                                                     },
                                                     topicRevisionsPresenter.getDisplay(),
                                                     true
@@ -2648,6 +2654,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     true
                             );
                         }
+
+                        @Override
+                        public void failed() {
+                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
+                            Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                        }
                     };
 
                     /*
@@ -2655,8 +2667,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     */
                     setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
-                            revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay());
+                    failOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),revisionTopic.getItem().getRevision()),
+                            callback,
+                            topicRevisionsPresenter.getDisplay(),
+                            true);
 
                 }
             });
