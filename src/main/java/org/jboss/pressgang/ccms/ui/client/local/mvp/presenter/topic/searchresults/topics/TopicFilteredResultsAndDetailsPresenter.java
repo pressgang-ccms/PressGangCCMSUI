@@ -62,6 +62,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -401,8 +402,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     if (startWithNewTopic) {
                                         LOGGER.log(Level.INFO, "Adding new topic to static list");
                                         getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
-                                        getSearchResultPresenter().getProviderData().setSize(
-                                                getSearchResultPresenter().getProviderData().getItems().size());
+                                        getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
                                         updateDisplayWithNewEntityData(false);
                                     } else {
                                         /* Update the selected topic */
@@ -435,8 +435,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
-                                ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                     } else {
 
                         failOverRESTCall.performRESTCall(
@@ -761,8 +760,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
-            checkState(getSearchResultPresenter().getProviderData() != null,
-                    "getSearchResultPresenter().getProviderData() should not return null");
+            checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultPresenter().getProviderData().getItems() != null &&
@@ -913,9 +911,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     boolean found = false;
                                     for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                         if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERTY_TAG) {
-                                            Window.open(
-                                                    Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" +
-                                                            prop.getItem().getValue(), "", "");
+                                            Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
                                             found = true;
                                             break;
                                         }
@@ -1107,8 +1103,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback,
-                        getTopicTagsPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -2446,11 +2441,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         public void success(@NotNull final RESTTopicV1 retValue) {
                             checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml();
+                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                    .getDtdDoctype() + "\n" + retValue.getXml();
 
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
-                                public void success(@NotNull final IntegerWrapper value1) {
-                                    final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
+                            failOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.holdXML(xml1),
+                                    new RESTCallBack<IntegerWrapper>() {
+                                        public void success(@NotNull final IntegerWrapper value1) {
+                                            final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                                    .getDtdDoctype() + "\n" + getDisplayedTopic().getXml();
 
                                             failOverRESTCall.performRESTCall(
                                                     FailOverRESTCallDatabase.holdXML(xml2),
