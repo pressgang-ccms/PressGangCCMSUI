@@ -38,6 +38,20 @@ self.addEventListener('message', function (e) {
 				}
 			}
 
+			// match anything that looks like a container
+			var containerRE = /^(  )*(\S*)\s*:/g;
+			var containerMatch = null;
+			while (containerMatch = containerRE.exec(line)) {
+				var container = containerMatch[2];
+
+				if (tags.indexOf(container) != -1) {
+					var prefix = containerMatch[1].length;
+					var start = containerMatch.index + prefix;
+					var end = start + container.length;
+					tagDetails.push([start, end]);
+				}
+			}
+
 			retValue.push(tagDetails);
 		}
 
