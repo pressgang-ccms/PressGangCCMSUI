@@ -41,6 +41,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     private String abstractDesc;
     private String brand;
     private String copyrightHolder;
+    private String copyrightYear;
     private String publicanCfg;
     private boolean matchAll = MATCH_ALL_DEFAULT;
 
@@ -163,6 +164,15 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     }
 
     @Nullable
+    public String getCopyrightYear() {
+        return copyrightYear;
+    }
+
+    public void setCopyrightYear(@Nullable String copyrightYear) {
+        this.copyrightYear = copyrightYear;
+    }
+
+    @Nullable
     public String getPublicanCfg() {
         return publicanCfg;
     }
@@ -245,6 +255,11 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                     createFilterField(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR, getCopyrightHolder()));
         }
 
+        if (!GWTUtilities.isStringNullOrEmpty(getCopyrightYear())) {
+            filter.getFilterFields_OTM().addNewItem(
+                    createFilterField(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_YEAR_FILTER_VAR, getCopyrightYear()));
+        }
+
         if (!GWTUtilities.isStringNullOrEmpty(getPublicanCfg())) {
             filter.getFilterFields_OTM().addNewItem(
                     createFilterField(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR, getPublicanCfg()));
@@ -292,6 +307,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             brand = "";
             abstractDesc = "";
             copyrightHolder = "";
+            copyrightYear = "";
             publicanCfg = "";
             matchAll = true;
 
@@ -321,6 +337,8 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                         setBrand(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR)) {
                         setCopyrightHolder(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_YEAR_FILTER_VAR)) {
+                        setCopyrightYear(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR)) {
                         setPublicanCfg(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.EDITED_IN_LAST_DAYS)) {
@@ -392,6 +410,10 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         if (!GWTUtilities.isStringNullOrEmpty(copyrightHolder)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR).append("=").append(
                     encodeQueryParameter(copyrightHolder));
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(copyrightYear)) {
+            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_YEAR_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(copyrightYear));
         }
         if (!GWTUtilities.isStringNullOrEmpty(publicanCfg)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR).append("=").append(

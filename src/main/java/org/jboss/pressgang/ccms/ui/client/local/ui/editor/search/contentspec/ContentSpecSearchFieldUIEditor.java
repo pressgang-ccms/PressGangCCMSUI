@@ -37,6 +37,7 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     private final TextBox abstractDesc = new TextBox();
     private final TextBox brand = new TextBox();
     private final TextBox copyrightHolder = new TextBox();
+    private final TextBox copyrightYear = new TextBox();
     private final TextBox publicanCfg = new TextBox();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
@@ -105,6 +106,10 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         setWidget(getRowCount(), 0, contentSpecCopyrightHolderLabel);
         setWidget(getRowCount() - 1, 1, copyrightHolder);
 
+        @NotNull final Label contentSpecCopyrightYearLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecCopyrightYear());
+        setWidget(getRowCount(), 0, contentSpecCopyrightYearLabel);
+        setWidget(getRowCount() - 1, 1, copyrightYear);
+
         @NotNull final Label contentSpecPublicanCfgLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecPublicanCfg());
         setWidget(getRowCount(), 0, contentSpecPublicanCfgLabel);
         setWidget(getRowCount() - 1, 1, publicanCfg);
@@ -134,6 +139,7 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         abstractDesc.setValue(value.getAbstractDesc());
         brand.setValue(value.getBrand());
         copyrightHolder.setValue(value.getCopyrightHolder());
+        copyrightYear.setValue(value.getCopyrightYear());
         publicanCfg.setValue(value.getPublicanCfg());
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
@@ -156,6 +162,7 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         value.setAbstractDesc(abstractDesc.getValue());
         value.setBrand(brand.getValue());
         value.setCopyrightHolder(copyrightHolder.getValue());
+        value.setCopyrightYear(copyrightYear.getValue());
         value.setPublicanCfg(publicanCfg.getValue());
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
