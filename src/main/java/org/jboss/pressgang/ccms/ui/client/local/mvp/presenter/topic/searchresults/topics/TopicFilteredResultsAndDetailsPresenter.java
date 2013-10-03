@@ -64,6 +64,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -2623,13 +2624,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         public void success(@NotNull final RESTTopicV1 retValue) {
                             checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml();
+                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                    .getDtdDoctype() + "\n" + retValue.getXml();
 
                             failOverRESTCall.performRESTCall(
                                     FailOverRESTCallDatabase.holdXML(xml1),
                                     new RESTCallBack<IntegerWrapper>() {
                                         public void success(@NotNull final IntegerWrapper value1) {
-                                            final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
+                                            final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                                    .getDtdDoctype() + "\n" + getDisplayedTopic().getXml();
 
                                             failOverRESTCall.performRESTCall(
                                                     FailOverRESTCallDatabase.holdXML(xml2),

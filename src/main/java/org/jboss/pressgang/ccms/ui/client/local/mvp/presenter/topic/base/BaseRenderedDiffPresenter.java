@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Panel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -120,7 +121,8 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                     }
                                 };
 
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display, true);
+                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                        .getDtdDoctype() + "\n" + retValue2.getXml()), hold2, display, true);
                             }
 
                             @Override
@@ -130,7 +132,8 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display, true);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                .getDtdDoctype() + "\n" + retValue1.getXml()), hold1, display, true);
 
                     }
                 };
@@ -246,7 +249,9 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 					// Make sure the iframe sending the data is from an expected source
 					var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
 					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
-					if (serverHost.indexOf(event.origin) == 0) {
+					console.log("Event Origin: " + event.origin);
+					console.log("Server Host: " + serverHost);
+                    if (serverHost.indexOf(event.origin) == 0) {
 						// Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
 						// This ensures that the diff ordering is correct
 
