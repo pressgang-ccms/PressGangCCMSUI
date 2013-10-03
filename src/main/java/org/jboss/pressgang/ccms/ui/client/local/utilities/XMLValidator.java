@@ -114,6 +114,9 @@ public class XMLValidator {
             var editor = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::editor;
             if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                if (text == null) {
+                    text = "";
+                }
                 // Add the doctype that include the standard docbook entities
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
                 text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;)(text);
