@@ -39,10 +39,10 @@ self.addEventListener('message', function (e) {
 			}
 
 			// match anything that looks like a container
-			var containerRE = /^(  )*(\S*)\s*:/g;
+			var containerRE = /^((\s{2})*)(\S+)\s*:/g;
 			var containerMatch = null;
 			while (containerMatch = containerRE.exec(line)) {
-				var container = containerMatch[2];
+				var container = containerMatch[3];
 
 				if (tags.indexOf(container) != -1) {
 					var prefix = containerMatch[1] ? containerMatch[1].length : 0;
