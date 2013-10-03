@@ -37,6 +37,8 @@ self.addEventListener('message', function (e) {
 					tagDetails.push([start, end]);
 				}
 			}
+
+			retValue.push(tagDetails);
 		}
 
 		postMessage(retValue);
