@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.Image;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
@@ -150,7 +149,7 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
         getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ContentSpecID());
         getPossibleChildrenResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.ContentSpecTitle());
         getPossibleChildrenResults().addColumn(productColumn, PressGangCCMSUI.INSTANCE.ContentSpecProduct());
-        getPossibleChildrenResults().addColumn(versionColumn, PressGangCCMSUI.INSTANCE.ContentSpecVersion());
+        getPossibleChildrenResults().addColumn(versionColumn, PressGangCCMSUI.INSTANCE.ContentSpecProductVersion());
         getPossibleChildrenResults().addColumn(viewButtonColumn, "");
         getPossibleChildrenResults().addColumn(docbuilderColumn, PressGangCCMSUI.INSTANCE.DocBuilder());
 

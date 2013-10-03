@@ -29,8 +29,15 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     private final SimpleIntegerBox notEditedInLastXDays = new SimpleIntegerBox();
     private final TextBox ids = new TextBox();
     private final TextBox title = new TextBox();
+    private final TextBox subtitle = new TextBox();
     private final TextBox product = new TextBox();
     private final TextBox version = new TextBox();
+    private final TextBox edition = new TextBox();
+    private final TextBox pubsnumber = new TextBox();
+    private final TextBox abstractDesc = new TextBox();
+    private final TextBox brand = new TextBox();
+    private final TextBox copyrightHolder = new TextBox();
+    private final TextBox publicanCfg = new TextBox();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
 
@@ -66,18 +73,47 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         setWidget(getRowCount(), 0, contentSpecTitleLabel);
         setWidget(getRowCount() - 1, 1, title);
 
+        @NotNull final Label contentSpecSubtitleLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecSubtitle());
+        setWidget(getRowCount(), 0, contentSpecSubtitleLabel);
+        setWidget(getRowCount() - 1, 1, subtitle);
+
         @NotNull final Label contentSpecProductLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecProduct());
         setWidget(getRowCount(), 0, contentSpecProductLabel);
         setWidget(getRowCount() - 1, 1, product);
 
-        @NotNull final Label contentSpecVersionLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecVersion());
+        @NotNull final Label contentSpecVersionLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecProductVersion());
         setWidget(getRowCount(), 0, contentSpecVersionLabel);
         setWidget(getRowCount() - 1, 1, version);
+
+        @NotNull final Label contentSpecEditionLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecEdition());
+        setWidget(getRowCount(), 0, contentSpecEditionLabel);
+        setWidget(getRowCount() - 1, 1, edition);
+
+        @NotNull final Label contentSpecPubsnumberLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecPubsnumber());
+        setWidget(getRowCount(), 0, contentSpecPubsnumberLabel);
+        setWidget(getRowCount() - 1, 1, pubsnumber);
+
+        @NotNull final Label contentSpecAbstractLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecAbstract());
+        setWidget(getRowCount(), 0, contentSpecAbstractLabel);
+        setWidget(getRowCount() - 1, 1, abstractDesc);
+
+        @NotNull final Label contentSpecBrandLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecBrand());
+        setWidget(getRowCount(), 0, contentSpecBrandLabel);
+        setWidget(getRowCount() - 1, 1, brand);
+
+        @NotNull final Label contentSpecCopyrightHolderLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecCopyrightHolder());
+        setWidget(getRowCount(), 0, contentSpecCopyrightHolderLabel);
+        setWidget(getRowCount() - 1, 1, copyrightHolder);
+
+        @NotNull final Label contentSpecPublicanCfgLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecPublicanCfg());
+        setWidget(getRowCount(), 0, contentSpecPublicanCfgLabel);
+        setWidget(getRowCount() - 1, 1, publicanCfg);
 
         setWidget(getRowCount(), 0, matchAll);
         setWidget(getRowCount() - 1, 1, matchAny);
 
         new NumbersAndCommaValidator(ids);
+        new NumbersAndCommaValidator(pubsnumber);
     }
 
     @Override
@@ -90,8 +126,15 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         notEditedInLastXDays.setValue(value.getNotEditedInLastXDays());
         ids.setValue(value.getIds());
         title.setValue(value.getTitle());
+        subtitle.setValue(value.getSubtitle());
         product.setValue(value.getProduct());
         version.setValue(value.getVersion());
+        edition.setValue(value.getEdition());
+        pubsnumber.setValue(value.getPubsnumber());
+        abstractDesc.setValue(value.getAbstractDesc());
+        brand.setValue(value.getBrand());
+        copyrightHolder.setValue(value.getCopyrightHolder());
+        publicanCfg.setValue(value.getPublicanCfg());
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
     }
@@ -105,8 +148,15 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         value.setNotEditedInLastXDays(notEditedInLastXDays.getValue());
         value.setIds(ids.getValue());
         value.setTitle(title.getValue());
+        value.setSubtitle(subtitle.getValue());
         value.setProduct(product.getValue());
         value.setVersion(version.getValue());
+        value.setEdition(edition.getValue());
+        value.setPubsnumber(pubsnumber.getValue());
+        value.setAbstractDesc(abstractDesc.getValue());
+        value.setBrand(brand.getValue());
+        value.setCopyrightHolder(copyrightHolder.getValue());
+        value.setPublicanCfg(publicanCfg.getValue());
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
 

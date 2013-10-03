@@ -981,10 +981,31 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecIds();
 
     @NotNull
+    String ContentSpecSubtitle();
+
+    @NotNull
     String ContentSpecProduct();
 
     @NotNull
-    String ContentSpecVersion();
+    String ContentSpecProductVersion();
+
+    @NotNull
+    String ContentSpecEdition();
+
+    @NotNull
+    String ContentSpecPubsnumber();
+
+    @NotNull
+    String ContentSpecAbstract();
+
+    @NotNull
+    String ContentSpecBrand();
+
+    @NotNull
+    String ContentSpecCopyrightHolder();
+
+    @NotNull
+    String ContentSpecPublicanCfg();
 
     @NotNull
     String FileID();
