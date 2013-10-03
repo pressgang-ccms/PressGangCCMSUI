@@ -45,7 +45,7 @@ self.addEventListener('message', function (e) {
 				var container = containerMatch[2];
 
 				if (tags.indexOf(container) != -1) {
-					var prefix = containerMatch[1] ? 0 : containerMatch[1].length;
+					var prefix = containerMatch[1] ? containerMatch[1].length : 0;
 					var start = containerMatch.index + prefix;
 					var end = start + container.length;
 					tagDetails.push([start, end]);
