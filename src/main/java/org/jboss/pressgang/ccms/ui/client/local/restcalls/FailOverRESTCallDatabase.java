@@ -415,7 +415,7 @@ public final class FailOverRESTCallDatabase {
 
             @Override
             public boolean isRepeatable() {
-                return false;
+                return true;
             }
         };
     }

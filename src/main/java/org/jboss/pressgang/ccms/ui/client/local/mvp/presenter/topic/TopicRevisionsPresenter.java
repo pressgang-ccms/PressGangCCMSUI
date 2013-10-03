@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
@@ -19,8 +20,10 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -140,7 +143,13 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         display.getTopActionGrandParentPanel().removeFromParent();
 
         if (topicID != null) {
-            loadTopics(topicID, firstRevision, secondRevision);
+            loadTopics(topicID, firstRevision, secondRevision, new RenderedDiffFailedCallback() {
+                @Override
+                public void failed() {
+                    display.showRenderedDiffError();
+                    Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                }
+            });
         }
     }
 

@@ -77,6 +77,13 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
     }
 
     @Override
+    public void showRenderedDiffError() {
+        final Image error = new Image(ImageResources.INSTANCE.bigError());
+        error.addStyleName(CSSConstants.TopicReviewView.TOPIC_REVIEW_VIEW_SPINNER);
+        this.getPanel().setWidget(error);
+    }
+
+    @Override
     public void displayHtmlDiff(@NotNull final String htmlDiff) {
         this.removeWaitOperation();
         reDisplayHtmlDiff();

@@ -27,6 +27,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface {
         void showWaitingFromRenderedDiff();
+        void showRenderedDiffError();
         void displayHtmlDiff(@NotNull final String htmlDiff);
     }
 
@@ -92,11 +93,11 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         addEventListener();
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision) {
-        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea());
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffFailedCallback failedCallback) {
+        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), failedCallback);
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach) {
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffFailedCallback failedCallback) {
         final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
             @Override
             public void success(@NotNull final RESTTopicV1 retValue1) {
@@ -112,13 +113,24 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                     public void success(@NotNull final IntegerWrapper holdValue2) {
                                         renderXML(holdValue1.value, holdValue2.value, hiddenAttach);
                                     }
+
+                                    @Override
+                                    public void failed() {
+                                        failedCallback.failed();
+                                    }
                                 };
 
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display);
+                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display, true);
                             }
+
+                            @Override
+                            public void failed() {
+                                failedCallback.failed();
+                            }
+
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display, true);
 
                     }
                 };

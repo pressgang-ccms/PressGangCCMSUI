@@ -27,8 +27,8 @@ public class ServerDetails {
     /**
      * A collection of all the available servers.
      */
-//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, LOCAL};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, LOCAL};
 
     /**
      * This is the list we work from, which may be modified through the config page.

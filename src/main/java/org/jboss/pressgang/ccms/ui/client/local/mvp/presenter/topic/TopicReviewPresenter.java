@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -9,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -94,7 +96,13 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                 /*
                     Load the revisions and create a diff
                  */
-                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach);
+                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach, new RenderedDiffFailedCallback() {
+                    @Override
+                    public void failed() {
+                        display.showRenderedDiffError();
+                        Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                    }
+                });
             }
 
             @Override
