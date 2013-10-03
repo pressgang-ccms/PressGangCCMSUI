@@ -26,7 +26,7 @@ self.addEventListener('message', function (e) {
 			var tagDetails = [];
 
 			// Match anything that looks like metadata
-			var metadataRe = /^(\S*)\s*=\s*/g;
+			var metadataRe = /^(.+?)\s*=\s*/g;
 			var metadataMatch = null;
 			while (metadataMatch = metadataRe.exec(line)) {
 				var tag = metadataMatch[1];
@@ -48,6 +48,20 @@ self.addEventListener('message', function (e) {
 					var prefix = containerMatch[1] ? containerMatch[1].length : 0;
 					var start = containerMatch.index + prefix;
 					var end = start + container.length;
+					tagDetails.push([start, end]);
+				}
+			}
+
+			// match anything that looks like a element metadata piece
+			var elementMetadataRE = /(\s*\[)(.+?)\s*:\s*/g;
+			var elementMatch = null;
+			while (elementMatch = elementMetadataRE.exec(line)) {
+				var element = elementMatch[2];
+
+				if (tags.indexOf(element) != -1) {
+					var prefix = elementMatch[1].length;
+					var start = elementMatch.index + prefix;
+					var end = start + element.length;
 					tagDetails.push([start, end]);
 				}
 			}
