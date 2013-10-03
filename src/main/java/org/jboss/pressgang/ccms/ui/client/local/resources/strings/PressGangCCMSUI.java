@@ -1104,6 +1104,15 @@ public interface PressGangCCMSUI extends Constants {
     String Condition();
 
     @NotNull
+    String MergeAdditionalXml();
+
+    @NotNull
+    String AdditionalXml();
+
+    @NotNull
+    String OriginalXML();
+
+    @NotNull
     String FromSpec();
 
     @NotNull

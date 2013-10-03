@@ -1,6 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -57,7 +68,6 @@ public interface BaseTemplateViewInterface {
     }
 
     /**
-     *
      * @return The label that holds the build number.
      */
     @NotNull
@@ -231,6 +241,14 @@ public interface BaseTemplateViewInterface {
     void addActionButton(@NotNull final Widget widget);
 
     /**
+     * Inserts a widget after another widget in the top action panel.
+     *
+     * @param newWidget The new widget to insert.
+     * @param oldWidget The widget that the new widget should be inserted after
+     */
+    void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget);
+
+    /**
      * Adds a widget to a new column in the local (ie right hand side) top action panel.
      *
      * @param widget The widget to add.
@@ -239,7 +257,7 @@ public interface BaseTemplateViewInterface {
 
     /**
      * @return The hidden DOM element that can be used as a parent for other elements
-     * that need to be attached but hidden.
+     *         that need to be attached but hidden.
      */
     HorizontalPanel getHiddenAttachmentArea();
 }

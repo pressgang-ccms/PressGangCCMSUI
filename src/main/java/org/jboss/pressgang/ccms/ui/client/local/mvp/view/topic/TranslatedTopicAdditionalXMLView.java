@@ -21,31 +21,31 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter.TranslatedTopicAdditionalXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.EditorSettingsDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1AdditionalXMLEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
+public class TranslatedTopicAdditionalXMLView extends BaseTemplateView implements TranslatedTopicAdditionalXMLPresenter.Display {
 
-    private static final Logger LOGGER = Logger.getLogger(TopicXMLView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TranslatedTopicAdditionalXMLView.class.getName());
 
     /**
      * The GWT Editor Driver
      */
-    private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
+    private final TranslatedTopicAdditionalXMLPresenterDriver driver = GWT.create(TranslatedTopicAdditionalXMLPresenterDriver.class);
 
-    private RESTTopicV1XMLEditor editor;
+    private RESTTranslatedTopicV1AdditionalXMLEditor editor;
 
     /**
      * An instance of the typo.js library, to be passed to the instance of the ACE editor. This object seems to stick
@@ -80,7 +80,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         return editorParent;
     }
 
-    public final static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
+    public final static class PlainTextXMLDialog extends DialogBox implements TranslatedTopicAdditionalXMLPresenter.Display
+            .PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private TextArea textArea;
@@ -151,7 +152,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     /**
      * The dialog box that displays a list of docbook tags.
      */
-    public final static class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
+    public final static class XmlTagsDialog extends DialogBox implements TranslatedTopicAdditionalXMLPresenter.Display.XmlTagsDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -235,7 +236,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     /**
      * The dialog box that displays a list of docbook templates.
      */
-    public final static class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
+    public final static class XmlTemplatesDialog extends DialogBox implements TranslatedTopicAdditionalXMLPresenter.Display.XmlTemplatesDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -309,7 +310,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         }
     }
 
-    public final static class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
+    public final static class CSPTopicDetailsDialog extends DialogBox implements TranslatedTopicAdditionalXMLPresenter.Display.CSPTopicDetailsDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final TextBox ids = new TextBox();
@@ -398,7 +399,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public TopicXMLPresenterDriver getDriver() {
+    public TranslatedTopicAdditionalXMLPresenterDriver getDriver() {
         return this.driver;
     }
 
@@ -411,15 +412,15 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     @Override
     public AceEditor getEditor() {
         if (this.editor != null) {
-            return this.editor.xml;
+            return this.editor.translatedAdditionalXML;
         }
         return null;
     }
 
-    public TopicXMLView() {
+    public TranslatedTopicAdditionalXMLView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.XMLEditing());
 
-        LOGGER.info("ENTER TopicXMLView()");
+        LOGGER.info("ENTER TranslatedTopicDataXMLView()");
 
         this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_PANEL);
         this.editorParent.addStyleName(CSSConstants.TopicView.ACE_EDITOR_PARENT);
@@ -441,10 +442,11 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public void display(final RESTTranslatedTopicV1 topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
-        this.editor = new RESTTopicV1XMLEditor(readOnly, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader);
+        this.editor = new RESTTranslatedTopicV1AdditionalXMLEditor(readOnly, positiveDictionary, negativeDictionary,
+                negativePhraseDictionary, tagDBLoader);
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */

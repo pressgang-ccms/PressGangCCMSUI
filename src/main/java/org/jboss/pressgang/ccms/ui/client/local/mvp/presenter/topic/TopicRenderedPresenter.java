@@ -1,57 +1,27 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.xml.client.DOMException;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @Dependent
-public class TopicRenderedPresenter extends BaseTemplatePresenter {
+public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopicV1> {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
-    public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
-        boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
+    public interface Display extends BaseTopicRenderedPresenter.Display {
 
-        void clear();
-
-        void removeListener();
-
-        FlexTable getLayoutPanel();
-
-        ListBox getConditions();
     }
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     /**
      * The rendered topic view display
@@ -59,135 +29,9 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    /**
-     * The condition set via the URL history token. Used when the view is used stand alone.
-     */
-    private String conditionOverride;
-
     @NotNull
     public Display getDisplay() {
         return display;
-    }
-
-    @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended();
-
-        /*
-            Don't display the conditions when this view is used stand alone.
-         */
-        display.getLayoutPanel().getFlexCellFormatter().setVisible(0, 0, false);
-    }
-
-    @Override
-    public void close() {
-        display.removeListener();
-    }
-
-    public void bindExtended() {
-        super.bind(display);
-    }
-
-    public void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
-
-        String xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
-                .getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(topicXML);
-
-        final Document doc = XMLUtilities.convertStringToDocument(xml);
-        if (doc != null) {
-            // Apply the conditions
-            if (display.getConditions().getSelectedIndex() != -1 || conditionOverride != null) {
-
-                /*
-                    conditionOverride overrides any selection in the combo box
-                 */
-                final String condition = conditionOverride != null ? conditionOverride : display.getConditions().getValue(
-                        display.getConditions().getSelectedIndex()).trim();
-
-                /*
-                    Apply some special rules when no condition is specified
-                 */
-                final String actualCondition = condition.isEmpty() ? ServiceConstants.DEFAULT_CONDITION : condition;
-
-                removeConditions(doc, actualCondition);
-            }
-
-            // Resolve any injections
-            InjectionResolver.resolveInjections(doc);
-
-            xml = doc.toString();
-        }
-
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
-            public void success(@NotNull final IntegerWrapper value) {
-                display.displayTopicRendered(value.value, readOnly, showImages);
-            }
-        }, display, true);
-    }
-
-    /**
-     * Remove any XML elements that don't match the supplied condition
-     *
-     * @param xml       The XML to be parsed
-     * @param condition The condition to be met
-     * @return The XML with the elements removed
-     */
-    private void removeConditions(@NotNull final Document doc, @NotNull final String condition) {
-        try {
-
-            // test the the regex is valid
-            RegExp.compile(condition);
-
-            removeConditions(doc.getDocumentElement(), condition);
-
-        } catch (@NotNull final DOMException e) {
-            // fall through to return statement below
-        } catch (@NotNull final RuntimeException ex) {
-            // regex did not compile. fall through to return statement below
-        }
-    }
-
-    private boolean removeConditions(@NotNull final Element element, @NotNull final String condition) {
-        if (element.hasAttribute(Constants.CONDITION_ATTRIBUTE)) {
-            final String elementCondition = element.getAttribute(Constants.CONDITION_ATTRIBUTE);
-
-            /*
-                The condition attribute value is split using one of three characters. See
-                 DocBookUtilities.getConditionNodes() for the code that does this with
-                 the content spec processor.
-             */
-            final String[] individualConditions = elementCondition.split("\\s*(;|,)\\s*");
-
-            boolean match = false;
-            for (@NotNull final String individualCondition : individualConditions) {
-                if (individualCondition.matches(condition)) {
-                    match = true;
-                    break;
-                }
-            }
-
-            if (!match) {
-                return false;
-            }
-        }
-
-        final List<Element> removedElements = new ArrayList<Element>();
-        final NodeList children = element.getChildNodes();
-        for (int i = 0, length = children.getLength(); i < length; ++i) {
-            final Node childNode = children.item(i);
-            if (childNode instanceof Element) {
-                if (!removeConditions((Element) childNode, condition)) {
-                    removedElements.add((Element) childNode);
-                }
-            }
-        }
-
-        for (@NotNull final Element removedElement : removedElements) {
-            element.removeChild(removedElement);
-        }
-
-        return true;
     }
 
     @Override
@@ -216,7 +60,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                 final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
-                        displayTopicRendered(retValue.getXml(), true, true);
+                        displayTopicRendered(retValue, true, true);
                     }
                 };
 
@@ -226,5 +70,20 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
         } catch (@NotNull final NumberFormatException ex) {
 
         }
+    }
+
+    @Override
+    public void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
+        String xml = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(topic.getXml()));
+        xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
+                .getDtdDoctype() + "\n" + xml;
+
+        xml = processXML(xml);
+
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+            public void success(@NotNull final IntegerWrapper value) {
+                getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+            }
+        }, getDisplay(), true);
     }
 }

@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -150,6 +151,7 @@ public final class FailOverRESTCallDatabase {
             "{\"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+                    TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION  + "," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
                     "]}";
 
@@ -1308,6 +1310,29 @@ public final class FailOverRESTCallDatabase {
             @Override
             public boolean isRepeatable() {
                 return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONTranslatedTopic method
+     * @param topic The topic to be updated
+     * @param message The revision log message
+     * @param flag The flags associated with this revision
+     * @param userId The user that made the changes
+     * @return A RESTCall that can call the REST updateJSONTopic method
+     */
+    public static RESTCall saveTranslatedTopic(@NotNull final RESTTranslatedTopicV1 topic, @NotNull final String message,
+            @NotNull final Integer flag, @NotNull final String userId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONTranslatedTopic(TRANSLATED_TOPIC_EXPANSION, topic, message, flag, userId);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }

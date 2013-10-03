@@ -24,7 +24,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,7 +34,6 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
@@ -73,6 +71,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicContentSpecsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicReviewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -102,7 +101,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -117,11 +116,8 @@ import org.vectomatic.file.events.LoadEndHandler;
  * display, edit and create topics.
  */
 @Dependent
-public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredResultsAndDetailsPresenter<
-        RESTTopicV1,
-        RESTTopicCollectionV1,
-        RESTTopicCollectionItemV1,
-        RESTTopicV1BasicDetailsEditor> {
+public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredResultsAndDetailsPresenter<RESTTopicV1,
+        RESTTopicCollectionV1, RESTTopicCollectionItemV1, RESTTopicV1BasicDetailsEditor> {
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
@@ -178,12 +174,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         elements are loaded.
      */
     private boolean revisionDiffLoadInitiated = false;
-    /**
-     * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
-     * topic or setting the review status. This variable allows us to remove the last assigned click handler in
-     * order to swap it out for the new one.
-     */
-    private HandlerRegistration messageLogOKHandler;
+
     /**
      * The REST callback called when a topic is updated
      */
@@ -215,8 +206,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         new children that are exposed through the UI.
                     */
                     if (retValue.getRevisions().getItems().size() >= 1) {
-                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
 
                         LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
 
@@ -228,8 +219,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                      */
                     if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                             /* Get the second last revision (the last one is the current one) */
-                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
 
                         LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
@@ -325,8 +316,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         message.append(user).append(": ");
                     }
                     message.append(display.getMessageLogDialog().getMessage().getText());
-                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
-                            .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                            : ServiceConstants.MAJOR_CHANGE);
 
                             /* Sync any changes back to the underlying object */
                     flushChanges();
@@ -347,8 +338,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "Copying modified collections");
                     if (sourceTopic.getProperties() != null && sourceTopic.getProperties().getItems() != null) {
                         newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
-                        newTopic.getProperties().setItems(
-                                sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                        newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
                     }
 
                     if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
@@ -408,7 +398,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     if (startWithNewTopic) {
                                         LOGGER.log(Level.INFO, "Adding new topic to static list");
                                         getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
-                                        getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
+                                        getSearchResultPresenter().getProviderData().setSize(
+                                                getSearchResultPresenter().getProviderData().getItems().size());
                                         updateDisplayWithNewEntityData(false);
                                     } else {
                                         /* Update the selected topic */
@@ -441,17 +432,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                     } else {
 
-                        failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.saveTopic(
-                                        newTopic,
-                                        message.toString(),
-                                        flag,
-                                        ServiceConstants.NULL_USER_ID.toString()),
-                                updateCallback,
-                                display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, message.toString(), flag,
+                                ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
                     }
                 }
             } finally {
@@ -477,17 +463,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     message.append(user).append(": ");
                 }
                 message.append(display.getMessageLogDialog().getMessage().getText());
-                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants
-                        .MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE :
+                        ServiceConstants.MAJOR_CHANGE);
 
-                failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.saveTopic(
-                        reviewUpdateTopic,
-                        message.toString(),
-                        flag,
-                        ServiceConstants.NULL_USER_ID.toString()),
-                        updateCallback,
-                        display);
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(reviewUpdateTopic, message.toString(), flag,
+                        ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
             } finally {
                 display.getMessageLogDialog().reset();
                 display.getMessageLogDialog().getDialogBox().hide();
@@ -500,7 +480,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * Changes to the revision status of a topic are saved through this
      * topic object. This is done so that there are no changes done to the
      * displayed topic.
-     *
+     * <p/>
      * This is important because it is possible to cancel the process of changing
      * the review status. If we made changes to the displayed topic and then
      * cancelled the save process, the topic would be in an inconsistent state in the
@@ -523,20 +503,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Inject
     private TopicReviewPresenter topicReviewPresenter;
     @Inject
+    private TopicRenderedPresenter topicRenderedPresenter;
+    /**
+     * The rendered topic view display in a split panel
+     */
+    @Inject
+    private TopicRenderedPresenter topicSplitPanelRenderedPresenter;
+    @Inject
     private Display display;
 
-    /**
-     * true while there is a thread checking the XML
-     */
-    private boolean checkingXML = false;
-    /**
-     * The xmllint worker
-     */
-    private JavaScriptObject worker = null;
-    /**
-     * The xml validation timeout
-      */
-    private JavaScriptObject timeout = null;
+    private XMLValidator xmlValidator = null;
 
     /**
      * The global event bus.
@@ -544,13 +520,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Inject
     private EventBus eventBus;
 
-
     /**
      * This entity is used to hold the tags that will be applied to
      * any bulk uploaded topics.
      */
     private final RESTTopicV1 bulkImportTemplate = new RESTTopicV1();
-
 
     /**
      * The history token.
@@ -636,6 +610,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         return topicContentSpecsPresenter;
     }
 
+    @Override
+    @NotNull
+    protected TopicRenderedPresenter getTopicRenderedPresenter() {
+        return topicRenderedPresenter;
+    }
+
+    @Override
+    @NotNull
+    protected TopicRenderedPresenter getTopicSplitPanelRenderedPresenter() {
+        return topicSplitPanelRenderedPresenter;
+    }
+
     public TopicFilteredResultsAndDetailsPresenter() {
         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter()");
     }
@@ -678,9 +664,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(),
-                topicViewPresenter.getDisplay(), getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(),
-                getDisplay(), getNewEntityCallback);
+        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(), topicViewPresenter.getDisplay(),
+                getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         topicContentSpecsPresenter.bindChildrenExtended();
         topicRevisionsPresenter.bindRenderedDiff(topicRevisionsPresenter.getDisplay());
@@ -761,7 +746,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
-            checkState(getSearchResultPresenter().getProviderData() != null, "getSearchResultPresenter().getProviderData() should not return null");
+            checkState(getSearchResultPresenter().getProviderData() != null,
+                    "getSearchResultPresenter().getProviderData() should not return null");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultPresenter().getProviderData().getItems() != null &&
@@ -776,20 +762,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     public void close() {
+        super.close();
         timer.cancel();
-        stopCheckingXMLAndCloseThread();
-        GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
-
+        getXmlValidator().stopCheckingXMLAndCloseThread();
         /*
             Allow the child components to close.
          */
-        getTopicRenderedPresenter().close();
-        getTopicSplitPanelRenderedPresenter().close();
-        getSearchResultPresenter().close();
-        getTopicPropertyTagPresenter().close();
-        getTopicTagsPresenter().close();
-        getTopicXMLPresenter().close();
         getTopicContentSpecsPresenter().close();
+        topicRevisionsPresenter.close();
     }
 
     private void bindRenderedViewClicks() {
@@ -886,13 +866,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     @Override
                     public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
                         if (isOKToProceed()) {
-                            checkState(object != null && object.getItem() != null, "The referenced column should have a valid " +
-                                    "content spec reference");
+                            checkState(object != null && object.getItem() != null,
+                                    "The referenced column should have a valid " + "content spec reference");
 
                             eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
                                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" +
-                                            object.getItem().getId(),
-                                    false));
+                                            object.getItem().getId(), false));
                         }
                     }
                 });
@@ -900,24 +879,29 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             Open the topic in the docbuilder book.
          */
-        getTopicContentSpecsPresenter().getDisplay().getDocbuilderColumn().setFieldUpdater(new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
-            @Override
-            public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
-                if (isOKToProceed()) {
-                    checkState(object != null && object.getItem() != null, "The referenced column should have a valid " +
-                            "content spec reference");
+        getTopicContentSpecsPresenter().getDisplay().getDocbuilderColumn().setFieldUpdater(
+                new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
+                    @Override
+                    public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
+                        if (isOKToProceed()) {
+                            checkState(object != null && object.getItem() != null,
+                                    "The referenced column should have a valid " + "content spec reference");
 
-                    failOverRESTCall.performRESTCall(
-                            FailOverRESTCallDatabase.getTopicRevisionWithProperties(getDisplayedTopic().getId(), getDisplayedTopic().getRevision()),
-                            new RESTCallBack<RESTTopicV1>() {
+                            failOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.getTopicRevisionWithProperties(getDisplayedTopic().getId(),
+                                            getDisplayedTopic().getRevision()), new RESTCallBack<RESTTopicV1>() {
                                 @Override
                                 public void success(@NotNull final RESTTopicV1 retValue) {
-                                    checkArgument(retValue.getProperties() != null, "The returned topic should have an expanded properties collection");
+                                    checkArgument(retValue.getProperties() != null,
+                                            "The returned topic should have an expanded properties collection");
 
                                     boolean found = false;
                                     for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                         if (prop.getItem().getId() == ServiceConstants.FIXED_URL_PROPERTY_TAG) {
-                                            Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
+                                            Window.open(
+                                                    Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem()
+                                                            .getValue(),
+                                                    "", "");
                                             found = true;
                                             break;
                                         }
@@ -936,14 +920,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         be exposed and used here.
                                      */
                                     if (!found) {
-                                        final String simulatedFixedURL = retValue.getTitle().replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
-                                        Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + simulatedFixedURL, "", "");
+                                        final String simulatedFixedURL = retValue.getTitle().replaceAll(" ", "_").replaceAll(
+                                                "^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
+                                        Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + simulatedFixedURL,
+                                                "", "");
                                     }
                                 }
                             });
-                }
-            }
-        });
+                        }
+                    }
+                });
     }
 
     /**
@@ -992,11 +978,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         try {
                             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
 
-                                    checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                                    checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                                    getTopicTagsPresenter().getDisplay().initializeNewTags(retValue);
-                                    display.getBulkImport().getTagsView().initializeNewTags(retValue);
+                            getTopicTagsPresenter().getDisplay().initializeNewTags(retValue);
+                            display.getBulkImport().getTagsView().initializeNewTags(retValue);
 
                             display.getBulkImport().setLoaded();
                         } finally {
@@ -1032,7 +1018,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         checkState(displayedItem.getItem() != null, "A collection item should be selected and have a valid item");
 
         if (displayedItem.getItem().getId() != null) {
-            GWTUtilities.setBrowserWindowTitle(displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+            GWTUtilities.setBrowserWindowTitle(
+                    displayedItem.getItem().getId() + " - " + displayedItem.getItem().getTitle() + " - " + PressGangCCMSUI.INSTANCE
+                            .PressGangCCMS());
         } else {
             GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
         }
@@ -1076,11 +1064,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final Integer revision = displayedTopic.getRevision();
 
                 /* A callback to respond to a request for a topic with the tags expanded */
-                 final RESTCallBack<RESTTopicV1> topicWithTagsCallback = new RESTCallBack<RESTTopicV1>() {
+                final RESTCallBack<RESTTopicV1> topicWithTagsCallback = new RESTCallBack<RESTTopicV1>() {
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO,
+                                    "ENTER TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
 
                             /*
                                 There is a small chance that in between loading the topic's details and
@@ -1104,12 +1093,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
                         } finally {
-                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO,
+                                    "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
                         }
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback,
+                        getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -1189,8 +1180,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
-                                    "topicWithContentSpecsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO,
+                                    "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " + "topicWithContentSpecsCallback" +
+                                            ".doSuccessAction()");
 
                             // copy the revisions into the displayed Topic
                             getDisplayedTopic().setContentSpecs_OTM(retValue.getContentSpecs_OTM());
@@ -1198,8 +1190,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
                         } finally {
-                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
-                                    "topicWithContentSpecsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO,
+                                    "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " + "topicWithContentSpecsCallback" +
+                                            ".doSuccessAction()");
                         }
                     }
                 };
@@ -1223,17 +1216,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             migrated to a content spec entity.
          */
         if (getDisplayedTopic().getId() != null) {
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
-                new RESTCallBack<RESTTopicCollectionV1>() {
-                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                        if (retValue.getSize() != 0) {
-                            if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
-                                eventBus.fireEvent(
-                                        new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
-                            }
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag" + ServiceConstants.CSP_TAG_ID +
+                    "=1;topicIds=" + getDisplayedTopic().getId()), new RESTCallBack<RESTTopicCollectionV1>() {
+                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                    if (retValue.getSize() != 0) {
+                        if (Window.confirm(
+                                PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#",
+                                        getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
+                            eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
+                                    "query;contentSpecIds=" + getDisplayedTopic().getId(), false));
                         }
                     }
-                });
+                }
+            });
         }
     }
 
@@ -1273,26 +1268,25 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
-                        checkArgument(retValue.getProperties().getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getProperties().getItems() != null,
+                                "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getProperties().getSize() != null, "Returned collection should have a valid size.");
 
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setProperties(
-                                retValue.getProperties());
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
 
                         Collections.sort(
-                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getProperties()
-                                        .getItems(),
+                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
 
                         // We have new data to display
-                        initializeViews(
-                                Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
                     }
                 };
 
                 final Integer id = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId();
                 final Integer revision = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
+                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback,
+                        getTopicPropertyTagPresenter().getDisplay());
             }
         }
     }
@@ -1408,20 +1402,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 loadPropertyTags();
             }
 
-                /* While editing the XML, we need to setup a refresh of the rendered view */
+            // While editing the XML, we need to setup a refresh of the rendered view */
             if (displayedView == this.getTopicXMLPresenter().getDisplay()) {
                 if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
                     timer.scheduleRepeating(Constants.REFRESH_RATE);
                 }
 
-                /* This should always be false */
-                if (!checkingXML) {
-                    startCheckingXML();
+                // This should always be false
+                if (!getXmlValidator().isCheckingXML()) {
+                    getXmlValidator().startCheckingXML();
                 }
             } else {
                 timer.cancel();
                 refreshSplitRenderedView(true);
-                stopCheckingXML();
+                getXmlValidator().stopCheckingXML();
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
@@ -1440,6 +1434,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
         }
+    }
+
+    private XMLValidator getXmlValidator() {
+        if (xmlValidator == null) {
+            xmlValidator = new XMLValidator(getTopicXMLPresenter().getDisplay().getEditor(),
+                    getTopicXMLPresenter().getDisplay().getXmlErrors());
+        }
+        return xmlValidator;
     }
 
     /**
@@ -1486,10 +1488,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
-                        getRenderedDiffRevision() + ";" +
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
+                            getRenderedDiffRevision() + ";" +
+                            getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                    eventBus.fireEvent(new RenderedDiffEvent(query,GWTUtilities.isEventToOpenNewWindow(event)));
+                    eventBus.fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             });
 
@@ -1506,7 +1508,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final ClickHandler saveClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    saveTopic();
+                    saveTopic(messageLogDialogOK);
                 }
             };
 
@@ -1681,8 +1683,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * Starting the review process means assigning the review tag, and saving the topic.
      */
     private void startReview() {
-        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                "There should be a displayed collection item.");
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
@@ -1702,16 +1703,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
 
         display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.StartReviewLogMessage());
-        saveTopic();
+        saveTopic(messageLogDialogOK);
     }
 
     /**
      * Stopping the review process means removing the review tag, and optionally rolling back the changes.
+     *
      * @param accept true if the changes are accepted, and false if they should be reverted
      */
     private void endReview(final boolean accept) {
-        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                "There should be a displayed collection item.");
+        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
@@ -1732,35 +1733,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         reviewUpdateTopic.getTags().addRemoveItem(newTag);
 
         if (!accept) {
-            topicReviewPresenter.findReviewRevision(
-                displayedTopic,
-                display,
-                new ReviewTopicStartRevisionFound() {
-                    @Override
-                    public void revisionFound(@NotNull final RESTTopicV1 revision) {
-                        failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision.getRevision()),
-                                new RESTCallBack<RESTTopicV1>() {
-                                    public void success(@NotNull final RESTTopicV1 value) {
+            topicReviewPresenter.findReviewRevision(displayedTopic, display, new ReviewTopicStartRevisionFound() {
+                @Override
+                public void revisionFound(@NotNull final RESTTopicV1 revision) {
+                    failOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision.getRevision()),
+                            new RESTCallBack<RESTTopicV1>() {
+                                public void success(@NotNull final RESTTopicV1 value) {
                                         /*
                                             Reset the XML and the title
                                          */
-                                        reviewUpdateTopic.explicitSetXml(value.getXml());
-                                        reviewUpdateTopic.explicitSetTitle(value.getTitle());
+                                    reviewUpdateTopic.explicitSetXml(value.getXml());
+                                    reviewUpdateTopic.explicitSetTitle(value.getTitle());
 
-                                        display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
-                                        updateReviewStatus();
-                                    }
-                                },
-                                display
-                        );
-                    }
+                                    display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
+                                    updateReviewStatus();
+                                }
+                            }, display);
+                }
 
-                    @Override
-                    public void revisionNotFound() {
-                        // this shouldn't happen
-                    }
-                });
+                @Override
+                public void revisionNotFound() {
+                    // this shouldn't happen
+                }
+            });
         } else {
             display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndAcceptLogMessage());
             updateReviewStatus();
@@ -1777,50 +1773,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(reviewMessageLogDialogOK);
 
         configureMessageDialog();
-    }
-
-    private void saveTopic() {
-        try {
-            LOGGER.log(Level.INFO,
-                    "ENTER TopicFilteredResultsAndDetailsPresenter.saveTopic()");
-
-            if (hasUnsavedChanges()) {
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                        "There should be a displayed collection item.");
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
-                        "The displayed collection item to reference a valid entity.");
-
-                if (messageLogOKHandler != null) {
-                    messageLogOKHandler.removeHandler();
-                    messageLogOKHandler = null;
-                }
-
-                messageLogOKHandler = display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-
-                configureMessageDialog();
-            } else {
-                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-            }
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.saveTopic()");
-        }
-    }
-
-    private void configureMessageDialog() {
-        /*
-            Default to using the major change for new topics
-         */
-        if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null && getSearchResultPresenter()
-                .getProviderData().getDisplayedItem().returnIsAddItem()) {
-            display.getMessageLogDialog().getMajorChange().setValue(true);
-            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
-        }
-
-        display.getMessageLogDialog().getUsername().setText(
-                Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-
-        display.getMessageLogDialog().getDialogBox().center();
-        display.getMessageLogDialog().getDialogBox().show();
     }
 
     /**
@@ -1937,7 +1889,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                     getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
-                                    getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
+                                    getSearchResultPresenter().getProviderData().setSize(
+                                            getSearchResultPresenter().getProviderData().getItems().size());
                                 }
 
                                 createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
@@ -1951,9 +1904,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         };
 
                         if (overwrite) {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE,
+                                            ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         } else {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(
+                                    FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE,
+                                            ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         }
                     } finally {
                         display.removeWaitOperation();
@@ -1990,135 +1947,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             return null;
         }
     }
-
-    /**
-     * The worker that continuously checks the XML will stop when checkingXML is set to false.
-     */
-    private void startCheckingXML() {
-        checkingXML = true;
-        checkXML();
-    }
-
-    /**
-     * The worker that continuously checks the XML will stop when checkingXML is set to false.
-     */
-    private void stopCheckingXML() {
-        checkingXML = false;
-    }
-
-    /**
-     * The worker that continuously checks the XML will stop when checkingXML is set to false.
-     */
-    private native void stopCheckingXMLAndCloseThread() /*-{
-		try {
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML = false;
-
-            if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout != null) {
-                $wnd.clearTimeout(this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout);
-                this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = null;
-            }
-
-            if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker != null) {
-                this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.terminate();
-                this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = null;
-            }
-        } catch (ex) {
-            console.log(ex);
-            throw ex;
-        }
-	}-*/;
-
-    private native void checkXML() /*-{
-        var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLPresenter()();
-		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
-
-		var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()();
-
-
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker == null) {
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = new Worker('javascript/xmllint/xmllint.js');
-			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.addEventListener('message', function (me) {
-				return function (e) {
-					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-					var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
-					var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
-					var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
-
-					var theseErrors = e.data;
-					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
-
-                    if (theseErrors == "" && oldErrors == "") {
-						errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
-                    } else if (oldErrors != theseErrors) {
-						var entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.match(/\n/g).length;
-
-                        // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
-						// message, and is removed before being displayed.
-						var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
-
-						var errorLineRegex = /topic\.xml:(\d+):/g;
-						var match = null;
-						var lineNumbers = [];
-						while (match = errorLineRegex.exec(theseErrors)) {
-							if (match.length >= 1) {
-                                var line = parseInt(match[1]) - entitiesLines - 1;
-								// We need to match the line numbers in the editor with those in the topic, which
-                                // means subtracting all the entities we added during validation.
-								errorMessage = errorMessage.replace("topic.xml:" + match[1], "topic.xml:" + line);
-								var found = false;
-								for (var i = 0, lineNumbersLength = lineNumbers.length; i < lineNumbersLength; ++i) {
-									if (lineNumbers[i] == line) {
-										found = true;
-										break;
-									}
-								}
-								if (!found) {
-									lineNumbers.push(line);
-								}
-							}
-						}
-
-						if (errorMessage.length == 0) {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
-						} else {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
-						}
-
-						if (editor != null) {
-							editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)(lineNumbers, "xmlerror");
-						}
-					}
-
-					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML()();
-				}
-			}(this),
-			false);
-		}
-
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
-			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-			if (editor != null) {
-                var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
-                // Add the doctype that include the standard docbook entities
-                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;)(text);
-                if (text == this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML) {
-                    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::timeout = $wnd.setTimeout(function(me) {
-                        return function(){
-
-                            me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML()();
-						};
-					}(this), 250);
-                } else {
-				    var dtd = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtd()();
-                    if (dtd != "") {
-                        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.lastXML = text;
-                        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker.postMessage({xml: text, schema: dtd});
-                    }
-                }
-			}
-		}
-	}-*/;
 
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
@@ -2198,7 +2026,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             searchResultPresenter.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/atom/" + getQueryString() + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D", "", "");
+                    Window.open(
+                            ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/atom/" + getQueryString() +
+                                    "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D",
+                            "", "");
                 }
             });
 
@@ -2334,8 +2165,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(
-                            addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(this.getDisplayedTopic().getXml())), isReadOnlyMode(), isDisplayingImage);
+                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();
@@ -2346,7 +2176,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void refreshRenderedView() {
-        getTopicRenderedPresenter().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
+        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
     }
 
     /**
@@ -2368,9 +2198,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
-            if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision()) {
-                if (topicRevisionsPresenter.getDisplay().getMergely() != null &&
-                        !topicRevisionsPresenter.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
+            if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
+                    .getRevision()) {
+                if (topicRevisionsPresenter.getDisplay().getMergely() != null && !topicRevisionsPresenter.getDisplay().getMergely()
+                        .getLhs().equals(
+                        getDisplayedTopic().getXml())) {
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
@@ -2454,8 +2286,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                                                 "The displayed collection item to reference a valid entity.");
                                         checkState(
-                                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getTags() !=
-                                                        null,
+                                                getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getTags() != null,
                                                 "The displayed collection item to reference a valid entity and have a valid tags " +
                                                         "collection.");
 
@@ -2564,9 +2395,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 have done so, don't show the merge view.
                              */
                             if (lastDisplayedView == topicRevisionsPresenter.getDisplay()) {
-                                final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
+                                final boolean rhsReadonly = getDisplayedTopic().getRevision() != getSearchResultPresenter()
+                                        .getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                topicRevisionsPresenter.getDisplay().displayDiff(retValue.getXml(), rhsReadonly, getDisplayedTopic().getXml());
+                                topicRevisionsPresenter.getDisplay().displayDiff(retValue.getXml(), rhsReadonly,
+                                        getDisplayedTopic().getXml());
 
                                 /*
                                     We can't save while merging.
@@ -2577,7 +2410,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                         }
                     };
-
 
 
                     failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
@@ -2625,28 +2457,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                             final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + retValue.getXml();
 
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.holdXML(xml1),
-                                    new RESTCallBack<IntegerWrapper>() {
-                                        public void success(@NotNull final IntegerWrapper value1) {
-                                            final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
+                                public void success(@NotNull final IntegerWrapper value1) {
+                                    final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + getDisplayedTopic().getXml();
 
-                                            failOverRESTCall.performRESTCall(
-                                                    FailOverRESTCallDatabase.holdXML(xml2),
-                                                    new RESTCallBack<IntegerWrapper>() {
-                                                        public void success(@NotNull final IntegerWrapper value2) {
-                                                            topicRevisionsPresenter.renderXML(value1.value, value2.value, display.getHiddenAttachmentArea());
-                                                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                                        }
-                                                    },
-                                                    topicRevisionsPresenter.getDisplay(),
-                                                    true
-                                            );
-                                        }
-                                    },
-                                    topicRevisionsPresenter.getDisplay(),
-                                    true
-                            );
+                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml2),
+                                            new RESTCallBack<IntegerWrapper>() {
+                                                public void success(@NotNull final IntegerWrapper value2) {
+                                                    topicRevisionsPresenter.renderXML(value1.value, value2.value,
+                                                            display.getHiddenAttachmentArea());
+                                                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
+                                                }
+                                            }, topicRevisionsPresenter.getDisplay(), true);
+                                }
+                            }, topicRevisionsPresenter.getDisplay(), true);
                         }
                     };
 
@@ -2809,7 +2633,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /*
                 Set the initial XML from a template defined in a string constant.
              */
-             final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+            final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
                 @Override
                 public void success(@NotNull final RESTStringConstantV1 retValue) {
                     // Create the topic wrapper
@@ -2842,7 +2666,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID), callback, display);
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID), callback,
+                    display);
 
 
         } finally {
@@ -2865,7 +2691,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void success(@NotNull final RESTStringConstantV1 retValue) {
                     try {
-                        LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements() callback.doSuccessAction()");
+                        LOGGER.log(Level.INFO,
+                                "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements() callback.doSuccessAction()");
 
                         /* Get the list of locales from the StringConstant */
                         @NotNull final List<String> xmlElements = new LinkedList<String>(Arrays.asList(
@@ -2887,7 +2714,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID), callback, display);
+            failOverRESTCall.performRESTCall(
+                    FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
         }
@@ -2905,8 +2733,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             public void success(@NotNull final RESTStringConstantV1 retValue) {
 
                 /* Get the list of template string constant ids from the StringConstant */
-                final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
-                        retValue.getValue()).split(Constants.COMMA)));
+                final Set<String> xmlElements = new HashSet<String>(
+                        Arrays.asList(GWTUtilities.fixUpIdSearchString(retValue.getValue()).split(Constants.COMMA)));
                 final Map<String, String> data = new TreeMap<String, String>();
 
                 /* work around the inability to modify an int from an anonymous class */
@@ -2938,7 +2766,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback, waitDisplay);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(Integer.parseInt(id)), callback,
+                                waitDisplay);
                     } catch (@NotNull final NumberFormatException ex) {
                         // this should not happen if GWTUtilities.fixUpIdSearchString() does its job properly
                     }
@@ -2946,7 +2775,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID), callback, waitDisplay);
+        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID),
+                callback, waitDisplay);
     }
 
     /**
@@ -3008,8 +2838,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 });
                             }
 
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(
+                                    topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
                             }
@@ -3019,8 +2849,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(
+                                    topicXMLDisplay)) {
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
                             }
@@ -3048,8 +2878,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 });
                             }
 
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(
+                                    topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().show();
                             }
@@ -3060,10 +2890,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
-                                topicXMLDisplay.getPlainTextXMLDialog().setText(
-                                        currentTopicCallback.getCurrentlyEditedTopic().getXml());
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(
+                                    topicXMLDisplay)) {
+                                topicXMLDisplay.getPlainTextXMLDialog().setText(currentTopicCallback.getCurrentlyEditedTopic().getXml());
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().center();
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().show();
                             }
@@ -3073,8 +2902,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(
+                                    topicXMLDisplay)) {
                                 String selection = topicXMLDisplay.getEditor().getSelection();
                                 if (selection != null) {
                                     selection = selection.replaceAll("&", "&amp;");
@@ -3102,7 +2931,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param display         The main view
      */
     private void addKeyboardShortcutEvents(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
-                                           @NotNull final BaseTemplateViewInterface display) {
+            @NotNull final BaseTemplateViewInterface display) {
         topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
 
             @Override
@@ -3282,23 +3111,23 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void insertCspDetails(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
-                                  @NotNull final BaseTemplateViewInterface display) {
+            @NotNull final BaseTemplateViewInterface display) {
         @NotNull final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
 
             final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                        final StringBuilder details = new StringBuilder();
-                        for (@NotNull final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
-                            final RESTTopicV1 topic = topicCollectionItem.getItem();
-                            if (!details.toString().isEmpty()) {
-                                details.append("\n");
-                            }
-                            details.append(topic.getTitle() + " [" + topic.getId() + "]");
+                    final StringBuilder details = new StringBuilder();
+                    for (@NotNull final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
+                        final RESTTopicV1 topic = topicCollectionItem.getItem();
+                        if (!details.toString().isEmpty()) {
+                            details.append("\n");
                         }
+                        details.append(topic.getTitle() + " [" + topic.getId() + "]");
+                    }
 
-                        topicXMLDisplay.getEditor().insertText(details.toString());
+                    topicXMLDisplay.getEditor().insertText(details.toString());
 
                 }
 
@@ -3309,8 +3138,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
-                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids), callback, display);
+            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(
+                    Constants.QUERY_PATH_SEGMENT_PREFIX + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants
+                            .TOPIC_IDS_FILTER_VAR + "=" + ids),
+                    callback, display);
 
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
@@ -3331,32 +3162,42 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             Property ui elements
         */
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().titleEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_TITLE.getId());
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId());
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId());
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId());
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().descriptionEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_DESCRIPTION.getId());
-        setDataAttribute(topicViewPresenter.getDisplay().getEditor().localeEditor(), ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_LOCALE.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().titleEditor(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_TITLE.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicDetails(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_ENDPOINT.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicXML(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_REST_XML_ENDPOINT.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().getRestTopicWebDav(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_WEBDAV_URL.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().descriptionEditor(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_DESCRIPTION.getId());
+        setDataAttribute(topicViewPresenter.getDisplay().getEditor().localeEditor(),
+                ServiceConstants.HELP_TOPICS.TOPIC_PROPERTY_LOCALE.getId());
 
-        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId());
-        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId());
+        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenResultsPanel(),
+                ServiceConstants.HELP_TOPICS.TOPIC_AVAILABLE_EXTENDED_PROPERTIES.getId());
+        setDataAttribute(getTopicPropertyTagPresenter().getDisplay().getExistingChildrenResultsPanel(),
+                ServiceConstants.HELP_TOPICS.TOPIC_EXISTING_EXTENDED_PROPERTIES.getId());
 
         setDataAttribute(searchResultPresenter.getDisplay().getCreate(), ServiceConstants.HELP_TOPICS.TOPIC_CREATE_TOPIC.getId());
         setDataAttribute(searchResultPresenter.getDisplay().getBulkImport(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_IMPORT.getId());
         setDataAttribute(searchResultPresenter.getDisplay().getBulkOverwrite(), ServiceConstants.HELP_TOPICS.BULK_TOPIC_OVERWRITE.getId());
         setDataAttribute(searchResultPresenter.getDisplay().getAtomFeed(), ServiceConstants.HELP_TOPICS.TOPIC_ATOM_FEED.getId());
 
-        setDataAttribute(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(), ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getSearchResultsPanel(),
+                ServiceConstants.HELP_TOPICS.TOPIC_REVISION_TABLE.getId());
         setDataAttribute(topicRevisionsPresenter.getDisplay().getDone(), ServiceConstants.HELP_TOPICS.DIFF_DONE.getId());
         setDataAttribute(topicRevisionsPresenter.getDisplay().getCancel(), ServiceConstants.HELP_TOPICS.DIFF_CANCEL.getId());
         setDataAttribute(topicRevisionsPresenter.getDisplay().getHTMLDone(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_DONE.getId());
-        setDataAttribute(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(), ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId());
+        setDataAttribute(topicRevisionsPresenter.getDisplay().getHtmlOpenDiff(),
+                ServiceConstants.HELP_TOPICS.RENDERED_DIFF_NEW_WINDOW.getId());
         setDataAttribute(topicRevisionsPresenter.getDisplay().getDiffParent(), ServiceConstants.HELP_TOPICS.TOPIC_DIFF_PANE.getId());
     }
 
     /**
      * The revision that was used to generate the rendered diff
-      */
+     */
     private Integer getRenderedDiffRevision() {
         return renderedDiffRevision;
     }
@@ -3394,10 +3235,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
          * @param tagDisplay         The display that the callback is modifying
          */
-        public AddTagClickHandler(
-                @NotNull final ReturnCurrentTopic returnCurrentTopic,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
-                @NotNull final BindRemoveButtons bindRemoveButtons,
+        public AddTagClickHandler(@NotNull final ReturnCurrentTopic returnCurrentTopic,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode, @NotNull final BindRemoveButtons bindRemoveButtons,
                 @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
             this.tagDisplay = tagDisplay;
@@ -3532,11 +3371,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
          * @param tagDisplay         The display that the callback is modifying
          */
-        public DeleteTagClickHandler(
-                @NotNull final RESTTagCollectionItemV1 tag,
-                @NotNull final ReturnCurrentTopic returnCurrentTopic,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
-                @NotNull final BindRemoveButtons bindRemoveButtons,
+        public DeleteTagClickHandler(@NotNull final RESTTagCollectionItemV1 tag, @NotNull final ReturnCurrentTopic returnCurrentTopic,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode, @NotNull final BindRemoveButtons bindRemoveButtons,
                 @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
             this.tagDisplay = tagDisplay;
@@ -3561,7 +3397,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1,
+            RESTTopicCollectionItemV1> {
         @NotNull
         PushButton getSave();
 

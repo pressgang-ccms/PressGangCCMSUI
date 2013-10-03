@@ -42,6 +42,10 @@ public final class ServiceConstants {
      */
     public static final Integer CSP_TAG_ID = 268;
     /**
+     * The id of the tag applied to all revision history topics.
+     */
+    public static final Integer REVISION_HISTORY_TAG_ID = 598;
+    /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
      * (https://issues.jboss.org/browse/ERRAI-433).
      */
