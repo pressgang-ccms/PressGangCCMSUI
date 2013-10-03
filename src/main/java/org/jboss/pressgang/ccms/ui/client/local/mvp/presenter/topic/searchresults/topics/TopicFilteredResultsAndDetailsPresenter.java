@@ -372,8 +372,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     newTopic.explicitSetLocale(sourceTopic.getLocale());
                     newTopic.explicitSetXml(sourceTopic.getXml());
 
-
-
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
 
                         /*
