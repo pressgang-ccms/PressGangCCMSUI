@@ -379,7 +379,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         /*
                             This is a new topic.
                             Only set the title if something has been entered.
-                            If no title has been set, it may be extracted from the XML by the server.
+                            If no title has been set, it may be extracted from the XML by the server. See TopicV1Factory.syncDBEntityWithRESTEntityFirstPass();
                         */
                         if (!sourceTopic.getTitle().trim().isEmpty()) {
                             newTopic.explicitSetTitle(sourceTopic.getTitle());
@@ -455,10 +455,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                     } else {
 
+                        checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
+                                "There should be a selected collection item.");
+                        checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
+                                "The selected collection item to reference a valid entity.");
+
                         /*
                             This is an existing new topic.
                             Only set the title if something has been changed.
-                            If no title has been set, it may be extracted from the XML by the server.
+                            If no title has been set, it may be extracted from the XML by the server. See TopicV1Factory.syncDBEntityWithRESTEntityFirstPass();
                         */
                         final String existingTitle = getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getTitle();
                         if (!sourceTopic.getTitle().trim().equals(existingTitle)) {
