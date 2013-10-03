@@ -32,8 +32,7 @@ self.addEventListener('message', function (e) {
 				var tag = metadataMatch[1];
 
 				if (tags.indexOf(tag) != -1) {
-					var prefix = metadataMatch[1];
-					var start = metadataMatch.index + prefix.length;
+					var start = metadataMatch.index;
 					var end = start + tag.length;
 					tagDetails.push([start, end]);
 				}
