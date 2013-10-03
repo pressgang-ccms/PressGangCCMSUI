@@ -21,14 +21,14 @@ public class ServerDetails {
      */
     private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name());
 
-//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
+    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
-//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, LOCAL};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, LOCAL};
 
     /**
      * This is the list we work from, which may be modified through the config page.
