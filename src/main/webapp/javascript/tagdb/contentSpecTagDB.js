@@ -4,6 +4,10 @@
 
 var tags = null;
 
+var reverse = function (input) {
+	return input.split('').reverse().join('');
+};
+
 self.addEventListener('message', function (e) {
 	if (e.data.tagDB) {
 		var database = JSON.parse(e.data.tagDB);
@@ -52,7 +56,7 @@ self.addEventListener('message', function (e) {
 				}
 			}
 
-			// match anything that looks like a element metadata piece
+			// match anything that looks like element relationship metadata
 			var elementMetadataRE = /(\s*\[)(.+?)\s*:\s*/g;
 			var elementMatch = null;
 			while (elementMatch = elementMetadataRE.exec(line)) {
@@ -63,6 +67,37 @@ self.addEventListener('message', function (e) {
 					var start = elementMatch.index + prefix;
 					var end = start + element.length;
 					tagDetails.push([start, end]);
+				}
+			}
+
+			// match anything that looks like a element metadata
+
+			// find a block that encloses text in two unescaped square brackets.
+			// we need to reverse the string to work arond the fact that javascript does
+			// not have look behinds
+			var elementMetadataRE = /\](?!\\)(.*?)(\[(?!\\).*?$)/g;
+			var elementMatch = null;
+			while (elementMatch = elementMetadataRE.exec(reverse(line))) {
+				var block = elementMatch[1];
+				var prefix = elementMatch[2].length;
+
+				var keyValuePairs = block.split(/,(?!\\)/g);
+				keyValuePairs.reverse();
+
+				for (var index = 0, count = keyValuePairs.length; index < count; ++index) {
+					var keyAndValue = keyValuePairs[index].split(/=(?!\\)/g);
+					if (keyAndValue.length == 2) {
+
+						var key = keyAndValue[1].trim();
+
+						if (tags.indexOf(reverse(key)) != -1) {
+							var start = prefix;
+							var end = start + key.length;
+							tagDetails.push([start, end]);
+
+							prefix += keyValuePairs[index].length + 1;
+						}
+					}
 				}
 			}
 
