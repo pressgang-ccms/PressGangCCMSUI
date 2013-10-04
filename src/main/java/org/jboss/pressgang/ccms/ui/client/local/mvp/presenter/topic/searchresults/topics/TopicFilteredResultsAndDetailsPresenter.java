@@ -2675,6 +2675,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     true
                                             );
                                         }
+
+                                        @Override
+                                        public void failed() {
+                                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
+                                            Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                        }
                                     },
                                     topicRevisionsPresenter.getDisplay(),
                                     true
