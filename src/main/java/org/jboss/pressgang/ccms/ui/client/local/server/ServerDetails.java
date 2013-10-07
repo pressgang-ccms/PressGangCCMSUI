@@ -15,20 +15,25 @@ public class ServerDetails {
     /**
      * The development server in Brisbane.
      */
-    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(2, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+    private static final  ServerDetails PNQ_DEVELOPMENT = new  ServerDetails(2, "Pune Development", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+
+    /**
+     * The development server in Pune
+     */
+    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
     /**
      * A local server.
      */
     private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name());
 
-//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
+    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
-//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, LOCAL};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, PNQ_DEVELOPMENT, LOCAL};
 
     /**
      * This is the list we work from, which may be modified through the config page.
