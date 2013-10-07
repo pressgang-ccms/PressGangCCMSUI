@@ -21,6 +21,12 @@ public class ServerDetails {
      * The development server in Pune
      */
     private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+
+    /**
+     * The development server in Brisbane
+     */
+    private static final  ServerDetails BNE_DEVELOPMENT_ECS_CLOUD = new  ServerDetails(5, "Brisbane Development", "http://pressgang-dev-ecs.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+
     /**
      * A local server.
      */
@@ -33,7 +39,7 @@ public class ServerDetails {
      * A collection of all the available servers.
      */
 //    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, PNQ_DEVELOPMENT, LOCAL};
+    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, BNE_DEVELOPMENT_ECS_CLOUD, PNQ_DEVELOPMENT, LOCAL};
 
     /**
      * This is the list we work from, which may be modified through the config page.
