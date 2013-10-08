@@ -39,6 +39,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -504,7 +505,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                     FailOverRESTCallDatabase.saveTopic(
                             modifiedTopics.get(index),
                             PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
-                            new Integer(ServiceConstants.MINOR_CHANGE),
+                            new Integer(RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT),
                             ServiceConstants.NULL_USER_ID.toString()),
                     callback, getDisplay());
         } else {

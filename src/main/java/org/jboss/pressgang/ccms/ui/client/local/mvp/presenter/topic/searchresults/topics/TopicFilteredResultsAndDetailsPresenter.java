@@ -490,8 +490,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     message.append(user).append(": ");
                 }
                 message.append(display.getMessageLogDialog().getMessage().getText());
-                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE :
-                        ServiceConstants.MAJOR_CHANGE);
+                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
+                        .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
 
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(reviewUpdateTopic, message.toString(), flag,
                         ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
@@ -1932,11 +1932,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         if (overwrite) {
                             failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE,
+                                    FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
                                             ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         } else {
                             failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE,
+                                    FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
                                             ServiceConstants.NULL_USER_ID.toString()), callback, display);
                         }
                     } finally {
