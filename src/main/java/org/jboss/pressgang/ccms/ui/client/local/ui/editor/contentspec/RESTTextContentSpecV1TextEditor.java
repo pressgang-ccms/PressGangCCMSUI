@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
 
 public final class RESTTextContentSpecV1TextEditor extends SimplePanel implements Editor<RESTTextContentSpecV1> {
     /**
@@ -16,9 +17,12 @@ public final class RESTTextContentSpecV1TextEditor extends SimplePanel implement
      * that the AceEditor being constructed with true. After the 17th December 2012 the ACE
      * editor uses relative positioning, and the AceEditor needs to be constructed with false.
      */
-    public final AceEditor text = new AceEditor(false);
+    public final AceEditor text;
 
-    public RESTTextContentSpecV1TextEditor(final boolean readOnly) {
+    public RESTTextContentSpecV1TextEditor(final boolean readOnly, final TagDBLoader tagDBLoader) {
+
+        text = new AceEditor(false, null, null, null, tagDBLoader.getTagDB(), false, true);
+
         this.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TEXT_EDITOR.getId() + "");
 
         this.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_TEXT_VIEW_ACE_PANEL);

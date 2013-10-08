@@ -261,7 +261,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 updateDisplayWithNewEntityData(false);
 
                 if (overwroteChanges) {
-                                                /* Take the user to the revisions view so they can review any overwritten changes */
+                    /* Take the user to the revisions view so they can review any overwritten changes */
                     switchView(topicRevisionsPresenter.getDisplay());
                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
@@ -323,7 +323,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
                             : ServiceConstants.MAJOR_CHANGE);
 
-                            /* Sync any changes back to the underlying object */
+                    /* Sync any changes back to the underlying object */
                     flushChanges();
 
                      /*
@@ -336,9 +336,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     final RESTTopicV1 newTopic = new RESTTopicV1();
 
-                            /*
-                                Only assign those modified children to the topic that is to be added/updated
-                            */
+                    /*
+                        Only assign those modified children to the topic that is to be added/updated
+                    */
                     LOGGER.log(Level.INFO, "Copying modified collections");
                     if (sourceTopic.getProperties() != null && sourceTopic.getProperties().getItems() != null) {
                         newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
@@ -363,10 +363,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     newTopic.setId(sourceTopic.getId());
                     newTopic.explicitSetDescription(sourceTopic.getDescription());
                     newTopic.explicitSetLocale(sourceTopic.getLocale());
-                    newTopic.explicitSetTitle(sourceTopic.getTitle());
                     newTopic.explicitSetXml(sourceTopic.getXml());
 
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
+
+                        /*
+                            This is a new topic.
+                            Only set the title if something has been entered.
+                            If no title has been set, it may be extracted from the XML by the server. See TopicV1Factory.syncDBEntityWithRESTEntityFirstPass();
+                        */
+                        if (!sourceTopic.getTitle().trim().isEmpty()) {
+                            newTopic.explicitSetTitle(sourceTopic.getTitle());
+                        }
 
                         final RESTCallBack<RESTTopicV1> addCallback = new RESTCallBack<RESTTopicV1>() {
                             @Override
@@ -437,6 +445,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
                     } else {
+
+                        checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
+                                "There should be a selected collection item.");
+                        checkState(getSearchResultPresenter().getProviderData().getSelectedItem().getItem() != null,
+                                "The selected collection item to reference a valid entity.");
+
+                        /*
+                            This is an existing new topic.
+                            Only set the title if something has been changed.
+                            If no title has been set, it may be extracted from the XML by the server. See TopicV1Factory.syncDBEntityWithRESTEntityFirstPass();
+                        */
+                        final String existingTitle = getSearchResultPresenter().getProviderData().getSelectedItem().getItem().getTitle();
+                        if (!sourceTopic.getTitle().trim().equals(existingTitle)) {
+                            newTopic.explicitSetTitle(sourceTopic.getTitle());
+                        }
 
                         failOverRESTCall.performRESTCall(
                                 FailOverRESTCallDatabase.saveTopic(
@@ -2468,6 +2491,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     topicRevisionsPresenter.getDisplay(),
                                                     true
                                             );
+                                        }
+
+                                        @Override
+                                        public void failed() {
+                                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
+                                            Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                                         }
                                     },
                                     topicRevisionsPresenter.getDisplay(),
