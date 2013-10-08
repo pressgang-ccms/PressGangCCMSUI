@@ -1288,14 +1288,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private native void createWorkers() /*-{
 
-        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = new Worker("javascript/highlighters/age.js");
-        var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker;
-        var textEditorPresenter = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecFilteredResultsAndDetailsPresenter::contentSpecPresenter;
-        var textEditorDisplay = textEditorPresenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecPresenter::getDisplay()();
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = new Worker("javascript/highlighters/age.js");
+        var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker;
+        var textEditorPresenter = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::contentSpecPresenter;
+        var textEditorDisplay = textEditorPresenter.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter::getDisplay()();
         var lastText = null;
         var lastEditor = null;
 
@@ -1309,8 +1305,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     var cache = message.data;
 
-                    var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                        .ContentSpecPresenter.Display::getEditor()();
+                    var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
 
                     // The keys in this dictionary represent the css styles that are applied to the gutter
                     var highlights = {dayOld: [], weekOld: [], monthOld: [], yearOld: [], older: []};
@@ -1369,8 +1364,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     // recursilevly call the function until some text has changed
                     var checkText = function () {
                         // the editior may have changed if we saved the content spec
-                        var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                            .ContentSpecPresenter.Display::getEditor()();
+                        var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
                         var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                         if (!lastText || lastText != text || !lastEditor || lastEditor !== aceEditor) {
                             // some text has changed, so post it to the worker
@@ -1381,15 +1375,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             return;
                         } else {
                             // otherwise call this function again in a second
-                            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                                .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+                            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
                                 $wnd.setTimeout(checkText, 1000);
                         }
                     }
 
                     // in 1 second, run checktext to see if there were any changes to the text
-                    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                        .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+                    this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
                         $wnd.setTimeout(checkText, 1000);
                 }
             } catch (ex) {
@@ -1398,8 +1390,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         });
 
         var sendText = function () {
-            var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter
-                .Display::getEditor()();
+            var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
             if (aceEditor) {
                 var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 var json = JSON.stringify({event: "text", data: text});
@@ -1407,8 +1398,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 return;
             }
 
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
+            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
                 $wnd.setTimeout(sendText, 1000);
         }
 
@@ -1419,20 +1409,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * Terminate any web workers before moving off the page
      */
     private native void cleanUpWorkers() /*-{
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout) {
-            $wnd.clearTimeout(this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout);
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                .ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout = null;
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout) {
+            $wnd.clearTimeout(this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout);
+            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout = null;
         }
 
-        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-            .ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker != null) {
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                .ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker.terminate();
-            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec
-                .ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = null;
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker != null) {
+            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker.terminate();
+            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = null;
         }
     }-*/;
 
