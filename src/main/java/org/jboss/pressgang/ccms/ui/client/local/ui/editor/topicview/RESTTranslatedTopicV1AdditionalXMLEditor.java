@@ -25,7 +25,7 @@ public final class RESTTranslatedTopicV1AdditionalXMLEditor extends SimplePanel 
      */
     public RESTTranslatedTopicV1AdditionalXMLEditor(final boolean readOnly, final TypoJS positiveDictionary,
             final TypoJS negativeDictionary, final TypoJS negativePhraseDictionary, final TagDBLoader tagDBLoader) {
-        this.translatedAdditionalXML = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB());
+        this.translatedAdditionalXML = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB(), true, false);
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         translatedAdditionalXML.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
