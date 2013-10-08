@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1AdditionalXMLEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

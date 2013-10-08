@@ -46,6 +46,10 @@ public final class ServiceConstants {
      */
     public static final Integer REVISION_HISTORY_TAG_ID = 598;
     /**
+     * The id of the tag applied to all author group topics.
+     */
+    public static final Integer AUTHOR_GROUP_TAG_ID = 664;
+    /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
      * (https://issues.jboss.org/browse/ERRAI-433).
      */

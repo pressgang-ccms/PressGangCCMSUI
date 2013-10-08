@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RevisionNodeSort;
@@ -91,9 +92,11 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
                 .getDtdDoctype() + "\n" + xml;
 
         // If we are displaying a revision history topic then merge the revisions together
-        if (getDisplay().getMergeAdditionalXML().getValue() && EntityUtilities.topicHasTag(translatedTopic,
-                ServiceConstants.REVISION_HISTORY_TAG_ID)) {
+        final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
+        if (merge && EntityUtilities.topicHasTag(translatedTopic, ServiceConstants.REVISION_HISTORY_TAG_ID)) {
             xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
+        } else if (merge && EntityUtilities.topicHasTag(translatedTopic, ServiceConstants.AUTHOR_GROUP_TAG_ID)) {
+            xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
         } else {
             xml = processXML(xml);
         }
@@ -151,6 +154,33 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
                     } else {
                         prevNode = revisionNode;
                     }
+                }
+
+                return doc.toString();
+            }
+        }
+
+        return xml;
+    }
+
+    protected String processAuthorGroupXML(final String xml, final String additionalXml) {
+        final Document doc = XMLUtilities.convertStringToDocument(xml);
+        final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
+
+        if (doc != null && additionalDoc != null) {
+            processXML(doc);
+            processXML(additionalDoc);
+
+            final NodeList authorGroups = doc.getElementsByTagName("authorgroup");
+            final NodeList mergeAuthorGroups = additionalDoc.getElementsByTagName("authorgroup");
+            if (authorGroups.getLength() > 0 && mergeAuthorGroups.getLength() > 0) {
+                final Element authorGroup = (Element) authorGroups.item(0);
+                final Node mergeAuthorGroup = doc.importNode(mergeAuthorGroups.item(0), true);
+
+                // Move all the authors/editors/othercredits to the main doc
+                final NodeList mergeAuthorGroupChildren = mergeAuthorGroup.getChildNodes();
+                while (mergeAuthorGroupChildren.getLength() > 0) {
+                    authorGroup.appendChild(mergeAuthorGroupChildren.item(0));
                 }
 
                 return doc.toString();

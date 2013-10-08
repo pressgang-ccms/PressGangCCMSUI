@@ -802,6 +802,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         if (getDisplayedTopic() != null) {
             if (EntityUtilities.topicHasTag(topic, ServiceConstants.REVISION_HISTORY_TAG_ID)) {
                 return true;
+            } else if (EntityUtilities.topicHasTag(topic, ServiceConstants.AUTHOR_GROUP_TAG_ID)) {
+                return true;
             } else {
                 return false;
             }
