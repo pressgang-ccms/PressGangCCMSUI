@@ -28,15 +28,6 @@ public final class ServiceConstants {
      * Tag style property tag id
      */
     public static final int TAG_STYLE_PROPERTY_TAG = 36;
-
-    /**
-     * Used to indicate a minor change to an entity.
-     */
-    public static final byte MINOR_CHANGE = 0x01;
-    /**
-     * Used to indicate a major change to an entity.
-     */
-    public static final byte MAJOR_CHANGE = 0x02;
     /**
      * The id of the tag applied to all content specs.
      */

@@ -25,9 +25,9 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
@@ -173,7 +173,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 final Integer flag = object.getItem().getLogDetails().getFlag();
-                return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+                return (flag & RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT) == RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT;
             }
             return false;
         }
@@ -188,7 +188,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @Override
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
-                return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
+                return (object.getItem().getLogDetails().getFlag() & RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT) == RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT;
             }
             return false;
         }
