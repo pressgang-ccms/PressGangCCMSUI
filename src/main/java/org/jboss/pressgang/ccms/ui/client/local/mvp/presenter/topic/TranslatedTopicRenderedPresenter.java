@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.inject.Inject;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +16,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -86,10 +83,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
 
     public void displayTopicRendered(final RESTTranslatedTopicV1 translatedTopic, final boolean readOnly,
             final boolean showImages) {
-        String xml = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(translatedTopic.getXml()));
-
-        xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
-                .getDtdDoctype() + "\n" + xml;
+        String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
 
         // If we are displaying a revision history topic then merge the revisions together
         final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();

@@ -21,6 +21,7 @@ import com.google.gwt.xml.client.NodeList;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -31,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseTemplatePresenter {
+    private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
+    private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
+    private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<? ,?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
@@ -225,9 +229,8 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
                     }
                 }
 
-                final RegExp cdataRe = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
                 final Map<String, String> singleLineCData = new HashMap<String, String>();
-                for (MatchResult matcher = cdataRe.exec(line); matcher != null; matcher = cdataRe.exec(line)) {
+                for (MatchResult matcher = CDATA_RE.exec(line); matcher != null; matcher = CDATA_RE.exec(line)) {
                     int marker = singleLineCData.size();
                     while (line.indexOf("#CDATAPLACEHOLDER" + marker + "#") != -1) {
                         ++marker;
@@ -236,15 +239,13 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
                     singleLineCData.put("#CDATAPLACEHOLDER" + marker + "#", matcher.getGroup(0));
                 }
 
-
                 for (final String marker : singleLineCData.keySet()) {
                     fixedLine = fixedLine.replace(singleLineCData.get(marker), marker);
                 }
 
                 final Map<String, String> startHangingCData = new HashMap<String, String>();
                 if (!inCData) {
-                    final RegExp cdataStartHangingRe = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
-                    final MatchResult matcher = cdataStartHangingRe.exec(fixedLine);
+                    final MatchResult matcher = CDATA_START_HANGING_RE.exec(fixedLine);
                     if (matcher != null) {
                         int marker = startHangingCData.size();
                         while (fixedLine.indexOf("#CDATASTARTPLACEHOLDER" + marker + "#") != -1) {
@@ -262,8 +263,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
                 }
 
                 if (!lineIsOnlyCData) {
-                    final RegExp elementRe = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
-                    fixedLine = elementRe.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
+                    fixedLine = ELEMENT_RE.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
                 }
 
                 for (final String marker : endHangingCData.keySet()) {
@@ -284,5 +284,17 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         }
 
         return retValue.toString();
+    }
+
+    protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
+        String retValue = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
+
+        // If the root node is <authorgroup> then we need to wrap it in <book><bookinfo>...</bookinfo></book> for it to render.
+        if (retValue.matches("^\\s*<authorgroup(\\s|.)*")) {
+            retValue = "<book><bookinfo>" + retValue + "</bookinfo></book>";
+        }
+
+        return (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
+                .getDtdDoctype() + "\n" + retValue;
     }
 }

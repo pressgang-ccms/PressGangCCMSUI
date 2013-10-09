@@ -8,12 +8,9 @@ import javax.inject.Inject;
 import com.google.gwt.http.client.URL;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
 @Dependent
@@ -75,9 +72,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
     @Override
     public void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
-        String xml = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(topic.getXml()));
-        xml = (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
-                .getDtdDoctype() + "\n" + xml;
+        String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
 
         xml = processXML(xml);
 
