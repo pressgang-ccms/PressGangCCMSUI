@@ -1933,9 +1933,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         if (overwrite) {
                             newTopic.setId(overwriteFilenameAsInt(files.getItem(index).getName()));
                         } else {
+                            // Don't set the title so that it'll be picked up from the XML by the server.
                             newTopic.explicitSetTags(bulkImportTemplate.getTags());
                             newTopic.explicitSetLocale(defaultLocale);
-                            newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
                             newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                             /* save the original file name */
