@@ -10,12 +10,12 @@ define(
 		var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
 		// defines the language specific highlighters and folding rules
 		var MyNewHighlightRules = require("./csp_highlighter").HighlightRules;
-		//var MyNewFoldMode = require("./folding/csp_style").FoldMode;
+		var MyNewFoldMode = require("./folding/csp_style").FoldMode;
 		var Mode = function() {
 			// set everything up
 			var highlighter = new MyNewHighlightRules();
 			this.$outdent = new MatchingBraceOutdent();
-			//this.foldingRules = new MyNewFoldMode();
+			this.foldingRules = new MyNewFoldMode();
 			this.$tokenizer = new Tokenizer(highlighter.getRules());
 		};
 		oop.inherits(Mode, TextMode);
@@ -59,7 +59,7 @@ define(
 				}, {
 					// tokens that define metadata
 					token: "keyword",
-					regex: "CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Edition\\s*=|^Book Version\\s*=|^Pubsnumber\\s*=|^Product\\s*=|^Abstract\\s*=|^Description\\s*=|^Copyright Holder\\s*=|^Copyright Year\\s*=|^Version\\s*=|^Brand\\s*=|^Bug Links\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=|^BZKeywords\\s*=|^BZServer\\s*=|^BZURL\\s*=|^Type\\s*=|^Brand Logo\\s*=|^publican.cfg\\s*=|^Inline Injection\\s*=|^DTD\\s*=|^Revision History\\s*=|^Feedback\\s*=|^Legal Notice\\s*=|^BZ Assignee\\s*=|^GroupId\\s*=|^ArtifactId\\s*=|^Additional Files\\s*=|^Files\\s*=|^JIRAProject\\s*=|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*=|^JIRAServer\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Output Style\\s*=|^spaces\\s*=|^Debug\\s*=|^Author Group\\s*=|^Entities\\s*=|^[-A-Za-Z0-9]+-publican.cfg\\s*=|^Default publican.cfg\\s*="
+					regex: "CHECKSUM\\s*=|^ID\\s*=|^Title\\s*=|^Subtitle\\s*=|^Edition\\s*=|^Book Version\\s*=|^Pubsnumber\\s*=|^Product\\s*=|^Abstract\\s*=|^Description\\s*=|^Copyright Holder\\s*=|^Copyright Year\\s*=|^Version\\s*=|^Brand\\s*=|^Bug Links\\s*=|^BZProduct\\s*=|^BZComponent\\s*=|^BZVersion\\s*=|^BZKeywords\\s*=|^BZServer\\s*=|^BZURL\\s*=|^Type\\s*=|^Brand Logo\\s*=|^publican.cfg\\s*=|^Inline Injection\\s*=|^DTD\\s*=|^Revision History\\s*=|^Feedback\\s*=|^Legal Notice\\s*=|^BZ Assignee\\s*=|^GroupId\\s*=|^ArtifactId\\s*=|^Additional Files\\s*=|^Files\\s*=|^JIRAProject\\s*=|^JIRAComponent\\s*=|^JIRAVersion\\s*=|^JIRALabels\\s*=|^JIRAServer\\s*=|^BZPRODUCT\\s*=|^BZCOMPONENT\\s*=|^BZVERSION\\s*=|^BZURL\\s*=|^Output Style\\s*=|^spaces\\s*=|^Debug\\s*=|^Author Group\\s*=|^Entities\\s*=|^[-A-Za-z0-9]+-publican.cfg\\s*=|^Default publican.cfg\\s*="
 				}, {
 					// tokens that define structure
 					token: "constant.language",
@@ -97,13 +97,77 @@ define(
 		var FoldMode = exports.FoldMode = function() {};
 		oop.inherits(FoldMode, BaseFoldMode);
 		(function() {
-			// regular expressions that identify starting and stopping points
-			this.foldingStartMarker = //;
-			this.foldingStopMarker = //;
-			this.getFoldWidgetRange = function(session, foldStyle, row) {
-				var line = session.getLine(row);
-				// test each line, and return a range of segments to collapse
-			};
+            this.foldingStartMarker = /^((([\w\d-]+-)?publican.cfg|Entities)\s*=\s*\[|\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:))(?:.*$)/;
+            this.getFoldWidgetRange = function(session, foldStyle, row) {
+                var metaDataRe = /^\w[-\w\.\s]+=\s*\[.*$/;
+                var levelRe = /^\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:).*$/
+                var line = session.getLine(row);
+                if (line.match(metaDataRe)) {
+                    return this._getFoldMetaDataWidgetRange(session, foldStyle, row);
+                } else if (line.match(levelRe)) {
+                    return this._getFoldLevelWidgetRange(session, foldStyle, row);
+                } else {
+                    return;
+                }
+            };
+
+            this._getFoldMetaDataWidgetRange = function(session, foldStyle, row) {
+                var reNext = /^.*\[.*$/;
+                var endRe = /^.*?\]\s*$/;
+                var line = session.getLine(row);
+
+                var startColumn = line.indexOf('[') + 1;
+                var endColumn = startColumn;
+                var maxRow = session.getLength();
+                var startRow = row;
+                var endRow = row;
+
+                while (++row < maxRow) {
+                    line = session.getLine(row);
+                    if (reNext.test(line)) {
+                        break;
+                    } else if (endRe.test(line)) {
+                        endRow = row;
+                        endColumn = line.indexOf(']');
+                        break;
+                    }
+                }
+
+                if (endRow > startRow) {
+                    return new Range(startRow, startColumn, endRow, endColumn);
+                }
+            }
+
+            this._getFoldLevelWidgetRange = function(session, foldStyle, row) {
+                var commentRe = /^\s*(#.*)?$/;
+                var blankLineRe = /^\s*$/;
+                var spaceCountRe = /^\s*/;
+                var line = session.getLine(row);
+
+                var startColumn = line.length;
+                var maxRow = session.getLength();
+                var startRow = row;
+                var endRow = row;
+                var indentationCount = line.match(spaceCountRe)[0].length;
+
+                while (++row < maxRow) {
+                    line = session.getLine(row);
+                    var lineIndentationCount = line.match(spaceCountRe)[0].length;
+
+                    if (line.match(blankLineRe)) {
+                        continue;
+                    } else if (lineIndentationCount <= indentationCount && !line.match(commentRe)) {
+                        break;
+                    }
+
+                    endRow = row;
+                }
+
+                if (endRow > startRow) {
+                    var endColumn = session.getLine(endRow).length;
+                    return new Range(startRow, startColumn, endRow, endColumn);
+                }
+            }
 		}).call(FoldMode.prototype);
 });
 
