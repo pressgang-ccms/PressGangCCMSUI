@@ -289,8 +289,9 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
         String retValue = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
 
-        // If the root node is <authorgroup> then we need to wrap it in <book><bookinfo>...</bookinfo></book> for it to render.
-        if (retValue.matches("^\\s*<authorgroup(\\s|.)*")) {
+        // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in <book><bookinfo>...</bookinfo></book> for it to
+        // render.
+        if (retValue.matches("^\\s*<(authorgroup|legalnotice)(\\s|.)*")) {
             retValue = "<book><bookinfo>" + retValue + "</bookinfo></book>";
         }
 
