@@ -1011,6 +1011,9 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecPublicanCfg();
 
     @NotNull
+    String ContentSpecType();
+
+    @NotNull
     String FileID();
 
     @NotNull

@@ -31,6 +31,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     private Integer editedInLastXDays;
     @Nullable
     private Integer notEditedInLastXDays;
+    private Integer type;
     private String ids;
     private String title;
     private String subtitle;
@@ -70,6 +71,15 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
 
     public void setEditedInLastXDays(@Nullable final Integer editedInLastXDays) {
         this.editedInLastXDays = editedInLastXDays;
+    }
+
+    @Nullable
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(@Nullable final Integer type) {
+        this.type = type;
     }
 
     @Nullable
@@ -210,6 +220,10 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     }
 
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
+        if (getType() != null) {
+            filter.getFilterFields_OTM().addNewItem(
+                    createFilterField(CommonFilterConstants.CONTENT_SPEC_TYPE_FILTER_VAR, getType().toString()));
+        }
 
         if (!GWTUtilities.isStringNullOrEmpty(getIds())) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR, getIds()));
@@ -297,6 +311,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             editedBefore = null;
             editedInLastXDays = null;
             notEditedInLastXDays = null;
+            type = null;
             ids = "";
             title = "";
             subtitle = "";
@@ -341,6 +356,12 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                         setCopyrightYear(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR)) {
                         setPublicanCfg(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_TYPE_FILTER_VAR)) {
+                        try {
+                            setType(Integer.parseInt(fieldItem.getValue()));
+                        } catch (@NotNull final NumberFormatException ex) {
+                            // do nothing
+                        }
                     } else if (fieldItem.getName().equals(CommonFilterConstants.EDITED_IN_LAST_DAYS)) {
                         try {
                             setEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
@@ -418,6 +439,10 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         if (!GWTUtilities.isStringNullOrEmpty(publicanCfg)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR).append("=").append(
                     encodeQueryParameter(publicanCfg));
+        }
+        if (type != null) {
+            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_TYPE_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(type.toString()));
         }
         if (editedInLastXDays != null) {
             retValue.append(";").append(CommonFilterConstants.EDITED_IN_LAST_DAYS).append("=").append(

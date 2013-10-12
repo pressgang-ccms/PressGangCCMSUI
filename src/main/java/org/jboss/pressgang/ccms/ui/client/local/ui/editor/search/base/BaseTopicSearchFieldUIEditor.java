@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.SmallTriStatePushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.base.BaseTopicSearchUIFields;
@@ -141,6 +142,14 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         final Label hasXMLErrorsLabels = new Label(PressGangCCMSUI.INSTANCE.HasXMLErrors());
         this.setWidget(this.getRowCount(), 0, hasXMLErrorsLabels);
         this.setWidget(this.getRowCount() - 1, 1, hasXMLErrors);
+
+        for (int i = 0; i < getRowCount(); ++i) {
+            getCellFormatter().addStyleName(i, 0, CSSConstants.FieldEditor.FIELD_VIEW_LABEL_CELL);
+        }
+
+        for (int i = 0; i < getRowCount() - 1; ++i) {
+            getCellFormatter().addStyleName(i, 1, CSSConstants.FieldEditor.FIELD_VIEW_VALUE_CELL);
+        }
     }
 
     protected void addMatchFields() {

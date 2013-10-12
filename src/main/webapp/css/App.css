@@ -1142,3 +1142,13 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
     vertical-align: middle;
     padding-left: 1px;
 }
+
+.FieldViewValueCell>select {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+td.FieldViewLabelCell {
+    padding: 4px 0px;
+}
