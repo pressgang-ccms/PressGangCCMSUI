@@ -1952,7 +1952,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 if (title.isEmpty()) {
                                                     newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
                                                 } else {
-                                                    newTopic.explicitSetTitle(child.getFirstChild().getNodeValue());
+                                                    newTopic.explicitSetTitle(title);
                                                 }
                                             } else {
                                                 newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
