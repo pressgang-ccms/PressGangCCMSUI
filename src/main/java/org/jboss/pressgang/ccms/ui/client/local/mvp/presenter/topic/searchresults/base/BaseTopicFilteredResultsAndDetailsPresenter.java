@@ -290,7 +290,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private void bindRemarksSelection() {
         getTopicRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
-            public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
                 Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
                 getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
             }
@@ -298,8 +298,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
-            public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().getValue());
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
             }
         });
