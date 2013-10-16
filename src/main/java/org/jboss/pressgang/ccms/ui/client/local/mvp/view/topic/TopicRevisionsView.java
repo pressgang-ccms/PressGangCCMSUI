@@ -579,4 +579,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public SimpleLayoutPanel getDiffParent() {
         return diffParent;
     }
+
+
 }

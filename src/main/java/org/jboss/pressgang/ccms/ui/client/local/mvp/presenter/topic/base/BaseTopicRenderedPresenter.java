@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
@@ -25,6 +26,7 @@ import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
@@ -46,6 +48,8 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         FlexTable getLayoutPanel();
 
         ListBox getConditions();
+
+        CheckBox getRemarks();
     }
 
     @Inject
@@ -115,7 +119,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     /**
      * Remove any XML elements that don't match the supplied condition
      *
-     * @param xml       The XML to be parsed
+     * @param doc       The XML to be parsed
      * @param condition The condition to be met
      * @return The XML with the elements removed
      */
@@ -289,13 +293,27 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
         String retValue = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
 
-        // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in <book><bookinfo>...</bookinfo></book> for it to
-        // render.
+        // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in
+        // <book><bookinfo>...</bookinfo></book> for it to render.
         if (retValue.matches("^\\s*<(authorgroup|legalnotice)(\\s|.)*")) {
             retValue = "<book><bookinfo>" + retValue + "</bookinfo></book>";
         }
 
-        return (showImages ? Constants.DOCBOOK_XSL_REFERENCE : Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE) + "\n" + DocbookDTD
-                .getDtdDoctype() + "\n" + retValue;
+        String xsl = null;
+        if (showImages)  {
+            if (getDisplay().getRemarks().getValue()) {
+                xsl = Constants.DOCBOOK_REMARKS_XSL_REFERENCE;
+            } else {
+                xsl = Constants.DOCBOOK_XSL_REFERENCE;
+            }
+        } else {
+            if (getDisplay().getRemarks().getValue()) {
+                xsl = Constants.DOCBOOK_REMARKS_PLACEHOLDER_XSL_REFERENCE;
+            } else {
+                xsl = Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE;
+            }
+        }
+
+        return xsl + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue;
     }
 }

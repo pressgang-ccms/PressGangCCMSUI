@@ -1165,4 +1165,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CanNotDisplayRenderedDiff();
+
+    @NotNull
+    String EnableRemarks();
 }

@@ -23,6 +23,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
@@ -254,6 +256,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         buildHelpDatabase();
 
         bindConditionSelection();
+
+        bindRemarksSelection();
     }
 
     private void bindConditionSelection() {
@@ -278,6 +282,24 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
                 }
+                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+            }
+        });
+    }
+
+    private void bindRemarksSelection() {
+        getTopicRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
+                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+            }
+        });
+
+        getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
                 getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
             }
         });
@@ -484,6 +506,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             loadMainSplitResize(getMainResizePreferencesKey());
 
 
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
@@ -578,6 +601,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
             findAndDisplayConditions();
+
+            /* enable or disable the rendering of remarks */
+            final boolean remarksEnabled = Preferences.INSTANCE.getBoolean(Preferences.REMARKS_ENABLED + getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId(), false);
+            getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().setValue(remarksEnabled);
+            getTopicRenderedPresenter().getDisplay().getRemarks().setValue(remarksEnabled);
 
             postLoadAdditionalDisplayedItemData();
 

@@ -34,6 +34,7 @@ public class TranslatedTopicRenderedView extends BaseTemplateView implements Tra
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable layoutPanel = new FlexTable();
     private final ListBox conditions = new ListBox(false);
+    private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
     private final CheckBox mergeAdditionalXML = new CheckBox(PressGangCCMSUI.INSTANCE.MergeAdditionalXml());
     private int displayingRow = 2;
     private JavaScriptObject listener;
@@ -78,6 +79,7 @@ public class TranslatedTopicRenderedView extends BaseTemplateView implements Tra
         horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
         horizontalPanel.add(conditions);
+        horizontalPanel.add(remarks);
 
         layoutPanel.setWidget(0, 0, horizontalPanel);
 
@@ -221,5 +223,11 @@ public class TranslatedTopicRenderedView extends BaseTemplateView implements Tra
     @Override
     public CheckBox getMergeAdditionalXML() {
         return mergeAdditionalXML;
+    }
+
+    @Override
+    @NotNull
+    public CheckBox getRemarks() {
+        return remarks;
     }
 }

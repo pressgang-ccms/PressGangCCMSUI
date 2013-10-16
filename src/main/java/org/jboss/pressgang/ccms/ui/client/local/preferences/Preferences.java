@@ -125,6 +125,7 @@ final public class Preferences {
     public static final String EDITOR_FONT_SIZE = "EditorFontSize";
     public static final String EDITOR_FONT = "EditorFont";
     public static final String TOPIC_CONDITION = "TopicCondition";
+    public static final String REMARKS_ENABLED = "RemarksEnabled";
     public static final String LINE_WRAPPING = "LineWrapping";
     public static final String SHOW_HIDDEN_CHARACTERS = "ShowHiddenCharacters";
 

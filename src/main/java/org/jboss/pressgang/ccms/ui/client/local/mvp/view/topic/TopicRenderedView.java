@@ -28,6 +28,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable layoutPanel = new FlexTable();
     private final ListBox conditions = new ListBox(false);
+    private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
     private int displayingRow = 1;
     private JavaScriptObject listener;
 
@@ -71,6 +72,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
         horizontalPanel.add(conditions);
+        horizontalPanel.add(remarks);
 
         layoutPanel.setWidget(0, 0, horizontalPanel);
 
@@ -205,5 +207,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @NotNull
     public ListBox getConditions() {
         return conditions;
+    }
+
+    @Override
+    @NotNull
+    public CheckBox getRemarks() {
+        return remarks;
     }
 }
