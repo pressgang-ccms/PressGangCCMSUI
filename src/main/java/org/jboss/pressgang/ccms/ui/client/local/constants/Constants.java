@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201310170811";
+    public static final String VERSION = "201310170823";
 
     /**
      * The name of the DocBook title element
@@ -307,7 +307,7 @@ public final class Constants {
     /**
      * The reference to the XSL file with placeholder images and remarks, to be added to any XML being rendered by the browser
      */
-    public static final String DOCBOOK_REMARKS_PLACEHOLDER_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-remakrs-placeholder.xsl'?>";
+    public static final String DOCBOOK_REMARKS_PLACEHOLDER_XSL_REFERENCE = "<?xml-stylesheet type='text/xsl' href='/pressgang-ccms-static/publican-docbook/html-single-remarks-placeholder.xsl'?>";
     /**
      * The REST endpoint that echos previously submitted xml
      */
