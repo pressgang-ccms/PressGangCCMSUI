@@ -11,7 +11,16 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201310091540";
+    public static final String VERSION = "201310161358";
+
+    /**
+     * The name of the DocBook title element
+     */
+    public static final String DOCBOOK_TITLE_ELEMENT = "title";
+    /**
+     * The name of the DocBook section element
+     */
+    public static final String DOCBOOK_SECTION_ELEMENT = "section";
 
     /**
      * Time, in milliseonds, between messages that say the client could not access the REST server

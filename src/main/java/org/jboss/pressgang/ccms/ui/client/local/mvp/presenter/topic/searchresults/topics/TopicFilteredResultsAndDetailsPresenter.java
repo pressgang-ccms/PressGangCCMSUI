@@ -46,6 +46,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.xml.client.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -1933,6 +1934,41 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         if (overwrite) {
                             newTopic.setId(overwriteFilenameAsInt(files.getItem(index).getName()));
                         } else {
+                            // we want the title of the imported topic to match the title element if possible. otherwise
+                            // we set it to something generic so the file will be uploaded without the server retuning
+                            // an error saying it couldn't set the title.
+                            try {
+                                final Document topicDom = XMLParser.parse(result);
+                                final Element section = topicDom.getDocumentElement();
+
+                                if (Constants.DOCBOOK_SECTION_ELEMENT.equals(section.getNodeName())) {
+                                    final NodeList children = section.getChildNodes();
+
+                                    for (int childIndex = 0, childCount = children.getLength(); childIndex < childCount; ++childIndex) {
+                                        final Node child = children.item(childIndex);
+                                        if (child.getNodeType() == Node.ELEMENT_NODE) {
+                                            if (Constants.DOCBOOK_TITLE_ELEMENT.equals(child.getNodeName())) {
+                                                final String title = child.getFirstChild().getNodeValue().trim();
+                                                if (title.isEmpty()) {
+                                                    newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                                } else {
+                                                    newTopic.explicitSetTitle(child.getFirstChild().getNodeValue());
+                                                }
+                                            } else {
+                                                newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                            }
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                }
+
+                            } catch (DOMException e) {
+                                newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                            }
+
+
                             // Don't set the title so that it'll be picked up from the XML by the server.
                             newTopic.explicitSetTags(bulkImportTemplate.getTags());
                             newTopic.explicitSetLocale(defaultLocale);
@@ -1975,9 +2011,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         };
 
                         if (overwrite) {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display, true);
                         } else {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display);
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString()), callback, display, true);
                         }
                     } finally {
                         display.removeWaitOperation();

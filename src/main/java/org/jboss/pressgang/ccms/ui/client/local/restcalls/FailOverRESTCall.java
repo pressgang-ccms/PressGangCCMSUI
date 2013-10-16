@@ -175,8 +175,8 @@ public final class FailOverRESTCall {
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR || ex.getResponse()
-                                        .getStatusCode() == Response.SC_BAD_REQUEST) {
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR ||
+                                        ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                     if (!disableDefaultFailureAction) {
                                         final String prefix;
                                         if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
