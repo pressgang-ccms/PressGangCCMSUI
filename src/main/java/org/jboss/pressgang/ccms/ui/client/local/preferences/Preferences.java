@@ -128,6 +128,7 @@ final public class Preferences {
     public static final String REMARKS_ENABLED = "RemarksEnabled";
     public static final String LINE_WRAPPING = "LineWrapping";
     public static final String SHOW_HIDDEN_CHARACTERS = "ShowHiddenCharacters";
+    public static final String BEHAVIOURS = "Behaviours";
 
     /**
      * A singelton instance of this class.

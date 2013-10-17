@@ -75,13 +75,12 @@ public class TranslatedTopicRenderedView extends BaseTemplateView implements Tra
         this.getPanel().setWidget(layoutPanel);
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
 
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
-        horizontalPanel.add(conditions);
-        horizontalPanel.add(remarks);
+        final FlexTable renderingOptions = new FlexTable();
+        renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.Condition()));
+        renderingOptions.setWidget(0, 1, conditions);
+        renderingOptions.setWidget(1, 0, remarks);
 
-        layoutPanel.setWidget(0, 0, horizontalPanel);
+        layoutPanel.setWidget(0, 0, renderingOptions);
 
         layoutPanel.setWidget(1, 0, mergeAdditionalXML);
         mergeAdditionalXML.setValue(true);

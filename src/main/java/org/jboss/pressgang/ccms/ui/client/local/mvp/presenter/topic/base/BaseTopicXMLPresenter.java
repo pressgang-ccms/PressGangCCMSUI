@@ -190,10 +190,14 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
         final boolean hidden = Preferences.INSTANCE.getBoolean(Preferences.SHOW_HIDDEN_CHARACTERS, false);
         getDisplay().getEditor().setShowInvisibles(hidden);
         getDisplay().getEditorSettingsDialog().getShowInvisibles().setValue(hidden);
+
+        final boolean behaviours = Preferences.INSTANCE.getBoolean(Preferences.BEHAVIOURS, true);
+        getDisplay().getEditor().setBehavioursEnabled(behaviours);
+        getDisplay().getEditorSettingsDialog().getBehaviours().setValue(behaviours);
     }
 
     /**
-     * Respond to the split panel resizing by regetDisplay()ing the ACE editor component
+     * Respond to the split panel resizing by redisplaying the ACE editor component
      */
     private void bindSplitPanelResize() {
 
@@ -228,6 +232,14 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
      * Bind the button clicks for the ACE editor buttons
      */
     protected void bindEditorSettingsButtons() {
+        getDisplay().getEditorSettingsDialog().getBehaviours().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
+                getDisplay().getEditor().setBehavioursEnabled(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.BEHAVIOURS, event.getValue());
+            }
+        });
+
         getDisplay().getEditorSettingsDialog().getLineWrap().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {

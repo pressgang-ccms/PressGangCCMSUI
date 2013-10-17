@@ -429,6 +429,9 @@ public interface PressGangCCMSUI extends Constants {
     String LineWrap();
 
     @NotNull
+    String EnableBehaviours();
+
+    @NotNull
     String ShowHiddenCharacters();
 
     @NotNull
