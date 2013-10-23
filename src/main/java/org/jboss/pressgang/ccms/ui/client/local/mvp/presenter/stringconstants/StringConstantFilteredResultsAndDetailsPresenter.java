@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -246,6 +247,8 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
         } finally {
             LOGGER.log(Level.INFO, "EXIT StringConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
         }
+
+        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

@@ -781,6 +781,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         });
 
         buildHelpDatabase();
+
+        this.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     /**
@@ -1389,7 +1391,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 this.getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
             }
 
-            this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
+            this.getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postEnableAndDisableActionButtons()");
