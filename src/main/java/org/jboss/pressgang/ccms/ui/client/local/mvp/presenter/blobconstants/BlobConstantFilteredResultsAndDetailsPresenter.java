@@ -250,6 +250,7 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                     blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
 
             display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+            blobConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");

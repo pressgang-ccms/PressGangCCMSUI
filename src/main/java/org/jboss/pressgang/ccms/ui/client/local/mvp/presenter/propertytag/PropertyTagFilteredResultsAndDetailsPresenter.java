@@ -197,6 +197,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         );
 
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

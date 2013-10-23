@@ -249,6 +249,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
         }
 
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        stringConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

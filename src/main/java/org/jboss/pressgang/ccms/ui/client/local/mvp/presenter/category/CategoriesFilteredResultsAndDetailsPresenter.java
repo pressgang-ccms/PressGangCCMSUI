@@ -172,6 +172,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         bindExistingChildrenRowClick();
 
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

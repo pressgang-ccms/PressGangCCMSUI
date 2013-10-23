@@ -159,6 +159,7 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
 
         display.getSave().addClickHandler(saveClickHandler);
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        integerConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     private void doSearch(final boolean newWindow) {

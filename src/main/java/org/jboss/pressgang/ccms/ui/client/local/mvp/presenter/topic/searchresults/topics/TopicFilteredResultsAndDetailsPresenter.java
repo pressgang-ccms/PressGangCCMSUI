@@ -783,6 +783,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         buildHelpDatabase();
 
         this.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        searchResultPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        searchResultPresenter.getDisplay().getBulkImport().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     /**

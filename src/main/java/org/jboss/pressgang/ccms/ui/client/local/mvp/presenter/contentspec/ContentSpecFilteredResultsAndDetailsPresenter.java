@@ -897,6 +897,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         createWorkers();
 
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     /**
