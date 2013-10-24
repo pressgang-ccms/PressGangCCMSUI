@@ -948,7 +948,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         for (@NotNull final BaseCustomViewInterface view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
-                view.display(displayedTag, false);
+                view.display(displayedTag, ServerDetails.getSavedServer().isReadOnly());
             }
         }
 

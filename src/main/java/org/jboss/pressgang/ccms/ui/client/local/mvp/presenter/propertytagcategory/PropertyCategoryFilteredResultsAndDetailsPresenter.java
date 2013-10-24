@@ -270,7 +270,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
 
-                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
                         tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewEntity);
@@ -436,12 +436,12 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
         for (@NotNull final BaseCustomViewInterface<RESTPropertyCategoryV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
-                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
         }
 
         if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
         }
 
     }

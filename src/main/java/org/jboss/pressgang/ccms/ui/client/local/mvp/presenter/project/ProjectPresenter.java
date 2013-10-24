@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEdito
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -79,7 +80,7 @@ public class ProjectPresenter extends BaseTemplatePresenter {
         final RESTCallBack<RESTProjectV1> callback = new RESTCallBack<RESTProjectV1>() {
             @Override
             public void success(@NotNull final RESTProjectV1 retValue) {
-                display.display(retValue, false);
+                display.display(retValue, ServerDetails.getSavedServer().isReadOnly());
             }
         };
 

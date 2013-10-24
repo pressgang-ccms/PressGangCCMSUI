@@ -37,7 +37,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final TabLayoutPanel imageTemplateTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
 
-    private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
+    private final RESTLanguageImageCollectionV1Editor languageImages_OTM;
 
     @NotNull
     public TextArea descriptionEditor() {
@@ -49,7 +49,9 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         return languageImages_OTM;
     }
 
-    public RESTImageV1Editor() {
+    public RESTImageV1Editor(final boolean readOnly) {
+        languageImages_OTM = new RESTLanguageImageCollectionV1Editor(readOnly);
+
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_PARENT_DOCK_PANEL);
 
         xmlTemplate.setReadOnly(true);

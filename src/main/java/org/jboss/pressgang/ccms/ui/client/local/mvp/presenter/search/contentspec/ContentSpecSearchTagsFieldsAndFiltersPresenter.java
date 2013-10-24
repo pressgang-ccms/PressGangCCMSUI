@@ -91,7 +91,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants
                         .FILTER_CONTENT_SPEC);
 
-        fieldsComponent.getDisplay().display(filterItem.getItem(), false);
+        fieldsComponent.getDisplay().display(filterItem.getItem(), ServerDetails.getSavedServer().isReadOnly());
 
         bindSearchButtons();
         loadSearchTags();
@@ -136,8 +136,8 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, false, false);
-                fieldsComponent.getDisplay().display(displayedFilter, false);
+                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, ServerDetails.getSavedServer().isReadOnly(), false);
+                fieldsComponent.getDisplay().display(displayedFilter, ServerDetails.getSavedServer().isReadOnly());
             }
         };
 

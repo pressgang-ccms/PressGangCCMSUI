@@ -46,6 +46,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTranslatedTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -684,7 +685,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         }
         if (viewIsInFilter(filter, translatedTopicAdditionalXMLPresenter.getDisplay())) {
             LOGGER.log(Level.INFO, "\tSetting translated topic additional XML edit button state and redisplaying ACE editor");
-            translatedTopicAdditionalXMLPresenter.getDisplay().display(this.getDisplayedTopic(), false);
+            translatedTopicAdditionalXMLPresenter.getDisplay().display(this.getDisplayedTopic(), ServerDetails.getSavedServer().isReadOnly());
             translatedTopicAdditionalXMLPresenter.loadEditorSettings();
             translatedTopicAdditionalXMLPresenter.getDisplay().getEditor().redisplay();
         }

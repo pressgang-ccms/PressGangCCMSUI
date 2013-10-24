@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -64,7 +65,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(@NotNull final List<String> stringList) {
-                localePresenter.getDisplay().display(stringList, false);
+                localePresenter.getDisplay().display(stringList, ServerDetails.getSavedServer().isReadOnly());
             }
         }, getDisplay(), failOverRESTCall);
     }
@@ -81,7 +82,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
-                tagsPresenter.getDisplay().displayExtended(retValue, null, false, isShowBulkTags());
+                tagsPresenter.getDisplay().displayExtended(retValue, null, ServerDetails.getSavedServer().isReadOnly(), isShowBulkTags());
             }
         };
 

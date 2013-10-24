@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
@@ -22,7 +23,8 @@ public class ProjectTagView
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>             // The existing child types
         implements ProjectTagPresenter.Display {
 
-    @NotNull
+    private boolean readOnly = false;
+
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         @NotNull
@@ -34,7 +36,6 @@ public class ProjectTagView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         @NotNull
@@ -46,12 +47,12 @@ public class ProjectTagView
         }
     };
 
-    @NotNull
-    private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell button = new DisableableButtonCell();
+    private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(button) {
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
+            button.setEnabled(!readOnly);
             if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                 if (ComponentProjectV1.containsTag(getOriginalEntity(), object.getItem().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -59,7 +60,7 @@ public class ProjectTagView
                     return PressGangCCMSUI.INSTANCE.Add();
                 }
             }
-
+            button.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
@@ -89,6 +90,7 @@ public class ProjectTagView
 
     public void display(@NotNull final RESTProjectV1 entity, final boolean readOnly) {
         super.displayChildren(entity, readOnly);
+        this.readOnly = readOnly;
     }
 
     @NotNull

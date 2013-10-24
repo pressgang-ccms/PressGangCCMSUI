@@ -1394,7 +1394,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 this.getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
             }
 
-            this.getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
+            this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postEnableAndDisableActionButtons()");
@@ -1579,7 +1579,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onClick(@NotNull final ClickEvent event) {
                     if (!hasUnsavedChanges()) {
                         loadAllTags();
-                        display.getBulkImport().getTagsView().display(bulkImportTemplate, false);
+                        display.getBulkImport().getTagsView().display(bulkImportTemplate, ServerDetails.getSavedServer().isReadOnly());
                         bindBulkImportTagEditingButtons();
                         display.getBulkImport().getDialog().center();
                     } else {
@@ -2076,7 +2076,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected boolean isReadOnlyMode() {
-        return this.topicRevisionsPresenter.getDisplay().getRevisionTopic() != null;
+        return this.topicRevisionsPresenter.getDisplay().getRevisionTopic() != null || ServerDetails.getSavedServer().isReadOnly();
     }
 
     @Override

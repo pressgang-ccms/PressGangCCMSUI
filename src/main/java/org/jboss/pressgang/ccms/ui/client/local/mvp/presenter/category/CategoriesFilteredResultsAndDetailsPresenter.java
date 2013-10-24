@@ -271,13 +271,13 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
             /* We need to initialize the view so the cell table buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay())) {
-                categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
-                categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+                categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
 
             /* Initialize the properties view */
             if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-                categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.initializeViews()");

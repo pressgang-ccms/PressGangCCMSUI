@@ -383,7 +383,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
-                getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
+                getDisplay().getSave().setEnabled(!isReadOnlyMode());
             }
         };
 
@@ -391,7 +391,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
-                getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
+                getDisplay().getSave().setEnabled(!isReadOnlyMode());
             }
         };
 
@@ -1575,7 +1575,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
         }
 
-        getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
+        getDisplay().getSave().setEnabled(!isReadOnlyMode());
     }
 
     @Nullable
@@ -1598,7 +1598,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private boolean isReadOnlyMode() {
-        return this.contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null;
+        return this.contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null || ServerDetails.getSavedServer().isReadOnly();
     }
 
     /**

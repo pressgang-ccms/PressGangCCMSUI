@@ -27,6 +27,7 @@ public class TagCategoriesView
                 RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.Display {
 
+    boolean readOnly = false;
 
     @NotNull
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
@@ -53,12 +54,13 @@ public class TagCategoriesView
         }
     };
 
+    private final DisableableButtonCell button = new DisableableButtonCell();
     @NotNull
-    private final Column<RESTCategoryCollectionItemV1, String> buttonColumn = new Column<RESTCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final Column<RESTCategoryCollectionItemV1, String> buttonColumn = new Column<RESTCategoryCollectionItemV1, String>(button) {
         @NotNull
         @Override
         public String getValue(@NotNull final RESTCategoryCollectionItemV1 object) {
+            button.setEnabled(!readOnly);
             if (getOriginalEntity() != null) {
                 if (ComponentCategoryV1.containsTag(object.getItem(), getOriginalEntity().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -67,6 +69,7 @@ public class TagCategoriesView
                 }
             }
 
+            button.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
@@ -155,6 +158,7 @@ public class TagCategoriesView
     @Override
     public void display(@NotNull final RESTTagV1 originalEntity, final boolean readOnly) {
         super.displayChildren(originalEntity, readOnly);
+        this.readOnly = readOnly;
     }
 
     public TagCategoriesView() {

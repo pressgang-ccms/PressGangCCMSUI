@@ -76,17 +76,18 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         return uploadButton;
     }
 
-    public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
+    public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex, final boolean readOnly) {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
-        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
+        upload.setEnabled(!readOnly);
+        uploadButton.setEnabled(!readOnly);
+
+        final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);
         uploadPanel.add(this.uploadButton);
-
-        uploadButton.setEnabled(!ServerDetails.getSavedServer().isReadOnly());
 
         int row = 0;
         this.setWidget(row, 0, this.newFileLabel);

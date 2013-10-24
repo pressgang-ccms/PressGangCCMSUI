@@ -111,7 +111,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getLocalePresenter().bindExtended();
         getSearchFilterResultsAndFilterPresenter().bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        getFieldsPresenter().getDisplay().display(filterItem.getItem(), false);
+        getFieldsPresenter().getDisplay().display(filterItem.getItem(), ServerDetails.getSavedServer().isReadOnly());
 
         bindSearchButtons();
         loadSearchTags();
@@ -157,8 +157,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
                         .getProviderData().getDisplayedItem().getItem();
-                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, false, isShowBulkTags());
-                getFieldsPresenter().getDisplay().display(displayedFilter, false);
+                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, ServerDetails.getSavedServer().isReadOnly(), isShowBulkTags());
+                getFieldsPresenter().getDisplay().display(displayedFilter, ServerDetails.getSavedServer().isReadOnly());
             }
         };
 

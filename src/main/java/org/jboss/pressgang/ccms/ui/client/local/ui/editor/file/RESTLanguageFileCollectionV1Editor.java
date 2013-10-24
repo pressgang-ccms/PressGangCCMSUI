@@ -32,8 +32,7 @@ public final class RESTLanguageFileCollectionV1Editor extends TabLayoutPanel imp
         @NotNull
         @Override
         public RESTLanguageFileV1Editor create(final int index) {
-            @NotNull final RESTLanguageFileV1Editor editor = new RESTLanguageFileV1Editor(RESTLanguageFileCollectionV1Editor.this,
-                    index);
+            final RESTLanguageFileV1Editor editor = new RESTLanguageFileV1Editor(RESTLanguageFileCollectionV1Editor.this, index);
             add(editor, PressGangCCMSUI.INSTANCE.FilePlaceholder());
             return editor;
         }

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
 
-    private RESTImageV1Editor editor = new RESTImageV1Editor();
+    private RESTImageV1Editor editor;
     private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
 
     private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
@@ -147,7 +147,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 
     @Override
     public void display(final RESTImageV1 image, final boolean readOnly) {
-
+        editor = new RESTImageV1Editor(readOnly);
     }
 
     @Override

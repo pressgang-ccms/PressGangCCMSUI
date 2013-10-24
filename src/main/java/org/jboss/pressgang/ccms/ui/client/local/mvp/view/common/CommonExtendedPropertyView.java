@@ -82,6 +82,7 @@ public class CommonExtendedPropertyView extends BaseExtendedChildrenView<
                 return PressGangCCMSUI.INSTANCE.Remove();
             }
 
+            removeButtonCell.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
