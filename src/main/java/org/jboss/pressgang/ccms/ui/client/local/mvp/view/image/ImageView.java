@@ -159,6 +159,8 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
             throw new IllegalArgumentException("locales cannot be null");
         }
 
+        editor.setReadOnly(readOnly);
+
         /* SearchUIProjectsEditor is a grid */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

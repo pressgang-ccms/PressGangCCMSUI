@@ -203,6 +203,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
         populateLocales();
         buildHelpDatabase();
+
+        imageComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        imageComponent.getDisplay().getAddLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        imageComponent.getDisplay().getRemoveLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     private void buildHelpDatabase() {
