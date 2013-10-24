@@ -130,6 +130,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         // Set a blank filter as the current displayed item
         getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
                 .getProviderData().setDisplayedItem(filterItem);
+
+        getDisplay().getApplyBulkTags().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

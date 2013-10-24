@@ -55,6 +55,8 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         name.addStyleName(CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_NAME_FIELD);
 
         name.setReadOnly(readOnly);
+        upload.setEnabled(!readOnly);
+        uploadButton.setEnabled(!readOnly);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
         this.setWidget(0, 0, idLabel);

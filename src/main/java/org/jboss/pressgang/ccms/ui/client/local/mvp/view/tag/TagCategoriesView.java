@@ -103,11 +103,11 @@ public class TagCategoriesView
     final DisableableButtonCell up = new DisableableButtonCell();
 
     @NotNull
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            up) {
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(up) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            up.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
@@ -116,11 +116,11 @@ public class TagCategoriesView
     final DisableableButtonCell down = new DisableableButtonCell();
 
     @NotNull
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            down) {
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(down) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            down.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };

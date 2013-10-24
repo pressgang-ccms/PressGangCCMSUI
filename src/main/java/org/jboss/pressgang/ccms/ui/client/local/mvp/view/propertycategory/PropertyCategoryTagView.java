@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
@@ -28,7 +29,8 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>          // The existing children types
         implements PropertyCategoryTagPresenter.Display {
 
-    @NotNull
+    private boolean readOnly = false;
+
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
@@ -41,7 +43,6 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         }
     };
 
-    @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
@@ -72,17 +73,17 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         return tagsNameColumn;
     }
 
+    private final DisableableButtonCell button = new DisableableButtonCell();
     /**
      * The column used to render the property tag category's add/remove button.
      */
-    @NotNull
-    private final Column<RESTPropertyTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyTagCollectionItemV1, String>(new ButtonCell()) {
+    private final Column<RESTPropertyTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyTagCollectionItemV1, String>(button) {
         @NotNull
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");
             checkArgument(object == null || (object.getItem() != null && object.getItem().getId() != null), "object should be null or it should have a valid item and the item should have a valid id");
-
+            button.setEnabled(!readOnly);
             if (object != null) {
                 if (ComponentPropertyCategoryV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -90,7 +91,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
                     return PressGangCCMSUI.INSTANCE.Add();
                 }
             }
-
+            button.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
@@ -121,6 +122,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
 
     public void display(@NotNull final RESTPropertyCategoryV1 entity, final boolean readOnly) {
         super.displayChildren(entity, readOnly);
+        this.readOnly = readOnly;
     }
 
 

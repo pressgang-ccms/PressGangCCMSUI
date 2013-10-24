@@ -52,7 +52,6 @@ public class CategoryTagView
         }
     };
 
-    @NotNull
     private final DisableableButtonCell button = new DisableableButtonCell();
     private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(button) {
         @NotNull
@@ -71,7 +70,6 @@ public class CategoryTagView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         @NotNull
@@ -84,7 +82,6 @@ public class CategoryTagView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         @NotNull
@@ -96,20 +93,22 @@ public class CategoryTagView
         }
     };
 
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell up = new DisableableButtonCell();
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(up) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            up.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell down = new DisableableButtonCell();
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(down) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            down.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };
