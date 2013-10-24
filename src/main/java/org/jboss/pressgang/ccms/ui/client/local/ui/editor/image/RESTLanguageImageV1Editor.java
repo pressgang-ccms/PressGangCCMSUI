@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageColle
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,8 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);
         uploadPanel.add(this.uploadButton);
+
+        uploadButton.setEnabled(!ServerDetails.getSavedServer().isReadOnly());
 
         int row = 0;
         this.setWidget(row, 0, this.newFileLabel);

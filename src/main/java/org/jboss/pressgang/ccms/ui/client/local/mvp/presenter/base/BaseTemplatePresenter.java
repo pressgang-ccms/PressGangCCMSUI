@@ -468,6 +468,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 enableHelpOverlay();
             };
         });
+
+        display.getTopShortcutView().getCreateContentSpec().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        display.getTopShortcutView().getCreateTopic().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     private native void enableHelpOverlay() /*-{

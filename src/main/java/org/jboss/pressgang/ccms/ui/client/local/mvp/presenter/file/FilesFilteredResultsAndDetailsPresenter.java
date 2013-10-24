@@ -208,6 +208,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         fileComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

@@ -383,7 +383,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
-                getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
             }
         };
 
@@ -391,7 +391,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
-                getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
             }
         };
 
@@ -1575,7 +1575,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
         }
 
-        getDisplay().getSave().setEnabled(!isReadOnlyMode());
+        getDisplay().getSave().setEnabled(!isReadOnlyMode() && !ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Nullable
