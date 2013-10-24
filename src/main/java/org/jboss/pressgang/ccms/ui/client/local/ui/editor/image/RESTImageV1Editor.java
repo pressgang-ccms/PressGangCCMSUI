@@ -12,11 +12,15 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 
 public final class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
+
+    private boolean readOnly = false;
+
     private RESTImageV1 value;
 
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ImageID());
 
     private final SimpleIntegerLabel id = new SimpleIntegerLabel();
+
     private final TextArea description = new TextArea();
 
     private final Label docbookFileName = new Label();
@@ -37,7 +41,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final TabLayoutPanel imageTemplateTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
 
-    private final RESTLanguageImageCollectionV1Editor languageImages_OTM;
+    private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
 
     @NotNull
     public TextArea descriptionEditor() {
@@ -49,9 +53,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         return languageImages_OTM;
     }
 
-    public RESTImageV1Editor(final boolean readOnly) {
-        languageImages_OTM = new RESTLanguageImageCollectionV1Editor(readOnly);
-
+    public RESTImageV1Editor() {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_PARENT_DOCK_PANEL);
 
         xmlTemplate.setReadOnly(true);
@@ -103,7 +105,6 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     @Override
     public void onPropertyChange(@NotNull final String... paths) {
 
-
     }
 
     @Override
@@ -151,5 +152,15 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     @Ignore
     public RESTLanguageImageCollectionV1Editor getLanguageImages_OTM() {
         return languageImages_OTM;
+    }
+
+    @Ignore
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(final boolean readOnly) {
+        this.readOnly = readOnly;
+        languageImages_OTM.setReadOnly(readOnly);
     }
 }

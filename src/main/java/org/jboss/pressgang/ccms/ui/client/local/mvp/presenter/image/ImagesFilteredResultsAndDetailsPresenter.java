@@ -196,17 +196,13 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             }
         };
 
+        LOGGER.info("super.bindSearchAndEdit()");
         super.bindSearchAndEdit(Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(),
                 imageFilteredResultsComponent.getDisplay(), imageFilteredResultsComponent, display, display, getNewEntityCallback);
+        LOGGER.info("super.bindSearchAndEditCompleted()");
 
         populateLocales();
         buildHelpDatabase();
-
-        imageComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getAddLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getRemoveLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     private void buildHelpDatabase() {

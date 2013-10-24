@@ -24,7 +24,16 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
     private final ListEditor<RESTLanguageImageCollectionItemV1, RESTLanguageImageV1Editor> items = ListEditor
             .of(new LanguageImageEditorSource());
 
-    private final boolean readOnly;
+    private boolean readOnly;
+
+    @Ignore
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(final boolean readOnly) {
+        this.readOnly = readOnly;
+    }
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor.
@@ -35,8 +44,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
         @NotNull
         @Override
         public RESTLanguageImageV1Editor create(final int index) {
-            @NotNull final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(
-                    RESTLanguageImageCollectionV1Editor.this, index, RESTLanguageImageCollectionV1Editor.this.readOnly);
+            final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this, index);
             add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
             return editor;
         }
@@ -57,9 +65,8 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
         return items;
     }
 
-    public RESTLanguageImageCollectionV1Editor(final boolean readOnly) {
+    public RESTLanguageImageCollectionV1Editor() {
         super(Constants.TAB_PANEL_HEIGHT, Unit.EM);
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB_PANEL);
-        this.readOnly = readOnly;
     }
 }

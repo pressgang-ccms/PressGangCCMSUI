@@ -54,6 +54,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private static final int BUTTON_PANEL_HEIGHT = 44;
 
+    private boolean readOnly = false;
 
     /**
      * Holds the mergely elements and the ok/cancel buttons
@@ -345,8 +346,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         LOGGER.info("ENTER TopicRevisionsView()");
 
-
-
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
         results.addColumn(htmlDiffButton, PressGangCCMSUI.INSTANCE.HTMLDiff());
@@ -460,6 +459,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public void display(@NotNull final RESTTopicV1 topic, final boolean readOnly) {
         this.mainTopic = topic;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -482,13 +482,15 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public void displayDiff(@NotNull final String lhs, boolean rhsReadOnly, @NotNull final String rhs) {
         diffParent.setWidget(null);
 
-        mergely = new Mergely(lhs, true, rhs, rhsReadOnly, true, Constants.XML_MIME_TYPE, false);
+        mergely = new Mergely(lhs, true, rhs, rhsReadOnly || readOnly, true, Constants.XML_MIME_TYPE, false);
         mergely.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF);
 
         diffParent.setWidget(mergely);
         this.getPanel().setWidget(diffPanel);
 
         isDisplayingRevisions = false;
+
+        done.setEnabled(!readOnly);
     }
 
     public void displayHtmlDiff(@NotNull final String htmlDiff) {

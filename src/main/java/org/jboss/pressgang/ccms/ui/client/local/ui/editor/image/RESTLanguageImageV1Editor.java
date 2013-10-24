@@ -34,7 +34,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
      * the index that this editor is assigned to. See http://stackoverflow.com/questions/10463782/adding-list
      * -sub-editors-to-tab-panel for an explanation. This is the reference to the tab panel
      */
-    private final TabLayoutPanel parentPanel;
+    private final RESTLanguageImageCollectionV1Editor parentPanel;
 
     /**
      * This is a reference to the tab index
@@ -76,14 +76,14 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         return uploadButton;
     }
 
-    public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex, final boolean readOnly) {
+    public RESTLanguageImageV1Editor(final RESTLanguageImageCollectionV1Editor parentPanel, final int parentIndex) {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
-        upload.setEnabled(!readOnly);
-        uploadButton.setEnabled(!readOnly);
+        upload.setEnabled(!parentPanel.isReadOnly());
+        uploadButton.setEnabled(!parentPanel.isReadOnly());
 
         final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);

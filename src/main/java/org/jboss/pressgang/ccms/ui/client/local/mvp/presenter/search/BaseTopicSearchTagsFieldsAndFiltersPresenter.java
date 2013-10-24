@@ -131,13 +131,17 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
                 .getProviderData().setDisplayedItem(filterItem);
 
-        getDisplay().getApplyBulkTags().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+
     }
 
     @Override
     public void bindExtended() {
         super.bindExtended();
         buildHelpDatabase();
+
+        getDisplay().getApplyBulkTags().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -297,7 +301,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             }
         };
 
-        @NotNull final ClickHandler saveCancelHandler = new ClickHandler() {
+        final ClickHandler saveCancelHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 saveFilterDialog.getDialogBox().hide();
