@@ -147,7 +147,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 
     @Override
     public void display(final RESTImageV1 image, final boolean readOnly) {
-
+        editor.setReadOnly(readOnly);
     }
 
     @Override
@@ -158,6 +158,8 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         if (locales == null) {
             throw new IllegalArgumentException("locales cannot be null");
         }
+
+        editor.setReadOnly(readOnly);
 
         /* SearchUIProjectsEditor is a grid */
         driver.initialize(editor);

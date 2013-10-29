@@ -67,7 +67,7 @@ public final class RESTLanguageFileV1Editor extends FlexTable implements ValueAw
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
-        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
+        final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);
         uploadPanel.add(this.uploadButton);
 

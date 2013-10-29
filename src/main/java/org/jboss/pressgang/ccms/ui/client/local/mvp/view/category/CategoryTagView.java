@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
@@ -24,6 +25,8 @@ public class CategoryTagView
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
         RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements CategoryTagPresenter.Display {
+
+    private boolean readOnly = false;
 
     @NotNull
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
@@ -49,12 +52,12 @@ public class CategoryTagView
         }
     };
 
-    @NotNull
-    private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell button = new DisableableButtonCell();
+    private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(button) {
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
+            button.setEnabled(!readOnly);
             if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                 if (ComponentCategoryV1.containsTag(getOriginalEntity(), object.getItem().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -62,12 +65,11 @@ public class CategoryTagView
                     return PressGangCCMSUI.INSTANCE.Add();
                 }
             }
-
+            button.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         @NotNull
@@ -80,7 +82,6 @@ public class CategoryTagView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         @NotNull
@@ -92,20 +93,22 @@ public class CategoryTagView
         }
     };
 
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell up = new DisableableButtonCell();
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(up) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            up.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
-    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final DisableableButtonCell down = new DisableableButtonCell();
+    private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(down) {
         @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            down.setEnabled(!readOnly);
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };
@@ -119,6 +122,7 @@ public class CategoryTagView
     @Override
     public void display(@NotNull final RESTCategoryV1 originalEntity, final boolean readOnly) {
         super.displayChildren(originalEntity, readOnly);
+        this.readOnly = readOnly;
     }
 
     public CategoryTagView() {

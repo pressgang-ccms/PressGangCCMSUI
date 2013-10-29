@@ -11,43 +11,45 @@ public class ServerDetails {
     /**
      * The production server in Brisbane.
      */
-    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://skynet.usersys.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production.name());
+    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production.name(), false);
+
+    /**
+     * The production server in Brisbane.
+     */
+    private static final  ServerDetails PNQ_RO_BACKUP = new  ServerDetails(1, "Pune Read Only Backup", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Read_Only_Backup.name(), true);
+
     /**
      * The development server in Brisbane.
      */
-    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(2, "Brisbane Development", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name());
+    private static final  ServerDetails PNQ_DEVELOPMENT = new  ServerDetails(2, "Pune Development", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+
+    /**
+     * The development server in Pune
+     */
+    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+
+    /**
+     * The development server in Brisbane
+     */
+    private static final  ServerDetails BNE_DEVELOPMENT_ECS_CLOUD = new  ServerDetails(5, "Brisbane Development ECS Cloud", "http://pressgang-dev-ecs.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+
     /**
      * A local server.
      */
-    private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name());
+    private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name(), false);
 
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST1 = new  ServerDetails(4, "HA Test Server 1", "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST2 = new  ServerDetails(5, "HA Test Server 2", "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-2.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST3 = new  ServerDetails(6, "HA Test Server 3", "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms", null, "http://ecs-cloud-pg-test-3.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    /**
-     * A HA test server.
-     */
-    private static final  ServerDetails HATEST4 = new  ServerDetails(7, "HA Test Server 4", "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms", null, "http://local-pg-test-1.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.High_Availability_Test.name());
-
-    //private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
+    private static final  ServerDetails DEFAULT_OVERRIDE = LOCAL;
+//    private static final  ServerDetails DEFAULT_OVERRIDE = PNQ_RO_BACKUP;
+//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
+//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
 
     /**
      * A collection of all the available servers.
      */
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION/*, BNE_DEVELOPMENT, LOCAL, HATEST1, HATEST2, HATEST3, HATEST4*/};
+    public static final ServerDetails[] DEFAULT_SERVERS = {LOCAL};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {PNQ_RO_BACKUP};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
+//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT, BNE_DEVELOPMENT_ECS_CLOUD, PNQ_DEVELOPMENT, LOCAL};
 
     /**
      * This is the list we work from, which may be modified through the config page.
@@ -84,6 +86,7 @@ public class ServerDetails {
     private final String reportUrl;
     private final String monitoringUrl;
     private final String serverType;
+    private final boolean readOnly;
 
     /**
      * Define the server urls.
@@ -94,13 +97,14 @@ public class ServerDetails {
      */
     public ServerDetails(final int id, @NotNull final String name, @NotNull final String restUrl,
                          @NotNull final String reportUrl, @NotNull final String monitoringUrl,
-                         @NotNull final String serverType) {
+                         @NotNull final String serverType, final boolean readOnly) {
         this.id = id;
         this.name = name;
         this.restUrl = restUrl;
         this.reportUrl = reportUrl;
         this.monitoringUrl = monitoringUrl;
         this.serverType = serverType;
+        this.readOnly = readOnly;
     }
 
     /**
@@ -159,5 +163,13 @@ public class ServerDetails {
     @NotNull
     public String getName() {
         return name;
+    }
+
+    /**
+     *
+     * @return Whether the server is readonly or not.
+     */
+    public boolean isReadOnly() {
+        return readOnly;
     }
 }

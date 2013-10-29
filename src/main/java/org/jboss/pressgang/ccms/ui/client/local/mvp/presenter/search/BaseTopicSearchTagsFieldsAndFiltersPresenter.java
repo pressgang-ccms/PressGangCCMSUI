@@ -39,6 +39,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -96,6 +97,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
     @Override
     public void go(@NotNull final HasWidgets container) {
+        final RESTFilterCollectionItemV1 filterItem = new RESTFilterCollectionItemV1();
+        filterItem.setItem(new RESTFilterV1());
 
         clearContainerAndAddTopLevelPanel(container, getDisplay());
 
@@ -108,7 +111,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getLocalePresenter().bindExtended();
         getSearchFilterResultsAndFilterPresenter().bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        getFieldsPresenter().getDisplay().display(null, false);
+        getFieldsPresenter().getDisplay().display(filterItem.getItem(), ServerDetails.getSavedServer().isReadOnly());
 
         bindSearchButtons();
         loadSearchTags();
@@ -123,12 +126,22 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         }
 
         displayTags();
+
+        // Set a blank filter as the current displayed item
+        getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
+                .getProviderData().setDisplayedItem(filterItem);
+
+
     }
 
     @Override
     public void bindExtended() {
         super.bindExtended();
         buildHelpDatabase();
+
+        getDisplay().getApplyBulkTags().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -150,8 +163,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
                         .getProviderData().getDisplayedItem().getItem();
-                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, false, isShowBulkTags());
-                getFieldsPresenter().getDisplay().display(displayedFilter, false);
+                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, ServerDetails.getSavedServer().isReadOnly(), isShowBulkTags());
+                getFieldsPresenter().getDisplay().display(displayedFilter, ServerDetails.getSavedServer().isReadOnly());
             }
         };
 
@@ -175,28 +188,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         */
         final RESTFilterV1 filter = new RESTFilterV1();
 
-        final ClickHandler createFilter = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                try {
-                    LOGGER.log(Level.INFO, "ENTER TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
-
-                    /* Setting the ID to null indicates that this is a new filter */
-                    filter.setId(null);
-                    /* The collections are new for a new filter */
-                    filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
-                    filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
-                    filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
-                    filter.explicitSetType(RESTFilterTypeV1.TOPIC);
-
-                    saveFilterDialog.getDialogBox().show();
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT TopicSearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
-                }
-            }
-        };
-
-        final ClickHandler overwriteFilter = new ClickHandler() {
+        final ClickHandler saveFilter = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -213,6 +205,11 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 /* Setting the id to the value of the displayed filter is the indication that this is an updated filter */
                 filter.setId(displayedFilter.getId());
+
+                // If the displayed filter has no id, it's new so set the type
+                if (displayedFilter.getId() == null) {
+                    filter.explicitSetType(RESTFilterTypeV1.TOPIC);
+                }
 
                 /* An overwritten filter will delete any existing children before adding new ones */
                 filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
@@ -304,7 +301,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             }
         };
 
-        @NotNull final ClickHandler saveCancelHandler = new ClickHandler() {
+        final ClickHandler saveCancelHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 saveFilterDialog.getDialogBox().hide();
@@ -313,8 +310,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
         getSearchFilterResultsAndFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHandler);
         getSearchFilterResultsAndFilterPresenter().getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().addClickHandler(overwriteFilter);
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().addClickHandler(createFilter);
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().addClickHandler(saveFilter);
+        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().addClickHandler(saveFilter);
         saveFilterDialog.getOk().addClickHandler(saveOKHandler);
         saveFilterDialog.getCancel().addClickHandler(saveCancelHandler);
     }
@@ -514,7 +511,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                     FailOverRESTCallDatabase.saveTopic(
                             modifiedTopics.get(index),
                             PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
-                            new Integer(ServiceConstants.MINOR_CHANGE),
+                            new Integer(RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT),
                             ServiceConstants.NULL_USER_ID.toString()),
                     callback, getDisplay());
         } else {

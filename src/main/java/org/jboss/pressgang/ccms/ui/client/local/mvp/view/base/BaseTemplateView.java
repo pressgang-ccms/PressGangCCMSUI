@@ -1,7 +1,24 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import javax.inject.Inject;
+
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -18,8 +35,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
 
 /**
  * This class is used to build the standard page template. All views extend this class.
@@ -185,7 +200,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     /**
      * The container holding the quick search ui elements
-      */
+     */
     @Override
     @NotNull
     public HorizontalPanel getQuickSearchParentPanel() {
@@ -282,20 +297,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
-                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +  XMLUtilities.removeAllPreamble(
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities
+                            .removeAllPreamble(
                             retValue.getXml());
 
-                    failOverRESTCall.performRESTCall(
-                            FailOverRESTCallDatabase.holdXML(xml),
-                            new RESTCallBack<IntegerWrapper>() {
-                                public void success(@NotNull final IntegerWrapper value) {
-                                    contents.setUrl(ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-                                    center();
-                                }
-                            },
-                            waitDisplay,
-                            true
-                    );
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+                        public void success(@NotNull final IntegerWrapper value) {
+                            contents.setUrl(
+                                    ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value +
+                                            "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities
+                                            .getLocalUrlEncoded());
+                            center();
+                        }
+                    }, waitDisplay, true);
                 }
             };
 
@@ -491,7 +505,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
-        servers.setEnabled(false);
 
         /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);
@@ -576,12 +589,47 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.setWidget(0, columns, widget);
     }
 
+    public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, @NotNull final FlexTable table) {
+        /* Early out if the existing widget isn't actually attached */
+        if (!oldWidget.isAttached() || oldWidget.getParent() != table) {
+            return;
+        }
+
+        final int oldWidgetColumn = getWidgetColumn(oldWidget, table);
+        // Insert the new cell
+        if (table.getCellCount(0) > oldWidgetColumn + 1) {
+            table.insertCell(0, oldWidgetColumn + 1);
+        }
+        table.setWidget(0, oldWidgetColumn + 1, newWidget);
+    }
+
+    private int getWidgetColumn(final Widget widget, final FlexTable table) {
+        for (int row = 0; row < table.getRowCount(); row++) {
+            for (int col = 0; col < table.getCellCount(row); col++) {
+                final Widget w = table.getWidget(row, col);
+                if (w == widget) {
+                    return col;
+                }
+            }
+        }
+
+        return -1;
+    }
+
     public void addLocalActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopViewSpecificRightActionPanel());
     }
 
+    public void insertLocalActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget) {
+        insertActionButton(newWidget, oldWidget, this.getTopViewSpecificRightActionPanel());
+    }
+
     public void addActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopActionPanel());
+    }
+
+    public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget) {
+        insertActionButton(newWidget, oldWidget, this.getTopActionPanel());
     }
 
     /**

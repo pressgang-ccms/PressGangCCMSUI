@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Panel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -27,6 +28,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface {
         void showWaitingFromRenderedDiff();
+        void showRenderedDiffError();
         void displayHtmlDiff(@NotNull final String htmlDiff);
     }
 
@@ -92,11 +94,11 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         addEventListener();
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision) {
-        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea());
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffFailedCallback failedCallback) {
+        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), failedCallback);
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach) {
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffFailedCallback failedCallback) {
         final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
             @Override
             public void success(@NotNull final RESTTopicV1 retValue1) {
@@ -112,13 +114,26 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                     public void success(@NotNull final IntegerWrapper holdValue2) {
                                         renderXML(holdValue1.value, holdValue2.value, hiddenAttach);
                                     }
+
+                                    @Override
+                                    public void failed() {
+                                        failedCallback.failed();
+                                    }
                                 };
 
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue2.getXml()), hold2, display);
+                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                        .getDtdDoctype() + "\n" + retValue2.getXml()), hold2, display, true);
                             }
+
+                            @Override
+                            public void failed() {
+                                failedCallback.failed();
+                            }
+
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + retValue1.getXml()), hold1, display);
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                .getDtdDoctype() + "\n" + retValue1.getXml()), hold1, display, true);
 
                     }
                 };
@@ -234,7 +249,9 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 					// Make sure the iframe sending the data is from an expected source
 					var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
 					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
-					if (serverHost.indexOf(event.origin) == 0) {
+					console.log("Event Origin: " + event.origin);
+					console.log("Server Host: " + serverHost);
+                    if (serverHost.indexOf(event.origin) == 0) {
 						// Match the ids we assigned to the temp rendering iframes to the ids of the source of the message.
 						// This ensures that the diff ordering is correct
 

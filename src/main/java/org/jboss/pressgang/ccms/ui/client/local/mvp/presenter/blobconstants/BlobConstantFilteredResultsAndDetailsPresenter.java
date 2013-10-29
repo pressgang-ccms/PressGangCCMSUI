@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.blobconstant.RESTBlobConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -105,7 +106,7 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-        blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+        blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
         bindUploadButton();
     }
 
@@ -247,6 +248,9 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
             blobConstantPresenter.bindExtended();
             super.bindSearchAndEdit(Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, blobConstantPresenter.getDisplay(), blobConstantPresenter.getDisplay(),
                     blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
+
+            display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+            blobConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");

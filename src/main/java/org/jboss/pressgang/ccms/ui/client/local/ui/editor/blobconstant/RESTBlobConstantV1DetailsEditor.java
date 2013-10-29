@@ -55,18 +55,20 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         name.addStyleName(CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_NAME_FIELD);
 
         name.setReadOnly(readOnly);
+        upload.setEnabled(!readOnly);
+        uploadButton.setEnabled(!readOnly);
 
-        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
+        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantName());
+        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        @NotNull final Label uploadLabel = new Label(PressGangCCMSUI.INSTANCE.Upload());
+        final Label uploadLabel = new Label(PressGangCCMSUI.INSTANCE.Upload());
         this.setWidget(2, 0, uploadLabel);
-        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
+        final HorizontalPanel uploadPanel = new HorizontalPanel();
         this.setWidget(2, 1, uploadPanel);
         uploadPanel.add(upload);
         uploadPanel.add(uploadButton);

@@ -768,8 +768,19 @@ define('ace/snippets', ['require', 'exports', 'module' , 'ace/lib/lang', 'ace/ra
 
 	var jsSnippets = require("ace/snippets/javascript");
 	jsSnippets.snippets = exports.snippetManager.parseSnippetFile(jsSnippets.snippetText);
-	exports.snippetManager.register(jsSnippets.snippets, "xml")
+	exports.snippetManager.register(jsSnippets.snippets, "xml");
 
+	var cspSnippets = require("ace/snippets/csp");
+	cspSnippets.snippets = exports.snippetManager.parseSnippetFile(cspSnippets.snippetText);
+	exports.snippetManager.register(cspSnippets.snippets, "csp");
+
+});
+
+define('ace/snippets/csp', ['require', 'exports', 'module' ], function (require, exports, module) {
+
+	exports.snippetText = "snippet [N\n\
+	[N, ${1:Type}, writer=${2:Writer}]\n\
+";
 });
 
 define('ace/snippets/javascript', ['require', 'exports', 'module' ], function (require, exports, module) {
@@ -1080,6 +1091,8 @@ snippet substeps\n\
 	</substeps>\n\
 snippet xiinclude\n\
 	<xi:include xmlns:xi='http://www.w3.org/2001/XInclude'' href='${1:path_to_file}'/>\n\
+snippet /para\n\
+	</para><para>\n\
 ";
 });
 

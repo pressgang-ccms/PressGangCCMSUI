@@ -28,19 +28,18 @@ public final class ServiceConstants {
      * Tag style property tag id
      */
     public static final int TAG_STYLE_PROPERTY_TAG = 36;
-
-    /**
-     * Used to indicate a minor change to an entity.
-     */
-    public static final byte MINOR_CHANGE = 0x01;
-    /**
-     * Used to indicate a major change to an entity.
-     */
-    public static final byte MAJOR_CHANGE = 0x02;
     /**
      * The id of the tag applied to all content specs.
      */
     public static final Integer CSP_TAG_ID = 268;
+    /**
+     * The id of the tag applied to all revision history topics.
+     */
+    public static final Integer REVISION_HISTORY_TAG_ID = 598;
+    /**
+     * The id of the tag applied to all author group topics.
+     */
+    public static final Integer AUTHOR_GROUP_TAG_ID = 664;
     /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
      * (https://issues.jboss.org/browse/ERRAI-433).
@@ -179,7 +178,16 @@ public final class ServiceConstants {
         IMAGE_DETAILS_TABLE(21690),
         IMAGE_ID_SEARCH_FIELD(21691),
         IMAGE_DESCRIPTION_SEARCH_FIELD(21692),
-        IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD(21693);
+        IMAGE_ORIGINAL_FILE_NAME_SEARCH_FIELD(21693),
+        CONTENT_SPEC_TEXT_EDITOR(23273),
+        CONTENT_SPEC_CONTENT_SPEC(23278),
+        CONTENT_SPEC_VALIDATION_MESSAGES(23279),
+        CONTENT_SPEC_PROPERTIES(23280),
+        CONTENT_SPEC_EXTENDED_PROPERTIES(23276),
+        CONTENT_SPEC_TAGS(23274),
+        CONTENT_SPEC_REVISIONS(23275),
+        CONTENT_SPEC_SAVE(23277),
+        CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS(23281);
 
         private final int id;
         public int getId() {

@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.Image;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
@@ -127,14 +126,10 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
      * The column that provides the view button.
      */
     private final DisableableButtonCell viewButtonCell = new DisableableButtonCell();
-
-    private final Column<RESTContentSpecCollectionItemV1, String> viewButtonColumn = new Column<RESTContentSpecCollectionItemV1, String>(
-            viewButtonCell) {
+    private final Column<RESTContentSpecCollectionItemV1, String> viewButtonColumn = new Column<RESTContentSpecCollectionItemV1, String>(viewButtonCell) {
         @NotNull
         @Override
         public String getValue(@Nullable final RESTContentSpecCollectionItemV1 object) {
-            viewButtonCell.setEnabled(!isReadOnly());
-
             return PressGangCCMSUI.INSTANCE.View();
         }
     };
@@ -150,7 +145,7 @@ public class TopicContentSpecsView extends BaseChildrenView<RESTTopicV1, RESTCon
         getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ContentSpecID());
         getPossibleChildrenResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.ContentSpecTitle());
         getPossibleChildrenResults().addColumn(productColumn, PressGangCCMSUI.INSTANCE.ContentSpecProduct());
-        getPossibleChildrenResults().addColumn(versionColumn, PressGangCCMSUI.INSTANCE.ContentSpecVersion());
+        getPossibleChildrenResults().addColumn(versionColumn, PressGangCCMSUI.INSTANCE.ContentSpecProductVersion());
         getPossibleChildrenResults().addColumn(viewButtonColumn, "");
         getPossibleChildrenResults().addColumn(docbuilderColumn, PressGangCCMSUI.INSTANCE.DocBuilder());
 

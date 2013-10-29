@@ -5,6 +5,7 @@ package org.jboss.pressgang.ccms.ui.client.local.server;
  */
 public enum ServerTypes {
     Production,
+    Read_Only_Backup,
     Development,
     Local,
     High_Availability_Test

@@ -168,6 +168,7 @@ public interface CSSConstants {
 
     interface WelcomeView {
         String WELCOME_VIEW_IFRAME = "WelcomeViewIFrame";
+        String WELCOME_VIEW_PANEL = "WelcomeViewPanel";
     }
 
     /**
@@ -229,6 +230,24 @@ public interface CSSConstants {
          * The style name of the cell that holds the filter's description textarea.
          */
         String FILTER_VIEW_DESCRIPTION_CELL = "FilterViewDescriptionCell";
+    }
+
+    /**
+     * The CSS style names applied to the search field editor
+     */
+    interface FieldEditor {
+        /**
+         * The style name of the field's parent panel.
+         */
+        String FIELD_VIEW_PANEL = "FieldViewPanel";
+        /**
+         * The style name of the cell that holds the label next to the field's value.
+         */
+        String FIELD_VIEW_LABEL_CELL = "FieldViewLabelCell";
+        /**
+         * The style name of the cell that holds the fields value.
+         */
+        String FIELD_VIEW_VALUE_CELL = "FieldViewValueCell";
     }
 
     interface PlainTextXMLDialog {

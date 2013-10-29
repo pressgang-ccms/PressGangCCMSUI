@@ -72,6 +72,7 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                 JSONString monitoringUrl = null;
                                 JSONString serverType = null;
                                 JSONBoolean defaultServerFlag = null;
+                                JSONBoolean readOnly = null;
 
                                 if (serverDetails.containsKey("id")) {
                                     id = serverDetails.get("id").isNumber();
@@ -101,6 +102,10 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                     defaultServerFlag = serverDetails.get("defaultServerFlag").isBoolean();
                                 }
 
+                                if (serverDetails.containsKey("readOnly")) {
+                                    readOnly = serverDetails.get("readOnly").isBoolean();
+                                }
+
                                 if (id != null && name != null && restUrl != null && monitoringUrl != null && serverType != null) {
                                     LOGGER.info("Found server config:\n" +
                                         "\tID:" + id.doubleValue() + "\n" +
@@ -117,7 +122,8 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                             restUrl.stringValue(),
                                             reportUrl == null ? null : reportUrl.stringValue(),
                                             monitoringUrl.stringValue(),
-                                            serverType.stringValue());
+                                            serverType.stringValue(),
+                                            readOnly == null ? false : readOnly.booleanValue());
                                     serverDetailsList.add(newServerDetails);
 
                                     if (defaultServerFlag != null) {

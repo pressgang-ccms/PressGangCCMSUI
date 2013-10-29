@@ -30,7 +30,7 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
             final TypoJS negativeDictionary,
             final TypoJS negativePhraseDictionary,
             final TagDBLoader tagDBLoader) {
-        this.xml = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB());
+        xml = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB(), true, false);
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);

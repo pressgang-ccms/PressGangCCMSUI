@@ -17,6 +17,7 @@ public class EditorSettingsDialog extends ClosablePopup {
     private final ListBox fontSizes = new ListBox();
     private final ListBox themes = new ListBox();
     private final ListBox fonts = new ListBox();
+    private final CheckBox behaviours = new CheckBox(PressGangCCMSUI.INSTANCE.EnableBehaviours());
 
     private final FlexTable layout = new FlexTable();
     private final Label fontSizesLabel = new Label(PressGangCCMSUI.INSTANCE.EditorFontSize());
@@ -82,6 +83,7 @@ public class EditorSettingsDialog extends ClosablePopup {
         layout.setWidget(5, 0, fontSizes);
         layout.setWidget(6, 0, lineWrap);
         layout.setWidget(7, 0, showInvisibles);
+        layout.setWidget(8, 0, getBehaviours());
 
         add(this.layout);
     }
@@ -108,5 +110,9 @@ public class EditorSettingsDialog extends ClosablePopup {
 
     public ListBox getFonts() {
         return fonts;
+    }
+
+    public CheckBox getBehaviours() {
+        return behaviours;
     }
 }

@@ -36,6 +36,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -169,6 +170,9 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
         bindExistingChildrenAddAndRemoveButtons();
         bindExistingChildrenRowClick();
+
+        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -267,13 +271,13 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
             /* We need to initialize the view so the cell table buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay())) {
-                categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
-                categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+                categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
 
             /* Initialize the properties view */
             if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-                categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.initializeViews()");

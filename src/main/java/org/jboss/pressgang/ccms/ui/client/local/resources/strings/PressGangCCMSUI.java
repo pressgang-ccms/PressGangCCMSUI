@@ -429,6 +429,9 @@ public interface PressGangCCMSUI extends Constants {
     String LineWrap();
 
     @NotNull
+    String EnableBehaviours();
+
+    @NotNull
     String ShowHiddenCharacters();
 
     @NotNull
@@ -981,10 +984,37 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecIds();
 
     @NotNull
+    String ContentSpecSubtitle();
+
+    @NotNull
     String ContentSpecProduct();
 
     @NotNull
-    String ContentSpecVersion();
+    String ContentSpecProductVersion();
+
+    @NotNull
+    String ContentSpecEdition();
+
+    @NotNull
+    String ContentSpecPubsnumber();
+
+    @NotNull
+    String ContentSpecAbstract();
+
+    @NotNull
+    String ContentSpecBrand();
+
+    @NotNull
+    String ContentSpecCopyrightHolder();
+
+    @NotNull
+    String ContentSpecCopyrightYear();
+
+    @NotNull
+    String ContentSpecPublicanCfg();
+
+    @NotNull
+    String ContentSpecType();
 
     @NotNull
     String FileID();
@@ -1104,6 +1134,15 @@ public interface PressGangCCMSUI extends Constants {
     String Condition();
 
     @NotNull
+    String MergeAdditionalXml();
+
+    @NotNull
+    String AdditionalXml();
+
+    @NotNull
+    String OriginalXML();
+
+    @NotNull
     String FromSpec();
 
     @NotNull
@@ -1120,4 +1159,16 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String OldContentSpec3();
+
+    @NotNull
+    String EditTopic();
+
+    @NotNull
+    String ContributeToThisContent();
+
+    @NotNull
+    String CanNotDisplayRenderedDiff();
+
+    @NotNull
+    String EnableRemarks();
 }

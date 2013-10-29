@@ -25,9 +25,9 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
@@ -54,6 +54,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private static final int BUTTON_PANEL_HEIGHT = 44;
 
+    private boolean readOnly = false;
 
     /**
      * Holds the mergely elements and the ok/cancel buttons
@@ -173,7 +174,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 final Integer flag = object.getItem().getLogDetails().getFlag();
-                return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+                return (flag & RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT) == RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT;
             }
             return false;
         }
@@ -188,7 +189,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @Override
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
-                return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
+                return (object.getItem().getLogDetails().getFlag() & RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT) == RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT;
             }
             return false;
         }
@@ -333,14 +334,17 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     /**
+     * The image to display if the rendered diff could not be created
+     */
+    private final Image bigError = new Image(ImageResources.INSTANCE.bigError());
+
+    /**
      * Builds the UI.
      */
     public TopicRevisionsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Revisions());
 
         LOGGER.info("ENTER TopicRevisionsView()");
-
-
 
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
@@ -398,6 +402,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().setWidget(searchResultsPanel);
 
         spinner.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_SPINNER);
+        bigError.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_SPINNER);
     }
 
     @NotNull
@@ -454,6 +459,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public void display(@NotNull final RESTTopicV1 topic, final boolean readOnly) {
         this.mainTopic = topic;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -476,13 +482,15 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public void displayDiff(@NotNull final String lhs, boolean rhsReadOnly, @NotNull final String rhs) {
         diffParent.setWidget(null);
 
-        mergely = new Mergely(lhs, true, rhs, rhsReadOnly, true, Constants.XML_MIME_TYPE, false);
+        mergely = new Mergely(lhs, true, rhs, rhsReadOnly || readOnly, true, Constants.XML_MIME_TYPE, false);
         mergely.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF);
 
         diffParent.setWidget(mergely);
         this.getPanel().setWidget(diffPanel);
 
         isDisplayingRevisions = false;
+
+        done.setEnabled(!readOnly);
     }
 
     public void displayHtmlDiff(@NotNull final String htmlDiff) {
@@ -501,6 +509,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public void showWaitingFromRenderedDiff() {
         this.getPanel().setWidget(spinner);
         this.isDisplayingRevisions = false;
+    }
+
+    @Override
+    public void showRenderedDiffError() {
+        this.getPanel().setWidget(bigError);
+        isDisplayingRevisions = false;
     }
 
     @NotNull
@@ -567,4 +581,6 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     public SimpleLayoutPanel getDiffParent() {
         return diffParent;
     }
+
+
 }

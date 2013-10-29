@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -45,12 +48,35 @@ public final class FailOverRESTCall {
     private EventBus eventBus;
 
     /**
+     * true if the application has been closed
+     */
+    private boolean closed = false;
+
+    /**
+     * The last time the failed messages was displayed.
+     */
+    private static Date lastMessage = null;
+
+    /**
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FailOverRESTCall.class.getName());
 
     public FailOverRESTCall () {
 
+    }
+
+    @PostConstruct
+    private void postCreate() {
+        /*
+            Watch for page close events, because these will instantly cancel any pending requests.
+         */
+        Window.addCloseHandler(new CloseHandler<Window>() {
+            @Override
+            public void onClose(@NotNull final CloseEvent<Window> event) {
+                closed = true;
+            }
+        });
     }
 
     public <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback) {
@@ -69,6 +95,15 @@ public final class FailOverRESTCall {
         performRESTCall(restCall, callback, null, disableDefaultFailureAction, new ArrayList<Integer>());
     }
 
+    /**
+     * Performs a REST call, which will fail over to a new server if it fails.
+     * @param restCall The wrapper around the actual REST call
+     * @param callback The callback to call when when the REST call succeeds or fails
+     * @param display The display used to show the waiting action, or null if no display should be used
+     * @param disableDefaultFailureAction true if no messages should be displayed. This is useful if it is expected that a call might fail.
+     * @param failedRESTServers
+     * @param <T>
+     */
     private <T> void performRESTCall(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback, @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction, @NotNull final List<Integer> failedRESTServers) {
 
         /*
@@ -76,6 +111,9 @@ public final class FailOverRESTCall {
         */
         final ServerDetails serverDetails = ServerDetails.getSavedServer();
 
+        /*
+            Fail over after a timeout
+         */
         final SuccessCallbackWrapper<T> successCallbackWrapper = new SuccessCallbackWrapper<T>() {
             @Override
             public RemoteCallback<T> getSuccessCallback() {
@@ -108,6 +146,9 @@ public final class FailOverRESTCall {
                 return new ErrorCallback() {
                     @Override
                     public boolean error(final Message message, final Throwable throwable) {
+                        /*
+                            Make sure the response it not from a request we just didn't wait long enough for.
+                         */
                         if (!isTimedout() && !isReturned()) {
                             if (throwable instanceof ResponseException) {
                                 final ResponseException ex = (ResponseException) throwable;
@@ -120,8 +161,11 @@ public final class FailOverRESTCall {
                                         pressgang sever. This means the server is down.
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
-                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                 } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
+                                    /*
+                                        The entity was not found. This is expected if an invalid ID was supplied.
+                                     */
                                     if (!disableDefaultFailureAction) {
                                         Window.alert(PressGangCCMSUI.INSTANCE.NotFound());
                                     }
@@ -131,8 +175,8 @@ public final class FailOverRESTCall {
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR || ex.getResponse()
-                                        .getStatusCode() == Response.SC_BAD_REQUEST) {
+                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR ||
+                                        ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                     if (!disableDefaultFailureAction) {
                                         final String prefix;
                                         if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
@@ -159,11 +203,12 @@ public final class FailOverRESTCall {
                                 } else {
                                     /*
                                         Any other possible responses that could happen should fail over if possible otherwise display an
-                                        unknown error message.
+                                        unknown error message. These events include situations like the database is down but the REST server
+                                        is up.
                                      */
                                     if (restCall.isRepeatable()) {
                                         LOGGER.info("Failing over due to error");
-                                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                     } else {
                                         if (!disableDefaultFailureAction) {
                                             Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
@@ -180,8 +225,17 @@ public final class FailOverRESTCall {
                             } else {
                                 if (restCall.isRepeatable()) {
                                     LOGGER.info("Failing over due to error");
-                                    failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                                 } else {
+                                    /*
+                                        So, what do we do when a non repeatable call failed? In reality most calls
+                                        that modify the database are probably repeatable - it's just like hitting
+                                        the save icon twice. But that logic is to be determined for each call. If
+                                        we have got to this point we just failover the server so the next attempt
+                                        by the user won't hit the same failed server again.
+                                     */
+                                    failOver(failedRESTServers, serverDetails);
+
                                     if (!disableDefaultFailureAction) {
                                         Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
                                     }
@@ -215,7 +269,7 @@ public final class FailOverRESTCall {
                         successCallbackWrapper.setTimedout(true);
                         failureCallbackWrapper.setTimedout(true);
                         LOGGER.info("Failing over due to timeout");
-                        failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
                     }
                 }
             }
@@ -236,7 +290,7 @@ public final class FailOverRESTCall {
             timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
         } catch (@NotNull final Exception ex) {
             LOGGER.info("Failing over due to exception");
-            failOver(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
 
             if (display != null) {
                 display.removeWaitOperation();
@@ -248,9 +302,43 @@ public final class FailOverRESTCall {
      * Switch to another server in the same group if available and try the rest call again.
      * @param failedRESTServers The list of servers that have already failed
      */
-    private <T> void failOver(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback,
+    private <T> void failOverAndTryAgain(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback,
                               @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction,
                               @NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
+        /*
+            If the application has been closed, just fail any calls.
+         */
+        if (closed) {
+            callback.failed();
+        }
+
+        if (failOver(failedRESTServers, serverDetails)) {
+             performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
+        } else {
+            /*
+                There are no more servers left to call, so remove the wait operation and call the failed callback.
+            */
+            if (!disableDefaultFailureAction && (lastMessage == null || new Date().getTime() - lastMessage.getTime() > Constants.REST_SERVER_ERROR_MESSAGE_DELAY)) {
+                lastMessage = new Date();
+                Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
+            }
+
+            callback.failed();
+
+            if (display != null) {
+                display.removeWaitOperation();
+            }
+        }
+    }
+
+    /**
+     * Switch to another server in the same group if available.
+     * @param failedRESTServers The list of servers that have already failed
+     */
+    private <T> boolean failOver(@NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
+
+
+
         /*
             We know this server has failed.
          */
@@ -328,8 +416,8 @@ public final class FailOverRESTCall {
 
                 eventBus.fireEvent(new FailoverEvent(nextServer.getId()));
 
-                performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                return;
+
+                return true;
             }
         }
 
@@ -343,22 +431,11 @@ public final class FailOverRESTCall {
 
                 eventBus.fireEvent(new FailoverEvent(nextServer.getId()));
 
-                performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
-                return;
+
+                return true;
             }
         }
 
-        /*
-            There are no more servers left to call, so remove the wait operation and call the failed callback.
-         */
-        if (!disableDefaultFailureAction) {
-            Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
-        }
-
-        callback.failed();
-
-        if (display != null) {
-            display.removeWaitOperation();
-        }
+        return false;
     }
 }

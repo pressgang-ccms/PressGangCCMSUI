@@ -1,5 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.flipthebird.gwthashcodeequals.EqualsBuilder;
+import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -15,15 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * This class represents a single category assigned to a project, with child tags.
@@ -273,12 +275,20 @@ public final class SearchUICategory extends SearchUIBase {
 
     @Override
     public boolean equals(final Object other) {
-        return super.equals(other);
+        if (!(other instanceof SearchUICategory)) {
+            return false;
+        } else if (myTags == null || myTags.isEmpty()) {
+            return super.equals(other);
+        } else {
+            return new EqualsBuilder()
+                    .append(getName(), ((SearchUICategory) other).getName())
+                    .append(myTags, ((SearchUICategory) other).getMyTags()).build();
+        }
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return new HashCodeBuilder().append(getName()).append(myTags).hashCode();
     }
 
     public boolean getMutuallyExclusiveCategory() {

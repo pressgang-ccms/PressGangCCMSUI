@@ -28,6 +28,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable layoutPanel = new FlexTable();
     private final ListBox conditions = new ListBox(false);
+    private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
     private int displayingRow = 1;
     private JavaScriptObject listener;
 
@@ -67,12 +68,12 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         this.getPanel().setWidget(layoutPanel);
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
 
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        horizontalPanel.add(new Label(PressGangCCMSUI.INSTANCE.Condition()));
-        horizontalPanel.add(conditions);
+        final FlexTable renderingOptions = new FlexTable();
+        renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.Condition()));
+        renderingOptions.setWidget(0, 1, conditions);
+        renderingOptions.setWidget(1, 0, remarks);
 
-        layoutPanel.setWidget(0, 0, horizontalPanel);
+        layoutPanel.setWidget(0, 0, renderingOptions);
 
         layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
         layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
@@ -205,5 +206,11 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @NotNull
     public ListBox getConditions() {
         return conditions;
+    }
+
+    @Override
+    @NotNull
+    public CheckBox getRemarks() {
+        return remarks;
     }
 }

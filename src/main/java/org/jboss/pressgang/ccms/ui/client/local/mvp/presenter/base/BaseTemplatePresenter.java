@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,20 +12,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
@@ -109,6 +102,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
                 display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
             }
+        }
+
+        // Disable the menu if we on;y have one available server
+        if (ServerDetails.SERVERS.length <= 1) {
+            display.getServers().setEnabled(false);
         }
     }
 
@@ -470,6 +468,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 enableHelpOverlay();
             };
         });
+
+        display.getTopShortcutView().getCreateContentSpec().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        display.getTopShortcutView().getCreateTopic().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     private native void enableHelpOverlay() /*-{

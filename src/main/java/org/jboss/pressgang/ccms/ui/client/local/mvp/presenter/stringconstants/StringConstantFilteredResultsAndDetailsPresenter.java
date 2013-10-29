@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +103,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        stringConstantPresenter.getDisplay().display(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+        stringConstantPresenter.getDisplay().display(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -246,6 +247,9 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
         } finally {
             LOGGER.log(Level.INFO, "EXIT StringConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
         }
+
+        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        stringConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override

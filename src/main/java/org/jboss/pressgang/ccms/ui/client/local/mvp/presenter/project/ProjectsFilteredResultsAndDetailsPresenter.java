@@ -33,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -197,6 +198,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                 }
         );
+
+        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -273,7 +277,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
 
-                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
                         tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewEntity);
@@ -440,12 +444,12 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
         for (@NotNull final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
-                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
             }
         }
 
         if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
         }
 
     }

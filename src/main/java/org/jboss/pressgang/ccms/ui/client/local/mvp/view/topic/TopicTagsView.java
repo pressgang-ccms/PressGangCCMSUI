@@ -181,22 +181,10 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
              * the item that was set via setValue().
              */
             final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
-            clonedCategories.remove(category);
 
             categories.setAcceptableValues(clonedCategories);
 
-            final List<SearchUITag> listTags = category.getMyTags();
-
-            if (!listTags.isEmpty()) {
-                final SearchUITag tag = listTags.get(0);
-
-                myTags.setValue(tag);
-
-                @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-                cloneTags.remove(tag);
-
-                myTags.setAcceptableValues(cloneTags);
-            }
+            updateNewTagTagDisplay();
         }
     }
 
@@ -210,7 +198,6 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             myTags.setValue(tag);
 
             @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-            cloneTags.remove(tag);
 
             myTags.setAcceptableValues(cloneTags);
         }

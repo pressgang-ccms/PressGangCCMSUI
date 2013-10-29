@@ -24,6 +24,17 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
     private final ListEditor<RESTLanguageImageCollectionItemV1, RESTLanguageImageV1Editor> items = ListEditor
             .of(new LanguageImageEditorSource());
 
+    private boolean readOnly;
+
+    @Ignore
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(final boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor.
      *
@@ -33,8 +44,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
         @NotNull
         @Override
         public RESTLanguageImageV1Editor create(final int index) {
-            @NotNull final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this,
-                    index);
+            final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this, index);
             add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
             return editor;
         }

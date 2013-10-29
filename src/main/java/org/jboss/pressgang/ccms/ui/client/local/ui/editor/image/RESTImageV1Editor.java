@@ -12,11 +12,15 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 
 public final class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
+
+    private boolean readOnly = false;
+
     private RESTImageV1 value;
 
     private final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ImageID());
 
     private final SimpleIntegerLabel id = new SimpleIntegerLabel();
+
     private final TextArea description = new TextArea();
 
     private final Label docbookFileName = new Label();
@@ -101,7 +105,6 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     @Override
     public void onPropertyChange(@NotNull final String... paths) {
 
-
     }
 
     @Override
@@ -149,5 +152,15 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     @Ignore
     public RESTLanguageImageCollectionV1Editor getLanguageImages_OTM() {
         return languageImages_OTM;
+    }
+
+    @Ignore
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(final boolean readOnly) {
+        this.readOnly = readOnly;
+        languageImages_OTM.setReadOnly(readOnly);
     }
 }

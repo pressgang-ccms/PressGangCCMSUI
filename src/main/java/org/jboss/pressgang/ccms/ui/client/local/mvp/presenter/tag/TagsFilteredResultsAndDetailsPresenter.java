@@ -47,6 +47,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -508,6 +509,9 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
+
+        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }
 
     @Override
@@ -944,7 +948,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         for (@NotNull final BaseCustomViewInterface view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
-                view.display(displayedTag, false);
+                view.display(displayedTag, ServerDetails.getSavedServer().isReadOnly());
             }
         }
 

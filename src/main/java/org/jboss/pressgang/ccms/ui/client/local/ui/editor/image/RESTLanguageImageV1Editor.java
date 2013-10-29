@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageColle
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +34,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
      * the index that this editor is assigned to. See http://stackoverflow.com/questions/10463782/adding-list
      * -sub-editors-to-tab-panel for an explanation. This is the reference to the tab panel
      */
-    private final TabLayoutPanel parentPanel;
+    private final RESTLanguageImageCollectionV1Editor parentPanel;
 
     /**
      * This is a reference to the tab index
@@ -75,13 +76,16 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         return uploadButton;
     }
 
-    public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
+    public RESTLanguageImageV1Editor(final RESTLanguageImageCollectionV1Editor parentPanel, final int parentIndex) {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
-        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
+        upload.setEnabled(!parentPanel.isReadOnly());
+        uploadButton.setEnabled(!parentPanel.isReadOnly());
+
+        final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);
         uploadPanel.add(this.uploadButton);
 

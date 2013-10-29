@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEdito
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -81,7 +82,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
         final RESTCallBack<RESTPropertyTagV1> callback = new RESTCallBack<RESTPropertyTagV1>() {
             @Override
             public void success(@NotNull final RESTPropertyTagV1 retValue) {
-                display.display(retValue, false);
+                display.display(retValue, ServerDetails.getSavedServer().isReadOnly());
             }
         };
 
