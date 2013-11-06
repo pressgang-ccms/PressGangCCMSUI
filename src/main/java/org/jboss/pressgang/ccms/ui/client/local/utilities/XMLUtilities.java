@@ -123,21 +123,63 @@ public class XMLUtilities {
         }
     }
 
-    public static List<Comment> getComments(final Document doc) {
+    /**
+     * Scans a node and all of its children for nodes of a particular type.
+     *
+     * @param parent    The parent node to search from.
+     * @param nodeNames A single node name or list of node names to search for
+     * @return A List of all the nodes found matching the nodeName(s) under the parent
+     */
+    public static List<Node> getChildNodes(final Node parent, final String... nodeNames) {
+        return getChildNodes(parent, true, nodeNames);
+    }
+
+    public static List<Comment> getComments(final Node parent) {
+        final List<Node> commentNodes = getChildNodes(parent, "#comment");
         final List<Comment> retValue = new ArrayList<Comment>();
-        getComments(doc.getDocumentElement(), retValue);
+        for (final Node comment : commentNodes) {
+            retValue.add((Comment) comment);
+        }
+
         return retValue;
     }
 
-    private static void getComments(final Node node, final List<Comment> comments) {
-        final NodeList children = node.getChildNodes();
+    /**
+     * Scans a node for directly related child nodes of a particular type. This method will not scan for nodes that aren't a child of the
+     * parent node.
+     *
+     * @param parent    The parent node to search from.
+     * @param nodeNames A single node name or list of node names to search for
+     * @return A List of all the nodes found matching the nodeName(s) under the parent
+     */
+    public static List<Node> getDirectChildNodes(final Node parent, final String... nodeNames) {
+        return getChildNodes(parent, false, nodeNames);
+    }
+
+    /**
+     * Scans a node and all of its children for nodes of a particular type.
+     *
+     * @param parent          The parent node to search from.
+     * @param recursiveSearch If the child nodes should be recursively searched.
+     * @param nodeNames       A single node name or list of node names to search for
+     * @return a List of all the nodes found matching the nodeName under the parent
+     */
+    protected static List<Node> getChildNodes(final Node parent, boolean recursiveSearch, final String... nodeNames) {
+        final List<Node> nodes = new ArrayList<Node>();
+        final NodeList children = parent.getChildNodes();
         for (int i = 0; i < children.getLength(); ++i) {
-            final Node childNode = children.item(i);
-            if (childNode.getNodeName().equals("#comment")) {
-                comments.add((Comment) childNode);
+            final Node child = children.item(i);
+
+            for (final String nodeName : nodeNames) {
+                if (child.getNodeName().equals(nodeName)) {
+                    nodes.add(child);
+                }
+                if (recursiveSearch) {
+                    nodes.addAll(getChildNodes(child, true, nodeName));
+                }
             }
-            getComments(childNode, comments);
         }
+        return nodes;
     }
 
     /**

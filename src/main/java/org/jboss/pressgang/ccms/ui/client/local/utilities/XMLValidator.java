@@ -1,7 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class XMLValidator {
@@ -61,6 +66,12 @@ public class XMLValidator {
 
                     var theseErrors = e.data;
                     var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+
+                    // Do additional DocBook validation
+                    if (theseErrors == "") {
+                        var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+                        theseErrors = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::doAdditionalDocBookValidation(Ljava/lang/String;Ljava/lang/String;)(text, entities)
+                    }
 
                     if (theseErrors == "" && oldErrors == "") {
                         errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
@@ -137,6 +148,24 @@ public class XMLValidator {
             }
         }
     }-*/;
+
+    public String doAdditionalDocBookValidation(final String xml, final String entities) {
+        final Document doc = XMLUtilities.convertStringToDocument(xml);
+        final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
+
+        if (doc != null) {
+            // Validate that the table cols declaration matches the number of entries for each table row
+            final List<Node> tables = XMLUtilities.getChildNodes(doc.getDocumentElement(), "table", "informaltable");
+            for (final Node table : tables) {
+                if (!DocBookUtilities.validateTableRows((Element) table)) {
+                    return "topic.xml:" + entitiesLines + ": element table: validity error : cols declaration doesn't match the " +
+                            "number of entry elements";
+                }
+            }
+        }
+
+        return "";
+    };
 
     public boolean isCheckingXML() {
         return checkingXML;
