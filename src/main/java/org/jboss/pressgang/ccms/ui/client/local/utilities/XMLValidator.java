@@ -101,7 +101,7 @@ public class XMLValidator {
                                     }
                                 }
                                 if (!found) {
-                                    lineNumbers.push(line);
+                                    lineNumbers.push(line - 1);
                                 }
 
                                 // Check if there as a line number in the error message
@@ -159,7 +159,8 @@ public class XMLValidator {
     }-*/;
 
     public String doAdditionalDocBookValidation(final String xml, final String entities) {
-        final Document doc = XMLUtilities.convertStringToDocument(xml);
+        final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(xml);
+        final Document doc = XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
         final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
 
         if (doc != null) {
@@ -167,7 +168,8 @@ public class XMLValidator {
             final List<Node> tables = XMLUtilities.getChildNodes(doc.getDocumentElement(), "table", "informaltable");
             for (final Node table : tables) {
                 if (!DocBookUtilities.validateTableRows((Element) table)) {
-                    return "topic.xml:" + entitiesLines + ": element table: validity error : cols declaration doesn't match the " +
+                    final int line = entitiesLines + Integer.parseInt(((Element) table).getAttribute("pressgangeditorlinenumber")) - 1;
+                    return "topic.xml:" + line + ": element table: validity error : cols declaration doesn't match the " +
                             "number of entry elements";
                 }
             }
