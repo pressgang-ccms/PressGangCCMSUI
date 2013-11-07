@@ -54,6 +54,7 @@ public class XMLValidator {
 
     private native void checkXML() /*-{
         var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()();
+        var dummyEntities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDummyDtdDoctype()();
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
@@ -82,12 +83,13 @@ public class XMLValidator {
                         // message, and is removed before being displayed.
                         var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
 
-                        var errorLineRegex = /topic\.xml:(\d+):/g;
+                        var errorLineRegex = /^topic\.xml:(\d+):.*$/gm;
+                        var errorLineNumRegex = / line (\d+)/;
                         var match = null;
                         var lineNumbers = [];
                         while (match = errorLineRegex.exec(theseErrors)) {
                             if (match.length >= 1) {
-                                var line = parseInt(match[1]) - entitiesLines - 1;
+                                var line = parseInt(match[1]) - entitiesLines;
                                 // We need to match the line numbers in the editor with those in the topic, which
                                 // means subtracting all the entities we added during validation.
                                 errorMessage = errorMessage.replace("topic.xml:" + match[1], "topic.xml:" + line);
@@ -100,6 +102,13 @@ public class XMLValidator {
                                 }
                                 if (!found) {
                                     lineNumbers.push(line);
+                                }
+
+                                // Check if there as a line number in the error message
+                                match = errorLineNumRegex.exec(match[0])
+                                if (match != null && match.length >= 1) {
+                                    line = parseInt(match[1]) - entitiesLines;
+                                    errorMessage = errorMessage.replace(" line " + match[1], " line " + line);
                                 }
                             }
                         }
@@ -130,7 +139,7 @@ public class XMLValidator {
                 }
                 // Add the doctype that include the standard docbook entities
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;)(text);
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;Ljava/lang/String;)(text, dummyEntities);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
                         return function(){

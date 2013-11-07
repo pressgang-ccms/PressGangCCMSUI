@@ -107,19 +107,35 @@ public class XMLUtilities {
 
     public static Document convertStringToDocument(final String xml) {
         try {
-            return XMLParser.parse(xml);
+            final Document doc = XMLParser.parse(xml);
+
+            // Workaround for http://code.google.com/p/google-web-toolkit/issues/detail?id=3613
+            final NodeList parseErrors = doc.getElementsByTagName("parsererror");
+            if (parseErrors.getLength() > 0) {
+                return null;
+            } else {
+                return doc;
+            }
         } catch (Exception e) {
             return null;
         }
     }
 
     public static String resolveInjections(@NotNull final String xml) {
-        final Document doc = convertStringToDocument(xml);
+        return resolveInjections(xml, null);
+    }
+
+    public static String resolveInjections(@NotNull final String xml, @Nullable final String entities) {
+        String fixedXml = xml;
+        if (entities != null) {
+            fixedXml = entities + xml;
+        }
+        final Document doc = convertStringToDocument(fixedXml);
         if (doc == null) {
             return xml;
         } else {
             InjectionResolver.resolveInjections(doc);
-            return doc.toString();
+            return removeAllPreamble(doc.toString());
         }
     }
 
