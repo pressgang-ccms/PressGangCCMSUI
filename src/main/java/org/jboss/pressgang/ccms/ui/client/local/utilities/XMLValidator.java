@@ -1,9 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.xml.client.Comment;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
@@ -159,23 +161,36 @@ public class XMLValidator {
     }-*/;
 
     public String doAdditionalDocBookValidation(final String xml, final String entities) {
-        final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(xml);
+        final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
         final Document doc = XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
         final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
 
+        final StringBuilder retValue = new StringBuilder();
         if (doc != null) {
             // Validate that the table cols declaration matches the number of entries for each table row
             final List<Node> tables = XMLUtilities.getChildNodes(doc.getDocumentElement(), "table", "informaltable");
             for (final Node table : tables) {
                 if (!DocBookUtilities.validateTableRows((Element) table)) {
                     final int line = entitiesLines + Integer.parseInt(((Element) table).getAttribute("pressgangeditorlinenumber")) - 1;
-                    return "topic.xml:" + line + ": element table: validity error : cols declaration doesn't match the " +
-                            "number of entry elements";
+                    retValue.append("topic.xml:" + line + ": element table: validity error : cols declaration doesn't match the " +
+                            "number of entry elements\n");
+                }
+            }
+
+            // Validate the injections are valid
+            final Map<Comment, List<String>> injectionErrors = InjectionValidator.checkForInvalidInjections(doc);
+            if (!injectionErrors.isEmpty()) {
+                for (final Map.Entry<Comment, List<String>> injectionError : injectionErrors.entrySet()) {
+                    final String commentText = injectionError.getKey().getNodeValue();
+                    retValue.append("\"").append(commentText.trim()).append("\" is possibly an invalid custom Injection Point. Errors:\n");
+                    for (final String msg : injectionError.getValue()) {
+                        retValue.append("\t- ").append(msg).append("\n");
+                    }
                 }
             }
         }
 
-        return "";
+        return retValue.toString();
     };
 
     public boolean isCheckingXML() {

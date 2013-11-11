@@ -308,7 +308,7 @@ public class XMLUtilities {
                 }
 
                 if (!lineIsOnlyCData) {
-                    fixedLine = ELEMENT_RE.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
+                    fixedLine = ELEMENT_RE.replace(fixedLine, "$1 pressgangeditorlinenumber=\"" + i + "\"$2$3");
                 }
 
                 for (final String marker : endHangingCData.keySet()) {
