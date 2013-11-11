@@ -677,7 +677,7 @@ bytecode
 Envers
 InnoDB
 JPQL
-EJB
+EJB/S
 JavaBean/S
 CDI
 JAXB
@@ -763,3 +763,4 @@ Postgres
 DLL/S
 IIS
 ARP
+JEE
