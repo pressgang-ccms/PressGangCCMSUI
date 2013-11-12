@@ -191,6 +191,10 @@ td {
     background-color: white;
 }
 
+.TopicRevisionBasePanel {
+    overflow-x: auto;
+}
+
 .TopicRenderedViewIFrame, .WelcomeViewIFrame, .TopicRevisionHTMLDiffFrame, .TopicReviewHelpIframe, .WelcomeViewPanel {
     width: 100%;
     height: 100%;

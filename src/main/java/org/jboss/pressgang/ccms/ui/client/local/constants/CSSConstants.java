@@ -453,6 +453,7 @@ public interface CSSConstants {
     }
 
     interface TopicRevisionView {
+        String TOPIC_REVISION_BASE_PANEL = "TopicRevisionBasePanel";
         String TOPIC_REVISION_NUMBER_COLUMN = "TopicRevisionNumberColumn";
         String TOPIC_REVISION_DATE_COLUMN = "TopicRevisionDateColumn";
         String TOPIC_REVISION_MINOR_RELEASE_COLUMN = "TopicRevisionMinorReleaseColumn";
