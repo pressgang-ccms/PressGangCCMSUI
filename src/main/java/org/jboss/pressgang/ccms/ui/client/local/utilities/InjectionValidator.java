@@ -14,7 +14,7 @@ import com.google.gwt.xml.client.Comment;
 import com.google.gwt.xml.client.Document;
 
 public class InjectionValidator {
-    private static final RegExp INJECT_RE = RegExp.compile("^\\s*(Inject\\w*)(:?)" + "\\s*([\\w\\d\\s,\\.]*)\\s*$", "i");
+    private static final RegExp INJECT_RE = RegExp.compile("^\\s*(Inject\\w*)(:?)" + "\\s*(\\d+[\\w\\d\\s,\\.]*)\\s*$", "i");
     private static final RegExp INJECT_ID_RE = RegExp.compile("^[\\d ,]+$");
     private static final List<String> VALID_INJECTION_TYPES = Arrays.asList("Inject", "InjectList", "InjectListItems",
             "InjectListAlphaSort", "InjectSequence");
