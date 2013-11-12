@@ -1,17 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
-import com.google.gwt.user.client.ui.TriStateSelectionState;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.rest.v1.entities.*;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +10,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
+import com.google.gwt.user.client.ui.TriStateSelectionState;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and
@@ -218,13 +223,23 @@ public class SearchUIProjects implements SearchViewBase {
                         If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
                         then add a query parameter.
                      */
-                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId());
+                    // If the project isn't the common project then add the project id.
+                    if (project.getId() > 0) {
+                        builder.append("-").append(project.getId());
+                    }
+                    builder.append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
                 } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
                     /*
                         If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
                         then add a query parameter.
                      */
-                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId());
+                    // If the project isn't the common project then add the project id.
+                    if (project.getId() > 0) {
+                        builder.append("-").append(project.getId());
+                    }
+                    builder.append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
                 if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {

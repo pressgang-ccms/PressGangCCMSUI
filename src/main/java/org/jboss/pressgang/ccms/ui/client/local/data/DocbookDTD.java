@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public final class DocbookDTD {
     private static String dtd = "";
     private static String ent = "";
+    private static String dummyEnt = "";
 
     public static String getDtd() {
         return dtd;
@@ -22,6 +23,14 @@ public final class DocbookDTD {
         }
         return "<!DOCTYPE section [" + ent + "]>";
     }
+
+    public static String getDummyDtdDoctype() {
+        if (dummyEnt.isEmpty()) {
+            return dummyEnt;
+        }
+        return "<!DOCTYPE section [" + dummyEnt + "]>";
+    }
+
 
     /**
      * Load the DTD file.
@@ -57,6 +66,22 @@ public final class DocbookDTD {
             });
         } catch (@NotNull final RequestException e) {
             ent = "";
+        }
+
+        try {
+            new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/dummy-docbook.ent").sendRequest("", new RequestCallback() {
+                @Override
+                public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
+                    dummyEnt = resp.getText();
+                }
+
+                @Override
+                public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
+                    dummyEnt = "";
+                }
+            });
+        } catch (@NotNull final RequestException e) {
+            dummyEnt = "";
         }
     }
 }

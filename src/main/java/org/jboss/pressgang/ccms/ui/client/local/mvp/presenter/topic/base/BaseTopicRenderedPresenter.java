@@ -34,10 +34,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseTemplatePresenter {
-    private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
-    private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
-    private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
-
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<? ,?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
 
@@ -182,116 +178,8 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
 
     public abstract void displayTopicRendered(final T topic, final boolean readOnly, final boolean showImages);
 
-    /**
-     * In order to link the rendered view to the line in the editor where the rendered text is coming from,
-     * each element has an attribute pressgangeditorlinenumber added to it to reflect the original line number.
-     * This can then be read when an element in the rendered view is clicked.
-     *
-     * @param topicXML The source XML
-     * @return The XML with all the elements having pressgangeditorlinenumber attributes
-     */
-    @NotNull
-    protected String addLineNumberAttributesToXML(@Nullable final String topicXML) {
-
-        final StringBuilder retValue = new StringBuilder();
-
-        if (topicXML != null) {
-            /* true if the last line had a hanging cdata start */
-            boolean inCData = false;
-            int i = 0;
-            for (final String line : topicXML.split("\n")) {
-                ++i;
-
-                /* true if the last line had a hanging cdata start and we did not find an end in this line */
-                boolean lineIsOnlyCData = inCData;
-
-                String fixedLine = line;
-
-                final Map<String, String> endHangingCData = new HashMap<String, String>();
-                if (inCData) {
-                    final RegExp cdataEndHangingRe = RegExp.compile("^.*?\\]\\]>", "g");
-                    final MatchResult matcher = cdataEndHangingRe.exec(fixedLine);
-                    if (matcher != null) {
-                        int marker = endHangingCData.size();
-                        while (fixedLine.indexOf("#CDATAENDPLACEHOLDER" + marker + "#") != -1) {
-                            ++marker;
-                        }
-
-                        endHangingCData.put("#CDATAENDPLACEHOLDER" + marker + "#", matcher.getGroup(0));
-
-                        inCData = false;
-
-                        /*
-                         * We found an end to the hanging cdata start. this lets us know further down that
-                         * we do need to process some elements in this line.
-                         */
-                        lineIsOnlyCData = false;
-                    }
-
-                    for (final String marker : endHangingCData.keySet()) {
-                        fixedLine = fixedLine.replace(endHangingCData.get(marker), marker);
-                    }
-                }
-
-                final Map<String, String> singleLineCData = new HashMap<String, String>();
-                for (MatchResult matcher = CDATA_RE.exec(line); matcher != null; matcher = CDATA_RE.exec(line)) {
-                    int marker = singleLineCData.size();
-                    while (line.indexOf("#CDATAPLACEHOLDER" + marker + "#") != -1) {
-                        ++marker;
-                    }
-
-                    singleLineCData.put("#CDATAPLACEHOLDER" + marker + "#", matcher.getGroup(0));
-                }
-
-                for (final String marker : singleLineCData.keySet()) {
-                    fixedLine = fixedLine.replace(singleLineCData.get(marker), marker);
-                }
-
-                final Map<String, String> startHangingCData = new HashMap<String, String>();
-                if (!inCData) {
-                    final MatchResult matcher = CDATA_START_HANGING_RE.exec(fixedLine);
-                    if (matcher != null) {
-                        int marker = startHangingCData.size();
-                        while (fixedLine.indexOf("#CDATASTARTPLACEHOLDER" + marker + "#") != -1) {
-                            ++marker;
-                        }
-
-                        startHangingCData.put("#CDATASTARTPLACEHOLDER" + marker + "#", matcher.getGroup(0));
-
-                        inCData = true;
-                    }
-                }
-
-                for (final String marker : startHangingCData.keySet()) {
-                    fixedLine = fixedLine.replace(startHangingCData.get(marker), marker);
-                }
-
-                if (!lineIsOnlyCData) {
-                    fixedLine = ELEMENT_RE.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
-                }
-
-                for (final String marker : endHangingCData.keySet()) {
-                    fixedLine = fixedLine.replace(marker, endHangingCData.get(marker));
-                }
-
-                for (final String marker : singleLineCData.keySet()) {
-                    fixedLine = fixedLine.replace(marker, singleLineCData.get(marker));
-                }
-
-                for (final String marker : startHangingCData.keySet()) {
-                    fixedLine = fixedLine.replace(marker, startHangingCData.get(marker));
-                }
-
-                retValue.append(fixedLine);
-                retValue.append("\n");
-            }
-        }
-
-        return retValue.toString();
-    }
-
     protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
-        String retValue = addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
+        String retValue = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
 
         // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in
         // <book><bookinfo>...</bookinfo></book> for it to render.
