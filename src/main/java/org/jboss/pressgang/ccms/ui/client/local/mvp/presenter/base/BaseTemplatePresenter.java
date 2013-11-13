@@ -118,8 +118,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
                 final ServerDetails newServerSettings = saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
 
-                if (!newServerSettings.getServerType().equals(currentServerSettings.getServerType())) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1", currentServerSettings.getServerType().replaceAll("_", " ")).replace("$2", newServerSettings.getServerType().replaceAll("_", " ")));
+                if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
+                            currentServerSettings.getGroup().getName().replaceAll("_", " ")).replace("$2",
+                            currentServerSettings.getGroup().getName().replaceAll("_", " ")));
                     Window.Location.reload();
                 }
             }
@@ -128,6 +130,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     /**
      * Saves the server id as the default, and changes the REST endpoint
+     *
      * @param id The new server id
      * @return The ServerDetails instance that matches the ID
      */
@@ -398,19 +401,25 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                     /* If the search query was numbers and integers, assume that we are searching for topics ids */
                     @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                     eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
+                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + fixedQuery,
+                            newWindow));
                 } else if (ID_SEARCH.test(query)) {
                     /* If the search query was numbers and integers, assume that we are searching for topics ids */
                     @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                     eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
-                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
+                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery,
+                            newWindow));
                 } else {
                     /* Otherwise do a search against the title, description and content of the topics */
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
-                            + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
-                            + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(query) : query) + ";"
-                            + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC, newWindow));
+                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
+                            Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants
+                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
+                                    query) : query) + ";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + (Constants
+                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
+                                    query) : query) + ";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + (Constants
+                                    .ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
+                                    query) : query) + ";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC,
+                            newWindow));
                 }
             }
         } finally {
@@ -421,9 +430,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     /**
      * Binding is done when the view is loaded. The code here doesn't reference the data in a selected entity (it is
      * quite possible that an entity has not been selected yet).
-     *
+     * <p/>
      * Binding is done once.
-     *
+     * <p/>
      * The display methods (see the interfaces like BaseChildrenPresenterInterface) are used to display the actual
      * data once an entity has been selected.
      *
@@ -466,7 +475,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 enableHelpOverlay();
-            };
+            }
+
+            ;
         });
 
         display.getTopShortcutView().getCreateContentSpec().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
@@ -474,11 +485,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private native void enableHelpOverlay() /*-{
-		if ($wnd.pressgang_website_enable) {
-			$wnd.pressgang_website_enable();
-		} else {
-			$wnd.alert("Help overlay is not available.")
-		}
+        if ($wnd.pressgang_website_enable) {
+            $wnd.pressgang_website_enable();
+        } else {
+            $wnd.alert("Help overlay is not available.")
+        }
     }-*/;
 
     private void buildHelpDatabase() {
@@ -486,8 +497,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(display.getTopShortcutView().getHome(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
         setDataAttribute(display.getTopShortcutView().getCreateTopic(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
-        setDataAttribute(display.getTopShortcutView().getSearchTopics().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
-        setDataAttribute(display.getTopShortcutView().getSearchTranslations().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchTopics().getElement(),
+                ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchTranslations().getElement(),
+                ServiceConstants.HELP_TOPICS.SEARCH_TRANSLATIONS_VIEW.getId());
         setDataAttribute(display.getTopShortcutView().getImages().getElement(), ServiceConstants.HELP_TOPICS.IMAGES_VIEW.getId());
         setDataAttribute(display.getTopShortcutView().getTags().getElement(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
         setDataAttribute(display.getTopShortcutView().getCategories().getElement(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
@@ -500,14 +513,20 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(display.getTopShortcutView().getAdvancedSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
         setDataAttribute(display.getTopShortcutView().getSearchSubMenu().getElement(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
 
-        setDataAttribute(display.getTopShortcutView().getSearchContentSpec().getElement(), ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
-        setDataAttribute(display.getTopShortcutView().getCreateContentSpec().getElement(), ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
+        setDataAttribute(display.getTopShortcutView().getSearchContentSpec().getElement(),
+                ServiceConstants.HELP_TOPICS.SEARCH_CONTENT_SPECS.getId());
+        setDataAttribute(display.getTopShortcutView().getCreateContentSpec().getElement(),
+                ServiceConstants.HELP_TOPICS.CREATE_CONTENT_SPEC.getId());
         setDataAttribute(display.getTopShortcutView().getBulkTagging().getElement(), ServiceConstants.HELP_TOPICS.BULK_TAGGING.getId());
-        setDataAttribute(display.getTopShortcutView().getStringConstants().getElement(), ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
+        setDataAttribute(display.getTopShortcutView().getStringConstants().getElement(),
+                ServiceConstants.HELP_TOPICS.STRING_CONSTANTS.getId());
         setDataAttribute(display.getTopShortcutView().getBlobConstants().getElement(), ServiceConstants.HELP_TOPICS.BLOB_CONSTANTS.getId());
-        setDataAttribute(display.getTopShortcutView().getIntegerConstants().getElement(), ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
-        setDataAttribute(display.getTopShortcutView().getPropertyTags().getElement(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
-        setDataAttribute(display.getTopShortcutView().getPropertyTagCategories().getElement(), ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
+        setDataAttribute(display.getTopShortcutView().getIntegerConstants().getElement(),
+                ServiceConstants.HELP_TOPICS.INTEGER_CONSTANTS.getId());
+        setDataAttribute(display.getTopShortcutView().getPropertyTags().getElement(),
+                ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTIES.getId());
+        setDataAttribute(display.getTopShortcutView().getPropertyTagCategories().getElement(),
+                ServiceConstants.HELP_TOPICS.EXTENDED_PROPERTY_CATEGORIES.getId());
         setDataAttribute(display.getTopShortcutView().getMonitoring().getElement(), ServiceConstants.HELP_TOPICS.MONITORING.getId());
 
         setDataAttribute(display.getQuickSearchPanel(), ServiceConstants.HELP_TOPICS.SIMPLE_SEARCH.getId());
@@ -518,8 +537,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     /**
      * Adds the data attribute that identifies the widget to the help overlay system
+     *
      * @param widget The widget to be modified
-     * @param id The help topic id
+     * @param id     The help topic id
      */
     protected void setDataAttribute(@NotNull final Widget widget, @NotNull final Integer id) {
         setDataAttribute(widget.getElement(), id);
@@ -527,8 +547,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     /**
      * Adds the data attribute that identifies the widget to the help overlay system
+     *
      * @param element The widget to be modified
-     * @param id The help topic id
+     * @param id      The help topic id
      */
     protected void setDataAttribute(@NotNull final Element element, @NotNull final Integer id) {
         element.setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());

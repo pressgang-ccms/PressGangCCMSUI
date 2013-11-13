@@ -1,13 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.config;
 
-import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.*;
-import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jetbrains.annotations.NotNull;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -15,8 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONException;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerGroup;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerType;
+import org.jetbrains.annotations.NotNull;
 
 /**
     This presenter is a debug page used to override the configuration of the app
@@ -70,7 +78,7 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                 JSONString restUrl = null;
                                 JSONString reportUrl = null;
                                 JSONString monitoringUrl = null;
-                                JSONString serverType = null;
+                                JSONString serverTypeName = null;
                                 JSONBoolean defaultServerFlag = null;
                                 JSONBoolean readOnly = null;
 
@@ -95,7 +103,7 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                 }
 
                                 if (serverDetails.containsKey("serverType")) {
-                                    serverType = serverDetails.get("serverType").isString();
+                                    serverTypeName = serverDetails.get("serverType").isString();
                                 }
 
                                 if (serverDetails.containsKey("defaultServerFlag")) {
@@ -106,6 +114,9 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                     readOnly = serverDetails.get("readOnly").isBoolean();
                                 }
 
+                                // Get the server type
+                                final ServerType serverType = serverTypeName == null ? null : ServerType.valueOf(serverTypeName.stringValue());
+
                                 if (id != null && name != null && restUrl != null && monitoringUrl != null && serverType != null) {
                                     LOGGER.info("Found server config:\n" +
                                         "\tID:" + id.doubleValue() + "\n" +
@@ -113,8 +124,20 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                         "\tREST URL:" + restUrl.stringValue() + "\n" +
                                         "\tReport URL:" + (reportUrl == null ? null : reportUrl.stringValue()) + "\n" +
                                         "\tMonitoring URL:" + monitoringUrl.stringValue() + "\n" +
-                                        "\tServer Type:" + serverType.stringValue() + "\n" +
-                                        "\tDefault:" + serverType.stringValue());
+                                        "\tServer Type:" + serverTypeName.stringValue() + "\n" +
+                                        "\tDefault:" + serverTypeName.stringValue());
+
+                                    // Find the server group to add to, or create a new one.
+                                    ServerGroup matchedServerGroup = null;
+                                    for (final ServerGroup group : ServerDetails.GROUPS) {
+                                        if (group.getType().equals(serverType)) {
+                                            matchedServerGroup = group;
+                                            break;
+                                        }
+                                    }
+                                    if (matchedServerGroup == null) {
+                                        matchedServerGroup = new ServerGroup(serverType);
+                                    }
 
                                     final ServerDetails newServerDetails = new ServerDetails(
                                             (int)id.doubleValue(),
@@ -122,7 +145,7 @@ public class ConfigPresenter extends BaseTemplatePresenter {
                                             restUrl.stringValue(),
                                             reportUrl == null ? null : reportUrl.stringValue(),
                                             monitoringUrl.stringValue(),
-                                            serverType.stringValue(),
+                                            matchedServerGroup,
                                             readOnly == null ? false : readOnly.booleanValue());
                                     serverDetailsList.add(newServerDetails);
 

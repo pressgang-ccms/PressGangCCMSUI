@@ -31,6 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,6 +111,7 @@ public final class FailOverRESTCall {
             The server that we failed to call.
         */
         final ServerDetails serverDetails = ServerDetails.getSavedServer();
+        final ServerGroup serverGroup = serverDetails.getGroup();
 
         /*
             Fail over after a timeout
@@ -161,7 +163,8 @@ public final class FailOverRESTCall {
                                         pressgang sever. This means the server is down.
                                      */
                                     LOGGER.info("Failing over due to incorrect headers");
-                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                            serverDetails, serverGroup);
                                 } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
                                     /*
                                         The entity was not found. This is expected if an invalid ID was supplied.
@@ -208,7 +211,8 @@ public final class FailOverRESTCall {
                                      */
                                     if (restCall.isRepeatable()) {
                                         LOGGER.info("Failing over due to error");
-                                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                                serverDetails, serverGroup);
                                     } else {
                                         if (!disableDefaultFailureAction) {
                                             Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
@@ -225,7 +229,8 @@ public final class FailOverRESTCall {
                             } else {
                                 if (restCall.isRepeatable()) {
                                     LOGGER.info("Failing over due to error");
-                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                            serverDetails, serverGroup);
                                 } else {
                                     /*
                                         So, what do we do when a non repeatable call failed? In reality most calls
@@ -234,7 +239,7 @@ public final class FailOverRESTCall {
                                         we have got to this point we just failover the server so the next attempt
                                         by the user won't hit the same failed server again.
                                      */
-                                    failOver(failedRESTServers, serverDetails);
+                                    failOver(failedRESTServers, serverDetails, serverGroup);
 
                                     if (!disableDefaultFailureAction) {
                                         Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
@@ -269,7 +274,8 @@ public final class FailOverRESTCall {
                         successCallbackWrapper.setTimedout(true);
                         failureCallbackWrapper.setTimedout(true);
                         LOGGER.info("Failing over due to timeout");
-                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails,
+                                serverGroup);
                     }
                 }
             }
@@ -287,10 +293,14 @@ public final class FailOverRESTCall {
             }
 
             restCall.call(restInterface);
-            timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
+
+            // Only timeout if we aren't using the last server
+            if (failedRESTServers.size() < serverGroup.getServerDetails().size() - 1) {
+                timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
+            }
         } catch (@NotNull final Exception ex) {
             LOGGER.info("Failing over due to exception");
-            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails);
+            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails, serverGroup);
 
             if (display != null) {
                 display.removeWaitOperation();
@@ -304,7 +314,8 @@ public final class FailOverRESTCall {
      */
     private <T> void failOverAndTryAgain(@NotNull final RESTCall restCall, @NotNull final RESTCallBack<T> callback,
                               @Nullable final BaseTemplateViewInterface display, final boolean disableDefaultFailureAction,
-                              @NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
+                              @NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails,
+            @NotNull final ServerGroup serverGroup) {
         /*
             If the application has been closed, just fail any calls.
          */
@@ -312,7 +323,7 @@ public final class FailOverRESTCall {
             callback.failed();
         }
 
-        if (failOver(failedRESTServers, serverDetails)) {
+        if (failOver(failedRESTServers, serverDetails, serverGroup)) {
              performRESTCall(restCall, callback, display, disableDefaultFailureAction, failedRESTServers);
         } else {
             /*
@@ -335,18 +346,12 @@ public final class FailOverRESTCall {
      * Switch to another server in the same group if available.
      * @param failedRESTServers The list of servers that have already failed
      */
-    private <T> boolean failOver(@NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails) {
-
-
-
+    private <T> boolean failOver(@NotNull final List<Integer> failedRESTServers, @NotNull final ServerDetails serverDetails,
+            @NotNull final ServerGroup serverGroup) {
         /*
             We know this server has failed.
          */
         failedRESTServers.add(serverDetails.getId());
-        /*
-            Which group did this server belong to.
-        */
-        final String serverType = serverDetails.getServerType();
 
         /*
             Often there are concurrent requests. To save time we need to make a note of any failed servers so the next
@@ -392,8 +397,8 @@ public final class FailOverRESTCall {
             Do an initial loop over the available servers, skipping any recently failed servers
          */
         outerloop:
-        for (final ServerDetails nextServer : ServerDetails.SERVERS) {
-            if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
+        for (final ServerDetails nextServer : serverGroup.getServerDetails()) {
+            if (!failedRESTServers.contains(nextServer.getId())) {
                 /*
                     Make sure this server did not recently fail
                  */
@@ -424,13 +429,12 @@ public final class FailOverRESTCall {
         /*
             If we get to here, all servers have recently failed. We now try them again.
          */
-        for (final ServerDetails nextServer : ServerDetails.SERVERS) {
-            if (!failedRESTServers.contains(nextServer.getId()) && nextServer.getServerType().equals(serverType)) {
+        for (final ServerDetails nextServer : serverGroup.getServerDetails()) {
+            if (!failedRESTServers.contains(nextServer.getId())) {
                 Preferences.INSTANCE.saveSetting(Preferences.SERVER, nextServer.getId() + "");
                 RestClient.setApplicationRoot(nextServer.getRestEndpoint());
 
                 eventBus.fireEvent(new FailoverEvent(nextServer.getId()));
-
 
                 return true;
             }

@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.server;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
@@ -8,35 +11,41 @@ import org.jetbrains.annotations.NotNull;
  * Contains the details for the various servers that the UI can connect to.
  */
 public class ServerDetails {
-    /**
-     * The production server in Brisbane.
-     */
-    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Production.name(), false);
+    private static final ServerGroup PRODUCTION_GROUP = new ServerGroup(ServerType.Production);
+    private static final ServerGroup PRODUCTION_RO_GROUP = new ServerGroup(ServerType.Read_Only_Backup);
+    private static final ServerGroup DEVELOPMENT_GROUP = new ServerGroup(ServerType.Development);
+    private static final ServerGroup LOCAL_GROUP = new ServerGroup(ServerType.Local);
+    public static final List<ServerGroup> GROUPS = Arrays.asList(PRODUCTION_GROUP, PRODUCTION_RO_GROUP, DEVELOPMENT_GROUP, LOCAL_GROUP);
 
     /**
      * The production server in Brisbane.
      */
-    private static final  ServerDetails PNQ_RO_BACKUP = new  ServerDetails(1, "Pune Read Only Backup", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Read_Only_Backup.name(), true);
+    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", PRODUCTION_GROUP, false);
+
+    /**
+     * The production server in Brisbane.
+     */
+    private static final  ServerDetails PNQ_RO_BACKUP = new  ServerDetails(1, "Pune Read Only Backup", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", PRODUCTION_RO_GROUP, true);
 
     /**
      * The development server in Brisbane.
      */
-    private static final  ServerDetails PNQ_DEVELOPMENT = new  ServerDetails(2, "Pune Development", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+    private static final  ServerDetails PNQ_DEVELOPMENT = new  ServerDetails(2, "Pune Development", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
 
     /**
      * The development server in Pune
      */
-    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
 
     /**
      * The development server in Brisbane
      */
-    private static final  ServerDetails BNE_DEVELOPMENT_ECS_CLOUD = new  ServerDetails(5, "Brisbane Development ECS Cloud", "http://pressgang-dev-ecs.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", ServerTypes.Development.name(), false);
+    private static final  ServerDetails BNE_DEVELOPMENT_ECS_CLOUD = new  ServerDetails(5, "Brisbane Development ECS Cloud", "http://pressgang-dev-ecs.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
 
     /**
      * A local server.
      */
-    private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", ServerTypes.Local.name(), false);
+    private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", LOCAL_GROUP, false);
 
     private static final  ServerDetails DEFAULT_OVERRIDE = LOCAL;
 //    private static final  ServerDetails DEFAULT_OVERRIDE = PNQ_RO_BACKUP;
@@ -85,7 +94,7 @@ public class ServerDetails {
     private final String restUrl;
     private final String reportUrl;
     private final String monitoringUrl;
-    private final String serverType;
+    private final ServerGroup group;
     private final boolean readOnly;
 
     /**
@@ -97,13 +106,14 @@ public class ServerDetails {
      */
     public ServerDetails(final int id, @NotNull final String name, @NotNull final String restUrl,
                          @NotNull final String reportUrl, @NotNull final String monitoringUrl,
-                         @NotNull final String serverType, final boolean readOnly) {
+                         @NotNull final ServerGroup group, final boolean readOnly) {
         this.id = id;
         this.name = name;
         this.restUrl = restUrl;
         this.reportUrl = reportUrl;
         this.monitoringUrl = monitoringUrl;
-        this.serverType = serverType;
+        this.group = group;
+        group.addServer(this);
         this.readOnly = readOnly;
     }
 
@@ -135,8 +145,8 @@ public class ServerDetails {
     }
 
     @NotNull
-    public String getServerType() {
-        return serverType;
+    public ServerGroup getGroup() {
+        return group;
     }
 
     /**
