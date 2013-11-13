@@ -346,6 +346,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         LOGGER.info("ENTER TopicRevisionsView()");
 
+        this.getPanel().addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_BASE_PANEL);
+
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
         results.addColumn(htmlDiffButton, PressGangCCMSUI.INSTANCE.HTMLDiff());
