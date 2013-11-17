@@ -29,9 +29,8 @@ public class AlertBox extends DialogBox {
         this.ok.addStyleName(CSSConstants.AlertBox.ALERT_BOX_OK);
         this.message.addStyleName(CSSConstants.AlertBox.ALERT_BOX_MESSAGE);
         verticalPanel.addStyleName(CSSConstants.AlertBox.ALERT_BOX_PANEL);
-        verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-        // this log should not really be in a view, but as we are replacing
+        // this logic should not really be in a view, but as we are replacing
         // the alert box, this functionality is not going to change
         ok.addClickHandler(new ClickHandler() {
             @Override
