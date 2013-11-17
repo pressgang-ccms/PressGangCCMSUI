@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+
 import org.jboss.errai.bus.client.api.RemoteCallback;
 
 /**

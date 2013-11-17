@@ -1,3 +1,7 @@
+.AlertBoxMessage, .AlertBoxOK {
+    margin: 8px;
+}
+
 td {
     /*
        Remove the default padding in table cells

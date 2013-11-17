@@ -1171,4 +1171,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String EnableRemarks();
+
+    @NotNull
+    String Alert();
 }

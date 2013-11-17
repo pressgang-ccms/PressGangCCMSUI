@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface AlertBox {
+        String ALERT_BOX_MESSAGE = "AlertBoxMessage";
+        String ALERT_BOX_OK = "AlertBoxOK";
+    }
+
     interface BaseChildrenView {
         String POSSIBLE_CHILDREN_RESULTS_PANEL = "PossibleChildrenResultsPanel";
     }

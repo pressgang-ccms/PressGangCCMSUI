@@ -58,6 +58,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -132,6 +133,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private SplitType split = SplitType.NONE;
 
     private boolean displayingSearchResults = true;
+
+    protected final AlertBox alertBox = new AlertBox();
 
     /**
      * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
@@ -915,7 +918,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                 configureMessageDialog();
             } else {
-                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");

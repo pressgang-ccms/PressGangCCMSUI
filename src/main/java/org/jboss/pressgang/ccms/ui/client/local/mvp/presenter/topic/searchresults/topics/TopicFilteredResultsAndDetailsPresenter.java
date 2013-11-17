@@ -270,9 +270,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (overwroteChanges) {
                     /* Take the user to the revisions view so they can review any overwritten changes */
                     switchView(topicRevisionsPresenter.getDisplay());
-                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
@@ -434,7 +434,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                     }
 
-                                    Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
                                 } finally {
                                     LOGGER.log(Level.INFO, "EXIT messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
                                 }
@@ -1583,7 +1583,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         bindBulkImportTagEditingButtons();
                         display.getBulkImport().getDialog().center();
                     } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                        alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
                     }
 
                 }
@@ -1619,7 +1619,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (!hasUnsavedChanges()) {
                         display.getBulkOverwrite().getDialog().center();
                     } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                        alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
                     }
 
                 }
@@ -1751,7 +1751,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 "The displayed collection item to reference a valid entity.");
 
         if (hasUnsavedChanges()) {
-            Window.alert(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+            alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
             reviewUpdateTopic = null;
             return;
         }
@@ -1842,7 +1842,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (ids.isEmpty()) {
-                Window.alert(message.toString());
+                alertBox.setMessageAndDisplay(message.toString());
             } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
                     This gives the user the option to open a new search with just the imported topics.
@@ -2538,7 +2538,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 @Override
                                                 public void failed() {
                                                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                                    Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                                                 }
                                             }, topicRevisionsPresenter.getDisplay(), true);
                                 }
@@ -2546,7 +2546,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 @Override
                                 public void failed() {
                                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                    Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                                 }
                             }, topicRevisionsPresenter.getDisplay(), true);
                         }
@@ -2554,7 +2554,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public void failed() {
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                            Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                            alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                         }
                     };
 
@@ -3219,7 +3219,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void failed() {
                     display.removeWaitOperation();
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ConnectionError());
                 }
             };
 
