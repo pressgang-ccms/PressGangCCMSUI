@@ -2866,7 +2866,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private void addKeyboardShortcutEventHandler(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
             @NotNull final BaseTemplateViewInterface display, @NotNull final GetCurrentTopic currentTopicCallback) {
-        @NotNull final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
+        final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
                 final NativeEvent ne = event.getNativeEvent();
@@ -2892,6 +2892,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
                                 }
                             }
+                        }
+                    });
+                } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'S') {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            saveTopic(messageLogDialogOK);
                         }
                     });
                 } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
