@@ -2,6 +2,10 @@
     margin: 8px;
 }
 
+.AlertBoxPanel {
+    width: 100%;
+}
+
 td {
     /*
        Remove the default padding in table cells

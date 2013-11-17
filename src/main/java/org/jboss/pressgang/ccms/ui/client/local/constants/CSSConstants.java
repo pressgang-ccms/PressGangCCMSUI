@@ -11,6 +11,7 @@ public interface CSSConstants {
     interface AlertBox {
         String ALERT_BOX_MESSAGE = "AlertBoxMessage";
         String ALERT_BOX_OK = "AlertBoxOK";
+        String ALERT_BOX_PANEL = "AlertBoxPanel";
     }
 
     interface BaseChildrenView {
