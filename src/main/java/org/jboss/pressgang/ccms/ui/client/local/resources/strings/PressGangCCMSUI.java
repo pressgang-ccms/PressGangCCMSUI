@@ -1186,4 +1186,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String StyleGuideMatch();
+
+    @NotNull
+    String Legend();
 }

@@ -797,6 +797,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private void buildLegend() {
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
 
+        final Label legend = new Label(PressGangCCMSUI.INSTANCE.Legend() + ":");
+        legend.addStyleName(CSSConstants.Legend.LEGEND);
+
         final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
         misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
 
@@ -809,6 +812,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
 
+        horizontalPanel.add(legend);
         horizontalPanel.add(misspelled);
         horizontalPanel.add(badWord);
         horizontalPanel.add(badPhrase);

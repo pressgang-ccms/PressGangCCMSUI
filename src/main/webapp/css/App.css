@@ -295,7 +295,8 @@ td {
 .BadPhraseLegend,
 .MisspelledLegend,
 .TagMatchLegend,
-.BadWordLegend {
+.BadWordLegend,
+.Legend {
     margin: 2px;
     padding: 2px;
 }

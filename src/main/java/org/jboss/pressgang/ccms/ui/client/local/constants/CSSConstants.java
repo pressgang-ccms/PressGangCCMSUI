@@ -13,7 +13,7 @@ public interface CSSConstants {
         String BAD_PHRASE_LEGEND = "BadPhraseLegend";
         String MISSPELLED_LEGEND = "MisspelledLegend";
         String BAD_WORD_LEGEND = "BadWordLegend";
-        String STYLE_GUIDE_LEGEND = "StyleGuideLegend";
+        String LEGEND = "Legend";
     }
 
     interface AlertBox {
