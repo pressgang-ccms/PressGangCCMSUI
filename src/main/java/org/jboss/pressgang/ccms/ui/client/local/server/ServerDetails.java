@@ -13,6 +13,21 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Contains the details for the various servers that the UI can connect to.
+ *
+ * These details can be loaded from a JSON file on the server at /pressgang-ccms-config/servers.json. The following is
+ * an example of the format of this file.
+ *
+ * [
+ *  {
+ *     "serverId": 1,
+ *     "serverName": "My Server",
+ *     "serverGroup": "Default Servers",
+ *     "restUrl": "http://myserver.com/pressgang-ccms",
+ *     "reportUrl": "http://mybirtserver.com",
+ *     "monitoringUrl": "http://myserver.com/pressgang-ccms/monitoring",
+ *     "readOnly": false
+ *  }
+ * ]
  */
 public class ServerDetails {
 
@@ -46,7 +61,10 @@ public class ServerDetails {
                 loadFromLocalStorage();
                 if (currentServer == null) {
                     // as a last resort, assume some defaults and use them
-                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms", "/birt", "/pressgang-ccms/monitoring", new ServerGroup("Default"), false);;
+                    final ServerGroup serverGroup = new ServerGroup("Default");
+                    serverGroups.put("Default", serverGroup);
+                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms", "/birt", "/pressgang-ccms/monitoring", serverGroup, false);
+                    currentServers.put(currentServer.getId(), currentServer);
                 }
             }
         }
