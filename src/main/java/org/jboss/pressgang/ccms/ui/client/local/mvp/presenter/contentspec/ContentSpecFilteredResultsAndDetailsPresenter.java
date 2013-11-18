@@ -32,6 +32,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -896,8 +897,32 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         createWorkers();
 
+        disableButtonsInReadonlymode();
+
+        buildLegend();
+    }
+
+    private void disableButtonsInReadonlymode() {
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         filteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+    }
+
+    /**
+     * Builds the legend at the bottom of the screen
+     */
+    private void buildLegend() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+
+        final Label legend = new Label(PressGangCCMSUI.INSTANCE.Legend() + ":");
+        legend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
+        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+
+        horizontalPanel.add(legend);
+        horizontalPanel.add(styleGuide);
+
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
     }
 
     /**
