@@ -216,53 +216,33 @@ td {
     height: 100%;
 }
 
-.dayOld {
+.ace_marker-layer .dayOld,
+.ace_marker-layer .weekOld,
+.ace_marker-layer .monthOld,
+.ace_marker-layer .yearOld,
+.ace_marker-layer .older
+{
+    position: absolute;
+    z-index: -2;
+}
+
+.dayOld, .ace_marker-layer .dayOld, .EditedOneDayLegend  {
     background-color: rgba(0, 0, 255, 0.20);
 }
 
-.ace_marker-layer .dayOld {
-    position: absolute;
-    z-index: -2;
-    background-color: rgba(0, 0, 255, 0.20);
-}
-
-.weekOld {
+.weekOld, .ace_marker-layer .weekOld, .EditedOneWeekLegend {
     background-color: rgba(0, 255, 0, 0.20);
 }
 
-.ace_marker-layer .weekOld {
-    position: absolute;
-    z-index: -2;
-    background-color: rgba(0, 255, 0, 0.20);
-}
-
-.monthOld {
+.monthOld, .ace_marker-layer .monthOld, .EditedOneMonthLegend {
     background-color: rgba(255, 255, 0, 0.20);
 }
 
-.ace_marker-layer .monthOld {
-    position: absolute;
-    z-index: -2;
-    background-color: rgba(255, 255, 0, 0.20);
-}
-
-.yearOld {
+.yearOld, .ace_marker-layer .yearOld, .EditedOneYearLegend {
     background-color: rgba(255, 127, 63, 0.20);
 }
 
-.ace_marker-layer .yearOld {
-    position: absolute;
-    z-index: -2;
-    background-color: rgba(255, 127, 63, 0.20);
-}
-
-.older {
-    background-color: rgba(255, 0, 0, 0.20);
-}
-
-.ace_marker-layer .older {
-    position: absolute;
-    z-index: -2;
+.older, .ace_marker-layer .older, .EditedOlderLegend {
     background-color: rgba(255, 0, 0, 0.20);
 }
 
@@ -291,6 +271,8 @@ td {
 .BadWordLegend, .ace_marker-layer div[class^='badword']  {
     background-color: rgba(245, 255, 0, 0.2);
 }
+
+
 
 .BadPhraseLegend,
 .MisspelledLegend,

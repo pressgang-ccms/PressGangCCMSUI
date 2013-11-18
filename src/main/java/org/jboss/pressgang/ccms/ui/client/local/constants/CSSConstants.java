@@ -14,6 +14,11 @@ public interface CSSConstants {
         String MISSPELLED_LEGEND = "MisspelledLegend";
         String BAD_WORD_LEGEND = "BadWordLegend";
         String LEGEND = "Legend";
+        String EDITED_ONE_DAY_LEGEND = "EditedOneDayLegend";
+        String EDITED_ONE_WEEK_LEGEND = "EditedOneWeekLegend";
+        String EDITED_ONE_MONTH_LEGEND = "EditedOneMonthLegend";
+        String EDITED_ONE_YEAR_LEGEND = "EditedOneYearLegend";
+        String EDITED_OLDER_LEGEND = "EditedOlderLegend";
     }
 
     interface AlertBox {

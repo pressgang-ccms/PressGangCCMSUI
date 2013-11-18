@@ -919,7 +919,27 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
 
+        final Label oneDay = new Label(PressGangCCMSUI.INSTANCE.EditedOneDay());
+        oneDay.addStyleName(CSSConstants.Legend.EDITED_ONE_DAY_LEGEND);
+
+        final Label oneWeek = new Label(PressGangCCMSUI.INSTANCE.EditedOneWeek());
+        oneWeek.addStyleName(CSSConstants.Legend.EDITED_ONE_WEEK_LEGEND);
+
+        final Label oneMonth = new Label(PressGangCCMSUI.INSTANCE.EditedOneMonth());
+        oneMonth.addStyleName(CSSConstants.Legend.EDITED_ONE_MONTH_LEGEND);
+
+        final Label oneYear = new Label(PressGangCCMSUI.INSTANCE.EditedOneYear());
+        oneYear.addStyleName(CSSConstants.Legend.EDITED_ONE_YEAR_LEGEND);
+
+        final Label older = new Label(PressGangCCMSUI.INSTANCE.EditedOlder());
+        older.addStyleName(CSSConstants.Legend.EDITED_OLDER_LEGEND);
+
         horizontalPanel.add(legend);
+        horizontalPanel.add(oneDay);
+        horizontalPanel.add(oneWeek);
+        horizontalPanel.add(oneMonth);
+        horizontalPanel.add(oneYear);
+        horizontalPanel.add(older);
         horizontalPanel.add(styleGuide);
 
         getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);

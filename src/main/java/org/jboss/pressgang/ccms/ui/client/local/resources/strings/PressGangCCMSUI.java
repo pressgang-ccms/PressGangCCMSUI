@@ -1189,4 +1189,19 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Legend();
+
+    @NotNull
+    String EditedOneDay();
+
+    @NotNull
+    String EditedOneWeek();
+
+    @NotNull
+    String EditedOneMonth();
+
+    @NotNull
+    String EditedOneYear();
+
+    @NotNull
+    String EditedOlder();
 }
