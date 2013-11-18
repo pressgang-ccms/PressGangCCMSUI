@@ -46,7 +46,7 @@ public class ServerDetails {
                 loadFromLocalStorage();
                 if (currentServer == null) {
                     // as a last resort, assume some defaults and use them
-                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms/rest", "/birt", "/pressgang-ccms/monitoring", new ServerGroup("Default"), false);;
+                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms", "/birt", "/pressgang-ccms/monitoring", new ServerGroup("Default"), false);;
                 }
             }
         }
