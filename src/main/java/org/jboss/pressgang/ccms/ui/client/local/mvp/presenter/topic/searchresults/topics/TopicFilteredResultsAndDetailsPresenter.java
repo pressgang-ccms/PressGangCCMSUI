@@ -40,10 +40,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Element;
@@ -782,10 +779,42 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         buildHelpDatabase();
 
+        disableButtonsInReadonlymode();
+
+        buildLegend();
+    }
+
+    private void disableButtonsInReadonlymode() {
         this.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getBulkImport().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+    }
+
+    /**
+     * Builds the legend at the bottom of the screen
+     */
+    private void buildLegend() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+
+        final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
+        misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
+
+        final Label badWord = new Label(PressGangCCMSUI.INSTANCE.BadWord());
+        badWord.addStyleName(CSSConstants.Legend.BAD_WORD_LEGEND);
+
+        final Label badPhrase = new Label(PressGangCCMSUI.INSTANCE.BadPhrase());
+        badPhrase.addStyleName(CSSConstants.Legend.BAD_PHRASE_LEGEND);
+
+        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
+        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+
+        horizontalPanel.add(misspelled);
+        horizontalPanel.add(badWord);
+        horizontalPanel.add(badPhrase);
+        horizontalPanel.add(styleGuide);
+
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
     }
 
     /**

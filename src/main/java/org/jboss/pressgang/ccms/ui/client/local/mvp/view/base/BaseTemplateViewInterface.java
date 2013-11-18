@@ -260,4 +260,9 @@ public interface BaseTemplateViewInterface {
      *         that need to be attached but hidden.
      */
     HorizontalPanel getHiddenAttachmentArea();
+
+    /**
+     * This panel can be used by views to add their own content.
+     */
+    public SimplePanel getFooterPanelCustomContent();
 }

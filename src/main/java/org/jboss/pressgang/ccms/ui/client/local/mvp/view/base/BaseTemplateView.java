@@ -144,10 +144,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * This is the collection of view specific action buttons.
      */
     private final FlexTable topActionPanel = new FlexTable();
-    /**
-     * The panel that holds the footer items.
-     */
     private final FlexTable footerPanel = new FlexTable();
+    private final SimplePanel footerPanelCustomContent = new SimplePanel();
 
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
@@ -226,6 +224,20 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public TopShortcutView getTopShortcutView() {
         return topShortcutView;
+    }
+
+    /**
+     * The panel that holds the footer items.
+     */
+    public FlexTable getFooterPanel() {
+        return footerPanel;
+    }
+
+    /**
+     * This panel can be used by views to add their own content.
+     */
+    public SimplePanel getFooterPanelCustomContent() {
+        return footerPanelCustomContent;
     }
 
     /**
@@ -505,6 +517,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
 
         /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);

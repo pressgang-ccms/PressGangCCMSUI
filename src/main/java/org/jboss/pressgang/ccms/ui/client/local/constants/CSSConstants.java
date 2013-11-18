@@ -8,6 +8,14 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface Legend {
+        String TAG_MATCH_LEGEND = "TagMatchLegend";
+        String BAD_PHRASE_LEGEND = "BadPhraseLegend";
+        String MISSPELLED_LEGEND = "MisspelledLegend";
+        String BAD_WORD_LEGEND = "BadWordLegend";
+        String STYLE_GUIDE_LEGEND = "StyleGuideLegend";
+    }
+
     interface AlertBox {
         String ALERT_BOX_MESSAGE = "AlertBoxMessage";
         String ALERT_BOX_OK = "AlertBoxOK";

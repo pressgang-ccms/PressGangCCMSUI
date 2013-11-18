@@ -1174,4 +1174,16 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Alert();
+
+    @NotNull
+    String Misspelled();
+
+    @NotNull
+    String BadWord();
+
+    @NotNull
+    String BadPhrase();
+
+    @NotNull
+    String StyleGuideMatch();
 }

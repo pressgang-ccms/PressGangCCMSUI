@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201311180935";
+    public static final String VERSION = "201311181011";
 
     /**
      * The name of the DocBook title element
