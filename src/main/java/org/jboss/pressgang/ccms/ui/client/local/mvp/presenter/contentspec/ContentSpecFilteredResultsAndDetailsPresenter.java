@@ -897,12 +897,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         createWorkers();
 
-        disableButtonsInReadonlymode();
+        disableButtonsInReadonlyMode();
 
         buildLegend();
     }
 
-    private void disableButtonsInReadonlymode() {
+    private void disableButtonsInReadonlyMode() {
         display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         filteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
     }

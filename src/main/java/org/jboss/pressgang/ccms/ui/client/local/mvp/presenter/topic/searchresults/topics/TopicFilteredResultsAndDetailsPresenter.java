@@ -779,12 +779,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         buildHelpDatabase();
 
-        disableButtonsInReadonlymode();
+        disableButtonsInReadonlyMode();
 
         buildLegend();
     }
 
-    private void disableButtonsInReadonlymode() {
+    private void disableButtonsInReadonlyMode() {
         this.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getBulkImport().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
