@@ -227,6 +227,22 @@ td {
     z-index: -2;
 }
 
+.BadPhraseLegend,
+.MisspelledLegend,
+.TagMatchLegend,
+.BadWordLegend,
+.Legend,
+.EditedOneDayLegend,
+.EditedOneWeekLegend,
+.EditedOneMonthLegend,
+.EditedOneYearLegend,
+.EditedOlderLegend,
+.XMLErrorLegend
+{
+    margin: 2px;
+    padding: 2px;
+}
+
 .dayOld, .ace_marker-layer .dayOld, .EditedOneDayLegend  {
     background-color: rgba(0, 0, 255, 0.20);
 }
@@ -267,16 +283,6 @@ td {
     background-color: rgba(245, 255, 0, 0.2);
 }
 
-
-
-.BadPhraseLegend,
-.MisspelledLegend,
-.TagMatchLegend,
-.BadWordLegend,
-.Legend {
-    margin: 2px;
-    padding: 2px;
-}
 
 .ace_marker-layer div[class^='badphrase'],
 .ace_marker-layer div[class^='tagmatch'],
