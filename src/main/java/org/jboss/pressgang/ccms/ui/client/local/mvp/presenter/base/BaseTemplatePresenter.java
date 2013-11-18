@@ -97,7 +97,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     protected void buildServersList() {
         /* Add the REST server */
         display.getServers().clear();
-        for (final ServerDetails serverDetails : ServerDetails.SERVERS) {
+        for (final ServerDetails serverDetails : ServerDetails.getCurrentServers().values()) {
             display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
             if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
                 display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
@@ -105,7 +105,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         }
 
         // Disable the menu if we on;y have one available server
-        if (ServerDetails.SERVERS.length <= 1) {
+        if (ServerDetails.getCurrentServers().values().size() <= 1) {
             display.getServers().setEnabled(false);
         }
     }
@@ -120,8 +120,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
                 if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
                     Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
-                            currentServerSettings.getGroup().getName().replaceAll("_", " ")).replace("$2",
-                            currentServerSettings.getGroup().getName().replaceAll("_", " ")));
+                            currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
+                            currentServerSettings.getGroup().getType().replaceAll("_", " ")));
                     Window.Location.reload();
                 }
             }

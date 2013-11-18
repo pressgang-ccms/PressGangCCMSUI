@@ -47,7 +47,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.Blob
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.config.ConfigPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FileFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter;
@@ -282,8 +281,6 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(FileFilteredResultsPresenter.class);
                 } else if (token.startsWith(TopicRevisionsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TopicRevisionsPresenter.class);
-                } else if (token.startsWith(ConfigPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(ConfigPresenter.class);
                 }
 
                 if (presenter.isPresent()) {

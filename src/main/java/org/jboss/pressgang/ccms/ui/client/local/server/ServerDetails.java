@@ -1,8 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.server;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+import com.google.gwt.http.client.*;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
@@ -11,74 +15,21 @@ import org.jetbrains.annotations.NotNull;
  * Contains the details for the various servers that the UI can connect to.
  */
 public class ServerDetails {
-    private static final ServerGroup PRODUCTION_GROUP = new ServerGroup(ServerType.Production);
-    private static final ServerGroup PRODUCTION_RO_GROUP = new ServerGroup(ServerType.Read_Only_Backup);
-    private static final ServerGroup DEVELOPMENT_GROUP = new ServerGroup(ServerType.Development);
-    private static final ServerGroup LOCAL_GROUP = new ServerGroup(ServerType.Local);
-    public static final List<ServerGroup> GROUPS = Arrays.asList(PRODUCTION_GROUP, PRODUCTION_RO_GROUP, DEVELOPMENT_GROUP, LOCAL_GROUP);
 
-    /**
-     * The production server in Brisbane.
-     */
-    private static final  ServerDetails BNE_PRODUCTION = new  ServerDetails(1, "Brisbane Production", "http://topika.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet.usersys.redhat.com:8080/birt/", "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring", PRODUCTION_GROUP, false);
+    private static final String SERVER_ID = "serverId";
+    private static final String SERVER_NAME = "serverName";
+    private static final String SERVER_GROUP = "serverGroup";
+    private static final String REST_URL = "restUrl";
+    private static final String REPORT_URL = "reportUrl";
+    private static final String MONITORING_URL = "monitoringUrl";
+    private static final String READONLY = "readOnly";
 
-    /**
-     * The production server in Brisbane.
-     */
-    private static final  ServerDetails PNQ_RO_BACKUP = new  ServerDetails(1, "Pune Read Only Backup", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", PRODUCTION_RO_GROUP, true);
+    private static final Map<String, ServerGroup> serverGroups = new HashMap<String, ServerGroup>();
+    private static final Map<Integer, ServerDetails> currentServers = new HashMap<Integer, ServerDetails>();
+    private static ServerDetails currentServer = null;
 
-    /**
-     * The development server in Brisbane.
-     */
-    private static final  ServerDetails PNQ_DEVELOPMENT = new  ServerDetails(2, "Pune Development", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/birt/", "http://pressgang-dev.lab.eng.pnq.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
-
-    /**
-     * The development server in Pune
-     */
-    private static final  ServerDetails BNE_DEVELOPMENT = new  ServerDetails(4, "Brisbane Development", "http://topicindex-dev.ecs.eng.bne.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
-
-    /**
-     * The development server in Brisbane
-     */
-    private static final  ServerDetails BNE_DEVELOPMENT_ECS_CLOUD = new  ServerDetails(5, "Brisbane Development ECS Cloud", "http://pressgang-dev-ecs.usersys.redhat.com:8080/pressgang-ccms", "http://skynet-dev.usersys.redhat.com:8080/birt/", "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring", DEVELOPMENT_GROUP, false);
-
-    /**
-     * A local server.
-     */
-    private static final  ServerDetails LOCAL = new  ServerDetails(3, "Local", "http://localhost:8080/pressgang-ccms", "http://localhost:8080/birt/", "http://localhost:8080/pressgang-ccms/monitoring", LOCAL_GROUP, false);
-
-//    private static final  ServerDetails DEFAULT_OVERRIDE = LOCAL;
-//    private static final  ServerDetails DEFAULT_OVERRIDE = PNQ_RO_BACKUP;
-    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_DEVELOPMENT;
-//    private static final  ServerDetails DEFAULT_OVERRIDE =  BNE_PRODUCTION;
-
-    /**
-     * A collection of all the available servers.
-     */
-//    public static final ServerDetails[] DEFAULT_SERVERS = {LOCAL};
-//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {PNQ_RO_BACKUP};
-//    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_PRODUCTION};
-    public static final ServerDetails[] DEFAULT_SERVERS = new ServerDetails[] {BNE_DEVELOPMENT};
-
-    /**
-     * This is the list we work from, which may be modified through the config page.
-     */
-    public static ServerDetails[] SERVERS = DEFAULT_SERVERS;
-
-    /**
-     *
-     * @param id The ID of the server to return
-     * @return The server details if the ID was found, and the default server otherwise.
-     */
-    @NotNull
-    public static ServerDetails getServer(final int id) {
-        for (final ServerDetails serverDetails : SERVERS) {
-            if (serverDetails.id == id) {
-                return serverDetails;
-            }
-        }
-
-        return DEFAULT_OVERRIDE;
+    public static Map<Integer, ServerDetails> getCurrentServers() {
+        return currentServers;
     }
 
     /**
@@ -86,7 +37,101 @@ public class ServerDetails {
      * @return The saved server details.
      */
     public static ServerDetails getSavedServer() {
-        return ServerDetails.getServer(Preferences.INSTANCE.getInt(Preferences.SERVER, Constants.DEFAULT_SERVER));
+
+        if (currentServer == null) {
+            // first attempt to load the settings from the server
+            loadFromServer();
+            if (currentServer == null) {
+                // then attempt to load the settings from the local storage
+                loadFromLocalStorage();
+                if (currentServer == null) {
+                    // as a last resort, assume some defaults and use them
+                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms/rest", "/birt", "/pressgang-ccms/monitoring", new ServerGroup("Default"), false);;
+                }
+            }
+        }
+
+
+        return currentServer;
+    }
+
+    private static void loadFromLocalStorage() {
+        final String json = Preferences.INSTANCE.getString(Preferences.SERVER_DETAILS, null);
+        if (json != null) {
+            parseJSONFile(json);
+        }
+    }
+
+    private static void loadFromServer() {
+        // First attempt to read the config file from the server
+        final String url = "/pressgang-ccms-config/servers.json";
+        final RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        try {
+            builder.sendRequest(null, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
+                    final String text = resp.getText();
+
+                    // save these servers for future reference
+                    Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
+
+                    parseJSONFile(text);
+                }
+
+                @Override
+                public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
+
+                }
+            });
+        } catch (@NotNull final RequestException e) {
+
+        }
+    }
+
+    private static void parseJSONFile(@NotNull final String json) {
+        final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
+
+        if (serverDetails != null) {
+
+            serverGroups.clear();
+            currentServers.clear();
+
+            for (int serverDetailsIndex = 0, serverDetailsSize = serverDetails.size(); serverDetailsIndex < serverDetailsSize; ++serverDetailsIndex) {
+                final JSONObject serverDetail = serverDetails.get(serverDetailsIndex).isObject();
+                if (serverDetail != null &&
+                        serverDetail.containsKey(SERVER_ID) && serverDetail.get(SERVER_ID).isNumber() != null &&
+                        serverDetail.containsKey(SERVER_GROUP) && serverDetail.get(SERVER_GROUP).isString() != null &&
+                        serverDetail.containsKey(SERVER_NAME) && serverDetail.get(SERVER_NAME).isString() != null &&
+                        serverDetail.containsKey(REST_URL) && serverDetail.get(REST_URL).isString() != null &&
+                        serverDetail.containsKey(REPORT_URL) && serverDetail.get(REPORT_URL).isString() != null&&
+                        serverDetail.containsKey(MONITORING_URL) && serverDetail.get(MONITORING_URL).isString() != null &&
+                        serverDetail.containsKey(READONLY) && serverDetail.get(MONITORING_URL).isBoolean() != null) {
+
+                    final int serverId = (int)serverDetail.get(SERVER_ID).isNumber().doubleValue();
+                    final String serverGroup = serverDetail.get(SERVER_GROUP).isString().stringValue();
+                    final String serverName = serverDetail.get(SERVER_NAME).isString().stringValue();
+                    final String restUrl = serverDetail.get(REST_URL).isString().stringValue();
+                    final String reportUrl = serverDetail.get(REPORT_URL).isString().stringValue();
+                    final String monitoringUrl = serverDetail.get(MONITORING_URL).isString().stringValue();
+                    final boolean readOnly = serverDetail.get(READONLY).isBoolean().booleanValue();
+
+                    if (!serverGroups.containsKey(serverGroup)) {
+                        serverGroups.put(serverGroup, new ServerGroup(serverGroup));
+                    }
+
+                    final ServerDetails newServerDetails = new ServerDetails(serverId, serverName, restUrl, reportUrl, monitoringUrl, serverGroups.get(serverGroup), readOnly);
+                    currentServers.put(serverId, newServerDetails);
+                }
+            }
+
+            final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+            if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+                currentServer = currentServers.get(selectedServerId);
+            } else {
+                currentServer = currentServers.values().iterator().next();
+            }
+        }
     }
 
     private final int id;
@@ -116,6 +161,7 @@ public class ServerDetails {
         group.addServer(this);
         this.readOnly = readOnly;
     }
+
 
     /**
      *

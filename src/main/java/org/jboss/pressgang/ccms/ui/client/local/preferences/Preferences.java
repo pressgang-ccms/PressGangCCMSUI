@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
  */
 final public class Preferences {
     /**
+     * Saves the server details returned by the web server
+     */
+    public static final String SERVER_DETAILS = "ServerDetails";
+    /**
      * Saves the server that the UI should connect to.
      */
     public static final String SERVER = "Server";

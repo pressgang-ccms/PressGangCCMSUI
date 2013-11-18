@@ -9,19 +9,15 @@ import org.jetbrains.annotations.NotNull;
  * A class to hold a list of server details that can be used to fall back on.
  */
 public class ServerGroup {
-    private final ServerType serverType;
+    private final String serverType;
     private final List<ServerDetails> serverDetails = new ArrayList<ServerDetails>();
 
-    public ServerGroup(@NotNull final ServerType serverType) {
+    public ServerGroup(@NotNull final String serverType) {
         this.serverType = serverType;
     }
 
-    public ServerType getType() {
+    public String getType() {
         return serverType;
-    }
-
-    public String getName() {
-        return serverType.name();
     }
 
     public List<ServerDetails> getServerDetails() {
