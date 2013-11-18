@@ -220,7 +220,8 @@ td {
 .ace_marker-layer .weekOld,
 .ace_marker-layer .monthOld,
 .ace_marker-layer .yearOld,
-.ace_marker-layer .older
+.ace_marker-layer .older,
+.ace_marker-layer .xmlerror
 {
     position: absolute;
     z-index: -2;
@@ -246,13 +247,7 @@ td {
     background-color: rgba(255, 0, 0, 0.20);
 }
 
-.xmlerror {
-    background-color: rgba(255, 87, 0, 0.20);
-}
-
-.ace_marker-layer .xmlerror {
-    position: absolute;
-    z-index: -2;
+.xmlerror, .ace_marker-layer .xmlerror, .XMLErrorLegend {
     background-color: rgba(255, 87, 0, 0.20);
 }
 

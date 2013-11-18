@@ -800,6 +800,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final Label legend = new Label(PressGangCCMSUI.INSTANCE.Legend() + ":");
         legend.addStyleName(CSSConstants.Legend.LEGEND);
 
+        final Label xmlError = new Label(PressGangCCMSUI.INSTANCE.XMLError());
+        xmlError.addStyleName(CSSConstants.Legend.XML_ERROR_LEGEND);
+
         final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
         misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
 
@@ -813,6 +816,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
 
         horizontalPanel.add(legend);
+        horizontalPanel.add(xmlError);
         horizontalPanel.add(misspelled);
         horizontalPanel.add(badWord);
         horizontalPanel.add(badPhrase);

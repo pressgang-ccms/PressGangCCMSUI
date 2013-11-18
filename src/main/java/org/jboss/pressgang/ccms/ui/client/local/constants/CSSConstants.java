@@ -19,6 +19,7 @@ public interface CSSConstants {
         String EDITED_ONE_MONTH_LEGEND = "EditedOneMonthLegend";
         String EDITED_ONE_YEAR_LEGEND = "EditedOneYearLegend";
         String EDITED_OLDER_LEGEND = "EditedOlderLegend";
+        String XML_ERROR_LEGEND = "XMLErrorLegend";
     }
 
     interface AlertBox {

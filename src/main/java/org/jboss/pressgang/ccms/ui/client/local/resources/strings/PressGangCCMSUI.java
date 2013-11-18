@@ -1204,4 +1204,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String EditedOlder();
+
+    @NotNull
+    String XMLError();
 }
