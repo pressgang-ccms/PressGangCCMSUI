@@ -51,7 +51,6 @@ public class ServerDetails {
             }
         }
 
-
         return currentServer;
     }
 
@@ -90,47 +89,51 @@ public class ServerDetails {
     }
 
     private static void parseJSONFile(@NotNull final String json) {
-        final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
+        try {
+            final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
 
-        if (serverDetails != null) {
+            if (serverDetails != null) {
 
-            serverGroups.clear();
-            currentServers.clear();
+                serverGroups.clear();
+                currentServers.clear();
 
-            for (int serverDetailsIndex = 0, serverDetailsSize = serverDetails.size(); serverDetailsIndex < serverDetailsSize; ++serverDetailsIndex) {
-                final JSONObject serverDetail = serverDetails.get(serverDetailsIndex).isObject();
-                if (serverDetail != null &&
-                        serverDetail.containsKey(SERVER_ID) && serverDetail.get(SERVER_ID).isNumber() != null &&
-                        serverDetail.containsKey(SERVER_GROUP) && serverDetail.get(SERVER_GROUP).isString() != null &&
-                        serverDetail.containsKey(SERVER_NAME) && serverDetail.get(SERVER_NAME).isString() != null &&
-                        serverDetail.containsKey(REST_URL) && serverDetail.get(REST_URL).isString() != null &&
-                        serverDetail.containsKey(REPORT_URL) && serverDetail.get(REPORT_URL).isString() != null&&
-                        serverDetail.containsKey(MONITORING_URL) && serverDetail.get(MONITORING_URL).isString() != null &&
-                        serverDetail.containsKey(READONLY) && serverDetail.get(MONITORING_URL).isBoolean() != null) {
+                for (int serverDetailsIndex = 0, serverDetailsSize = serverDetails.size(); serverDetailsIndex < serverDetailsSize; ++serverDetailsIndex) {
+                    final JSONObject serverDetail = serverDetails.get(serverDetailsIndex).isObject();
+                    if (serverDetail != null &&
+                            serverDetail.containsKey(SERVER_ID) && serverDetail.get(SERVER_ID).isNumber() != null &&
+                            serverDetail.containsKey(SERVER_GROUP) && serverDetail.get(SERVER_GROUP).isString() != null &&
+                            serverDetail.containsKey(SERVER_NAME) && serverDetail.get(SERVER_NAME).isString() != null &&
+                            serverDetail.containsKey(REST_URL) && serverDetail.get(REST_URL).isString() != null &&
+                            serverDetail.containsKey(REPORT_URL) && serverDetail.get(REPORT_URL).isString() != null&&
+                            serverDetail.containsKey(MONITORING_URL) && serverDetail.get(MONITORING_URL).isString() != null &&
+                            serverDetail.containsKey(READONLY) && serverDetail.get(MONITORING_URL).isBoolean() != null) {
 
-                    final int serverId = (int)serverDetail.get(SERVER_ID).isNumber().doubleValue();
-                    final String serverGroup = serverDetail.get(SERVER_GROUP).isString().stringValue();
-                    final String serverName = serverDetail.get(SERVER_NAME).isString().stringValue();
-                    final String restUrl = serverDetail.get(REST_URL).isString().stringValue();
-                    final String reportUrl = serverDetail.get(REPORT_URL).isString().stringValue();
-                    final String monitoringUrl = serverDetail.get(MONITORING_URL).isString().stringValue();
-                    final boolean readOnly = serverDetail.get(READONLY).isBoolean().booleanValue();
+                        final int serverId = (int)serverDetail.get(SERVER_ID).isNumber().doubleValue();
+                        final String serverGroup = serverDetail.get(SERVER_GROUP).isString().stringValue();
+                        final String serverName = serverDetail.get(SERVER_NAME).isString().stringValue();
+                        final String restUrl = serverDetail.get(REST_URL).isString().stringValue();
+                        final String reportUrl = serverDetail.get(REPORT_URL).isString().stringValue();
+                        final String monitoringUrl = serverDetail.get(MONITORING_URL).isString().stringValue();
+                        final boolean readOnly = serverDetail.get(READONLY).isBoolean().booleanValue();
 
-                    if (!serverGroups.containsKey(serverGroup)) {
-                        serverGroups.put(serverGroup, new ServerGroup(serverGroup));
+                        if (!serverGroups.containsKey(serverGroup)) {
+                            serverGroups.put(serverGroup, new ServerGroup(serverGroup));
+                        }
+
+                        final ServerDetails newServerDetails = new ServerDetails(serverId, serverName, restUrl, reportUrl, monitoringUrl, serverGroups.get(serverGroup), readOnly);
+                        currentServers.put(serverId, newServerDetails);
                     }
+                }
 
-                    final ServerDetails newServerDetails = new ServerDetails(serverId, serverName, restUrl, reportUrl, monitoringUrl, serverGroups.get(serverGroup), readOnly);
-                    currentServers.put(serverId, newServerDetails);
+                final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+                if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+                    currentServer = currentServers.get(selectedServerId);
+                } else {
+                    currentServer = currentServers.values().iterator().next();
                 }
             }
-
-            final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
-            if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
-                currentServer = currentServers.get(selectedServerId);
-            } else {
-                currentServer = currentServers.values().iterator().next();
-            }
+        } catch (@NotNull final Exception ex) {
+            // do nothing if the JSON is invalid
         }
     }
 
