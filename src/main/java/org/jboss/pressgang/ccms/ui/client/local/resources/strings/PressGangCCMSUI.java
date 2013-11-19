@@ -1191,6 +1191,12 @@ public interface PressGangCCMSUI extends Constants {
     String Legend();
 
     @NotNull
+    String ShowLegend();
+
+    @NotNull
+    String HideLegend();
+
+    @NotNull
     String EditedOneDay();
 
     @NotNull

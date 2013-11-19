@@ -98,6 +98,7 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
@@ -796,9 +797,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private void buildLegend() {
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
 
-        final Label legend = new Label(PressGangCCMSUI.INSTANCE.Legend() + ":");
-        legend.addStyleName(CSSConstants.Legend.LEGEND);
+        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
+        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
+        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
 
         final Label xmlError = new Label(PressGangCCMSUI.INSTANCE.XMLError());
         xmlError.addStyleName(CSSConstants.Legend.XML_ERROR_LEGEND);
@@ -815,14 +821,39 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
 
-        horizontalPanel.add(legend);
-        horizontalPanel.add(xmlError);
-        horizontalPanel.add(misspelled);
-        horizontalPanel.add(badWord);
-        horizontalPanel.add(badPhrase);
-        horizontalPanel.add(styleGuide);
+        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
+            horizontalPanel.add(hideLegend);
+            horizontalPanel.add(xmlError);
+            horizontalPanel.add(misspelled);
+            horizontalPanel.add(badWord);
+            horizontalPanel.add(badPhrase);
+            horizontalPanel.add(styleGuide);
+        } else {
+            horizontalPanel.add(showLegend);
+        }
 
-        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
+        hideLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
+                horizontalPanel.clear();
+                horizontalPanel.add(showLegend);
+            }
+        });
+
+        showLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
+                horizontalPanel.clear();
+                horizontalPanel.add(hideLegend);
+                horizontalPanel.add(xmlError);
+                horizontalPanel.add(misspelled);
+                horizontalPanel.add(badWord);
+                horizontalPanel.add(badPhrase);
+                horizontalPanel.add(styleGuide);
+            }
+        });
     }
 
     /**
