@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.server;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONArray;
@@ -31,6 +33,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ServerDetails {
 
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ServerDetails.class.getName());
+
     private static final String SERVER_ID = "serverId";
     private static final String SERVER_NAME = "serverName";
     private static final String SERVER_GROUP = "serverGroup";
@@ -60,6 +67,9 @@ public class ServerDetails {
                 // then attempt to load the settings from the local storage
                 loadFromLocalStorage();
                 if (currentServer == null) {
+                    serverGroups.clear();
+                    currentServers.clear();
+
                     // as a last resort, assume some defaults and use them
                     final ServerGroup serverGroup = new ServerGroup("Default");
                     serverGroups.put("Default", serverGroup);
@@ -124,7 +134,7 @@ public class ServerDetails {
                             serverDetail.containsKey(REST_URL) && serverDetail.get(REST_URL).isString() != null &&
                             serverDetail.containsKey(REPORT_URL) && serverDetail.get(REPORT_URL).isString() != null&&
                             serverDetail.containsKey(MONITORING_URL) && serverDetail.get(MONITORING_URL).isString() != null &&
-                            serverDetail.containsKey(READONLY) && serverDetail.get(MONITORING_URL).isBoolean() != null) {
+                            serverDetail.containsKey(READONLY) && serverDetail.get(READONLY).isBoolean() != null) {
 
                         final int serverId = (int)serverDetail.get(SERVER_ID).isNumber().doubleValue();
                         final String serverGroup = serverDetail.get(SERVER_GROUP).isString().stringValue();
@@ -140,18 +150,20 @@ public class ServerDetails {
 
                         final ServerDetails newServerDetails = new ServerDetails(serverId, serverName, restUrl, reportUrl, monitoringUrl, serverGroups.get(serverGroup), readOnly);
                         currentServers.put(serverId, newServerDetails);
+                    } else {
+                        LOGGER.log(Level.INFO, "The server defined in the JSON file did not have the required fields");
                     }
                 }
 
                 final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
                 if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
                     currentServer = currentServers.get(selectedServerId);
-                } else {
+                } else if (currentServers.size() != 0) {
                     currentServer = currentServers.values().iterator().next();
                 }
             }
         } catch (@NotNull final Exception ex) {
-            // do nothing if the JSON is invalid
+            LOGGER.log(Level.INFO, "Could not parse:\n" +  json);
         }
     }
 
