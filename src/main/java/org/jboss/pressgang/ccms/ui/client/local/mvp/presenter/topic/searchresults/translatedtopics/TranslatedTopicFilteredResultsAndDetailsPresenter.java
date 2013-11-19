@@ -19,9 +19,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -29,6 +27,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCol
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -50,6 +49,7 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTranslatedTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -403,6 +403,52 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         });
 
         bindSplitPanelResize();
+
+        buildLegend();
+    }
+
+    /**
+     * Builds the legend at the bottom of the screen
+     */
+    private void buildLegend() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
+
+        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
+        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
+        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
+        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+
+        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
+            horizontalPanel.add(hideLegend);
+            horizontalPanel.add(styleGuide);
+        } else {
+            horizontalPanel.add(showLegend);
+        }
+
+        hideLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
+                horizontalPanel.clear();
+                horizontalPanel.add(showLegend);
+            }
+        });
+
+        showLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
+                horizontalPanel.clear();
+                horizontalPanel.add(hideLegend);
+                horizontalPanel.add(styleGuide);
+            }
+        });
     }
 
     /**

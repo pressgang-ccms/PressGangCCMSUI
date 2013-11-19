@@ -31,10 +31,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -69,6 +66,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
@@ -912,9 +910,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private void buildLegend() {
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
 
-        final Label legend = new Label(PressGangCCMSUI.INSTANCE.Legend() + ":");
-        legend.addStyleName(CSSConstants.Legend.LEGEND);
+        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
+        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
+        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
 
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
@@ -934,15 +937,41 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final Label older = new Label(PressGangCCMSUI.INSTANCE.EditedOlder());
         older.addStyleName(CSSConstants.Legend.EDITED_OLDER_LEGEND);
 
-        horizontalPanel.add(legend);
-        horizontalPanel.add(oneDay);
-        horizontalPanel.add(oneWeek);
-        horizontalPanel.add(oneMonth);
-        horizontalPanel.add(oneYear);
-        horizontalPanel.add(older);
-        horizontalPanel.add(styleGuide);
+        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
+            horizontalPanel.add(hideLegend);
+            horizontalPanel.add(oneDay);
+            horizontalPanel.add(oneWeek);
+            horizontalPanel.add(oneMonth);
+            horizontalPanel.add(oneYear);
+            horizontalPanel.add(older);
+            horizontalPanel.add(styleGuide);
+        } else {
+            horizontalPanel.add(showLegend);
+        }
 
-        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
+        hideLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
+                horizontalPanel.clear();
+                horizontalPanel.add(showLegend);
+            }
+        });
+
+        showLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
+                horizontalPanel.clear();
+                horizontalPanel.add(hideLegend);
+                horizontalPanel.add(oneDay);
+                horizontalPanel.add(oneWeek);
+                horizontalPanel.add(oneMonth);
+                horizontalPanel.add(oneYear);
+                horizontalPanel.add(older);
+                horizontalPanel.add(styleGuide);
+            }
+        });
     }
 
     /**
