@@ -9,80 +9,19 @@ import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
  * @author Matthew Casperson
  */
 public final class ServiceConstants {
-    /**
-     * The fixed url property tag id.
-     */
-    public static final int FIXED_URL_PROPERTY_TAG = 20;
 
-    /**
-     * The property tag that has the revision of a topic just before a review was requested
-     */
-    public static final int REVIEW_PROPERTY_TAG = 659;
-
-    /**
-     * Original file name property tag
-     */
-    public static final int ORIGINAL_FILE_NAME_PROPERTY_TAG = 28;
-
-    /**
-     * Tag style property tag id
-     */
-    public static final int TAG_STYLE_PROPERTY_TAG = 36;
     /**
      * The id of the tag applied to all content specs.
      */
     public static final Integer CSP_TAG_ID = 268;
     /**
-     * The id of the tag applied to all revision history topics.
-     */
-    public static final Integer REVISION_HISTORY_TAG_ID = 598;
-    /**
-     * The id of the tag applied to all author group topics.
-     */
-    public static final Integer AUTHOR_GROUP_TAG_ID = 664;
-    /**
-     * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
-     * (https://issues.jboss.org/browse/ERRAI-433).
-     */
-    public static final Integer NULL_USER_ID = 89;
-    /**
      * When a spec has no conditions defined, it will actually match a special condition
      * called "default".
      */
     public static final String DEFAULT_CONDITION = "default";
-    //public static final Integer NULL_USER_ID = null;
 
-    /*
-        *************** STRING CONSTANTS ***************
-     */
     public static String CS_NODE_TOPIC_TYPES_QUERY = "query;" + CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" +
             CommonConstants.CS_NODE_TOPIC + "," + CommonConstants.CS_NODE_INNER_TOPIC + "," + CommonConstants.CS_NODE_META_DATA_TOPIC +";";
-
-    /**
-     * The StringConstant that holds the locales.
-     */
-    public static final int LOCALE_STRING_CONSTANT = 38;
-    /**
-     * The StringConstant default locale id.
-     */
-    public static final int DEFAULT_LOCALE_ID = 40;
-    /**
-     * The string constant that contains all the docbook elements.
-     */
-    public static final Integer DOCBOOK_ELEMENTS_STRING_CONSTANT_ID = 41;
-    /**
-     * The string constant ID that contains a comma separated list of
-     * other string constant IDs that contain docbook templates.
-     */
-    public static final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
-    /**
-     * The String Constant ID of the basic section template.
-      */
-    public static final Integer BASIC_TOPIC_TEMPLATE_STRING_CONSTANT_ID = 59;
-    /**
-     * The String Constant ID of the basic content spec template.
-     */
-    public static final Integer BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID = 71;
 
     /*
         *************** TOPIC CONSTANTS ***************

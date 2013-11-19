@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
@@ -272,7 +272,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                                 true);
 
                                 /* This project is no longer a new project */
-                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                         filteredResultsComponent.getDisplay().getProvider().updateRowData(
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
@@ -357,7 +357,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 final RESTProjectV1 displayedEntity = new RESTProjectV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setTags(new RESTTagCollectionV1());
-                final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);

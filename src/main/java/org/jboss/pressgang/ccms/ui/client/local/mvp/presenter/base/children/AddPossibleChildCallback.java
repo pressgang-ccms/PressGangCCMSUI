@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <Y> The collection wrapper for the possible child type.
  * @author Matthew Casperson
  */
-public interface AddPossibleChildCallback<Y extends RESTBaseCollectionItemV1<?, ?, ?>> {
+public interface AddPossibleChildCallback<Y extends RESTBaseEntityCollectionItemV1<?, ?, ?>> {
 
     /**
      * Create a new child relationship and add it to the parent collection.

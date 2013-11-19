@@ -13,6 +13,10 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.ServerSettingsReceived;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.ServerSettingsReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BulkTagSearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
@@ -173,14 +177,27 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 
             this.container = container;
-            this.bind();
 
-            if ("".equals(History.getToken())) {
-                LOGGER.log(Level.INFO, "Setting default history token");
-                History.newItem(WelcomePresenter.HISTORY_TOKEN);
-            } else {
-                LOGGER.log(Level.INFO, "Firing current history token");
-                History.fireCurrentHistoryState();
+            // Create an event handler to bind and fire the history state once the server settings have been downloaded
+            eventBus.addHandler(ServerSettingsReceived.getType(), new ServerSettingsReceivedHandler() {
+                @Override
+                public void onSettingsReceived(RESTServerSettingsV1 serverSettings) {
+                    bind();
+
+                    if ("".equals(History.getToken())) {
+                        LOGGER.log(Level.INFO, "Setting default history token");
+                        History.newItem(WelcomePresenter.HISTORY_TOKEN);
+                    } else {
+                        LOGGER.log(Level.INFO, "Firing current history token");
+                        History.fireCurrentHistoryState();
+                    }
+                }
+            });
+
+            /* Load the ServerSettings */
+            final Optional<ServerSettings> serverSettings = getBeanInstance(ServerSettings.class);
+            if (serverSettings.isPresent()) {
+                serverSettings.get().loadSettings();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.go()");
@@ -200,7 +217,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             final String token = event.getValue();
 
             if (token != null) {
-                Optional<BaseTemplatePresenterInterface> presenter = Optional.absent();
+                Optional<? extends BaseTemplatePresenterInterface> presenter = Optional.absent();
 
                 if (token.startsWith(DocBuilderPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(DocBuilderPresenter.class);
@@ -303,7 +320,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
         }
     }
 
-    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(
+    private <T> Optional<T> getBeanInstance(
             final Class<T> presenterType) {
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.getBeanInstance()");
@@ -311,7 +328,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             final IOCBeanDef<T> bean = this.manager.lookupBean(presenterType);
             if (bean != null) {
                 LOGGER.log(Level.INFO, "Found bean.");
-                final BaseTemplatePresenterInterface presenter = bean.getInstance();
+                final T presenter = bean.getInstance();
                 return Optional.of(presenter);
             }
             return Optional.absent();

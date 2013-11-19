@@ -6,8 +6,8 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -36,8 +36,8 @@ import static com.google.common.base.Preconditions.checkState;
  */
 abstract public class BaseSearchAndEditPresenter<
         T extends RESTBaseEntityV1<T, U, V>,
-        U extends RESTBaseCollectionV1<T, U, V>,
-        V extends RESTBaseCollectionItemV1<T, U, V>,
+        U extends RESTBaseEntityCollectionV1<T, U, V>,
+        V extends RESTBaseEntityCollectionItemV1<T, U, V>,
         Y extends Editor<T>>
         extends BaseTemplatePresenter implements BaseSearchAndEditPresenterInterface {
 

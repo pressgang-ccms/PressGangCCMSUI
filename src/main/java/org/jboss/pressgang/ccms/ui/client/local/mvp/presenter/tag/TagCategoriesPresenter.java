@@ -9,8 +9,8 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
@@ -125,8 +125,8 @@ public class TagCategoriesPresenter
             if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
-                if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
-                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                if (RESTBaseEntityCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                    child.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                 }
 
                 return true;

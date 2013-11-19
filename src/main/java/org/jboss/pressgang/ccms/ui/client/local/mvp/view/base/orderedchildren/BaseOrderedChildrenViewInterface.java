@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
 import com.google.gwt.user.cellview.client.Column;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface BaseOrderedChildrenViewInterface<
         T extends RESTBaseEntityV1<T, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
-        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
+        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseEntityCollectionV1<D, E, F>, F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseExtendedChildrenViewInterface<T, C, D, E, F> {
 
     @NotNull

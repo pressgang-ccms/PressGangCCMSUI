@@ -2,8 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchil
 
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -25,10 +25,10 @@ import static com.google.common.base.Preconditions.checkState;
 abstract public class BaseDetailedChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
         W extends RESTBaseEntityV1<?, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
-        E extends RESTBaseCollectionV1<D, E, F>,
-        F extends RESTBaseCollectionItemV1<D, E, F>>
+        E extends RESTBaseEntityCollectionV1<D, E, F>,
+        F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseChildrenPresenter<T, C, D, E, F>
         implements BaseDetailedChildrenPresenterInterface<T, W, C, D, E, F> {
 

@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
@@ -17,10 +17,10 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public abstract class BaseChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
-        E extends RESTBaseCollectionV1<D, E, F>,
-        F extends RESTBaseCollectionItemV1<D, E, F>>
+        E extends RESTBaseEntityCollectionV1<D, E, F>,
+        F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseTemplatePresenter implements BaseChildrenPresenterInterface<T, C, D, E, F> {
 
     private boolean readOnly;
@@ -106,10 +106,10 @@ public abstract class BaseChildrenPresenter<
                             existingCollection.getItems().remove(child);
                         } else if (child.returnIsRemoveItem()) {
                             /* Tag existed, was removed and then was added again */
-                            child.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                            child.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                         } else {
                             /* Tag existed and was removed */
-                            child.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                            child.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                         }
                         found = true;
                         break;

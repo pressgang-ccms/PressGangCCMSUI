@@ -8,7 +8,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,23 +29,22 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -136,12 +135,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
      */
     private static final Logger LOGGER = Logger.getLogger(ImagesFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     /**
      * A reference to the StringConstants that holds the locales.
      */
-    private String[] locales;
+    private List<String> locales;
 
     @Inject
     private EventBus eventBus;
@@ -304,7 +306,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 } else {
                     final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
-                    imageCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                    imageCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                     // create the image, and add to the wrapper
                     imageCollectionItem.setItem(retValue);
@@ -336,7 +338,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null,
                 "The displayed collection item to reference a valid entity and have a valid collection of language images.");
 
-        final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
+        final List<String> newLocales = new ArrayList<String>(locales);
 
         /* Make it so you can't add a locale if it already exists */
         if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
@@ -350,18 +352,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     }
 
     private void populateLocales() {
-        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-            @Override
-            public void success(@NotNull final RESTStringConstantV1 retValue) {
-                /* Get the list of locales from the StringConstant */
-                locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",");
-
-                finishLoading();
-            }
-        };
-
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback,
-                display);
+        locales = serverSettings.getSettings().getLocales();
+        Collections.sort(locales);
+        finishLoading();
     }
 
     /**
@@ -428,8 +421,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     updatedLanguageImage.explicitSetImageData(buffer);
                                     updatedLanguageImage.explicitSetFilename(file.getName());
                                     // If the state is unchanged then it means it already exists, so we just want to update the data
-                                    if (updatedLanguageImageItem.getState().equals(RESTBaseCollectionItemV1.UNCHANGED_STATE)) {
-                                        updatedLanguageImageItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                                    if (updatedLanguageImageItem.getState().equals(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE)) {
+                                        updatedLanguageImageItem.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                                     }
                                     updatedLanguageImageItem.setItem(updatedLanguageImage);
 
@@ -593,7 +586,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     ().remove(
                                     selectedImage);
                         } else {
-                            selectedImage.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                            selectedImage.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                         }
 
                         // Remove the language image from the display and re-add the locale to the locale dialog list
@@ -645,7 +638,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 if (existingLanguageImageItem == null) {
                     // Add the new language image to the displayed image
                     languageImageItem = new RESTLanguageImageCollectionItemV1();
-                    languageImageItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    languageImageItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                     final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
                     languageImage.explicitSetLocale(selectedLocale);
@@ -656,9 +649,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     // Change the state from removed to added/updated
                     languageImageItem = existingLanguageImageItem;
                     if (languageImageItem.getItem().getId() == null) {
-                        languageImageItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                        languageImageItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
                     } else {
-                        languageImageItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                        languageImageItem.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                     }
                 }
 
@@ -804,42 +797,31 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
+                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
 
-                    /* Start by getting the default locale */
-                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-                        @Override
-                        public void success(@NotNull final RESTStringConstantV1 retValue) {
+                    // Create the image wrapper
+                    final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
+                    imageCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
-                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
+                    /* When we have the default locale, create a new image */
+                    final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
+                    langImage.explicitSetLocale(defaultLocale);
 
-                            // Create the image wrapper
-                            final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
-                            imageCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    final RESTImageV1 newImage = new RESTImageV1();
+                    newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                    newImage.getLanguageImages_OTM().addNewItem(langImage);
+                    imageCollectionItem.setItem(newImage);
 
-                            /* When we have the default locale, create a new image */
-                            final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
-                            langImage.explicitSetLocale(retValue.getValue());
+                    // the image won't show up in the list of files until it is saved, so the
+                    // selected item is null
+                    imageFilteredResultsComponent.setSelectedItem(null);
 
-                            final RESTImageV1 newImage = new RESTImageV1();
-                            newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                            newImage.getLanguageImages_OTM().addNewItem(langImage);
-                            imageCollectionItem.setItem(newImage);
+                    // the new image is being displayed though, so we set the displayed item
+                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem);
 
-                            // the image won't show up in the list of files until it is saved, so the
-                            // selected item is null
-                            imageFilteredResultsComponent.setSelectedItem(null);
-
-                            // the new image is being displayed though, so we set the displayed item
-                            imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem);
-
-                            updateViewsAfterNewEntityLoaded();
-                        }
-                    };
-
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
-                            callback, display);
+                    updateViewsAfterNewEntityLoaded();
                 }
-            }
+            };
         });
 
         imageFilteredResultsComponent.getDisplay().getBulkUpload().addClickHandler(new ClickHandler() {
@@ -864,18 +846,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
-                    /* Start by getting the default locale */
-                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-                        @Override
-                        public void success(@NotNull final RESTStringConstantV1 retValue) {
-                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                            createNewImage(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(), 0,
-                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
-                        }
-                    };
-
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
-                            callback, display);
+                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
+                    createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
+                            display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
                 }
             }
         });

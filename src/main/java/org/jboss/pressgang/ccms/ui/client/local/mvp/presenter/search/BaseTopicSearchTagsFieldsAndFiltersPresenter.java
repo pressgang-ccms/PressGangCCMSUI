@@ -23,7 +23,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
@@ -43,6 +43,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -81,6 +82,8 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     /**
      * The dialog used when saving or overwriting a filter
@@ -267,7 +270,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                             // Create the topic wrapper
                             @NotNull final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
-                            collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                            collectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                             // create the topic, and add to the wrapper
                             collectionItem.setItem(retValue);
@@ -512,7 +515,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                             modifiedTopics.get(index),
                             PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
                             new Integer(RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT),
-                            ServiceConstants.NULL_USER_ID.toString()),
+                            serverSettings.getEntities().getUnknownUserId().toString()),
                     callback, getDisplay());
         } else {
             if (failedTopics.size() == 0) {

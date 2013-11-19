@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -27,8 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
-import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.UNCHANGED_STATE;
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1.REMOVE_STATE;
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1.UNCHANGED_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
@@ -151,7 +151,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
                         @Override
                         public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
                             if (UNCHANGED_STATE.equals(object.getState())) {
-                                object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                                object.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                             }
 
                             object.getItem().explicitSetTitle(value);
@@ -164,7 +164,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
                 public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
 
                     if (UNCHANGED_STATE.equals(object.getState())) {
-                        object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                        object.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                     }
 
                     object.getItem().explicitSetUrl(value);

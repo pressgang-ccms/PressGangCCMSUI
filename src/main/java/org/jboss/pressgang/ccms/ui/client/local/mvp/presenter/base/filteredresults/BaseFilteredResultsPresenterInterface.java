@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * @param <V> The collection item type for entity T
  * @author Matthew Casperson
  */
-public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>> extends PresenterInterface {
+public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseEntityCollectionItemV1<?, ?, ?>> extends PresenterInterface {
 
     /**
      * @return The query string that represents the current state of the filters

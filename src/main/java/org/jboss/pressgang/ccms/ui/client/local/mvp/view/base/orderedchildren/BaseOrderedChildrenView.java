@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 
 /**
@@ -18,8 +18,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  */
 abstract public class BaseOrderedChildrenView<
         T extends RESTBaseEntityV1<T, ?, ?>,
-        A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
-        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseEntityCollectionV1<A, B, C>, C extends RESTBaseEntityCollectionItemV1<A, B, C>,
+        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseEntityCollectionV1<D, E, F>, F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseExtendedChildrenView<T, C, D, E, F> implements BaseOrderedChildrenViewInterface<T, C, D, E, F> {
 
     public BaseOrderedChildrenView(final String applicationName, final String pageName) {

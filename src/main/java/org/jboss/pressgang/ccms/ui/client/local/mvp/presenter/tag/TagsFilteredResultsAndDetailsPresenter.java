@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -165,8 +165,8 @@ public class TagsFilteredResultsAndDetailsPresenter
             if (child.getItem().getRelationshipSort() == null || child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
-                if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
-                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                if (RESTBaseEntityCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                    child.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                 }
 
                 return true;
@@ -267,7 +267,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     public void success(@NotNull final RESTTagV1 retValue) {
                         /* we are now viewing the object returned by the save */
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                         /* Update the list of tags with any saved changes */
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
@@ -549,17 +549,17 @@ public class TagsFilteredResultsAndDetailsPresenter
 
                                 if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                     /* Project was added and then removed */
-                                    if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
+                                    if (RESTBaseEntityCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                                         object.getItem().getTags().getItems().remove(tag);
                                     }
 
                                     /* Project existed, was removed and then was added again */
-                                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
-                                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    if (RESTBaseEntityCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
+                                        tag.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                                     }
                                     /* Project existed and was removed */
                                     else {
-                                        tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                                        tag.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                                     }
 
                                     found = true;
@@ -630,11 +630,11 @@ public class TagsFilteredResultsAndDetailsPresenter
                                     }
                                     /* Tag existed, was removed and then was added again */
                                     else if (tag.returnIsRemoveItem()) {
-                                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                        tag.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                                     }
                                     /* Tag existed and was removed */
                                     else {
-                                        tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                                        tag.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                                         tag.getItem().setRelationshipSort(0);
                                     }
 
@@ -783,7 +783,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 displayedTag.setId(Constants.NULL_ID);
                 /* We assume all tags already have a properties collection present */
                 displayedTag.setProperties(new RESTAssignedPropertyTagCollectionV1());
-                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag, RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);

@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
@@ -265,7 +265,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                         filteredResultsComponent.getDisplay().getProvider().updateRowData(
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
@@ -355,7 +355,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 final RESTPropertyCategoryV1 displayedEntity = new RESTPropertyCategoryV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyTags(new RESTPropertyTagInPropertyCategoryCollectionV1());
-                final RESTPropertyCategoryCollectionItemV1 displayedTagWrapper = new RESTPropertyCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTPropertyCategoryCollectionItemV1 displayedTagWrapper = new RESTPropertyCategoryCollectionItemV1(displayedEntity, RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);

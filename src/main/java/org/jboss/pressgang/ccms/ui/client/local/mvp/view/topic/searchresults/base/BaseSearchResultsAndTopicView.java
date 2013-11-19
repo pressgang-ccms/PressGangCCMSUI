@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base;
 
 import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -22,8 +22,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class BaseSearchResultsAndTopicView<
         T extends RESTBaseEntityV1<T, U, V>,
-        U extends RESTBaseCollectionV1<T, U, V>,
-        V extends RESTBaseCollectionItemV1<T, U, V>> extends
+        U extends RESTBaseEntityCollectionV1<T, U, V>,
+        V extends RESTBaseEntityCollectionItemV1<T, U, V>> extends
         BaseSearchAndEditView<T, U, V> implements BaseTopicFilteredResultsAndDetailsPresenter.Display<T, U, V> {
 
     /**

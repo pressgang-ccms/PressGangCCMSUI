@@ -1,10 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
@@ -28,10 +23,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -2003,53 +1994,21 @@ public final class FailOverRESTCallDatabase {
     }
 
     /**
-     * Retrieve a list of locales from the server.
+     * Create a RESTCall object to call the REST getJSONServerSettings method
      *
-     * @param loadedCallback The callback to call when the locales are loaded
+     * @return
      */
-    public static void populateLocales(@NotNull final StringListLoaded loadedCallback,
-                                       @NotNull final BaseTemplateViewInterface display,
-                                       @NotNull final FailOverRESTCall failOverRESTCall) {
-        failOverRESTCall.performRESTCall(
-            getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT),
-            new RESTCallBack<RESTStringConstantV1>() {
-                @Override
-                public void success(@NotNull final RESTStringConstantV1 value) {
-                    final List<String> locales = new LinkedList<String>(Arrays.asList(value.getValue()
-                            .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
-                            .replaceAll(" ", "").split(Constants.COMMA)));
+    public static RESTCall getServerSettings() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONServerSettings();
+            }
 
-                    /* Clean the list */
-                    while (locales.contains("")) {
-                        locales.remove("");
-                    }
-
-                    Collections.sort(locales);
-
-                    loadedCallback.stringListLoaded(locales);
-                }
-            },
-            display
-        );
-
-    }
-
-    /**
-     * Load the default locale
-     * @param loadedCallback The callback to call when the default locale is loaded
-     */
-    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback,
-                                         @NotNull final BaseTemplateViewInterface display,
-                                         @NotNull final FailOverRESTCall failOverRESTCall) {
-        failOverRESTCall.performRESTCall(
-            getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID),
-            new RESTCallBack<RESTStringConstantV1>() {
-                @Override
-                public void success(@NotNull final RESTStringConstantV1 value) {
-                    loadedCallback.stringLoaded(value.getValue());
-                }
-            },
-            display
-        );
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
     }
 }

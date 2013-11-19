@@ -19,7 +19,11 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -29,7 +33,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -74,7 +78,10 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      */
     private static final Logger LOGGER = Logger.getLogger(TranslatedTopicFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     /**
      * The main view.
@@ -277,7 +284,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                     newTopic.explicitSetTranslatedAdditionalXML(sourceTopic.getTranslatedAdditionalXML());
 
                     failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTranslatedTopic(newTopic, message.toString(), flag,
-                            ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
+                            serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                 }
             } finally {
                 display.getMessageLogDialog().reset();
@@ -848,9 +855,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     protected boolean isExtendedTopic() {
         final RESTTranslatedTopicV1 topic = getDisplayedTopic();
         if (getDisplayedTopic() != null) {
-            if (EntityUtilities.topicHasTag(topic, ServiceConstants.REVISION_HISTORY_TAG_ID)) {
+            if (EntityUtilities.topicHasTag(topic, serverSettings.getEntities().getRevisionHistoryTagId())) {
                 return true;
-            } else if (EntityUtilities.topicHasTag(topic, ServiceConstants.AUTHOR_GROUP_TAG_ID)) {
+            } else if (EntityUtilities.topicHasTag(topic, serverSettings.getEntities().getAuthorGroupTagId())) {
                 return true;
             } else {
                 return false;

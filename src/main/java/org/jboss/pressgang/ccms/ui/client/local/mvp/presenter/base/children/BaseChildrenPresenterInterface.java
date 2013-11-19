@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -32,10 +32,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface BaseChildrenPresenterInterface<
         T extends RESTBaseEntityV1<?, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
-        E extends RESTBaseCollectionV1<D, E, F>,
-        F extends RESTBaseCollectionItemV1<D, E, F>>
+        E extends RESTBaseEntityCollectionV1<D, E, F>,
+        F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends PresenterInterface {
 
     /**

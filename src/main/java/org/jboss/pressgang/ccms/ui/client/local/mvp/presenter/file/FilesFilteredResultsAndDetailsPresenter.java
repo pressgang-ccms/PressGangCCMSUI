@@ -9,7 +9,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,15 +32,14 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageFileCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
@@ -142,12 +141,15 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
      */
     private static final Logger LOGGER = Logger.getLogger(FilesFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     /**
      * A reference to the StringConstants that holds the locales.
      */
-    private String[] locales;
+    private List<String> locales;
 
     @Inject
     private EventBus eventBus;
@@ -274,7 +276,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     retValue.cloneInto(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 } else {
                     final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
-                    fileCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                    fileCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                     // create the file, and add to the wrapper
                     fileCollectionItem.setItem(retValue);
@@ -306,7 +308,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
         checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null,
                 "The displayed collection item to reference a valid entity and have a valid collection of language files.");
 
-        final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
+        final List<String> newLocales = new ArrayList<String>(locales);
 
         /* Make it so you can't add a locale if it already exists */
         if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null) {
@@ -320,18 +322,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     }
 
     private void populateLocales() {
-
-        final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-            @Override
-            public void success(@NotNull final RESTStringConstantV1 retValue) {
-                /* Get the list of locales from the StringConstant */
-                locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",");
-
-                finishLoading();
-            }
-        };
-
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.LOCALE_STRING_CONSTANT), callback, display);
+        locales = serverSettings.getSettings().getLocales();
+        Collections.sort(locales);
+        finishLoading();
     }
 
     /**
@@ -407,8 +400,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     updatedLanguageFile.explicitSetFileData(buffer);
                                     updatedLanguageFile.explicitSetFilename(file.getName());
                                     // If the state is unchanged then it means it already exists, so we just want to update the data
-                                    if (updatedLanguageFileItem.getState().equals(RESTBaseCollectionItemV1.UNCHANGED_STATE)) {
-                                        updatedLanguageFileItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                                    if (updatedLanguageFileItem.getState().equals(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE)) {
+                                        updatedLanguageFileItem.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                                     }
                                     updatedLanguageFileItem.setItem(updatedLanguageFile);
 
@@ -617,7 +610,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM().getItems()
                                     .remove(selectedFile);
                         } else {
-                            selectedFile.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                            selectedFile.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                         }
 
                         // Remove the language file from the display and remove add the locale back to the locale dialog list
@@ -669,7 +662,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (existingLanguageFileItem == null) {
                     // Add the new language file to the displayed file
                     languageFileItem = new RESTLanguageFileCollectionItemV1();
-                    languageFileItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    languageFileItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                     final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
                     languageFile.explicitSetLocale(selectedLocale);
@@ -679,9 +672,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     // Change the state from removed to updated or added
                     languageFileItem = existingLanguageFileItem;
                     if (languageFileItem.getItem().getId() == null) {
-                        languageFileItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                        languageFileItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
                     } else {
-                        languageFileItem.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                        languageFileItem.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                     }
                 }
 
@@ -765,38 +758,29 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
+                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
 
-                    /* Start by getting the default locale */
-                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-                        @Override
-                        public void success(@NotNull final RESTStringConstantV1 retValue) {
-                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
+                    // Create the file wrapper
+                    final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
+                    fileCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
-                            // Create the file wrapper
-                            final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
-                            fileCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    // When we have the default locale, create a new file
+                    final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
+                    langFile.explicitSetLocale(defaultLocale);
 
-                                    /* When we have the default locale, create a new file */
-                            final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
-                            langFile.explicitSetLocale(retValue.getValue());
+                    final RESTFileV1 newFile = new RESTFileV1();
+                    newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
+                    newFile.getLanguageFiles_OTM().addNewItem(langFile);
+                    fileCollectionItem.setItem(newFile);
 
-                            final RESTFileV1 newFile = new RESTFileV1();
-                            newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
-                            newFile.getLanguageFiles_OTM().addNewItem(langFile);
-                            fileCollectionItem.setItem(newFile);
+                    // the file won't show up in the list of files until it is saved, so the
+                    // selected item is null
+                    fileFilteredResultsComponent.setSelectedItem(null);
 
-                            // the file won't show up in the list of files until it is saved, so the
-                            // selected item is null
-                            fileFilteredResultsComponent.setSelectedItem(null);
+                    // the new file is being displayed though, so we set the displayed item
+                    fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
 
-                            // the new file is being displayed though, so we set the displayed item
-                            fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
-
-                            updateViewsAfterNewEntityLoaded();
-                        }
-                    };
-
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    updateViewsAfterNewEntityLoaded();
                 }
             }
         });
@@ -823,18 +807,11 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
-                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-                        @Override
-                        public void success(@NotNull final RESTStringConstantV1 retValue) {
-                            checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                            createNewFile(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(),
-                                    display.getBulkUploadDialog().getFilePath().getText(), 0,
-                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
-                                    new ArrayList<String>());
-                        }
-                    };
-
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(ServiceConstants.DEFAULT_LOCALE_ID), callback, display);
+                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
+                    createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
+                            display.getBulkUploadDialog().getFilePath().getText(), 0,
+                            display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
+                            new ArrayList<String>());
                 }
             }
         });

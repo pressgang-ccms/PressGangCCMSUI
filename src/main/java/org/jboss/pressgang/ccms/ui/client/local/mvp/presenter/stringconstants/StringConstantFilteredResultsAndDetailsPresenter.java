@@ -9,7 +9,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -135,7 +135,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                         retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                        stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
                         stringConstantFilteredResultsPresenter.getDisplay().getProvider().updateRowData(
                                 stringConstantFilteredResultsPresenter.getProviderData().getStartRow(),
                                 stringConstantFilteredResultsPresenter.getProviderData().getItems());
@@ -213,7 +213,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                 /* The displayed entity will also be blank. This is the object that our data will be saved into */
                 final RESTStringConstantV1 displayedEntity = new RESTStringConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                 stringConstantFilteredResultsPresenter.setSelectedItem(selectedTagWrapper);
                 stringConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);

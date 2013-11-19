@@ -1,11 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jetbrains.annotations.NotNull;
 
-public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>> {
+public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseEntityCollectionV1<D, E, F>, F extends RESTBaseEntityCollectionItemV1<D, E, F>> {
     /**
      * The sort property is not exposed via a consistent interface, so this method is used to allow overriding components to set
      * the sort order on the children being modified.

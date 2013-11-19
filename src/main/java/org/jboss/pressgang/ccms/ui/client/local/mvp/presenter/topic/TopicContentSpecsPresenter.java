@@ -100,7 +100,7 @@ public class TopicContentSpecsPresenter extends BaseChildrenPresenter<RESTTopicV
 
                 if (parent != null && parent.getContentSpecs_OTM() != null) {
                     getPossibleChildrenProviderData().getItems().addAll(
-                            parent.getContentSpecs_OTM().returnExistingAddedAndUpdatedCollectionItems());
+                            parent.getContentSpecs_OTM().returnExistingAndAddedCollectionItems());
                 }
 
                 /*

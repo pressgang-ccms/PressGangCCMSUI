@@ -3,8 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -23,10 +23,10 @@ import org.jetbrains.annotations.Nullable;
  */
 abstract public class BaseChildrenView<
         T extends RESTBaseEntityV1<?, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
-        E extends RESTBaseCollectionV1<D, E, F>,
-        F extends RESTBaseCollectionItemV1<D, E, F>>
+        E extends RESTBaseEntityCollectionV1<D, E, F>,
+        F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseTemplateView implements BaseChildrenViewInterface<T, C, D, E, F> {
 
     /**

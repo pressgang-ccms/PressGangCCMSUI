@@ -31,9 +31,13 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -46,14 +50,13 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -62,7 +65,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
@@ -91,7 +93,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private static final Logger LOGGER = Logger.getLogger(ContentSpecFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     /*
         True when the property tags tab is opened for the first time, and the
@@ -470,7 +475,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     // Create the contentspec wrapper
                                     final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
                                             RESTTextContentSpecCollectionItemV1();
-                                    contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                                     // create the content spec, and add to the wrapper
                                     contentSpecCollectionItem.setItem(retValue);
@@ -539,7 +544,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         };
 
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
-                                ServiceConstants.NULL_USER_ID.toString()), addCallback, display);
+                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -632,7 +637,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         };
 
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
-                                ServiceConstants.NULL_USER_ID.toString()), updateCallback, display);
+                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
@@ -769,7 +774,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 public void success(@NotNull final RESTStringConstantV1 retValue) {
                     // Create the content spec wrapper
                     final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new RESTTextContentSpecCollectionItemV1();
-                    contentSpecCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+                    contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                     // create the content spec, and add to the wrapper
                     final RESTTextContentSpecV1 newEntity = new RESTTextContentSpecV1();
@@ -803,8 +808,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             };
 
             failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getStringConstant(ServiceConstants.BASIC_CONTENT_SPEC_TEMPLATE_STRING_CONSTANT_ID), callback,
-                    display);
+                    FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
+                    callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -867,31 +872,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
-            @Override
-            public void stringListLoaded(@NotNull final List<String> locales) {
-                try {
-                    LOGGER.log(Level.INFO,
-                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
-
-                    ContentSpecFilteredResultsAndDetailsPresenter.this.locales = locales;
-                    localesLoaded = true;
-                    displayNewContentSpec();
-                    displayInitialContentSpec(getNewEntityCallback);
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
-                }
-
-            }
-        }, display, failOverRESTCall);
-
-        FailOverRESTCallDatabase.loadDefaultLocale(new StringLoaded() {
-            @Override
-            public void stringLoaded(@NotNull final String string) {
-                defaultLocale = string;
-                displayNewContentSpec();
-            }
-        }, display, failOverRESTCall);
+        locales = serverSettings.getSettings().getLocales();
+        Collections.sort(locales);
+        defaultLocale = serverSettings.getSettings().getDefaultLocale();
+        displayNewContentSpec();
+        displayInitialContentSpec(getNewEntityCallback);
 
         createWorkers();
 
@@ -982,7 +967,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
-            if (isInitialTopicReadyToBeLoaded() &&
+            if (isInitialContentSpecReadyToBeLoaded() &&
                     filteredResultsPresenter.getProviderData().getItems() != null &&
                     filteredResultsPresenter.getProviderData().getItems().size() == 1) {
                 loadNewEntity(getNewEntityCallback, filteredResultsPresenter.getProviderData().getItems().get(0));
@@ -993,9 +978,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
     }
 
-    private boolean isInitialTopicReadyToBeLoaded() {
+    private boolean isInitialContentSpecReadyToBeLoaded() {
         /* only proceed loading the initial topic when the locales and the topic list have been loaded */
-        return localesLoaded && contentSpecListLoaded;
+        return contentSpecListLoaded;
     }
 
     /**
@@ -1925,7 +1910,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Nullable RESTTagCollectionItemV1 deletedTag = null;
             for (@NotNull final RESTTagCollectionItemV1 tag : returnCurrentContentSpec.getContentSpec().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
-                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
+                    if (RESTBaseEntityCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                         deletedTag = tag;
                         break;
                     } else {
@@ -1962,7 +1947,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
 
                             /* there is no match if the tag has already been removed */
-                    if (existingTag == null || existingTag.getItem() == null || RESTBaseCollectionItemV1.REMOVE_STATE.equals(
+                    if (existingTag == null || existingTag.getItem() == null || RESTBaseEntityCollectionItemV1.REMOVE_STATE.equals(
                             existingTag.getState())) {
                         return false;
                     }
@@ -2007,7 +1992,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
 
                 for (@NotNull final RESTTagCollectionItemV1 tag : conflictingTags) {
-                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                    tag.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
                 }
             }
 
@@ -2017,7 +2002,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 /* Add the tag to the topic */
                 returnCurrentContentSpec.getContentSpec().getTags().addNewItem(selectedTagClone);
             } else {
-                deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                deletedTag.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
             }
 
             /* Redisplay the view */
@@ -2056,12 +2041,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         @Override
         public void onClick(@NotNull final ClickEvent event) {
 
-            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
+            if (RESTBaseEntityCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */
                 returnCurrentContentSpec.getContentSpec().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
-                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                tag.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
             }
 
             tagDisplay.display(returnCurrentContentSpec.getContentSpec(), returnReadOnlyMode.getReadOnlyMode());

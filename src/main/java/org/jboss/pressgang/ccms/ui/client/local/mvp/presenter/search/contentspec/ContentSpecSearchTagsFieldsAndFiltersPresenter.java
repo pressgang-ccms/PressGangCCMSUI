@@ -16,7 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollection
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
@@ -234,7 +234,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
 
                             // Create the topic wrapper
                             @NotNull final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
-                            collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                            collectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                             // create the topic, and add to the wrapper
                             collectionItem.setItem(retValue);

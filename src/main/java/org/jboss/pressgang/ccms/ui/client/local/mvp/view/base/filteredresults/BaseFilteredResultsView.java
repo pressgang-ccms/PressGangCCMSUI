@@ -5,7 +5,7 @@ import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SingleSelectionModel;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <V> The collection item type for entity T
  * @author Matthew Casperson
  */
-abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1<?, ?, ?>>
+abstract public class BaseFilteredResultsView<V extends RESTBaseEntityCollectionItemV1<?, ?, ?>>
         extends BaseTemplateView implements BaseFilteredResultsViewInterface<V> {
 
     /**

@@ -16,7 +16,6 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -87,9 +86,9 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
 
         // If we are displaying a revision history topic then merge the revisions together
         final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
-        if (merge && EntityUtilities.topicHasTag(translatedTopic, ServiceConstants.REVISION_HISTORY_TAG_ID)) {
+        if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
             xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
-        } else if (merge && EntityUtilities.topicHasTag(translatedTopic, ServiceConstants.AUTHOR_GROUP_TAG_ID)) {
+        } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
             xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
         } else {
             xml = processXML(xml);

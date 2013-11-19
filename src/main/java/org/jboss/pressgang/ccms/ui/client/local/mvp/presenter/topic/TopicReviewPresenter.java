@@ -1,14 +1,25 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.Collections;
+
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
@@ -21,15 +32,6 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionIt
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import java.util.Collections;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to add logic to the review view.
@@ -55,6 +57,8 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
     @Inject
     private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     private RESTTopicV1 topic;
 
@@ -144,7 +148,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 topicWithTags) {
 
-                        final boolean hasReviewTag = EntityUtilities.topicHasTag(topicWithTags, ServiceConstants.REVIEW_PROPERTY_TAG);
+                        final boolean hasReviewTag = EntityUtilities.topicHasTag(topicWithTags, serverSettings.getEntities().getReviewTagId());
 
                         if (hasReviewTag) {
                             /*
@@ -170,7 +174,8 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                                 }
 
                                 if (foundLatest) {
-                                    final boolean revisionHasReviewTag = EntityUtilities.topicHasTag(revision.getItem(), ServiceConstants.REVIEW_PROPERTY_TAG);
+                                    final boolean revisionHasReviewTag = EntityUtilities.topicHasTag(revision.getItem(),
+                                            serverSettings.getEntities().getReviewTagId());
 
                                     checkState(lastRevisionWithTag != null || revisionHasReviewTag, "The first revision should have the review tag. The database revisions may be in an inconsistent state.");
 

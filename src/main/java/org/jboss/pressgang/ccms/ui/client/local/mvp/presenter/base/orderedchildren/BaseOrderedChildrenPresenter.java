@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchildren.BaseDetailedChildrenPresenter;
@@ -18,10 +18,10 @@ import static com.google.common.base.Preconditions.checkState;
 abstract public class BaseOrderedChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
         W extends RESTBaseEntityV1<?, ?, ?>,
-        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
-        E extends RESTBaseCollectionV1<D, E, F>,
-        F extends RESTBaseCollectionItemV1<D, E, F>>
+        E extends RESTBaseEntityCollectionV1<D, E, F>,
+        F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseDetailedChildrenPresenter<T, W, C, D, E, F>
         implements BaseOrderedChildrenPresenterInterface<T, W, C, D, E, F> {
 
@@ -80,8 +80,8 @@ abstract public class BaseOrderedChildrenPresenter<
                     sortCallback.setSort(existingChild, j);
 
                     /* we need to mark the joiner entity as updated */
-                    if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(existingChild.getState())) {
-                        existingChild.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    if (RESTBaseEntityCollectionItemV1.UNCHANGED_STATE.equals(existingChild.getState())) {
+                        existingChild.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                     }
                 }
 

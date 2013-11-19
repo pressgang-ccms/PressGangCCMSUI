@@ -1,5 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -12,6 +25,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
@@ -20,19 +34,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTTranslatedTopicCollectionItemV1> implements BaseTemplatePresenterInterface {
@@ -52,7 +57,10 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
      */
     private static final RegExp LOCALE_REGEX = RegExp.compile(LOCALE_REGEX_STRING);
 
-    @Inject private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+    @Inject
+    private ServerSettings serverSettings;
 
     @Inject
     private Display display;
@@ -92,51 +100,42 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         super.bindFilteredResults(queryString, display);
         this.queryString = queryString;
 
-        FailOverRESTCallDatabase.populateLocales(new StringListLoaded() {
-            @Override
-            public void stringListLoaded(@NotNull final List<String> locales) {
+        // Get the common query and locales that will make up the grouped results
+        final List<String> locales = serverSettings.getSettings().getLocales();
+        Collections.sort(locales);
+        breakDownQuery(locales);
 
-                /* Get the common query and locales that will make up the grouped results */
-                breakDownQuery(locales);
+        // Add "tabs" for the locales
+        boolean first = true;
+        for (final String locale : localeQueries.keySet()) {
+            final PushButton localeTab = UIUtilities.createTopTabPushButton(locale);
+            final Label localeTabDown = UIUtilities.createTopTabDownLabel(locale);
+            tabButtonsAndLabels.put(localeTab, localeTabDown);
 
-                /*
-                    Add "tabs" for the locales
-                */
-                boolean first = true;
-                for (final String locale : localeQueries.keySet()) {
-                    final PushButton localeTab = UIUtilities.createTopTabPushButton(locale);
-                    final Label localeTabDown = UIUtilities.createTopTabDownLabel(locale);
-                    tabButtonsAndLabels.put(localeTab, localeTabDown);
+            display.addActionButton(localeTab, display.getTabPanel());
 
-                    display.addActionButton(localeTab, display.getTabPanel());
+            @NotNull final ClickHandler clickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    displayLocaleResults(localeQueries.get(locale));
 
-                    @NotNull final ClickHandler clickHandler = new ClickHandler() {
-                        @Override
-                        public void onClick(final ClickEvent event) {
-                            displayLocaleResults(localeQueries.get(locale));
-
-                            for (final PushButton tab : tabButtonsAndLabels.keySet()) {
-                                display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab, display.getTabPanel());
-                            }
-
-                            display.replaceTopActionButton(localeTab, localeTabDown, display.getTabPanel());
-                        }
-                    };
-
-                    localeTab.addClickHandler(clickHandler);
-
-                    /*
-                        Load the first locale by default
-                     */
-                    if (first) {
-                        clickHandler.onClick(null);
+                    for (final PushButton tab : tabButtonsAndLabels.keySet()) {
+                        display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab, display.getTabPanel());
                     }
 
-                    first = false;
+                    display.replaceTopActionButton(localeTab, localeTabDown, display.getTabPanel());
                 }
+            };
 
+            localeTab.addClickHandler(clickHandler);
+
+            // Load the first locale by default
+            if (first) {
+                clickHandler.onClick(null);
             }
-        }, display, failOverRESTCall);
+
+            first = false;
+        }
     }
 
     private void displayLocaleResults(@Nullable final String localeSearch) {

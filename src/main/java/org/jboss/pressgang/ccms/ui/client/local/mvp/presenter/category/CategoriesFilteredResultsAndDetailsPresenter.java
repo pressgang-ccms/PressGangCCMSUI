@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
@@ -85,8 +85,8 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             if (child.getItem().getRelationshipSort() == null || child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
-                if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
-                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                if (RESTBaseEntityCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                    child.setState(RESTBaseEntityUpdateCollectionItemV1.UPDATE_STATE);
                 }
 
                 return true;
@@ -371,7 +371,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This category is no longer a new category */
-                        filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
 
                         categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                         categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
@@ -466,7 +466,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
                     displayedEntity.setId(Constants.NULL_ID);
                     displayedEntity.setTags(new RESTTagInCategoryCollectionV1());
-                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity, RESTBaseEntityCollectionItemV1.ADD_STATE);
 
                     filteredResultsPresenter.setSelectedItem(selectedTagWrapper);
                     filteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);

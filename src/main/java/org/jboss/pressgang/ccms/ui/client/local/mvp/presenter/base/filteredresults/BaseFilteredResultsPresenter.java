@@ -1,10 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.view.client.SingleSelectionModel;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -16,16 +22,10 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * @see BaseFilteredResultsPresenterInterface
  */
-abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionItemV1<?, ?, ?>>
+abstract public class BaseFilteredResultsPresenter<V extends RESTBaseEntityCollectionItemV1<?, ?, ?>>
         extends BaseTemplatePresenter implements BaseFilteredResultsPresenterInterface<V> {
 
     /**
@@ -154,7 +154,9 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
             final SingleSelectionModel<V> selectionModel = (SingleSelectionModel<V>) getDisplay().getResults().getSelectionModel();
             selectionModel.clear();
         } else {
-            getDisplay().getResults().getSelectionModel().setSelected(selectedItem, true);
+            final SingleSelectionModel<V> selectionModel = (SingleSelectionModel<V>) getDisplay().getResults().getSelectionModel();
+            selectionModel.clear();
+            selectionModel.setSelected(selectedItem, true);
         }
     }
 }
