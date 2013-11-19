@@ -30,11 +30,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
@@ -43,6 +39,7 @@ import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -65,6 +62,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -261,6 +259,72 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         bindConditionSelection();
 
         bindRemarksSelection();
+
+        buildLegend();
+    }
+
+    /**
+     * Builds the legend at the bottom of the screen
+     */
+    private void buildLegend() {
+        final HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
+
+        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
+        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
+        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final Label xmlError = new Label(PressGangCCMSUI.INSTANCE.XMLError());
+        xmlError.addStyleName(CSSConstants.Legend.XML_ERROR_LEGEND);
+
+        final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
+        misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
+
+        final Label badWord = new Label(PressGangCCMSUI.INSTANCE.BadWord());
+        badWord.addStyleName(CSSConstants.Legend.BAD_WORD_LEGEND);
+
+        final Label badPhrase = new Label(PressGangCCMSUI.INSTANCE.BadPhrase());
+        badPhrase.addStyleName(CSSConstants.Legend.BAD_PHRASE_LEGEND);
+
+        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
+        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+
+        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
+            horizontalPanel.add(hideLegend);
+            horizontalPanel.add(xmlError);
+            horizontalPanel.add(misspelled);
+            horizontalPanel.add(badWord);
+            horizontalPanel.add(badPhrase);
+            horizontalPanel.add(styleGuide);
+        } else {
+            horizontalPanel.add(showLegend);
+        }
+
+        hideLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
+                horizontalPanel.clear();
+                horizontalPanel.add(showLegend);
+            }
+        });
+
+        showLegend.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
+                horizontalPanel.clear();
+                horizontalPanel.add(hideLegend);
+                horizontalPanel.add(xmlError);
+                horizontalPanel.add(misspelled);
+                horizontalPanel.add(badWord);
+                horizontalPanel.add(badPhrase);
+                horizontalPanel.add(styleGuide);
+            }
+        });
     }
 
     private void bindConditionSelection() {

@@ -403,52 +403,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         });
 
         bindSplitPanelResize();
-
-        buildLegend();
-    }
-
-    /**
-     * Builds the legend at the bottom of the screen
-     */
-    private void buildLegend() {
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
-
-        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
-        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
-
-        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
-        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
-
-        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
-        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
-
-        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
-            horizontalPanel.add(hideLegend);
-            horizontalPanel.add(styleGuide);
-        } else {
-            horizontalPanel.add(showLegend);
-        }
-
-        hideLegend.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
-                horizontalPanel.clear();
-                horizontalPanel.add(showLegend);
-            }
-        });
-
-        showLegend.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
-                horizontalPanel.clear();
-                horizontalPanel.add(hideLegend);
-                horizontalPanel.add(styleGuide);
-            }
-        });
     }
 
     /**
