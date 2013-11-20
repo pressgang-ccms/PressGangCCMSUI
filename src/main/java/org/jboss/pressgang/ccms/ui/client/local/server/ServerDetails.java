@@ -73,7 +73,9 @@ public class ServerDetails {
                     // as a last resort, assume some defaults and use them
                     final ServerGroup serverGroup = new ServerGroup("Default");
                     serverGroups.put("Default", serverGroup);
-                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms", "/birt", "/pressgang-ccms/monitoring", serverGroup, false);
+                    final String hostUrl = GWTUtilities.getLocalUrl();
+                    currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
+                            hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
                     currentServers.put(currentServer.getId(), currentServer);
                 }
             }
