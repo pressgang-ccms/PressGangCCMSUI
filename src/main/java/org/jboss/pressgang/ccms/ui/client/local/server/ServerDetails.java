@@ -1,16 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.server;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gwt.http.client.*;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -73,7 +77,9 @@ public class ServerDetails {
                     // as a last resort, assume some defaults and use them
                     final ServerGroup serverGroup = new ServerGroup("Default");
                     serverGroups.put("Default", serverGroup);
-                    currentServer = new ServerDetails(1, "Default", "/pressgang-ccms", "/birt", "/pressgang-ccms/monitoring", serverGroup, false);
+                    final String hostUrl = GWTUtilities.getLocalUrl();
+                    currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
+                            hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
                     currentServers.put(currentServer.getId(), currentServer);
                 }
             }

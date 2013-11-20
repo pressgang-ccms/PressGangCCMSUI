@@ -39,8 +39,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
@@ -102,7 +100,6 @@ import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
@@ -770,8 +767,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         buildHelpDatabase();
 
         disableButtonsInReadonlyMode();
-
-        buildLegend();
     }
 
     private void disableButtonsInReadonlyMode() {
@@ -779,70 +774,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         searchResultPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getBulkImport().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
         searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-    }
-
-    /**
-     * Builds the legend at the bottom of the screen
-     */
-    private void buildLegend() {
-        final HorizontalPanel horizontalPanel = new HorizontalPanel();
-        horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
-
-        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
-        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
-
-        final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
-        showLegend.addStyleName(CSSConstants.Legend.LEGEND);
-
-        final Label xmlError = new Label(PressGangCCMSUI.INSTANCE.XMLError());
-        xmlError.addStyleName(CSSConstants.Legend.XML_ERROR_LEGEND);
-
-        final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
-        misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
-
-        final Label badWord = new Label(PressGangCCMSUI.INSTANCE.BadWord());
-        badWord.addStyleName(CSSConstants.Legend.BAD_WORD_LEGEND);
-
-        final Label badPhrase = new Label(PressGangCCMSUI.INSTANCE.BadPhrase());
-        badPhrase.addStyleName(CSSConstants.Legend.BAD_PHRASE_LEGEND);
-
-        final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
-        styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
-
-        if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
-            horizontalPanel.add(hideLegend);
-            horizontalPanel.add(xmlError);
-            horizontalPanel.add(misspelled);
-            horizontalPanel.add(badWord);
-            horizontalPanel.add(badPhrase);
-            horizontalPanel.add(styleGuide);
-        } else {
-            horizontalPanel.add(showLegend);
-        }
-
-        hideLegend.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, false);
-                horizontalPanel.clear();
-                horizontalPanel.add(showLegend);
-            }
-        });
-
-        showLegend.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
-                horizontalPanel.clear();
-                horizontalPanel.add(hideLegend);
-                horizontalPanel.add(xmlError);
-                horizontalPanel.add(misspelled);
-                horizontalPanel.add(badWord);
-                horizontalPanel.add(badPhrase);
-                horizontalPanel.add(styleGuide);
-            }
-        });
     }
 
     /**
