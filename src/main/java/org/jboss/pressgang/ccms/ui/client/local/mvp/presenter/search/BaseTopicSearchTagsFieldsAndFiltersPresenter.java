@@ -46,6 +46,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -422,7 +423,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
     private void applyBulkTags(@NotNull final String query, @NotNull final List<Integer> removeTags, @NotNull final Map<SearchUICategory, ArrayList<Integer>> addTags) {
 
         if (removeTags.size() == 0 && addTags.size() == 0) {
-            Window.alert(PressGangCCMSUI.INSTANCE.NoBulkTagsSelected());
+            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoBulkTagsSelected());
             return;
         }
 
@@ -483,7 +484,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 }
 
                 if (modifiedTopics.size() == 0) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoTopicsFound());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoTopicsFound());
                 } else if (Window.confirm(PressGangCCMSUI.INSTANCE.ThisOperationWillModify() + " " + modifiedTopics.size() + " " + PressGangCCMSUI.INSTANCE.Topics() + ".\n" + PressGangCCMSUI.INSTANCE.AreYouSureYouWishToContinue())) {
                     updateTopic(0, new ArrayList<Integer>(), modifiedTopics);
                 }
@@ -519,9 +520,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                     callback, getDisplay());
         } else {
             if (failedTopics.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.AllTopicsUpdatedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.AllTopicsUpdatedSuccessfully());
             } else {
-                Window.alert(failedTopics.size() + " " + PressGangCCMSUI.INSTANCE.TopicsWereNotUpdatedCorrectly() + modifiedTopics.toString());
+                AlertBox.setMessageAndDisplay(failedTopics.size() + " " + PressGangCCMSUI.INSTANCE.TopicsWereNotUpdatedCorrectly() + modifiedTopics.toString());
             }
         }
     }

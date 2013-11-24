@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -142,7 +143,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
 
                         updateDisplayWithNewEntityData(wasNewEntity);
 
-                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                     }
                 };
 
@@ -163,7 +164,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                             failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateStringConstant(stringConstant), callback, display);
                         }
                     } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 }
             }

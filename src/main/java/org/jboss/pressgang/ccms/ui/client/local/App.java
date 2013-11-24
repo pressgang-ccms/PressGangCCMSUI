@@ -11,6 +11,7 @@ import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -50,7 +51,7 @@ public class App {
         public void onUncaughtException(@NotNull final Throwable ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
             LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
-            Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
+            AlertBox.setMessageAndDisplay("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
             History.newItem(WelcomePresenter.HISTORY_TOKEN);
         }
     };

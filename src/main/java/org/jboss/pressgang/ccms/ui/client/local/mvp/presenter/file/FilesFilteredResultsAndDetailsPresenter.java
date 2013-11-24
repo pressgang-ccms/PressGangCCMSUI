@@ -47,6 +47,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -288,12 +289,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                 updateDisplayWithNewEntityData(newEntity);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
             }
 
             @Override
             public void failed() {
-                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadFailure());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FileUploadFailure());
             }
         };
     }
@@ -552,7 +553,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
                     }
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
 
             }
@@ -805,7 +806,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 display.getBulkUploadDialog().getDialogBox().hide();
 
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
                     final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
                     createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
@@ -844,7 +845,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             }
 
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -854,7 +855,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
             eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(

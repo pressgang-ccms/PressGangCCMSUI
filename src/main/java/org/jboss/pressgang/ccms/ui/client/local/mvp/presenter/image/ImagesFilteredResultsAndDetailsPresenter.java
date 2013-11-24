@@ -47,6 +47,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -318,12 +319,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                 updateDisplayWithNewEntityData(newEntity);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
             }
 
             @Override
             public void failed() {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
             }
         };
     }
@@ -549,7 +550,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
 
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
 
             }
@@ -844,7 +845,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 display.getBulkUploadDialog().getDialogBox().hide();
 
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
                     final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
                     createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
@@ -868,7 +869,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         if (index >= files.getLength()) {
 
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -878,7 +879,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
 

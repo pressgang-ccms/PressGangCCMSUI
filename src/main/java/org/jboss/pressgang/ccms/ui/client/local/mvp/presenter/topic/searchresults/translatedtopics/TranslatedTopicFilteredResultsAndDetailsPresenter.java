@@ -41,6 +41,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTo
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -197,9 +198,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 updateDisplayWithNewEntityData(false);
 
                 if (overwroteChanges) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
@@ -233,7 +234,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             final String user = display.getMessageLogDialog().getUsername().getText().trim();
 
             if (user.isEmpty()) {
-                Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                display.getMessageLogDialog().getDialogBox().hide();
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                display.getMessageLogDialog().getDialogBox().center();
                 return;
             }
 

@@ -137,8 +137,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     private boolean displayingSearchResults = true;
 
-    protected final AlertBox alertBox = new AlertBox();
-
     /**
      * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
      * topic or setting the review status. This variable allows us to remove the last assigned click handler in
@@ -987,7 +985,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                 configureMessageDialog();
             } else {
-                alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");

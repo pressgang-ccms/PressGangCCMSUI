@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
@@ -170,7 +171,7 @@ public final class FailOverRESTCall {
                                         The entity was not found. This is expected if an invalid ID was supplied.
                                      */
                                     if (!disableDefaultFailureAction) {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.NotFound());
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NotFound());
                                     }
 
                                     callback.failed();
@@ -195,7 +196,7 @@ public final class FailOverRESTCall {
                                              */
                                             prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
                                         }
-                                        Window.alert(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
+                                        AlertBox.setMessageAndDisplay(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
                                     }
 
                                     callback.failed();
@@ -215,7 +216,7 @@ public final class FailOverRESTCall {
                                                 serverDetails, serverGroup);
                                     } else {
                                         if (!disableDefaultFailureAction) {
-                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
+                                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
                                                     responseText)));
                                         }
 
@@ -242,7 +243,7 @@ public final class FailOverRESTCall {
                                     failOver(failedRESTServers, serverDetails, serverGroup);
 
                                     if (!disableDefaultFailureAction) {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UnknownError());
                                     }
 
                                     callback.failed();
@@ -331,7 +332,7 @@ public final class FailOverRESTCall {
             */
             if (!disableDefaultFailureAction && (lastMessage == null || new Date().getTime() - lastMessage.getTime() > Constants.REST_SERVER_ERROR_MESSAGE_DELAY)) {
                 lastMessage = new Date();
-                Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoServersError());
             }
 
             callback.failed();

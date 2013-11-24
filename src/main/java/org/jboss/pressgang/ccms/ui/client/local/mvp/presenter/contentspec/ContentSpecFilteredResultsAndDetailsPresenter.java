@@ -60,6 +60,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -362,7 +363,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().center();
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             }
         };
@@ -414,7 +415,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 final String user = display.getMessageLogDialog().getUsername().getText().trim();
 
                 if (user.isEmpty()) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                    display.getMessageLogDialog().getDialogBox().hide();
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                    display.getMessageLogDialog().getDialogBox().center();
                     return;
                 }
 
@@ -530,10 +533,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
                                         // Take the user to the errors view so they can review any error messages
                                         switchView(contentSpecErrorsPresenter.getDisplay());
-                                        Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
                                                 ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
                                     } else {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                     }
                                 } finally {
                                     LOGGER.log(Level.INFO,
@@ -623,15 +626,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                 if (overwroteChanges) {
                                     // Take the user to the revisions view so they can review any overwritten changes
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
-                                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
                                     // Take the user to the errors view so they can review any error messages
                                     switchView(contentSpecErrorsPresenter.getDisplay());
-                                    Window.alert(
+                                    AlertBox.setMessageAndDisplay(
                                             PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
                                                     .ContentSpecSaveSuccessWithErrorsPostFix());
                                 } else {
-                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
                             }
                         };
@@ -1221,7 +1224,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                 This check is left in comments just to show that a conflict is possible.
                             */
                             /*if (!retValue.getRevision().equals(revision)) {
-                                Window.alert("The content spec details and tags are not in sync.");
+                                AlertBox.setMessageAndDisplay("The content spec details and tags are not in sync.");
                             }*/
 
                             /* copy the revisions into the displayed Topic */
@@ -1915,7 +1918,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         break;
                     } else {
                         /* Don't add tags twice */
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
                         return;
                     }
                 }

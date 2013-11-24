@@ -42,6 +42,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExten
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -239,7 +240,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     /* Create the tag first */
                     saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT saveClickHandler.onClick()");
@@ -279,7 +280,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         } else {
                             updateDisplayWithNewEntityData(wasNewTag);
-                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                         }
                     }
                 };
@@ -407,7 +408,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewTag);
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                     }
                 };
 

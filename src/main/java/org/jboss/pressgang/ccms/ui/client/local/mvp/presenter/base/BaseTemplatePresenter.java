@@ -48,6 +48,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeVie
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
@@ -119,7 +120,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 final ServerDetails newServerSettings = saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
 
                 if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
                             currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
                             currentServerSettings.getGroup().getType().replaceAll("_", " ")));
                     Window.Location.reload();
@@ -395,7 +396,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             final String query = display.getQuickSearchQuery().getValue().trim();
 
             if (query.isEmpty()) {
-                Window.alert(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
             } else {
                 if (CS_ID_SEARCH.test(query)) {
                     /* If the search query was numbers and integers, assume that we are searching for topics ids */

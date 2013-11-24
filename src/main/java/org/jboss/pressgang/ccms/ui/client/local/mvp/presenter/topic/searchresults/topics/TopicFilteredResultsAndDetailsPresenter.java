@@ -90,6 +90,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringM
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
@@ -271,9 +272,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (overwroteChanges) {
                     /* Take the user to the revisions view so they can review any overwritten changes */
                     switchView(topicRevisionsPresenter.getDisplay());
-                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
-                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
@@ -307,7 +308,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final String user = display.getMessageLogDialog().getUsername().getText().trim();
 
             if (user.isEmpty()) {
-                Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                display.getMessageLogDialog().getDialogBox().hide();
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                display.getMessageLogDialog().getDialogBox().center();
                 return;
             }
 
@@ -435,7 +438,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
                                     }
 
-                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
                                 } finally {
                                     LOGGER.log(Level.INFO, "EXIT messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
                                 }
@@ -1113,7 +1116,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 This check is left in comments just to show that a conflict is possible.
                             */
                             /*if (!retValue.getRevision().equals(revision)) {
-                                Window.alert("The topics details and tags are not in sync.");
+                                AlertBox.setMessageAndDisplay("The topics details and tags are not in sync.");
                             }*/
 
                             /* copy the revisions into the displayed Topic */
@@ -1570,7 +1573,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         bindBulkImportTagEditingButtons();
                         display.getBulkImport().getDialog().center();
                     } else {
-                        alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
                     }
 
                 }
@@ -1606,7 +1609,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (!hasUnsavedChanges()) {
                         display.getBulkOverwrite().getDialog().center();
                     } else {
-                        alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
                     }
 
                 }
@@ -1738,7 +1741,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 "The displayed collection item to reference a valid entity.");
 
         if (hasUnsavedChanges()) {
-            alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
             reviewUpdateTopic = null;
             return;
         }
@@ -1829,7 +1832,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (ids.isEmpty()) {
-                alertBox.setMessageAndDisplay(message.toString());
+                AlertBox.setMessageAndDisplay(message.toString());
             } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
                     This gives the user the option to open a new search with just the imported topics.
@@ -2525,7 +2528,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 @Override
                                                 public void failed() {
                                                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                                                 }
                                             }, topicRevisionsPresenter.getDisplay(), true);
                                 }
@@ -2533,7 +2536,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 @Override
                                 public void failed() {
                                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                                 }
                             }, topicRevisionsPresenter.getDisplay(), true);
                         }
@@ -2541,7 +2544,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public void failed() {
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                            alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                         }
                     };
 
@@ -3195,7 +3198,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void failed() {
                     display.removeWaitOperation();
-                    alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ConnectionError());
                 }
             };
 
@@ -3309,7 +3312,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         break;
                     } else {
                         /* Don't add tags twice */
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
                         return;
                     }
                 }

@@ -12,11 +12,12 @@ import org.jetbrains.annotations.NotNull;
  * A dialog box to replace the browser alert.
  */
 public class AlertBox extends DialogBox {
+    private static final AlertBox INSTANCE = new AlertBox();
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final Label message = new Label();
     private final VerticalPanel verticalPanel = new VerticalPanel();
 
-    public AlertBox() {
+    private AlertBox() {
         this.setModal(true);
         this.setGlassEnabled(true);
         this.setText(PressGangCCMSUI.INSTANCE.Alert());
@@ -40,12 +41,12 @@ public class AlertBox extends DialogBox {
         });
     }
 
-    public void setMessageAndDisplay(@NotNull final String message) {
-        setMessage(message);
-        this.center();
+    static public void setMessageAndDisplay(@NotNull final String message) {
+        INSTANCE.setMessage(message);
+        INSTANCE.center();
     }
 
-    public void setMessage(@NotNull final String message) {
-        this.message.setText(message);
+    static public void setMessage(@NotNull final String message) {
+        INSTANCE.message.setText(message);
     }
 }
