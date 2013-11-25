@@ -309,8 +309,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             if (user.isEmpty()) {
                 display.getMessageLogDialog().getDialogBox().hide();
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing());
-                display.getMessageLogDialog().getDialogBox().center();
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        display.getMessageLogDialog().getDialogBox().center();
+                    }
+                });
+
                 return;
             }
 

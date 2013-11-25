@@ -51,7 +51,7 @@ public class App {
         public void onUncaughtException(@NotNull final Throwable ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage());
             LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
-            AlertBox.setMessageAndDisplay("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
+            Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
             History.newItem(WelcomePresenter.HISTORY_TOKEN);
         }
     };
