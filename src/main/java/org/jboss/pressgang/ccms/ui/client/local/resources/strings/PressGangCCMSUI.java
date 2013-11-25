@@ -357,6 +357,9 @@ public interface PressGangCCMSUI extends Constants {
     String SpecValidationErrors();
 
     @NotNull
+    String ViewInDocBuilder();
+
+    @NotNull
     String Properties();
 
     @NotNull

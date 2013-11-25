@@ -8,11 +8,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,6 +45,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -421,6 +418,20 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecTagsPresenter.getDisplay());
                 }
+            }
+        };
+
+        final ClickHandler viewInDocBuilderClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        // TODO: This url should be part of the servers.json file
+                        final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                        Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                    }
+                });
             }
         };
 
@@ -2175,6 +2186,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         PushButton getHistory();
 
         PushButton getContentSpecTags();
+
+        PushButton getViewInDocBuilder();
 
         Label getTextDown();
 
