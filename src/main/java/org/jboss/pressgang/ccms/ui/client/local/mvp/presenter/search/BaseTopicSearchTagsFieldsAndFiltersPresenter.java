@@ -52,6 +52,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
@@ -115,7 +116,12 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getLocalePresenter().bindExtended();
         getSearchFilterResultsAndFilterPresenter().bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        getFieldsPresenter().getDisplay().display(filterItem.getItem(), ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                getFieldsPresenter().getDisplay().display(filterItem.getItem(), serverDetails.isReadOnly());
+            }
+        });
 
         bindSearchButtons();
         loadSearchTags();
@@ -143,9 +149,14 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         super.bindExtended();
         buildHelpDatabase();
 
-        getDisplay().getApplyBulkTags().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                getDisplay().getApplyBulkTags().setEnabled(!serverDetails.isReadOnly());
+                getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!serverDetails.isReadOnly());
+                getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -165,10 +176,16 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                         .getDisplayedItem() != null, "There should be a displayed collection item.");
                 checkState(getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-                final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
-                        .getProviderData().getDisplayedItem().getItem();
-                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, ServerDetails.getSavedServer().isReadOnly(), isShowBulkTags());
-                getFieldsPresenter().getDisplay().display(displayedFilter, ServerDetails.getSavedServer().isReadOnly());
+                final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
+
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, serverDetails.isReadOnly(), isShowBulkTags());
+                        getFieldsPresenter().getDisplay().display(displayedFilter, serverDetails.isReadOnly());
+                    }
+                });
+
             }
         };
 
@@ -396,7 +413,13 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/zip/" + query, "Zip Download", "");
+
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        Window.open(serverDetails.getRestEndpoint() + "/1/topics/get/zip/" + query, "Zip Download", "");
+                    }
+                });
             }
         };
 
@@ -410,7 +433,13 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
                         + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/csv/" + query, "Csv Download", "");
+
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        Window.open(serverDetails.getRestEndpoint() + "/1/topics/get/csv/" + query, "Csv Download", "");
+                    }
+                });
             }
         };
 

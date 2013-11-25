@@ -54,6 +54,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -207,11 +208,16 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         populateLocales();
         buildHelpDatabase();
 
-        imageComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getAddLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getRemoveLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                imageComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
+                imageComponent.getDisplay().getAddLocale().setEnabled(!serverDetails.isReadOnly());
+                imageComponent.getDisplay().getRemoveLocale().setEnabled(!serverDetails.isReadOnly());
+                imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     private void buildHelpDatabase() {
@@ -688,10 +694,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             .languageImages_OTMEditor().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
-                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedImage
-                            .getItem().getLocale(),
-                            null, null);
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getRestEndpoint() + "/1/image/get/raw/" +
+                                    imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedImage
+                                    .getItem().getLocale(),
+                                    null, null);
+                        }
+                    });
                 }
             }
         });

@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -172,22 +173,26 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
 
         /* the id will be null for new topics */
         if (value.getId() != null) {
-            final String detailsURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
-            final String xmlURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    final String detailsURL = serverDetails.getRestEndpoint() + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
+                    final String xmlURL = serverDetails.getRestEndpoint() + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 
-            final String idString = value.getId().toString();
-            String webDAV = ServerDetails.getSavedServer().getRestUrl() + "/webdav/TOPICS/";
-            for (int i = 0; i < idString.length(); ++i) {
-                webDAV += idString.charAt(i) + "/";
-            }
-            webDAV += "TOPIC" + idString + "/" + idString + ".xml";
+                    final String idString = value.getId().toString();
+                    String webDAV = serverDetails.getRestUrl() + "/webdav/TOPICS/";
+                    for (int i = 0; i < idString.length(); ++i) {
+                        webDAV += idString.charAt(i) + "/";
+                    }
+                    webDAV += "TOPIC" + idString + "/" + idString + ".xml";
+                    restTopicWebDav.setText(webDAV);
 
-            restTopicDetails.setHref(detailsURL);
-            restTopicDetails.setText(detailsURL);
-            restTopicXML.setHref(xmlURL);
-            restTopicXML.setText(xmlURL);
-
-            restTopicWebDav.setText(webDAV);
+                    restTopicDetails.setHref(detailsURL);
+                    restTopicDetails.setText(detailsURL);
+                    restTopicXML.setHref(xmlURL);
+                    restTopicXML.setText(xmlURL);
+                }
+            });
         }
     }
 

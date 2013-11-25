@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBug
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -40,7 +41,12 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     @Override
     public void display(@NotNull final RESTBaseTopicV1<?, ?, ?> entity, final boolean readonly) {
         if (entity.getId() != null) {
-            iFrame.setUrl(ServerDetails.getSavedServer().getReportUrl() + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + entity.getId());
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    iFrame.setUrl(serverDetails.getReportUrl() + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + entity.getId());
+                }
+            });
         }
     }
 }

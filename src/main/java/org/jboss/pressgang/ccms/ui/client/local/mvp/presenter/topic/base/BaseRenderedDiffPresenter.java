@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -191,11 +192,17 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
         comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
 
-        currentXMLHREF =  ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
-        comparedXMLHREF = ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                currentXMLHREF =  serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+                comparedXMLHREF = serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
 
-        currentXML.setUrl(currentXMLHREF);
-        comparedXML.setUrl(comparedXMLHREF);
+                currentXML.setUrl(currentXMLHREF);
+                comparedXML.setUrl(comparedXMLHREF);
+            }
+        });
+
     }
 
     protected void displayRenderedHTML() {

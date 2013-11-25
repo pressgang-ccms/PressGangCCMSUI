@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -118,10 +119,14 @@ public class TopicReviewView extends BaseTemplateView implements TopicReviewPres
         buttonPanel.clear();
         buttonPanel.add(startReview);
 
-        content.setUrl(ServerDetails.getSavedServer().getRestEndpoint() +
-                Constants.ECHO_ENDPOINT + "?id=" + helpTopic + "&" +
-                Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                content.setUrl(serverDetails.getRestEndpoint() +
+                        Constants.ECHO_ENDPOINT + "?id=" + helpTopic + "&" +
+                        Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+            }
+        });
     }
 
     @Override

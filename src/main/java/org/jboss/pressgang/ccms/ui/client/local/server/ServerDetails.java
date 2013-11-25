@@ -13,6 +13,8 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -54,22 +56,37 @@ public class ServerDetails {
     private static final Map<Integer, ServerDetails> currentServers = new HashMap<Integer, ServerDetails>();
     private static ServerDetails currentServer = null;
 
-    public static Map<Integer, ServerDetails> getCurrentServers() {
-        return currentServers;
+    public static void getCurrentServers(@NotNull final AllServerDetailsCallback allServerDetailsCallback) {
+        getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                allServerDetailsCallback.serverDetailsFound(currentServers);
+            }
+        });
     }
 
     /**
-     *
-     * @return The saved server details.
+     * This looks like an async call, but in reality once it has been called once it is synchronous. This
+     * method is called by App.startApp() when the application is first loaded, so all subsequent calls
+     * will be synchronous.
+     * @param serverDetailsCallback The callback to be called with the server details
      */
-    public static ServerDetails getSavedServer() {
+    public static void getSavedServer(@NotNull final ServerDetailsCallback serverDetailsCallback) {
 
         if (currentServer == null) {
             // first attempt to load the settings from the server
             loadFromServer();
         }
 
-        return currentServer;
+        final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+        if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+            currentServer = currentServers.get(selectedServerId);
+        } else if (currentServers.size() != 0) {
+            currentServer = currentServers.values().iterator().next();
+        }
+
+        serverDetailsCallback.serverDetailsFound(currentServer);
+
     }
 
     /**
@@ -78,8 +95,7 @@ public class ServerDetails {
      */
     private static void loadFallbackServerDetails() {
         // then attempt to load the settings from the local storage
-        loadFromLocalStorage();
-        if (currentServer == null) {
+        if (!loadFromLocalStorage()) {
             serverGroups.clear();
             currentServers.clear();
 
@@ -93,11 +109,13 @@ public class ServerDetails {
         }
     }
 
-    private static void loadFromLocalStorage() {
+    private static boolean loadFromLocalStorage() {
         final String json = Preferences.INSTANCE.getString(Preferences.SERVER_DETAILS, null);
         if (json != null) {
-            parseJSONFile(json);
+            return parseJSONFile(json);
         }
+
+        return false;
     }
 
     private static void loadFromServer() {
@@ -172,13 +190,6 @@ public class ServerDetails {
                         LOGGER.log(Level.INFO, "The server defined in the JSON file did not have the required fields");
                         return false;
                     }
-                }
-
-                final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
-                if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
-                    currentServer = currentServers.get(selectedServerId);
-                } else if (currentServers.size() != 0) {
-                    currentServer = currentServers.values().iterator().next();
                 }
 
                 return true;

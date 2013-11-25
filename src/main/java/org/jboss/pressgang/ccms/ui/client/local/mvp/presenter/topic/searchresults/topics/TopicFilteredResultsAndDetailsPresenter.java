@@ -65,6 +65,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -88,6 +89,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.ReadOnlyPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
@@ -98,6 +100,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -778,10 +781,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void disableButtonsInReadonlyMode() {
-        getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        searchResultPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        searchResultPresenter.getDisplay().getBulkImport().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
+                searchResultPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                searchResultPresenter.getDisplay().getBulkImport().setEnabled(!serverDetails.isReadOnly());
+                searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     /**
@@ -862,12 +870,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         "The displayed collection item to reference a valid entity and have a valid tags collection.");
                 return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
             }
-        }, new ReturnReadOnlyMode() {
-            @Override
-            public boolean getReadOnlyMode() {
-                return isReadOnlyMode();
-            }
-        }, new BindRemoveButtons() {
+        }, TopicFilteredResultsAndDetailsPresenter.this,
+        new BindRemoveButtons() {
             @Override
             public void bindRemoveButtons() {
                 bindTagEditingButtons();
@@ -888,15 +892,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             public RESTTopicV1 getTopic() {
                 return bulkImportTemplate;
             }
-        }, new ReturnReadOnlyMode() {
-            /**
-             * @return false, because the bulk import dialog is never read only
-             */
-            @Override
-            public boolean getReadOnlyMode() {
-                return false;
-            }
-        }, new BindRemoveButtons() {
+        }, TopicFilteredResultsAndDetailsPresenter.this,
+        new BindRemoveButtons() {
             @Override
             public void bindRemoveButtons() {
                 bindBulkImportTagEditingButtons();
@@ -1383,13 +1380,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getDisplay().replaceTopActionButton(getDisplay().getReview(), getDisplay().getReviewDown());
             }
 
-            if (isReadOnlyMode()) {
-                this.getDisplay().getHistory().addStyleName(CSSConstants.Common.ALERT_BUTTON);
-            } else {
-                this.getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
-            }
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(boolean readOnly) {
+                    if (readOnly) {
+                        getDisplay().getHistory().addStyleName(CSSConstants.Common.ALERT_BUTTON);
+                    } else {
+                        getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
+                    }
 
-            this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                    getDisplay().getSave().setEnabled(!readOnly);
+                }
+            });
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postEnableAndDisableActionButtons()");
@@ -1432,24 +1434,29 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             // While editing the XML, we need to setup a refresh of the rendered view */
-            if (displayedView == this.getTopicXMLPresenter().getDisplay()) {
-                if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-                    timer.scheduleRepeating(Constants.REFRESH_RATE);
-                }
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(final boolean readOnly) {
+                    if (displayedView == getTopicXMLPresenter().getDisplay()) {
+                        if (getDisplay().getSplitType() != SplitType.NONE && !readOnly) {
+                            timer.scheduleRepeating(Constants.REFRESH_RATE);
+                        }
 
-                // This should always be false
-                if (!getXmlValidator().isCheckingXML()) {
-                    getXmlValidator().startCheckingXML();
-                }
-            } else {
-                timer.cancel();
-                refreshSplitRenderedView(true);
-                getXmlValidator().stopCheckingXML();
-            }
+                        // This should always be false
+                        if (!getXmlValidator().isCheckingXML()) {
+                            getXmlValidator().startCheckingXML();
+                        }
+                    } else {
+                        timer.cancel();
+                        refreshSplitRenderedView(true);
+                        getXmlValidator().stopCheckingXML();
+                    }
 
-            if (displayedView == getTopicRenderedPresenter().getDisplay()) {
-                refreshRenderedView();
-            }
+                    if (displayedView == getTopicRenderedPresenter().getDisplay()) {
+                        refreshRenderedView();
+                    }
+                }
+            });
 
             /*
                 Load the revisions of the topic that mark the review boundaries and display the changes in an
@@ -1499,8 +1506,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay()}));
                     }
                     topicRevisionsPresenter.getDisplay().displayRevisions();
-                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
                 }
             });
 
@@ -1508,8 +1520,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     topicRevisionsPresenter.getDisplay().displayRevisions();
-                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
                 }
             });
 
@@ -1528,7 +1545,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     topicRevisionsPresenter.getDisplay().displayRevisions();
-                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
 
                 }
             });
@@ -1574,9 +1596,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onClick(@NotNull final ClickEvent event) {
                     if (!hasUnsavedChanges()) {
                         loadAllTags();
-                        display.getBulkImport().getTagsView().display(bulkImportTemplate, ServerDetails.getSavedServer().isReadOnly());
-                        bindBulkImportTagEditingButtons();
-                        display.getBulkImport().getDialog().center();
+                        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                            @Override
+                            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                                display.getBulkImport().getTagsView().display(bulkImportTemplate, serverDetails.isReadOnly());
+                                bindBulkImportTagEditingButtons();
+                                display.getBulkImport().getDialog().center();
+                            }
+                        });
                     } else {
                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
                     }
@@ -2021,57 +2048,66 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                     "The displayed collection item to reference a valid entity.");
 
-            if (viewIsInFilter(filter, topicViewPresenter.getDisplay())) {
-                topicViewPresenter.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
-            }
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(final boolean readOnly) {
+                    if (viewIsInFilter(filter, topicViewPresenter.getDisplay())) {
+                        topicViewPresenter.getDisplay().displayTopicDetails(getDisplayedTopic(), readOnly, locales);
+                    }
 
-            /*
-                refresh the list of assigned property tags
-             */
-            if (viewIsInFilter(filter, getTopicPropertyTagPresenter().getDisplay())) {
-                getTopicPropertyTagPresenter().refreshExistingChildList(getDisplayedTopic());
-            }
+                    /*
+                        refresh the list of content specs
+                     */
+                    if (viewIsInFilter(filter, getTopicContentSpecsPresenter().getDisplay())) {
+                        getTopicContentSpecsPresenter().getDisplay().display(getDisplayedTopic(), readOnly);
+                        getTopicContentSpecsPresenter().displayChildrenExtended(getDisplayedTopic(), readOnly);
+                    }
 
-            /*
-                refresh the list of content specs
-             */
-            if (viewIsInFilter(filter, getTopicContentSpecsPresenter().getDisplay())) {
-                getTopicContentSpecsPresenter().getDisplay().display(getDisplayedTopic(), isReadOnlyMode());
-                getTopicContentSpecsPresenter().displayChildrenExtended(getDisplayedTopic(), isReadOnlyMode());
-            }
+                    /*
+                        refresh the list of assigned property tags
+                     */
+                    if (viewIsInFilter(filter, getTopicPropertyTagPresenter().getDisplay())) {
+                        getTopicPropertyTagPresenter().refreshExistingChildList(getDisplayedTopic());
+                    }
 
-            /*
-                The revision display always displays details from the main topic, and not the selected revision.
-            */
-            if (viewIsInFilter(filter, topicRevisionsPresenter.getDisplay())) {
-                LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-                topicRevisionsPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(),
-                        isReadOnlyMode());
-                // make sure the revisions list is displayed and not the diff view if it ws previously open
-                if (!topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
-                    topicRevisionsPresenter.getDisplay().displayRevisions();
+                    /*
+                        The revision display always displays details from the main topic, and not the selected revision.
+                    */
+                    if (viewIsInFilter(filter, topicRevisionsPresenter.getDisplay())) {
+                        LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
+                        topicRevisionsPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
+                        // make sure the revisions list is displayed and not the diff view if it ws previously open
+                        if (!topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
+                            topicRevisionsPresenter.getDisplay().displayRevisions();
+                        }
+                    }
+
+                    /*
+                        Bind logic to the tag buttons
+                     */
+                    if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
+                        LOGGER.log(Level.INFO, "\tInitializing topic tags view");
+                        bindTagEditingButtons();
+                    }
+
+                    if (viewIsInFilter(filter, topicReviewPresenter.getDisplay())) {
+                        topicReviewPresenter.setTopic(searchResultPresenter.getProviderData().getDisplayedItem().getItem());
+                    }
                 }
-            }
-
-            /*
-                Bind logic to the tag buttons
-             */
-            if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
-                LOGGER.log(Level.INFO, "\tInitializing topic tags view");
-                bindTagEditingButtons();
-            }
-
-            if (viewIsInFilter(filter, topicReviewPresenter.getDisplay())) {
-                topicReviewPresenter.setTopic(searchResultPresenter.getProviderData().getDisplayedItem().getItem());
-            }
+            });
         } finally {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postInitializeViews()");
         }
     }
 
     @Override
-    protected boolean isReadOnlyMode() {
-        return this.topicRevisionsPresenter.getDisplay().getRevisionTopic() != null || ServerDetails.getSavedServer().isReadOnly();
+    public void isReadOnlyMode(@NotNull final ReadOnlyCallback readOnlyCallback) {
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                readOnlyCallback.readonlyCallback(topicRevisionsPresenter.getDisplay().getRevisionTopic() != null || serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -2089,7 +2125,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             searchResultPresenter.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/topics/get/atom/" + getQueryString() + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D", "", "");
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getRestEndpoint() + "/1/topics/get/atom/" + getQueryString() + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D", "", "");
+                        }
+                    });
                 }
             });
 
@@ -2223,10 +2264,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
                         .REFRESH_RATE_WTH_IMAGES;
 
-                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
-                    isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
-                }
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(final boolean readOnly) {
+                        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                            isDisplayingImage = timeToDisplayImage;
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
+                        }
+                    }
+                });
+
 
                 lastXML = this.getDisplayedTopic().getXml();
             }
@@ -2236,7 +2283,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void refreshRenderedView() {
-        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+        isReadOnlyMode(new ReadOnlyCallback() {
+            @Override
+            public void readonlyCallback(final boolean readOnly) {
+                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+            }
+        });
     }
 
     /**
@@ -2352,12 +2404,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                         return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
                                     }
-                                }, new ReturnReadOnlyMode() {
-                                    @Override
-                                    public boolean getReadOnlyMode() {
-                                        return isReadOnlyMode();
-                                    }
-                                }, new BindRemoveButtons() {
+                                }, TopicFilteredResultsAndDetailsPresenter.this,
+                                new BindRemoveButtons() {
                                     @Override
                                     public void bindRemoveButtons() {
                                         bindTagEditingButtons();
@@ -2413,12 +2461,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     public RESTTopicV1 getTopic() {
                                         return bulkImportTemplate;
                                     }
-                                }, new ReturnReadOnlyMode() {
-                                    @Override
-                                    public boolean getReadOnlyMode() {
-                                        return false;
-                                    }
-                                }, new BindRemoveButtons() {
+                                },
+                                TopicFilteredResultsAndDetailsPresenter.this,
+                                new BindRemoveButtons() {
                                     @Override
                                     public void bindRemoveButtons() {
                                         bindBulkImportTagEditingButtons();
@@ -3268,10 +3313,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicV1 getTopic();
     }
 
-    private interface ReturnReadOnlyMode {
-        boolean getReadOnlyMode();
-    }
-
     private interface BindRemoveButtons {
         void bindRemoveButtons();
     }
@@ -3285,7 +3326,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         private final ReturnCurrentTopic returnCurrentTopic;
         private final TopicTagsPresenter.Display tagDisplay;
-        private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final ReadOnlyPresenter returnReadOnlyMode;
         private final BindRemoveButtons bindRemoveButtons;
 
         /**
@@ -3294,7 +3335,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          */
         public AddTagClickHandler(
                 @NotNull final ReturnCurrentTopic returnCurrentTopic,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final ReadOnlyPresenter returnReadOnlyMode,
                 @NotNull final BindRemoveButtons bindRemoveButtons,
                 @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
@@ -3408,7 +3449,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /* Redisplay the view */
-            tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
+            returnReadOnlyMode.isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(final boolean readOnly) {
+                    tagDisplay.display(returnCurrentTopic.getTopic(), readOnly);
+                }
+            });
+
             bindRemoveButtons.bindRemoveButtons();
         }
     }
@@ -3422,7 +3469,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         private final RESTTagCollectionItemV1 tag;
         private final ReturnCurrentTopic returnCurrentTopic;
         private final TopicTagsPresenter.Display tagDisplay;
-        private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final ReadOnlyPresenter returnReadOnlyMode;
         private final BindRemoveButtons bindRemoveButtons;
 
 
@@ -3433,7 +3480,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         public DeleteTagClickHandler(
                 @NotNull final RESTTagCollectionItemV1 tag,
                 @NotNull final ReturnCurrentTopic returnCurrentTopic,
-                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final ReadOnlyPresenter returnReadOnlyMode,
                 @NotNull final BindRemoveButtons bindRemoveButtons,
                 @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
@@ -3454,7 +3501,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 tag.setState(RESTBaseEntityCollectionItemV1.REMOVE_STATE);
             }
 
-            tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
+            returnReadOnlyMode.isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(final boolean readOnly) {
+                    tagDisplay.display(returnCurrentTopic.getTopic(), readOnly);
+                }
+            });
+
             bindRemoveButtons.bindRemoveButtons();
         }
     }

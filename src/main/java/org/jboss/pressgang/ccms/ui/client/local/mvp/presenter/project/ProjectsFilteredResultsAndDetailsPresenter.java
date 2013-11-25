@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -35,6 +34,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -200,8 +200,13 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 }
         );
 
-        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getSave().setEnabled(!serverDetails.isReadOnly());
+                filteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -278,7 +283,13 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
 
-                        tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+                        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                            @Override
+                            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                                tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                            }
+                        });
+
                         tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewEntity);
@@ -443,15 +454,19 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        for (@NotNull final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
-            if (viewIsInFilter(filter, view)) {
-                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                for (@NotNull final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
+                    if (viewIsInFilter(filter, view)) {
+                        view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                    }
+                }
+
+                if (viewIsInFilter(filter, tagComponent.getDisplay())) {
+                    tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                }
             }
-        }
-
-        if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
-        }
-
+        });
     }
 }

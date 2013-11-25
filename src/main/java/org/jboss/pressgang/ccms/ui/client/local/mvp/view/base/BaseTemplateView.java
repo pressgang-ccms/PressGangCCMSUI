@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
@@ -313,15 +314,20 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                             .removeAllPreamble(
                             retValue.getXml());
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
-                        public void success(@NotNull final IntegerWrapper value) {
-                            contents.setUrl(
-                                    ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value +
-                                            "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities
-                                            .getLocalUrlEncoded());
-                            center();
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+                                public void success(@NotNull final IntegerWrapper value) {
+                                    contents.setUrl(
+                                            serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + value.value +
+                                                    "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities
+                                                    .getLocalUrlEncoded());
+                                    center();
+                                }
+                            }, waitDisplay, true);
                         }
-                    }, waitDisplay, true);
+                    });
                 }
             };
 

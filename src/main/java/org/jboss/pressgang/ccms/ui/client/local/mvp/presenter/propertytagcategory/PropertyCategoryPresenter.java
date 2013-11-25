@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,7 +83,12 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
         final RESTCallBack<RESTPropertyCategoryV1> callback = new RESTCallBack<RESTPropertyCategoryV1>() {
             @Override
             public void success(@NotNull final RESTPropertyCategoryV1 retValue) {
-                display.display(retValue, ServerDetails.getSavedServer().isReadOnly());
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        display.display(retValue, serverDetails.isReadOnly());
+                    }
+                });
             }
         };
 

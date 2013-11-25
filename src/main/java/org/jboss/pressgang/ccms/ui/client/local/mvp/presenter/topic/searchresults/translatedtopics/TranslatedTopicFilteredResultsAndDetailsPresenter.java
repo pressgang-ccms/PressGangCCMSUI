@@ -18,7 +18,6 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -29,6 +28,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCol
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -48,6 +48,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTranslatedTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -691,20 +692,30 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         if (viewIsInFilter(filter, translatedTopicPresenter.getDisplay())) {
-            translatedTopicPresenter.getDisplay().display(this.getDisplayedTopic(), isReadOnlyMode());
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(boolean readOnly) {
+                    translatedTopicPresenter.getDisplay().display(getDisplayedTopic(), readOnly);
+                }
+            });
         }
         if (viewIsInFilter(filter, translatedTopicAdditionalXMLPresenter.getDisplay())) {
             LOGGER.log(Level.INFO, "\tSetting translated topic additional XML edit button state and redisplaying ACE editor");
-            translatedTopicAdditionalXMLPresenter.getDisplay().display(this.getDisplayedTopic(), ServerDetails.getSavedServer().isReadOnly());
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    translatedTopicAdditionalXMLPresenter.getDisplay().display(getDisplayedTopic(), serverDetails.isReadOnly());
+                }
+            });
             translatedTopicAdditionalXMLPresenter.loadEditorSettings();
             translatedTopicAdditionalXMLPresenter.getDisplay().getEditor().redisplay();
         }
     }
 
     @Override
-    protected boolean isReadOnlyMode() {
+    public void isReadOnlyMode(@NotNull final ReadOnlyCallback readOnlyCallback) {
         /* translated topics are always readonly */
-        return true;
+        readOnlyCallback.readonlyCallback(true);
     }
 
     @Override
@@ -796,7 +807,12 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
                 if (forceUpdate || xmlHasChanges || additionalXmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, isDisplayingImage);
+                        }
+                    });
                 }
 
                 lastXML = getDisplayedTopic().getXml();

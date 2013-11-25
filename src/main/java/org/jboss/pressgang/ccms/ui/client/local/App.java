@@ -11,9 +11,9 @@ import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,18 +75,24 @@ public class App {
             GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
 
             /* Setup the REST client */
-            RestClient.setApplicationRoot(ServerDetails.getSavedServer().getRestEndpoint());
-            RestClient.setJacksonMarshallingActive(true);
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    RestClient.setApplicationRoot(serverDetails.getRestEndpoint());
 
-            final RootLayoutPanel root = RootLayoutPanel.get();
+                    RestClient.setJacksonMarshallingActive(true);
 
-            /* Inject the CSS file */
-            CSSResources.INSTANCE.appCss().ensureInjected();
+                    final RootLayoutPanel root = RootLayoutPanel.get();
 
-            /* Load the DTD file used for validation and rendering */
-            DocbookDTD.loadDtd();
+                    /* Inject the CSS file */
+                    CSSResources.INSTANCE.appCss().ensureInjected();
 
-            this.appController.go(root);
+                    /* Load the DTD file used for validation and rendering */
+                    DocbookDTD.loadDtd();
+
+                    appController.go(root);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT App.startApp()");
         }

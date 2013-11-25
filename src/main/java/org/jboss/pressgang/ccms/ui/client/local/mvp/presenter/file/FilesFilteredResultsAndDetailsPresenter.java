@@ -54,6 +54,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTLanguageFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -209,9 +210,19 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         populateLocales();
 
-        fileComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        fileComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
+                        fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -573,10 +584,16 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             ().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/file/get/raw/" +
-                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
-                            .getItem().getLocale(),
-                            null, null);
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getRestEndpoint() + "/1/file/get/raw/" +
+                                    fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
+                                    .getItem().getLocale(),
+                                    null, null);
+                        }
+                    });
+
                 }
             }
         });

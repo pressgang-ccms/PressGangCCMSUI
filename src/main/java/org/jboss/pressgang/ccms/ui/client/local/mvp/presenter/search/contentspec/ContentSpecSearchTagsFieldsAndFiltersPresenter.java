@@ -37,6 +37,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
@@ -91,7 +92,12 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants
                         .FILTER_CONTENT_SPEC);
 
-        fieldsComponent.getDisplay().display(filterItem.getItem(), ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                fieldsComponent.getDisplay().display(filterItem.getItem(), serverDetails.isReadOnly());
+            }
+        });
 
         bindSearchButtons();
         loadSearchTags();
@@ -136,8 +142,14 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, ServerDetails.getSavedServer().isReadOnly(), false);
-                fieldsComponent.getDisplay().display(displayedFilter, ServerDetails.getSavedServer().isReadOnly());
+
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, serverDetails.isReadOnly(), false);
+                        fieldsComponent.getDisplay().display(displayedFilter, serverDetails.isReadOnly());
+                    }
+                });
             }
         };
 
@@ -311,7 +323,13 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(
                         true) + getFieldsPresenter().getDisplay().getFields().getSearchQuery(
                         false) + getLocalePresenter().getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
+
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        Window.open(serverDetails.getRestEndpoint() + "/1/contentspecs/get/zip/" + query, "Zip Download", "");
+                    }
+                });
             }
         };
 

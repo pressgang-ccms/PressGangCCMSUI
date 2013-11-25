@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -25,12 +26,7 @@ import org.jetbrains.annotations.NotNull;
  * Loads the topics that provide style information for tags.
  */
 public class TagDBLoader {
-    private final TagDB tagDB = new TagDB(new GetRESTServerCallback() {
-        @Override
-        public String getBaseRESTURL() {
-            return ServerDetails.getSavedServer().getRestEndpoint();
-        }
-    });
+    private final TagDB tagDB = new TagDB();
 
     /**
      * A Logger
@@ -51,31 +47,36 @@ public class TagDBLoader {
         try {
             LOGGER.log(Level.INFO, "ENTER TagDBLoader.postConstruct()");
 
-            final String query = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.PROPERTY_TAG_EXISTS + serverSettings
-                    .getEntities().getTagStylePropertyTagId() + "=true";
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getTopicsWithPropertiesFromQuery(query),
-                    new RESTCallBack<RESTTopicCollectionV1>() {
-                        public void success(@NotNull final RESTTopicCollectionV1 value) {
-                            for (final RESTTopicCollectionItemV1 restTopicV1 : value.getItems())  {
-                                final List<RESTAssignedPropertyTagV1> properties = EntityUtilities.returnProperties(restTopicV1.getItem(),
-                                        serverSettings.getEntities().getTagStylePropertyTagId());
-                                for (final RESTAssignedPropertyTagV1 property : properties) {
-                                    if (property.getValue() != null) {
-                                        tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
-                                    }
-                                }
-                            }
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    tagDB.setRestEndpoint(serverDetails.getRestEndpoint());
 
-                            /*
-                                Let the ACE editor know that the tag database has been loaded.
-                             */
-                            tagDB.setLoaded(true);
-                        }
-                    },
-                    null,
-                    true
-            );
+                    final String query = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.PROPERTY_TAG_EXISTS + serverSettings.getEntities().getTagStylePropertyTagId() + "=true";
+                    failOverRESTCall.performRESTCall(
+                            FailOverRESTCallDatabase.getTopicsWithPropertiesFromQuery(query),
+                            new RESTCallBack<RESTTopicCollectionV1>() {
+                                public void success(@NotNull final RESTTopicCollectionV1 value) {
+                                    for (final RESTTopicCollectionItemV1 restTopicV1 : value.getItems())  {
+                                        final List<RESTAssignedPropertyTagV1> properties = EntityUtilities.returnProperties(restTopicV1.getItem(), serverSettings.getEntities().getTagStylePropertyTagId());
+                                        for (final RESTAssignedPropertyTagV1 property : properties) {
+                                            if (property.getValue() != null) {
+                                                tagDB.getDatabase().put(property.getValue(), new JSONNumber(restTopicV1.getItem().getId()));
+                                            }
+                                        }
+                                    }
+
+                                    /*
+                                        Let the ACE editor know that the tag database has been loaded.
+                                     */
+                                    tagDB.setLoaded(true);
+                                }
+                            },
+                            null,
+                            true
+                    );
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT TagDBLoader()");
         }

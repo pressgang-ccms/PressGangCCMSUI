@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -120,16 +121,22 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        final String detailsURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/contentspec/get/json/" + value.getId() + "/r/" +
-                value.getRevision();
-        final String textURL = ServerDetails.getSavedServer().getRestEndpoint() + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                final String detailsURL = serverDetails.getRestEndpoint() + "/1/contentspec/get/json/" + value.getId() + "/r/" +
+                        value.getRevision();
+                final String textURL = serverDetails.getRestEndpoint() + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
 
-        restContentSpecDetails.setHref(detailsURL);
-        restContentSpecText.setHref(textURL);
+                restContentSpecDetails.setHref(detailsURL);
+                restContentSpecText.setHref(textURL);
 
-        restContentSpecDetails.setText(detailsURL);
-        restContentSpecText.setText(textURL);
+                restContentSpecDetails.setText(detailsURL);
+                restContentSpecText.setText(textURL);
+            }
+        });
     }
+
 
     @Override
     public RESTTextContentSpecV1 getValue() {

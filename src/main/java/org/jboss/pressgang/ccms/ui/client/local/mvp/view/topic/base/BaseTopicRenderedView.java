@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTop
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -192,14 +193,18 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
             All this means in this situation is that the user will see blank screen or a half rendered HTML page.
          */
 
-        final ServerDetails serverDetails = ServerDetails.getSavedServer();
-        echoServer = serverDetails.getRestUrl();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                echoServer = serverDetails.getRestUrl();
 
-        loadingiframe = new Frame();
-        loadingiframe.getElement().setId(LOADING_IFRAME);
-        loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-        loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-        layoutPanel.setWidget(displayingRow, 0, loadingiframe);
+                loadingiframe = new Frame();
+                loadingiframe.getElement().setId(LOADING_IFRAME);
+                loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+                loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+                layoutPanel.setWidget(displayingRow, 0, loadingiframe);
+            }
+        });
 
         return true;
     }
