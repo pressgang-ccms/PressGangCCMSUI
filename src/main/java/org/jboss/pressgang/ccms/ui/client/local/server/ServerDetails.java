@@ -75,27 +75,26 @@ public class ServerDetails {
 
         if (currentServer == null) {
             // first attempt to load the settings from the server
-            loadFromServer();
+            loadFromServer(serverDetailsCallback);
+        } else {
+            final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+            if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+                currentServer = currentServers.get(selectedServerId);
+            } else if (currentServers.size() != 0) {
+                currentServer = currentServers.values().iterator().next();
+            }
+
+            serverDetailsCallback.serverDetailsFound(currentServer);
         }
-
-        final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
-        if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
-            currentServer = currentServers.get(selectedServerId);
-        } else if (currentServers.size() != 0) {
-            currentServer = currentServers.values().iterator().next();
-        }
-
-        serverDetailsCallback.serverDetailsFound(currentServer);
-
     }
 
     /**
      * If loading the server details from a JSON file hosted on the server didn't work, the
      * we fall back to whatever is in local storage, or the default settings.
      */
-    private static void loadFallbackServerDetails() {
+    private static void loadFallbackServerDetails(@NotNull final ServerDetailsCallback serverDetailsCallback) {
         // then attempt to load the settings from the local storage
-        if (!loadFromLocalStorage()) {
+        if (!loadFromLocalStorage(serverDetailsCallback)) {
             serverGroups.clear();
             currentServers.clear();
 
@@ -109,16 +108,16 @@ public class ServerDetails {
         }
     }
 
-    private static boolean loadFromLocalStorage() {
+    private static boolean loadFromLocalStorage(@NotNull final ServerDetailsCallback serverDetailsCallback) {
         final String json = Preferences.INSTANCE.getString(Preferences.SERVER_DETAILS, null);
         if (json != null) {
-            return parseJSONFile(json);
+            return parseJSONFile(json, serverDetailsCallback);
         }
 
         return false;
     }
 
-    private static void loadFromServer() {
+    private static void loadFromServer(@NotNull final ServerDetailsCallback serverDetailsCallback) {
         // First attempt to read the config file from the server
         final String url = "/pressgang-ccms-config/servers.json";
         final RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -129,17 +128,17 @@ public class ServerDetails {
                 public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
                     final String text = resp.getText();
 
-                    if (parseJSONFile(text)) {
+                    if (parseJSONFile(text, serverDetailsCallback)) {
                         // save these servers for future reference
                         Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
                     } else {
-                        loadFallbackServerDetails();
+                        loadFallbackServerDetails(serverDetailsCallback);
                     }
                 }
 
                 @Override
                 public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-                    loadFallbackServerDetails();
+                    loadFallbackServerDetails(serverDetailsCallback);
                 }
             });
         } catch (@NotNull final RequestException e) {
@@ -152,7 +151,7 @@ public class ServerDetails {
      * @param json The server json file to parse
      * @return true if the json string defined at least one server, and that every server defined had all tye required fields.
      */
-    private static boolean parseJSONFile(@NotNull final String json) {
+    private static boolean parseJSONFile(@NotNull final String json, @NotNull final ServerDetailsCallback serverDetailsCallback) {
         try {
             final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
 
@@ -191,6 +190,15 @@ public class ServerDetails {
                         return false;
                     }
                 }
+
+                final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+                if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+                    currentServer = currentServers.get(selectedServerId);
+                } else if (currentServers.size() != 0) {
+                    currentServer = currentServers.values().iterator().next();
+                }
+
+                serverDetailsCallback.serverDetailsFound(currentServer);
 
                 return true;
             } else {
