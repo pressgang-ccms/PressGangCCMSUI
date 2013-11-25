@@ -714,6 +714,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         display.getSave().addClickHandler(saveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
+        display.getViewInDocBuilder().addClickHandler(viewInDocBuilderClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
