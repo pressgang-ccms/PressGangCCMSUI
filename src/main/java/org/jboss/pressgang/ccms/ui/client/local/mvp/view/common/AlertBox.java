@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -21,7 +22,7 @@ public class AlertBox extends DialogBox {
     private static final AlertBox INSTANCE = new AlertBox();
     private static final List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
-    private final Label message = new Label();
+    private final HTML message = new HTML();
     private final VerticalPanel verticalPanel = new VerticalPanel();
 
     private AlertBox() {
@@ -73,6 +74,6 @@ public class AlertBox extends DialogBox {
     }
 
     static public void setMessage(@NotNull final String message) {
-        INSTANCE.message.setText(message);
+        INSTANCE.message.setHTML(new SafeHtmlBuilder().appendEscapedLines(message).toSafeHtml());
     }
 }

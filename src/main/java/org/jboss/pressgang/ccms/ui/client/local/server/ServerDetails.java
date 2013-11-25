@@ -67,25 +67,30 @@ public class ServerDetails {
         if (currentServer == null) {
             // first attempt to load the settings from the server
             loadFromServer();
-            if (currentServer == null) {
-                // then attempt to load the settings from the local storage
-                loadFromLocalStorage();
-                if (currentServer == null) {
-                    serverGroups.clear();
-                    currentServers.clear();
-
-                    // as a last resort, assume some defaults and use them
-                    final ServerGroup serverGroup = new ServerGroup("Default");
-                    serverGroups.put("Default", serverGroup);
-                    final String hostUrl = GWTUtilities.getLocalUrl();
-                    currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
-                            hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
-                    currentServers.put(currentServer.getId(), currentServer);
-                }
-            }
         }
 
         return currentServer;
+    }
+
+    /**
+     * If loading the server details from a JSON file hosted on the server didn't work, the
+     * we fall back to whatever is in local storage, or the default settings.
+     */
+    private static void loadFallbackServerDetails() {
+        // then attempt to load the settings from the local storage
+        loadFromLocalStorage();
+        if (currentServer == null) {
+            serverGroups.clear();
+            currentServers.clear();
+
+            // as a last resort, assume some defaults and use them
+            final ServerGroup serverGroup = new ServerGroup("Default");
+            serverGroups.put("Default", serverGroup);
+            final String hostUrl = GWTUtilities.getLocalUrl();
+            currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
+                    hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
+            currentServers.put(currentServer.getId(), currentServer);
+        }
     }
 
     private static void loadFromLocalStorage() {
@@ -106,15 +111,17 @@ public class ServerDetails {
                 public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
                     final String text = resp.getText();
 
-                    // save these servers for future reference
-                    Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
-
-                    parseJSONFile(text);
+                    if (parseJSONFile(text)) {
+                        // save these servers for future reference
+                        Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
+                    } else {
+                        loadFallbackServerDetails();
+                    }
                 }
 
                 @Override
                 public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-
+                    loadFallbackServerDetails();
                 }
             });
         } catch (@NotNull final RequestException e) {
@@ -122,11 +129,16 @@ public class ServerDetails {
         }
     }
 
-    private static void parseJSONFile(@NotNull final String json) {
+    /**
+     * Load the server details from the supplied JSON file.
+     * @param json The server json file to parse
+     * @return true if the json string defined at least one server, and that every server defined had all tye required fields.
+     */
+    private static boolean parseJSONFile(@NotNull final String json) {
         try {
             final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
 
-            if (serverDetails != null) {
+            if (serverDetails != null && serverDetails.size() != 0) {
 
                 serverGroups.clear();
                 currentServers.clear();
@@ -158,6 +170,7 @@ public class ServerDetails {
                         currentServers.put(serverId, newServerDetails);
                     } else {
                         LOGGER.log(Level.INFO, "The server defined in the JSON file did not have the required fields");
+                        return false;
                     }
                 }
 
@@ -167,9 +180,14 @@ public class ServerDetails {
                 } else if (currentServers.size() != 0) {
                     currentServer = currentServers.values().iterator().next();
                 }
+
+                return true;
+            } else {
+                return false;
             }
         } catch (@NotNull final Exception ex) {
             LOGGER.log(Level.INFO, "Could not parse:\n" +  json);
+            return false;
         }
     }
 
