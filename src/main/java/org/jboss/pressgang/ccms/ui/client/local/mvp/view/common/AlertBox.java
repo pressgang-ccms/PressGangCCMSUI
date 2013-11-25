@@ -52,6 +52,7 @@ public class AlertBox extends DialogBox {
         this.setGlassEnabled(true);
         this.setHTML(new SafeHtmlBuilder().appendEscaped(PressGangCCMSUI.INSTANCE.Alert()).toSafeHtml());
         this.add(verticalPanel);
+        this.setModal(true);
 
         verticalPanel.add(this.message);
         verticalPanel.add(ok);
