@@ -711,16 +711,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private void saveContentSpec() {
-        if (hasUnsavedChanges()) {
-            display.getMessageLogDialog().getUsername().setText(
-                    Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-            display.getMessageLogDialog().reset();
-            display.getMessageLogDialog().getDialogBox().center();
-        } else {
-            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+        if (!AlertBox.isDisplayed() && !display.getMessageLogDialog().getDialogBox().isShowing()) {
+            if (hasUnsavedChanges()) {
+                display.getMessageLogDialog().getUsername().setText(
+                        Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().center();
+            } else {
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+            }
         }
-
-
     }
 
     private void setSearchResultsVisible(final boolean visible) {
@@ -2135,7 +2135,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            saveContentSpec();
+
+                                saveContentSpec();
+
                         }
                     });
                 }

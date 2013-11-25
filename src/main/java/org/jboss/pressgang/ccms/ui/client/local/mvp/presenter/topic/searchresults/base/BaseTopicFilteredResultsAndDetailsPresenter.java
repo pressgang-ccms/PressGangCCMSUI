@@ -1003,22 +1003,25 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");
 
-            if (hasUnsavedChanges()) {
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                        "There should be a displayed collection item.");
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
-                        "The displayed collection item to reference a valid entity.");
+            if (!getDisplay().getMessageLogDialog().getDialogBox().isShowing() && !AlertBox.isDisplayed()) {
 
-                if (messageLogOKHandler != null) {
-                    messageLogOKHandler.removeHandler();
-                    messageLogOKHandler = null;
+                if (hasUnsavedChanges()) {
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                            "There should be a displayed collection item.");
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                            "The displayed collection item to reference a valid entity.");
+
+                    if (messageLogOKHandler != null) {
+                        messageLogOKHandler.removeHandler();
+                        messageLogOKHandler = null;
+                    }
+
+                    messageLogOKHandler = getDisplay().getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
+
+                    configureMessageDialog();
+                } else {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
-
-                messageLogOKHandler = getDisplay().getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-
-                configureMessageDialog();
-            } else {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");
