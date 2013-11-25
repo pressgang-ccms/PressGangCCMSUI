@@ -11,12 +11,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
@@ -27,6 +32,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -35,9 +41,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -126,6 +134,11 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      * False if we are not displaying external images in the current rendered view, and true otherwise
      */
     private boolean isDisplayingImage;
+
+    /**
+     * The event handler that watches for keyboard presses
+     */
+    private HandlerRegistration keyboardEventHandler = null;
 
     /**
      * The REST callback called when a topic is updated
@@ -333,6 +346,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         getXmlValidator().stopCheckingXMLAndCloseThread();
 
         translatedTopicAdditionalXMLPresenter.close();
+        keyboardEventHandler.removeHandler();
     }
 
     @NotNull
@@ -414,6 +428,19 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         });
 
         bindSplitPanelResize();
+
+        addKeyboardShortcutEventHandler(getTopicXMLPresenter().getDisplay(), getDisplay(), new GetCurrentTopic() {
+
+            @Override
+            public RESTBaseTopicV1 getCurrentlyEditedTopic() {
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                        "There should be a displayed collection item.");
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                        "The displayed collection item to reference a valid entity.");
+
+                return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+            }
+        });
     }
 
     /**
@@ -838,6 +865,27 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         } else {
             return false;
         }
+    }
+
+    private void addKeyboardShortcutEventHandler(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
+                                                 @NotNull final BaseTemplateViewInterface display, @NotNull final GetCurrentTopic currentTopicCallback) {
+        final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
+                final NativeEvent ne = event.getNativeEvent();
+
+                if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'S') {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            saveTopic(messageLogDialogOK);
+                        }
+                    });
+                }
+            }
+        };
+
+        keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }
 
     /**

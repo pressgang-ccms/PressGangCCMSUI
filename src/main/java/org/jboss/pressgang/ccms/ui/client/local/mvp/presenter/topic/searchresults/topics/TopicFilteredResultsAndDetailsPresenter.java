@@ -32,6 +32,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
@@ -62,6 +63,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -190,6 +192,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         elements are loaded.
      */
     private boolean revisionDiffLoadInitiated = false;
+
+    /**
+     * The event handler that watches for keyboard presses
+     */
+    private HandlerRegistration keyboardEventHandler = null;
 
     /**
      * The REST callback called when a topic is updated
@@ -765,7 +772,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         addKeyboardShortcutEventHandler(getTopicXMLPresenter().getDisplay(), getDisplay(), new GetCurrentTopic() {
 
             @Override
-            public RESTTopicV1 getCurrentlyEditedTopic() {
+            public RESTBaseTopicV1 getCurrentlyEditedTopic() {
                 checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
                         "There should be a displayed collection item.");
                 checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
@@ -823,6 +830,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          */
         getTopicContentSpecsPresenter().close();
         topicRevisionsPresenter.close();
+        keyboardEventHandler.removeHandler();
     }
 
     private void bindRenderedViewClicks() {
@@ -3036,7 +3044,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
+        keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }
 
     /**

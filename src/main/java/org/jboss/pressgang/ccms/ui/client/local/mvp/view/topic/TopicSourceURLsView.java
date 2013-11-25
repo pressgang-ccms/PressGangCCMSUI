@@ -125,6 +125,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     @Override
     public void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
+        add.setEnabled(!readOnly);
     }
 
     @NotNull
