@@ -462,8 +462,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         message.append(user).append(": ");
                     }
                     message.append(display.getMessageLogDialog().getMessage().getText());
-                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
-                            .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
 
                     final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                     final RESTTextContentSpecV1 selectedEntity;
@@ -533,20 +532,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         Show the invalid text if required. Also fix up the selected item, because this is what
                                         we will be comparing to when checking for changes.
                                     */
-                                    ComponentContentSpecV1.fixDisplayedText(
-                                            filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                    ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
 
                                     if (startWithNewSpec) {
                                         LOGGER.log(Level.INFO, "Adding new content spec to static list");
 
                                         // We need to swap the text with the invalid text
-                                        ComponentContentSpecV1.fixDisplayedText(
-                                                filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
                                         filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
-                                        filteredResultsPresenter.getProviderData().setSize(
-                                                filteredResultsPresenter.getProviderData().getItems().size());
+                                        filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
                                         updateDisplayWithNewEntityData(false);
                                     } else {
                                         // Update the selected topic
@@ -561,10 +557,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     }});
 
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                        // Take the user to the errors view so they can review any error messages
-                                        switchView(contentSpecErrorsPresenter.getDisplay());
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
-                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new ClickHandler() {
+                                            @Override
+                                            public void onClick(ClickEvent event) {
+                                                // Take the user to the errors view so they can review any error messages
+                                                switchView(contentSpecErrorsPresenter.getDisplay());
+                                            }
+                                        });
                                     } else {
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                     }
@@ -658,11 +658,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                    // Take the user to the errors view so they can review any error messages
-                                    switchView(contentSpecErrorsPresenter.getDisplay());
-                                    AlertBox.setMessageAndDisplay(
-                                            PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
-                                                    .ContentSpecSaveSuccessWithErrorsPostFix());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new ClickHandler() {
+                                        @Override
+                                        public void onClick(ClickEvent event) {
+                                            // Take the user to the errors view so they can review any error messages
+                                            switchView(contentSpecErrorsPresenter.getDisplay());
+                                        }
+                                    });
                                 } else {
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
