@@ -91,8 +91,13 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         this.display = display;
 
         super.bind(display);
-        createEventListener();
-        addEventListener();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                createEventListener(serverDetails.getRestUrl());
+                addEventListener();
+            }
+        });
     }
 
     public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffFailedCallback failedCallback) {
@@ -247,15 +252,13 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 		}
 	}-*/;
 
-    private native void createEventListener() /*-{
+    private native void createEventListener(final String serverHost) /*-{
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
 					console.log("ENTER BaseRenderedDiffPresenter.createEventListener() BaseRenderedDiffPresenter.displayAfterLoaded()");
 
 					// Make sure the iframe sending the data is from an expected source
-					var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
-					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
 					console.log("Event Origin: " + event.origin);
 					console.log("Server Host: " + serverHost);
                     if (serverHost.indexOf(event.origin) == 0) {
