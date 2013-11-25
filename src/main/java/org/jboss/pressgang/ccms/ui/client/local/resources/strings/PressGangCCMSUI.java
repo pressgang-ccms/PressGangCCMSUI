@@ -1131,7 +1131,7 @@ public interface PressGangCCMSUI extends Constants {
     String NotFound();
 
     @NotNull
-    String Condition();
+    String RenderContentSpec();
 
     @NotNull
     String MergeAdditionalXml();
@@ -1146,10 +1146,10 @@ public interface PressGangCCMSUI extends Constants {
     String FromSpec();
 
     @NotNull
-    String MoreConditions();
+    String DefaultContentSpecs();
 
     @NotNull
-    String NoCondition();
+    String NoContentSpec();
 
     @NotNull
     String OldContentSpec();
@@ -1213,4 +1213,13 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String XMLError();
+
+    @NotNull
+    String Condition();
+
+    @NotNull
+    String CustomEntities();
+
+    @NotNull
+    String RenderingInfo();
 }

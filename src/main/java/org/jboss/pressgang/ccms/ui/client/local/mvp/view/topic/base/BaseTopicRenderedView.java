@@ -8,13 +8,17 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -31,8 +35,10 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
     private static final String LOADED_IFRAME = "LoadedIFrame";
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
     private final FlexTable layoutPanel = new FlexTable();
-    private final ListBox conditions = new ListBox(false);
+    private final ListBox contentSpecs = new ListBox(false);
     private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
+    private final PushButton renderingInfo = new PushButton(new Image(ImageResources.INSTANCE.info()));
+    private final TopicRenderingInfoDialog renderingInfoDialog = new TopicRenderingInfoDialog();
     final FlexTable renderingOptions = new FlexTable();
     private int displayingRow = 1;
     private JavaScriptObject listener;
@@ -72,10 +78,11 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         this.getPanel().setWidget(layoutPanel);
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
 
-        renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.Condition()));
-        renderingOptions.setWidget(0, 1, conditions);
+        renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.RenderContentSpec()));
+        renderingOptions.setWidget(0, 1, contentSpecs);
+        renderingOptions.setWidget(0, 2, renderingInfo);
         renderingOptions.setWidget(1, 0, remarks);
-        renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 2);
+        renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 3);
 
         layoutPanel.setWidget(0, 0, renderingOptions);
 
@@ -177,8 +184,14 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
     @Override
     public void clear() {
-        final int next = displayingRow == 1 ? 2 : 1;
-        layoutPanel.setWidget(next, 0, null);
+        if (loadediframe != null && loadediframe.isAttached()) {
+            loadediframe.removeFromParent();
+        }
+        if (loadingiframe != null && loadingiframe.isAttached()) {
+            loadingiframe.removeFromParent();
+        }
+        loadediframe = null;
+        loadingiframe = null;
     }
 
     @Override
@@ -212,13 +225,24 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
     @Override
     @NotNull
-    public ListBox getConditions() {
-        return conditions;
+    public ListBox getContentSpecs() {
+        return contentSpecs;
     }
 
     @Override
     @NotNull
     public CheckBox getRemarks() {
         return remarks;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getRenderingInfo() {
+        return renderingInfo;
+    }
+
+    @Override
+    public TopicRenderingInfoDialog getRenderingInfoDialog() {
+        return renderingInfoDialog;
     }
 }
