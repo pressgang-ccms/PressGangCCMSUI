@@ -397,7 +397,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void readonlyCallback(boolean readOnly) {
+                    public void readonlyCallback(final boolean readOnly) {
                         getDisplay().getSave().setEnabled(!readOnly);
                     }
                 });
@@ -1668,7 +1668,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         isReadOnlyMode(new ReadOnlyCallback() {
             @Override
             public void readonlyCallback(final boolean readOnly) {
-                getDisplay().getSave().setEnabled(readOnly);
+                getDisplay().getSave().setEnabled(!readOnly);
             }
         });
     }
