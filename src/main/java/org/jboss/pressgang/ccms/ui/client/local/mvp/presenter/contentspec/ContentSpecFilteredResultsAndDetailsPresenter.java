@@ -367,14 +367,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (hasUnsavedChanges()) {
-                    display.getMessageLogDialog().getUsername().setText(
-                            Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
-                    display.getMessageLogDialog().reset();
-                    display.getMessageLogDialog().getDialogBox().center();
-                } else {
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                }
+                saveContentSpec();
             }
         };
 
@@ -434,7 +427,248 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final ClickHandler logMessageOkClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                saveContentSpec();
+                final String user = display.getMessageLogDialog().getUsername().getText().trim();
+
+                if (user.isEmpty()) {
+                    display.getMessageLogDialog().getDialogBox().hide();
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            display.getMessageLogDialog().getDialogBox().center();
+                        }
+                    });
+                    return;
+                }
+
+                try {
+                    LOGGER.log(Level.INFO,
+                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+
+                    Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
+
+                    final StringBuilder message = new StringBuilder();
+                    if (!user.isEmpty()) {
+                        message.append(user).append(": ");
+                    }
+                    message.append(display.getMessageLogDialog().getMessage().getText());
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
+                            .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
+
+                    final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                    final RESTTextContentSpecV1 selectedEntity;
+                    if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
+                        selectedEntity = filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
+                    } else {
+                        selectedEntity = null;
+                    }
+                    final Integer id = displayedEntity.getId();
+
+                    // Copy out the text
+                    flushChanges();
+
+                    // create the object to be saved
+                    final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
+                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(
+                            displayedEntity.getText())) {
+                        updatedSpec.explicitSetText(displayedEntity.getText());
+                    }
+                    updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
+
+                    if (displayedEntity.getProperties() != null) {
+                        updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                        updatedSpec.getProperties().setItems(displayedEntity.getProperties().getItems());
+                    }
+
+                    if (displayedEntity.getTags() != null) {
+                        updatedSpec.explicitSetTags(new RESTTagCollectionV1());
+                        updatedSpec.getTags().setItems(displayedEntity.getTags().getItems());
+                    }
+
+                    if (filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem()) {
+
+                        final RESTCallBack<RESTTextContentSpecV1> addCallback = new RESTCallBack<RESTTextContentSpecV1>() {
+                            @Override
+                            public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                                try {
+                                    LOGGER.log(Level.INFO,
+                                            "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK"
+                                                    + ".onClick() addCallback.doSuccessAction() - New Content Spec");
+
+                                    // Create the contentspec wrapper
+                                    final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
+                                            RESTTextContentSpecCollectionItemV1();
+                                    contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
+
+                                    // create the content spec, and add to the wrapper
+                                    contentSpecCollectionItem.setItem(retValue);
+
+                                    // Update the displayed content spec
+                                    filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
+
+                                    /*
+                                        Two things can happen to the selected item at this point. Either we are in the
+                                        "create content spec" mode, in which we simply add the new topics to the data provider,
+                                        and never refresh from the database. In this case, the selected item and the item
+                                        in the data provider are the same, and always linked.
+
+                                        The second mode is where we have created a topic when already displaying a query.
+                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                        or it will remain referencing the returned value here if the query doesn't actually
+                                        return the topic that was saved.
+                                     */
+                                    filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
+
+                                    /*
+                                        Show the invalid text if required. Also fix up the selected item, because this is what
+                                        we will be comparing to when checking for changes.
+                                    */
+                                    ComponentContentSpecV1.fixDisplayedText(
+                                            filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+
+
+                                    if (startWithNewSpec) {
+                                        LOGGER.log(Level.INFO, "Adding new content spec to static list");
+
+                                        // We need to swap the text with the invalid text
+                                        ComponentContentSpecV1.fixDisplayedText(
+                                                filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
+                                        filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
+                                        filteredResultsPresenter.getProviderData().setSize(
+                                                filteredResultsPresenter.getProviderData().getItems().size());
+                                        updateDisplayWithNewEntityData(false);
+                                    } else {
+                                        // Update the selected topic
+                                        LOGGER.log(Level.INFO, "Redisplaying query");
+
+                                        // When the list is repopulated, the text will be swapped with the invalid text
+                                        updateDisplayWithNewEntityData(true);
+                                    }
+
+                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                        add(contentSpecPresenter.getDisplay());
+                                    }});
+
+                                    if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                        // Take the user to the errors view so they can review any error messages
+                                        switchView(contentSpecErrorsPresenter.getDisplay());
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
+                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                    } else {
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
+                                    }
+                                } finally {
+                                    LOGGER.log(Level.INFO,
+                                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK" +
+                                                    ".onClick() addCallback.doSuccessAction() - New Topic");
+                                }
+                            }
+                        };
+
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
+                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                    } else {
+                        /* We are updating, so we need the id */
+                        updatedSpec.setId(id);
+
+                        /*
+                            Save the spec
+                         */
+                        final RESTCallBack<RESTTextContentSpecV1> updateCallback = new RESTCallBack<RESTTextContentSpecV1>() {
+                            @Override
+                            public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                                boolean overwroteChanges = false;
+                                final Integer originalRevision = displayedEntity.getRevision();
+
+                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                                    Collections.sort(retValue.getRevisions().getItems(),
+                                            new RESTTextContentSpecCollectionItemV1RevisionSort());
+
+                                    /*
+                                        If no changes were made to the topic itself (i.e. we just update some children),
+                                        then the revision number will not change. So if what is sent back has the same
+                                        revision number as the topic we were editing, then we have not overwritten background
+                                        changes.
+
+                                        Note that this should not happen because we don't actually just update the property tags;
+                                        any change to the property tag value results in the mapping being deleted and recreated.
+
+                                        The code is left here as a reminder that some additional checking might be required with
+                                        new children that are exposed through the UI.
+                                    */
+                                    if (retValue.getRevisions().getItems().size() >= 1) {
+                                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                                retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+
+                                        LOGGER.log(Level.INFO,
+                                                "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+
+                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                    }
+
+                                    /*
+                                        Otherwise we need to make sure that the second last revision matches the revision of the
+                                        topic we were editing.
+                                     */
+                                    if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
+                                                /* Get the second last revision (the last one is the current one) */
+                                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                                retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
+                                        LOGGER.log(Level.INFO,
+                                                "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+
+                                        /*
+                                         * if the second last revision doesn't match the revision of the topic when editing was
+                                         * started, then we have overwritten someone elses changes
+                                         */
+                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                    }
+                                }
+
+                                // Update the displayed content spec
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
+                                // Update the selected content spec
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+
+                                // Show the invalid text if required.
+                                ComponentContentSpecV1.fixDisplayedText(
+                                        filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                ComponentContentSpecV1.fixDisplayedText(
+                                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
+                                initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                                    add(contentSpecPresenter.getDisplay());
+                                }});
+                                updateDisplayWithNewEntityData(false);
+
+                                if (overwroteChanges) {
+                                    // Take the user to the revisions view so they can review any overwritten changes
+                                    switchView(contentSpecRevisionsPresenter.getDisplay());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
+                                    // Take the user to the errors view so they can review any error messages
+                                    switchView(contentSpecErrorsPresenter.getDisplay());
+                                    AlertBox.setMessageAndDisplay(
+                                            PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
+                                                    .ContentSpecSaveSuccessWithErrorsPostFix());
+                                } else {
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                }
+                            }
+                        };
+
+                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
+                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                    }
+                } finally {
+                    display.getMessageLogDialog().reset();
+                    display.getMessageLogDialog().getDialogBox().hide();
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProcessingOptions(null);
+
+                    LOGGER.log(Level.INFO,
+                            "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                }
             }
         };
 
@@ -477,248 +711,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private void saveContentSpec() {
-        final String user = display.getMessageLogDialog().getUsername().getText().trim();
-
-        if (user.isEmpty()) {
-            display.getMessageLogDialog().getDialogBox().hide();
-            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    display.getMessageLogDialog().getDialogBox().center();
-                }
-            });
-            return;
-        }
-
-        try {
-            LOGGER.log(Level.INFO,
-                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-
-            Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
-
-            final StringBuilder message = new StringBuilder();
-            if (!user.isEmpty()) {
-                message.append(user).append(": ");
-            }
-            message.append(display.getMessageLogDialog().getMessage().getText());
-            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
-                    .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
-
-            final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-            final RESTTextContentSpecV1 selectedEntity;
-            if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
-                selectedEntity = filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
-            } else {
-                selectedEntity = null;
-            }
-            final Integer id = displayedEntity.getId();
-
-            // Copy out the text
-            flushChanges();
-
-            // create the object to be saved
-            final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
-            if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(
-                    displayedEntity.getText())) {
-                updatedSpec.explicitSetText(displayedEntity.getText());
-            }
-            updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
-
-            if (displayedEntity.getProperties() != null) {
-                updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
-                updatedSpec.getProperties().setItems(displayedEntity.getProperties().getItems());
-            }
-
-            if (displayedEntity.getTags() != null) {
-                updatedSpec.explicitSetTags(new RESTTagCollectionV1());
-                updatedSpec.getTags().setItems(displayedEntity.getTags().getItems());
-            }
-
-            if (filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem()) {
-
-                final RESTCallBack<RESTTextContentSpecV1> addCallback = new RESTCallBack<RESTTextContentSpecV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
-                        try {
-                            LOGGER.log(Level.INFO,
-                                    "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK"
-                                            + ".onClick() addCallback.doSuccessAction() - New Content Spec");
-
-                            // Create the contentspec wrapper
-                            final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
-                                    RESTTextContentSpecCollectionItemV1();
-                            contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
-
-                            // create the content spec, and add to the wrapper
-                            contentSpecCollectionItem.setItem(retValue);
-
-                            // Update the displayed content spec
-                            filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
-
-                                    /*
-                                        Two things can happen to the selected item at this point. Either we are in the
-                                        "create content spec" mode, in which we simply add the new topics to the data provider,
-                                        and never refresh from the database. In this case, the selected item and the item
-                                        in the data provider are the same, and always linked.
-
-                                        The second mode is where we have created a topic when already displaying a query.
-                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                        or it will remain referencing the returned value here if the query doesn't actually
-                                        return the topic that was saved.
-                                     */
-                            filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
-
-                                    /*
-                                        Show the invalid text if required. Also fix up the selected item, because this is what
-                                        we will be comparing to when checking for changes.
-                                    */
-                            ComponentContentSpecV1.fixDisplayedText(
-                                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-
-
-                            if (startWithNewSpec) {
-                                LOGGER.log(Level.INFO, "Adding new content spec to static list");
-
-                                // We need to swap the text with the invalid text
-                                ComponentContentSpecV1.fixDisplayedText(
-                                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
-
-                                filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
-                                filteredResultsPresenter.getProviderData().setSize(
-                                        filteredResultsPresenter.getProviderData().getItems().size());
-                                updateDisplayWithNewEntityData(false);
-                            } else {
-                                // Update the selected topic
-                                LOGGER.log(Level.INFO, "Redisplaying query");
-
-                                // When the list is repopulated, the text will be swapped with the invalid text
-                                updateDisplayWithNewEntityData(true);
-                            }
-
-                            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                                add(contentSpecPresenter.getDisplay());
-                            }});
-
-                            if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                // Take the user to the errors view so they can review any error messages
-                                switchView(contentSpecErrorsPresenter.getDisplay());
-                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
-                                        ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
-                            } else {
-                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
-                            }
-                        } finally {
-                            LOGGER.log(Level.INFO,
-                                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK" +
-                                            ".onClick() addCallback.doSuccessAction() - New Topic");
-                        }
-                    }
-                };
-
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
-                        serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
-            } else {
-                        /* We are updating, so we need the id */
-                updatedSpec.setId(id);
-
-                        /*
-                            Save the spec
-                         */
-                final RESTCallBack<RESTTextContentSpecV1> updateCallback = new RESTCallBack<RESTTextContentSpecV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
-                        boolean overwroteChanges = false;
-                        final Integer originalRevision = displayedEntity.getRevision();
-
-                        if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
-                            Collections.sort(retValue.getRevisions().getItems(),
-                                    new RESTTextContentSpecCollectionItemV1RevisionSort());
-
-                                    /*
-                                        If no changes were made to the topic itself (i.e. we just update some children),
-                                        then the revision number will not change. So if what is sent back has the same
-                                        revision number as the topic we were editing, then we have not overwritten background
-                                        changes.
-
-                                        Note that this should not happen because we don't actually just update the property tags;
-                                        any change to the property tag value results in the mapping being deleted and recreated.
-
-                                        The code is left here as a reminder that some additional checking might be required with
-                                        new children that are exposed through the UI.
-                                    */
-                            if (retValue.getRevisions().getItems().size() >= 1) {
-                                final Integer overwriteRevision = retValue.getRevisions().getItems().get(
-                                        retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
-
-                                LOGGER.log(Level.INFO,
-                                        "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
-
-                                overwroteChanges = !originalRevision.equals(overwriteRevision);
-                            }
-
-                                    /*
-                                        Otherwise we need to make sure that the second last revision matches the revision of the
-                                        topic we were editing.
-                                     */
-                            if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
-                                                /* Get the second last revision (the last one is the current one) */
-                                final Integer overwriteRevision = retValue.getRevisions().getItems().get(
-                                        retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
-
-                                LOGGER.log(Level.INFO,
-                                        "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
-
-                                        /*
-                                         * if the second last revision doesn't match the revision of the topic when editing was
-                                         * started, then we have overwritten someone elses changes
-                                         */
-                                overwroteChanges = !originalRevision.equals(overwriteRevision);
-                            }
-                        }
-
-                        // Update the displayed content spec
-                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
-                        // Update the selected content spec
-                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-
-                        // Show the invalid text if required.
-                        ComponentContentSpecV1.fixDisplayedText(
-                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                        ComponentContentSpecV1.fixDisplayedText(
-                                filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
-
-                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                            add(contentSpecPresenter.getDisplay());
-                        }});
-                        updateDisplayWithNewEntityData(false);
-
-                        if (overwroteChanges) {
-                            // Take the user to the revisions view so they can review any overwritten changes
-                            switchView(contentSpecRevisionsPresenter.getDisplay());
-                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                        } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                            // Take the user to the errors view so they can review any error messages
-                            switchView(contentSpecErrorsPresenter.getDisplay());
-                            AlertBox.setMessageAndDisplay(
-                                    PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
-                                            .ContentSpecSaveSuccessWithErrorsPostFix());
-                        } else {
-                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                        }
-                    }
-                };
-
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
-                        serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
-            }
-        } finally {
+        if (hasUnsavedChanges()) {
+            display.getMessageLogDialog().getUsername().setText(
+                    Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
             display.getMessageLogDialog().reset();
-            display.getMessageLogDialog().getDialogBox().hide();
-            filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setProcessingOptions(null);
-
-            LOGGER.log(Level.INFO,
-                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+            display.getMessageLogDialog().getDialogBox().center();
+        } else {
+            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
         }
+
+
     }
 
     private void setSearchResultsVisible(final boolean visible) {
@@ -2113,7 +2115,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * Add listeners for keyboard events
      */
     private void addKeyboardShortcutEventHandler() {
-        @NotNull final Event.NativePreviewHandler keyboardShortcutPreviewHandler = new Event.NativePreviewHandler() {
+        final Event.NativePreviewHandler keyboardShortcutPreviewHandler = new Event.NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
                 final NativeEvent ne = event.getNativeEvent();

@@ -1,9 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -21,6 +26,23 @@ import static com.google.common.base.Preconditions.checkState;
 public class AlertBox extends DialogBox {
     private static final AlertBox INSTANCE = new AlertBox();
     private static final List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+    private static final Event.NativePreviewHandler keyboardShortcutPreviewHandler = new Event.NativePreviewHandler() {
+        @Override
+        public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
+            final NativeEvent ne = event.getNativeEvent();
+
+            if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE || ne.getKeyCode() == KeyCodes.KEY_ENTER) {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        close();
+                    }
+                });
+            }
+        }
+    };
+    private static HandlerRegistration keyboardEventHandler = null;
+
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final HTML message = new HTML();
     private final VerticalPanel verticalPanel = new VerticalPanel();
@@ -30,7 +52,6 @@ public class AlertBox extends DialogBox {
         this.setGlassEnabled(true);
         this.setHTML(new SafeHtmlBuilder().appendEscaped(PressGangCCMSUI.INSTANCE.Alert()).toSafeHtml());
         this.add(verticalPanel);
-
 
         verticalPanel.add(this.message);
         verticalPanel.add(ok);
@@ -44,12 +65,21 @@ public class AlertBox extends DialogBox {
         ok.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent clickEvent) {
-                AlertBox.this.hide();
-                for (final HandlerRegistration handlerRegistration : handlers) {
-                    handlerRegistration.removeHandler();
-                }
+                close();
             }
         });
+    }
+
+    static private void close() {
+        INSTANCE.hide();
+        for (final HandlerRegistration handlerRegistration : handlers) {
+            handlerRegistration.removeHandler();
+        }
+
+        if (keyboardEventHandler != null) {
+            keyboardEventHandler.removeHandler();
+            keyboardEventHandler = null;
+        }
     }
 
     /**
@@ -58,10 +88,8 @@ public class AlertBox extends DialogBox {
      * @param clickHandler A handler that is called when the ok button is clicked. Once clicked, the handler is removed.
      */
     static public void setMessageAndDisplay(@NotNull final String message, @NotNull final ClickHandler clickHandler) {
-        checkState(!INSTANCE.isShowing(), "setMessageAndDisplay() should not be called when the alert is already displayed.");
         handlers.add(INSTANCE.ok.addClickHandler(clickHandler));
-        INSTANCE.setMessage(message);
-        INSTANCE.center();
+        setMessageAndDisplay(message);
     }
 
     /**
@@ -69,8 +97,10 @@ public class AlertBox extends DialogBox {
      * @param message The message to display
      */
     static public void setMessageAndDisplay(@NotNull final String message) {
+        checkState(!INSTANCE.isShowing(), "setMessageAndDisplay() should not be called when the alert is already displayed.");
         INSTANCE.setMessage(message);
         INSTANCE.center();
+        keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
     }
 
     static public void setMessage(@NotNull final String message) {
