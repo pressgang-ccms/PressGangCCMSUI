@@ -105,22 +105,17 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         ServerDetails.getCurrentServers(new AllServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final Map<Integer, ServerDetails> allServerDetails) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                    @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        for (final ServerDetails serverDetail : allServerDetails.values()) {
-                            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
-                            if (serverDetails.getId() == serverDetails.getId()) {
-                                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
-                            }
-                        }
-
-                        // Disable the menu if we on;y have one available server
-                        if (allServerDetails.values().size() <= 1) {
-                            display.getServers().setEnabled(false);
-                        }
+                for (final ServerDetails serverDetail : allServerDetails.values()) {
+                    display.getServers().addItem(serverDetail.getName(), serverDetail.getId() + "");
+                    if (serverDetail.getId() == serverDetail.getId()) {
+                        display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
                     }
-                });
+                }
+
+                // Disable the menu if we on;y have one available server
+                if (allServerDetails.values().size() <= 1) {
+                    display.getServers().setEnabled(false);
+                }
             }
         });
 
@@ -131,12 +126,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getServers().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(@NotNull final ChangeEvent event) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                    @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails currentServerSettings) {
-                        saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
-                    }
-                });
+                saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
             }
         });
     }
@@ -159,7 +149,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
                                     currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")));
+                                    newServerSettings.getGroup().getType().replaceAll("_", " ")));
                             Window.Location.reload();
                         }
                     }
