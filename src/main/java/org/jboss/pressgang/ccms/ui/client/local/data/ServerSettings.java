@@ -48,6 +48,10 @@ public class ServerSettings {
 
                             eventBus.fireEvent(new ServerSettingsReceived(value));
                         }
+
+                        public void failed() {
+                            eventBus.fireEvent(new ServerSettingsReceived(null));
+                        }
                     },
                     null,
                     true

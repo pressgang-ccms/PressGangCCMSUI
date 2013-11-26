@@ -84,6 +84,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics
         .TranslatedTopicFilteredResultsAndDetailsPresenter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class watches the event bus for page change requests, and instructs the appropriate presenters
@@ -181,7 +182,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             // Create an event handler to bind and fire the history state once the server settings have been downloaded
             eventBus.addHandler(ServerSettingsReceived.getType(), new ServerSettingsReceivedHandler() {
                 @Override
-                public void onSettingsReceived(RESTServerSettingsV1 serverSettings) {
+                public void onSettingsReceived(@Nullable final RESTServerSettingsV1 serverSettings) {
                     bind();
 
                     if ("".equals(History.getToken())) {

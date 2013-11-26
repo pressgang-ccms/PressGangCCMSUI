@@ -161,7 +161,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
                                     currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")), new CloseHandler() {
+                                    newServerSettings.getGroup().getType().replaceAll("_", " ")), new CloseHandler() {
                                 @Override
                                 public void onClose(CloseEvent event) {
                                     Window.Location.reload();
