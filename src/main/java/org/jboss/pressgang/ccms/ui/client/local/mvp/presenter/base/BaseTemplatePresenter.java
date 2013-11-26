@@ -109,10 +109,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void serverDetailsFound(@NotNull final Map<Integer, ServerDetails> allServerDetails) {
                 ServerDetails.getSavedServer(new ServerDetailsCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    public void serverDetailsFound(@NotNull final ServerDetails currentServerDetails) {
                         for (final ServerDetails serverDetail : allServerDetails.values()) {
-                            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
-                            if (serverDetails.getId() == serverDetails.getId()) {
+                            display.getServers().addItem(serverDetail.getName(), serverDetail.getId() + "");
+                            if (serverDetail.getId() == currentServerDetails.getId()) {
                                 display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
                             }
                         }
