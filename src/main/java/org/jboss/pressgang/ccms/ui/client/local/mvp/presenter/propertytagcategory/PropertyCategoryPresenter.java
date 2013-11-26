@@ -1,24 +1,23 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The presenter for the property tag details view.
@@ -38,8 +37,6 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
      * History token.
      */
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer entityId;
@@ -92,6 +89,6 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(entityId), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyCategory(entityId), callback, display);
     }
 }

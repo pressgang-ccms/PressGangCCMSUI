@@ -26,6 +26,10 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
@@ -54,9 +58,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,6 +85,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     @Inject
     private EventBus eventBus;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+
+    private RESTServerSettingsV1 serverSettings;
 
     /**
      * The display that holds the UI elements the user interacts with.
@@ -95,6 +103,30 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     @Override
     public boolean hasUnsavedChanges() {
         return false;
+    }
+
+    @NotNull
+    protected EventBus getEventBus() {
+        return eventBus;
+    }
+
+    @NotNull
+    protected FailOverRESTCall getFailOverRESTCall() {
+        return failOverRESTCall;
+    }
+
+    protected void getServerSettings(@NotNull final ServerSettingsCallback settingsCallback) {
+        if (serverSettings == null) {
+            FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value) {
+                    serverSettings = value;
+                    settingsCallback.serverSettingsLoaded(serverSettings);
+                }
+            }, display, failOverRESTCall);
+        } else {
+            settingsCallback.serverSettingsLoaded(serverSettings);
+        }
     }
 
     /**

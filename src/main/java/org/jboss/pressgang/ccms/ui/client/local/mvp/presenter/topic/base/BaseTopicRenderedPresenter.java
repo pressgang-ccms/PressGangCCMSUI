@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +23,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -52,11 +49,6 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
 
         TopicRenderingInfoDialog getRenderingInfoDialog();
     }
-
-    @Inject
-    protected FailOverRESTCall failOverRESTCall;
-    @Inject
-    protected ServerSettings serverSettings;
 
     /**
      * The condition set via the URL history token. Used when the view is used stand alone.

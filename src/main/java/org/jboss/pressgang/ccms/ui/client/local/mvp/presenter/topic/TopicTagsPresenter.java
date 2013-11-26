@@ -1,5 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -10,7 +18,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -20,14 +27,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 public class TopicTagsPresenter extends BaseTemplatePresenter {
 
@@ -52,8 +51,6 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicTagsView";
 
     private static final Logger LOGGER = Logger.getLogger(TopicTagsPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer topicId;
@@ -114,7 +111,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicTagsPresenter.getTags()");
         }

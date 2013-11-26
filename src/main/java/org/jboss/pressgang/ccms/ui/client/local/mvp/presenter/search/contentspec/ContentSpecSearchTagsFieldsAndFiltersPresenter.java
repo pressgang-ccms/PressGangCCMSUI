@@ -27,17 +27,16 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterDialogInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
@@ -56,8 +55,6 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(ContentSpecSearchTagsFieldsAndFiltersPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -271,9 +268,9 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 };
 
                 if (filter.getId() == null) {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, display);
                 } else {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, display);
                 }
             }
         };

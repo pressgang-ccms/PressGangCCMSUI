@@ -1,11 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -18,6 +29,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -33,25 +45,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
  * The presenter that adds logic to the category search and edit view.
@@ -96,14 +96,6 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             return false;
         }
     };
-
-    @Inject private FailOverRESTCall failOverRESTCall;
-
-    /**
-     * The Errai event bus
-     */
-    @Inject
-    private EventBus eventBus;
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
@@ -158,7 +150,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCategory(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getCategory(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -412,9 +404,9 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
 
                         if (wasNewEntity) {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createCategory(category), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createCategory(category), callback, display);
                         } else {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveCategory(category), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveCategory(category), callback, display);
                         }
                     } else {
                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -433,7 +425,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsPresenter.getQuery(),
+            getEventBus().fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsPresenter.getQuery(),
                     newWindow));
         }
     }

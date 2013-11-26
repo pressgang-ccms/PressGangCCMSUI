@@ -1,5 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -16,7 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
@@ -26,16 +35,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to add logic to the category tag view.
@@ -57,8 +56,6 @@ public class CategoryTagPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CategoryTagPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     /**
      * The id of the category to display.
@@ -143,7 +140,7 @@ public class CategoryTagPresenter
                 }
             };
             getPossibleChildrenProviderData().reset();
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

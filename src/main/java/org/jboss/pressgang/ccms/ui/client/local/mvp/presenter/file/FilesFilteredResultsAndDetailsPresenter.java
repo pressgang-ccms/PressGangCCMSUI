@@ -23,7 +23,6 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -38,8 +37,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItem
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
@@ -50,11 +51,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTLanguageFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -143,18 +142,10 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
      */
     private static final Logger LOGGER = Logger.getLogger(FilesFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
-
     /**
      * A reference to the StringConstants that holds the locales.
      */
     private List<String> locales;
-
-    @Inject
-    private EventBus eventBus;
 
     @Inject
     private Display display;
@@ -200,7 +191,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFileWithoutData(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getFileWithoutData(selectedEntity.getId()), callback,
+                        display);
             }
         };
 
@@ -262,10 +254,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 }
             };
 
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getFileWithoutData(
-                            fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()),
-                    callback, display);
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getFileWithoutData(
+                    fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()), callback, display);
         }
     }
 
@@ -334,9 +324,14 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     }
 
     private void populateLocales() {
-        locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        finishLoading();
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales();
+                Collections.sort(locales);
+                finishLoading();
+            }
+        });
     }
 
     /**
@@ -431,9 +426,11 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     }
 
                                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(updateFile), getDefaultFileRestCallback(true), display);
+                                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createFile(updateFile),
+                                                getDefaultFileRestCallback(true), display);
                                     } else {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
+                                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile),
+                                                getDefaultFileRestCallback(false), display);
                                     }
                                 } finally {
                                     display.removeWaitOperation();
@@ -559,9 +556,11 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     }
 
                     if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(updateFile), getDefaultFileRestCallback(true), display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createFile(updateFile),
+                                getDefaultFileRestCallback(true), display);
                     } else {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile),
+                                getDefaultFileRestCallback(false), display);
                     }
                 } else {
                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -734,7 +733,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(fileFilteredResultsComponent.getQuery(), newWindow));
+            getEventBus().fireEvent(new FilesFilteredResultsAndFileViewEvent(fileFilteredResultsComponent.getQuery(), newWindow));
         }
     }
 
@@ -776,29 +775,34 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
-                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            final String defaultLocale = serverSettings.getDefaultLocale();
 
-                    // Create the file wrapper
-                    final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
-                    fileCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
+                            // Create the file wrapper
+                            final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
+                            fileCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
-                    // When we have the default locale, create a new file
-                    final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
-                    langFile.explicitSetLocale(defaultLocale);
+                            // When we have the default locale, create a new file
+                            final RESTLanguageFileV1 langFile = new RESTLanguageFileV1();
+                            langFile.explicitSetLocale(defaultLocale);
 
-                    final RESTFileV1 newFile = new RESTFileV1();
-                    newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
-                    newFile.getLanguageFiles_OTM().addNewItem(langFile);
-                    fileCollectionItem.setItem(newFile);
+                            final RESTFileV1 newFile = new RESTFileV1();
+                            newFile.explicitSetLanguageFiles_OTM(new RESTLanguageFileCollectionV1());
+                            newFile.getLanguageFiles_OTM().addNewItem(langFile);
+                            fileCollectionItem.setItem(newFile);
 
-                    // the file won't show up in the list of files until it is saved, so the
-                    // selected item is null
-                    fileFilteredResultsComponent.setSelectedItem(null);
+                            // the file won't show up in the list of files until it is saved, so the
+                            // selected item is null
+                            fileFilteredResultsComponent.setSelectedItem(null);
 
-                    // the new file is being displayed though, so we set the displayed item
-                    fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
+                            // the new file is being displayed though, so we set the displayed item
+                            fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem);
 
-                    updateViewsAfterNewEntityLoaded();
+                            updateViewsAfterNewEntityLoaded();
+                        }
+                    });
                 }
             }
         });
@@ -825,11 +829,16 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
-                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
-                    createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
-                            display.getBulkUploadDialog().getFilePath().getText(), 0,
-                            display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
-                            new ArrayList<String>());
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            final String defaultLocale = serverSettings.getDefaultLocale();
+                            createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
+                                    display.getBulkUploadDialog().getFilePath().getText(), 0,
+                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
+                                    new ArrayList<String>());
+                        }
+                    });
                 }
             }
         });
@@ -875,7 +884,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
-            eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(
+            getEventBus().fireEvent(new FilesFilteredResultsAndFileViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
             display.addWaitOperation();
@@ -924,7 +933,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFile(newFile), callback, display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createFile(newFile), callback, display);
                     } finally {
                         display.removeWaitOperation();
                     }

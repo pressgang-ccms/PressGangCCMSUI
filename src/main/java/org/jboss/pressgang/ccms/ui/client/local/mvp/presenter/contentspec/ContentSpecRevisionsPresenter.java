@@ -1,5 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -12,7 +18,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -20,12 +25,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
 public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
@@ -81,10 +80,6 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
      * History token
      */
     public static final String HISTORY_TOKEN = "ContentSpecHistoryView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
-
-    private String contentSpec;
 
     @Inject
     private Display display;
@@ -169,7 +164,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                 final int length = list.getVisibleRange().getLength();
                 final int end = start + length;
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(id, start, end), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(id, start, end), callback, display);
             }
         };
         return provider;

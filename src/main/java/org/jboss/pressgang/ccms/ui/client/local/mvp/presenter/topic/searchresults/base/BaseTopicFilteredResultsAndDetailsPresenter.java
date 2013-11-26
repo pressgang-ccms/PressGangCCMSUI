@@ -108,14 +108,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
-
-    /**
-     * The global event bus.
-     */
-    @Inject
-    private EventBus eventBus;
-
     /**
      * The query string, which is the full history token minus the HISTORY_TOKEN. Or it is null
      * if we are creating only new topics.
@@ -473,7 +465,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Don't attempt to find content specs on new topics
              */
             if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
                         ServiceConstants.CS_NODE_TOPIC_TYPES_QUERY + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" +
                                 getDisplayedTopic().getId() + ";"), new RESTCallBack<RESTCSNodeCollectionV1>() {
                     @Override

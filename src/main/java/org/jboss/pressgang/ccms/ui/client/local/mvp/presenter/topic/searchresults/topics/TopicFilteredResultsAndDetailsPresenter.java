@@ -33,7 +33,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -62,6 +61,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -70,11 +70,12 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -100,12 +101,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -137,11 +136,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicCollectionV1,
         RESTTopicCollectionItemV1,
         RESTTopicV1BasicDetailsEditor> {
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
 
     /**
      * When a new topic is created, it is populated with a default template. The
@@ -472,8 +466,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
-                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
+                                        serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                            }
+                        });
                     } else {
 
                         checkState(getSearchResultPresenter().getProviderData().getSelectedItem() != null,
@@ -491,14 +490,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetTitle(sourceTopic.getTitle());
                         }
 
-                        failOverRESTCall.performRESTCall(
-                                FailOverRESTCallDatabase.saveTopic(
-                                        newTopic,
-                                        message.toString(),
-                                        flag,
-                                        serverSettings.getEntities().getUnknownUserId().toString()),
-                                updateCallback,
-                                display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, message.toString(), flag,
+                                        serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                            }
+                        });
+
                     }
                 }
             } finally {
@@ -527,14 +526,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
                         .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
 
-                failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.saveTopic(
-                        reviewUpdateTopic,
-                        message.toString(),
-                        flag,
-                        serverSettings.getEntities().getUnknownUserId().toString()),
-                        updateCallback,
-                        display);
+                getServerSettings(new ServerSettingsCallback() {
+                    @Override
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        getFailOverRESTCall().performRESTCall(
+                                FailOverRESTCallDatabase.saveTopic(
+                                        reviewUpdateTopic,
+                                        message.toString(),
+                                        flag,
+                                        serverSettings.getEntities().getUnknownUserId().toString()),
+                                updateCallback,
+                                display);
+                    }
+                });
             } finally {
                 display.getMessageLogDialog().reset();
                 display.getMessageLogDialog().getDialogBox().hide();
@@ -580,12 +584,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private Display display;
 
     private XMLValidator xmlValidator = null;
-
-    /**
-     * The global event bus.
-     */
-    @Inject
-    private EventBus eventBus;
 
     /**
      * This entity is used to hold the tags that will be applied to
@@ -723,7 +721,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(selectedEntity.getId()), callback, getDisplay());
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(selectedEntity.getId()), callback, getDisplay());
 
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
@@ -764,12 +762,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         });
 
-
-        locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        defaultLocale = serverSettings.getSettings().getDefaultLocale();
-        displayNewTopic();
-        displayInitialTopic(getNewEntityCallback);
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales();
+                Collections.sort(locales);
+                defaultLocale = serverSettings.getDefaultLocale();
+                displayNewTopic();
+                displayInitialTopic(getNewEntityCallback);
+            }
+        });
 
         addKeyboardShortcutEventHandler(getTopicXMLPresenter().getDisplay(), getDisplay(), new GetCurrentTopic() {
 
@@ -921,7 +923,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             checkState(object != null && object.getItem() != null,
                                     "The referenced column should have a valid content spec reference");
 
-                            eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
+                            getEventBus().fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
                                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" +
                                             object.getItem().getId(), false));
                         }
@@ -939,7 +941,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             checkState(object != null && object.getItem() != null,
                                     "The referenced column should have a valid " + "content spec reference");
 
-                            failOverRESTCall.performRESTCall(
+                            getFailOverRESTCall().performRESTCall(
                                     FailOverRESTCallDatabase.getTopicRevisionWithProperties(getDisplayedTopic().getId(),
                                             getDisplayedTopic().getRevision()), new RESTCallBack<RESTTopicV1>() {
                                 @Override
@@ -947,31 +949,36 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     checkArgument(retValue.getProperties() != null,
                                             "The returned topic should have an expanded properties collection");
 
-                                    boolean found = false;
-                                    for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
-                                        if (prop.getItem().getId() == serverSettings.getEntities().getFixedUrlPropertyTagId()) {
-                                            Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
-                                            found = true;
-                                            break;
+                                    getServerSettings(new ServerSettingsCallback() {
+                                        @Override
+                                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                            boolean found = false;
+                                            for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
+                                                if (prop.getItem().getId() == serverSettings.getEntities().getFixedUrlPropertyTagId()) {
+                                                    Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop.getItem().getValue(), "", "");
+                                                    found = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            /*
+                                                The docbuilder won't set the fixed url. This is left until the book is built by
+                                                author with csprocessor to ensure that the title is set at the last possible
+                                                moment. This means it is possible for a topic to be in a book on the docbuilder
+                                                without having a FIXED URL property tag. In this case we guess the fixed url.
+
+                                                Worst case scenario is that this topic has the same title as another topic in
+                                                the book, and the user will be sent to the wrong topic.
+
+                                                Ideally the logic employed by the csprocessor to set the temp fixed url should
+                                                be exposed and used here.
+                                             */
+                                            if (!found) {
+                                                final String simulatedFixedURL = retValue.getTitle().replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
+                                                Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + simulatedFixedURL, "", "");
+                                            }
                                         }
-                                    }
-
-                                    /*
-                                        The docbuilder won't set the fixed url. This is left until the book is built by
-                                        author with csprocessor to ensure that the title is set at the last possible
-                                        moment. This means it is possible for a topic to be in a book on the docbuilder
-                                        without having a FIXED URL property tag. In this case we guess the fixed url.
-
-                                        Worst case scenario is that this topic has the same title as another topic in
-                                        the book, and the user will be sent to the wrong topic.
-
-                                        Ideally the logic employed by the csprocessor to set the temp fixed url should
-                                        be exposed and used here.
-                                     */
-                                    if (!found) {
-                                        final String simulatedFixedURL = retValue.getTitle().replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
-                                        Window.open(Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + simulatedFixedURL, "", "");
-                                    }
+                                    });
                                 }
                             });
                         }
@@ -1038,7 +1045,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getTopicTagsPresenter().getDisplay());
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadAllTags()");
@@ -1141,7 +1148,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithTags(id, revision), topicWithTagsCallback, getTopicTagsPresenter().getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -1188,7 +1195,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, topicRevision), callback, display);
             }
         }
     }
@@ -1240,7 +1247,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(id, revision),
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(id, revision),
                             topicWithContentSpecsCallback, getTopicContentSpecsPresenter().getDisplay());
                 } else {
                     // update the view
@@ -1263,12 +1270,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             migrated to a content spec entity.
          */
         if (getDisplayedTopic().getId() != null) {
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
                 new RESTCallBack<RESTTopicCollectionV1>() {
                     public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                         if (retValue.getSize() != 0) {
                             if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
-                                eventBus.fireEvent(
+                                getEventBus().fireEvent(
                                         new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
                             }
                         }
@@ -1286,7 +1293,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
-        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultPresenter().getProviderData().getSelectedItem();
+        final RESTTopicCollectionItemV1 selectedItem = getSearchResultPresenter().getProviderData().getSelectedItem();
         final RESTTopicV1 displayedItem = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
         final RESTTopicV1 displayedTopic = getDisplayedTopic();
         // Are we displaying the latest version of the topic i.e. the one that doesn't have its tags loaded?
@@ -1329,7 +1336,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 final Integer id = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId();
                 final Integer revision = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision();
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithProperties(id, revision), callback, getTopicPropertyTagPresenter().getDisplay());
             }
         }
     }
@@ -1560,7 +1567,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
                             getRenderedDiffRevision() + ";" + getDisplayedTopic().getRevision();
 
-                    eventBus.fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             });
 
@@ -1766,23 +1773,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
                 "The displayed collection item to reference a valid entity.");
 
-        final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
-        /*
-            If the tags have not been loaded, the tags collection will be null.
-         */
-        if (displayedTopic.getTags() == null) {
-            displayedTopic.setTags(new RESTTagCollectionV1());
-        }
+                // If the tags have not been loaded, the tags collection will be null.
+                if (displayedTopic.getTags() == null) {
+                    displayedTopic.setTags(new RESTTagCollectionV1());
+                }
 
-        if (!EntityUtilities.topicHasTag(displayedTopic, serverSettings.getEntities().getReviewTagId())) {
-            final RESTTagV1 newTag = new RESTTagV1();
-            newTag.setId(serverSettings.getEntities().getReviewTagId());
-            displayedTopic.getTags().addNewItem(newTag);
-        }
+                if (!EntityUtilities.topicHasTag(displayedTopic, serverSettings.getEntities().getReviewTagId())) {
+                    final RESTTagV1 newTag = new RESTTagV1();
+                    newTag.setId(serverSettings.getEntities().getReviewTagId());
+                    displayedTopic.getTags().addNewItem(newTag);
+                }
 
-        display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.StartReviewLogMessage());
-        saveTopic(messageLogDialogOK);
+                display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.StartReviewLogMessage());
+                saveTopic(messageLogDialogOK);
+            }
+        });
     }
 
     /**
@@ -1801,45 +1811,50 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             return;
         }
 
-        final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
-        reviewUpdateTopic = new RESTTopicV1();
-        reviewUpdateTopic.setId(displayedTopic.getId());
-        reviewUpdateTopic.explicitSetTags(new RESTTagCollectionV1());
+                reviewUpdateTopic = new RESTTopicV1();
+                reviewUpdateTopic.setId(displayedTopic.getId());
+                reviewUpdateTopic.explicitSetTags(new RESTTagCollectionV1());
 
-        final RESTTagV1 newTag = new RESTTagV1();
-        newTag.setId(serverSettings.getEntities().getReviewTagId());
-        reviewUpdateTopic.getTags().addRemoveItem(newTag);
+                final RESTTagV1 newTag = new RESTTagV1();
+                newTag.setId(serverSettings.getEntities().getReviewTagId());
+                reviewUpdateTopic.getTags().addRemoveItem(newTag);
 
-        if (!accept) {
-            topicReviewPresenter.findReviewRevision(displayedTopic, display, new ReviewTopicStartRevisionFound() {
-                @Override
-                public void revisionFound(@NotNull final RESTTopicV1 revision) {
-                    failOverRESTCall.performRESTCall(
-                            FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision.getRevision()),
-                            new RESTCallBack<RESTTopicV1>() {
-                                public void success(@NotNull final RESTTopicV1 value) {
+                if (!accept) {
+                    topicReviewPresenter.findReviewRevision(displayedTopic, display, new ReviewTopicStartRevisionFound() {
+                        @Override
+                        public void revisionFound(@NotNull final RESTTopicV1 revision) {
+                            getFailOverRESTCall().performRESTCall(
+                                    FailOverRESTCallDatabase.getTopicRevision(displayedTopic.getId(), revision.getRevision()),
+                                    new RESTCallBack<RESTTopicV1>() {
+                                        public void success(@NotNull final RESTTopicV1 value) {
                                     /*
                                         Reset the XML and the title
                                      */
-                                    reviewUpdateTopic.explicitSetXml(value.getXml());
-                                    reviewUpdateTopic.explicitSetTitle(value.getTitle());
+                                            reviewUpdateTopic.explicitSetXml(value.getXml());
+                                            reviewUpdateTopic.explicitSetTitle(value.getTitle());
 
-                                    display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
-                                    updateReviewStatus();
-                                }
-                            }, display);
-                }
+                                            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndRejectLogMessage());
+                                            updateReviewStatus();
+                                        }
+                                    }, display);
+                        }
 
-                @Override
-                public void revisionNotFound() {
-                    // this shouldn't happen
+                        @Override
+                        public void revisionNotFound() {
+                            // this shouldn't happen
+                        }
+                    });
+                } else {
+                    display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndAcceptLogMessage());
+                    updateReviewStatus();
                 }
-            });
-        } else {
-            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.EndAndAcceptLogMessage());
-            updateReviewStatus();
-        }
+            }
+        });
     }
 
     private void updateReviewStatus() {
@@ -1901,7 +1916,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     idsQuery.append(id);
                 }
 
-                eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
+                getEventBus().fireEvent(new TopicSearchResultsAndTopicViewEvent(
                         Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + idsQuery.toString(),
                         false));
             } else if (startWithNewTopic) {
@@ -1931,103 +1946,108 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             reader.addLoadEndHandler(new LoadEndHandler() {
                 @Override
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
-                    try {
-                        final String result = reader.getStringResult();
-
-                         /* Populate the new topics details */
-                        final RESTTopicV1 newTopic = new RESTTopicV1();
-                        newTopic.explicitSetXml(result);
-                        if (overwrite) {
-                            newTopic.setId(overwriteFilenameAsInt(files.getItem(index).getName()));
-                        } else {
-                            // we want the title of the imported topic to match the title element if possible. otherwise
-                            // we set it to something generic so the file will be uploaded without the server retuning
-                            // an error saying it couldn't set the title.
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
                             try {
-                                final Document topicDom = XMLParser.parse(result);
-                                final Element section = topicDom.getDocumentElement();
+                                final String result = reader.getStringResult();
 
-                                if (Constants.DOCBOOK_SECTION_ELEMENT.equals(section.getNodeName())) {
-                                    final NodeList children = section.getChildNodes();
-
-                                    for (int childIndex = 0, childCount = children.getLength(); childIndex < childCount; ++childIndex) {
-                                        final Node child = children.item(childIndex);
-                                        if (child.getNodeType() == Node.ELEMENT_NODE) {
-                                            if (Constants.DOCBOOK_TITLE_ELEMENT.equals(child.getNodeName())) {
-                                                final String title = child.getFirstChild().getNodeValue().trim();
-                                                if (title.isEmpty()) {
-                                                    newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
-                                                } else {
-                                                    newTopic.explicitSetTitle(title);
-                                                }
-                                            } else {
-                                                newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
-                                            }
-                                            break;
-                                        }
-                                    }
+                                // Populate the new topics details
+                                final RESTTopicV1 newTopic = new RESTTopicV1();
+                                newTopic.explicitSetXml(result);
+                                if (overwrite) {
+                                    newTopic.setId(overwriteFilenameAsInt(files.getItem(index).getName()));
                                 } else {
-                                    newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
-                                }
+                                    // we want the title of the imported topic to match the title element if possible. otherwise
+                                    // we set it to something generic so the file will be uploaded without the server retuning
+                                    // an error saying it couldn't set the title.
+                                    try {
+                                        final Document topicDom = XMLParser.parse(result);
+                                        final Element section = topicDom.getDocumentElement();
 
-                            } catch (DOMException e) {
-                                newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
-                            }
+                                        if (Constants.DOCBOOK_SECTION_ELEMENT.equals(section.getNodeName())) {
+                                            final NodeList children = section.getChildNodes();
+
+                                            for (int childIndex = 0, childCount = children.getLength(); childIndex < childCount; ++childIndex) {
+                                                final Node child = children.item(childIndex);
+                                                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                                                    if (Constants.DOCBOOK_TITLE_ELEMENT.equals(child.getNodeName())) {
+                                                        final String title = child.getFirstChild().getNodeValue().trim();
+                                                        if (title.isEmpty()) {
+                                                            newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                                        } else {
+                                                            newTopic.explicitSetTitle(title);
+                                                        }
+                                                    } else {
+                                                        newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                        }
+
+                                    } catch (DOMException e) {
+                                        newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                                    }
 
 
-                            // Don't set the title so that it'll be picked up from the XML by the server.
-                            newTopic.explicitSetTags(bulkImportTemplate.getTags());
-                            newTopic.explicitSetLocale(defaultLocale);
-                            newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                                    // Don't set the title so that it'll be picked up from the XML by the server.
+                                    newTopic.explicitSetTags(bulkImportTemplate.getTags());
+                                    newTopic.explicitSetLocale(defaultLocale);
+                                    newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                             /* save the original file name */
-                            final RESTAssignedPropertyTagV1 originalFileName = new RESTAssignedPropertyTagV1();
-                            originalFileName.setValue(files.getItem(index).getName());
-                            originalFileName.setId(serverSettings.getEntities().getOriginalFileNamePropertyTagId());
+                                    final RESTAssignedPropertyTagV1 originalFileName = new RESTAssignedPropertyTagV1();
+                                    originalFileName.setValue(files.getItem(index).getName());
+                                    originalFileName.setId(serverSettings.getEntities().getOriginalFileNamePropertyTagId());
 
-                            newTopic.getProperties().addNewItem(originalFileName);
-                        }
+                                    newTopic.getProperties().addNewItem(originalFileName);
+                                }
 
-                        final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
-                            @Override
-                            public void success(@NotNull final RESTTopicV1 retValue) {
-                                ids.add(retValue.getId());
+                                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                                    @Override
+                                    public void success(@NotNull final RESTTopicV1 retValue) {
+                                        ids.add(retValue.getId());
 
                                 /*
                                     If we are working with a collection of new topics, add anything uploaded to
                                     that list.
                                  */
-                                if (startWithNewTopic) {
-                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-                                    topicCollectionItem.setItem(retValue);
-                                    topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                        if (startWithNewTopic) {
+                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                            topicCollectionItem.setItem(retValue);
+                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                    getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
-                                    getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
+                                            getSearchResultPresenter().getProviderData().getItems().add(topicCollectionItem);
+                                            getSearchResultPresenter().getProviderData().setSize(getSearchResultPresenter().getProviderData().getItems().size());
+                                        }
+
+                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
+                                    }
+
+                                    @Override
+                                    public void failed() {
+                                        failedFiled.add(files.getItem(index).getName());
+                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
+                                    }
+                                };
+
+                                if (overwrite) {
+                                    getFailOverRESTCall().performRESTCall(
+                                            FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
+                                                    serverSettings.getEntities().getUnknownUserId().toString()), callback, display);
+                                } else {
+                                    getFailOverRESTCall().performRESTCall(
+                                            FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
+                                                    serverSettings.getEntities().getUnknownUserId().toString()), callback, display);
                                 }
-
-                                createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
+                            } finally {
+                                display.removeWaitOperation();
                             }
-
-                            @Override
-                            public void failed() {
-                                failedFiled.add(files.getItem(index).getName());
-                                createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
-                            }
-                        };
-
-                        if (overwrite) {
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.saveTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
-                                            serverSettings.getEntities().getUnknownUserId().toString()), callback, display);
-                        } else {
-                            failOverRESTCall.performRESTCall(
-                                    FailOverRESTCallDatabase.createTopic(newTopic, logMessage, (int) RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT,
-                                            serverSettings.getEntities().getUnknownUserId().toString()), callback, display);
                         }
-                    } finally {
-                        display.removeWaitOperation();
-                    }
+                    });
                 }
             });
 
@@ -2538,7 +2558,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
                             revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay());
 
                 }
@@ -2584,12 +2604,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
                                     retValue.getXml();
 
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
                                 public void success(@NotNull final IntegerWrapper value1) {
                                     final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
                                             getDisplayedTopic().getXml();
 
-                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml2),
+                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml2),
                                             new RESTCallBack<IntegerWrapper>() {
                                                 public void success(@NotNull final IntegerWrapper value2) {
                                                     topicRevisionsPresenter.renderXML(value1.value, value2.value,
@@ -2625,7 +2645,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     */
                     setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
                             revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay(), true);
 
                 }
@@ -2812,10 +2832,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getTopicTemplateStringConstantId()), callback,
-                    display);
-
-
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getTopicTemplateStringConstantId()), callback,
+                            display);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -2858,8 +2881,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getDocBookElementsStringConstantId()), callback,
-                    display);
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getDocBookElementsStringConstantId()), callback,
+                            display);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
         }
@@ -2872,40 +2900,43 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param loadedCallback The callback to call when the data is loaded
      */
     private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
-        // Get the list of template string constant ids from the StringConstant
-        final List<Integer> xmlTemplateIds = serverSettings.getSettings().getDocBookTemplateIds();
-        final Map<String, String> data = new TreeMap<String, String>();
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                // Get the list of template string constant ids from the StringConstant
+                final List<Integer> xmlTemplateIds = serverSettings.getDocBookTemplateIds();
+                final Map<String, String> data = new TreeMap<String, String>();
 
-        // work around the inability to modify an int from an anonymous class
-        final int[] counter = new int[]{0};
+                // work around the inability to modify an int from an anonymous class
+                final int[] counter = new int[]{0};
 
-        for (final Integer id : xmlTemplateIds) {
-            final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
-                @Override
-                public void success(@NotNull final RESTStringConstantV1 retValue) {
-                    ++counter[0];
+                for (final Integer id : xmlTemplateIds) {
+                    final RESTCallBack<RESTStringConstantV1> callback = new RESTCallBack<RESTStringConstantV1>() {
+                        @Override
+                        public void success(@NotNull final RESTStringConstantV1 retValue) {
+                            ++counter[0];
 
-                    data.put(retValue.getName(), retValue.getValue());
+                            data.put(retValue.getName(), retValue.getValue());
 
-                    /*
-                     * If this was the last call, return the data to the callee.
-                     */
-                    if (counter[0] == xmlTemplateIds.size()) {
-                        loadedCallback.stringMapLoaded(data);
-                    }
+                            // If this was the last call, return the data to the callee.
+                            if (counter[0] == xmlTemplateIds.size()) {
+                                loadedCallback.stringMapLoaded(data);
+                            }
+                        }
+
+                        @Override
+                        public void failed() {
+                            ++counter[0];
+                            if (counter[0] == xmlTemplateIds.size()) {
+                                loadedCallback.stringMapLoaded(data);
+                            }
+                        }
+                    };
+
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(id), callback, waitDisplay);
                 }
-
-                @Override
-                public void failed() {
-                    ++counter[0];
-                    if (counter[0] == xmlTemplateIds.size()) {
-                        loadedCallback.stringMapLoaded(data);
-                    }
-                }
-            };
-
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getStringConstant(id), callback, waitDisplay);
-        }
+            }
+        });
     }
 
     /**
@@ -3274,7 +3305,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
                     + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids), callback, display);
 
             hideCspDetailsDialogBox(topicXMLDisplay);
@@ -3344,7 +3375,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (!customEntitiesLoaded) {
             final RESTTopicV1 topic = getDisplayedTopic();
             if (topic != null) {
-                failOverRESTCall.performRESTCall(
+                getFailOverRESTCall().performRESTCall(
                         FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
                         new RESTCallBack<RESTTopicV1>() {
                             @Override

@@ -1,11 +1,23 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -30,6 +42,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -44,29 +57,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TagsFilteredResultsAndDetailsPresenter
@@ -110,12 +108,6 @@ public class TagsFilteredResultsAndDetailsPresenter
      * The history token used to identify this view
      */
     public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-
-    @Inject
-    private EventBus eventBus;
 
     /**
      * A logger.
@@ -367,9 +359,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                  */
                 if (unsavedTagChanges) {
                     if (wasNewTag) {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createTag(updateTag), callback, display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createTag(updateTag), callback, display);
                     } else {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.saveTag(updateTag), callback, display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveTag(updateTag), callback, display);
                     }
                 }
                 /*
@@ -451,7 +443,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 }
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateCategories(updatedCategories), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateCategories(updatedCategories), callback, display);
             } finally {
                 LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
             }
@@ -492,7 +484,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTag(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -744,7 +736,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), newWindow));
+            getEventBus().fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), newWindow));
         }
     }
 

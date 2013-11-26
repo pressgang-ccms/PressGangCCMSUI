@@ -14,8 +14,10 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
@@ -72,7 +74,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTranslatedTopic(translatedTopicId), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTranslatedTopic(translatedTopicId), callback, display);
             }
 
         } catch (@NotNull final NumberFormatException ex) {
@@ -82,24 +84,29 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
 
     public void displayTopicRendered(final RESTTranslatedTopicV1 translatedTopic, final boolean readOnly,
             final boolean showImages) {
-        String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
-
-        // If we are displaying a revision history topic then merge the revisions together
-        final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
-        if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
-            xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
-        } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
-            xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
-        } else {
-            xml = processXML(xml);
-        }
-
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+        getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void success(@NotNull final IntegerWrapper value) {
-                getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
+
+                // If we are displaying a revision history topic then merge the revisions together
+                final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
+                if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
+                    xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
+                    xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                } else {
+                    xml = processXML(xml);
+                }
+
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+                    @Override
+                    public void success(@NotNull final IntegerWrapper value) {
+                        getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+                    }
+                }, getDisplay(), true);
             }
-        }, getDisplay(), true);
+        });
     }
 
     protected String processRevisionHistoryXML(final String xml, final String additionalXml) {

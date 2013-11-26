@@ -62,7 +62,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
             }
 
         } catch (@NotNull final NumberFormatException ex) {
@@ -76,7 +76,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
         xml = processXML(xml);
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
             @Override
             public void success(@NotNull final IntegerWrapper value) {
                 getDisplay().displayTopicRendered(value.value, readOnly, showImages);

@@ -1,26 +1,24 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Panel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * Contains the common logic to render two HTML pages and get the diff between them.
@@ -41,9 +39,6 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
     private static final String COMPARE_FRAME_ID_PREFIX = "Compare" + FRAME_ID_PREFIX;
 
     private static int tempIFrameCount = 0;
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
 
     /**
      * A logger.
@@ -127,7 +122,8 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                     }
                                 };
 
-                                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" +
+                                        DocbookDTD
                                         .getDtdDoctype() + "\n" + retValue2.getXml()), hold2, display, true);
                             }
 
@@ -138,21 +134,21 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
                                 .getDtdDoctype() + "\n" + retValue1.getXml()), hold1, display, true);
 
                     }
                 };
 
                 if (secondRevision == null) {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback2, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback2, display);
                 } else {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, secondRevision), callback2, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, secondRevision), callback2, display);
                 }
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback, display);
     }
 
     /**

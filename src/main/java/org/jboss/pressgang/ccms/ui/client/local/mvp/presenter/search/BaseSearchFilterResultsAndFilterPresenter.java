@@ -1,5 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -10,20 +18,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * The presenter used to display the list of filter's and their details.
@@ -38,8 +37,6 @@ public abstract class BaseSearchFilterResultsAndFilterPresenter extends BaseSear
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseSearchFilterResultsAndFilterPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private SearchFilterPresenter searchFilterPresenter;
@@ -110,7 +107,7 @@ public abstract class BaseSearchFilterResultsAndFilterPresenter extends BaseSear
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFilter(selectedEntity.getId()), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getFilter(selectedEntity.getId()), callback, display);
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT BaseSearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
                 }

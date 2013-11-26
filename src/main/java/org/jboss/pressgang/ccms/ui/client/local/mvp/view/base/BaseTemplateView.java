@@ -66,9 +66,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-
     /**
      * true when the view is visible, false otherwise
      */

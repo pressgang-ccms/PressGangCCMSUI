@@ -1,10 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -16,6 +28,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCateg
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInPropertyTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -31,25 +44,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 @Dependent
 public class PropertyTagFilteredResultsAndDetailsPresenter
@@ -89,11 +90,6 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PropertyTagFilteredResultsAndDetailsPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
-
-    @Inject
-    private EventBus eventBus;
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
@@ -147,7 +143,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTag(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyTag(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -312,9 +308,9 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                         propertyTag.explicitSetRegex(displayedItem.getRegex());
 
                         if (wasNewEntity) {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createPropertyTag(propertyTag), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createPropertyTag(propertyTag), callback, display);
                         } else {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.savePropertyTag(propertyTag), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.savePropertyTag(propertyTag), callback, display);
                         }
                     } else {
                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -330,7 +326,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(), newWindow));
+            getEventBus().fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(), newWindow));
         }
     }
 

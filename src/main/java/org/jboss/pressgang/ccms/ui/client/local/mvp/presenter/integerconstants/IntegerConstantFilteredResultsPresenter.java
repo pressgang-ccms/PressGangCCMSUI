@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
@@ -11,18 +18,10 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter used to display the list of integer constants.
@@ -31,8 +30,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTIntegerConstantCollectionItemV1> {
 
     public static final String HISTORY_TOKEN = "IntegerConstantFilteredResultsView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -82,7 +79,8 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getIntegerConstantsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getIntegerConstantsFromQuery(queryString, getProviderData().getStartRow(),
+                        end), callback, display);
             }
         };
         return provider;

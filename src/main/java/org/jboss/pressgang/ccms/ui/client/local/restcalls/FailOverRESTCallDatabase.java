@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -23,6 +24,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -1998,7 +2001,7 @@ public final class FailOverRESTCallDatabase {
      *
      * @return
      */
-    public static RESTCall getServerSettings() {
+    private static RESTCall getServerSettings() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -2010,5 +2013,26 @@ public final class FailOverRESTCallDatabase {
                 return true;
             }
         };
+    }
+
+    /**
+     * Retrieve a list of locales from the server.
+     *
+     * @param serverSettingsCallback The callback to call when the locales are loaded
+     */
+    public static void getServerSettings(@NotNull final ServerSettingsCallback serverSettingsCallback,
+            @NotNull final BaseTemplateViewInterface display,
+            @NotNull final FailOverRESTCall failOverRESTCall) {
+        failOverRESTCall.performRESTCall(
+                getServerSettings(),
+                new RESTCallBack<RESTServerSettingsV1>() {
+                    @Override
+                    public void success(@NotNull final RESTServerSettingsV1 value) {
+                        serverSettingsCallback.serverSettingsLoaded(value);
+                    }
+                },
+                display
+        );
+
     }
 }

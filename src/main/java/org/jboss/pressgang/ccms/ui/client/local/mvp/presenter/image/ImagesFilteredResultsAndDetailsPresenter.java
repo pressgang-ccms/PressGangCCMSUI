@@ -20,7 +20,6 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -36,9 +35,11 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageColle
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -50,11 +51,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -137,18 +136,10 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
      */
     private static final Logger LOGGER = Logger.getLogger(ImagesFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
-
     /**
      * A reference to the StringConstants that holds the locales.
      */
     private List<String> locales;
-
-    @Inject
-    private EventBus eventBus;
 
     @Inject
     private Display display;
@@ -195,7 +186,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback,
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getImageWithoutPreview(selectedEntity.getId()), callback,
                         display);
             }
         };
@@ -286,7 +277,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 }
             };
 
-            failOverRESTCall.performRESTCall(
+            getFailOverRESTCall().performRESTCall(
                     FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()),
                     callback, display);
         }
@@ -359,9 +350,14 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     }
 
     private void populateLocales() {
-        locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        finishLoading();
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales();
+                Collections.sort(locales);
+                finishLoading();
+            }
+        });
     }
 
     /**
@@ -447,10 +443,10 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     }
 
                                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
+                                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
                                                 getDefaultImageRestCallback(true), display);
                                     } else {
-                                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
+                                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
                                                 getDefaultImageRestCallback(false), display);
                                     }
 
@@ -548,10 +544,10 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
 
                     if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createImage(updateImage),
                                 getDefaultImageRestCallback(true), display);
                     } else {
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateImage(updateImage),
                                 getDefaultImageRestCallback(false), display);
                     }
 
@@ -724,7 +720,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                     final String searchQuery = "images/" + docbookFileName;
 
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(
+                    getEventBus().fireEvent(new TopicSearchResultsAndTopicViewEvent(
                             Constants.QUERY_PATH_SEGMENT_PREFIX + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants
                                     .TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(
                                     searchQuery) : searchQuery), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
@@ -767,7 +763,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), newWindow));
+            getEventBus().fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), newWindow));
         }
     }
 
@@ -809,29 +805,35 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
-                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            final String defaultLocale = serverSettings.getDefaultLocale();
 
-                    // Create the image wrapper
-                    final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
-                    imageCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
+                            // Create the image wrapper
+                            final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
+                            imageCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
-                    /* When we have the default locale, create a new image */
-                    final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
-                    langImage.explicitSetLocale(defaultLocale);
+                            // When we have the default locale, create a new image
+                            final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
+                            langImage.explicitSetLocale(defaultLocale);
 
-                    final RESTImageV1 newImage = new RESTImageV1();
-                    newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                    newImage.getLanguageImages_OTM().addNewItem(langImage);
-                    imageCollectionItem.setItem(newImage);
+                            final RESTImageV1 newImage = new RESTImageV1();
+                            newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                            newImage.getLanguageImages_OTM().addNewItem(langImage);
+                            imageCollectionItem.setItem(newImage);
 
-                    // the image won't show up in the list of files until it is saved, so the
-                    // selected item is null
-                    imageFilteredResultsComponent.setSelectedItem(null);
+                            // the image won't show up in the list of files until it is saved, so the
+                            // selected item is null
+                            imageFilteredResultsComponent.setSelectedItem(null);
 
-                    // the new image is being displayed though, so we set the displayed item
-                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem);
+                            // the new image is being displayed though, so we set the displayed item
+                            imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem);
 
-                    updateViewsAfterNewEntityLoaded();
+                            updateViewsAfterNewEntityLoaded();
+                        }
+                    });
+
                 }
             };
         });
@@ -858,9 +860,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
-                    final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
-                    createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
-                            display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            final String defaultLocale = serverSettings.getDefaultLocale();
+                            createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
+                                    display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                        }
+                    });
+
                 }
             }
         });
@@ -901,7 +909,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 }
                 idsQuery.append(id);
             }
-            eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(
+            getEventBus().fireEvent(new ImagesFilteredResultsAndImageViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.IMAGE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
             display.addWaitOperation();
@@ -949,7 +957,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createImage(newImage), callback, display);
                     } finally {
                         display.removeWaitOperation();
                     }

@@ -8,7 +8,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,15 +47,16 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -65,11 +70,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -96,11 +99,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ContentSpecFilteredResultsAndDetailsPresenter.class.getName());
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
 
     private HandlerRegistration keyboardEventHandler = null;
 
@@ -578,8 +576,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
-                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(
+                                        FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
+                                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                            }
+                        });
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -672,8 +676,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
-                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(
+                                        FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
+                                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                            }
+                        });
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
@@ -857,9 +867,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
             };
 
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
-                    callback, display);
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    getFailOverRESTCall().performRESTCall(
+                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
+                            callback, display);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -884,7 +899,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpec(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpec(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -922,11 +937,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        defaultLocale = serverSettings.getSettings().getDefaultLocale();
-        displayNewContentSpec();
-        displayInitialContentSpec(getNewEntityCallback);
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales();
+                Collections.sort(locales);
+                defaultLocale = serverSettings.getDefaultLocale();
+                displayNewContentSpec();
+                displayInitialContentSpec(getNewEntityCallback);
+            }
+        });
 
         createWorkers();
 
@@ -1224,7 +1244,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, contentSpecTagsPresenter.getDisplay());
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadAllTags()");
@@ -1292,7 +1312,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
                         contentSpecWithTagsCallback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
@@ -1352,7 +1372,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                 final Integer id = displayedItem.getId();
                 final Integer revision = displayedItem.getRevision();
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithProperties(id, revision), callback,
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithProperties(id, revision), callback,
                         commonExtendedPropertiesPresenter.getDisplay());
             }
         }
@@ -1381,7 +1401,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-
         this.queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
 
         if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {

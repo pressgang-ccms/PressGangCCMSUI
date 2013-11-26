@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.Collections;
+
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -14,7 +21,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagInPropertyC
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemIDSort;
@@ -24,13 +30,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.Collections;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to display the property category tags.
@@ -43,8 +42,6 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer entityId;
@@ -109,7 +106,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
             }
         };
         getPossibleChildrenProviderData().reset();
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
     }
 
     @Override

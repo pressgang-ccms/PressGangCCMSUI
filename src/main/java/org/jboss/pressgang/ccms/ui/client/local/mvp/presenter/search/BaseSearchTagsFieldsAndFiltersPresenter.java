@@ -6,20 +6,19 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -31,12 +30,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     private SearchTagPresenter tagsPresenter;
     @Inject
     private SearchLocalePresenter localePresenter;
-    @Inject
-    private EventBus eventBus;
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
@@ -56,10 +49,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         return localePresenter;
     }
 
-    protected EventBus getEventBus() {
-        return eventBus;
-    }
-
     public void bindExtended() {
         bind(getDisplay());
         buildHelpDatabase();
@@ -69,9 +58,14 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                final List<String> locales = serverSettings.getSettings().getLocales();
-                Collections.sort(locales);
-                localePresenter.getDisplay().display(locales, serverDetails.isReadOnly());
+                getServerSettings(new ServerSettingsCallback() {
+                    @Override
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        final List<String> locales = serverSettings.getLocales();
+                        Collections.sort(locales);
+                        localePresenter.getDisplay().display(locales, serverDetails.isReadOnly());
+                    }
+                });
             }
         });
     }
@@ -97,7 +91,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getDisplay());
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getDisplay());
     }
 
     /**
