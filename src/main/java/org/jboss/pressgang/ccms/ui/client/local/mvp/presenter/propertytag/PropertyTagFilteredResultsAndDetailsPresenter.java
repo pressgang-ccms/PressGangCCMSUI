@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -29,12 +28,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -196,8 +197,13 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                 }
         );
 
-        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getSave().setEnabled(!serverDetails.isReadOnly());
+                filteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -273,12 +279,18 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
 
-                        categoryPresenter.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+                        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                            @Override
+                            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                                categoryPresenter.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                            }
+                        });
+
                         categoryPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewEntity);
 
-                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                     }
                 };
 
@@ -305,7 +317,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                             failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.savePropertyTag(propertyTag), callback, display);
                         }
                     } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 }
             }
@@ -449,15 +461,19 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(categoryPresenter.getDisplay());
 
-        for (@NotNull final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
-            if (viewIsInFilter(filter, view)) {
-                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                for (@NotNull final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
+                    if (viewIsInFilter(filter, view)) {
+                        view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                    }
+                }
+
+                if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
+                    categoryPresenter.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                }
             }
-        }
-
-        if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-            categoryPresenter.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
-        }
-
+        });
     }
 }

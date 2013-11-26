@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
@@ -20,12 +19,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.integerconstant.RESTIntegerConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +96,12 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
         checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        integerConstantPresenter.getDisplay().display(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                integerConstantPresenter.getDisplay().display(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -133,7 +139,7 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
 
                         updateDisplayWithNewEntityData(wasNewEntity);
 
-                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                     }
                 };
 
@@ -152,15 +158,21 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
                             failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateIntegerConstant(integerConstant), callback, display);
                         }
                     } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 }
             }
         };
 
         display.getSave().addClickHandler(saveClickHandler);
-        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        integerConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getSave().setEnabled(!serverDetails.isReadOnly());
+                integerConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     private void doSearch(final boolean newWindow) {

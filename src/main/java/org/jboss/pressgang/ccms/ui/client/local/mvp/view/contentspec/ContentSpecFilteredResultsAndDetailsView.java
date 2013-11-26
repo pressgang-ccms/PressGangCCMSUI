@@ -28,6 +28,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final PushButton history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
+    private final PushButton viewInDocBuilder = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true);
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
@@ -141,6 +142,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
 
     private void populateTopActionBar() {
         addActionButton(getShowHideSearchResults());
+        addActionButton(getViewInDocBuilder());
         addActionButton(getText());
         addActionButton(getErrors());
         addActionButton(getDetails());
@@ -172,5 +174,9 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     @NotNull
     public Label getContentSpecTagsDown() {
         return tagsDown;
+    }
+
+    public PushButton getViewInDocBuilder() {
+        return viewInDocBuilder;
     }
 }

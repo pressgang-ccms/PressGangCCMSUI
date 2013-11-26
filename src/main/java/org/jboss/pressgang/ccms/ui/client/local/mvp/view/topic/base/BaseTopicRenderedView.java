@@ -21,6 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInf
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,8 +90,13 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
         layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
-        createEventListener();
-        addEventListener();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                createEventListener(serverDetails.getRestUrl());
+                addEventListener();
+            }
+        });
 
         // Hide the action bar since it's not needed
         getTopActionGrandParentPanel().removeFromParent();
@@ -117,14 +123,10 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
 	}-*/;
 
-    private native void createEventListener() /*-{
+    private native void createEventListener(final String serverHost) /*-{
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.base.BaseTopicRenderedView::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
-					// Make sure the iframe sending the data is from an expected source
-                    var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
-                    var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
-
                     try {
                         var eventObject = JSON.parse(event.data);
 
@@ -205,14 +207,18 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
             All this means in this situation is that the user will see blank screen or a half rendered HTML page.
          */
 
-        final ServerDetails serverDetails = ServerDetails.getSavedServer();
-        echoServer = serverDetails.getRestUrl();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                echoServer = serverDetails.getRestUrl();
 
-        loadingiframe = new Frame();
-        loadingiframe.getElement().setId(LOADING_IFRAME);
-        loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
-        loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
-        layoutPanel.setWidget(displayingRow, 0, loadingiframe);
+                loadingiframe = new Frame();
+                loadingiframe.getElement().setId(LOADING_IFRAME);
+                loadingiframe.setUrl(serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + topicXMLHoldID + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded());
+                loadingiframe.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME);
+                layoutPanel.setWidget(displayingRow, 0, loadingiframe);
+            }
+        });
 
         return true;
     }

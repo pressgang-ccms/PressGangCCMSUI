@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -42,12 +41,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExten
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -239,7 +240,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     /* Create the tag first */
                     saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT saveClickHandler.onClick()");
@@ -279,7 +280,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         } else {
                             updateDisplayWithNewEntityData(wasNewTag);
-                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                         }
                     }
                 };
@@ -407,7 +408,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         updateDisplayWithNewEntityData(wasNewTag);
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                     }
                 };
 
@@ -510,8 +511,13 @@ public class TagsFilteredResultsAndDetailsPresenter
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
 
-        display.getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        filteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getSave().setEnabled(!serverDetails.isReadOnly());
+                filteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     @Override
@@ -946,11 +952,17 @@ public class TagsFilteredResultsAndDetailsPresenter
         displayableViews.add(categoriesComponent.getDisplay());
         displayableViews.add(commonExtendedPropertiesPresenter.getDisplay());
 
-        for (@NotNull final BaseCustomViewInterface view : displayableViews) {
-            if (viewIsInFilter(filter, view)) {
-                view.display(displayedTag, ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                for (@NotNull final BaseCustomViewInterface view : displayableViews) {
+                    if (viewIsInFilter(filter, view)) {
+                        view.display(displayedTag, serverDetails.isReadOnly());
+                    }
+                }
             }
-        }
+        });
+
 
         if (viewIsInFilter(filter, projectsComponent.getDisplay())) {
             projectsComponent.displayChildrenExtended(displayedTag, false);

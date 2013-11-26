@@ -28,9 +28,11 @@ import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -110,202 +112,206 @@ public final class FailOverRESTCall {
         /*
             The server that we failed to call.
         */
-        final ServerDetails serverDetails = ServerDetails.getSavedServer();
-        final ServerGroup serverGroup = serverDetails.getGroup();
-
-        /*
-            Fail over after a timeout
-         */
-        final SuccessCallbackWrapper<T> successCallbackWrapper = new SuccessCallbackWrapper<T>() {
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
-            public RemoteCallback<T> getSuccessCallback() {
-                return new RemoteCallback<T>() {
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                final ServerGroup serverGroup = serverDetails.getGroup();
+
+                /*
+                    Fail over after a timeout
+                 */
+                final SuccessCallbackWrapper<T> successCallbackWrapper = new SuccessCallbackWrapper<T>() {
                     @Override
-                    public void callback(final T retValue) {
-                        if (!isTimedout() && !isReturned()) {
+                    public RemoteCallback<T> getSuccessCallback() {
+                        return new RemoteCallback<T>() {
+                            @Override
+                            public void callback(final T retValue) {
+                                if (!isTimedout() && !isReturned()) {
 
-                            try {
-                                callback.success(retValue);
-                            } catch (@NotNull final RuntimeException ex) {
-                                LOGGER.info("Success method threw RuntimeException. Rethrowing");
-                                throw ex;
-                            }
-
-                            if (display != null) {
-                                display.removeWaitOperation();
-                            }
-                        }
-
-                        setReturned(true);
-                    }
-                };
-            }
-        };
-
-        final FailureCallbackWrapper failureCallbackWrapper = new FailureCallbackWrapper() {
-            @Override
-            public ErrorCallback getErrorCallback() {
-                return new ErrorCallback() {
-                    @Override
-                    public boolean error(final Message message, final Throwable throwable) {
-                        /*
-                            Make sure the response it not from a request we just didn't wait long enough for.
-                         */
-                        if (!isTimedout() && !isReturned()) {
-                            if (throwable instanceof ResponseException) {
-                                final ResponseException ex = (ResponseException) throwable;
-                                final String responseText = ex.getResponse().getText();
-                                final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
-
-                                if (pressgangHeader == null) {
-                                    /*
-                                        The response did not contain the header that should be found in all responses from the
-                                        pressgang sever. This means the server is down.
-                                     */
-                                    LOGGER.info("Failing over due to incorrect headers");
-                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
-                                            serverDetails, serverGroup);
-                                } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
-                                    /*
-                                        The entity was not found. This is expected if an invalid ID was supplied.
-                                     */
-                                    if (!disableDefaultFailureAction) {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.NotFound());
+                                    try {
+                                        callback.success(retValue);
+                                    } catch (@NotNull final RuntimeException ex) {
+                                        LOGGER.info("Success method threw RuntimeException. Rethrowing");
+                                        throw ex;
                                     }
-
-                                    callback.failed();
 
                                     if (display != null) {
                                         display.removeWaitOperation();
                                     }
-                                } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR ||
-                                        ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
-                                    if (!disableDefaultFailureAction) {
-                                        final String prefix;
-                                        if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                                }
+
+                                setReturned(true);
+                            }
+                        };
+                    }
+                };
+
+                final FailureCallbackWrapper failureCallbackWrapper = new FailureCallbackWrapper() {
+                    @Override
+                    public ErrorCallback getErrorCallback() {
+                        return new ErrorCallback() {
+                            @Override
+                            public boolean error(final Message message, final Throwable throwable) {
+                                /*
+                                    Make sure the response it not from a request we just didn't wait long enough for.
+                                 */
+                                if (!isTimedout() && !isReturned()) {
+                                    if (throwable instanceof ResponseException) {
+                                        final ResponseException ex = (ResponseException) throwable;
+                                        final String responseText = ex.getResponse().getText();
+                                        final String pressgangHeader = ex.getResponse().getHeader(RESTv1Constants.X_PRESSGANG_VERSION_HEADER);
+
+                                        if (pressgangHeader == null) {
+                                            /*
+                                                The response did not contain the header that should be found in all responses from the
+                                                pressgang sever. This means the server is down.
+                                             */
+                                            LOGGER.info("Failing over due to incorrect headers");
+                                            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                                    serverDetails, serverGroup);
+                                        } else if (ex.getResponse().getStatusCode() == Response.SC_NOT_FOUND) {
+                                            /*
+                                                The entity was not found. This is expected if an invalid ID was supplied.
+                                             */
+                                            if (!disableDefaultFailureAction) {
+                                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NotFound());
+                                            }
+
+                                            callback.failed();
+
+                                            if (display != null) {
+                                                display.removeWaitOperation();
+                                            }
+                                        } else if (ex.getResponse().getStatusCode() == Response.SC_INTERNAL_SERVER_ERROR ||
+                                                ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                                            if (!disableDefaultFailureAction) {
+                                                final String prefix;
+                                                if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                             /*
                                                 A bad request means invalid input, like a duplicated name. This does not indicate a
                                                 failure of the REST server.
                                             */
-                                            prefix = PressGangCCMSUI.INSTANCE.InvalidInput();
-                                        } else {
+                                                    prefix = PressGangCCMSUI.INSTANCE.InvalidInput();
+                                                } else {
                                             /*
                                                 An Internal Server Error likely means it is a bug in the server and therefore will have
                                                 to have a bug logged, so no point failing over.
                                              */
-                                            prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
+                                                    prefix = PressGangCCMSUI.INSTANCE.InternalServerError();
+                                                }
+                                                AlertBox.setMessageAndDisplay(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
+                                            }
+
+                                            callback.failed();
+
+                                            if (display != null) {
+                                                display.removeWaitOperation();
+                                            }
+                                        } else {
+                                            /*
+                                                Any other possible responses that could happen should fail over if possible otherwise display an
+                                                unknown error message. These events include situations like the database is down but the REST server
+                                                is up.
+                                             */
+                                            if (restCall.isRepeatable()) {
+                                                LOGGER.info("Failing over due to error");
+                                                failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                                        serverDetails, serverGroup);
+                                            } else {
+                                                if (!disableDefaultFailureAction) {
+                                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
+                                                            responseText)));
+                                                }
+
+                                                callback.failed();
+
+                                                if (display != null) {
+                                                    display.removeWaitOperation();
+                                                }
+                                            }
                                         }
-                                        Window.alert(prefix + (responseText == null ? "" : ("\n\n" + responseText)));
-                                    }
-
-                                    callback.failed();
-
-                                    if (display != null) {
-                                        display.removeWaitOperation();
-                                    }
-                                } else {
-                                    /*
-                                        Any other possible responses that could happen should fail over if possible otherwise display an
-                                        unknown error message. These events include situations like the database is down but the REST server
-                                        is up.
-                                     */
-                                    if (restCall.isRepeatable()) {
-                                        LOGGER.info("Failing over due to error");
-                                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
-                                                serverDetails, serverGroup);
                                     } else {
-                                        if (!disableDefaultFailureAction) {
-                                            Window.alert(PressGangCCMSUI.INSTANCE.UnknownError() + (responseText == null ? "" : ("\n\n" +
-                                                    responseText)));
-                                        }
+                                        if (restCall.isRepeatable()) {
+                                            LOGGER.info("Failing over due to error");
+                                            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
+                                                    serverDetails, serverGroup);
+                                        } else {
+                                            /*
+                                                So, what do we do when a non repeatable call failed? In reality most calls
+                                                that modify the database are probably repeatable - it's just like hitting
+                                                the save icon twice. But that logic is to be determined for each call. If
+                                                we have got to this point we just failover the server so the next attempt
+                                                by the user won't hit the same failed server again.
+                                             */
+                                            failOver(failedRESTServers, serverDetails, serverGroup);
 
-                                        callback.failed();
+                                            if (!disableDefaultFailureAction) {
+                                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UnknownError());
+                                            }
 
-                                        if (display != null) {
-                                            display.removeWaitOperation();
+                                            callback.failed();
+
+                                            if (display != null) {
+                                                display.removeWaitOperation();
+                                            }
                                         }
                                     }
                                 }
-                            } else {
-                                if (restCall.isRepeatable()) {
-                                    LOGGER.info("Failing over due to error");
-                                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers,
-                                            serverDetails, serverGroup);
-                                } else {
-                                    /*
-                                        So, what do we do when a non repeatable call failed? In reality most calls
-                                        that modify the database are probably repeatable - it's just like hitting
-                                        the save icon twice. But that logic is to be determined for each call. If
-                                        we have got to this point we just failover the server so the next attempt
-                                        by the user won't hit the same failed server again.
-                                     */
-                                    failOver(failedRESTServers, serverDetails, serverGroup);
 
-                                    if (!disableDefaultFailureAction) {
-                                        Window.alert(PressGangCCMSUI.INSTANCE.UnknownError());
-                                    }
+                                setReturned(true);
 
-                                    callback.failed();
-
-                                    if (display != null) {
-                                        display.removeWaitOperation();
-                                    }
-                                }
+                                return true;
                             }
-                        }
-
-                        setReturned(true);
-
-                        return true;
+                        };
                     }
                 };
-            }
-        };
 
-        final Timer timeoutMonitor = new Timer() {
-            @Override
-            public void run() {
-                if (!(successCallbackWrapper.isReturned() || failureCallbackWrapper.isReturned())) {
+                final Timer timeoutMonitor = new Timer() {
+                    @Override
+                    public void run() {
+                        if (!(successCallbackWrapper.isReturned() || failureCallbackWrapper.isReturned())) {
+                            /*
+                                If this particular rest call can be repeated, mark the old callbacks as timed out
+                                and fail over.
+                            */
+                            if (restCall.isRepeatable()) {
+                                successCallbackWrapper.setTimedout(true);
+                                failureCallbackWrapper.setTimedout(true);
+                                LOGGER.info("Failing over due to timeout");
+                                failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails,
+                                        serverGroup);
+                            }
+                        }
+                    }
+                };
+
+                final RESTInterfaceV1 restInterface = RestClient.create(RESTInterfaceV1.class, successCallbackWrapper.getSuccessCallback(), failureCallbackWrapper.getErrorCallback());
+
+                try {
                     /*
-                        If this particular rest call can be repeated, mark the old callbacks as timed out
-                        and fail over.
+                        Only add a wait operation if this is the first time we are calling this REST endpoint (i.e.
+                        failedRESTServers.size() == 0).
                      */
-                    if (restCall.isRepeatable()) {
-                        successCallbackWrapper.setTimedout(true);
-                        failureCallbackWrapper.setTimedout(true);
-                        LOGGER.info("Failing over due to timeout");
-                        failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails,
-                                serverGroup);
+                    if (display != null && failedRESTServers.size() == 0) {
+                        display.addWaitOperation();
+                    }
+
+                    restCall.call(restInterface);
+
+                    // Only timeout if we aren't using the last server
+                    if (failedRESTServers.size() < serverGroup.getServerDetails().size() - 1) {
+                        timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
+                    }
+                } catch (@NotNull final Exception ex) {
+                    LOGGER.info("Failing over due to exception");
+                    failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails, serverGroup);
+
+                    if (display != null) {
+                        display.removeWaitOperation();
                     }
                 }
             }
-        };
-
-        final RESTInterfaceV1 restInterface = RestClient.create(RESTInterfaceV1.class, successCallbackWrapper.getSuccessCallback(), failureCallbackWrapper.getErrorCallback());
-
-        try {
-            /*
-                Only add a wait operation if this is the first time we are calling this REST endpoint (i.e.
-                failedRESTServers.size() == 0).
-             */
-            if (display != null && failedRESTServers.size() == 0) {
-                display.addWaitOperation();
-            }
-
-            restCall.call(restInterface);
-
-            // Only timeout if we aren't using the last server
-            if (failedRESTServers.size() < serverGroup.getServerDetails().size() - 1) {
-                timeoutMonitor.schedule(Constants.REST_CALL_TIMEOUT);
-            }
-        } catch (@NotNull final Exception ex) {
-            LOGGER.info("Failing over due to exception");
-            failOverAndTryAgain(restCall, callback, display, disableDefaultFailureAction, failedRESTServers, serverDetails, serverGroup);
-
-            if (display != null) {
-                display.removeWaitOperation();
-            }
-        }
+        });
     }
 
     /**
@@ -331,7 +337,7 @@ public final class FailOverRESTCall {
             */
             if (!disableDefaultFailureAction && (lastMessage == null || new Date().getTime() - lastMessage.getTime() > Constants.REST_SERVER_ERROR_MESSAGE_DELAY)) {
                 lastMessage = new Date();
-                Window.alert(PressGangCCMSUI.INSTANCE.NoServersError());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoServersError());
             }
 
             callback.failed();

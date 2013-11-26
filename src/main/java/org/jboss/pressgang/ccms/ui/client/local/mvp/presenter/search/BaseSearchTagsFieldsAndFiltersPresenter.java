@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -65,9 +66,14 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void loadSearchLocales() {
-        final List<String> locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        localePresenter.getDisplay().display(locales, ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                final List<String> locales = serverSettings.getSettings().getLocales();
+                Collections.sort(locales);
+                localePresenter.getDisplay().display(locales, serverDetails.isReadOnly());
+            }
+        });
     }
 
     /**
@@ -82,7 +88,12 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
-                tagsPresenter.getDisplay().displayExtended(retValue, null, ServerDetails.getSavedServer().isReadOnly(), isShowBulkTags());
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                        tagsPresenter.getDisplay().displayExtended(retValue, null, serverDetails.isReadOnly(), isShowBulkTags());
+                    }
+                });
             }
         };
 

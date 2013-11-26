@@ -74,9 +74,9 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     protected void loadAdditionalDisplayedItemData(final Integer id) {
         // Make the window title display the id of the content spec
         if (id != null) {
-                /*
-                    Run an additional query to get the title of the spec
-                 */
+            /*
+                Run an additional query to get the title of the spec
+             */
             failOverRESTCall.performRESTCall(
                     FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
                             CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + CommonConstants.CS_NODE_META_DATA + ";" +

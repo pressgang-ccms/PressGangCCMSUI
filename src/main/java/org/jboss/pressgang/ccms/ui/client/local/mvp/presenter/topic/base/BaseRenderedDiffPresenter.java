@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -90,8 +91,13 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         this.display = display;
 
         super.bind(display);
-        createEventListener();
-        addEventListener();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                createEventListener(serverDetails.getRestUrl());
+                addEventListener();
+            }
+        });
     }
 
     public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffFailedCallback failedCallback) {
@@ -191,11 +197,17 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         currentXMLIFrameElement.setId(CURRENT_FRAME_ID_PREFIX + tempIFrameCount);
         comparedXMLXMLIFrameElement.setId(COMPARE_FRAME_ID_PREFIX + tempIFrameCount);
 
-        currentXMLHREF =  ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
-        comparedXMLHREF = ServerDetails.getSavedServer().getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                currentXMLHREF =  serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo1 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
+                comparedXMLHREF = serverDetails.getRestEndpoint() + Constants.ECHO_ENDPOINT + "?id=" + echo2 + "&" + Constants.ECHO_ENDPOINT_PARENT_DOMAIN_QUERY_PARAM + "=" + GWTUtilities.getLocalUrlEncoded();
 
-        currentXML.setUrl(currentXMLHREF);
-        comparedXML.setUrl(comparedXMLHREF);
+                currentXML.setUrl(currentXMLHREF);
+                comparedXML.setUrl(comparedXMLHREF);
+            }
+        });
+
     }
 
     protected void displayRenderedHTML() {
@@ -240,15 +252,13 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 		}
 	}-*/;
 
-    private native void createEventListener() /*-{
+    private native void createEventListener(final String serverHost) /*-{
 		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter::listener =
 			function (me) {
 				return function displayAfterLoaded(event) {
 					console.log("ENTER BaseRenderedDiffPresenter.createEventListener() BaseRenderedDiffPresenter.displayAfterLoaded()");
 
 					// Make sure the iframe sending the data is from an expected source
-					var server = @org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getSavedServer()();
-					var serverHost = server.@org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails::getRestUrl()();
 					console.log("Event Origin: " + event.origin);
 					console.log("Server Host: " + serverHost);
                     if (serverHost.indexOf(event.origin) == 0) {

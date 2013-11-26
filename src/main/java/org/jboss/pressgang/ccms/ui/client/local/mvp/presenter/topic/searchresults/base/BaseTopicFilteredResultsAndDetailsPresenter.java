@@ -56,6 +56,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -97,7 +98,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         T extends RESTBaseTopicV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>, V extends RESTBaseEntityCollectionItemV1<T, U,
-        V>, Y extends Editor<T>> extends BaseSearchAndEditPresenter<T, U, V, Y> implements BaseTemplatePresenterInterface {
+        V>, Y extends Editor<T>> extends BaseSearchAndEditPresenter<T, U, V, Y> implements BaseTemplatePresenterInterface,
+        ReadOnlyPresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
@@ -154,8 +156,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     protected boolean customEntitiesLoaded = false;
     protected String customEntities = "";
-
-    protected final AlertBox alertBox = new AlertBox();
 
     /**
      * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
@@ -361,9 +361,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex());
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
-
                 getTopicRenderedPresenter().getDisplay().clear();
-                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(final boolean readOnly) {
+                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                    }
+                });
             }
         });
 
@@ -375,9 +379,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex());
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
-
                 getTopicSplitPanelRenderedPresenter().getDisplay().clear();
-                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(final boolean readOnly) {
+                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                    }
+                });
             }
         });
     }
@@ -386,18 +394,29 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         getTopicRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(),
-                        getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
-                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
+
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(final boolean readOnly) {
+                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                    }
+                });
+
             }
         });
 
         getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(),
-                        getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().getValue());
-                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
+                Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().getValue());
+
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(final boolean readOnly) {
+                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                    }
+                });
             }
         });
     }
@@ -546,10 +565,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
                                 getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
 
-                                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(),
-                                        true);
-                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),
-                                        isReadOnlyMode(), false);
+                                isReadOnlyMode(new ReadOnlyCallback() {
+                                    @Override
+                                    public void readonlyCallback(final boolean readOnly) {
+                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                                    }
+                                });
 
                                 break;
                             }
@@ -563,8 +585,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 /*
                     Trigger the initial render
                  */
-                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), true);
-                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), false);
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(boolean readOnly) {
+                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                    }
+                });
+
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayContentSpecs()");
@@ -624,8 +652,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     getTopicSplitPanelRenderedPresenter().getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
-
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
@@ -1020,22 +1046,25 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");
 
-            if (hasUnsavedChanges()) {
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
-                        "There should be a displayed collection item.");
-                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
-                        "The displayed collection item to reference a valid entity.");
+            if (!getDisplay().getMessageLogDialog().getDialogBox().isShowing() && !AlertBox.isDisplayed()) {
 
-                if (messageLogOKHandler != null) {
-                    messageLogOKHandler.removeHandler();
-                    messageLogOKHandler = null;
+                if (hasUnsavedChanges()) {
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                            "There should be a displayed collection item.");
+                    checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                            "The displayed collection item to reference a valid entity.");
+
+                    if (messageLogOKHandler != null) {
+                        messageLogOKHandler.removeHandler();
+                        messageLogOKHandler = null;
+                    }
+
+                    messageLogOKHandler = getDisplay().getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
+
+                    configureMessageDialog();
+                } else {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
-
-                messageLogOKHandler = getDisplay().getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-
-                configureMessageDialog();
-            } else {
-                alertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.saveTopic()");
@@ -1118,12 +1147,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
             displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
-            final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
-            for (@NotNull final BaseCustomViewInterface view : displayableViews) {
-                if (viewIsInFilter(filter, view)) {
-                    view.display(topicToDisplay, isReadOnlyMode());
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(final boolean readOnly) {
+                    final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
+                    for (@NotNull final BaseCustomViewInterface view : displayableViews) {
+                        if (viewIsInFilter(filter, view)) {
+                            view.display(topicToDisplay, readOnly);
+                        }
+                    }
                 }
-            }
+            });
 
             /* We display the rendered view with images */
             /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
@@ -1148,13 +1182,19 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             LOGGER.log(Level.INFO, "\tInitializing topic presenters");
 
-            if (viewIsInFilter(filter, topicPropertyTagPresenter.getDisplay())) {
-                topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay, isReadOnlyMode());
-            }
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(boolean readOnly) {
+                    final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
+                    if (viewIsInFilter(filter, topicPropertyTagPresenter.getDisplay())) {
+                        topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay, readOnly);
+                    }
 
-            if (viewIsInFilter(filter, topicSourceURLsPresenter.getDisplay())) {
-                topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay, isReadOnlyMode());
-            }
+                    if (viewIsInFilter(filter, topicSourceURLsPresenter.getDisplay())) {
+                        topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay, readOnly);
+                    }
+                }
+            });
 
             postInitializeViews(filter);
 
@@ -1165,8 +1205,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     protected abstract void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter);
-
-    protected abstract boolean isReadOnlyMode();
 
     private void initializeSplitViewButtons() {
         try {

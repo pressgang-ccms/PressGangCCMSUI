@@ -11,14 +11,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -28,26 +32,32 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTranslatedTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -127,6 +137,11 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     private boolean isDisplayingImage;
 
     /**
+     * The event handler that watches for keyboard presses
+     */
+    private HandlerRegistration keyboardEventHandler = null;
+
+    /**
      * The REST callback called when a topic is updated
      */
     private final RESTCallBack<RESTTranslatedTopicV1> updateCallback = new RESTCallBack<RESTTranslatedTopicV1>() {
@@ -198,9 +213,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 updateDisplayWithNewEntityData(false);
 
                 if (overwroteChanges) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
@@ -234,7 +249,13 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             final String user = display.getMessageLogDialog().getUsername().getText().trim();
 
             if (user.isEmpty()) {
-                Window.alert(PressGangCCMSUI.INSTANCE.UsernameMissing());
+                display.getMessageLogDialog().getDialogBox().hide();
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        display.getMessageLogDialog().getDialogBox().center();
+                    }
+                });
                 return;
             }
 
@@ -326,6 +347,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         getXmlValidator().stopCheckingXMLAndCloseThread();
 
         translatedTopicAdditionalXMLPresenter.close();
+        keyboardEventHandler.removeHandler();
     }
 
     @NotNull
@@ -407,6 +429,19 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         });
 
         bindSplitPanelResize();
+
+        addKeyboardShortcutEventHandler(getTopicXMLPresenter().getDisplay(), getDisplay(), new GetCurrentTopic() {
+
+            @Override
+            public RESTBaseTopicV1 getCurrentlyEditedTopic() {
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                        "There should be a displayed collection item.");
+                checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                        "The displayed collection item to reference a valid entity.");
+
+                return getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
+            }
+        });
     }
 
     /**
@@ -692,21 +727,30 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         if (viewIsInFilter(filter, translatedTopicPresenter.getDisplay())) {
-            translatedTopicPresenter.getDisplay().display(this.getDisplayedTopic(), isReadOnlyMode());
+            isReadOnlyMode(new ReadOnlyCallback() {
+                @Override
+                public void readonlyCallback(boolean readOnly) {
+                    translatedTopicPresenter.getDisplay().display(getDisplayedTopic(), readOnly);
+                }
+            });
         }
         if (viewIsInFilter(filter, translatedTopicAdditionalXMLPresenter.getDisplay())) {
             LOGGER.log(Level.INFO, "\tSetting translated topic additional XML edit button state and redisplaying ACE editor");
-            translatedTopicAdditionalXMLPresenter.getDisplay().display(this.getDisplayedTopic(),
-                    ServerDetails.getSavedServer().isReadOnly());
+            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                @Override
+                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    translatedTopicAdditionalXMLPresenter.getDisplay().display(getDisplayedTopic(), serverDetails.isReadOnly());
+                }
+            });
             translatedTopicAdditionalXMLPresenter.loadEditorSettings();
             translatedTopicAdditionalXMLPresenter.getDisplay().getEditor().redisplay();
         }
     }
 
     @Override
-    protected boolean isReadOnlyMode() {
+    public void isReadOnlyMode(@NotNull final ReadOnlyCallback readOnlyCallback) {
         /* translated topics are always readonly */
-        return true;
+        readOnlyCallback.readonlyCallback(true);
     }
 
     @Override
@@ -798,7 +842,12 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
                 if (forceUpdate || xmlHasChanges || additionalXmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, isDisplayingImage);
+                        }
+                    });
                 }
 
                 lastXML = getDisplayedTopic().getXml();
@@ -824,6 +873,27 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         } else {
             return false;
         }
+    }
+
+    private void addKeyboardShortcutEventHandler(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
+                                                 @NotNull final BaseTemplateViewInterface display, @NotNull final GetCurrentTopic currentTopicCallback) {
+        final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
+                final NativeEvent ne = event.getNativeEvent();
+
+                if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'S') {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            saveTopic(messageLogDialogOK);
+                        }
+                    });
+                }
+            }
+        };
+
+        keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }
 
     @Override

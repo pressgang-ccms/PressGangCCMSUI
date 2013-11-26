@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,9 +49,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeVie
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,33 +101,42 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     protected void buildServersList() {
         /* Add the REST server */
         display.getServers().clear();
-        for (final ServerDetails serverDetails : ServerDetails.getCurrentServers().values()) {
-            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
-            if (serverDetails.getId() == ServerDetails.getSavedServer().getId()) {
-                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
-            }
-        }
 
-        // Disable the menu if we on;y have one available server
-        if (ServerDetails.getCurrentServers().values().size() <= 1) {
-            display.getServers().setEnabled(false);
-        }
+        ServerDetails.getCurrentServers(new AllServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final Map<Integer, ServerDetails> allServerDetails) {
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        for (final ServerDetails serverDetail : allServerDetails.values()) {
+                            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
+                            if (serverDetails.getId() == serverDetails.getId()) {
+                                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
+                            }
+                        }
+
+                        // Disable the menu if we on;y have one available server
+                        if (allServerDetails.values().size() <= 1) {
+                            display.getServers().setEnabled(false);
+                        }
+                    }
+                });
+            }
+        });
+
+
     }
 
     private void bindServerSelector() {
         display.getServers().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(@NotNull final ChangeEvent event) {
-                final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
-
-                final ServerDetails newServerSettings = saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
-
-                if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
-                            currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                            currentServerSettings.getGroup().getType().replaceAll("_", " ")));
-                    Window.Location.reload();
-                }
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails currentServerSettings) {
+                        saveServer(display.getServers().getValue(display.getServers().getSelectedIndex()));
+                    }
+                });
             }
         });
     }
@@ -134,11 +147,26 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @param id The new server id
      * @return The ServerDetails instance that matches the ID
      */
-    protected ServerDetails saveServer(@NotNull final String id) {
-        Preferences.INSTANCE.saveSetting(Preferences.SERVER, id);
-        final ServerDetails newServerSettings = ServerDetails.getSavedServer();
-        RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
-        return newServerSettings;
+    protected void saveServer(@NotNull final String id) {
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails currentServerSettings) {
+                Preferences.INSTANCE.saveSetting(Preferences.SERVER, id);
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails newServerSettings) {
+                        RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
+                        if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
+                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
+                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")));
+                            Window.Location.reload();
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     /**
@@ -275,7 +303,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(ServerDetails.getSavedServer().getReportUrl(), "_blank", "");
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        Window.open(serverDetails.getReportUrl(), "_blank", "");
+                    }
+                });
             }
         });
 
@@ -329,7 +362,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getMonitoring().setScheduledCommand(new Command() {
             @Override
             public void execute() {
-                Window.open(ServerDetails.getSavedServer().getMonitoringUrl(), "_blank", "");
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        Window.open(serverDetails.getMonitoringUrl(), "_blank", "");
+                    }
+                });
             }
         });
 
@@ -395,7 +433,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             final String query = display.getQuickSearchQuery().getValue().trim();
 
             if (query.isEmpty()) {
-                Window.alert(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
             } else {
                 if (CS_ID_SEARCH.test(query)) {
                     /* If the search query was numbers and integers, assume that we are searching for topics ids */
@@ -460,14 +498,18 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         this.eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
             @Override
             public void onFailOverEvent() {
-                final ServerDetails currentServerSettings = ServerDetails.getSavedServer();
-
-                for (int i = 0; i < display.getServers().getItemCount(); ++i) {
-                    if (display.getServers().getValue(i).equals(currentServerSettings.getId() + "")) {
-                        display.getServers().setSelectedIndex(i);
-                        break;
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        for (int i = 0; i < display.getServers().getItemCount(); ++i) {
+                            if (display.getServers().getValue(i).equals(serverDetails.getId() + "")) {
+                                display.getServers().setSelectedIndex(i);
+                                break;
+                            }
+                        }
                     }
-                }
+                });
+
             }
         });
 
@@ -480,8 +522,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             ;
         });
 
-        display.getTopShortcutView().getCreateContentSpec().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        display.getTopShortcutView().getCreateTopic().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getTopShortcutView().getCreateContentSpec().setEnabled(!serverDetails.isReadOnly());
+                display.getTopShortcutView().getCreateTopic().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
+
     }
 
     private native void enableHelpOverlay() /*-{

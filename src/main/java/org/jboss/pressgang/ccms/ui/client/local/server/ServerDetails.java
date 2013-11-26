@@ -13,6 +13,8 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -54,48 +56,68 @@ public class ServerDetails {
     private static final Map<Integer, ServerDetails> currentServers = new HashMap<Integer, ServerDetails>();
     private static ServerDetails currentServer = null;
 
-    public static Map<Integer, ServerDetails> getCurrentServers() {
-        return currentServers;
+    public static void getCurrentServers(@NotNull final AllServerDetailsCallback allServerDetailsCallback) {
+        getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                allServerDetailsCallback.serverDetailsFound(currentServers);
+            }
+        });
     }
 
     /**
-     *
-     * @return The saved server details.
+     * This looks like an async call, but in reality once it has been called once it is synchronous. This
+     * method is called by App.startApp() when the application is first loaded, so all subsequent calls
+     * will be synchronous.
+     * @param serverDetailsCallback The callback to be called with the server details
      */
-    public static ServerDetails getSavedServer() {
+    public static void getSavedServer(@NotNull final ServerDetailsCallback serverDetailsCallback) {
 
         if (currentServer == null) {
             // first attempt to load the settings from the server
-            loadFromServer();
-            if (currentServer == null) {
-                // then attempt to load the settings from the local storage
-                loadFromLocalStorage();
-                if (currentServer == null) {
-                    serverGroups.clear();
-                    currentServers.clear();
-
-                    // as a last resort, assume some defaults and use them
-                    final ServerGroup serverGroup = new ServerGroup("Default");
-                    serverGroups.put("Default", serverGroup);
-                    final String hostUrl = GWTUtilities.getLocalUrl();
-                    currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
-                            hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
-                    currentServers.put(currentServer.getId(), currentServer);
-                }
+            loadFromServer(serverDetailsCallback);
+        } else {
+            final Integer selectedServerId = Preferences.INSTANCE.getInt(Preferences.SERVER, null);
+            if (selectedServerId != null && currentServers.containsKey(selectedServerId)) {
+                currentServer = currentServers.get(selectedServerId);
+            } else if (currentServers.size() != 0) {
+                currentServer = currentServers.values().iterator().next();
             }
-        }
 
-        return currentServer;
+            serverDetailsCallback.serverDetailsFound(currentServer);
+        }
     }
 
-    private static void loadFromLocalStorage() {
+    /**
+     * If loading the server details from a JSON file hosted on the server didn't work, the
+     * we fall back to whatever is in local storage, or the default settings.
+     */
+    private static void loadFallbackServerDetails(@NotNull final ServerDetailsCallback serverDetailsCallback) {
+        // then attempt to load the settings from the local storage
+        if (!loadFromLocalStorage(serverDetailsCallback)) {
+            serverGroups.clear();
+            currentServers.clear();
+
+            // as a last resort, assume some defaults and use them
+            final ServerGroup serverGroup = new ServerGroup("Default");
+            serverGroups.put("Default", serverGroup);
+            final String hostUrl = GWTUtilities.getLocalUrl();
+            currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
+                    hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
+            currentServers.put(currentServer.getId(), currentServer);
+        }
+    }
+
+    private static boolean loadFromLocalStorage(@NotNull final ServerDetailsCallback serverDetailsCallback) {
         final String json = Preferences.INSTANCE.getString(Preferences.SERVER_DETAILS, null);
         if (json != null) {
-            parseJSONFile(json);
+            return parseJSONFile(json, serverDetailsCallback);
         }
+
+        return false;
     }
 
-    private static void loadFromServer() {
+    private static void loadFromServer(@NotNull final ServerDetailsCallback serverDetailsCallback) {
         // First attempt to read the config file from the server
         final String url = "/pressgang-ccms-config/servers.json";
         final RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -106,15 +128,17 @@ public class ServerDetails {
                 public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
                     final String text = resp.getText();
 
-                    // save these servers for future reference
-                    Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
-
-                    parseJSONFile(text);
+                    if (parseJSONFile(text, serverDetailsCallback)) {
+                        // save these servers for future reference
+                        Preferences.INSTANCE.saveSetting(Preferences.SERVER_DETAILS, text);
+                    } else {
+                        loadFallbackServerDetails(serverDetailsCallback);
+                    }
                 }
 
                 @Override
                 public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-
+                    loadFallbackServerDetails(serverDetailsCallback);
                 }
             });
         } catch (@NotNull final RequestException e) {
@@ -122,11 +146,16 @@ public class ServerDetails {
         }
     }
 
-    private static void parseJSONFile(@NotNull final String json) {
+    /**
+     * Load the server details from the supplied JSON file.
+     * @param json The server json file to parse
+     * @return true if the json string defined at least one server, and that every server defined had all tye required fields.
+     */
+    private static boolean parseJSONFile(@NotNull final String json, @NotNull final ServerDetailsCallback serverDetailsCallback) {
         try {
             final JSONArray serverDetails = JSONParser.parseStrict(json).isArray();
 
-            if (serverDetails != null) {
+            if (serverDetails != null && serverDetails.size() != 0) {
 
                 serverGroups.clear();
                 currentServers.clear();
@@ -158,6 +187,7 @@ public class ServerDetails {
                         currentServers.put(serverId, newServerDetails);
                     } else {
                         LOGGER.log(Level.INFO, "The server defined in the JSON file did not have the required fields");
+                        return false;
                     }
                 }
 
@@ -167,9 +197,16 @@ public class ServerDetails {
                 } else if (currentServers.size() != 0) {
                     currentServer = currentServers.values().iterator().next();
                 }
+
+                serverDetailsCallback.serverDetailsFound(currentServer);
+
+                return true;
+            } else {
+                return false;
             }
         } catch (@NotNull final Exception ex) {
             LOGGER.log(Level.INFO, "Could not parse:\n" +  json);
+            return false;
         }
     }
 

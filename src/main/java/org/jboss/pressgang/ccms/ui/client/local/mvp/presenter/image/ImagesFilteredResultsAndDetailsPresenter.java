@@ -47,12 +47,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -206,11 +208,16 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         populateLocales();
         buildHelpDatabase();
 
-        imageComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getAddLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageComponent.getDisplay().getRemoveLocale().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                imageComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
+                imageComponent.getDisplay().getAddLocale().setEnabled(!serverDetails.isReadOnly());
+                imageComponent.getDisplay().getRemoveLocale().setEnabled(!serverDetails.isReadOnly());
+                imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
+            }
+        });
     }
 
     private void buildHelpDatabase() {
@@ -318,12 +325,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                 updateDisplayWithNewEntityData(newEntity);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImageUploadedSuccessfully());
             }
 
             @Override
             public void failed() {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
             }
         };
     }
@@ -549,7 +556,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     }
 
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
 
             }
@@ -687,10 +694,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                             .languageImages_OTMEditor().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/image/get/raw/" +
-                            imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedImage
-                            .getItem().getLocale(),
-                            null, null);
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getRestEndpoint() + "/1/image/get/raw/" +
+                                    imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedImage
+                                    .getItem().getLocale(),
+                                    null, null);
+                        }
+                    });
                 }
             }
         });
@@ -844,7 +856,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 display.getBulkUploadDialog().getDialogBox().hide();
 
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
                     final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
                     createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
@@ -868,7 +880,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         if (index >= files.getLength()) {
 
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -878,7 +890,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
 

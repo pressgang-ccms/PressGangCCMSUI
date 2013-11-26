@@ -47,12 +47,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTLanguageFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -208,9 +210,19 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         populateLocales();
 
-        fileComponent.getDisplay().getSave().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
-        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!ServerDetails.getSavedServer().isReadOnly());
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        fileComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
+                        fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -288,12 +300,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                 updateDisplayWithNewEntityData(newEntity);
 
-                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FileUploadedSuccessfully());
             }
 
             @Override
             public void failed() {
-                Window.alert(PressGangCCMSUI.INSTANCE.FileUploadFailure());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FileUploadFailure());
             }
         };
     }
@@ -552,7 +564,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFile(updateFile), getDefaultFileRestCallback(false), display);
                     }
                 } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
 
             }
@@ -572,10 +584,16 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                             ().itemsEditor().getList().get(
                             selectedTab);
 
-                    Window.open(ServerDetails.getSavedServer().getRestEndpoint() + "/1/file/get/raw/" +
-                            fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
-                            .getItem().getLocale(),
-                            null, null);
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getRestEndpoint() + "/1/file/get/raw/" +
+                                    fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "?lang=" + selectedFile
+                                    .getItem().getLocale(),
+                                    null, null);
+                        }
+                    });
+
                 }
             }
         });
@@ -805,7 +823,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 display.getBulkUploadDialog().getDialogBox().hide();
 
                 if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoFilesSelected());
                 } else {
                     final String defaultLocale = serverSettings.getSettings().getDefaultLocale();
                     createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
@@ -844,7 +862,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
             }
 
             if (failedFiles.size() == 0) {
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -854,7 +872,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     failedNames.append(name);
                 }
 
-                Window.alert(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesNotUploadedSuccessfully() + ": " + failedNames.toString());
             }
 
             eventBus.fireEvent(new FilesFilteredResultsAndFileViewEvent(

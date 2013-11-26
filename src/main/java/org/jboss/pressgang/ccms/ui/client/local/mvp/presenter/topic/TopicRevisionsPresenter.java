@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRen
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -147,7 +148,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
                 @Override
                 public void failed() {
                     display.showRenderedDiffError();
-                    Window.alert(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                 }
             });
         }
