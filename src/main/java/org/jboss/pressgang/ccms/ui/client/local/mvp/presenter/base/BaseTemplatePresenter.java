@@ -159,15 +159,17 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                     public void serverDetailsFound(@NotNull final ServerDetails newServerSettings) {
                         RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
-                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    newServerSettings.getGroup().getType().replaceAll("_", " ")), new CloseHandler() {
-                                @Override
-                                public void onClose(CloseEvent event) {
-                                    Window.Location.reload();
+                            AlertBox.setMessageAndDisplay(
+                                PressGangCCMSUI.INSTANCE.ChangedServers()
+                                    .replace("$1",currentServerSettings.getGroup().getType())
+                                    .replace("$2",newServerSettings.getGroup().getType()),
+                                new CloseHandler() {
+                                    @Override
+                                    public void onClose(CloseEvent event) {
+                                        Window.Location.reload();
+                                    }
                                 }
-                            });
-
+                            );
                         }
                     }
                 });
