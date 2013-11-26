@@ -1,16 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -24,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
@@ -39,9 +44,13 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
 
         FlexTable getLayoutPanel();
 
-        ListBox getConditions();
+        ListBox getContentSpecs();
 
         CheckBox getRemarks();
+
+        PushButton getRenderingInfo();
+
+        TopicRenderingInfoDialog getRenderingInfoDialog();
     }
 
     @Inject
@@ -89,14 +98,14 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     }
 
     protected void processXML(@NotNull final Document doc) {
-        // Apply the conditions
-        if (getDisplay().getConditions().getSelectedIndex() != -1 || conditionOverride != null) {
+        final JSONObject jsonValue = getSelectedContentSpecValue();
 
+        // Apply the conditions
+        if (jsonValue.containsKey("condition") || conditionOverride != null) {
             /*
                 conditionOverride overrides any selection in the combo box
              */
-            final String condition = conditionOverride != null ? conditionOverride : getDisplay().getConditions().getValue(
-                    getDisplay().getConditions().getSelectedIndex()).trim();
+            final String condition = conditionOverride != null ? conditionOverride : jsonValue.get("condition").isString().stringValue().trim();
 
             /*
                 Apply some special rules when no condition is specified
@@ -108,6 +117,23 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
 
         // Resolve any injections
         InjectionResolver.resolveInjections(doc);
+    }
+
+    protected JSONObject getSelectedContentSpecValue() {
+        // Check to see if we have a selected content spec to render for
+        if (getDisplay().getContentSpecs().getSelectedIndex() != -1) {
+            final String value = getDisplay().getContentSpecs().getValue(getDisplay().getContentSpecs()
+                    .getSelectedIndex());
+            if (!isStringNullOrEmpty(value)) {
+                try {
+                    return (JSONObject) JSONParser.parseStrict(value);
+                } catch (Exception e) {
+
+                }
+            }
+        }
+
+        return new JSONObject();
     }
 
     /**
@@ -200,6 +226,11 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
             }
         }
 
-        return xsl + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue;
+        final JSONObject jsonValue = getSelectedContentSpecValue();
+        if (jsonValue.containsKey("entities")) {
+            return xsl + "\n" + DocbookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue()) + "\n" + retValue;
+        } else {
+            return xsl + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue;
+        }
     }
 }

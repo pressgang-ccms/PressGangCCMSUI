@@ -14,6 +14,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 public class XMLValidator {
     private final AceEditor editor;
     private final TextArea errors;
+    private String customEntities = "";
     /**
      * true while there is a thread checking the XML
      */
@@ -55,8 +56,9 @@ public class XMLValidator {
     }-*/;
 
     private native void checkXML() /*-{
-        var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype()();
-        var dummyEntities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDummyDtdDoctype()();
+        var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
+        var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
+        var dummyEntities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDummyDtdDoctype(Ljava/lang/String;)(customEntities);
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
@@ -210,5 +212,13 @@ public class XMLValidator {
      */
     public void stopCheckingXML() {
         checkingXML = false;
+    }
+
+    public String getCustomEntities() {
+        return customEntities;
+    }
+
+    public void setCustomEntities(String customEntities) {
+        this.customEntities = customEntities;
     }
 }

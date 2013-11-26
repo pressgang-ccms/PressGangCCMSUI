@@ -77,6 +77,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
         xml = processXML(xml);
 
         failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+            @Override
             public void success(@NotNull final IntegerWrapper value) {
                 getDisplay().displayTopicRendered(value.value, readOnly, showImages);
             }

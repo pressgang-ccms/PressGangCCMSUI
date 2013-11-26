@@ -91,6 +91,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.ReadOnlyPresenter;
@@ -231,8 +232,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         new children that are exposed through the UI.
                     */
                     if (retValue.getRevisions().getItems().size() >= 1) {
-                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
 
                         LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
 
@@ -244,8 +245,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                      */
                     if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                             /* Get the second last revision (the last one is the current one) */
-                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                        final Integer overwriteRevision = retValue.getRevisions().getItems().get(
+                                retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
 
                         LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
@@ -730,9 +731,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(),
-                topicViewPresenter.getDisplay(), getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(),
-                getDisplay(), getNewEntityCallback);
+        super.bindSearchAndEdit(getMainResizePreferencesKey(), getTopicXMLPresenter().getDisplay(), topicViewPresenter.getDisplay(),
+                getSearchResultPresenter().getDisplay(), getSearchResultPresenter(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         topicContentSpecsPresenter.bindChildrenExtended();
         topicRevisionsPresenter.bindRenderedDiff(topicRevisionsPresenter.getDisplay());
@@ -918,13 +918,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     @Override
                     public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
                         if (isOKToProceed()) {
-                            checkState(object != null && object.getItem() != null, "The referenced column should have a valid " +
-                                    "content spec reference");
+                            checkState(object != null && object.getItem() != null,
+                                    "The referenced column should have a valid content spec reference");
 
                             eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(
                                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" +
-                                            object.getItem().getId(),
-                                    false));
+                                            object.getItem().getId(), false));
                         }
                     }
                 });
@@ -1213,32 +1212,40 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (!contentSpecsLoadInitiated && selectedItem != null) {
                 contentSpecsLoadInitiated = true;
 
-                /* Initiate the REST calls */
-                final Integer id = displayedTopic.getId();
-                final Integer revision = displayedTopic.getRevision();
+                // Check to see if we need to get the content specs, as they might have been loaded by the getAllCustomEntities call
+                if (displayedTopic.getContentSpecs_OTM() == null) {
+                    /* Initiate the REST calls */
+                    final Integer id = displayedTopic.getId();
+                    final Integer revision = displayedTopic.getRevision();
 
-                /* A callback to respond to a request for a topic with the content specs expanded */
-                final RESTCallBack<RESTTopicV1> topicWithContentSpecsCallback = new RESTCallBack<RESTTopicV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTopicV1 retValue) {
-                        try {
-                            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
-                                    "topicWithContentSpecsCallback.doSuccessAction()");
+                    /* A callback to respond to a request for a topic with the content specs expanded */
+                    final RESTCallBack<RESTTopicV1> topicWithContentSpecsCallback = new RESTCallBack<RESTTopicV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTopicV1 retValue) {
+                            try {
+                                LOGGER.log(Level.INFO,
+                                        "ENTER TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() topicWithContentSpecsCallback" +
+                                                ".doSuccessAction()");
 
-                            // copy the revisions into the displayed Topic
-                            getDisplayedTopic().setContentSpecs_OTM(retValue.getContentSpecs_OTM());
+                                // copy the revisions into the displayed Topic
+                                displayedTopic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
 
-                            /* update the view */
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
-                        } finally {
-                            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() " +
-                                    "topicWithContentSpecsCallback.doSuccessAction()");
+                                // update the view
+                                initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
+                            } finally {
+                                LOGGER.log(Level.INFO,
+                                        "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() topicWithContentSpecsCallback" +
+                                                ".doSuccessAction()");
+                            }
                         }
-                    }
-                };
+                    };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(id, revision),
-                        topicWithContentSpecsCallback, getTopicContentSpecsPresenter().getDisplay());
+                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(id, revision),
+                            topicWithContentSpecsCallback, getTopicContentSpecsPresenter().getDisplay());
+                } else {
+                    // update the view
+                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
+                }
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs()");
@@ -1454,14 +1461,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         // This should always be false
                         if (!getXmlValidator().isCheckingXML()) {
-                            getXmlValidator().startCheckingXML();
+                            loadAllCustomEntities(new StringLoaded() {
+                                @Override
+                                public void stringLoaded(final String entities) {
+                                    customEntitiesLoaded = true;
+                                    getXmlValidator().setCustomEntities(entities);
+                                    getXmlValidator().startCheckingXML();
+                                }
+                            });
                         }
                     } else {
                         timer.cancel();
                         refreshSplitRenderedView(true);
                         getXmlValidator().stopCheckingXML();
                     }
-
+    
                     if (displayedView == getTopicRenderedPresenter().getDisplay()) {
                         refreshRenderedView();
                     }
@@ -1544,8 +1558,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
-                        getRenderedDiffRevision() + ";" +
-                        getDisplayedTopic().getRevision();
+                            getRenderedDiffRevision() + ";" + getDisplayedTopic().getRevision();
 
                     eventBus.fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -2283,7 +2296,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
                     }
                 });
-
 
                 lastXML = this.getDisplayedTopic().getXml();
             }
@@ -3327,6 +3339,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         void bindRemoveButtons();
     }
 
+    @Override
+    protected void loadAllCustomEntities(@NotNull final StringLoaded callback) {
+        if (!customEntitiesLoaded) {
+            final RESTTopicV1 topic = getDisplayedTopic();
+            if (topic != null) {
+                failOverRESTCall.performRESTCall(
+                        FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
+                        new RESTCallBack<RESTTopicV1>() {
+                            @Override
+                            public void success(final RESTTopicV1 retValue) {
+                                topic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
+                                customEntities = getCustomEntities(retValue);
+                                customEntitiesLoaded = true;
+                                callback.stringLoaded(customEntities);
+                            }
+                        });
+            }
+        } else {
+            callback.stringLoaded(customEntities);
+        }
+    }
+
     /**
      * A click handler to add a tag to a topic
      *
@@ -3522,7 +3556,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1,
+            RESTTopicCollectionItemV1> {
         @NotNull
         PushButton getSave();
 

@@ -3,12 +3,16 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +31,10 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -34,6 +42,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
@@ -41,8 +50,11 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -58,6 +70,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceU
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -67,9 +80,11 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.sort.contentspec.RESTContentSpecIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,8 +97,9 @@ import org.jetbrains.annotations.Nullable;
  * or translated topic screens.
  */
 public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
-        T extends RESTBaseTopicV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>, V extends RESTBaseEntityCollectionItemV1<T, U, V>,
-        Y extends Editor<T>> extends BaseSearchAndEditPresenter<T, U, V, Y> implements BaseTemplatePresenterInterface, ReadOnlyPresenter {
+        T extends RESTBaseTopicV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>, V extends RESTBaseEntityCollectionItemV1<T, U,
+        V>, Y extends Editor<T>> extends BaseSearchAndEditPresenter<T, U, V, Y> implements BaseTemplatePresenterInterface,
+        ReadOnlyPresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
@@ -137,6 +153,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private SplitType split = SplitType.NONE;
 
     private boolean displayingSearchResults = true;
+
+    protected boolean customEntitiesLoaded = false;
+    protected String customEntities = "";
 
     /**
      * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
@@ -260,9 +279,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         buildHelpDatabase();
 
-        bindConditionSelection();
+        bindRenderContentSpecSelection();
 
         bindRemarksSelection();
+
+        bindRenderingInfoSelection();
 
         buildLegend();
     }
@@ -331,15 +352,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         });
     }
 
-    private void bindConditionSelection() {
-        getTopicRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
+    private void bindRenderContentSpecSelection() {
+        getTopicRenderedPresenter().getDisplay().getContentSpecs().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                if (getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
-                    final String conditionValue = getTopicRenderedPresenter().getDisplay().getConditions().getValue(
-                            getTopicRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
+                if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex() != -1) {
+                    final String contentSpecId = getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(
+                            getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex());
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
+                getTopicRenderedPresenter().getDisplay().clear();
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
@@ -349,14 +371,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             }
         });
 
-        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addChangeHandler(new ChangeHandler() {
+        getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-                if (getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex() != -1) {
-                    final String conditionValue = getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getValue(
-                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().getSelectedIndex());
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONDITION + getDisplayedTopic().getId(), conditionValue);
+                if (getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex() != -1) {
+                    final String contentSpecId = getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getValue(
+                            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex());
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
+                getTopicSplitPanelRenderedPresenter().getDisplay().clear();
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
@@ -398,18 +421,56 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         });
     }
 
-    /**
-     * Get all the content specs associated with this topic and list their conditions
-     */
-    private void findAndDisplayConditions() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
+    private void bindRenderingInfoSelection() {
+        getTopicRenderedPresenter().getDisplay().getRenderingInfo().addClickHandler(getRenderingInfoClickHandler
+                (getTopicRenderedPresenter().getDisplay()));
 
-            getTopicRenderedPresenter().getDisplay().getConditions().clear();
-            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().clear();
+        getTopicSplitPanelRenderedPresenter().getDisplay().getRenderingInfo().addClickHandler(getRenderingInfoClickHandler
+                (getTopicSplitPanelRenderedPresenter().getDisplay()));
+    }
+
+    private ClickHandler getRenderingInfoClickHandler(@NotNull final BaseTopicRenderedPresenter.Display renderingDisplay) {
+        return new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                renderingDisplay.getRenderingInfoDialog().reset();
+                final ListBox contentSpecs = renderingDisplay.getContentSpecs();
+                final String value = contentSpecs.getValue(contentSpecs.getSelectedIndex());
+                try {
+                    final JSONObject jsonValue = JSONParser.parseStrict(value).isObject();
+
+                    if (jsonValue.containsKey("id")) {
+                        renderingDisplay.getRenderingInfoDialog().getId().setValue(
+                                (int) jsonValue.get("id").isNumber().doubleValue());
+                    }
+                    if (jsonValue.containsKey("condition")) {
+                        renderingDisplay.getRenderingInfoDialog().getCondition().setText(jsonValue.get
+                                ("condition").isString().stringValue());
+                    }
+                    if (jsonValue.containsKey("entities")) {
+                        renderingDisplay.getRenderingInfoDialog().getEntities().setText(jsonValue.get
+                                ("entities").isString().stringValue());
+                    }
+                } catch (Exception e) {
+
+                }
+                renderingDisplay.getRenderingInfoDialog().center();
+            }
+        };
+    }
+
+    /**
+     * Get all the content specs associated with this topic and list them
+     */
+    private void findAndDisplayContentSpecs() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayContentSpecs()");
+
+            getTopicRenderedPresenter().getDisplay().getContentSpecs().clear();
+            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().clear();
 
             /*
-                Don't attempt to find conditions on new topics
+                Don't attempt to find content specs on new topics
              */
             if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
                 failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
@@ -419,111 +480,90 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
                         checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
 
-                        boolean foundNullCondition = false;
-                        final Map<String, String> conditions = new TreeMap<String, String>();
-                        final Map<String, HashSet<Integer>> conditionCounts = new TreeMap<String, HashSet<Integer>>();
+                        final Set<RESTCSNodeCollectionItemV1> nodes = new HashSet<RESTCSNodeCollectionItemV1>();
+                        final Map<Integer, String> contentSpecTitles = new HashMap<Integer, String>();
 
+                        // Get the csnodes that have conditions or custom entities
                         for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
                             checkState(node.getItem().getContentSpec() != null,
                                     "The content spec node should have an expanded content spec property");
 
-                            String title = "";
-                            for (final RESTCSNodeCollectionItemV1 csNode : node.getItem().getContentSpec().getChildren_OTM().getItems()) {
-                                if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA && csNode.getItem().getTitle().equals(
-                                        "Title")) {
-                                    title = csNode.getItem().getAdditionalText();
-                                    break;
-                                }
+                            // If the node has a condition then add it
+                            if (!isStringNullOrEmpty(node.getItem().getInheritedCondition())) {
+                                nodes.add(node);
                             }
 
-                            foundNullCondition = foundNullCondition || node.getItem().getInheritedCondition() == null;
-                            final String condition = node.getItem().getInheritedCondition() == null ? "" : node.getItem()
-                                    .getInheritedCondition();
-
-
-                            final String conditionName = (condition.isEmpty() ? PressGangCCMSUI.INSTANCE.NoCondition() : condition) +
-                                    " - " + title + " (CS" + node.getItem().getContentSpec().getId() + ")";
-
-                            if (!conditions.containsKey(condition)) {
-                                conditions.put(condition, conditionName);
-                                conditionCounts.put(condition, new HashSet<Integer>() {{
-                                    add(node.getItem().getContentSpec().getId());
-                                }});
-                            } else {
-                                conditionCounts.get(condition).add(node.getItem().getContentSpec().getId());
+                            // Check for entities on the nodes content spec
+                            final RESTContentSpecV1 contentSpec = node.getItem().getContentSpec();
+                            for (final RESTCSNodeCollectionItemV1 csNode : contentSpec.getChildren_OTM().getItems()) {
+                                // Only worry about metadata nodes
+                                if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA) {
+                                    if (csNode.getItem().getTitle().equals(CommonConstants.CS_TITLE_TITLE)) {
+                                        contentSpecTitles.put(contentSpec.getId(), csNode.getItem().getAdditionalText());
+                                    } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_ENTITIES_TITLE)) {
+                                        csNode.getItem().setContentSpec(contentSpec);
+                                        nodes.add(csNode);
+                                    }
+                                }
                             }
                         }
 
-                        if (conditions.size() == 0) {
-                            getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
-                                    PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                        final List<RESTCSNodeCollectionItemV1> items = retValue.getItems();
+                        if (nodes.isEmpty()) {
+                            // There is always the option to not use any conditions or entities.
+                            getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+                            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(
+                                    PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
                         } else {
-                                        /*
-                                            There is always the option to not use any conditions. This option may come from content specs
-                                            that don't define any conditions. If every spec has a condition,
-                                            then foundNullCondition will be false,
-                                            in which case we add the NONE option.
-                                         */
-
-                            if (!foundNullCondition) {
-                                getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(),
-                                        "");
-                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
-                                        PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                            } else {
-                                            /*
-                                                Otherwise display the empty condition first
-                                            */
-                                for (final String key : conditions.keySet()) {
-                                    if (key.isEmpty()) {
-                                        if (conditionCounts.get(key).size() == 1) {
-                                            getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key),
-                                                    key);
-                                        } else {
-                                            getTopicRenderedPresenter().getDisplay().getConditions().addItem(
-                                                    conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
-                                                            (conditionCounts.get(key).size() - 1) + ""), key);
-                                            getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
-                                                    conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
-                                                            (conditionCounts.get(key).size() - 1) + ""), key);
-                                        }
-
-                                        break;
-                                    }
-                                }
-                            }
-
-                                        /*
-                                            Other conditions are listed in sorted order
-                                         */
-                            for (final String key : conditions.keySet()) {
-                                if (!key.isEmpty()) {
-                                    if (conditionCounts.get(key).size() == 1) {
-                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key), key);
-                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(conditions.get(key),
-                                                key);
-                                    } else {
-                                        getTopicRenderedPresenter().getDisplay().getConditions().addItem(
-                                                conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
-                                                        (conditionCounts.get(key).size() - 1) + ""), key);
-                                        getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(
-                                                conditions.get(key) + " " + PressGangCCMSUI.INSTANCE.MoreConditions().replace("#",
-                                                        (conditionCounts.get(key).size() - 1) + ""), key);
-                                    }
-                                }
-                            }
-
+                            final int numContentSpecs = items.size() - nodes.size();
+                            final String key = PressGangCCMSUI.INSTANCE.DefaultContentSpecs().replace("#", numContentSpecs + "");
+                            getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(key, "");
+                            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(key, "");
                         }
 
-                        final String key = Preferences.TOPIC_CONDITION + getDisplayedTopic().getId();
-                        final String savedValue = Preferences.INSTANCE.getString(key, "");
+                        // Create the mapping of nodes to content specs
+                        final SortedMap<RESTContentSpecV1, List<RESTCSNodeV1>> contentSpecToNodes = new TreeMap
+                                <RESTContentSpecV1, List<RESTCSNodeV1>>(new RESTContentSpecIDSort(true));
+                        for (final RESTCSNodeCollectionItemV1 item : nodes) {
+                            final RESTContentSpecV1 contentSpec = item.getItem().getContentSpec();
 
-                        for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getConditions().getItemCount(); i < length; ++i) {
-                            if (getTopicRenderedPresenter().getDisplay().getConditions().getValue(i).equals(savedValue)) {
-                                getTopicRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
-                                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().setSelectedIndex(i);
+                            if (!contentSpecToNodes.containsKey(contentSpec)) {
+                                contentSpecToNodes.put(contentSpec, new ArrayList<RESTCSNodeV1>());
+                            }
+
+                            contentSpecToNodes.get(contentSpec).add(item.getItem());
+                        }
+
+                        // Populate the Content Specs ListBox
+                        for (final Map.Entry<RESTContentSpecV1, List<RESTCSNodeV1>> entry : contentSpecToNodes.entrySet()) {
+                            final RESTContentSpecV1 contentSpec = entry.getKey();
+                            final List<RESTCSNodeV1> contentSpecNodes = entry.getValue();
+                            final String formattedTitle = getFormattedContentSpecTitle(contentSpec, contentSpecTitles);
+
+                            // Generate a JSON object to hold the data for us.
+                            final JSONObject o = new JSONObject();
+                            o.put("id", new JSONNumber(contentSpec.getId()));
+                            for (final RESTCSNodeV1 node : contentSpecNodes) {
+                                if (!isStringNullOrEmpty(node.getInheritedCondition())) {
+                                    o.put("condition", new JSONString(node.getInheritedCondition()));
+                                } else if (CommonConstants.CS_ENTITIES_TITLE.equals(node.getTitle())) {
+                                    o.put("entities", new JSONString(node.getAdditionalText()));
+                                }
+                            }
+                            final String value = o.toString();
+
+                            getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(formattedTitle, value);
+                            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(formattedTitle, value);
+                        }
+
+                        // Select the saved value and trigger the rendering
+                        final String key = Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId();
+                        final String savedValue = Preferences.INSTANCE.getString(key, "");
+                        for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getContentSpecs().getItemCount
+                                (); i < length; ++i) {
+                            if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(i).equals(savedValue)) {
+                                getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
+                                getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
 
                                 isReadOnlyMode(new ReadOnlyCallback() {
                                     @Override
@@ -539,8 +579,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     }
                 });
             } else {
-                getTopicRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
-                getTopicSplitPanelRenderedPresenter().getDisplay().getConditions().addItem(PressGangCCMSUI.INSTANCE.NoCondition(), "");
+                getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+                getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
 
                 /*
                     Trigger the initial render
@@ -555,8 +595,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayConditions()");
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayContentSpecs()");
         }
+    }
+
+    private String getFormattedContentSpecTitle(final RESTContentSpecV1 contentSpec, final Map<Integer, String> contentSpecTitles) {
+        final String title = contentSpecTitles.get(contentSpec.getId());
+        return title + " (CS" + contentSpec.getId() + ")";
     }
 
     /**
@@ -603,13 +648,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final double searchResultsWidth = Preferences.INSTANCE.getDouble(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, isDisplayingSearchResults(), getTopicSplitPanelRenderedPresenter().getDisplay().getPanel(),
-                    searchResultsWidth, renderedPanelSize);
+            getDisplay().initialize(false, split, isDisplayingSearchResults(),
+                    getTopicSplitPanelRenderedPresenter().getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
-
-
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
@@ -703,10 +745,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /* Display the list of property tags */
             topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
-            findAndDisplayConditions();
+            findAndDisplayContentSpecs();
 
             /* enable or disable the rendering of remarks */
-            final boolean remarksEnabled = Preferences.INSTANCE.getBoolean(Preferences.REMARKS_ENABLED + getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId(), false);
+            final boolean remarksEnabled = Preferences.INSTANCE.getBoolean(
+                    Preferences.REMARKS_ENABLED + getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId(), false);
             getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().setValue(remarksEnabled);
             getTopicRenderedPresenter().getDisplay().getRemarks().setValue(remarksEnabled);
 
@@ -1116,7 +1159,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             });
 
-
             /* We display the rendered view with images */
             /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
             /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
@@ -1231,13 +1273,31 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         return false;
     }
 
+    protected abstract void loadAllCustomEntities(@NotNull final StringLoaded callback);
+
+    protected String getCustomEntities(@NotNull final RESTTopicV1 retValue) {
+        checkArgument(retValue.getContentSpecs_OTM() != null, "There should be a Content Spec collection.");
+
+        final StringBuilder entities = new StringBuilder();
+        for (final RESTContentSpecV1 contentSpec : retValue.getContentSpecs_OTM().returnItems()) {
+            checkArgument(contentSpec.getChildren_OTM() != null, "The Content Spec should have a children collection.");
+
+            for (final RESTCSNodeV1 csNode : contentSpec.getChildren_OTM().returnItems()) {
+                if (CommonConstants.CS_ENTITIES_TITLE.equals(csNode.getTitle())) {
+                    entities.append(csNode.getAdditionalText()).append("\n");
+                }
+            }
+        }
+
+        return entities.toString();
+    }
 
     /**
      * The interface that defines the top level topic list and edit view
      */
     public interface Display<
-            T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>, V extends RESTBaseEntityCollectionItemV1<T, U,
-                        V>> extends BaseSearchAndEditViewInterface<T, U, V> {
+            T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>,
+            V extends RESTBaseEntityCollectionItemV1<T, U, V>> extends BaseSearchAndEditViewInterface<T, U, V> {
 
 
         FlexTable getRenderedSplitViewMenu();

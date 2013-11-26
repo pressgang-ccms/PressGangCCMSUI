@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONNumber;
-import edu.ycp.cs.dh.acegwt.client.tagdb.GetRESTServerCallback;
 import edu.ycp.cs.dh.acegwt.client.tagdb.TagDB;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;

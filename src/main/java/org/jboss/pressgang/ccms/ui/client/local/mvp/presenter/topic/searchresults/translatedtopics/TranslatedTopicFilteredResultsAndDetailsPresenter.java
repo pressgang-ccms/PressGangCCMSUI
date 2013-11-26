@@ -43,6 +43,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTo
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -574,7 +575,14 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
             // This should always be false
             if (!getXmlValidator().isCheckingXML()) {
-                getXmlValidator().startCheckingXML();
+                loadAllCustomEntities(new StringLoaded() {
+                    @Override
+                    public void stringLoaded(final String entities) {
+                        customEntitiesLoaded = true;
+                        getXmlValidator().setCustomEntities(entities);
+                        getXmlValidator().startCheckingXML();
+                    }
+                });
             }
         } else {
             timer.cancel();
@@ -885,11 +893,33 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }
 
+    @Override
+    protected void loadAllCustomEntities(@NotNull final StringLoaded callback) {
+        if (!customEntitiesLoaded) {
+            final RESTTranslatedTopicV1 topic = getDisplayedTopic();
+            if (topic != null) {
+                failOverRESTCall.performRESTCall(
+                        FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getTopicId(), topic.getTopicRevision()),
+                        new RESTCallBack<RESTTopicV1>() {
+                            @Override
+                            public void success(final RESTTopicV1 retValue) {
+                                customEntities = getCustomEntities(retValue);
+                                customEntitiesLoaded = true;
+                                callback.stringLoaded(customEntities);
+                            }
+                        });
+            }
+        } else {
+            callback.stringLoaded(customEntities);
+        }
+    }
+
     /**
      * This interface defines nothing over BaseTopicFilteredResultsAndDetailsPresenter.Display,
      * but exists for the benefit of the injection.
      */
-    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1,
+            RESTTopicCollectionItemV1> {
         @NotNull
         PushButton getAdditionalXML();
 

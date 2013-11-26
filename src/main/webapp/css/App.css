@@ -1154,3 +1154,7 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 td.FieldViewLabelCell {
     padding: 4px 0px;
 }
+
+td.TopicRenderingInfoEntitiesCell {
+    width: 350px;
+}
