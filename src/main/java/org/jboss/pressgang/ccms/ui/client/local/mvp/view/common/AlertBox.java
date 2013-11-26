@@ -5,11 +5,14 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.CloseCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -35,7 +38,7 @@ public class AlertBox extends DialogBox {
                 Scheduler.get().scheduleDeferred(new Command() {
                     @Override
                     public void execute() {
-                        close();
+                       close();
                     }
                 });
             }
@@ -89,10 +92,10 @@ public class AlertBox extends DialogBox {
     /**
      * Display a message in a dialog box with an OK button.
      * @param message The message to display
-     * @param clickHandler A handler that is called when the ok button is clicked. Once clicked, the handler is removed.
+     * @param closeHandler A handler that is called when the ok button is clicked. Once clicked, the handler is removed.
      */
-    static public void setMessageAndDisplay(@NotNull final String message, @NotNull final ClickHandler clickHandler) {
-        handlers.add(INSTANCE.ok.addClickHandler(clickHandler));
+    static public void setMessageAndDisplay(@NotNull final String message, @NotNull final CloseHandler closeHandler) {
+        handlers.add(INSTANCE.addCloseHandler(closeHandler));
         setMessageAndDisplay(message);
     }
 

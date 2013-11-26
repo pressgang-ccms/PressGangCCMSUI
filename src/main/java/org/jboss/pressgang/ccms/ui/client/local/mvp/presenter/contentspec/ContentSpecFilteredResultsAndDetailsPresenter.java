@@ -22,6 +22,8 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -442,9 +444,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                 if (user.isEmpty()) {
                     display.getMessageLogDialog().getDialogBox().hide();
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new CloseHandler() {
                         @Override
-                        public void onClick(ClickEvent event) {
+                        public void onClose(CloseEvent event) {
                             display.getMessageLogDialog().getDialogBox().center();
                         }
                     });
@@ -558,9 +560,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
-                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new ClickHandler() {
+                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new CloseHandler() {
                                             @Override
-                                            public void onClick(ClickEvent event) {
+                                            public void onClose(CloseEvent event) {
                                                 // Take the user to the errors view so they can review any error messages
                                                 switchView(contentSpecErrorsPresenter.getDisplay());
                                             }
@@ -658,10 +660,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new ClickHandler() {
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new CloseHandler() {
                                         @Override
-                                        public void onClick(ClickEvent event) {
-                                            // Take the user to the errors view so they can review any error messages
+                                        public void onClose(CloseEvent event) {
                                             switchView(contentSpecErrorsPresenter.getDisplay());
                                         }
                                     });

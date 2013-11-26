@@ -29,6 +29,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -319,9 +321,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             if (user.isEmpty()) {
                 display.getMessageLogDialog().getDialogBox().hide();
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new CloseHandler() {
                     @Override
-                    public void onClick(ClickEvent event) {
+                    public void onClose(CloseEvent event) {
                         display.getMessageLogDialog().getDialogBox().center();
                     }
                 });

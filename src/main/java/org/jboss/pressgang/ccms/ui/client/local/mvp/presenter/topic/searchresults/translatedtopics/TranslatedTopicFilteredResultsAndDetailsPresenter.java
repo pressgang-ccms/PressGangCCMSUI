@@ -15,10 +15,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
@@ -249,9 +246,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
             if (user.isEmpty()) {
                 display.getMessageLogDialog().getDialogBox().hide();
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new CloseHandler() {
                     @Override
-                    public void onClick(ClickEvent event) {
+                    public void onClose(CloseEvent event) {
                         display.getMessageLogDialog().getDialogBox().center();
                     }
                 });

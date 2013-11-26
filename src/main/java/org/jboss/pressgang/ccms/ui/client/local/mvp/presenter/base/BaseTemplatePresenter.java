@@ -13,6 +13,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
@@ -159,8 +161,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
                                     currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")));
-                            Window.Location.reload();
+                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")), new CloseHandler() {
+                                @Override
+                                public void onClose(CloseEvent event) {
+                                    Window.Location.reload();
+                                }
+                            });
+
                         }
                     }
                 });
