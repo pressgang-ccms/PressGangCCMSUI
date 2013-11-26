@@ -13,6 +13,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
@@ -21,6 +23,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
@@ -105,21 +108,24 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         ServerDetails.getCurrentServers(new AllServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final Map<Integer, ServerDetails> allServerDetails) {
-                for (final ServerDetails serverDetail : allServerDetails.values()) {
-                    display.getServers().addItem(serverDetail.getName(), serverDetail.getId() + "");
-                    if (serverDetail.getId() == serverDetail.getId()) {
-                        display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
-                    }
-                }
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails savedServerDetails) {
+                        for (final ServerDetails serverDetail : allServerDetails.values()) {
+                            display.getServers().addItem(serverDetail.getName(), serverDetail.getId() + "");
+                            if (serverDetail.getId() == savedServerDetails.getId()) {
+                                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
+                            }
+                        }
 
-                // Disable the menu if we on;y have one available server
-                if (allServerDetails.values().size() <= 1) {
-                    display.getServers().setEnabled(false);
-                }
+                        // Disable the menu if we on;y have one available server
+                        if (allServerDetails.values().size() <= 1) {
+                            display.getServers().setEnabled(false);
+                        }
+                    }
+                });
             }
         });
-
-
     }
 
     private void bindServerSelector() {
@@ -149,8 +155,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
                                     currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    newServerSettings.getGroup().getType().replaceAll("_", " ")));
-                            Window.Location.reload();
+                                    newServerSettings.getGroup().getType().replaceAll("_", " ")), new CloseHandler<PopupPanel>() {
+                                @Override
+                                public void onClose(CloseEvent<PopupPanel> event) {
+                                    Window.Location.reload();
+                                }
+                            });
                         }
                     }
                 });
