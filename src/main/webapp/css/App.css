@@ -533,11 +533,13 @@ html {
 .TextButton.TopTab, .DownLabel.TopTab {
     border-top-left-radius: 0.5em 0.5em;
     border-top-right-radius: 0.5em 0.5em;
+    text-align: center;
 }
 
 .TextButton.LeftTab, .DownLabel.LeftTab {
     border-top-left-radius: 0.5em 0.5em;
     border-bottom-left-radius: 0.5em 0.5em;
+    text-align: center;
 }
 
 .TextButton.SubMenu {

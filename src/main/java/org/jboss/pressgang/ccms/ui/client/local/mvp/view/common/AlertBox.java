@@ -101,7 +101,7 @@ public class AlertBox extends DialogBox {
      * @param message The message to display
      */
     static public void setMessageAndDisplay(@NotNull final String message) {
-        checkState(!INSTANCE.isShowing(), "setMessageAndDisplay() should not be called when the alert is already displayed.");
+        checkState(!INSTANCE.isShowing(), "setMessageAndDisplay() should not be called when the alert is already displayed. Second message was \"" + message + "\"");
         INSTANCE.setMessage(message);
         INSTANCE.center();
         keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
