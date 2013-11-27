@@ -339,8 +339,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             public void onClick(@NotNull final ClickEvent event) {
                 Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
                 horizontalPanel.clear();
-                horizontalPanel.add(hideLegend);
                 horizontalPanel.add(legendPanel);
+                horizontalPanel.add(hideLegend);
             }
         });
     }
