@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201311251626";
+    public static final String VERSION = "201311280830";
 
     /**
      * The name of the DocBook title element
@@ -252,7 +252,7 @@ public final class Constants {
     /**
      * The height of the footer.
      */
-    public static final int FOOTER_HEIGHT = 40;
+    public static final int FOOTER_HEIGHT = 50;
     /**
      * The maximum number of results to return in a search result.
      */

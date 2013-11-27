@@ -37,14 +37,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
@@ -284,8 +277,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * Builds the legend at the bottom of the screen
      */
     private void buildLegend() {
+
+        /*
+            The horizontal panel is used to vertically align the legend items
+         */
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        horizontalPanel.addStyleName(CSSConstants.Legend.LEGEND_PARENT_PANEL);
         getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
 
         final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
@@ -294,28 +292,35 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
         showLegend.addStyleName(CSSConstants.Legend.LEGEND);
 
+        /*
+            A flow panel is used here to allow the legend items to wrap around.
+         */
+        final FlowPanel legendPanel = new FlowPanel();
+        legendPanel.addStyleName(CSSConstants.Legend.LEGEND_PANEL);
+
         final Label xmlError = new Label(PressGangCCMSUI.INSTANCE.XMLError());
         xmlError.addStyleName(CSSConstants.Legend.XML_ERROR_LEGEND);
+        legendPanel.add(xmlError);
 
         final Label misspelled = new Label(PressGangCCMSUI.INSTANCE.Misspelled());
         misspelled.addStyleName(CSSConstants.Legend.MISSPELLED_LEGEND);
+        legendPanel.add(misspelled);
 
         final Label badWord = new Label(PressGangCCMSUI.INSTANCE.BadWord());
         badWord.addStyleName(CSSConstants.Legend.BAD_WORD_LEGEND);
+        legendPanel.add(badWord);
 
         final Label badPhrase = new Label(PressGangCCMSUI.INSTANCE.BadPhrase());
         badPhrase.addStyleName(CSSConstants.Legend.BAD_PHRASE_LEGEND);
+        legendPanel.add(badPhrase);
 
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+        legendPanel.add(styleGuide);
 
         if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
             horizontalPanel.add(hideLegend);
-            horizontalPanel.add(xmlError);
-            horizontalPanel.add(misspelled);
-            horizontalPanel.add(badWord);
-            horizontalPanel.add(badPhrase);
-            horizontalPanel.add(styleGuide);
+            horizontalPanel.add(legendPanel);
         } else {
             horizontalPanel.add(showLegend);
         }
@@ -335,11 +340,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
                 horizontalPanel.clear();
                 horizontalPanel.add(hideLegend);
-                horizontalPanel.add(xmlError);
-                horizontalPanel.add(misspelled);
-                horizontalPanel.add(badWord);
-                horizontalPanel.add(badPhrase);
-                horizontalPanel.add(styleGuide);
+                horizontalPanel.add(legendPanel);
             }
         });
     }

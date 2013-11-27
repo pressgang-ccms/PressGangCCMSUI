@@ -521,9 +521,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
+        footerPanel.getCellFormatter().addStyleName(0, footerPanel.getCellCount(0) - 1, CSSConstants.Template.CUSTOM_FOOTER_PANEL);
 
-        /* Add the feedback link */
-        addRightAlignedActionButtonPaddingPanel(footerPanel);
+        /* Add the help button */
         footerPanel.setWidget(0, footerPanel.getCellCount(0), helpMode);
 
         /* Add the content panel */

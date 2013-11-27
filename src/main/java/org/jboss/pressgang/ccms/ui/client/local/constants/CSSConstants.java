@@ -9,6 +9,8 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public interface CSSConstants {
 
     interface Legend {
+        String LEGEND_PANEL = "LegendPanel";
+        String LEGEND_PARENT_PANEL = "LegendParentPanel";
         String TAG_MATCH_LEGEND = "TagMatchLegend";
         String BAD_PHRASE_LEGEND = "BadPhraseLegend";
         String MISSPELLED_LEGEND = "MisspelledLegend";
@@ -155,6 +157,10 @@ public interface CSSConstants {
          * Assigned to a padding element that pushing the remaining buttons to the right.
          */
         String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
+        /**
+         * The style applied to the panel that holds custom footer items
+          */
+        String CUSTOM_FOOTER_PANEL = "CustomFooterPanel";
         /**
          * The style applied to the version label.
           */
