@@ -228,6 +228,9 @@ td {
     z-index: -2;
 }
 
+.LegendParentPanel {
+    float:right;
+}
 
 .Legend {
     float: left;

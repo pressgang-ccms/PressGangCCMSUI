@@ -319,8 +319,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         legendPanel.add(styleGuide);
 
         if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
-            horizontalPanel.add(hideLegend);
             horizontalPanel.add(legendPanel);
+            horizontalPanel.add(hideLegend);
         } else {
             horizontalPanel.add(showLegend);
         }
