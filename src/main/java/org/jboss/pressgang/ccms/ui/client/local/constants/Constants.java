@@ -9,9 +9,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class Constants {
     /**
-     * The UI Version - yyyymmddhhmm.
+     * The UI version
      */
-    public static final String VERSION = "201311261823";
+    public static final String VERSION = "1.3-SNAPSHOT";
+
+    /**
+     * The UI Build - yyyymmddhhmm.
+     */
+    public static final String BUILD = "201311271544";
 
     /**
      * The name of the DocBook title element
@@ -321,7 +326,7 @@ public final class Constants {
      * The Bugzilla link for this product.
      */
     public static final String BUGZILLA_URL = BUGZILLA_BASE_URL + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1" +
-            ".2&cf_build_id=UI%20Build%20" + VERSION;
+            ".3&cf_build_id=UI%20Build%20" + BUILD;
     /**
      * A link to the survey.
      */
