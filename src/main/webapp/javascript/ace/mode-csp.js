@@ -63,7 +63,7 @@ define(
 				}, {
 					// tokens that define structure
 					token: "constant.language",
-					regex: "^\\s*Chapter:|^\\s*Section:|^\\s*Appendix:|^\\s*Part:|^\\s*Process:|^\\s*Preface:|Refer-to:|Prerequisite:|Link-List:|T\\d+|R:\\d+|P:\\d+|\\bN\\d*\\b|X\\d+"
+					regex: "^\\s*Chapter:|^\\s*Section:|^\\s*Appendix:|^\\s*Part:|^\\s*Process:|^\\s*Preface:|Refer-to:|Prerequisite:|Link-List:|T\\d+|R:\\d+|P:\\d+|\\bN\\d*\\b|X\\d+|T-\\w+"
 				},  {
 					token : "constant.numeric",
 					regex : "\\b[0-9]+\\b"
@@ -76,7 +76,7 @@ define(
 				},  {
 					// tokens that appear in brackets as values
 					token : "constant.language",
-                    regex : "condition\\s*=|writer\\s*=|URL\\s*=|Description\\s*=|rev:"
+                    regex : "condition\\s*=|(W|w)riter\\s*=|URL\\s*=|Description\\s*=|rev:"
 //					regex : "Test Topic|Concept|Reference|Task|condition\\s*=|writer\\s*=|URL\\s*=|Description\\s*=|rev:"
 				}
 			]
