@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.Collections;
+
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -12,7 +19,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
@@ -21,13 +27,6 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollecti
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.Collections;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
 public class TagProjectsPresenter extends BaseChildrenPresenter<
@@ -51,8 +50,6 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
      * The history token.
      */
     public static final String HISTORY_TOKEN = "TagProjectsView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -178,7 +175,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
     }
 }
 

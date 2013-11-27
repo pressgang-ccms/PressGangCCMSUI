@@ -1,5 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -7,17 +13,10 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * The presenter used to display the list of search filters.
@@ -34,8 +33,6 @@ public abstract class BaseSearchFilterFilteredResultsPresenter extends BaseFilte
      */
     public interface Display extends BaseFilteredResultsViewInterface<RESTFilterCollectionItemV1> {
     }
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     /**
      * The display.
@@ -86,7 +83,8 @@ public abstract class BaseSearchFilterFilteredResultsPresenter extends BaseFilte
                         }
                     };
 
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getFiltersFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getFiltersFromQuery(queryString, getProviderData().getStartRow(), end),
+                            callback, display);
                 }
             };
             return provider;

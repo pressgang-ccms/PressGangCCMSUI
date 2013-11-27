@@ -105,6 +105,8 @@ public class ServerDetails {
             currentServer = new ServerDetails(1, "Default", hostUrl + "/pressgang-ccms", hostUrl + "/birt",
                     hostUrl + "/pressgang-ccms/monitoring", serverGroup, false);
             currentServers.put(currentServer.getId(), currentServer);
+
+            serverDetailsCallback.serverDetailsFound(currentServer);
         }
     }
 

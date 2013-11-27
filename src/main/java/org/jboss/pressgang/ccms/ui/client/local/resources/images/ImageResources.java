@@ -79,4 +79,7 @@ public interface ImageResources extends ClientBundle {
     @Source("minus16.png")
     ImageResource minus16();
 
+    @NotNull
+    @Source("info.png")
+    ImageResource info();
 }

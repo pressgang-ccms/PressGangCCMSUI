@@ -13,10 +13,6 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.ServerSettingsReceived;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.ServerSettingsReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BulkTagSearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
@@ -81,8 +77,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisio
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics
-        .TranslatedTopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -177,27 +172,14 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 
             this.container = container;
+            bind();
 
-            // Create an event handler to bind and fire the history state once the server settings have been downloaded
-            eventBus.addHandler(ServerSettingsReceived.getType(), new ServerSettingsReceivedHandler() {
-                @Override
-                public void onSettingsReceived(RESTServerSettingsV1 serverSettings) {
-                    bind();
-
-                    if ("".equals(History.getToken())) {
-                        LOGGER.log(Level.INFO, "Setting default history token");
-                        History.newItem(WelcomePresenter.HISTORY_TOKEN);
-                    } else {
-                        LOGGER.log(Level.INFO, "Firing current history token");
-                        History.fireCurrentHistoryState();
-                    }
-                }
-            });
-
-            /* Load the ServerSettings */
-            final Optional<ServerSettings> serverSettings = getBeanInstance(ServerSettings.class);
-            if (serverSettings.isPresent()) {
-                serverSettings.get().loadSettings();
+            if ("".equals(History.getToken())) {
+                LOGGER.log(Level.INFO, "Setting default history token");
+                History.newItem(WelcomePresenter.HISTORY_TOKEN);
+            } else {
+                LOGGER.log(Level.INFO, "Firing current history token");
+                History.fireCurrentHistoryState();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.go()");

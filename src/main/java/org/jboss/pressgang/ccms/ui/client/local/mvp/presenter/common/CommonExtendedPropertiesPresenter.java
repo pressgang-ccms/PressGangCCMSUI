@@ -1,5 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1.REMOVE_STATE;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -14,24 +25,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchild
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1.REMOVE_STATE;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter used to populate the tables of possible and existing property tags.
@@ -59,8 +58,6 @@ public class CommonExtendedPropertiesPresenter
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommonExtendedPropertiesPresenter.class.getName());
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer topicId;
@@ -271,7 +268,7 @@ public class CommonExtendedPropertiesPresenter
                 }
             };
             getDisplay().getPossibleChildrenProvider().resetProvider();
-            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }

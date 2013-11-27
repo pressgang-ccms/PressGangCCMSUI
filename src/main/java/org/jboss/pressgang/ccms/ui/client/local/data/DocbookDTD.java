@@ -18,19 +18,26 @@ public final class DocbookDTD {
     }
 
     public static String getDtdDoctype() {
+        return getDtdDoctype("");
+    }
+
+    public static String getDtdDoctype(final String additionalEntities) {
         if (ent.isEmpty()) {
-            return ent;
+            return ent + additionalEntities;
         }
-        return "<!DOCTYPE section [" + ent + "]>";
+        return "<!DOCTYPE section [" + ent + "\n" + additionalEntities + "]>";
     }
 
     public static String getDummyDtdDoctype() {
-        if (dummyEnt.isEmpty()) {
-            return dummyEnt;
-        }
-        return "<!DOCTYPE section [" + dummyEnt + "]>";
+        return getDummyDtdDoctype("");
     }
 
+    public static String getDummyDtdDoctype(final String additionalEntities) {
+        if (dummyEnt.isEmpty()) {
+            return dummyEnt + additionalEntities;
+        }
+        return "<!DOCTYPE section [" + dummyEnt + "\n" + additionalEntities + "]>";
+    }
 
     /**
      * Load the DTD file.

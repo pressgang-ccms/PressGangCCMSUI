@@ -37,22 +37,22 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
@@ -81,11 +81,6 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicSearchTagsFieldsAndFiltersPresenter.class.getName());
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
 
     /**
      * The dialog used when saving or overwriting a filter
@@ -315,9 +310,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 };
 
                 if (filter.getId() == null) {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, getDisplay());
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createFilter(filter), callback, getDisplay());
                 } else {
-                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, getDisplay());
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateFilter(filter), callback, getDisplay());
                 }
             }
         };
@@ -520,7 +515,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicsFromQueryWithExpandedTags(query), callback, getDisplay());
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQueryWithExpandedTags(query), callback, getDisplay());
     }
 
     private void updateTopic(final int index, @NotNull final List<Integer> failedTopics, @NotNull final List<RESTTopicV1> modifiedTopics) {
@@ -540,13 +535,15 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 }
             };
 
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.saveTopic(
-                            modifiedTopics.get(index),
-                            PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
-                            new Integer(RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT),
-                            serverSettings.getEntities().getUnknownUserId().toString()),
-                    callback, getDisplay());
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    getFailOverRESTCall().performRESTCall(
+                            FailOverRESTCallDatabase.saveTopic(modifiedTopics.get(index), PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(),
+                                    new Integer(RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT),
+                                    serverSettings.getEntities().getUnknownUserId().toString()), callback, getDisplay());
+                }
+            });
         } else {
             if (failedTopics.size() == 0) {
                 AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.AllTopicsUpdatedSuccessfully());

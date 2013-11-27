@@ -26,6 +26,8 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -45,14 +47,16 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -66,11 +70,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -97,11 +99,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ContentSpecFilteredResultsAndDetailsPresenter.class.getName());
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
 
     private HandlerRegistration keyboardEventHandler = null;
 
@@ -424,6 +421,20 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         };
 
+        final ClickHandler viewInDocBuilderClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        // TODO: This url should be part of the servers.json file
+                        final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                        Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                    }
+                });
+            }
+        };
+
         final ClickHandler logMessageOkClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -431,9 +442,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                 if (user.isEmpty()) {
                     display.getMessageLogDialog().getDialogBox().hide();
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new ClickHandler() {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.UsernameMissing(), new CloseHandler() {
                         @Override
-                        public void onClick(ClickEvent event) {
+                        public void onClose(CloseEvent event) {
                             display.getMessageLogDialog().getDialogBox().center();
                         }
                     });
@@ -451,8 +462,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         message.append(user).append(": ");
                     }
                     message.append(display.getMessageLogDialog().getMessage().getText());
-                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1
-                            .MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? RESTLogDetailsV1.MINOR_CHANGE_FLAG_BIT : RESTLogDetailsV1.MAJOR_CHANGE_FLAG_BIT);
 
                     final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
                     final RESTTextContentSpecV1 selectedEntity;
@@ -522,20 +532,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         Show the invalid text if required. Also fix up the selected item, because this is what
                                         we will be comparing to when checking for changes.
                                     */
-                                    ComponentContentSpecV1.fixDisplayedText(
-                                            filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                    ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
 
                                     if (startWithNewSpec) {
                                         LOGGER.log(Level.INFO, "Adding new content spec to static list");
 
                                         // We need to swap the text with the invalid text
-                                        ComponentContentSpecV1.fixDisplayedText(
-                                                filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
                                         filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
-                                        filteredResultsPresenter.getProviderData().setSize(
-                                                filteredResultsPresenter.getProviderData().getItems().size());
+                                        filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
                                         updateDisplayWithNewEntityData(false);
                                     } else {
                                         // Update the selected topic
@@ -550,10 +557,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     }});
 
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                        // Take the user to the errors view so they can review any error messages
-                                        switchView(contentSpecErrorsPresenter.getDisplay());
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
-                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix());
+                                                ".\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new CloseHandler() {
+                                            @Override
+                                            public void onClose(CloseEvent event) {
+                                                // Take the user to the errors view so they can review any error messages
+                                                switchView(contentSpecErrorsPresenter.getDisplay());
+                                            }
+                                        });
                                     } else {
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                     }
@@ -565,8 +576,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
-                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(
+                                        FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
+                                                serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
+                            }
+                        });
                     } else {
                         /* We are updating, so we need the id */
                         updatedSpec.setId(id);
@@ -647,19 +664,26 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                     switchView(contentSpecRevisionsPresenter.getDisplay());
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                 } else if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
-                                    // Take the user to the errors view so they can review any error messages
-                                    switchView(contentSpecErrorsPresenter.getDisplay());
-                                    AlertBox.setMessageAndDisplay(
-                                            PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE
-                                                    .ContentSpecSaveSuccessWithErrorsPostFix());
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess() + "\n\n" + PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithErrorsPostFix(), new CloseHandler() {
+                                        @Override
+                                        public void onClose(CloseEvent event) {
+                                            switchView(contentSpecErrorsPresenter.getDisplay());
+                                        }
+                                    });
                                 } else {
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
                             }
                         };
 
-                        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
-                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                getFailOverRESTCall().performRESTCall(
+                                        FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
+                                                serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
+                            }
+                        });
                     }
                 } finally {
                     display.getMessageLogDialog().reset();
@@ -703,6 +727,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         display.getSave().addClickHandler(saveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
+        display.getViewInDocBuilder().addClickHandler(viewInDocBuilderClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
@@ -842,9 +867,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 }
             };
 
-            failOverRESTCall.performRESTCall(
-                    FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
-                    callback, display);
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    getFailOverRESTCall().performRESTCall(
+                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
+                            callback, display);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.createNewTopic()");
         }
@@ -869,7 +899,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpec(selectedEntity.getId()), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpec(selectedEntity.getId()), callback, display);
             }
         };
 
@@ -907,11 +937,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        locales = serverSettings.getSettings().getLocales();
-        Collections.sort(locales);
-        defaultLocale = serverSettings.getSettings().getDefaultLocale();
-        displayNewContentSpec();
-        displayInitialContentSpec(getNewEntityCallback);
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales();
+                Collections.sort(locales);
+                defaultLocale = serverSettings.getDefaultLocale();
+                displayNewContentSpec();
+                displayInitialContentSpec(getNewEntityCallback);
+            }
+        });
 
         createWorkers();
 
@@ -1209,7 +1244,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTags(), callback, contentSpecTagsPresenter.getDisplay());
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadAllTags()");
@@ -1277,7 +1312,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
                         contentSpecWithTagsCallback, contentSpecTagsPresenter.getDisplay());
             }
         } finally {
@@ -1337,7 +1372,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                 final Integer id = displayedItem.getId();
                 final Integer revision = displayedItem.getRevision();
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithProperties(id, revision), callback,
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithProperties(id, revision), callback,
                         commonExtendedPropertiesPresenter.getDisplay());
             }
         }
@@ -1366,7 +1401,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-
         this.queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
 
         if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
@@ -2175,6 +2209,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         PushButton getHistory();
 
         PushButton getContentSpecTags();
+
+        PushButton getViewInDocBuilder();
 
         Label getTextDown();
 

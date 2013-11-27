@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
@@ -25,7 +24,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -102,9 +100,6 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
      * History token
      */
     public static final String HISTORY_TOKEN = "TopicHistoryView";
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -212,9 +207,9 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
                 final int length = list.getVisibleRange().getLength();
                 final int end = start + length;
 
-                this.resetProvider();
+                resetProvider();
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
             }
         };
         return provider;

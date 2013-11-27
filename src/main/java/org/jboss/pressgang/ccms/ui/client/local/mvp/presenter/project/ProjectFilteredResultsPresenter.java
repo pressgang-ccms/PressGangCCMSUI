@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
@@ -12,18 +19,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class ProjectFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTProjectCollectionItemV1> implements
@@ -33,8 +32,6 @@ public class ProjectFilteredResultsPresenter extends BaseFilteredResultsPresente
      * History token
      */
     public static final String HISTORY_TOKEN = "ProjectFilteredResultsView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -99,7 +96,8 @@ public class ProjectFilteredResultsPresenter extends BaseFilteredResultsPresente
                     }
                 };
 
-                failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getProjectsFromQuery(queryString, getProviderData().getStartRow(), end), callback, display);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getProjectsFromQuery(queryString, getProviderData().getStartRow(), end),
+                        callback, display);
             }
         };
         return provider;

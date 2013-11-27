@@ -8,25 +8,24 @@ import javax.inject.Inject;
 import java.util.Collections;
 
 import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.data.ServerSettings;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
@@ -55,11 +54,6 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
     @Inject
     private Display display;
-
-    @Inject
-    private FailOverRESTCall failOverRESTCall;
-    @Inject
-    private ServerSettings serverSettings;
 
     private RESTTopicV1 topic;
 
@@ -112,26 +106,21 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
 
             @Override
             public void revisionNotFound() {
-                failOverRESTCall.performRESTCall(
+                getFailOverRESTCall().performRESTCall(
                         FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
                         new RESTCallBack<RESTTopicV1>() {
                             public void success(@NotNull final RESTTopicV1 value) {
-                                final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(
+                                final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
+                                        XMLUtilities.removeAllPreamble(
                                         value.getXml());
-                                failOverRESTCall.performRESTCall(
-                                        FailOverRESTCallDatabase.holdXML(xml),
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),
                                         new RESTCallBack<IntegerWrapper>() {
                                             public void success(@NotNull final IntegerWrapper value) {
                                                 display.showHelpTopic(value.value);
                                             }
-                                        },
-                                        display,
-                                        true
-                                );
+                                        }, display, true);
                             }
-                        },
-                        display
-                );
+                        }, display);
             }
         });
     }
@@ -143,67 +132,70 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
      * @param callback The callback to call when the revision is found
      */
     public void findReviewRevision(@NotNull final RESTTopicV1 topic, @NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final ReviewTopicStartRevisionFound callback) {
-        failOverRESTCall.performRESTCall(
-                FailOverRESTCallDatabase.getTopicWithRevisionsWithTags(
-                        topic.getId()),
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisionsWithTags(topic.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 topicWithTags) {
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                final boolean hasReviewTag = EntityUtilities.topicHasTag(topicWithTags,
+                                        serverSettings.getEntities().getReviewTagId());
 
-                        final boolean hasReviewTag = EntityUtilities.topicHasTag(topicWithTags, serverSettings.getEntities().getReviewTagId());
+                                if (hasReviewTag) {
+                                    // Make sure the list of revisions is smallest to largest
+                                    Collections.sort(topicWithTags.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                                    // And then reverse the list to go from largest to smallest
+                                    Collections.reverse(topicWithTags.getRevisions().getItems());
 
-                        if (hasReviewTag) {
-                            /*
-                                Make sure the list of revisions is smallest to largest
-                            */
-                            Collections.sort(topicWithTags.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
-                            /*
-                                And then reverse the list to go from largest to smallest
-                            */
-                            Collections.reverse(topicWithTags.getRevisions().getItems());
+                                    boolean foundLatest = false;
+                                    boolean foundEarliest = false;
+                                    RESTTopicV1 lastRevisionWithTag = null;
+                                    for (@NotNull final RESTTopicCollectionItemV1 revision : topicWithTags.getRevisions().getItems()) {
+                                        /*
+                                            On the off chance that a new revision was created between when this topic was
+                                            selected and when the review diff is viewed, we ignore any revisions greater than
+                                            the one assigned to the topic.
+                                         */
+                                        if (!foundLatest && revision.getItem().getRevision().equals(topic.getRevision())) {
+                                            foundLatest = true;
+                                        }
 
-                            boolean foundLatest = false;
-                            boolean foundEarliest = false;
-                            RESTTopicV1 lastRevisionWithTag = null;
-                            for (@NotNull final RESTTopicCollectionItemV1 revision : topicWithTags.getRevisions().getItems()) {
-                                /*
-                                    On the off chance that a new revision was created between when this topic was
-                                    selected and when the review diff is viewed, we ignore any revisions greater than
-                                    the one assigned to the topic.
-                                 */
-                                if (!foundLatest && revision.getItem().getRevision().equals(topic.getRevision())) {
-                                    foundLatest = true;
-                                }
+                                        if (foundLatest) {
+                                            final boolean revisionHasReviewTag = EntityUtilities.topicHasTag(revision.getItem(),
+                                                    serverSettings.getEntities().getReviewTagId());
 
-                                if (foundLatest) {
-                                    final boolean revisionHasReviewTag = EntityUtilities.topicHasTag(revision.getItem(),
-                                            serverSettings.getEntities().getReviewTagId());
+                                            checkState(lastRevisionWithTag != null || revisionHasReviewTag,
+                                                    "The first revision should have the review tag. The database revisions may be in an " +
+                                                            "inconsistent state.");
 
-                                    checkState(lastRevisionWithTag != null || revisionHasReviewTag, "The first revision should have the review tag. The database revisions may be in an inconsistent state.");
+                                            if (revisionHasReviewTag) {
+                                                lastRevisionWithTag = revision.getItem();
+                                            } else {
+                                                checkState(lastRevisionWithTag != null,
+                                                        "A revision should have been found with the revision tag. The database revisions may be " +
+                                                                "in an inconsistent state.");
 
-                                    if (revisionHasReviewTag) {
-                                        lastRevisionWithTag = revision.getItem();
-                                    } else {
-                                        checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
-
-                                        callback.revisionFound(lastRevisionWithTag);
-                                        foundEarliest = true;
-                                        break;
+                                                callback.revisionFound(lastRevisionWithTag);
+                                                foundEarliest = true;
+                                                break;
+                                            }
+                                        }
                                     }
+
+                                    if (!foundEarliest) {
+                                        checkState(lastRevisionWithTag != null,
+                                                "A revision should have been found with the revision tag. The database revisions may be in an " +
+                                                        "inconsistent state.");
+
+                                        // If we got here then the first revision of the topic was set for review.
+                                        callback.revisionFound(lastRevisionWithTag);
+                                    }
+                                } else {
+                                    callback.revisionNotFound();
                                 }
                             }
-
-                            if (!foundEarliest) {
-                                checkState(lastRevisionWithTag != null, "A revision should have been found with the revision tag. The database revisions may be in an inconsistent state.");
-
-                                // If we got here then the first revision of the topic was set for review.
-                                callback.revisionFound(lastRevisionWithTag);
-                            }
-                        } else {
-                            callback.revisionNotFound();
-                        }
+                        });
                     }
-                },
-                waitDisplay
-        );
+                }, waitDisplay);
     }
 }

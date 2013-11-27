@@ -15,7 +15,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -31,8 +30,6 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     public interface Display extends BaseTemplateViewInterface {
         void display(@Nullable final Integer id);
     }
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Inject
     private Display display;
@@ -74,10 +71,10 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     protected void loadAdditionalDisplayedItemData(final Integer id) {
         // Make the window title display the id of the content spec
         if (id != null) {
-                /*
-                    Run an additional query to get the title of the spec
-                 */
-            failOverRESTCall.performRESTCall(
+            /*
+                Run an additional query to get the title of the spec
+             */
+            getFailOverRESTCall().performRESTCall(
                     FailOverRESTCallDatabase.getCSNodesWithFromQuery("query;" +
                             CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" + CommonConstants.CS_NODE_META_DATA + ";" +
                             CommonFilterConstants.CONTENT_SPEC_NODE_TITLE_FILTER_VAR + "=" + CommonConstants.CS_TITLE_TITLE

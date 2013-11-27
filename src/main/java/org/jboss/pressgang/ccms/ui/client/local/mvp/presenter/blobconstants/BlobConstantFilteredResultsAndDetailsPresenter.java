@@ -1,16 +1,27 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants;
 
+import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -22,11 +33,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.blobconstant.RESTBlobConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -36,15 +45,6 @@ import org.vectomatic.file.FileReader;
 import org.vectomatic.file.events.ErrorHandler;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
  * The presenter used to display a list of integer constants and their details.
@@ -68,8 +68,6 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
      */
     private static final Logger LOGGER = Logger.getLogger(BlobConstantFilteredResultsAndDetailsPresenter.class.getName());
 
-    @Inject private FailOverRESTCall failOverRESTCall;
-
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
@@ -90,12 +88,6 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
      * The query string extracted from the history token
      */
     private String queryString;
-
-    /**
-     * The global event bus.
-     */
-    @Inject
-    private EventBus eventBus;
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
@@ -168,9 +160,9 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                         blobConstant.explicitSetValue(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
 
                         if (wasNewEntity) {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(blobConstant), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createBlobConstant(blobConstant), callback, display);
                         } else {
-                            failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(blobConstant), callback, display);
+                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(blobConstant), callback, display);
                         }
                     } else {
                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -184,7 +176,7 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
 
     private void doSearch(final boolean newWindow) {
         if (isOKToProceed()) {
-            eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(blobConstantFilteredResultsPresenter.getQuery(), newWindow));
+            getEventBus().fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(blobConstantFilteredResultsPresenter.getQuery(), newWindow));
         }
     }
 
@@ -370,9 +362,9 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
                                 };
 
                                 if (wasNewEntity) {
-                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.createBlobConstant(updateEntity), callback, display);
+                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createBlobConstant(updateEntity), callback, display);
                                 } else {
-                                    failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(updateEntity), callback, display);
+                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateBlobConstant(updateEntity), callback, display);
                                 }
 
                             } finally {

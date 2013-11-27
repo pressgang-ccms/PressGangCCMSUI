@@ -2,11 +2,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresu
 
 import static com.google.common.base.Preconditions.checkState;
 
-import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -41,17 +39,7 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseEntityColle
     /**
      * Used to distribute events, such as when the list of entities has been loaded.
      */
-    @Inject
-    private EventBus eventBus;
     private HandlerManager handlerManager = new HandlerManager(this);
-
-    /**
-     * Manages event registration and notification.
-     */
-    @NotNull
-    public EventBus getEventBus() {
-        return eventBus;
-    }
 
     @NotNull
     protected HandlerManager getHandlerManager() {

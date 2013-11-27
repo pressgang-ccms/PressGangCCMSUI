@@ -13,6 +13,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
@@ -24,6 +26,10 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
@@ -52,9 +58,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,6 +85,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     @Inject
     private EventBus eventBus;
+    @Inject
+    private FailOverRESTCall failOverRESTCall;
+
+    private RESTServerSettingsV1 serverSettings;
 
     /**
      * The display that holds the UI elements the user interacts with.
@@ -95,6 +105,30 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         return false;
     }
 
+    @NotNull
+    protected EventBus getEventBus() {
+        return eventBus;
+    }
+
+    @NotNull
+    protected FailOverRESTCall getFailOverRESTCall() {
+        return failOverRESTCall;
+    }
+
+    protected void getServerSettings(@NotNull final ServerSettingsCallback settingsCallback) {
+        if (serverSettings == null) {
+            FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value) {
+                    serverSettings = value;
+                    settingsCallback.serverSettingsLoaded(serverSettings);
+                }
+            }, display, failOverRESTCall);
+        } else {
+            settingsCallback.serverSettingsLoaded(serverSettings);
+        }
+    }
+
     /**
      * Populate the list of servers.
      */
@@ -107,10 +141,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void serverDetailsFound(@NotNull final Map<Integer, ServerDetails> allServerDetails) {
                 ServerDetails.getSavedServer(new ServerDetailsCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                    public void serverDetailsFound(@NotNull final ServerDetails currentServerDetails) {
                         for (final ServerDetails serverDetail : allServerDetails.values()) {
-                            display.getServers().addItem(serverDetails.getName(), serverDetails.getId() + "");
-                            if (serverDetails.getId() == serverDetails.getId()) {
+                            display.getServers().addItem(serverDetail.getName(), serverDetail.getId() + "");
+                            if (serverDetail.getId() == currentServerDetails.getId()) {
                                 display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
                             }
                         }
@@ -157,10 +191,17 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                     public void serverDetailsFound(@NotNull final ServerDetails newServerSettings) {
                         RestClient.setApplicationRoot(newServerSettings.getRestEndpoint());
                         if (!newServerSettings.getGroup().equals(currentServerSettings.getGroup())) {
-                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ChangedServers().replace("$1",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")).replace("$2",
-                                    currentServerSettings.getGroup().getType().replaceAll("_", " ")));
-                            Window.Location.reload();
+                            AlertBox.setMessageAndDisplay(
+                                PressGangCCMSUI.INSTANCE.ChangedServers()
+                                    .replace("$1",currentServerSettings.getGroup().getType())
+                                    .replace("$2",newServerSettings.getGroup().getType()),
+                                new CloseHandler() {
+                                    @Override
+                                    public void onClose(CloseEvent event) {
+                                        Window.Location.reload();
+                                    }
+                                }
+                            );
                         }
                     }
                 });

@@ -1,5 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.Collections;
+
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -14,7 +21,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInProp
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemIDSort;
@@ -25,13 +31,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.Collections;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 @Dependent
 public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
         RESTPropertyTagV1,                                                                                                                          // The main REST types
@@ -40,8 +39,6 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "PropertyTagCategoryView";
-
-    @Inject private FailOverRESTCall failOverRESTCall;
 
     @Nullable
     private Integer entityId;
@@ -106,7 +103,7 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
             }
         };
 
-        failOverRESTCall.performRESTCall(FailOverRESTCallDatabase.getPropertyTagCategories(), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyTagCategories(), callback, display);
     }
 
     @Override

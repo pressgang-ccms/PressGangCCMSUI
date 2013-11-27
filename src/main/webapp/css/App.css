@@ -578,6 +578,7 @@ html {
     padding: 8px;
     color: white;
     height: 100%;
+    text-align: center;
     -moz-box-sizing: border-box;
 }
 
@@ -1154,4 +1155,8 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 
 td.FieldViewLabelCell {
     padding: 4px 0px;
+}
+
+td.TopicRenderingInfoEntitiesCell {
+    width: 350px;
 }
