@@ -1225,4 +1225,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String RenderingInfo();
+
+    @NotNull
+    String UnableToRenderGeneric();
+
+    @NotNull
+    String UnableToRenderEntity();
 }

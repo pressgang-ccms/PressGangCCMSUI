@@ -6,6 +6,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.http.client.URL;
+import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
@@ -72,15 +73,19 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
     @Override
     public void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
-        String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
+        try {
+            String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
 
-        xml = processXML(xml);
+            xml = processXML(xml);
 
-        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
-            @Override
-            public void success(@NotNull final IntegerWrapper value) {
-                getDisplay().displayTopicRendered(value.value, readOnly, showImages);
-            }
-        }, getDisplay(), true);
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+                @Override
+                public void success(@NotNull final IntegerWrapper value) {
+                    getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+                }
+            }, getDisplay(), true);
+        } catch (DOMParseException e) {
+            handleXMLError(e);
+        }
     }
 }

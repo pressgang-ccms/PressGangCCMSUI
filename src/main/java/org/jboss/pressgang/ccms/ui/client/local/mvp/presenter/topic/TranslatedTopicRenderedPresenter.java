@@ -14,6 +14,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -87,33 +88,37 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
         getServerSettings(new ServerSettingsCallback() {
             @Override
             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
+                try {
+                    String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
 
-                // If we are displaying a revision history topic then merge the revisions together
-                final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
-                if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
-                    xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
-                } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
-                    xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
-                } else {
-                    xml = processXML(xml);
-                }
-
-                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
-                    @Override
-                    public void success(@NotNull final IntegerWrapper value) {
-                        getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+                    // If we are displaying a revision history topic then merge the revisions together
+                    final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
+                    if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
+                        xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                    } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
+                        xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                    } else {
+                        xml = processXML(xml);
                     }
-                }, getDisplay(), true);
+
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
+                        @Override
+                        public void success(@NotNull final IntegerWrapper value) {
+                            getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+                        }
+                    }, getDisplay(), true);
+                } catch (DOMParseException e) {
+                    handleXMLError(e);
+                }
             }
         });
     }
 
     protected String processRevisionHistoryXML(final String xml, final String additionalXml) {
-        final Document doc = XMLUtilities.convertStringToDocument(xml);
-        final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
+        try {
+            final Document doc = XMLUtilities.convertStringToDocument(xml);
+            final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
 
-        if (doc != null && additionalDoc != null) {
             processXML(doc);
             processXML(additionalDoc);
 
@@ -159,16 +164,18 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
 
                 return doc.toString();
             }
+        } catch (DOMParseException e) {
+
         }
 
         return xml;
     }
 
     protected String processAuthorGroupXML(final String xml, final String additionalXml) {
-        final Document doc = XMLUtilities.convertStringToDocument(xml);
-        final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
+        try {
+            final Document doc = XMLUtilities.convertStringToDocument(xml);
+            final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
 
-        if (doc != null && additionalDoc != null) {
             processXML(doc);
             processXML(additionalDoc);
 
@@ -186,6 +193,8 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
 
                 return doc.toString();
             }
+        } catch (DOMParseException e) {
+
         }
 
         return xml;

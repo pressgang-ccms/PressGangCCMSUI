@@ -16,7 +16,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201311271544";
+    public static final String BUILD = "201311281207";
 
     /**
      * The name of the DocBook title element

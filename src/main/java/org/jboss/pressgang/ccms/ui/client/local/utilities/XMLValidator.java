@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.Comment;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.impl.DOMParseException;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class XMLValidator {
@@ -164,8 +165,13 @@ public class XMLValidator {
 
     public String doAdditionalDocBookValidation(final String xml, final String entities) {
         final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
-        final Document doc = XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
         final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
+        Document doc = null;
+        try {
+            XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
+        } catch (DOMParseException e) {
+
+        }
 
         final StringBuilder retValue = new StringBuilder();
         if (doc != null) {

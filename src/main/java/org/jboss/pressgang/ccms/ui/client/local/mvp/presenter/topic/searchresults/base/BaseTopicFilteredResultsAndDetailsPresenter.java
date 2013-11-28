@@ -475,14 +475,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                         final Set<RESTCSNodeCollectionItemV1> nodes = new HashSet<RESTCSNodeCollectionItemV1>();
                         final Map<Integer, String> contentSpecTitles = new HashMap<Integer, String>();
+                        int numPlainContentSpecs = 0;
 
                         // Get the csnodes that have conditions or custom entities
                         for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
                             checkState(node.getItem().getContentSpec() != null,
                                     "The content spec node should have an expanded content spec property");
 
+                            boolean customContentFound = false;
+
                             // If the node has a condition then add it
                             if (!isStringNullOrEmpty(node.getItem().getInheritedCondition())) {
+                                customContentFound = true;
                                 nodes.add(node);
                             }
 
@@ -496,20 +500,24 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                     } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_ENTITIES_TITLE)) {
                                         csNode.getItem().setContentSpec(contentSpec);
                                         nodes.add(csNode);
+                                        customContentFound = true;
                                     }
                                 }
                             }
+
+                            // If no custom content was found then increase the plain content spec counter
+                            if (!customContentFound) {
+                                numPlainContentSpecs++;
+                            }
                         }
 
-                        final List<RESTCSNodeCollectionItemV1> items = retValue.getItems();
                         if (nodes.isEmpty()) {
                             // There is always the option to not use any conditions or entities.
                             getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
                             getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(
                                     PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
                         } else {
-                            final int numContentSpecs = items.size() - nodes.size();
-                            final String key = PressGangCCMSUI.INSTANCE.DefaultContentSpecs().replace("#", numContentSpecs + "");
+                            final String key = PressGangCCMSUI.INSTANCE.DefaultContentSpecs().replace("#", numPlainContentSpecs + "");
                             getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(key, "");
                             getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(key, "");
                         }

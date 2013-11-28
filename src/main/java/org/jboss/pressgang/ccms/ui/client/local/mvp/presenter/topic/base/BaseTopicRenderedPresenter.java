@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -19,6 +20,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -27,13 +29,18 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseTemplatePresenter {
+    private static final RegExp ENTITY_ERROR_RE = RegExp.compile(".*Entity '([\\w\\d]+)' not defined.*");
+
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<? ,?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
+
+        void displayError(final String errorMessage);
 
         void clear();
 
@@ -78,15 +85,21 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         super.bind(getDisplay());
     }
 
-    protected String processXML(final String xml) {
-        final Document doc = XMLUtilities.convertStringToDocument(xml);
-        if (doc != null) {
-            processXML(doc);
+    protected void handleXMLError(final DOMParseException e) {
+        final String errorMessage = e.getContents();
 
-            return doc.toString();
+        final MatchResult entityError = ENTITY_ERROR_RE.exec(errorMessage);
+        if (entityError != null) {
+            getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderEntity().replace("#", entityError.getGroup(1)));
+        } else {
+            getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
         }
+    }
 
-        return xml;
+    protected String processXML(final String xml) throws DOMParseException {
+        final Document doc = XMLUtilities.convertStringToDocument(xml);
+        processXML(doc);
+        return doc.toString();
     }
 
     protected void processXML(@NotNull final Document doc) {

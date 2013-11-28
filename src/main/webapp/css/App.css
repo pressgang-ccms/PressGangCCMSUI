@@ -1169,3 +1169,10 @@ td.FieldViewLabelCell {
 td.TopicRenderingInfoEntitiesCell {
     width: 350px;
 }
+
+.TopicRenderedViewErrorLabel {
+    color: red;
+    padding: 4px 0px;
+    font-weight: bold;
+    text-align: center;
+}
