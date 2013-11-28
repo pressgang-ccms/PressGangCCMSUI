@@ -519,7 +519,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         version.addStyleName(CSSConstants.Template.VERSION_LABEL);
         footerPanel.setWidget(0, 0, version);
 
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
         footerPanel.getCellFormatter().addStyleName(0, footerPanel.getCellCount(0) - 1, CSSConstants.Template.CUSTOM_FOOTER_PANEL);
