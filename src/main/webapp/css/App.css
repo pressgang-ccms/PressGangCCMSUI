@@ -250,6 +250,7 @@ td {
     margin: 2px;
     padding: 2px;
     float: left;
+    font-size: smaller;
 }
 
 .dayOld, .ace_marker-layer .dayOld, .EditedOneDayLegend  {
