@@ -820,7 +820,7 @@ html {
 .ThirdLevelLayoutPanel {
     margin-left: 8px;
     margin-right: 8px;
-    margin-bottom: 8px;
+    /*margin-bottom: 8px;*/
 }
 
 .TopicRenderedViewDiv {
@@ -1169,4 +1169,11 @@ td.FieldViewLabelCell {
 
 td.TopicRenderingInfoEntitiesCell {
     width: 350px;
+}
+
+.TopicRenderedViewErrorLabel {
+    color: red;
+    padding: 4px 0px;
+    font-weight: bold;
+    text-align: center;
 }

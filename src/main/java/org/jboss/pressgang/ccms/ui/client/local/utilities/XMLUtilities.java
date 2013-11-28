@@ -12,6 +12,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,19 +113,16 @@ public class XMLUtilities {
         return removeDoctypePreamble(removeXmlPreamble(xml));
     }
 
-    public static Document convertStringToDocument(final String xml) {
-        try {
-            final Document doc = XMLParser.parse(xml);
+    public static Document convertStringToDocument(final String xml) throws DOMParseException {
+        final Document doc = XMLParser.parse(xml);
 
-            // Workaround for http://code.google.com/p/google-web-toolkit/issues/detail?id=3613
-            final NodeList parseErrors = doc.getElementsByTagName("parsererror");
-            if (parseErrors.getLength() > 0) {
-                return null;
-            } else {
-                return doc;
-            }
-        } catch (Exception e) {
-            return null;
+        // Workaround for http://code.google.com/p/google-web-toolkit/issues/detail?id=3613
+        final NodeList parseErrors = doc.getElementsByTagName("parsererror");
+        if (parseErrors.getLength() > 0) {
+            final Node node = parseErrors.item(0);
+            throw new DOMParseException(getNodeText(node.getChildNodes().item(1)));
+        } else {
+            return doc;
         }
     }
 
@@ -137,12 +135,12 @@ public class XMLUtilities {
         if (entities != null) {
             fixedXml = entities + xml;
         }
-        final Document doc = convertStringToDocument(fixedXml);
-        if (doc == null) {
-            return xml;
-        } else {
+        try {
+            final Document doc = convertStringToDocument(fixedXml);
             InjectionResolver.resolveInjections(doc);
             return removeAllPreamble(doc.toString());
+        } catch (DOMParseException e) {
+            return xml;
         }
     }
 

@@ -372,8 +372,12 @@
                             <file>src/main/java/org/jboss/pressgang/ccms/ui/client/local/constants/Constants.java</file>
                             <replacements>
                                 <replacement>
-                                    <token>public static final String VERSION = "\d{12}"</token>
-                                    <value>public static final String VERSION = "${maven.build.timestamp}"</value>
+                                    <token>public static final String BUILD = "\d{12}"</token>
+                                    <value>public static final String BUILD = "${maven.build.timestamp}"</value>
+                                </replacement>
+                                <replacement>
+                                    <token>public static final String VERSION = "\d+[\.\d]+(-SNAPSHOT)?"</token>
+                                    <value>public static final String VERSION = "${project.version}"</value>
                                 </replacement>
                             </replacements>
                         </configuration>

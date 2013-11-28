@@ -9,9 +9,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class Constants {
     /**
-     * The UI Version - yyyymmddhhmm.
+     * The UI version
      */
-    public static final String VERSION = "201311290914";
+    public static final String VERSION = "1.3-SNAPSHOT";
+
+    /**
+     * The UI Build - yyyymmddhhmm.
+     */
+    public static final String BUILD = "201311281207";
 
     /**
      * The name of the DocBook title element
@@ -252,7 +257,7 @@ public final class Constants {
     /**
      * The height of the footer.
      */
-    public static final int FOOTER_HEIGHT = 50;
+    public static final int FOOTER_HEIGHT = 40;
     /**
      * The maximum number of results to return in a search result.
      */

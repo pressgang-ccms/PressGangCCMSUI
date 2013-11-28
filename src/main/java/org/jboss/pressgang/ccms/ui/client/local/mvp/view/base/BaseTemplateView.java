@@ -145,7 +145,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final FlexTable footerPanel = new FlexTable();
     private final SimplePanel footerPanelCustomContent = new SimplePanel();
 
-    private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
+    private final Label version = new Label(PressGangCCMSUI.INSTANCE.PressGangCCMS() + " " + Constants.VERSION + " " +
+            PressGangCCMSUI.INSTANCE.Build() + " " + Constants.BUILD);
 
     private final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
 
@@ -518,7 +519,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         version.addStyleName(CSSConstants.Template.VERSION_LABEL);
         footerPanel.setWidget(0, 0, version);
 
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
         footerPanel.getCellFormatter().addStyleName(0, footerPanel.getCellCount(0) - 1, CSSConstants.Template.CUSTOM_FOOTER_PANEL);

@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
@@ -21,7 +22,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInf
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,8 +40,9 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
     private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
     private final PushButton renderingInfo = new PushButton(new Image(ImageResources.INSTANCE.info()));
     private final TopicRenderingInfoDialog renderingInfoDialog = new TopicRenderingInfoDialog();
-    final FlexTable renderingOptions = new FlexTable();
-    private int displayingRow = 1;
+    private final FlexTable renderingOptions = new FlexTable();
+    private final Label errorLabel = new Label();
+    private int displayingRow = 2;
     private JavaScriptObject listener;
 
     private Frame loadingiframe;
@@ -78,6 +79,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
         this.getPanel().setWidget(layoutPanel);
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
+        errorLabel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_LABEL);
 
         renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.RenderContentSpec()));
         renderingOptions.setWidget(0, 1, contentSpecs);
@@ -87,8 +89,9 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
         layoutPanel.setWidget(0, 0, renderingOptions);
 
-        layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(3, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
@@ -152,7 +155,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
     private void displayRendered() {
         if (loadingiframe != null) {
-            final int next = displayingRow == 1 ? 2 : 1;
+            final int next = displayingRow == 2 ? 3 : 2;
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
@@ -172,6 +175,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
                 loadediframe.getElement().setId(HIDDEN_IFRAME);
             }
 
+            layoutPanel.remove(errorLabel);
             loadediframe = loadingiframe;
             loadediframe.getElement().setId(LOADED_IFRAME);
             loadingiframe = null;
@@ -186,6 +190,9 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
     @Override
     public void clear() {
+        if (errorLabel.isAttached()) {
+            errorLabel.removeFromParent();
+        }
         if (loadediframe != null && loadediframe.isAttached()) {
             loadediframe.removeFromParent();
         }
@@ -221,6 +228,15 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         });
 
         return true;
+    }
+
+    @Override
+    public void displayError(@NotNull final String errorMessage) {
+        clear();
+
+        errorLabel.setText(errorMessage);
+
+        layoutPanel.setWidget(1, 0, errorLabel);
     }
 
     @Override
