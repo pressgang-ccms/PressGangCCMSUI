@@ -34,11 +34,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -969,42 +965,50 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * Builds the legend at the bottom of the screen
      */
     private void buildLegend() {
+        /*
+            The horizontal panel is used to vertically align the legend items
+         */
         final HorizontalPanel horizontalPanel = new HorizontalPanel();
         horizontalPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        horizontalPanel.addStyleName(CSSConstants.Legend.LEGEND_PARENT_PANEL);
         getDisplay().getFooterPanelCustomContent().setWidget(horizontalPanel);
-
-        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
-        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
 
         final PushButton showLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ShowLegend());
         showLegend.addStyleName(CSSConstants.Legend.LEGEND);
 
+        final PushButton hideLegend = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideLegend());
+        hideLegend.addStyleName(CSSConstants.Legend.LEGEND);
+
+        final FlowPanel legendPanel = new FlowPanel();
+        legendPanel.addStyleName(CSSConstants.Legend.LEGEND_PANEL);
+
         final Label styleGuide = new Label(PressGangCCMSUI.INSTANCE.StyleGuideMatch());
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
+        legendPanel.add(styleGuide);
 
         final Label oneDay = new Label(PressGangCCMSUI.INSTANCE.EditedOneDay());
         oneDay.addStyleName(CSSConstants.Legend.EDITED_ONE_DAY_LEGEND);
+        legendPanel.add(oneDay);
 
         final Label oneWeek = new Label(PressGangCCMSUI.INSTANCE.EditedOneWeek());
         oneWeek.addStyleName(CSSConstants.Legend.EDITED_ONE_WEEK_LEGEND);
+        legendPanel.add(oneWeek);
 
         final Label oneMonth = new Label(PressGangCCMSUI.INSTANCE.EditedOneMonth());
         oneMonth.addStyleName(CSSConstants.Legend.EDITED_ONE_MONTH_LEGEND);
+        legendPanel.add(oneMonth);
 
         final Label oneYear = new Label(PressGangCCMSUI.INSTANCE.EditedOneYear());
         oneYear.addStyleName(CSSConstants.Legend.EDITED_ONE_YEAR_LEGEND);
+        legendPanel.add(oneYear);
 
         final Label older = new Label(PressGangCCMSUI.INSTANCE.EditedOlder());
         older.addStyleName(CSSConstants.Legend.EDITED_OLDER_LEGEND);
+        legendPanel.add(older);
 
         if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
+            horizontalPanel.add(legendPanel);
             horizontalPanel.add(hideLegend);
-            horizontalPanel.add(oneDay);
-            horizontalPanel.add(oneWeek);
-            horizontalPanel.add(oneMonth);
-            horizontalPanel.add(oneYear);
-            horizontalPanel.add(older);
-            horizontalPanel.add(styleGuide);
         } else {
             horizontalPanel.add(showLegend);
         }
@@ -1023,13 +1027,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void onClick(@NotNull final ClickEvent event) {
                 Preferences.INSTANCE.saveSetting(Preferences.SHOW_LEGEND, true);
                 horizontalPanel.clear();
+                horizontalPanel.add(legendPanel);
                 horizontalPanel.add(hideLegend);
-                horizontalPanel.add(oneDay);
-                horizontalPanel.add(oneWeek);
-                horizontalPanel.add(oneMonth);
-                horizontalPanel.add(oneYear);
-                horizontalPanel.add(older);
-                horizontalPanel.add(styleGuide);
             }
         });
     }

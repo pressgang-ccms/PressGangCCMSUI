@@ -262,12 +262,7 @@ public interface BaseTemplateViewInterface {
     HorizontalPanel getHiddenAttachmentArea();
 
     /**
-     * This panel can be used by views to add their own content on the left side of the footer.
+     * This panel can be used by views to add their own content.
      */
-    public SimplePanel getFooterPanelLeftCustomContent();
-
-    /**
-     * This panel can be used by views to add their own content on the right side of the footer.
-     */
-    public SimplePanel getFooterPanelRightCustomContent();
+    public SimplePanel getFooterPanelCustomContent();
 }

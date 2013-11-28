@@ -143,8 +143,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final FlexTable topActionPanel = new FlexTable();
     private final FlexTable footerPanel = new FlexTable();
-    private final SimplePanel footerPanelLeftCustomContent = new SimplePanel();
-    private final SimplePanel footerPanelRightCustomContent = new SimplePanel();
+    private final SimplePanel footerPanelCustomContent = new SimplePanel();
 
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.PressGangCCMS() + " " + Constants.VERSION + " " +
             PressGangCCMSUI.INSTANCE.Build() + " " + Constants.BUILD);
@@ -233,14 +232,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return footerPanel;
     }
 
-    @Override
-    public SimplePanel getFooterPanelLeftCustomContent() {
-        return footerPanelLeftCustomContent;
-    }
-
-    @Override
-    public SimplePanel getFooterPanelRightCustomContent() {
-        return footerPanelRightCustomContent;
+    /**
+     * This panel can be used by views to add their own content.
+     */
+    public SimplePanel getFooterPanelCustomContent() {
+        return footerPanelCustomContent;
     }
 
     /**
@@ -523,12 +519,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         version.addStyleName(CSSConstants.Template.VERSION_LABEL);
         footerPanel.setWidget(0, 0, version);
 
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), servers);
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelLeftCustomContent);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
+        footerPanel.getCellFormatter().addStyleName(0, footerPanel.getCellCount(0) - 1, CSSConstants.Template.CUSTOM_FOOTER_PANEL);
 
-        /* Add the feedback link */
-        addRightAlignedActionButtonPaddingPanel(footerPanel);
-        footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelRightCustomContent);
+        /* Add the help button */
         footerPanel.setWidget(0, footerPanel.getCellCount(0), helpMode);
 
         /* Add the content panel */

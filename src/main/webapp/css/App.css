@@ -228,6 +228,14 @@ td {
     z-index: -2;
 }
 
+.LegendParentPanel {
+    float:right;
+}
+
+.Legend {
+    float: left;
+}
+
 .BadPhraseLegend,
 .MisspelledLegend,
 .TagMatchLegend,
@@ -241,6 +249,7 @@ td {
 {
     margin: 2px;
     padding: 2px;
+    float: left;
 }
 
 .dayOld, .ace_marker-layer .dayOld, .EditedOneDayLegend  {
@@ -533,11 +542,13 @@ html {
 .TextButton.TopTab, .DownLabel.TopTab {
     border-top-left-radius: 0.5em 0.5em;
     border-top-right-radius: 0.5em 0.5em;
+    text-align: center;
 }
 
 .TextButton.LeftTab, .DownLabel.LeftTab {
     border-top-left-radius: 0.5em 0.5em;
     border-bottom-left-radius: 0.5em 0.5em;
+    text-align: center;
 }
 
 .TextButton.SubMenu {
@@ -781,7 +792,7 @@ html {
     height: 100%;
 }
 
-.RightAlignedActionButtons {
+.RightAlignedActionButtons, .CustomFooterPanel {
     width: 100%;
 }
 
