@@ -1088,6 +1088,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         propertyTagsLoadInitiated = false;
         contentSpecsLoadInitiated = false;
         revisionDiffLoadInitiated = false;
+        customEntitiesLoaded = false;
+        customEntities = "";
     }
 
     /**
@@ -3372,20 +3374,27 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected void loadAllCustomEntities(@NotNull final StringLoaded callback) {
-        if (!customEntitiesLoaded) {
-            final RESTTopicV1 topic = getDisplayedTopic();
-            if (topic != null) {
-                getFailOverRESTCall().performRESTCall(
-                        FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
-                        new RESTCallBack<RESTTopicV1>() {
-                            @Override
-                            public void success(final RESTTopicV1 retValue) {
-                                topic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
-                                customEntities = getCustomEntities(retValue);
-                                customEntitiesLoaded = true;
-                                callback.stringLoaded(customEntities);
-                            }
-                        });
+        // Only attempt to load custom entities for existing topics
+        if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
+            if (!customEntitiesLoaded) {
+                final RESTTopicV1 topic = getDisplayedTopic();
+                if (topic != null) {
+                    getFailOverRESTCall().performRESTCall(
+                            FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
+                            new RESTCallBack<RESTTopicV1>() {
+                                @Override
+                                public void success(final RESTTopicV1 retValue) {
+                                    topic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
+                                    customEntities = getCustomEntities(retValue);
+                                    customEntitiesLoaded = true;
+                                    callback.stringLoaded(customEntities);
+                                }
+                            });
+                } else {
+                    callback.stringLoaded(customEntities);
+                }
+            } else {
+                callback.stringLoaded(customEntities);
             }
         } else {
             callback.stringLoaded(customEntities);

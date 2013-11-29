@@ -504,15 +504,14 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @Override
     protected boolean isInitialTopicReadyToBeLoaded() {
-        /* displayInitialContentSpec() is only called when all the data is available, so just return true */
+        /* displayInitialTopic() is only called when all the data is available, so just return true */
         return true;
     }
 
     @Override
     protected void preLoadAdditionalDisplayedItemData() {
-        /*
-            Nothing needs to be done here
-        */
+        customEntitiesLoaded = false;
+        customEntities = "";
     }
 
     @Override
@@ -918,6 +917,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                                 callback.stringLoaded(customEntities);
                             }
                         });
+            } else {
+                callback.stringLoaded(customEntities);
             }
         } else {
             callback.stringLoaded(customEntities);
