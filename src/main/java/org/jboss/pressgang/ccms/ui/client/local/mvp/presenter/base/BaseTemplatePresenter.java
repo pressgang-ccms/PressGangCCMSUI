@@ -293,19 +293,19 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getSearchContentSpec().setHref("#" + ContentSpecSearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN);
 
         // Entities SubMenu
-        display.getTopShortcutView().getImages().setHref("#" + ImagesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getFiles().setHref("#" + FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getTags().setHref("#" + TagsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getCategories().setHref("#" + CategoriesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getProjects().setHref("#" + ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getImages().setHref("#" + ImagesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getFiles().setHref("#" + FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getTags().setHref("#" + TagsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getCategories().setHref("#" + CategoriesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getProjects().setHref("#" + ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         // Advanced SubMenu
-        display.getTopShortcutView().getBulkTagging().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN);
-        display.getTopShortcutView().getBlobConstants().setHref("#" + BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getStringConstants().setHref("#" + StringConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getIntegerConstants().setHref("#" + IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getPropertyTags().setHref("#" + PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getPropertyTagCategories().setHref("#" + PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getBulkTagging().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getBlobConstants().setHref("#" + BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getStringConstants().setHref("#" + StringConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getIntegerConstants().setHref("#" + IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getPropertyTags().setHref("#" + PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getPropertyTagCategories().setHref("#" + PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
