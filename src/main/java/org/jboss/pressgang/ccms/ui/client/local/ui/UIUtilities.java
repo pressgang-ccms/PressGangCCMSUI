@@ -5,6 +5,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.AnchorPushButton;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -69,23 +70,31 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text) {
+    public static AnchorPushButton createTopTabPushButton(final String text) {
         return createTopTabPushButton(text, false, false);
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, @NotNull final String id) {
+    public static AnchorPushButton createTopTabPushButton(final String text, @NotNull final String id) {
         return createTopTabPushButton(text, false, false, id);
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+    public static AnchorPushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         return createTopTabPushButton(text, false, externalLink, null);
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
-        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
+    public static AnchorPushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final AnchorPushButton retValue = new AnchorPushButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        } else if (externalLink) {
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         if (id != null) {
             retValue.getElement().setId(id);

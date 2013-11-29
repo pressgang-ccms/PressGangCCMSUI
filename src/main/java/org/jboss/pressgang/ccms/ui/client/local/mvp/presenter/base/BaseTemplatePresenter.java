@@ -52,7 +52,21 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.BlobConstantFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilesFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants.IntegerConstantFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.PropertyTagFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory.PropertyCategoryFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec.ContentSpecSearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic.TopicSearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
@@ -214,6 +228,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * Called to bind the UI elements to event handlers.
      */
     private void bindStandardButtons() {
+        bindShortcutLinks();
         bindDefaultShortcutButtons();
         bindAdvancedShortcutButtons();
 
@@ -250,6 +265,52 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 doQuickSearch(GWTUtilities.isEventToOpenNewWindow(event));
+            }
+        });
+    }
+
+    private void bindShortcutLinks() {
+        // Base
+        display.getTopShortcutView().getHome().setHref("#" + WelcomePresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getDocbuilder().setHref("#" + DocBuilderPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getCreateTopic().setHref("#" + TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+        display.getTopShortcutView().getCreateContentSpec().setHref("#" + ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";"
+                + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getTopShortcutView().getReports().setHref(serverDetails.getReportUrl());
+                display.getTopShortcutView().getReports().setTarget("_blank");
+            }
+        });
+        display.getTopShortcutView().getBug().setHref(Constants.BUGZILLA_URL);
+        display.getTopShortcutView().getBug().setTarget("_blank");
+
+        // Search SubMenu
+        display.getTopShortcutView().getSearchTopics().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getSearchTranslations().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.TRANSLATED_HISTORY_TOKEN);
+        display.getTopShortcutView().getSearchContentSpec().setHref("#" + ContentSpecSearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN);
+
+        // Entities SubMenu
+        display.getTopShortcutView().getImages().setHref("#" + ImagesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getFiles().setHref("#" + FilesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getTags().setHref("#" + TagsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getCategories().setHref("#" + CategoriesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getProjects().setHref("#" + ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+
+        // Advanced SubMenu
+        display.getTopShortcutView().getBulkTagging().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN);
+        display.getTopShortcutView().getBlobConstants().setHref("#" + BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getStringConstants().setHref("#" + StringConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getIntegerConstants().setHref("#" + IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getPropertyTags().setHref("#" + PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        display.getTopShortcutView().getPropertyTagCategories().setHref("#" + PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                display.getTopShortcutView().getMonitoring().setHref(serverDetails.getMonitoringUrl());
+                display.getTopShortcutView().getMonitoring().setTarget("_blank");
             }
         });
     }

@@ -1177,3 +1177,19 @@ td.TopicRenderingInfoEntitiesCell {
     font-weight: bold;
     text-align: center;
 }
+
+div.AnchorPushButton, td.AnchorMenuItem {
+    position: relative;
+}
+
+a.AnchorPushButton, a.AnchorMenuItem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    z-index: 10;
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
