@@ -2614,8 +2614,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
                     setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), getDisplayedTopic().getRevision(),
-                            revisionTopic.getItem().getRevision(), display.getHiddenAttachmentArea(), new RenderedDiffCallback() {
+                    topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), revisionTopic.getItem().getRevision(),
+                            getDisplayedTopic().getRevision(), display.getHiddenAttachmentArea(), new RenderedDiffCallback() {
                         @Override
                         public void success() {
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
