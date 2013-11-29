@@ -114,6 +114,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
@@ -2602,12 +2603,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                             final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
-                                    retValue.getXml();
+                                    DocBookUtilities.replaceAllCustomEntities(retValue.getXml());
 
                             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
                                 public void success(@NotNull final IntegerWrapper value1) {
                                     final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
-                                            getDisplayedTopic().getXml();
+                                            DocBookUtilities.replaceAllCustomEntities(getDisplayedTopic().getXml());
 
                                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml2),
                                             new RESTCallBack<IntegerWrapper>() {

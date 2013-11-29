@@ -1,12 +1,44 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jetbrains.annotations.NotNull;
 
 public class DocBookUtilities {
+
+    /**
+     * Replace all custom entities so they show up in the text as the entity. This is used when we need
+     * to render the docbook without knowing the custom entities.
+     * @param xml The source xml
+     * @return the fixed xml
+     */
+    public static String replaceAllCustomEntities(@NotNull final String xml) {
+        final List<String> allMatches = new ArrayList<String>();
+        final RegExp entityRe = RegExp.compile("&.*?;", "g");
+
+        MatchResult matchResult = null;
+        while ((matchResult = entityRe.exec(xml)) != null) {
+            final String entity = matchResult.getGroup(0);
+            if (Constants.DOCBOOK_45_ENTITIES.indexOf(entity) == -1) {
+                allMatches.add(entity);
+            }
+        }
+
+        String retValue = xml;
+        for (final String customEntity : allMatches) {
+            retValue = retValue.replaceAll(customEntity, "&amp;" + customEntity.substring(1));
+        }
+
+        return retValue;
+    }
+
     /**
      * Check to ensure that a table isn't missing any entries in its rows.
      *

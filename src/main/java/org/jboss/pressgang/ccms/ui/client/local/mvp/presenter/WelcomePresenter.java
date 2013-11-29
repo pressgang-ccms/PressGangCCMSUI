@@ -21,6 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,7 +69,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
                         final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(
                                 value.getXml());
                         getFailOverRESTCall().performRESTCall(
-                                FailOverRESTCallDatabase.holdXML(xml),
+                                FailOverRESTCallDatabase.holdXML(DocBookUtilities.replaceAllCustomEntities(xml)),
                                 new RESTCallBack<IntegerWrapper>() {
                                     public void success(@NotNull final IntegerWrapper value) {
                                         display.displayTopicRendered(value.value);

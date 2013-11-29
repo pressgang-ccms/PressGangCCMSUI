@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -123,8 +124,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                 };
 
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" +
-                                        DocbookDTD
-                                        .getDtdDoctype() + "\n" + retValue2.getXml()), hold2, display, true);
+                                        DocbookDTD.getDtdDoctype() + "\n" + DocBookUtilities.replaceAllCustomEntities(retValue2.getXml())), hold2, display, true);
                             }
 
                             @Override
@@ -134,8 +134,8 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
 
                         };
 
-                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD
-                                .getDtdDoctype() + "\n" + retValue1.getXml()), hold1, display, true);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" +
+                                DocbookDTD.getDtdDoctype() + "\n" + DocBookUtilities.replaceAllCustomEntities(retValue1.getXml())), hold1, display, true);
 
                     }
                 };
