@@ -310,7 +310,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
                     final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
-                            DocBookUtilities.replaceAllCustomEntities(XMLUtilities.removeAllPreamble(retValue.getXml()));
+                            DocBookUtilities.escapeAllCustomEntities(XMLUtilities.removeAllPreamble(retValue.getXml()));
 
                     ServerDetails.getSavedServer(new ServerDetailsCallback() {
                         @Override

@@ -14,19 +14,16 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
 @Dependent
-public class WelcomePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class WelcomePresenter extends BaseRenderedPresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "WelcomeView";
 
@@ -66,10 +63,9 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
                 FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
                 new RESTCallBack<RESTTopicV1>() {
                     public void success(@NotNull final RESTTopicV1 value) {
-                        final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities.removeAllPreamble(
-                                value.getXml());
+                        final String xml = cleanXMLAndAddAdditionalContent(value.getXml(), true, true, true);
                         getFailOverRESTCall().performRESTCall(
-                                FailOverRESTCallDatabase.holdXML(DocBookUtilities.replaceAllCustomEntities(xml)),
+                                FailOverRESTCallDatabase.holdXML(xml),
                                 new RESTCallBack<IntegerWrapper>() {
                                     public void success(@NotNull final IntegerWrapper value) {
                                         display.displayTopicRendered(value.value);

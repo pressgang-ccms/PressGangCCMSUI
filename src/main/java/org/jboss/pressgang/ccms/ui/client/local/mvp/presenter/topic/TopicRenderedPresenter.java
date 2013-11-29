@@ -12,7 +12,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jetbrains.annotations.NotNull;
 
 @Dependent
@@ -79,7 +78,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
             xml = processXML(xml);
 
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(DocBookUtilities.replaceAllCustomEntities(xml)),
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),
                 new RESTCallBack<IntegerWrapper>() {
                     @Override
                     public void success(@NotNull final IntegerWrapper value) {

@@ -19,9 +19,9 @@ public class DocBookUtilities {
      * @param xml The source xml
      * @return the fixed xml
      */
-    public static String replaceAllCustomEntities(@NotNull final String xml) {
+    public static String escapeAllCustomEntities(@NotNull final String xml) {
         final List<String> allMatches = new ArrayList<String>();
-        final RegExp entityRe = RegExp.compile("&.*?;", "g");
+        final RegExp entityRe = RegExp.compile("&[\\w-\\.]+?;", "g");
 
         MatchResult matchResult = null;
         while ((matchResult = entityRe.exec(xml)) != null) {

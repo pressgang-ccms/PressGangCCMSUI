@@ -21,7 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
@@ -95,7 +95,11 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                 /*
                     Load the revisions and create a diff
                  */
-                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach, new RenderedDiffFailedCallback() {
+                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach, new RenderedDiffCallback() {
+                    @Override
+                    public void success() {
+                    }
+
                     @Override
                     public void failed() {
                         display.showRenderedDiffError();

@@ -25,7 +25,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
@@ -34,8 +33,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseTemplatePresenter {
-    private static final RegExp ENTITY_ERROR_RE = RegExp.compile(".*Entity '([\\w\\d]+)' not defined.*");
+public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseRenderedPresenter {
+    private static final RegExp ENTITY_ERROR_RE = RegExp.compile(".*Entity '([\\w-\\.]+)' not defined.*");
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<? ,?, ?>> {
         boolean displayTopicRendered(final Integer topicXMLHoldID, final boolean readOnly, final boolean showImages);
@@ -61,6 +60,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
      * The condition set via the URL history token. Used when the view is used stand alone.
      */
     protected String conditionOverride;
+    protected boolean standalone = false;
 
     @NotNull
     public abstract Display getDisplay();
@@ -74,6 +74,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
             Don't display the conditions when this view is used stand alone.
          */
         getDisplay().getLayoutPanel().getFlexCellFormatter().setVisible(0, 0, false);
+        standalone = true;
     }
 
     @Override
@@ -208,34 +209,38 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     public abstract void displayTopicRendered(final T topic, final boolean readOnly, final boolean showImages);
 
     protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
-        String retValue = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
+        final boolean showRemarks = getDisplay().getRemarks().getValue();
+        return cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone);
+    }
 
-        // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in
-        // <book><bookinfo>...</bookinfo></book> for it to render.
-        if (retValue.matches("^\\s*<(authorgroup|legalnotice)(\\s|.)*")) {
-            retValue = "<book><bookinfo>" + retValue + "</bookinfo></book>";
+    @Override
+    protected String getDTD() {
+        if (!standalone) {
+            final JSONObject jsonValue = getSelectedContentSpecValue();
+            if (jsonValue.containsKey("entities")) {
+                return DocbookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue());
+            }
         }
 
-        String xsl = null;
+        return super.getDTD();
+    }
+
+    protected String getXSLTemplate(final boolean showImages, final boolean showRemarks) {
+        final String xsl;
         if (showImages)  {
-            if (getDisplay().getRemarks().getValue()) {
+            if (showRemarks) {
                 xsl = Constants.DOCBOOK_REMARKS_XSL_REFERENCE;
             } else {
                 xsl = Constants.DOCBOOK_XSL_REFERENCE;
             }
         } else {
-            if (getDisplay().getRemarks().getValue()) {
+            if (showRemarks) {
                 xsl = Constants.DOCBOOK_REMARKS_PLACEHOLDER_XSL_REFERENCE;
             } else {
                 xsl = Constants.DOCBOOK_PLACEHOLDER_XSL_REFERENCE;
             }
         }
 
-        final JSONObject jsonValue = getSelectedContentSpecValue();
-        if (jsonValue.containsKey("entities")) {
-            return xsl + "\n" + DocbookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue()) + "\n" + retValue;
-        } else {
-            return xsl + "\n" + DocbookDTD.getDtdDoctype() + "\n" + retValue;
-        }
+        return xsl;
     }
 }

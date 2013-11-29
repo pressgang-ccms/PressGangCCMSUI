@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class contains a number of constants used throughout the application.
@@ -1003,7 +1003,6 @@ public final class Constants {
         add("Verbar");
         add("wedgeq");
     }};
-    public static final String BUILD = "201311291125";
 
     /**
      * The name of the DocBook title element
