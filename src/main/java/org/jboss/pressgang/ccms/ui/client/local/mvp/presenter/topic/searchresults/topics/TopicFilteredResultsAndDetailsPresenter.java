@@ -50,6 +50,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -115,6 +116,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -1506,8 +1508,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     private XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
-            xmlValidator = new XMLValidator(getTopicXMLPresenter().getDisplay().getEditor(),
-                    getTopicXMLPresenter().getDisplay().getXmlErrors());
+            xmlValidator = new XMLValidator(new XMLValidationHelper() {
+                        @Override
+                        public AceEditor getEditor() {
+                            return getTopicXMLPresenter().getDisplay().getEditor();
+                        }
+
+                        @Override
+                        public String getError() {
+                            return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
+                        }
+
+                        @Override
+                        public void setError(final String errorMsg) {
+                            getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+                        }
+                    });
         }
         return xmlValidator;
     }
