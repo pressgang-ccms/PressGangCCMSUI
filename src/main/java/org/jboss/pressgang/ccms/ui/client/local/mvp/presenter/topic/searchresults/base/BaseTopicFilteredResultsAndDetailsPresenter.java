@@ -548,7 +548,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 if (!isStringNullOrEmpty(node.getInheritedCondition())) {
                                     o.put("condition", new JSONString(node.getInheritedCondition()));
                                 } else if (CommonConstants.CS_ENTITIES_TITLE.equals(node.getTitle())) {
-                                    o.put("entities", new JSONString(node.getAdditionalText()));
+                                    o.put("entities", new JSONString(node.getAdditionalText().trim()));
                                 }
                             }
                             final String value = o.toString();
