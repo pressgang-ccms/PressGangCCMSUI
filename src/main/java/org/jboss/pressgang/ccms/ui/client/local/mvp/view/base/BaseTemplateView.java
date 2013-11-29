@@ -33,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -308,9 +309,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                 @Override
                 public void success(@NotNull final RESTTopicV1 retValue) {
-                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" + XMLUtilities
-                            .removeAllPreamble(
-                            retValue.getXml());
+                    final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
+                            DocBookUtilities.replaceAllCustomEntities(XMLUtilities.removeAllPreamble(retValue.getXml()));
 
                     ServerDetails.getSavedServer(new ServerDetailsCallback() {
                         @Override
