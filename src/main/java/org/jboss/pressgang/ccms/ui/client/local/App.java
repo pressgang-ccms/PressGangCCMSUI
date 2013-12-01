@@ -74,6 +74,12 @@ public class App {
 
             GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
 
+            /* Inject the CSS file */
+            CSSResources.INSTANCE.appCss().ensureInjected();
+
+            /* Load the DTD file used for validation and rendering */
+            DocbookDTD.loadDtd();
+
             /* Setup the REST client */
             ServerDetails.getSavedServer(new ServerDetailsCallback() {
                 @Override
@@ -83,12 +89,6 @@ public class App {
                     RestClient.setJacksonMarshallingActive(true);
 
                     final RootLayoutPanel root = RootLayoutPanel.get();
-
-                    /* Inject the CSS file */
-                    CSSResources.INSTANCE.appCss().ensureInjected();
-
-                    /* Load the DTD file used for validation and rendering */
-                    DocbookDTD.loadDtd();
 
                     appController.go(root);
                 }

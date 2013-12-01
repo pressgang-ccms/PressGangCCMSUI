@@ -337,7 +337,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                LOGGER.log(Level.INFO, "ENTER BaseTemplatePresenter.bindDefaultShortcutButtons() display.getTopShortcutView().getBug() ClickHandler.onClick()");
                 Window.open(Constants.BUGZILLA_URL, "_blank", "");
+                LOGGER.log(Level.INFO, "EXIT BaseTemplatePresenter.bindDefaultShortcutButtons() display.getTopShortcutView().getBug() ClickHandler.onClick()");
             }
         });
 
