@@ -60,6 +60,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
                 final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
+                        retValue.setXml(DocBookUtilities.replaceAllCustomEntities(retValue.getXml()));
                         displayTopicRendered(retValue, true, true);
                     }
                 };
@@ -79,7 +80,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
             xml = processXML(xml);
 
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(DocBookUtilities.replaceAllCustomEntities(xml)),
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),
                 new RESTCallBack<IntegerWrapper>() {
                     @Override
                     public void success(@NotNull final IntegerWrapper value) {
