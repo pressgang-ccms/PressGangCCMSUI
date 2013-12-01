@@ -51,7 +51,7 @@ public class TagProjectsView extends
         @NotNull
         @Override
         public String getValue(@NotNull final RESTProjectCollectionItemV1 object) {
-            button.setEnabled(readOnly);
+            button.setEnabled(!readOnly);
 
             if (getOriginalEntity() != null) {
                 if (ComponentProjectV1.containsTag(object.getItem(), getOriginalEntity().getId())) {
