@@ -412,10 +412,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
-                    Window.open(Constants.BUGZILLA_URL, "_blank", "");
-                }
+                Window.open(Constants.BUGZILLA_URL, "_blank", "");
             }
         });
 

@@ -1785,7 +1785,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             final RESTTextContentSpecCollectionItemV1 selectedEntityCollectionItem = filteredResultsPresenter.getProviderData()
                     .getSelectedItem();
 
-             /*
+            /*
                 If there are any modified tags in newContentSpec, we have unsaved changes.
                 If getTags() is null, the tags have not been loaded yet (and can't have been modified).
             */
@@ -1800,9 +1800,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
 
             if (!displayedEntityCollectionItem.returnIsAddItem()) {
-                /* See if the text has changed */
-                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(),
-                        displayedEntity.getText())) {
+                /* See if the text or locale has changed */
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(), displayedEntity.getText()) ||
+                        !selectedEntityCollectionItem.getItem().getLocale().equals(displayedEntity.getLocale())) {
                     LOGGER.log(Level.INFO,
                             "Text is different between selected and displayed. \n" + selectedEntityCollectionItem.getItem().getText() +
                                     "\n" + displayedEntity.getText());

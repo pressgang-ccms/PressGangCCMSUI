@@ -15,11 +15,11 @@ public class PropertyTagFilteredResultsAndDetailsView extends
         PropertyTagFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
+    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagDetails());
+    private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
 
-    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final Label childrenDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags());
+    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.PropertyTagDetails());
+    private final Label childrenDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
 
     @Override
     public PushButton getChildren() {
