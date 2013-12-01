@@ -93,7 +93,7 @@ public class XMLUtilities {
      * @return the xml without the preamble
      */
     public static String removeXmlPreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\?[\\s\\S]*?\\?>", "g");
+        final RegExp regExp = RegExp.compile("^\\s*<\\?[\\s\\S]*?\\?>", "gm");
         return regExp.replace(xml, "");
     }
 
@@ -105,7 +105,7 @@ public class XMLUtilities {
      * @return the xml without the doctype preamble
      */
     public static String removeDoctypePreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>", "g");
+        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>", "gm");
         return regExp.replace(xml, "");
     }
 
