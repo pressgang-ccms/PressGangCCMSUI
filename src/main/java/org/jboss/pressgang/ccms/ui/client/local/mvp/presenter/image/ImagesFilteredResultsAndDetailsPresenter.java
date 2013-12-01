@@ -888,7 +888,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         if (index >= files.getLength()) {
 
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + ": " + failedNames.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
