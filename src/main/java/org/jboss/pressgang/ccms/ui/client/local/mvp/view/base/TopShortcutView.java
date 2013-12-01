@@ -93,7 +93,7 @@ public class TopShortcutView extends HorizontalPanel {
         this.add(createTopic);
         this.add(createContentSpec);
         this.add(bug);
-        this.add(reports);
+        //this.add(reports);
         this.add(menus);
 
         this.addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
