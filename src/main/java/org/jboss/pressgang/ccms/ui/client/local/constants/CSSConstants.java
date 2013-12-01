@@ -459,6 +459,7 @@ public interface CSSConstants {
     }
 
     interface ContentSpecView {
+        String CONTENT_SPEC_ERRORS = "ContentSpecErrors";
         String CONTENT_SPEC_VIEW_PANEL = "ContentSpecViewPanel";
         String CONTENT_SPEC_VIEW_ID_FIELD = "ContentSpecViewIDField";
         String CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD = "ContentSpecViewRevisionNumberField";

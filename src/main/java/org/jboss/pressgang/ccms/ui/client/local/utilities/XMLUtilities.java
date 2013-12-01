@@ -107,7 +107,7 @@ public class XMLUtilities {
      * @return the xml without the entities
      */
     public static String removeXmlEntities(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\!ENTITY\\s+.+?\\s+.+?+\\s*>", "gm");
+        final RegExp regExp = RegExp.compile("^\\s*<!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
         return regExp.replace(xml, "");
     }
 
