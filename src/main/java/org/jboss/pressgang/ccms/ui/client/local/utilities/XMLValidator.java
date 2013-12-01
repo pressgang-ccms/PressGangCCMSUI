@@ -145,7 +145,6 @@ public class XMLValidator {
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
                         return function(){
-
                             me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::checkXML()();
                         };
                     }(this), 250);
