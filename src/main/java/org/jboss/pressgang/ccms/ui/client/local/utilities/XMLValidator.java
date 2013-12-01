@@ -4,17 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.xml.client.Comment;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.impl.DOMParseException;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class XMLValidator {
-    private final AceEditor editor;
-    private final TextArea errors;
+    private final XMLValidationHelper validationHelper;
     private String customEntities = "";
     /**
      * true while there is a thread checking the XML
@@ -29,9 +26,8 @@ public class XMLValidator {
      */
     private JavaScriptObject timeout = null;
 
-    public XMLValidator(final AceEditor editor, final TextArea errors) {
-        this.editor = editor;
-        this.errors = errors;
+    public XMLValidator(final XMLValidationHelper validationHelper) {
+        this.validationHelper = validationHelper;
     }
 
     /**
@@ -65,13 +61,13 @@ public class XMLValidator {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.addEventListener('message', function (me) {
                 return function (e) {
-                    var editor = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::editor;
-                    var errors = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::errors;
+                    var helper = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::validationHelper;
+                    var editor = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getEditor()();
                     var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
                     var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
 
                     var theseErrors = e.data;
-                    var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+                    var oldErrors = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getError()();
 
                     // Do additional DocBook validation
                     if (theseErrors == "") {
@@ -80,7 +76,7 @@ public class XMLValidator {
                     }
 
                     if (theseErrors == "" && oldErrors == "") {
-                        errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
+                        helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(noXmlErrors);
                     } else if (oldErrors != theseErrors) {
                         var entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.match(/\n/g).length;
 
@@ -119,9 +115,9 @@ public class XMLValidator {
                         }
 
                         if (errorMessage.length == 0) {
-                            errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
+                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(noXmlErrors);
                         } else {
-                            errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
+                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(errorMessage);
                         }
 
                         if (editor != null) {
@@ -136,7 +132,8 @@ public class XMLValidator {
         }
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::checkingXML) {
-            var editor = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::editor;
+            var helper = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::validationHelper;
+            var editor = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getEditor()();
             if (editor != null) {
                 var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                 if (text == null) {

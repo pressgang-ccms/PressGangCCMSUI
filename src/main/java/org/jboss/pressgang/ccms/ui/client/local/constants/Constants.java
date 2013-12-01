@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class contains a number of constants used throughout the application.
@@ -19,7 +19,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201311291259";
+    public static final String BUILD = "201311292035";
 
     /**
      * A collection of all the Docbook 4.5 entities
@@ -1312,7 +1312,7 @@ public final class Constants {
      * The Bugzilla link for this product.
      */
     public static final String BUGZILLA_URL = BUGZILLA_BASE_URL + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1" +
-            ".2&cf_build_id=UI%20Build%20" + VERSION;
+            ".3&cf_build_id=UI%20Build%20" + BUILD;
     /**
      * A link to the survey.
      */

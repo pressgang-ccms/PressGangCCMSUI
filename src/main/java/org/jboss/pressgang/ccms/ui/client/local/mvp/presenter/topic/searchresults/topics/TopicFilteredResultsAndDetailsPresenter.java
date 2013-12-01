@@ -50,6 +50,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -68,14 +69,12 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
@@ -91,6 +90,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisio
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
@@ -114,9 +114,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -1089,6 +1089,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         propertyTagsLoadInitiated = false;
         contentSpecsLoadInitiated = false;
         revisionDiffLoadInitiated = false;
+        customEntitiesLoaded = false;
+        customEntities = "";
     }
 
     /**
@@ -1506,8 +1508,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     private XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
-            xmlValidator = new XMLValidator(getTopicXMLPresenter().getDisplay().getEditor(),
-                    getTopicXMLPresenter().getDisplay().getXmlErrors());
+            xmlValidator = new XMLValidator(new XMLValidationHelper() {
+                        @Override
+                        public AceEditor getEditor() {
+                            return getTopicXMLPresenter().getDisplay().getEditor();
+                        }
+
+                        @Override
+                        public String getError() {
+                            return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
+                        }
+
+                        @Override
+                        public void setError(final String errorMsg) {
+                            getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+                        }
+                    });
         }
         return xmlValidator;
     }
@@ -2596,42 +2612,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
+                    setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                    topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), revisionTopic.getItem().getRevision(),
+                            getDisplayedTopic().getRevision(), display.getHiddenAttachmentArea(), new RenderedDiffCallback() {
                         @Override
-                        public void success(@NotNull final RESTTopicV1 retValue) {
-                            checkState(getDisplayedTopic() != null, "There should be a displayed item.");
-
-                            final String xml1 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
-                                    DocBookUtilities.replaceAllCustomEntities(retValue.getXml());
-
-                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml1), new RESTCallBack<IntegerWrapper>() {
-                                public void success(@NotNull final IntegerWrapper value1) {
-                                    final String xml2 = Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
-                                            DocBookUtilities.replaceAllCustomEntities(getDisplayedTopic().getXml());
-
-                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml2),
-                                            new RESTCallBack<IntegerWrapper>() {
-                                                public void success(@NotNull final IntegerWrapper value2) {
-                                                    topicRevisionsPresenter.renderXML(value1.value, value2.value,
-                                                            display.getHiddenAttachmentArea());
-                                                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                                }
-
-                                                @Override
-                                                public void failed() {
-                                                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
-                                                }
-                                            }, topicRevisionsPresenter.getDisplay(), true);
-                                }
-
-                                @Override
-                                public void failed() {
-                                    topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
-                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
-                                }
-                            }, topicRevisionsPresenter.getDisplay(), true);
+                        public void success() {
+                            topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                         }
 
                         @Override
@@ -2639,15 +2626,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
                         }
-                    };
-
-                    /*
-                        Make a note of the revision for the click handler.
-                    */
-                    setRenderedDiffRevision(revisionTopic.getItem().getRevision());
-
-                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(revisionTopic.getItem().getId(),
-                            revisionTopic.getItem().getRevision()), callback, topicRevisionsPresenter.getDisplay(), true);
+                    });
 
                 }
             });
@@ -3373,20 +3352,27 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected void loadAllCustomEntities(@NotNull final StringLoaded callback) {
-        if (!customEntitiesLoaded) {
-            final RESTTopicV1 topic = getDisplayedTopic();
-            if (topic != null) {
-                getFailOverRESTCall().performRESTCall(
-                        FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
-                        new RESTCallBack<RESTTopicV1>() {
-                            @Override
-                            public void success(final RESTTopicV1 retValue) {
-                                topic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
-                                customEntities = getCustomEntities(retValue);
-                                customEntitiesLoaded = true;
-                                callback.stringLoaded(customEntities);
-                            }
-                        });
+        // Only attempt to load custom entities for existing topics
+        if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
+            if (!customEntitiesLoaded) {
+                final RESTTopicV1 topic = getDisplayedTopic();
+                if (topic != null) {
+                    getFailOverRESTCall().performRESTCall(
+                            FailOverRESTCallDatabase.getTopicRevisionWithContentSpecs(topic.getId(), topic.getRevision()),
+                            new RESTCallBack<RESTTopicV1>() {
+                                @Override
+                                public void success(final RESTTopicV1 retValue) {
+                                    topic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
+                                    customEntities = getCustomEntities(retValue);
+                                    customEntitiesLoaded = true;
+                                    callback.stringLoaded(customEntities);
+                                }
+                            });
+                } else {
+                    callback.stringLoaded(customEntities);
+                }
+            } else {
+                callback.stringLoaded(customEntities);
             }
         } else {
             callback.stringLoaded(customEntities);

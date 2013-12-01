@@ -10,13 +10,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Contains the common logic to render two HTML pages and get the diff between them.
  */
-abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
+abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
 
     public interface Display extends BaseTemplateViewInterface {
         void showWaitingFromRenderedDiff();
@@ -96,12 +93,12 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
         });
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffFailedCallback failedCallback) {
-        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), failedCallback);
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
+        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffFailedCallback failedCallback) {
-        final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffCallback callback) {
+        final RESTCallBack<RESTTopicV1> callback1 = new RESTCallBack<RESTTopicV1>() {
             @Override
             public void success(@NotNull final RESTTopicV1 retValue1) {
                 final RESTCallBack<RESTTopicV1> callback2 = new RESTCallBack<RESTTopicV1>() {
@@ -115,27 +112,30 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
                                     @Override
                                     public void success(@NotNull final IntegerWrapper holdValue2) {
                                         renderXML(holdValue1.value, holdValue2.value, hiddenAttach);
+
+                                        callback.success();
                                     }
 
                                     @Override
                                     public void failed() {
-                                        failedCallback.failed();
+                                        callback.failed();
                                     }
                                 };
 
-                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" +
-                                        DocbookDTD.getDtdDoctype() + "\n" + DocBookUtilities.replaceAllCustomEntities(retValue2.getXml())), hold2, display, true);
+                                final String xml = cleanXMLAndAddAdditionalContent(retValue2.getXml(), true, false, true);
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold2, display,
+                                        true);
                             }
 
                             @Override
                             public void failed() {
-                                failedCallback.failed();
+                                callback.failed();
                             }
 
                         };
 
-                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(Constants.DOCBOOK_DIFF_XSL_REFERENCE + "\n" +
-                                DocbookDTD.getDtdDoctype() + "\n" + DocBookUtilities.replaceAllCustomEntities(retValue1.getXml())), hold1, display, true);
+                        final String xml = cleanXMLAndAddAdditionalContent(retValue1.getXml(), true, false, true);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold1, display, true);
 
                     }
                 };
@@ -148,7 +148,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
             }
         };
 
-        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback1, display);
     }
 
     /**
@@ -299,4 +299,8 @@ abstract public class BaseRenderedDiffPresenter extends BaseTemplatePresenter {
     private native void addEventListener() /*-{
 		$wnd.addEventListener('message', this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter::listener);
 	}-*/;
+
+    protected String getXSLTemplate(final boolean showImages, final boolean showRemarks) {
+        return Constants.DOCBOOK_DIFF_XSL_REFERENCE;
+    }
 }

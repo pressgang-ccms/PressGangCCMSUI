@@ -19,7 +19,7 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffFailedCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
@@ -139,7 +139,11 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         display.getTopActionGrandParentPanel().removeFromParent();
 
         if (topicID != null) {
-            loadTopics(topicID, firstRevision, secondRevision, new RenderedDiffFailedCallback() {
+            loadTopics(topicID, firstRevision, secondRevision, new RenderedDiffCallback() {
+                @Override
+                public void success() {
+                }
+
                 @Override
                 public void failed() {
                     display.showRenderedDiffError();

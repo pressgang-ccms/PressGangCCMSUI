@@ -28,6 +28,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -66,6 +67,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -504,15 +506,14 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @Override
     protected boolean isInitialTopicReadyToBeLoaded() {
-        /* displayInitialContentSpec() is only called when all the data is available, so just return true */
+        /* displayInitialTopic() is only called when all the data is available, so just return true */
         return true;
     }
 
     @Override
     protected void preLoadAdditionalDisplayedItemData() {
-        /*
-            Nothing needs to be done here
-        */
+        customEntitiesLoaded = false;
+        customEntities = "";
     }
 
     @Override
@@ -603,8 +604,23 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     private XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
-            xmlValidator = new XMLValidator(translatedTopicAdditionalXMLPresenter.getDisplay().getEditor(),
-                    translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors());
+            xmlValidator = new XMLValidator(
+                    new XMLValidationHelper() {
+                        @Override
+                        public AceEditor getEditor() {
+                            return translatedTopicAdditionalXMLPresenter.getDisplay().getEditor();
+                        }
+
+                        @Override
+                        public String getError() {
+                            return translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().getText();
+                        }
+
+                        @Override
+                        public void setError(final String errorMsg) {
+                            translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().setText(errorMsg);
+                        }
+                    });
         }
 
         return xmlValidator;
@@ -918,6 +934,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                                 callback.stringLoaded(customEntities);
                             }
                         });
+            } else {
+                callback.stringLoaded(customEntities);
             }
         } else {
             callback.stringLoaded(customEntities);
