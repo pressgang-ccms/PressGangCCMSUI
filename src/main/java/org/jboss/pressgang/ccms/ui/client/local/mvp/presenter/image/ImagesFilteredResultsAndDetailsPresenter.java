@@ -887,8 +887,16 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
 
+            final StringBuilder idsQuery = new StringBuilder();
+            for (final Integer id : ids) {
+                if (!idsQuery.toString().isEmpty()) {
+                    idsQuery.append(",");
+                }
+                idsQuery.append(id);
+            }
+
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + ": " + failedNames.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + idsQuery.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
@@ -902,13 +910,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
             }
 
 
-            final StringBuilder idsQuery = new StringBuilder();
-            for (final Integer id : ids) {
-                if (!idsQuery.toString().isEmpty()) {
-                    idsQuery.append(",");
-                }
-                idsQuery.append(id);
-            }
+
             getEventBus().fireEvent(new ImagesFilteredResultsAndImageViewEvent(
                     Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.IMAGE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
         } else {
