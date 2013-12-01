@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -19,11 +20,13 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.impl.HyperlinkImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
@@ -316,12 +319,16 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void bindDefaultShortcutButtons() {
+        final HyperlinkImpl hyperlinkImpl = GWT.create(HyperlinkImpl.class);
         // Shortcut button menus
         display.getTopShortcutView().getHome().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new WelcomeViewEvent());
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new WelcomeViewEvent());
+                    }
                 }
             }
         });
@@ -329,10 +336,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getDocbuilder().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-
-                    eventBus.fireEvent(new DocBuilderViewEvent());
-
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new DocBuilderViewEvent());
+                    }
                 }
             }
         });
@@ -367,14 +375,17 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                /* don't try and launch the page again */
-                if (History.getToken().startsWith(
-                        TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                    return;
-                }
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    /* don't try and launch the page again */
+                    if (History.getToken().startsWith(
+                            TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                        return;
+                    }
 
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    }
                 }
             }
         });
@@ -382,15 +393,18 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getCreateContentSpec().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                /* don't try and launch the page again */
-                if (History.getToken().startsWith(
-                        ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
-                                .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                    return;
-                }
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    /* don't try and launch the page again */
+                    if (History.getToken().startsWith(
+                            ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
+                                    .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                        return;
+                    }
 
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    }
                 }
             }
         });
@@ -398,19 +412,25 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.BUGZILLA_URL, "_blank", "");
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    Window.open(Constants.BUGZILLA_URL, "_blank", "");
+                }
             }
         });
 
         display.getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                    @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        Window.open(serverDetails.getReportUrl(), "_blank", "");
-                    }
-                });
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    event.preventDefault();
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getReportUrl(), "_blank", "");
+                        }
+                    });
+                }
             }
         });
 

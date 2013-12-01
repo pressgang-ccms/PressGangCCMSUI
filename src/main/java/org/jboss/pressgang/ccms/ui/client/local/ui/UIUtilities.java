@@ -5,7 +5,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.ui.AnchorPushButton;
+import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -70,30 +70,24 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static AnchorPushButton createTopTabPushButton(final String text) {
+    public static PushButton createTopTabPushButton(final String text) {
         return createTopTabPushButton(text, false, false);
     }
 
     @NotNull
-    public static AnchorPushButton createTopTabPushButton(final String text, @NotNull final String id) {
+    public static PushButton createTopTabPushButton(final String text, @NotNull final String id) {
         return createTopTabPushButton(text, false, false, id);
     }
 
     @NotNull
-    public static AnchorPushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         return createTopTabPushButton(text, false, externalLink, null);
     }
 
     @NotNull
-    public static AnchorPushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
-        @NotNull final AnchorPushButton retValue = new AnchorPushButton(text);
-        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
-
-        if (subMenu) {
-            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
-        } else if (externalLink) {
-            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
-        }
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink,
+            @Nullable final String id) {
+        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink, id);
 
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         if (id != null) {
@@ -239,5 +233,62 @@ final public class UIUtilities {
     @NotNull
     public static <T extends RESTBaseEntityCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {
         return new CellTable<T>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text) {
+        return createMenuButton(text, false, false);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, @NotNull final String id) {
+        return createMenuButton(text, false, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink) {
+        return createMenuButton(text, subMenu, externalLink, null);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final AnchorButton retValue = new AnchorButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        } else if (externalLink) {
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text) {
+        return createMenuDownLabel(text, false, null);
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, @NotNull final String id) {
+        return createMenuDownLabel(text, false, id);
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, final boolean subMenu) {
+        @NotNull final Label retValue = createDownLabel(text, null);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, final boolean subMenu, @NotNull final String id) {
+        @NotNull final Label retValue = createDownLabel(text, id);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
     }
 }

@@ -6,8 +6,8 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.AnchorMenuItem;
-import com.google.gwt.user.client.ui.AnchorPushButton;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -20,17 +20,17 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  * Constructs the shortcut panel to be displayed at the top of the screen.
  */
 public class TopShortcutView extends HorizontalPanel {
-    private final AnchorPushButton home = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Home(),
+    private final AnchorButton home = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Home(),
             Constants.ElementIDs.HOME_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorPushButton docbuilder = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
+    private final AnchorButton docbuilder = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
             Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorPushButton createTopic = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
+    private final AnchorButton createTopic = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
             Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorPushButton createContentSpec = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
+    private final AnchorButton createContentSpec = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
             Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorPushButton bug = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true,
+    private final AnchorButton bug = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true,
             Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorPushButton reports = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
+    private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
             Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
     private final MenuBar menus = new MenuBar();
@@ -149,27 +149,27 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addDomHandler(focusHandler, FocusEvent.getType());
     }
 
-    public AnchorPushButton getHome() {
+    public AnchorButton getHome() {
         return home;
     }
 
-    public AnchorPushButton getDocbuilder() {
+    public AnchorButton getDocbuilder() {
         return docbuilder;
     }
 
-    public AnchorPushButton getCreateTopic() {
+    public AnchorButton getCreateTopic() {
         return createTopic;
     }
 
-    public AnchorPushButton getCreateContentSpec() {
+    public AnchorButton getCreateContentSpec() {
         return createContentSpec;
     }
 
-    public AnchorPushButton getBug() {
+    public AnchorButton getBug() {
         return bug;
     }
 
-    public AnchorPushButton getReports() {
+    public AnchorButton getReports() {
         return reports;
     }
 

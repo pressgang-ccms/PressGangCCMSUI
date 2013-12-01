@@ -1178,7 +1178,7 @@ td.TopicRenderingInfoEntitiesCell {
     text-align: center;
 }
 
-div.AnchorPushButton, td.AnchorMenuItem {
+div.AnchorPushButton, div.AnchorMenuItem {
     position: relative;
 }
 
