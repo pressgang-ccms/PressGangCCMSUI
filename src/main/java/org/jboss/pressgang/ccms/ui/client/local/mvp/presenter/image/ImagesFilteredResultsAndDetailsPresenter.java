@@ -886,9 +886,6 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index,
             @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
-
-            final int MAX_IDS_BEFORE_LINE_BREAK = 5;
-
             final StringBuilder idsQuery = new StringBuilder();
             final StringBuilder messageIds = new StringBuilder();
             int count = 1;
@@ -898,14 +895,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     messageIds.append(", ");
                 }
 
-                if (count % MAX_IDS_BEFORE_LINE_BREAK == 0) {
-                    messageIds.append("\n");
-                }
-
                 idsQuery.append(id);
                 messageIds.append(id);
-
-                ++count;
             }
 
             if (failedFiles.size() == 0) {
