@@ -142,7 +142,7 @@ public class XMLValidator {
                 // Add the doctype that include the standard docbook entities
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
                 // ignore any custom entities for now
-                //text = @org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities::escapeAllCustomEntities(Ljava/lang/String;)(text);
+                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities::escapeAllCustomEntities(Ljava/lang/String;)(text);
                 // process any injections
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;Ljava/lang/String;)(text, dummyEntities);
                 // now build up the actual xml to be verified
