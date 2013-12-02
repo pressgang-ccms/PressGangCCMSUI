@@ -1237,4 +1237,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String UnableToRenderEntity();
+
+    @NotNull
+    String PleaseSaveTheContentSpec();
 }
