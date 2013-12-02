@@ -42,6 +42,9 @@ public interface PressGangCCMSUI extends Constants {
     String NoXMLErrors();
 
     @NotNull
+    String DownloadingDTD();
+
+    @NotNull
     String XMLErrors();
 
     @NotNull
