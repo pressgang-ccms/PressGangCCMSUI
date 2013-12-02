@@ -23,9 +23,8 @@ import org.jetbrains.annotations.Nullable;
  * Some utility methods for working with XML
  */
 public class XMLUtilities {
-    private static final Logger LOGGER = Logger.getLogger(XMLUtilities.class.getName());
     private static final RegExp PREAMBLE_RE = RegExp.compile("^\\s*(<\\?[\\s\\S]*?\\?>)", "gm");
-    private static final RegExp ENTITY_RE = RegExp.compile("^\\s*<!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
+    private static final RegExp ENTITY_RE = RegExp.compile("<\\s*!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
     private static final RegExp DOCTYPE_RE = RegExp.compile("^\\s*(<\\s*!DOCTYPE[\\s\\S]*?>)");
     private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
     private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");

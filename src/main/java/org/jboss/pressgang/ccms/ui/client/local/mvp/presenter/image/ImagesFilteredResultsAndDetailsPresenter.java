@@ -886,17 +886,21 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index,
             @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
-
             final StringBuilder idsQuery = new StringBuilder();
+            final StringBuilder messageIds = new StringBuilder();
+            int count = 1;
             for (final Integer id : ids) {
                 if (!idsQuery.toString().isEmpty()) {
                     idsQuery.append(",");
+                    messageIds.append(", ");
                 }
+
                 idsQuery.append(id);
+                messageIds.append(id);
             }
 
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + messageIds.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
