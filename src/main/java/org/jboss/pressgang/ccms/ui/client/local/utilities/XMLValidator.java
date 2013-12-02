@@ -55,7 +55,6 @@ public class XMLValidator {
     private native void checkXML() /*-{
         var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
         var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
-        var dummyEntities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDummyDtdDoctype(Ljava/lang/String;)(customEntities);
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
@@ -141,7 +140,7 @@ public class XMLValidator {
                 }
                 // Add the doctype that include the standard docbook entities
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::resolveInjections(Ljava/lang/String;Ljava/lang/String;)(text, dummyEntities);
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
                         return function(){
@@ -164,7 +163,7 @@ public class XMLValidator {
         final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
         Document doc = null;
         try {
-            XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
+            doc = XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
         } catch (DOMParseException e) {
 
         }
