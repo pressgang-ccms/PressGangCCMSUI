@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -25,11 +24,10 @@ import org.jetbrains.annotations.Nullable;
 public class XMLUtilities {
     private static final RegExp PREAMBLE_RE = RegExp.compile("^\\s*(<\\?[\\s\\S]*?\\?>)", "gm");
     private static final RegExp ENTITY_RE = RegExp.compile("<\\s*!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
-    private static final RegExp DOCTYPE_RE = RegExp.compile("^\\s*(<\\s*!DOCTYPE[\\s\\S]*?>)");
+    private static final RegExp DOCTYPE_RE = RegExp.compile("^\\s*(<\\?[\\s\\S]*?\\?>)?\\s*(<\\s*!DOCTYPE[\\s\\S]*?(\\[[\\s\\S]*?\\])?>)", "gm");
     private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
     private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
     private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
-    private static final RegExp XML_ENTITY_RE = RegExp.compile("\\&([#\\w\\d]*?);", "g");
 
     /**
      * Strips out the xml preamble. This is usually done before the XML
@@ -41,7 +39,7 @@ public class XMLUtilities {
      * @return the xml without the preamble
      */
     public static String removeXmlPreamble(@NotNull final String xml) {
-        return PREAMBLE_RE.replace(xml, "");
+        return PREAMBLE_RE.replace(xml, "").trim();
     }
 
     /**
@@ -76,7 +74,7 @@ public class XMLUtilities {
      * @return the xml without the doctype preamble
      */
     public static String removeDoctypePreamble(@NotNull final String xml) {
-        return DOCTYPE_RE.replace(xml, "");
+        return DOCTYPE_RE.replace(xml, "$1").trim();
     }
 
     /**
@@ -86,8 +84,8 @@ public class XMLUtilities {
      * @return the xml doctype content or null if nothing was found.
      */
     public static String getDoctypePreamble(@NotNull final String xml) {
-        final MatchResult result = DOCTYPE_RE.exec(removeXmlPreamble(xml));
-        return result == null ? null : result.getGroup(1);
+        final MatchResult result = DOCTYPE_RE.exec(xml);
+        return result == null ? null : result.getGroup(2);
     }
 
     public static String removeAllPreamble(@NotNull final String xml) {
