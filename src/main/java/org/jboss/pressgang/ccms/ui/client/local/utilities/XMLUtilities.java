@@ -95,8 +95,8 @@ public class XMLUtilities {
      * @return the xml without the preamble
      */
     public static String removeXmlPreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\?[\\s\\S]*?\\?>", "gm");
-        return regExp.replace(xml, "");
+        final RegExp regExp = RegExp.compile("<\\?[\\s\\S]*?\\?>");
+        return regExp.replace(xml, "").trim();
     }
 
     /**
@@ -107,8 +107,8 @@ public class XMLUtilities {
      * @return the xml without the entities
      */
     public static String removeXmlEntities(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
-        return regExp.replace(xml, "");
+        final RegExp regExp = RegExp.compile("<\\s*!ENTITY\\s+.+?\\s+.+?\\s*>", "g");
+        return regExp.replace(xml, "").trim();
     }
 
     /**
@@ -119,8 +119,8 @@ public class XMLUtilities {
      * @return the xml without the doctype preamble
      */
     public static String removeDoctypePreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>");
-        return regExp.replace(xml, "");
+        final RegExp regExp = RegExp.compile("<\\s*!DOCTYPE[\\s\\S]*?\\]>");
+        return regExp.replace(xml, "").trim();
     }
 
     public static String removeAllPreamble(@NotNull final String xml) {
@@ -152,7 +152,7 @@ public class XMLUtilities {
         try {
             final Document doc = convertStringToDocument(fixedXml);
             InjectionResolver.resolveInjections(doc);
-            return removeAllPreamble(removeXmlEntities(doc.toString()));
+            return removeAllPreamble(doc.toString());
         } catch (DOMParseException e) {
             return xml;
         }
