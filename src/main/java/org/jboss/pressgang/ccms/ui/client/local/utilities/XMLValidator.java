@@ -105,7 +105,7 @@ public class XMLValidator {
                                     lineNumbers.push(line - 1);
                                 }
 
-                                // Check if there as a line number in the error message
+                                // Check if there is a line number in the error message
                                 match = errorLineNumRegex.exec(match[0])
                                 if (match != null && match.length >= 1) {
                                     line = parseInt(match[1]) - entitiesLines;
