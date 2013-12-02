@@ -888,15 +888,18 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         if (index >= files.getLength()) {
 
             final StringBuilder idsQuery = new StringBuilder();
+            final StringBuilder messageIds = new StringBuilder();
             for (final Integer id : ids) {
                 if (!idsQuery.toString().isEmpty()) {
                     idsQuery.append(",");
+                    messageIds.append(", ");
                 }
                 idsQuery.append(id);
+                messageIds.append(id);
             }
 
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImagesUploadedSuccessfully() + " " + messageIds.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
