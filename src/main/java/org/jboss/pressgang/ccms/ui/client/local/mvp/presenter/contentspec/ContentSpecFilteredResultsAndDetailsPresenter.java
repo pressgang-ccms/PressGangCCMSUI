@@ -425,7 +425,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                         // TODO: This url should be part of the servers.json file
                         final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-                        Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        if (displayedEntity.getId() != null) {
+                            Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        } else {
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveTheContentSpec());
+                        }
                     }
                 });
             }

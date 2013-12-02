@@ -64,6 +64,7 @@ public class XMLValidator {
                     var editor = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getEditor()();
                     var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
                     var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
+                    var downloadingDTD = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::DownloadingDTD()();
 
                     var theseErrors = e.data;
                     var oldErrors = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getError()();
@@ -152,6 +153,8 @@ public class XMLValidator {
                     if (dtd != "") {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, schema: dtd});
+                    } else {
+                        helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(downloadingDTD);
                     }
                 }
             }

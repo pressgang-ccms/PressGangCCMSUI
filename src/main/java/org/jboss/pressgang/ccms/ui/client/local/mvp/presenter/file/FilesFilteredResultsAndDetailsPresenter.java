@@ -863,15 +863,18 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 as a search result.
              */
             final StringBuilder idsQuery = new StringBuilder();
+            final StringBuilder idsDisplay = new StringBuilder();
             for (final Integer id : ids) {
                 if (!idsQuery.toString().isEmpty()) {
                     idsQuery.append(",");
+                    idsDisplay.append(", ");
                 }
                 idsQuery.append(id);
+                idsDisplay.append(id);
             }
 
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsDisplay.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {
