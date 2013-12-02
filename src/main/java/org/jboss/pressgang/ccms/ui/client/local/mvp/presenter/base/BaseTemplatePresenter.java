@@ -20,6 +20,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
@@ -325,7 +326,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
+                    eatEvent((Event) event.getNativeEvent());
                     if (isOKToProceed()) {
                         eventBus.fireEvent(new WelcomeViewEvent());
                     }
@@ -337,10 +338,72 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
+                    eatEvent((Event) event.getNativeEvent());
                     if (isOKToProceed()) {
                         eventBus.fireEvent(new DocBuilderViewEvent());
                     }
+                }
+            }
+        });
+
+        display.getTopShortcutView().getCreateTopic().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    eatEvent((Event) event.getNativeEvent());
+                    /* don't try and launch the page again */
+                    if (History.getToken().startsWith(
+                            TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                        return;
+                    }
+
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    }
+                }
+            }
+        });
+
+        display.getTopShortcutView().getCreateContentSpec().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    eatEvent((Event) event.getNativeEvent());
+                    /* don't try and launch the page again */
+                    if (History.getToken().startsWith(
+                            ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
+                                    .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                        return;
+                    }
+
+                    if (isOKToProceed()) {
+                        eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
+                    }
+                }
+            }
+        });
+
+        display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    eatEvent((Event) event.getNativeEvent());
+                    Window.open(Constants.BUGZILLA_URL, "_blank", "");
+                }
+            }
+        });
+
+        display.getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    eatEvent((Event) event.getNativeEvent());
+                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        @Override
+                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                            Window.open(serverDetails.getReportUrl(), "_blank", "");
+                        }
+                    });
                 }
             }
         });
@@ -368,65 +431,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new TranslatedSearchTagsFieldsAndFiltersViewEvent());
-                }
-            }
-        });
-
-        display.getTopShortcutView().getCreateTopic().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
-                    /* don't try and launch the page again */
-                    if (History.getToken().startsWith(
-                            TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                        return;
-                    }
-
-                    if (isOKToProceed()) {
-                        eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
-                    }
-                }
-            }
-        });
-
-        display.getTopShortcutView().getCreateContentSpec().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
-                    /* don't try and launch the page again */
-                    if (History.getToken().startsWith(
-                            ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
-                                    .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                        return;
-                    }
-
-                    if (isOKToProceed()) {
-                        eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
-                    }
-                }
-            }
-        });
-
-        display.getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                Window.open(Constants.BUGZILLA_URL, "_blank", "");
-            }
-        });
-
-        display.getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    event.preventDefault();
-                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                        @Override
-                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                            Window.open(serverDetails.getReportUrl(), "_blank", "");
-                        }
-                    });
                 }
             }
         });
@@ -475,6 +479,11 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+    }
+
+    private void eatEvent(@NotNull final Event event) {
+        DOM.eventCancelBubble(event, true);
+        DOM.eventPreventDefault(event);
     }
 
     private void bindAdvancedShortcutButtons() {

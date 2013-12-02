@@ -1,12 +1,15 @@
 package com.google.gwt.user.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.impl.HyperlinkImpl;
 
 public class AnchorButton extends CustomButton {
+    private static final HyperlinkImpl hyperlinkImpl = GWT.create(HyperlinkImpl.class);
     private static final String DEFAULT_ANCHOR_STYLE = "AnchorPushButton";
     private Anchor anchor = new Anchor();
 

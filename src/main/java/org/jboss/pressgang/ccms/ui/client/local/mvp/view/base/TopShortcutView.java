@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AnchorButton;
+import com.google.gwt.user.client.ui.AnchorMenuBar;
 import com.google.gwt.user.client.ui.AnchorMenuItem;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -33,11 +34,11 @@ public class TopShortcutView extends HorizontalPanel {
     private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
             Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
-    private final MenuBar menus = new MenuBar();
+    private final AnchorMenuBar menus = new AnchorMenuBar();
 
-    private final MenuBar search = new MenuBar(true);
-    private final MenuBar entities = new MenuBar(true);
-    private final MenuBar advanced = new MenuBar(true);
+    private final AnchorMenuBar search = new AnchorMenuBar(true);
+    private final AnchorMenuBar entities = new AnchorMenuBar(true);
+    private final AnchorMenuBar advanced = new AnchorMenuBar(true);
 
     private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
     private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
