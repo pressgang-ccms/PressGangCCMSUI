@@ -205,10 +205,6 @@ td {
     background-color: white;
 }
 
-.WelcomeViewPanelParent {
-    overflow: hidden;
-}
-
 .TopicRenderedViewIFrame, .WelcomeViewIFrame, .TopicRevisionHTMLDiffFrame, .TopicReviewHelpIframe, .WelcomeViewPanel {
     width: 100%;
     height: 100%;

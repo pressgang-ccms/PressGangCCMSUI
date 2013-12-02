@@ -25,7 +25,6 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
         panel.setWidget(1, 0, content);
 
         this.getPanel().setWidget(panel);
-        this.getPanel().addStyleName(CSSConstants.WelcomeView.WELCOME_VIEW_PANEL_PARENT);
 
         panel.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
         panel.getFlexCellFormatter().setHeight(1, 0, "100%");
