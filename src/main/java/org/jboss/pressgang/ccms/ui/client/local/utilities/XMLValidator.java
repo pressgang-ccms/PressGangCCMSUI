@@ -55,6 +55,8 @@ public class XMLValidator {
     private native void checkXML() /*-{
         var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
         var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
+        var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+        var downloadingDTD = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::DownloadingDTD()();
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
@@ -62,9 +64,7 @@ public class XMLValidator {
                 return function (e) {
                     var helper = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::validationHelper;
                     var editor = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getEditor()();
-                    var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
                     var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
-                    var downloadingDTD = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::DownloadingDTD()();
 
                     var theseErrors = e.data;
                     var oldErrors = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getError()();
