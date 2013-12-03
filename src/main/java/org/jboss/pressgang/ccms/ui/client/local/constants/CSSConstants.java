@@ -195,6 +195,7 @@ public interface CSSConstants {
     interface WelcomeView {
         String WELCOME_VIEW_IFRAME = "WelcomeViewIFrame";
         String WELCOME_VIEW_PANEL = "WelcomeViewPanel";
+        String WELCOME_VIEW_PANEL_PARENT = "WelcomeViewPanelParent";
     }
 
     /**
@@ -459,6 +460,7 @@ public interface CSSConstants {
     }
 
     interface ContentSpecView {
+        String CONTENT_SPEC_ERRORS = "ContentSpecErrors";
         String CONTENT_SPEC_VIEW_PANEL = "ContentSpecViewPanel";
         String CONTENT_SPEC_VIEW_ID_FIELD = "ContentSpecViewIDField";
         String CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD = "ContentSpecViewRevisionNumberField";

@@ -373,6 +373,6 @@ public abstract class BaseSearchResultsAndTopicView<
         addActionButton(this.getExtendedProperties());
         addActionButton(this.getUrls());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
+        //addActionButton(this.getBugs());
     }
 }

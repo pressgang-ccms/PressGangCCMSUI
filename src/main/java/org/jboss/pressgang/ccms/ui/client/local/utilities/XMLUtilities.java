@@ -8,9 +8,11 @@ import java.util.Map;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.xml.client.Comment;
+import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jetbrains.annotations.NotNull;
@@ -20,81 +22,48 @@ import org.jetbrains.annotations.Nullable;
  * Some utility methods for working with XML
  */
 public class XMLUtilities {
+    private static final RegExp PREAMBLE_RE = RegExp.compile("^\\s*(<\\?[\\s\\S]*?\\?>)", "gm");
+    private static final RegExp ENTITY_RE = RegExp.compile("<\\s*!ENTITY\\s+.+?\\s+.+?\\s*>", "gm");
+    private static final RegExp DOCTYPE_RE = RegExp.compile("^\\s*(<\\?[\\s\\S]*?\\?>)?\\s*(<\\s*!DOCTYPE[\\s\\S]*?(\\[[\\s\\S]*?\\])?>)", "gm");
     private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
     private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
     private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
 
     /**
-     * Parse the supplied text as XML, and return any errors.
-     *
-     * @param xml The XML to be parsed
-     * @return Any errors, or null if none were found
-     */
-    @Nullable
-    public static native String getXMLErrors(@NotNull final String xml) /*-{
-        var parserError = "parsererror";
-
-        // code for IE
-        if ($wnd.ActiveXObject) {
-            var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async = "false";
-            xmlDoc.loadXML($doc.all(xml).value);
-
-            if (xmlDoc.parseError.errorCode != 0) {
-                var message = "Error Code: " + xmlDoc.parseError.errorCode + "\n";
-                message = message + "Error Reason: " + xmlDoc.parseError.reason + "\n";
-                message = message + "Error Line: " + xmlDoc.parseError.line;
-                return message;
-            }
-        }
-        // code for Mozilla, Firefox, Opera, etc.
-        else if ($doc.implementation.createDocument) {
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(xml, "text/xml");
-
-            if (xmlDoc.getElementsByTagName(parserError).length > 0) {
-                var message = null;
-                var foundH3 = false;
-                checkXML = function (node) {
-                    var nodeName = node.nodeName;
-                    if (nodeName == "h3") {
-                        if (foundH3) {
-                            return;
-                        }
-                        foundH3 = true;
-                    }
-                    if (nodeName == "#text") {
-                        if (message == null) {
-                            message = node.nodeValue + "\n";
-                        } else {
-                            message = message + node.nodeValue + "\n";
-                        }
-                    }
-
-                    var nodeLength = node.childNodes.length;
-                    for (var i = 0; i < nodeLength; i++) {
-                        checkXML(node.childNodes[i], message, foundH3);
-                    }
-                }
-
-                checkXML(xmlDoc.getElementsByTagName(parserError)[0]);
-                return message;
-            }
-        }
-
-        return null;
-    }-*/;
-
-    /**
      * Strips out the xml preamble. This is usually done before the XML
      * is rendered in the UI
+     *
+     * Preamble is anything that looks like <?something here?>
      *
      * @param xml The source xml
      * @return the xml without the preamble
      */
     public static String removeXmlPreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\?[\\s\\S]*?\\?>", "g");
-        return regExp.replace(xml, "");
+        return PREAMBLE_RE.replace(xml, "").trim();
+    }
+
+    /**
+     * Gets the xml preamble.
+     *
+     * Preamble is anything that looks like <?something here?>
+     *
+     * @param xml The source xml
+     * @return the xml preamble content or null if nothing was found.
+     */
+    public static String getXmlPreamble(@NotNull final String xml) {
+        final MatchResult result = PREAMBLE_RE.exec(xml);
+        return result == null ? null : result.getGroup(1);
+    }
+
+    /**
+     * Strips out the xml entities. This is usually done before the XML
+     * is rendered in the UI
+     *
+     * @param xml The source xml
+     * @return the xml without the entities
+     */
+    public static String removeXmlEntities(@NotNull final String xml) {
+        return ENTITY_RE.replace(xml, "");
     }
 
     /**
@@ -105,16 +74,40 @@ public class XMLUtilities {
      * @return the xml without the doctype preamble
      */
     public static String removeDoctypePreamble(@NotNull final String xml) {
-        final RegExp regExp = RegExp.compile("^\\s*<\\s*!DOCTYPE[\\s\\S]*?>", "g");
-        return regExp.replace(xml, "");
+        return DOCTYPE_RE.replace(xml, "$1").trim();
+    }
+
+    /**
+     * Gets the xml doctype.
+     *
+     * @param xml The source xml
+     * @return the xml doctype content or null if nothing was found.
+     */
+    public static String getDoctypePreamble(@NotNull final String xml) {
+        final MatchResult result = DOCTYPE_RE.exec(xml);
+        return result == null ? null : result.getGroup(2);
     }
 
     public static String removeAllPreamble(@NotNull final String xml) {
         return removeDoctypePreamble(removeXmlPreamble(xml));
     }
 
+    public static String getAllPreamble(@NotNull final String xml) {
+        final String preamble = getXmlPreamble(xml);
+        final String doctype = getDoctypePreamble(xml);
+        if (preamble != null && doctype != null) {
+            return preamble + "\n" + doctype;
+        } else if (preamble != null) {
+            return preamble;
+        } else if (doctype != null) {
+            return doctype;
+        } else {
+            return null;
+        }
+    }
+
     public static Document convertStringToDocument(final String xml) throws DOMParseException {
-        final Document doc = XMLParser.parse(xml);
+        final Document doc = XMLParser.parse(xml == null ? "" : xml);
 
         // Workaround for http://code.google.com/p/google-web-toolkit/issues/detail?id=3613
         final NodeList parseErrors = doc.getElementsByTagName("parsererror");
@@ -123,24 +116,6 @@ public class XMLUtilities {
             throw new DOMParseException(getNodeText(node.getChildNodes().item(1)));
         } else {
             return doc;
-        }
-    }
-
-    public static String resolveInjections(@NotNull final String xml) {
-        return resolveInjections(xml, null);
-    }
-
-    public static String resolveInjections(@NotNull final String xml, @Nullable final String entities) {
-        String fixedXml = xml;
-        if (entities != null) {
-            fixedXml = entities + xml;
-        }
-        try {
-            final Document doc = convertStringToDocument(fixedXml);
-            InjectionResolver.resolveInjections(doc);
-            return removeAllPreamble(doc.toString());
-        } catch (DOMParseException e) {
-            return xml;
         }
     }
 
@@ -213,13 +188,35 @@ public class XMLUtilities {
      */
     public static String getNodeText(Node xmlNode) {
         if (xmlNode == null) return "";
-        final StringBuilder result = new StringBuilder(4096);
-        for (Node child = xmlNode.getFirstChild(); child != null; child = child.getNextSibling()) {
-            if (child.getNodeType() == Node.TEXT_NODE) {
-                result.append(child.getNodeValue());
+
+        if (xmlNode instanceof Text) {
+            return xmlNode.getNodeValue();
+        } else {
+            final StringBuilder result = new StringBuilder(4096);
+            for (Node child = xmlNode.getFirstChild(); child != null; child = child.getNextSibling()) {
+                if (child.getNodeType() == Node.TEXT_NODE) {
+                    result.append(child.getNodeValue());
+                }
+            }
+            return result.toString();
+        }
+    }
+
+    public static void setNodeText(Node xmlNode, String text)
+            throws DOMException {
+        if (xmlNode instanceof Text) {
+            xmlNode.setNodeValue(text);
+        } else {
+            // get rid of any existing children
+            Node child;
+            while ((child = xmlNode.getFirstChild()) != null) {
+                xmlNode.removeChild(child);
+            }
+            // create a Text node to hold the given content
+            if (text != null && text.length() != 0){
+                xmlNode.appendChild(xmlNode.getOwnerDocument().createTextNode(text));
             }
         }
-        return result.toString();
     }
 
     /**

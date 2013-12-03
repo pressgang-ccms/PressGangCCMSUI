@@ -425,7 +425,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                         // TODO: This url should be part of the servers.json file
                         final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-                        Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        if (displayedEntity.getId() != null) {
+                            Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        } else {
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveTheContentSpec());
+                        }
                     }
                 });
             }
@@ -474,11 +478,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     // create the object to be saved
                     final RESTTextContentSpecV1 updatedSpec = new RESTTextContentSpecV1();
-                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(
-                            displayedEntity.getText())) {
+                    if (selectedEntity == null || selectedEntity.getText() == null || !selectedEntity.getText().equals(displayedEntity.getText())) {
                         updatedSpec.explicitSetText(displayedEntity.getText());
                     }
                     updatedSpec.setProcessingOptions(displayedEntity.getProcessingOptions());
+                    updatedSpec.explicitSetLocale(displayedEntity.getLocale());
 
                     if (displayedEntity.getProperties() != null) {
                         updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());

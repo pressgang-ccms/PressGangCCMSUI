@@ -12,8 +12,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-
-import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jetbrains.annotations.NotNull;
 
 @Dependent
@@ -40,9 +38,9 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
         final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
 
         /*
-            The history token is expected to be the topic id, optionally with a semicolon
-            and then an encoded condition.
-         */
+The history token is expected to be the topic id, optionally with a semicolon
+and then an encoded condition.
+*/
 
         try {
             final String[] tokens = fixedToken.split(";");
@@ -50,8 +48,8 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
             if (tokens.length > 0) {
 
                 /*
-                    Set the condition override if it is present.
-                 */
+Set the condition override if it is present.
+*/
                 if (tokens.length > 1) {
                     conditionOverride = URL.decode(tokens[1]);
                 }
@@ -61,7 +59,6 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
                 final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                     @Override
                     public void success(@NotNull final RESTTopicV1 retValue) {
-                        retValue.setXml(DocBookUtilities.escapeAllCustomEntities(retValue.getXml()));
                         displayTopicRendered(retValue, true, true);
                     }
                 };
@@ -82,12 +79,12 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
             xml = processXML(xml);
 
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),
-                new RESTCallBack<IntegerWrapper>() {
-                    @Override
-                    public void success(@NotNull final IntegerWrapper value) {
-                        getDisplay().displayTopicRendered(value.value, readOnly, showImages);
-                    }
-                }, getDisplay(), true);
+                    new RESTCallBack<IntegerWrapper>() {
+                        @Override
+                        public void success(@NotNull final IntegerWrapper value) {
+                            getDisplay().displayTopicRendered(value.value, readOnly, showImages);
+                        }
+                    }, getDisplay(), true);
         } catch (DOMParseException e) {
             handleXMLError(e);
         }

@@ -1470,16 +1470,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
 
                         // This should always be false
-                        if (!getXmlValidator().isCheckingXML()) {
-                            loadAllCustomEntities(new StringLoaded() {
-                                @Override
-                                public void stringLoaded(final String entities) {
-                                    customEntitiesLoaded = true;
-                                    getXmlValidator().setCustomEntities(entities);
-                                    getXmlValidator().startCheckingXML();
-                                }
-                            });
-                        }
+                        initAndStartXMLValidation();
                     } else {
                         timer.cancel();
                         refreshSplitRenderedView(true);
@@ -1506,7 +1497,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    private XMLValidator getXmlValidator() {
+    @Override
+    protected XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
             xmlValidator = new XMLValidator(new XMLValidationHelper() {
                         @Override
@@ -3355,6 +3347,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         // Only attempt to load custom entities for existing topics
         if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
             if (!customEntitiesLoaded) {
+                getTopicXMLPresenter().getDisplay().getXmlErrors().setText(PressGangCCMSUI.INSTANCE.LoadingEntities());
+
                 final RESTTopicV1 topic = getDisplayedTopic();
                 if (topic != null) {
                     getFailOverRESTCall().performRESTCall(
