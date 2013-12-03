@@ -14,12 +14,12 @@ public final class Constants {
     /**
      * The UI version
      */
-    public static final String VERSION = "1.3-SNAPSHOT";
+    public static final String VERSION = "1.4-SNAPSHOT";
 
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201312031231";
+    public static final String BUILD = "201312040911";
 
     /**
      * A collection of all the Docbook 4.5 entities
