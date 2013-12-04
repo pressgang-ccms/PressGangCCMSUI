@@ -120,8 +120,16 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
 
     }
 
-    public EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> generateListProvider(@NotNull final Integer id,
-            @NotNull final BaseTemplateViewInterface waitDisplay) {
+    public void redisplayList(@NotNull final RESTTextContentSpecV1 contentSpec) {
+        if (contentSpec.getId() == null || getDisplay().getProvider() == null) {
+            getDisplay().setProvider(generateListProvider(contentSpec));
+        } else {
+            // If there is already preloaded data then do nothing since this is an asynchronus list
+        }
+    }
+
+    public EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> generateListProvider(@NotNull final RESTTextContentSpecV1
+            contentSpec) {
 
         getProviderData().reset();
 
@@ -129,42 +137,46 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                 EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
+                if (contentSpec.getId() != null) {
+                    final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTextContentSpecV1 retValue) {
+                            checkArgument(retValue.getRevisions() != null, "Returned entity should have a valid revisions collection.");
+                            checkArgument(retValue.getRevisions().getItems() != null,
+                                    "Returned entity should have a valid revisions collection with a valid items collection.");
+                            checkArgument(retValue.getRevisions().getSize() != null,
+                                    "Returned entity should have a valid revisions collection with a valid size.");
 
-                final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTextContentSpecV1 retValue) {
-                        checkArgument(retValue.getRevisions() != null, "Returned entity should have a valid revisions collection.");
-                        checkArgument(retValue.getRevisions().getItems() != null,
-                                "Returned entity should have a valid revisions collection with a valid items collection.");
-                        checkArgument(retValue.getRevisions().getSize() != null,
-                                "Returned entity should have a valid revisions collection with a valid size.");
+                            if (retValue.getRevisions().getItems().size() != 0) {
+                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null,
+                                        "Returned entities should have a valid properties collection.");
+                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getItems() != null,
+                                        "Returned entities should have a valid properties collection with a valid items collection.");
+                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getSize() != null,
+                                        "Returned entities should have a valid properties collection with a valid size.");
+                            }
 
-                        if (retValue.getRevisions().getItems().size() != 0) {
-                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null,
-                                    "Returned entities should have a valid properties collection.");
-                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getItems() != null,
-                                    "Returned entities should have a valid properties collection with a valid items collection.");
-                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getSize() != null,
-                                    "Returned entities should have a valid properties collection with a valid size.");
+                            // Fix the text
+                            for (final RESTTextContentSpecCollectionItemV1 item : retValue.getRevisions().getItems()) {
+                                ComponentContentSpecV1.fixDisplayedText(item.getItem());
+                            }
+
+                            getProviderData().setItems(retValue.getRevisions().getItems());
+                            getProviderData().setSize(retValue.getRevisions().getSize());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         }
+                    };
 
-                        // Fix the text
-                        for (final RESTTextContentSpecCollectionItemV1 item : retValue.getRevisions().getItems()) {
-                            ComponentContentSpecV1.fixDisplayedText(item.getItem());
-                        }
+                    final int start = list.getVisibleRange().getStart();
+                    getProviderData().setStartRow(start);
+                    final int length = list.getVisibleRange().getLength();
+                    final int end = start + length;
 
-                        getProviderData().setItems(retValue.getRevisions().getItems());
-                        getProviderData().setSize(retValue.getRevisions().getSize());
-                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                    }
-                };
-
-                final int start = list.getVisibleRange().getStart();
-                getProviderData().setStartRow(start);
-                final int length = list.getVisibleRange().getLength();
-                final int end = start + length;
-
-                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(id, start, end), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(contentSpec.getId(), start, end),
+                            callback, display);
+                } else {
+                    resetProvider();
+                }
             }
         };
         return provider;

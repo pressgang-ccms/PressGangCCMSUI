@@ -21,7 +21,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -181,39 +180,49 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         }
     }
 
-    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final Integer id, @NotNull final BaseTemplateViewInterface waitDisplay) {
+    public void redisplayList(@NotNull final RESTTopicV1 topic) {
+        if (topic.getId() == null || getDisplay().getProvider() == null) {
+            getDisplay().setProvider(generateListProvider(topic));
+        } else {
+            // If there is already preloaded data then do nothing since this is an asynchronus list
+        }
+    }
+
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final RESTTopicV1 topic) {
 
         getProviderData().reset();
 
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
+                if (topic.getId() != null) {
+                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTopicV1 retValue) {
+                            checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
 
-                final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
-                    @Override
-                    public void success(@NotNull final RESTTopicV1 retValue) {
-                        checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
+                            if (retValue.getRevisions().getItems().size() != 0) {
+                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
+                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
+                            }
 
-                        if (retValue.getRevisions().getItems().size() != 0) {
-                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
-                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
+                            getProviderData().setItems(retValue.getRevisions().getItems());
+                            getProviderData().setSize(retValue.getRevisions().getSize());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         }
+                    };
 
-                        getProviderData().setItems(retValue.getRevisions().getItems());
-                        getProviderData().setSize(retValue.getRevisions().getSize());
-                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                    }
-                };
+                    final int start = list.getVisibleRange().getStart();
+                    getProviderData().setStartRow(start);
+                    final int length = list.getVisibleRange().getLength();
+                    final int end = start + length;
 
-                final int start = list.getVisibleRange().getStart();
-                getProviderData().setStartRow(start);
-                final int length = list.getVisibleRange().getLength();
-                final int end = start + length;
-
-                resetProvider();
-
-                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(id, start, end), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(topic.getId(), start, end), callback,
+                            display);
+                } else {
+                    resetProvider();
+                }
             }
         };
         return provider;

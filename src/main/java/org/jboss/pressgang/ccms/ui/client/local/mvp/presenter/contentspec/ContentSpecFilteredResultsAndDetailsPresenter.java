@@ -297,6 +297,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     if (viewIsInFilter(filter, contentSpecRevisionsPresenter.getDisplay())) {
                         LOGGER.log(Level.INFO, "\tInitializing content spec revisions view");
                         contentSpecRevisionsPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),readOnly);
+                        contentSpecRevisionsPresenter.redisplayList(getDisplayedContentSpec());
                         // make sure the revisions list is displayed and not the diff view if it ws previously open
                         if (!contentSpecRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
                             contentSpecRevisionsPresenter.getDisplay().displayRevisions();
@@ -1389,15 +1390,14 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             revisionsLoadInitiated = true;
 
             /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new content spec */
-            if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
-
-                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null,
+            final RESTTextContentSpecCollectionItemV1 selectedItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+            if (selectedItem != null) {
+                checkState(selectedItem.getItem() != null,
                         "The selected collection item to reference a valid entity.");
-                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId() != null,
+                checkState(selectedItem.getItem().getId() != null,
                         "The selected collection item to reference a valid entity with a valid ID.");
 
-                contentSpecRevisionsPresenter.getDisplay().setProvider(contentSpecRevisionsPresenter.generateListProvider(
-                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId(), display));
+                contentSpecRevisionsPresenter.getDisplay().setProvider(contentSpecRevisionsPresenter.generateListProvider(selectedItem.getItem()));
             }
         }
     }
