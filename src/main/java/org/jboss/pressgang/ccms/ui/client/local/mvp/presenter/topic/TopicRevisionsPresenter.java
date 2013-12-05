@@ -110,7 +110,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
     /**
      * Holds the data required to populate and refresh the tags list
      */
-    private final ProviderUpdateData<RESTTopicCollectionItemV1> providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
+    private ProviderUpdateData<RESTTopicCollectionItemV1> providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
 
     @NotNull
     public ProviderUpdateData<RESTTopicCollectionItemV1> getProviderData() {
@@ -180,21 +180,30 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         }
     }
 
-    public void redisplayList(@NotNull final RESTTopicV1 topic) {
-        if (topic.getId() == null || getDisplay().getProvider() == null) {
-            getDisplay().setProvider(generateListProvider(topic));
-        } else {
-            // If there is already preloaded data then do nothing since this is an asynchronus list
+    public void reset() {
+        providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
+        if (getDisplay().getProvider() != null) {
+            getDisplay().getProvider().resetProvider();
+            getDisplay().setProvider(null);
+        }
+        getDisplay().setRevisionTopic(null);
+    }
+
+    public void refreshList() {
+        if (getDisplay().getProvider() != null && getProviderData().isValid()) {
+            getDisplay().getProvider().displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
         }
     }
 
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final RESTTopicV1 topic) {
 
-        getProviderData().reset();
+        final ProviderUpdateData<RESTTopicCollectionItemV1> providerData = getProviderData();
+        providerData.reset();
 
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
+                resetProvider();
                 if (topic.getId() != null) {
                     final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                         @Override
@@ -207,21 +216,22 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
                                 checkArgument(retValue.getRevisions().getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
                             }
 
-                            getProviderData().setItems(retValue.getRevisions().getItems());
-                            getProviderData().setSize(retValue.getRevisions().getSize());
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            providerData.setItems(retValue.getRevisions().getItems());
+                            providerData.setSize(retValue.getRevisions().getSize());
+                            displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                         }
                     };
 
                     final int start = list.getVisibleRange().getStart();
-                    getProviderData().setStartRow(start);
+                    providerData.setStartRow(start);
                     final int length = list.getVisibleRange().getLength();
                     final int end = start + length;
 
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicWithRevisions(topic.getId(), start, end), callback,
                             display);
                 } else {
-                    resetProvider();
+                    providerData.resetToEmpty();
+                    displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                 }
             }
         };

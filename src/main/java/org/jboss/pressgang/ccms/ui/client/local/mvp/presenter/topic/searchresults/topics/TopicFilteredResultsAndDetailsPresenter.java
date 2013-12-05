@@ -1080,6 +1080,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* Disable the topic revision view */
         viewLatestTopicRevision();
 
+        topicRevisionsPresenter.reset();
         resetAllInitialLoads();
     }
 
@@ -1350,19 +1351,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private void loadRevisions() {
         if (!revisionsLoadInitiated) {
             revisionsLoadInitiated = true;
-            final RESTTopicCollectionItemV1 selectedItem = getSearchResultPresenter().getProviderData().getSelectedItem();
 
-            /* If this is a new topic, the selectedItem will be null, and there will not be any revisions to get */
-            if (selectedItem != null) {
-                checkState(selectedItem != null,
-                        "There should be a selected collection item.");
-                checkState(selectedItem.getItem() != null,
-                        "The selected collection item to reference a valid entity.");
-                checkState(selectedItem.getItem().getId() != null,
-                        "The selected collection item to reference a valid entity with a valid ID.");
-
-                this.topicRevisionsPresenter.getDisplay().setProvider(topicRevisionsPresenter.generateListProvider(getDisplayedTopic()));
-            }
+            topicRevisionsPresenter.getDisplay().setProvider(topicRevisionsPresenter.generateListProvider(getDisplayedTopic()));
         }
     }
 
@@ -2128,7 +2118,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
 
                         topicRevisionsPresenter.getDisplay().display(getDisplayedTopic(), readOnly);
-                        topicRevisionsPresenter.redisplayList(getDisplayedTopic());
+                        topicRevisionsPresenter.refreshList();
                         // make sure the revisions list is displayed and not the diff view if it was previously open
                         if (!topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
                             topicRevisionsPresenter.getDisplay().displayRevisions();
@@ -2590,9 +2580,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         displayRevision(revisionTopic.getItem());
 
-                        topicRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
-                                topicRevisionsPresenter.getProviderData().getItems(), topicRevisionsPresenter.getProviderData().getSize(),
-                                topicRevisionsPresenter.getProviderData().getStartRow());
+                        if (topicRevisionsPresenter.getProviderData().isValid()) {
+                            topicRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                    topicRevisionsPresenter.getProviderData().getItems(), topicRevisionsPresenter.getProviderData().getSize(),
+                                    topicRevisionsPresenter.getProviderData().getStartRow());
+                        }
                     } finally {
                         LOGGER.log(Level.INFO,
                                 "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");

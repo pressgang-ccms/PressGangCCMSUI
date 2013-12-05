@@ -443,8 +443,13 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
     @Override
     public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
+        if (this.provider != null) {
+            this.provider.removeDataDisplay(results);
+        }
         this.provider = provider;
-        provider.addDataDisplay(results);
+        if (provider != null) {
+            provider.addDataDisplay(results);
+        }
     }
 
     @NotNull

@@ -324,8 +324,13 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
 
     @Override
     public void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider) {
+        if (this.provider != null) {
+            this.provider.removeDataDisplay(results);
+        }
         this.provider = provider;
-        provider.addDataDisplay(results);
+        if (provider != null) {
+            provider.addDataDisplay(results);
+        }
     }
 
     @NotNull
@@ -340,8 +345,8 @@ public class ContentSpecRevisionsView extends BaseTemplateView implements Conten
     }
 
     @Override
-    public void display(@NotNull final RESTTextContentSpecV1 topic, final boolean readOnly) {
-        this.mainContentSpec = topic;
+    public void display(@NotNull final RESTTextContentSpecV1 contentSpec, final boolean readOnly) {
+        this.mainContentSpec = contentSpec;
     }
 
     @Override

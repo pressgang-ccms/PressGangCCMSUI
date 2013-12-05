@@ -87,8 +87,8 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
     /**
      * Holds the data required to populate and refresh the tags list
      */
-    private final ProviderUpdateData<RESTTextContentSpecCollectionItemV1> providerData = new
-            ProviderUpdateData<RESTTextContentSpecCollectionItemV1>();
+    private ProviderUpdateData<RESTTextContentSpecCollectionItemV1> providerData = new ProviderUpdateData
+            <RESTTextContentSpecCollectionItemV1>();
 
     @NotNull
     public ProviderUpdateData<RESTTextContentSpecCollectionItemV1> getProviderData() {
@@ -120,23 +120,32 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void redisplayList(@NotNull final RESTTextContentSpecV1 contentSpec) {
-        if (contentSpec.getId() == null || getDisplay().getProvider() == null) {
-            getDisplay().setProvider(generateListProvider(contentSpec));
-        } else {
-            // If there is already preloaded data then do nothing since this is an asynchronus list
+    public void reset() {
+        providerData = new ProviderUpdateData<RESTTextContentSpecCollectionItemV1>();
+        if (getDisplay().getProvider() != null) {
+            getDisplay().getProvider().resetProvider();
+            getDisplay().setProvider(null);
+        }
+        getDisplay().setRevisionContentSpec(null);
+    }
+
+    public void refreshList() {
+        if (getDisplay().getProvider() != null && getProviderData().isValid()) {
+            getDisplay().getProvider().displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
         }
     }
 
     public EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> generateListProvider(@NotNull final RESTTextContentSpecV1
             contentSpec) {
 
-        getProviderData().reset();
+        final ProviderUpdateData<RESTTextContentSpecCollectionItemV1> providerData = getProviderData();
+        providerData.reset();
 
         final EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1> provider = new
                 EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
+                resetProvider();
                 if (contentSpec.getId() != null) {
                     final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
                         @Override
@@ -161,24 +170,26 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                                 ComponentContentSpecV1.fixDisplayedText(item.getItem());
                             }
 
-                            getProviderData().setItems(retValue.getRevisions().getItems());
-                            getProviderData().setSize(retValue.getRevisions().getSize());
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            providerData.setItems(retValue.getRevisions().getItems());
+                            providerData.setSize(retValue.getRevisions().getSize());
+                            displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                         }
                     };
 
                     final int start = list.getVisibleRange().getStart();
-                    getProviderData().setStartRow(start);
+                    providerData.setStartRow(start);
                     final int length = list.getVisibleRange().getLength();
                     final int end = start + length;
 
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecWithRevisions(contentSpec.getId(), start, end),
                             callback, display);
                 } else {
-                    resetProvider();
+                    providerData.resetToEmpty();
+                    displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                 }
             }
         };
+
         return provider;
     }
 }
