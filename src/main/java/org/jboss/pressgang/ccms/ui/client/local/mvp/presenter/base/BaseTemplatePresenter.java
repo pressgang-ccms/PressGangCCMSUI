@@ -277,9 +277,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         // Base
         display.getTopShortcutView().getHome().setHref("#" + WelcomePresenter.HISTORY_TOKEN);
         display.getTopShortcutView().getDocbuilder().setHref("#" + DocBuilderPresenter.HISTORY_TOKEN);
-        display.getTopShortcutView().getCreateTopic().setHref("#" + TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+        display.getTopShortcutView().getCreateTopic().setHref("#" + TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX);
         display.getTopShortcutView().getCreateContentSpec().setHref("#" + ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";"
-                + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+                + Constants.CREATE_PATH_SEGMENT_PREFIX);
 
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
