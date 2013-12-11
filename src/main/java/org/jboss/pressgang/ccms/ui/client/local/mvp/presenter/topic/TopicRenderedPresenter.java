@@ -38,18 +38,15 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
         final String fixedToken = removeHistoryToken(historyToken, HISTORY_TOKEN);
 
         /*
-The history token is expected to be the topic id, optionally with a semicolon
-and then an encoded condition.
-*/
-
+         * The history token is expected to be the topic id, optionally with a semicolon
+         * and then an encoded condition.
+         */
         try {
             final String[] tokens = fixedToken.split(";");
 
             if (tokens.length > 0) {
 
-                /*
-Set the condition override if it is present.
-*/
+                // Set the condition override if it is present.
                 if (tokens.length > 1) {
                     conditionOverride = URL.decode(tokens[1]);
                 }
