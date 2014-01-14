@@ -2927,10 +2927,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
                                 }
 
-                                if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
-                                    topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
-                                }
-
                                 if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
                                     topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().hide();
                                 }
@@ -2974,17 +2970,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
-                            }
-                        }
-                    });
-                } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'W') {
-                    Scheduler.get().scheduleDeferred(new Command() {
-                        @Override
-                        public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
-                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
-                                topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
-                                topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
                             }
                         }
                     });
@@ -3113,42 +3098,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         });
 
-        topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
-
-            @Override
-            public void onKeyPress(@NotNull final KeyPressEvent event) {
-                final int charCode = event.getUnicodeCharCode();
-                if (charCode == 0) {
-                    // it's probably Firefox
-                    final int keyCode = event.getNativeEvent().getKeyCode();
-                    // beware! keyCode=40 means "down arrow", while charCode=40 means '('
-                    // always check the keyCode against a list of "known to be buggy" codes!
-                    if (keyCode == KeyCodes.KEY_ENTER) {
-                        insertCspDetails(topicXMLDisplay, display);
-                    }
-                } else if (charCode == KeyCodes.KEY_ENTER) {
-                    insertCspDetails(topicXMLDisplay, display);
-                }
-
-            }
-        });
-
-        topicXMLDisplay.getCSPTopicDetailsDialog().getOK().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                insertCspDetails(topicXMLDisplay, display);
-            }
-        });
-
-        topicXMLDisplay.getCSPTopicDetailsDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideCspDetailsDialogBox(topicXMLDisplay);
-            }
-        });
-
         topicXMLDisplay.getXmlTemplatesDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
@@ -3210,11 +3159,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         hidePlainTextXMLDialog(topicXMLDisplay);
     }
 
-    private void hideCspDetailsDialogBox(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
-        topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
-        topicXMLDisplay.getEditor().focus();
-    }
-
     private void hideElementDialogBox(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
@@ -3241,41 +3185,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             topicXMLDisplay.getEditor().insertAtCursor(value);
         }
         hideTemplateDialogBox(topicXMLDisplay);
-    }
-
-    private void insertCspDetails(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
-            @NotNull final BaseTemplateViewInterface display) {
-        @NotNull final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
-        if (!ids.isEmpty()) {
-
-            final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
-                @Override
-                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                    final StringBuilder details = new StringBuilder();
-                    for (@NotNull final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
-                        final RESTTopicV1 topic = topicCollectionItem.getItem();
-                        if (!details.toString().isEmpty()) {
-                            details.append("\n");
-                        }
-                        details.append(topic.getTitle() + " [" + topic.getId() + "]");
-                    }
-
-                    topicXMLDisplay.getEditor().insertText(details.toString());
-                }
-
-                @Override
-                public void failed() {
-                    display.removeWaitOperation();
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ConnectionError());
-                }
-            };
-
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(Constants.QUERY_PATH_SEGMENT_PREFIX
-                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids), callback, display);
-
-            hideCspDetailsDialogBox(topicXMLDisplay);
-        }
-
     }
 
     /**

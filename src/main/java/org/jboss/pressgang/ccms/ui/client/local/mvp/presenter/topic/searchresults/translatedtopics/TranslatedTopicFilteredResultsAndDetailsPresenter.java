@@ -720,10 +720,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             return true;
         }
 
-        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
-            return true;
-        }
-
         if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
             return true;
         }
