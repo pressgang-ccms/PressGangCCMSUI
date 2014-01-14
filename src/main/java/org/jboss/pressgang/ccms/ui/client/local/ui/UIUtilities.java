@@ -291,4 +291,47 @@ final public class UIUtilities {
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         return retValue;
     }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text) {
+        return createAnchorButton(text, false, false);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final String id) {
+        return createAnchorButton(text, false, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu) {
+        return createAnchorButton(text, subMenu, false);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
+        return createAnchorButton(text, subMenu, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
+        return createAnchorButton(text, subMenu, externalLink, null);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final AnchorButton retValue = new AnchorButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        } else if (externalLink) {
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
+
+        return retValue;
+    }
 }
