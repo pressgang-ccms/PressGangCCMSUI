@@ -543,17 +543,16 @@ html {
     height: 100%;
     text-align: center;
     -moz-box-sizing: border-box;
+    cursor: pointer;
 }
 
 .TextButton.TopTab, .DownLabel.TopTab {
-    border-top-left-radius: 0.5em 0.5em;
-    border-top-right-radius: 0.5em 0.5em;
+    border-radius: 0.5em 0.5em 0px 0px;
     text-align: center;
 }
 
 .TextButton.LeftTab, .DownLabel.LeftTab {
-    border-top-left-radius: 0.5em 0.5em;
-    border-bottom-left-radius: 0.5em 0.5em;
+    border-radius: 0.5em 0.5em 0px 0px;
     text-align: center;
 }
 
@@ -1185,9 +1184,11 @@ td.TopicRenderingInfoEntitiesCell {
 
 div.AnchorPushButton, div.AnchorMenuItem {
     position: relative;
+    cursor: pointer;
 }
 
 a.AnchorPushButton, a.AnchorMenuItem {
+    display: inline-block;
     position: absolute;
     top: 0;
     left: 0;
