@@ -23,6 +23,8 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
 
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
+    private String createdBy;
+    private String editedBy;
     @Nullable
     private Date editedAfter;
     @Nullable
@@ -45,6 +47,24 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     private String copyrightYear;
     private String publicanCfg;
     private boolean matchAll = MATCH_ALL_DEFAULT;
+
+    @Nullable
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(@Nullable final String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Nullable
+    public String getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(@Nullable final String editedBy) {
+        this.editedBy = editedBy;
+    }
 
     @Nullable
     public Date getEditedAfter() {
@@ -219,7 +239,16 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         super(filter);
     }
 
+    @Override
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
+        if (!GWTUtilities.isStringNullOrEmpty(getCreatedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.CREATED_BY_VAR, getCreatedBy()));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(getEditedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.EDITED_BY_VAR, getEditedBy()));
+        }
+
         if (getType() != null) {
             filter.getFilterFields_OTM().addNewItem(
                     createFilterField(CommonFilterConstants.CONTENT_SPEC_TYPE_FILTER_VAR, getType().toString()));
@@ -304,9 +333,12 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         }
     }
 
+    @Override
     public void initialize(@Nullable final RESTFilterV1 filter) {
         if (filter != null) {
 
+            createdBy = "";
+            editedBy = "";
             editedAfter = null;
             editedBefore = null;
             editedInLastXDays = null;
@@ -332,7 +364,11 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
 
                     final RESTFilterFieldV1 fieldItem = field.getItem();
 
-                    if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR)) {
+                    if (fieldItem.getName().equals(CommonFilterConstants.CREATED_BY_VAR)) {
+                        setCreatedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.EDITED_BY_VAR)) {
+                        setEditedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR)) {
                         setIds(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_TITLE_FILTER_VAR)) {
                         setTitle(fieldItem.getValue());
@@ -392,6 +428,14 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
 
         @NotNull final StringBuilder retValue = new StringBuilder(
                 includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+
+        if (!GWTUtilities.isStringNullOrEmpty(createdBy)) {
+            retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(encodeQueryParameter(createdBy));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(editedBy)) {
+            retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(encodeQueryParameter(editedBy));
+        }
 
         if (!GWTUtilities.isStringNullOrEmpty(ids)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR).append("=").append(encodeQueryParameter(ids));
