@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
@@ -33,6 +34,8 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final Label templateLabel =  new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplates());
 
+    private final Label copyToClipboard = new Label(PressGangCCMSUI.INSTANCE.CtrlCToCopy());
+
     private final TextArea xmlTemplate = new TextArea();
 
     private final TextArea inlineXmlTemplate = new TextArea();
@@ -56,17 +59,17 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     public RESTImageV1Editor() {
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_PARENT_DOCK_PANEL);
 
-        xmlTemplate.setReadOnly(true);
-        inlineXmlTemplate.setReadOnly(true);
-        bareXmlTemplate.setReadOnly(true);
+        getXmlTemplate().setReadOnly(true);
+        getInlineXmlTemplate().setReadOnly(true);
+        getBareXmlTemplate().setReadOnly(true);
 
         imageTemplateTable.addStyleName(CSSConstants.ImageView.IMAGE_TEMPLATES_TAB_PANEL);
         imageDetails.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DETAILS_TABLE);
         descriptionLabel.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL);
         description.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT);
-        xmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
-        inlineXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
-        bareXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        getXmlTemplate().addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        getInlineXmlTemplate().addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        getBareXmlTemplate().addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
         id.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_ID_TEXT);
 
         imageDetails.setWidget(0, 0, idLabel);
@@ -74,12 +77,16 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         imageDetails.setWidget(1, 0, descriptionLabel);
         imageDetails.setWidget(1, 1, description);
 
-        imageDetails.setWidget(2, 0, templateLabel);
+        final VerticalPanel templateLabels = new VerticalPanel();
+        templateLabels.add(templateLabel);
+        templateLabels.add(copyToClipboard);
+
+        imageDetails.setWidget(2, 0, templateLabels);
         imageDetails.setWidget(2, 1, imageTemplateTable);
 
-        imageTemplateTable.add(xmlTemplate, PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
-        imageTemplateTable.add(bareXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
-        imageTemplateTable.add(inlineXmlTemplate, PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
+        imageTemplateTable.add(getXmlTemplate(), PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
+        imageTemplateTable.add(getBareXmlTemplate(), PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
+        imageTemplateTable.add(getInlineXmlTemplate(), PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DETAIL_CELL);
@@ -90,6 +97,10 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
         this.add(imageDetails, DockPanel.NORTH);
         this.add(languageImages_OTM, DockPanel.CENTER);
+
+        // we need to sink the click handler to respond to clicks (http://stackoverflow.com/a/4303407/157605)
+        imageTemplateTable.sinkEvents(Event.ONCLICK);
+
     }
 
     @Override
@@ -112,10 +123,10 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         this.value = value;
         this.id.setValue(value.getId());
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
-        this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
+        this.getXmlTemplate().setText(ComponentImageV1.getXMLTemplate(value));
 
-        this.inlineXmlTemplate.setText(ComponentImageV1.getInlineXMLTemplate(value));
-        this.bareXmlTemplate.setText(ComponentImageV1.getBareXMLTemplate(value));
+        this.getInlineXmlTemplate().setText(ComponentImageV1.getInlineXMLTemplate(value));
+        this.getBareXmlTemplate().setText(ComponentImageV1.getBareXMLTemplate(value));
     }
 
     @Ignore
@@ -162,5 +173,20 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
     public void setReadOnly(final boolean readOnly) {
         this.readOnly = readOnly;
         languageImages_OTM.setReadOnly(readOnly);
+    }
+
+    @Ignore
+    public TextArea getXmlTemplate() {
+        return xmlTemplate;
+    }
+
+    @Ignore
+    public TextArea getInlineXmlTemplate() {
+        return inlineXmlTemplate;
+    }
+
+    @Ignore
+    public TextArea getBareXmlTemplate() {
+        return bareXmlTemplate;
     }
 }

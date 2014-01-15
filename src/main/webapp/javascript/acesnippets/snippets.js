@@ -1093,6 +1093,18 @@ snippet xiinclude\n\
 	<xi:include xmlns:xi='http://www.w3.org/2001/XInclude'' href='${1:path_to_file}'/>\n\
 snippet /para\n\
 	</para><para>\n\
+snippet mediaobject\n\
+	<mediaobject>\n\
+		<imageobject>\n\
+			<imagedata fileref='images/${1:imageid}.png'/>\n\
+		</imageobject>\n\
+	</mediaobject>\n\
+snippet inlinemediaobject\n\
+	<inlinemediaobject>\n\
+		<imageobject>\n\
+			<imagedata fileref='images/${1:imageid}.png'/>\n\
+		</imageobject>\n\
+	</inlinemediaobject>\n\
 ";
 });
 
