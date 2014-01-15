@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -20,6 +21,8 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -198,6 +201,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
         populateLocales();
         buildHelpDatabase();
+        bindTabSelections();
 
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
@@ -209,6 +213,52 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
             }
         });
+    }
+
+    private void bindTabSelections()
+    {
+        imageComponent.getDisplay().getEditor().getImageTemplateTable().addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(@NotNull final SelectionEvent<Integer> event) {
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        final TextArea textArea = (TextArea)imageComponent.getDisplay().getEditor().getImageTemplateTable().getWidget(event.getSelectedItem());
+                        textArea.setFocus(true);
+                        textArea.selectAll();
+                    }
+                });
+            }
+        });
+
+        // select the text when the tab control is clicked (http://stackoverflow.com/a/4303407/157605)
+        imageComponent.getDisplay().getEditor().getImageTemplateTable().addHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                final TextArea textArea = (TextArea) imageComponent.getDisplay().getEditor().getImageTemplateTable().getWidget(imageComponent.getDisplay().getEditor().getImageTemplateTable().getSelectedIndex());
+                textArea.setFocus(true);
+                textArea.selectAll();
+            }
+        }, ClickEvent.getType());
+
+        // select the text when the text control is clicked
+        final ClickHandler textAreaClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                final TextArea textArea = (TextArea) event.getSource();
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        textArea.setFocus(true);
+                        textArea.selectAll();
+                    }
+                });
+            }
+        };
+
+        imageComponent.getDisplay().getEditor().getBareXmlTemplate().addClickHandler(textAreaClickHandler);
+        imageComponent.getDisplay().getEditor().getXmlTemplate().addClickHandler(textAreaClickHandler);
+        imageComponent.getDisplay().getEditor().getInlineXmlTemplate().addClickHandler(textAreaClickHandler);
     }
 
     private void buildHelpDatabase() {
@@ -281,6 +331,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     FailOverRESTCallDatabase.getImage(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId()),
                     callback, display);
         }
+
+
     }
 
     @NotNull
@@ -986,6 +1038,16 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         if (viewIsInFilter(filter, imageComponent.getDisplay())) {
             imageComponent.getDisplay().displayExtended(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false,
                     getUnassignedLocales().toArray(new String[0]));
+
+            // select the docbook template text so the users can just CTRL-C to copy it out
+            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                @Override
+                public void execute() {
+                    final TextArea textArea = (TextArea)imageComponent.getDisplay().getEditor().getImageTemplateTable().getWidget(imageComponent.getDisplay().getEditor().getImageTemplateTable().getSelectedIndex());
+                    textArea.setFocus(true);
+                    textArea.selectAll();
+                }
+            });
         }
 
         bindImageUploadButtons();

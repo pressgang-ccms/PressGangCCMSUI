@@ -507,6 +507,9 @@ public interface PressGangCCMSUI extends Constants {
     String DocbookImageTemplates();
 
     @NotNull
+    String CtrlCToCopy();
+
+    @NotNull
     String DocbookImageTemplate();
 
     @NotNull
