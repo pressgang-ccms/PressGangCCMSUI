@@ -1530,8 +1530,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
                             .getRevision()) {
                         checkState(topicRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
-                        final String lhs = topicRevisionsPresenter.getDisplay().getMergely().getLhs();
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(lhs);
+                        final String rhs = topicRevisionsPresenter.getDisplay().getMergely().getRhs();
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(rhs);
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay()}));
                     }
                     topicRevisionsPresenter.getDisplay().displayRevisions();
@@ -2117,7 +2117,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (viewIsInFilter(filter, topicRevisionsPresenter.getDisplay())) {
                         LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
 
-                        topicRevisionsPresenter.getDisplay().display(getDisplayedTopic(), readOnly);
+                        topicRevisionsPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
                         topicRevisionsPresenter.refreshList();
                         // make sure the revisions list is displayed and not the diff view if it was previously open
                         if (!topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {

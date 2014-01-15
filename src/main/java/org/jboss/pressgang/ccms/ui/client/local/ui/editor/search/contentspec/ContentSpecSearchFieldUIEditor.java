@@ -30,6 +30,8 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     private final DateBox editedBefore = new DateBox();
     private final SimpleIntegerBox editedInLastXDays = new SimpleIntegerBox();
     private final SimpleIntegerBox notEditedInLastXDays = new SimpleIntegerBox();
+    private final TextBox createdBy = new TextBox();
+    private final TextBox editedBy = new TextBox();
     private final ListBox type = new ListBox();
     private final TextBox ids = new TextBox();
     private final TextBox title = new TextBox();
@@ -49,6 +51,14 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     private ContentSpecSearchUIFields value;
 
     public ContentSpecSearchFieldUIEditor() {
+
+        @NotNull final Label contentSpecCreatedByLabel = new Label(PressGangCCMSUI.INSTANCE.CreatedBy());
+        setWidget(getRowCount(), 0, contentSpecCreatedByLabel);
+        setWidget(getRowCount() - 1, 1, createdBy);
+
+        @NotNull final Label contentSpecEditedByLabel = new Label(PressGangCCMSUI.INSTANCE.EditedBy());
+        setWidget(getRowCount(), 0, contentSpecEditedByLabel);
+        setWidget(getRowCount() - 1, 1, editedBy);
 
         @NotNull final Label contentSpecEditedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecEditedAfter());
         editedAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
@@ -147,6 +157,8 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     public void setValue(@NotNull final ContentSpecSearchUIFields value) {
         this.value = value;
 
+        createdBy.setValue(value.getCreatedBy());
+        editedBy.setValue(value.getEditedBy());
         editedAfter.setValue(value.getEditedAfter());
         editedBefore.setValue(value.getEditedBefore());
         editedInLastXDays.setValue(value.getEditedInLastXDays());
@@ -175,6 +187,8 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     @Override
     public ContentSpecSearchUIFields getValue() {
 
+        value.setCreatedBy(createdBy.getValue());
+        value.setEditedBy(editedBy.getValue());
         value.setEditedAfter(editedAfter.getValue());
         value.setEditedBefore(editedBefore.getValue());
         value.setEditedInLastXDays(editedInLastXDays.getValue());
