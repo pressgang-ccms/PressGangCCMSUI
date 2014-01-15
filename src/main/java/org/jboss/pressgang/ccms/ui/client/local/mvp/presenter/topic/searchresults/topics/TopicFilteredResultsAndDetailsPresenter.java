@@ -1530,8 +1530,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
                             .getRevision()) {
                         checkState(topicRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
-                        final String lhs = topicRevisionsPresenter.getDisplay().getMergely().getLhs();
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(lhs);
+                        final String rhs = topicRevisionsPresenter.getDisplay().getMergely().getRhs();
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(rhs);
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay()}));
                     }
                     topicRevisionsPresenter.getDisplay().displayRevisions();

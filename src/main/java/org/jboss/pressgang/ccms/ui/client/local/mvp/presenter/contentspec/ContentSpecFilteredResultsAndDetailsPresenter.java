@@ -381,8 +381,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 if (getDisplayedContentSpec().getRevision() == filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
                         .getRevision()) {
                     checkState(contentSpecRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
-                    final String lhs = contentSpecRevisionsPresenter.getDisplay().getMergely().getLhs();
-                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(lhs);
+                    final String rhs = contentSpecRevisionsPresenter.getDisplay().getMergely().getRhs();
+                    filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(rhs);
                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
