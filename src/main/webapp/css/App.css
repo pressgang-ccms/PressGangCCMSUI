@@ -546,6 +546,10 @@ html {
     cursor: pointer;
 }
 
+.DownLabel {
+    cursor: default;
+}
+
 .TextButton.TopTab, .DownLabel.TopTab {
     border-radius: 0.5em 0.5em 0px 0px;
     text-align: center;
@@ -608,6 +612,7 @@ html {
 
 .TextButton.gwt-PushButton-up-disabled {
     background-color: #B4B4B4;
+    cursor: default;
 }
 
 .ContentLayoutPanel>div {
