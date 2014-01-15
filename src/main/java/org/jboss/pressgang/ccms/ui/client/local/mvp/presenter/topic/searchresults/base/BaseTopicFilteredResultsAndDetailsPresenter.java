@@ -629,10 +629,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
             if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
                 split = SplitType.NONE;
-            } else if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
-                split = SplitType.VERTICAL;
-            } else {
+            } else if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL.equals(savedSplit)) {
                 split = SplitType.HORIZONTAL;
+            } else {
+                split = SplitType.VERTICAL;
             }
 
             double renderedPanelSize = Constants.SPLIT_PANEL_SIZE;
