@@ -2117,7 +2117,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     if (viewIsInFilter(filter, topicRevisionsPresenter.getDisplay())) {
                         LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
 
-                        topicRevisionsPresenter.getDisplay().display(getDisplayedTopic(), readOnly);
+                        topicRevisionsPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
                         topicRevisionsPresenter.refreshList();
                         // make sure the revisions list is displayed and not the diff view if it was previously open
                         if (!topicRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
