@@ -1,7 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -20,20 +21,21 @@ public class DocBookUtilities {
      * @return the fixed xml
      */
     public static String escapeAllCustomEntities(@NotNull final String xml) {
-        final List<String> allMatches = new ArrayList<String>();
-        final RegExp entityRe = RegExp.compile("&[\\w-\\.]+?;", "g");
+        final Set<String> allMatches = new HashSet<String>();
+        final RegExp entityRe = RegExp.compile("&([\\w-\\.]+?);", "g");
 
         MatchResult matchResult = null;
         while ((matchResult = entityRe.exec(xml)) != null) {
+            final String entityName = matchResult.getGroup(1);
             final String entity = matchResult.getGroup(0);
-            if (Constants.DOCBOOK_45_ENTITIES.indexOf(entity) == -1) {
+            if (Constants.DOCBOOK_45_ENTITIES.indexOf(entityName) == -1) {
                 allMatches.add(entity);
             }
         }
 
         String retValue = xml;
         for (final String customEntity : allMatches) {
-            retValue = retValue.replaceAll(customEntity, "&amp;" + customEntity.substring(1));
+            retValue = retValue.replace(customEntity, "&amp;" + customEntity.substring(1));
         }
 
         return retValue;

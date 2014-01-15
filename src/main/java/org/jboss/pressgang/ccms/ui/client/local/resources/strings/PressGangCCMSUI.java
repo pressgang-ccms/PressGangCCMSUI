@@ -45,6 +45,9 @@ public interface PressGangCCMSUI extends Constants {
     String DownloadingDTD();
 
     @NotNull
+    String LoadingEntities();
+
+    @NotNull
     String XMLErrors();
 
     @NotNull
@@ -1237,4 +1240,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String UnableToRenderEntity();
+
+    @NotNull
+    String PleaseSaveTheContentSpec();
 }

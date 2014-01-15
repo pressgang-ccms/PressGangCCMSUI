@@ -18,21 +18,19 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.EditorSettingsDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -309,61 +307,8 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         }
     }
 
-    public final static class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
-        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
-        private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
-        private final TextBox ids = new TextBox();
-        private final FlexTable layout = new FlexTable();
-
-        @Override
-        public PushButton getOK() {
-            return this.ok;
-        }
-
-        @Override
-        public PushButton getCancel() {
-            return this.cancel;
-        }
-
-        @NotNull
-        @Override
-        public TextBox getIds() {
-            return this.ids;
-        }
-
-        @NotNull
-        @Override
-        public DialogBox getDialogBox() {
-            return this;
-        }
-
-        public CSPTopicDetailsDialog() {
-            this.setGlassEnabled(true);
-            this.setText(PressGangCCMSUI.INSTANCE.InsertCSPTopicDetails());
-
-            this.layout.setWidget(0, 0, this.ids);
-            new NumbersAndCommaValidator(this.ids);
-
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(this.cancel);
-            buttonPanel.add(this.ok);
-
-            this.layout.setWidget(1, 0, buttonPanel);
-
-            this.add(this.layout);
-        }
-
-        @Override
-        public void show() {
-            super.show();
-            this.ids.setFocus(true);
-        }
-    }
-
     private final XmlTagsDialog xmlTagsDialog = new XmlTagsDialog();
     private final XmlTemplatesDialog xmlTemplatesDialog = new XmlTemplatesDialog();
-    private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
     private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
     private final EditorSettingsDialog editorSettingsDialog = new EditorSettingsDialog();
     private final PushButton settings = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
@@ -384,12 +329,6 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     @Override
     public XmlTagsDialog getXmlTagsDialog() {
         return this.xmlTagsDialog;
-    }
-
-    @NotNull
-    @Override
-    public CSPTopicDetailsDialog getCSPTopicDetailsDialog() {
-        return this.cspTopicDetailsDialog;
     }
 
     @Override

@@ -19,6 +19,6 @@
     border-collapse: collapse;
 }
 
-.gwt-MenuBar-vertical .gwt-MenuItem {
+.gwt-MenuBar-vertical .gwt-MenuItem > div{
     padding: 3px 8px 3px 8px;
 }

@@ -5,6 +5,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -84,8 +85,10 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
-        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink,
+            @Nullable final String id) {
+        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink, id);
+
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         if (id != null) {
             retValue.getElement().setId(id);
@@ -230,5 +233,105 @@ final public class UIUtilities {
     @NotNull
     public static <T extends RESTBaseEntityCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {
         return new CellTable<T>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text) {
+        return createMenuButton(text, false, false);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, @NotNull final String id) {
+        return createMenuButton(text, false, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink) {
+        return createMenuButton(text, subMenu, externalLink, null);
+    }
+
+    @NotNull
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final AnchorButton retValue = new AnchorButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        } else if (externalLink) {
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text) {
+        return createMenuDownLabel(text, false, null);
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, @NotNull final String id) {
+        return createMenuDownLabel(text, false, id);
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, final boolean subMenu) {
+        @NotNull final Label retValue = createDownLabel(text, null);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
+    }
+
+    @NotNull
+    public static Label createMenuDownLabel(final String text, final boolean subMenu, @NotNull final String id) {
+        @NotNull final Label retValue = createDownLabel(text, id);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text) {
+        return createAnchorButton(text, false, false);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final String id) {
+        return createAnchorButton(text, false, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu) {
+        return createAnchorButton(text, subMenu, false);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
+        return createAnchorButton(text, subMenu, false, id);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
+        return createAnchorButton(text, subMenu, externalLink, null);
+    }
+
+    @NotNull
+    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final AnchorButton retValue = new AnchorButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (subMenu) {
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
+        } else if (externalLink) {
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        }
+
+        if (id != null) {
+            retValue.getElement().setId(id);
+        }
+
+        return retValue;
     }
 }

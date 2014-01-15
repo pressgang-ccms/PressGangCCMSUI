@@ -107,7 +107,7 @@ public class XMLUtilities {
     }
 
     public static Document convertStringToDocument(final String xml) throws DOMParseException {
-        final Document doc = XMLParser.parse(xml);
+        final Document doc = XMLParser.parse(xml == null ? "" : xml);
 
         // Workaround for http://code.google.com/p/google-web-toolkit/issues/detail?id=3613
         final NodeList parseErrors = doc.getElementsByTagName("parsererror");

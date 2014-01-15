@@ -6,10 +6,12 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.AnchorButton;
+import com.google.gwt.user.client.ui.AnchorMenuBar;
+import com.google.gwt.user.client.ui.AnchorMenuItem;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -19,46 +21,46 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  * Constructs the shortcut panel to be displayed at the top of the screen.
  */
 public class TopShortcutView extends HorizontalPanel {
-    private final PushButton home = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Home(),
+    private final AnchorButton home = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Home(),
             Constants.ElementIDs.HOME_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton docbuilder = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
+    private final AnchorButton docbuilder = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
             Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton createTopic = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
+    private final AnchorButton createTopic = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
             Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton createContentSpec = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
+    private final AnchorButton createContentSpec = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
             Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true,
+    private final AnchorButton bug = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true,
             Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
+    private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
             Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
-    private final MenuBar menus = new MenuBar();
+    private final AnchorMenuBar menus = new AnchorMenuBar();
 
-    private final MenuBar search = new MenuBar(true);
-    private final MenuBar entities = new MenuBar(true);
-    private final MenuBar advanced = new MenuBar(true);
+    private final AnchorMenuBar search = new AnchorMenuBar(true);
+    private final AnchorMenuBar entities = new AnchorMenuBar(true);
+    private final AnchorMenuBar advanced = new AnchorMenuBar(true);
 
     private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
     private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
     private final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);
 
-    private final MenuItem bulkTagging = new MenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command) null);
-    private final MenuItem stringConstants = new MenuItem(PressGangCCMSUI.INSTANCE.StringConstants(), false, (Command) null);
-    private final MenuItem integerConstants = new MenuItem(PressGangCCMSUI.INSTANCE.IntegerConstants(), false, (Command) null);
-    private final MenuItem blobConstants = new MenuItem(PressGangCCMSUI.INSTANCE.BlobConstants(), false, (Command) null);
-    private final MenuItem propertyTags = new MenuItem(PressGangCCMSUI.INSTANCE.PropertyTags(), false, (Command) null);
-    private final MenuItem propertyTagCategories = new MenuItem(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), false, (Command) null);
-    private final MenuItem monitoring = new MenuItem(PressGangCCMSUI.INSTANCE.Monitoring(), false, (Command) null);
+    private final AnchorMenuItem bulkTagging = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command) null);
+    private final AnchorMenuItem stringConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.StringConstants(), false, (Command) null);
+    private final AnchorMenuItem integerConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.IntegerConstants(), false, (Command) null);
+    private final AnchorMenuItem blobConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BlobConstants(), false, (Command) null);
+    private final AnchorMenuItem propertyTags = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.PropertyTags(), false, (Command) null);
+    private final AnchorMenuItem propertyTagCategories = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), false, (Command) null);
+    private final AnchorMenuItem monitoring = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Monitoring(), false, (Command) null);
 
-    private final MenuItem images = new MenuItem(PressGangCCMSUI.INSTANCE.Images(), false, (Command) null);
-    private final MenuItem files = new MenuItem(PressGangCCMSUI.INSTANCE.Files(), false, (Command) null);
-    private final MenuItem tags = new MenuItem(PressGangCCMSUI.INSTANCE.Tags(), false, (Command) null);
-    private final MenuItem categories = new MenuItem(PressGangCCMSUI.INSTANCE.Categories(), false, (Command) null);
-    private final MenuItem projects = new MenuItem(PressGangCCMSUI.INSTANCE.Projects(), false, (Command) null);
+    private final AnchorMenuItem images = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Images(), false, (Command) null);
+    private final AnchorMenuItem files = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Files(), false, (Command) null);
+    private final AnchorMenuItem tags = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Tags(), false, (Command) null);
+    private final AnchorMenuItem categories = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Categories(), false, (Command) null);
+    private final AnchorMenuItem projects = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Projects(), false, (Command) null);
 
-    private final MenuItem searchTopics = new MenuItem(PressGangCCMSUI.INSTANCE.SearchTopics(), false, (Command) null);
-    private final MenuItem searchContentSpec = new MenuItem(PressGangCCMSUI.INSTANCE.SearchContentSpecs(), false, (Command) null);
-    private final MenuItem searchTranslations = new MenuItem(PressGangCCMSUI.INSTANCE.SearchTranslations(), false, (Command) null);
+    private final AnchorMenuItem searchTopics = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.SearchTopics(), false, (Command) null);
+    private final AnchorMenuItem searchContentSpec = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.SearchContentSpecs(), false, (Command) null);
+    private final AnchorMenuItem searchTranslations = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.SearchTranslations(), false, (Command) null);
 
     boolean hasFocus = false;
 
@@ -148,87 +150,87 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addDomHandler(focusHandler, FocusEvent.getType());
     }
 
-    public PushButton getHome() {
+    public AnchorButton getHome() {
         return home;
     }
 
-    public PushButton getDocbuilder() {
+    public AnchorButton getDocbuilder() {
         return docbuilder;
     }
 
-    public PushButton getCreateTopic() {
+    public AnchorButton getCreateTopic() {
         return createTopic;
     }
 
-    public PushButton getCreateContentSpec() {
+    public AnchorButton getCreateContentSpec() {
         return createContentSpec;
     }
 
-    public PushButton getBug() {
+    public AnchorButton getBug() {
         return bug;
     }
 
-    public PushButton getReports() {
+    public AnchorButton getReports() {
         return reports;
     }
 
-    public MenuItem getBulkTagging() {
+    public AnchorMenuItem getBulkTagging() {
         return bulkTagging;
     }
 
-    public MenuItem getStringConstants() {
+    public AnchorMenuItem getStringConstants() {
         return stringConstants;
     }
 
-    public MenuItem getIntegerConstants() {
+    public AnchorMenuItem getIntegerConstants() {
         return integerConstants;
     }
 
-    public MenuItem getBlobConstants() {
+    public AnchorMenuItem getBlobConstants() {
         return blobConstants;
     }
 
-    public MenuItem getPropertyTags() {
+    public AnchorMenuItem getPropertyTags() {
         return propertyTags;
     }
 
-    public MenuItem getPropertyTagCategories() {
+    public AnchorMenuItem getPropertyTagCategories() {
         return propertyTagCategories;
     }
 
-    public MenuItem getMonitoring() {
+    public AnchorMenuItem getMonitoring() {
         return monitoring;
     }
 
-    public MenuItem getImages() {
+    public AnchorMenuItem getImages() {
         return images;
     }
 
-    public MenuItem getFiles() {
+    public AnchorMenuItem getFiles() {
         return files;
     }
 
-    public MenuItem getTags() {
+    public AnchorMenuItem getTags() {
         return tags;
     }
 
-    public MenuItem getCategories() {
+    public AnchorMenuItem getCategories() {
         return categories;
     }
 
-    public MenuItem getProjects() {
+    public AnchorMenuItem getProjects() {
         return projects;
     }
 
-    public MenuItem getSearchTopics() {
+    public AnchorMenuItem getSearchTopics() {
         return searchTopics;
     }
 
-    public MenuItem getSearchContentSpec() {
+    public AnchorMenuItem getSearchContentSpec() {
         return searchContentSpec;
     }
 
-    public MenuItem getSearchTranslations() {
+    public AnchorMenuItem getSearchTranslations() {
         return searchTranslations;
     }
 

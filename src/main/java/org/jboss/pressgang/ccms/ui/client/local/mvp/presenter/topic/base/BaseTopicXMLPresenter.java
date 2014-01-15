@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -83,19 +82,7 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
             void setSuggestions(final Map<String, String> suggestions);
         }
 
-        interface CSPTopicDetailsDialog {
-            PushButton getOK();
-
-            PushButton getCancel();
-
-            TextBox getIds();
-
-            DialogBox getDialogBox();
-        }
-
         XmlTagsDialog getXmlTagsDialog();
-
-        CSPTopicDetailsDialog getCSPTopicDetailsDialog();
 
         XmlTemplatesDialog getXmlTemplatesDialog();
 

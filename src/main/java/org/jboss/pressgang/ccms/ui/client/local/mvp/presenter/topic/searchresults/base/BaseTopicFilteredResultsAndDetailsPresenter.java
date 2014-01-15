@@ -77,6 +77,7 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.contentspec.RESTContentSpec
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1255,10 +1256,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             return true;
         }
 
-        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
-            return true;
-        }
-
         if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
             return true;
         }
@@ -1272,6 +1269,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         }
 
         return false;
+    }
+
+    protected abstract XMLValidator getXmlValidator();
+
+    protected void initAndStartXMLValidation() {
+        if (!getXmlValidator().isCheckingXML()) {
+            loadAllCustomEntities(new StringLoaded() {
+                @Override
+                public void stringLoaded(final String entities) {
+                    customEntitiesLoaded = true;
+                    getXmlValidator().setCustomEntities(entities);
+                    getXmlValidator().startCheckingXML();
+                }
+            });
+        }
     }
 
     protected abstract void loadAllCustomEntities(@NotNull final StringLoaded callback);

@@ -37,7 +37,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItem
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -863,15 +863,18 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 as a search result.
              */
             final StringBuilder idsQuery = new StringBuilder();
+            final StringBuilder idsDisplay = new StringBuilder();
             for (final Integer id : ids) {
                 if (!idsQuery.toString().isEmpty()) {
                     idsQuery.append(",");
+                    idsDisplay.append(", ");
                 }
                 idsQuery.append(id);
+                idsDisplay.append(id);
             }
 
             if (failedFiles.size() == 0) {
-                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsQuery.toString());
+                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilesUploadedSuccessfully() + " " + idsDisplay.toString());
             } else {
                 final StringBuilder failedNames = new StringBuilder();
                 for (final String name : failedFiles) {

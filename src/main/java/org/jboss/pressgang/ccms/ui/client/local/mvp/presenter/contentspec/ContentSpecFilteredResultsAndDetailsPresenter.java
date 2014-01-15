@@ -43,7 +43,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
@@ -245,6 +245,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
+            contentSpecRevisionsPresenter.reset();
             revisionsLoadInitiated = false;
             tagsLoadInitiated = false;
             propertyTagsLoadInitiated = false;
@@ -297,6 +298,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     if (viewIsInFilter(filter, contentSpecRevisionsPresenter.getDisplay())) {
                         LOGGER.log(Level.INFO, "\tInitializing content spec revisions view");
                         contentSpecRevisionsPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),readOnly);
+                        contentSpecRevisionsPresenter.refreshList();
                         // make sure the revisions list is displayed and not the diff view if it ws previously open
                         if (!contentSpecRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
                             contentSpecRevisionsPresenter.getDisplay().displayRevisions();
@@ -425,7 +427,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                         // TODO: This url should be part of the servers.json file
                         final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-                        Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        if (displayedEntity.getId() != null) {
+                            Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
+                        } else {
+                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveTheContentSpec());
+                        }
                     }
                 });
             }
@@ -775,25 +781,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
     }
 
-    /**
-     * (Re)Initialize the main display with the rendered view split pane (if selected).
-     */
-    private void initializeDisplay() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.initializeDisplay()");
-
-            final double searchResultsWidth = Preferences.INSTANCE.getDouble(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH,
-                    Constants.SPLIT_PANEL_SIZE);
-
-            /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(isDisplayingSearchResults(), searchResultsWidth);
-            enableAndDisableActionButtons(lastDisplayedView);
-            loadMainSplitResize(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH);
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.initializeDisplay()");
-        }
-    }
-
     @Override
     protected void bindFilteredResultsButtons() {
 
@@ -844,13 +831,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     // no changes are made to the topic beyond the default template, the unsaved
                     // changes warning does not appear.
                     lastNewContentSpecTemplate = retValue.getValue().trim();
-
-                    // the content spec won't show up in the list of content specs until it is saved, so the
-                    // selected item is null
-                    filteredResultsPresenter.setSelectedItem(null);
-
-                    // the new content spec is being displayed though, so we set the displayed item
-                    filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem);
 
                     // the content spec won't show up in the list of content specs until it is saved, so the
                     // selected item is null
@@ -1120,7 +1100,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             try {
                                 LOGGER.log(Level.INFO,
                                         "ENTER ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() " +
-                                                "FieldUpdater" + ".update()");
+                                                "FieldUpdater.update()");
 
                                 checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null,
                                         "There should be a displayed collection item.");
@@ -1130,14 +1110,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 displayRevision(revisionTopic.getItem());
 
-                                contentSpecRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
-                                        contentSpecRevisionsPresenter.getProviderData().getItems(),
-                                        contentSpecRevisionsPresenter.getProviderData().getSize(),
-                                        contentSpecRevisionsPresenter.getProviderData().getStartRow());
+                                if (contentSpecRevisionsPresenter.getProviderData().isValid()) {
+                                    contentSpecRevisionsPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                            contentSpecRevisionsPresenter.getProviderData().getItems(),
+                                            contentSpecRevisionsPresenter.getProviderData().getSize(),
+                                            contentSpecRevisionsPresenter.getProviderData().getStartRow());
+                                }
                             } finally {
                                 LOGGER.log(Level.INFO,
                                         "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindViewContentSpecRevisionButton() " +
-                                                "FieldUpdater" + ".update()");
+                                                "FieldUpdater.update()");
                             }
                         }
                     });
@@ -1384,17 +1366,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         if (!revisionsLoadInitiated) {
             revisionsLoadInitiated = true;
 
-            /* if getSearchResultPresenter().getProviderData().getSelectedItem() == null, then we are displaying a new content spec */
-            if (filteredResultsPresenter.getProviderData().getSelectedItem() != null) {
-
-                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null,
-                        "The selected collection item to reference a valid entity.");
-                checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId() != null,
-                        "The selected collection item to reference a valid entity with a valid ID.");
-
-                contentSpecRevisionsPresenter.getDisplay().setProvider(contentSpecRevisionsPresenter.generateListProvider(
-                        filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getId(), display));
-            }
+            contentSpecRevisionsPresenter.getDisplay().setProvider(contentSpecRevisionsPresenter.generateListProvider(getDisplayedContentSpec()));
         }
     }
 

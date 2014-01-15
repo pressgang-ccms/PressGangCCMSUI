@@ -16,7 +16,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
 
     private final FlexTable panel = new FlexTable();
     private final Frame content = new Frame();
-    private final PushButton edit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContributeToThisContent());
+    private final AnchorButton edit = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ContributeToThisContent());
 
     public WelcomeView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Welcome());
@@ -54,7 +54,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
 
     @Override
     @NotNull
-    public PushButton getEdit() {
+    public AnchorButton getEdit() {
         return edit;
     }
 }

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -115,6 +116,11 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
     }
 
     protected String processRevisionHistoryXML(final String xml, final String additionalXml) {
+        // Check that we have some additional xml to process first
+        if (isStringNullOrEmpty(additionalXml)) {
+            return xml;
+        }
+
         try {
             final Document doc = XMLUtilities.convertStringToDocument(xml);
             final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
@@ -172,6 +178,11 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
     }
 
     protected String processAuthorGroupXML(final String xml, final String additionalXml) {
+        // Check that we have some additional xml to process first
+        if (isStringNullOrEmpty(additionalXml)) {
+            return xml;
+        }
+
         try {
             final Document doc = XMLUtilities.convertStringToDocument(xml);
             final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);

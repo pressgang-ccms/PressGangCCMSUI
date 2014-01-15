@@ -543,17 +543,16 @@ html {
     height: 100%;
     text-align: center;
     -moz-box-sizing: border-box;
+    cursor: pointer;
 }
 
 .TextButton.TopTab, .DownLabel.TopTab {
-    border-top-left-radius: 0.5em 0.5em;
-    border-top-right-radius: 0.5em 0.5em;
+    border-radius: 0.5em 0.5em 0px 0px;
     text-align: center;
 }
 
 .TextButton.LeftTab, .DownLabel.LeftTab {
-    border-top-left-radius: 0.5em 0.5em;
-    border-bottom-left-radius: 0.5em 0.5em;
+    border-radius: 0.5em 0.5em 0px 0px;
     text-align: center;
 }
 
@@ -1181,4 +1180,22 @@ td.TopicRenderingInfoEntitiesCell {
     padding: 4px 0px;
     font-weight: bold;
     text-align: center;
+}
+
+div.AnchorPushButton, div.AnchorMenuItem {
+    position: relative;
+    cursor: pointer;
+}
+
+a.AnchorPushButton, a.AnchorMenuItem {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    z-index: 10;
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
 }

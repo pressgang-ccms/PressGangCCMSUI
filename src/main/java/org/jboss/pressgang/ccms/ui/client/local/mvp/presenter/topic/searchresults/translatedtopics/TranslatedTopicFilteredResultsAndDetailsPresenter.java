@@ -33,7 +33,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -585,16 +585,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
 
             // This should always be false
-            if (!getXmlValidator().isCheckingXML()) {
-                loadAllCustomEntities(new StringLoaded() {
-                    @Override
-                    public void stringLoaded(final String entities) {
-                        customEntitiesLoaded = true;
-                        getXmlValidator().setCustomEntities(entities);
-                        getXmlValidator().startCheckingXML();
-                    }
-                });
-            }
+            initAndStartXMLValidation();
         } else {
             timer.cancel();
             refreshSplitRenderedView(true);
@@ -602,7 +593,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         }
     }
 
-    private XMLValidator getXmlValidator() {
+    @Override
+    protected XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
             xmlValidator = new XMLValidator(
                     new XMLValidationHelper() {
@@ -725,10 +717,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     protected boolean isAnyDialogBoxesOpen(@NotNull final TranslatedTopicAdditionalXMLPresenter.Display topicXMLDisplay) {
         if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing()) {
-            return true;
-        }
-
-        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
             return true;
         }
 
@@ -922,6 +910,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     @Override
     protected void loadAllCustomEntities(@NotNull final StringLoaded callback) {
         if (!customEntitiesLoaded) {
+            getTopicXMLPresenter().getDisplay().getXmlErrors().setText(PressGangCCMSUI.INSTANCE.LoadingEntities());
+
             final RESTTranslatedTopicV1 topic = getDisplayedTopic();
             if (topic != null) {
                 getFailOverRESTCall().performRESTCall(
