@@ -140,7 +140,7 @@ public class XMLValidator {
                 }
                 // Add the doctype that include the standard docbook entities
                 text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Ljava/lang/String;)(text);
+                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Ljava/lang/String;)(text);
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
                         return function(){
@@ -154,8 +154,10 @@ public class XMLValidator {
                     var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
 
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_45) {
+                        text = entities + text;
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
                     } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_50) {
+                        // need to add docbook 5 entities here.
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }
                 }
