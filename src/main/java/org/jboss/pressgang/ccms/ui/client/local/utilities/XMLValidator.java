@@ -79,7 +79,7 @@ public class XMLValidator {
                     } else if (oldErrors != theseErrors) {
                         var entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.match(/\n/g).length;
 
-                        // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
+                        // "Document topic.xml does not validate against docbook??.dtd" is a standard part of the error
                         // message, and is removed before being displayed.
                         var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against schemas/docbook45.dtd", "");
                         errorMessage = errorMessage.replace("\nDocument topic.xml does not validate against schemas/docbook50.dtd", "");
@@ -160,7 +160,7 @@ public class XMLValidator {
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
                     } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_50) {
-                        // need to add docbook 5 entities here.
+                        text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::addDocbook5Namespaces(Ljava/lang/String;)(text);
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }
                 }

@@ -791,6 +791,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         disableButtonsInReadonlyMode();
     }
 
+    /**
+     * We flush the UI changes to the underlying topic when the topic format has changed. A lot of
+     * processes rely on the xmlDoctype being set to the correct value for things like rendering
+     * and validation.
+     */
+    private void bindTopicFormatChange() {
+        topicViewPresenter.getDisplay().getEditor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                topicViewPresenter.getDisplay().getDriver().flush();
+            }
+        });
+    }
+
     private void disableButtonsInReadonlyMode() {
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
@@ -1507,7 +1521,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public RESTXMLDoctype getFormat()
                         {
-                            for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
+                            /*for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
                             {
                                 if (docType.name().equals(topicViewPresenter.getDisplay().getEditor().getXmlDoctypeEditor().getValue().toString()))
                                 {
@@ -1515,7 +1529,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 }
                             }
 
-                            return null;
+                            return null;*/
+
+                            return getDisplayedTopic().getXmlDoctype();
                         }
                     });
         }

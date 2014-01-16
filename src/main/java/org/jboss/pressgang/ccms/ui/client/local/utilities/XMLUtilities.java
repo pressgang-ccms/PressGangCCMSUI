@@ -7,13 +7,7 @@ import java.util.Map;
 
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.xml.client.Comment;
-import com.google.gwt.xml.client.DOMException;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.Text;
-import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.*;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +22,7 @@ public class XMLUtilities {
     private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
     private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
     private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
+    private static final RegExp SECTION_RE = RegExp.compile("^([\\s\\S]*?)<\\s*section\\s*(.*?)>");
 
     /**
      * Strips out the xml preamble. This is usually done before the XML
@@ -86,6 +81,25 @@ public class XMLUtilities {
     public static String getDoctypePreamble(@NotNull final String xml) {
         final MatchResult result = DOCTYPE_RE.exec(xml);
         return result == null ? null : result.getGroup(2);
+    }
+
+    /**
+     * It is expected that a Docbook 5 book or article will define the namespaces at the root element. But for
+     * validation against a single topic, we need to add these namespaces in in order for the dtd to validate.
+     * @param xml The source xml
+     * @return the xml with the docbook 5 namespaces added
+     */
+    public static String addDocbook5Namespaces(@NotNull final String xml) {
+        final MatchResult result = SECTION_RE.exec(xml);
+        if (result != null) {
+            return xml.replace(
+                    result.getGroup(0),
+                    result.getGroup(1) +
+                        "<section xmlns=\"http://docbook.org/ns/docbook\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"5.0\" " +
+                        result.getGroup(2) + ">");
+        }
+
+        return xml;
     }
 
     public static String removeAllPreamble(@NotNull final String xml) {
