@@ -56,7 +56,6 @@ public class XMLValidator {
         var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
         var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
         var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
-        var downloadingDTD = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::DownloadingDTD()();
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
             this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker = new Worker('javascript/xmllint/xmllint.js');
@@ -149,12 +148,15 @@ public class XMLValidator {
                         };
                     }(this), 250);
                 } else {
-                    var dtd = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtd()();
-                    if (dtd != "") {
-                        this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
-                        this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, schema: dtd});
-                    } else {
-                        helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(downloadingDTD);
+                    this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
+
+                    // get the format of the topic
+                    var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
+
+                    if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_45) {
+                        this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
+                    } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_50) {
+                        this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }
                 }
             }

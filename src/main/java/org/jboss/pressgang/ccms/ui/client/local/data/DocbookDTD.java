@@ -9,13 +9,9 @@ import org.jetbrains.annotations.NotNull;
  * work in Firefox, as Firefox will not load external entity files.
  */
 public final class DocbookDTD {
-    private static String dtd = "";
     private static String ent = "";
     private static String dummyEnt = "";
 
-    public static String getDtd() {
-        return dtd;
-    }
 
     public static String getDtdDoctype() {
         return getDtdDoctype("");
@@ -32,22 +28,6 @@ public final class DocbookDTD {
      * Load the DTD file.
      */
     public static void loadDtd() {
-        try {
-            new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
-                @Override
-                public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
-                    dtd = resp.getText();
-                }
-
-                @Override
-                public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-                    dtd = "";
-                }
-            });
-        } catch (@NotNull final RequestException e) {
-            dtd = "";
-        }
-
         try {
             new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.ent").sendRequest("", new RequestCallback() {
                 @Override

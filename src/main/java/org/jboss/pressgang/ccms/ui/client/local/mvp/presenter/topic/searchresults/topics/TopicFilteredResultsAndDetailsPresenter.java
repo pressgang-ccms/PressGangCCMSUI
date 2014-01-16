@@ -68,6 +68,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
@@ -114,10 +115,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EntityUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.*;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1503,6 +1501,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public void setError(final String errorMsg) {
                             getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+                        }
+
+                        @Override
+                        public RESTXMLDoctype getFormat()
+                        {
+                            return getDisplayedTopic().getXmlDoctype();
                         }
                     });
         }

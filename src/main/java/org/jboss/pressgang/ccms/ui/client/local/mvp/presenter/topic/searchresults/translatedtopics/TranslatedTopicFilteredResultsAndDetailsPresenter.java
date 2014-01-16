@@ -38,6 +38,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -611,6 +612,12 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                         @Override
                         public void setError(final String errorMsg) {
                             translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().setText(errorMsg);
+                        }
+
+                        @Override
+                        public RESTXMLDoctype getFormat()
+                        {
+                            return getDisplayedTopic().getXmlDoctype();
                         }
                     });
         }
