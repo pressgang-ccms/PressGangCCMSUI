@@ -82,7 +82,7 @@ public class XMLValidator {
                         // "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
                         // message, and is removed before being displayed.
                         var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against schemas/docbook45.dtd", "");
-                        var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against schemas/docbook50.dtd", "");
+                        errorMessage = errorMessage.replace("\nDocument topic.xml does not validate against schemas/docbook50.dtd", "");
 
                         var errorLineRegex = /^topic\.xml:(\d+):.*$/gm;
                         var errorLineNumRegex = / line (\d+)/;
