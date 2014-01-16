@@ -386,6 +386,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     newTopic.explicitSetDescription(sourceTopic.getDescription());
                     newTopic.explicitSetLocale(sourceTopic.getLocale());
                     newTopic.explicitSetXml(sourceTopic.getXml());
+                    newTopic.explicitSetXmlDoctype(sourceTopic.getXmlDoctype());
 
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
 
@@ -1506,7 +1507,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public RESTXMLDoctype getFormat()
                         {
-                            return getDisplayedTopic().getXmlDoctype();
+                            for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
+                            {
+                                if (docType.name().equals(topicViewPresenter.getDisplay().getEditor().getXmlDoctypeEditor().getValue().toString()))
+                                {
+                                    return docType;
+                                }
+                            }
+
+                            return null;
                         }
                     });
         }
@@ -2735,6 +2744,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return true;
                 }
                 if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml())) {
+                    return true;
+                }
+
+                if (selectedTopic.getXmlDoctype() != displayedTopic.getXmlDoctype()) {
                     return true;
                 }
             }

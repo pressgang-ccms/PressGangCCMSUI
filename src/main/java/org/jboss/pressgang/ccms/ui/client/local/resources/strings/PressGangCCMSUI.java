@@ -1252,4 +1252,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String EditedBy();
+
+    @NotNull
+    String TopicFormat();
 }

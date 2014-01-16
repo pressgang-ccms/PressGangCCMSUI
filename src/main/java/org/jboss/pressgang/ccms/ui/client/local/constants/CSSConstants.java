@@ -521,6 +521,7 @@ public interface CSSConstants {
         String TOPIC_VIEW_ID_FIELD = "TopicViewIDField";
         String TOPIC_VIEW_REVISION_NUMBER_FIELD = "TopicViewRevisionNumberField";
         String TOPIC_VIEW_TITLE_FIELD = "TopicViewTitleField";
+        String TOPIC_VIEW_XMLDOCTYPE_FIELD = "TopicViewXMLDocTypeField";
         /**
          * Assigned to the field that holds the topic's detail endpoint url
          */

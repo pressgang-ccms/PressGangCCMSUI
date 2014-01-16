@@ -6,6 +6,7 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -16,11 +17,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 
-    private static final int ROWS = 10;
+    private static final int ROWS = 11;
     private static final int COLS = 2;
 
     private RESTTopicV1 value;
@@ -45,6 +47,17 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     private final Anchor restTopicDetails = new Anchor();
     private final Anchor restTopicXML = new Anchor();
     private final Label restTopicWebDav = new Label();
+
+    private final ValueListBox xmlDoctype = new ValueListBox<String>(new Renderer<String>() {
+        @Override
+        public String render(final String object) {
+            return object;
+        }
+
+        @Override
+        public void render(final String object, final Appendable appendable) throws IOException {
+        }
+    });
 
     @NotNull
     public DateLabel lastModifiedEditor() {
@@ -89,6 +102,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
         title.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TITLE_FIELD);
+        xmlDoctype.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XMLDOCTYPE_FIELD);
         restTopicDetails.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DETAILS_ENDPOINT_FIELD);
         restTopicXML.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XML_ENDPOINT_FIELD);
         restTopicWebDav.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD);
@@ -124,6 +138,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.setWidget(row, 1, title);
 
         ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicFormat()));
+        this.setWidget(row, 1, xmlDoctype);
+
+        ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDetailsRESTEndpoint()));
         this.setWidget(row, 1, restTopicDetails);
 
@@ -153,9 +171,21 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
+
         /* http://stackoverflow.com/a/11176707/157605 */
         locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
+
+        DOM.setElementPropertyBoolean(xmlDoctype.getElement(), "disabled", readOnly);
+
+        final List<String> docTypeValues = new ArrayList<String>();
+        for (final RESTXMLDoctype docType : RESTXMLDoctype.values()) {
+            docTypeValues.add(docType.name());
+        }
+        xmlDoctype.setValue(docTypeValues.get(0));
+        xmlDoctype.setAcceptableValues(docTypeValues);
+
+
         description.setReadOnly(readOnly);
     }
 
@@ -170,6 +200,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         description.setValue(value.getDescription());
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
+        xmlDoctype.setValue(value.getXmlDoctype().name());
 
         /* the id will be null for new topics */
         if (value.getId() != null) {
@@ -201,6 +232,17 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         value.setTitle(title.getValue());
         value.setLocale(locale.getValue());
         value.setDescription(description.getValue());
+        if (xmlDoctype.getValue() != null)
+        {
+            for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
+            {
+                if (docType.name().equals(xmlDoctype.getValue().toString()))
+                {
+                    value.setXmlDoctype(docType);
+                    break;
+                }
+            }
+        }
         return value;
     }
 
@@ -217,5 +259,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     @NotNull
     public Label getRestTopicWebDav() {
         return restTopicWebDav;
+    }
+
+    @NotNull
+    public ValueListBox getXmlDoctypeEditor() {
+        return xmlDoctype;
     }
 }
