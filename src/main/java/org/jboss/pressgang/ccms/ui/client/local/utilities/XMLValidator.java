@@ -145,7 +145,13 @@ public class XMLValidator {
                 // see (http://www.sagehill.net/docbookxsl/Db5Entities.html)
                 text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Ljava/lang/String;)(text);
 
-                if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML) {
+                // get the format of the topic
+                var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
+                var formatName = format.@org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::name()();
+
+                // if there has been no change to the xml and the format, don't revalidate
+                if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML &&
+                    formatName == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastFormat) {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
                         return function(){
                             me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::checkXML()();
@@ -153,9 +159,7 @@ public class XMLValidator {
                     }(this), 250);
                 } else {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
-
-                    // get the format of the topic
-                    var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
+                    this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastFormat = formatName;
 
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
