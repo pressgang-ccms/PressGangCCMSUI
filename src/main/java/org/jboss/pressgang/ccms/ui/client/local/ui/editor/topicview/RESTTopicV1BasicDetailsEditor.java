@@ -48,16 +48,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     private final Anchor restTopicXML = new Anchor();
     private final Label restTopicWebDav = new Label();
 
-    private final ValueListBox xmlDoctype = new ValueListBox<String>(new Renderer<String>() {
-        @Override
-        public String render(final String object) {
-            return object;
-        }
-
-        @Override
-        public void render(final String object, final Appendable appendable) throws IOException {
-        }
-    });
+    private final ListBox xmlDoctype = new ListBox();
 
     @NotNull
     public DateLabel lastModifiedEditor() {
@@ -176,15 +167,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
 
-        DOM.setElementPropertyBoolean(xmlDoctype.getElement(), "disabled", readOnly);
-
+        xmlDoctype.setEnabled(!readOnly);
         final List<String> docTypeValues = new ArrayList<String>();
         for (final RESTXMLDoctype docType : RESTXMLDoctype.values()) {
-            docTypeValues.add(docType.name());
+            xmlDoctype.addItem(docType.getCommonName(), docType.name());
         }
-        xmlDoctype.setValue(docTypeValues.get(0));
-        xmlDoctype.setAcceptableValues(docTypeValues);
-
 
         description.setReadOnly(readOnly);
     }
@@ -200,7 +187,12 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         description.setValue(value.getDescription());
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
-        xmlDoctype.setValue(value.getXmlDoctype().name());
+
+        for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
+            if (xmlDoctype.getValue(i).equals(value.getXmlDoctype().name()))  {
+                xmlDoctype.setSelectedIndex(i);
+            }
+        }
 
         /* the id will be null for new topics */
         if (value.getId() != null) {
@@ -232,11 +224,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         value.setTitle(title.getValue());
         value.setLocale(locale.getValue());
         value.setDescription(description.getValue());
-        if (xmlDoctype.getValue() != null)
+        if (xmlDoctype.getSelectedIndex() != -1)
         {
             for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
             {
-                if (docType.name().equals(xmlDoctype.getValue().toString()))
+                if (docType.name().equals(xmlDoctype.getValue(xmlDoctype.getSelectedIndex())))
                 {
                     value.setXmlDoctype(docType);
                     break;
@@ -262,7 +254,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     }
 
     @NotNull
-    public ValueListBox getXmlDoctypeEditor() {
+    public ListBox getXmlDoctypeEditor() {
         return xmlDoctype;
     }
 }

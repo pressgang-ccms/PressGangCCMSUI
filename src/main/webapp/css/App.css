@@ -86,7 +86,7 @@ td {
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
 .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField, .TopicViewLocaleField,
 .TopicViewDescriptionField, .PossibleChildrenResultsPanel, .TopicTagViewParentProjectsTable, .SearchResultsPanel,
-.TopicRevisionDiffParentPanel {
+.TopicRevisionDiffParentPanel, .TopicViewXMLDocTypeField {
     background-color: white;
 }
 

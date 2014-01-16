@@ -47,10 +47,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
@@ -610,8 +607,11 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                         }
 
                         @Override
-                        public void setError(final String errorMsg) {
+                        public void setError(final String errorMsg, final boolean isError) {
                             translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().setText(errorMsg);
+                            if (isError) {
+                                getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                            }
                         }
 
                         @Override

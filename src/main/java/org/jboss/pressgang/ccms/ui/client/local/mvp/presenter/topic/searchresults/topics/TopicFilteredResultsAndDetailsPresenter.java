@@ -24,11 +24,7 @@ import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -633,6 +629,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @org.jetbrains.annotations.Nullable
     private String lastXML;
     /**
+     * The last doctype that was assigned to the topic
+      */
+    @org.jetbrains.annotations.Nullable
+    private RESTXMLDoctype lastDocType;
+    /**
+     * Set to true until the xml validation indicates that the XML is valid
+      */
+    private boolean hasXMLErrors = true;
+    /**
      * How long it has been since the xml changes
      */
     private long lastXMLChange;
@@ -680,6 +685,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected TopicRenderedPresenter getTopicRenderedPresenter() {
         return topicRenderedPresenter;
     }
+
 
     @Override
     @NotNull
@@ -789,6 +795,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         buildHelpDatabase();
 
         disableButtonsInReadonlyMode();
+
+        bindTopicFormatChange();
     }
 
     /**
@@ -797,10 +805,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * and validation.
      */
     private void bindTopicFormatChange() {
-        topicViewPresenter.getDisplay().getEditor().addClickHandler(new ClickHandler() {
+        topicViewPresenter.getDisplay().getEditor().getXmlDoctypeEditor().addChangeHandler(new ChangeHandler() {
             @Override
-            public void onClick(ClickEvent event) {
+            public void onChange(ChangeEvent event) {
                 topicViewPresenter.getDisplay().getDriver().flush();
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(boolean readOnly) {
+                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                    }
+                });
             }
         });
     }
@@ -1514,23 +1528,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
 
                         @Override
-                        public void setError(final String errorMsg) {
+                        public void setError(final String errorMsg, final boolean isError) {
                             getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+                            if (isError) {
+                                getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                                getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                            }
+
+                            hasXMLErrors = isError;
                         }
 
                         @Override
                         public RESTXMLDoctype getFormat()
                         {
-                            /*for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
-                            {
-                                if (docType.name().equals(topicViewPresenter.getDisplay().getEditor().getXmlDoctypeEditor().getValue().toString()))
-                                {
-                                    return docType;
-                                }
-                            }
-
-                            return null;*/
-
                             return getDisplayedTopic().getXmlDoctype();
                         }
                     });
@@ -2327,7 +2337,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (this.getDisplayedTopic() != null) {
-                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml());
+                final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml())) ||
+                        (lastDocType == null || lastDocType != this.getDisplayedTopic().getXmlDoctype());
 
                 if (xmlHasChanges) {
                     lastXMLChange = System.currentTimeMillis();
@@ -2339,7 +2350,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
-                        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                        if (!hasXMLErrors && (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))) {
                             isDisplayingImage = timeToDisplayImage;
                             getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
                         }
@@ -2347,6 +2358,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 });
 
                 lastXML = this.getDisplayedTopic().getXml();
+                lastDocType = this.getDisplayedTopic().getXmlDoctype();
             }
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");

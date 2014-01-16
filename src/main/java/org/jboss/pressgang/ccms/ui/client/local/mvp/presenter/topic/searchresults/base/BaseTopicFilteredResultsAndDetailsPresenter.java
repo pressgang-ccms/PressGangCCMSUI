@@ -57,11 +57,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -1220,11 +1216,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     /**
-     * The presenter used to display the topic's rendered view..
-     */
-    protected abstract BaseTopicRenderedPresenter getTopicRenderedPresenter();
-
-    /**
      * Add listeners for keyboard events
      */
     private void addKeyboardShortcutEventHandler() {
@@ -1271,7 +1262,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         return false;
     }
 
-    protected abstract XMLValidator getXmlValidator();
+
 
     protected void initAndStartXMLValidation() {
         if (!getXmlValidator().isCheckingXML()) {
@@ -1286,7 +1277,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         }
     }
 
-    protected abstract void loadAllCustomEntities(@NotNull final StringLoaded callback);
+
 
     protected String getCustomEntities(@NotNull final RESTTopicV1 retValue) {
         checkArgument(retValue.getContentSpecs_OTM() != null, "There should be a Content Spec collection.");
@@ -1304,6 +1295,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         return entities.toString();
     }
+
+    /**
+     * The presenter used to display the topic's rendered view..
+     */
+    protected abstract BaseTopicRenderedPresenter getTopicRenderedPresenter();
+
+    protected abstract XMLValidator getXmlValidator();
+
+    protected abstract void loadAllCustomEntities(@NotNull final StringLoaded callback);
 
     /**
      * The interface that defines the top level topic list and edit view

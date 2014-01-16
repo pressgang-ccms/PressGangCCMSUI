@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -40,6 +41,8 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * The text box that displays the translation locale
      */
     private final Label locale = new Label();
+
+    //private final Label xmlDoctype = new Label();
 
     /**
      * The property used by the editor framework to bind the locale to the ui element.
@@ -81,6 +84,11 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         return id;
     }
 
+    /*@NotNull
+    public Label getXmlDoctypeEditor() {
+        return xmlDoctype;
+    }*/
+
     /**
      * @param readOnly true if the ui elements presented by this editor should be readonly
      */
@@ -105,6 +113,10 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
         this.setWidget(row, 1, locale);
 
+        /*++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicFormat()));
+        this.setWidget(row, 1, xmlDoctype);*/
+
         for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL_CELL);
         }
@@ -114,4 +126,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         }
 
     }
+
+
 }

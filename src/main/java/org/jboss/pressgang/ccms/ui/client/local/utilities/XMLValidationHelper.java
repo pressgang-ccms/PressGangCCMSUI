@@ -20,8 +20,9 @@ public interface XMLValidationHelper {
 
     /**
      * @param errorMsg The new error string
+     * @param isError whether the message indicates an actual error, or a a "all ok" message.
      */
-    void setError(final String errorMsg);
+    void setError(final String errorMsg, final boolean isError);
 
     /**
      * @return The format of the topic

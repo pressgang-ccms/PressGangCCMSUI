@@ -75,7 +75,7 @@ public class XMLValidator {
                     }
 
                     if (theseErrors == "" && oldErrors == "") {
-                        helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(noXmlErrors);
+                        helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;Z)(noXmlErrors, false);
                     } else if (oldErrors != theseErrors) {
                         var entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.match(/\n/g).length;
 
@@ -115,9 +115,9 @@ public class XMLValidator {
                         }
 
                         if (errorMessage.length == 0) {
-                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(noXmlErrors);
+                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;Z)(noXmlErrors, false);
                         } else {
-                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;)(errorMessage);
+                            helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::setError(Ljava/lang/String;Z)(errorMessage, true);
                         }
 
                         if (editor != null) {
