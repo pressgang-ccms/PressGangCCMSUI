@@ -3,6 +3,37 @@
     Since it uses regular expressions, it is somewhat tolerant of badly formatted XML.
  */
 
+function convert(text, startEnd) {
+    var retValue = [];
+
+    var beforeText = text.substr(0, startEnd.start);
+    var beforeLines = beforeText.split("\n");
+
+    var includingText = text.substr(startEnd.start, startEnd.start + startEnd.end);
+    var includingLines = includingText.split("\n");
+
+    var line = beforeLines.length;
+    var start = beforeLines[beforeLines.length - 1].length;
+    var end = includingLines.length > 1 ?
+        start + includingLines[0].length :
+        startEnd.end - (startEnd.start - start);
+
+    retValue.push({line: line, start: start, end: end});
+
+    if (includingLines.length > 1) {
+        var remainingLength = includingText.length - end;
+
+        for (var includingLinesIndex = 1, includingLinesCount = includingLines.length - 1; includingLinesIndex < includingLinesCount; ++includingLinesIndex) {
+            retValue.push({line: line + includingLinesIndex, start: 0, end: includingLines[includingLinesIndex].length});
+            remainingLength -= includingLines[includingLinesIndex].length;
+        }
+
+        retValue.push({line: line + includingLines.length, start: 0, end: remainingLength });
+    }
+
+    return retValue;
+}
+
 self.addEventListener('message', function (e) {
     /**
      * A regex to match an XML element with a condition attribute
@@ -41,13 +72,13 @@ self.addEventListener('message', function (e) {
             }
         }
 
+        var start = match.index + totalLength;
+        totalLength += match.index + match[0].length;
+        text = text.substr(match.index + match[0].length);
+
+        // This conditional element does not meet the condition. So we need to find the
+        // end tag, and note the space that the conditional element takes up.
         if (!include) {
-            var start = match.index + totalLength;
-
-            totalLength += match.index + match[0].length;
-
-            text = text.substr(match.index + match[0].length);
-
             // not a self closing element
             if (!match[3]) {
                 // a regex to match any opening tag of the same type as the conditional one we are processing
@@ -81,9 +112,9 @@ self.addEventListener('message', function (e) {
                     }
                 }
 
-                retValue.push({start: start, end: totalLength});
+                retValue.push(convert(e.data.text, {start: start, end: totalLength}));
             } else {
-                retValue.push({start: start, end: totalLength});
+                retValue.push(convert(e.data.text, {start: start, end: totalLength}));
             }
         }
     }
