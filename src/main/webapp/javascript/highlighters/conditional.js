@@ -36,7 +36,7 @@ function convert(text, startEnd) {
             remainingLength -= includingLines[includingLinesIndex].length;
         }
 
-        retValue.push({line: line + includingLines.length - 2, start: 0, end: remainingLength });
+        retValue.push({line: line + includingLines.length - 1, start: 0, end: remainingLength });
     }
 
     return retValue;
