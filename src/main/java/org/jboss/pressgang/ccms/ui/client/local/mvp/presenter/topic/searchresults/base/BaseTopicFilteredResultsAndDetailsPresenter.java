@@ -356,6 +356,39 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         });
     }
 
+    /**
+     * When a new content spec is selected, the ace editor needs to be updated so the dimming of
+     * elements that don't match the condition can be done by the conditional.js worker.
+     * @param listBox The ListBox that contains the selected content spec.
+     */
+    private void notifyAceEditorOfCondition(@NotNull final ListBox listBox) {
+        // notify the ace editor that the condition has changed
+        if (listBox.getSelectedIndex() != -1) {
+            try {
+                final String value = listBox.getValue(listBox.getSelectedIndex());
+                if (value != null && !value.trim().isEmpty()) {
+                    final JSONValue jsonValue = JSONParser.parseStrict(value);
+
+                    if (value != null) {
+                        final JSONObject jsonObject = jsonValue.isObject();
+                        if (jsonObject != null && jsonObject.containsKey("condition")) {
+                            final JSONString condition = jsonObject.get("condition").isString();
+                            if (condition != null) {
+                                getTopicXMLPresenter().getDisplay().getEditor().setCondition(condition.stringValue());
+                                return;
+                            }
+                        }
+                    }
+                }
+            } catch (@NotNull final Exception ex) {
+                // do nothing, fall through to set the condition to null
+            }
+        }
+
+        // if we didn't return above, set the condition to null
+        getTopicXMLPresenter().getDisplay().getEditor().setCondition(null);
+    }
+
     private void bindRenderContentSpecSelection() {
         getTopicRenderedPresenter().getDisplay().getContentSpecs().addChangeHandler(new ChangeHandler() {
             @Override
@@ -375,25 +408,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     });
                 }
 
-                // notify the ace editor that the condition has changed
-                if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex() != -1) {
-                    final JSONValue value = JSONParser.parseStrict(getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(
-                            getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex()));
-
-                    if (value != null) {
-                        final JSONObject jsonObject = value.isObject();
-                        if (jsonObject != null && jsonObject.containsKey("condition")) {
-                            final JSONString condition = jsonObject.get("condition").isString();
-                            if (condition != null) {
-                                getTopicXMLPresenter().getDisplay().getEditor().setCondition(condition.toString());
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                // if we didn't return above, set the condition to null
-                getTopicXMLPresenter().getDisplay().getEditor().setCondition(null);
+                notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
             }
         });
 
@@ -414,6 +429,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                         }
                     });
                 }
+
+                notifyAceEditorOfCondition(getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs());
             }
         });
     }
@@ -602,6 +619,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(i).equals(savedValue)) {
                                 getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
                                 getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
+                                notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
 
                                 if (!hasXMLErrors()) {
                                     isReadOnlyMode(new ReadOnlyCallback() {
