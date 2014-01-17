@@ -5,7 +5,8 @@
 
 /**
  * Take the start and end positions of characters in a block of text that includes line breaks,
- * and convert it to start and end positions across a number of lines
+ * and convert it to start and end positions across a number of lines. This is required because
+ * markings in the ace editor are determined by line number, start and end position.
  * @param text The text being analysed
  * @param startEnd The start and end positions to be converted to start and end positions over multiple lines
  * @returns {Array}
@@ -42,6 +43,12 @@ function convert(text, startEnd) {
 }
 
 self.addEventListener('message', function (e) {
+
+    // return an empty array if there is no condition selected
+    if (!e.data.condition) {
+        postMessage([]);
+    }
+
     /**
      * A regex to match an XML element with a condition attribute
      * @type {RegExp}

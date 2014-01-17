@@ -298,15 +298,18 @@ td {
     background-color: rgba(245, 255, 0, 0.2);
 }
 
+.ace_marker-layer div[class='conditionExclusion'] {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+}
 
 .ace_marker-layer div[class^='badphrase'],
 .ace_marker-layer div[class^='tagmatch'],
 .ace_marker-layer div[class^='specmatch'],
 .ace_marker-layer div[class^='misspelled'],
-.ace_marker-layer div[class^='badword']{
+.ace_marker-layer div[class^='badword'] {
     position: absolute;
     z-index: -2;
-
 }
 
 .HelpCalloutSpinner {

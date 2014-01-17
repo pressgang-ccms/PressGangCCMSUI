@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.editor.client.Editor;
@@ -31,10 +32,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
@@ -376,6 +374,26 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                         }
                     });
                 }
+
+                // notify the ace editor that the condition has changed
+                if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex() != -1) {
+                    final JSONValue value = JSONParser.parseStrict(getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(
+                            getTopicRenderedPresenter().getDisplay().getContentSpecs().getSelectedIndex()));
+
+                    if (value != null) {
+                        final JSONObject jsonObject = value.isObject();
+                        if (jsonObject != null && jsonObject.containsKey("condition")) {
+                            final JSONString condition = jsonObject.get("condition").isString();
+                            if (condition != null) {
+                                getTopicXMLPresenter().getDisplay().getEditor().setCondition(condition.toString());
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                // if we didn't return above, set the condition to null
+                getTopicXMLPresenter().getDisplay().getEditor().setCondition(null);
             }
         });
 
