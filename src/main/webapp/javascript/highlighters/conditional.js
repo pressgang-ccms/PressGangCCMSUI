@@ -14,28 +14,40 @@
 function convert(text, startEnd) {
     var retValue = [];
 
+    // this tells us how many lines preceed the element
     var beforeText = text.substr(0, startEnd.start);
     var beforeLines = beforeText.split("\n");
 
+    // this tells us how many lines are included in the element
     var includingText = text.substr(startEnd.start, startEnd.end - startEnd.start);
     var includingLines = includingText.split("\n");
 
+    // determine the details of the marker in the first line
     var line = beforeLines.length - 1;
     var start = beforeLines[beforeLines.length - 1].length;
     var end = includingLines.length > 1 ?
         start + includingLines[0].length :
         startEnd.end - (startEnd.start - start);
 
+    // push a marker from the start of the element to the end of the element, or the end
+    // of the line if the element spans multiple lines
     retValue.push({line: line, start: start, end: end});
 
+    // Account for elements that span multiple lines
     if (includingLines.length > 1) {
+        // keep a track of how much of the element's contents we "consume" in the loop,
+        // so we know how much is left in the final line
         var remainingLength = includingText.length - includingLines[0].length;
 
+        // push a marker for each of the lines between the first and the last. these
+        // markers are from the start of the line to the end.
         for (var includingLinesIndex = 1, includingLinesCount = includingLines.length - 1; includingLinesIndex < includingLinesCount; ++includingLinesIndex) {
             retValue.push({line: line + includingLinesIndex, start: 0, end: includingLines[includingLinesIndex].length});
             remainingLength -= includingLines[includingLinesIndex].length;
         }
 
+        // push a marker for the last line. This is from the start of the line to the end
+        // of the element/
         retValue.push({line: line + includingLines.length - 1, start: 0, end: remainingLength});
     }
 
@@ -45,7 +57,7 @@ function convert(text, startEnd) {
 self.addEventListener('message', function (e) {
 
     // return an empty array if there is no condition selected
-    if (!e.data.condition) {
+    if (!e.data.condition || !e.data.text) {
         postMessage([]);
     }
 
