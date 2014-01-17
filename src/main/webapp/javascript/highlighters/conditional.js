@@ -29,14 +29,14 @@ function convert(text, startEnd) {
     retValue.push({line: line, start: start, end: end});
 
     if (includingLines.length > 1) {
-        var remainingLength = includingText.length - end;
+        var remainingLength = includingText.length - includingLines[0].length;
 
         for (var includingLinesIndex = 1, includingLinesCount = includingLines.length - 1; includingLinesIndex < includingLinesCount; ++includingLinesIndex) {
             retValue.push({line: line + includingLinesIndex, start: 0, end: includingLines[includingLinesIndex].length});
             remainingLength -= includingLines[includingLinesIndex].length;
         }
 
-        retValue.push({line: line + includingLines.length - 1, start: 0, end: remainingLength });
+        retValue.push({line: line + includingLines.length - 1, start: 0, end: remainingLength});
     }
 
     return retValue;
