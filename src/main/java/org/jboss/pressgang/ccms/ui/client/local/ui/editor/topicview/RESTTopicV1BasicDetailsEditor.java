@@ -168,7 +168,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
 
         xmlDoctype.setEnabled(!readOnly);
-        final List<String> docTypeValues = new ArrayList<String>();
+        xmlDoctype.clear();
         for (final RESTXMLDoctype docType : RESTXMLDoctype.values()) {
             xmlDoctype.addItem(docType.getCommonName(), docType.name());
         }

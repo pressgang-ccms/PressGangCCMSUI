@@ -633,10 +633,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
       */
     @org.jetbrains.annotations.Nullable
     private RESTXMLDoctype lastDocType;
-    /**
-     * Set to true until the xml validation indicates that the XML is valid
-      */
-    private boolean hasXMLErrors = true;
+
     /**
      * How long it has been since the xml changes
      */
@@ -1535,6 +1532,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
                             }
 
+                            // If this is the first time we have validated the xml and it is ok, render the xml
+                            if (hasXMLErrors == null && !isError) {
+                                isReadOnlyMode(new ReadOnlyCallback() {
+                                    @Override
+                                    public void readonlyCallback(boolean readOnly) {
+                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                                    }
+                                });
+                            }
+
                             hasXMLErrors = isError;
                         }
 
@@ -2350,7 +2358,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
-                        if (!hasXMLErrors && (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))) {
+                        if (!hasXMLErrors() && (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))) {
                             isDisplayingImage = timeToDisplayImage;
                             getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
                         }

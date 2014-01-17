@@ -612,6 +612,19 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                             if (isError) {
                                 getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
                             }
+
+                            // If this is the first time we have validated the xml and it is ok, render the xml
+                            if (hasXMLErrors == null && !isError) {
+                                isReadOnlyMode(new ReadOnlyCallback() {
+                                    @Override
+                                    public void readonlyCallback(boolean readOnly) {
+                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                                    }
+                                });
+                            }
+
+                            hasXMLErrors = isError;
                         }
 
                         @Override

@@ -140,11 +140,27 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected String customEntities = "";
 
     /**
+     * Null until validation has been done, and true if xml validation indicates that the XML is valid. The topic
+     * should not be rendered unless this is false.
+     */
+    protected Boolean hasXMLErrors = null;
+
+    /**
      * The click OK button handler for the message log dialog box depends on whether we are saving changes to the
      * topic or setting the review status. This variable allows us to remove the last assigned click handler in
      * order to swap it out for the new one.
      */
     protected HandlerRegistration messageLogOKHandler;
+
+    /**
+     * If this method returns false, the topics can be rendered. If it returns true it means the
+     * topics has yet to be validated or has errros.
+     * @return true if the xml has errors or if it has not been tested yet, and false otherwise.
+     */
+    protected boolean hasXMLErrors()
+    {
+        return hasXMLErrors == null || hasXMLErrors;
+    }
 
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
@@ -352,12 +368,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
                 getTopicRenderedPresenter().getDisplay().clear();
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                    }
-                });
+                if (!hasXMLErrors()) {
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        }
+                    });
+                }
             }
         });
 
@@ -370,12 +388,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId(), contentSpecId);
                 }
                 getTopicSplitPanelRenderedPresenter().getDisplay().clear();
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                    }
-                });
+                if (!hasXMLErrors()) {
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        }
+                    });
+                }
             }
         });
     }
@@ -385,14 +405,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
                 Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicRenderedPresenter().getDisplay().getRemarks().getValue());
-
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                    }
-                });
-
+                if (!hasXMLErrors()) {
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        }
+                    });
+                }
             }
         });
 
@@ -401,12 +421,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> booleanValueChangeEvent) {
                 Preferences.INSTANCE.saveSetting(Preferences.REMARKS_ENABLED + getDisplayedTopic().getId(), getTopicSplitPanelRenderedPresenter().getDisplay().getRemarks().getValue());
 
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                    }
-                });
+                if (!hasXMLErrors()) {
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        }
+                    });
+                }
             }
         });
     }
@@ -563,14 +585,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                                 getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
                                 getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
 
-                                isReadOnlyMode(new ReadOnlyCallback() {
+                                if (!hasXMLErrors()) {
+                                    isReadOnlyMode(new ReadOnlyCallback() {
                                     @Override
                                     public void readonlyCallback(final boolean readOnly) {
-                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                                    }
-                                });
-
+                                            getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                                        }
+                                    });
+                                }
                                 break;
                             }
                         }
@@ -583,13 +606,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 /*
                     Trigger the initial render
                  */
-                isReadOnlyMode(new ReadOnlyCallback() {
+                if (!hasXMLErrors()) {
+                    isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(boolean readOnly) {
-                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                    }
-                });
+                            getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                        }
+                    });
+                }
 
             }
         } finally {
