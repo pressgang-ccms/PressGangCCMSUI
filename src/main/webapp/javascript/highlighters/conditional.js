@@ -3,6 +3,13 @@
     Since it uses regular expressions, it is somewhat tolerant of badly formatted XML.
  */
 
+/**
+ * Take the start and end positions of characters in a block of text that includes line breaks,
+ * and convert it to start and end positions across a number of lines
+ * @param text The text being analysed
+ * @param startEnd The start and end positions to be converted to start and end positions over multiple lines
+ * @returns {Array}
+ */
 function convert(text, startEnd) {
     var retValue = [];
 
