@@ -17,7 +17,7 @@ function convert(text, startEnd) {
     var beforeText = text.substr(0, startEnd.start);
     var beforeLines = beforeText.split("\n");
 
-    var includingText = text.substr(startEnd.start, startEnd.start + startEnd.end);
+    var includingText = text.substr(startEnd.start, startEnd.end - startEnd.start);
     var includingLines = includingText.split("\n");
 
     var line = beforeLines.length;
@@ -126,9 +126,9 @@ self.addEventListener('message', function (e) {
                     }
                 }
 
-                retValue.push(convert(e.data.text, {start: start, end: totalLength}));
+                retValue = retValue.concat(convert(e.data.text, {start: start, end: totalLength}));
             } else {
-                retValue.push(convert(e.data.text, {start: start, end: totalLength}));
+                retValue = retValue.concat(convert(e.data.text, {start: start, end: totalLength}));
             }
         }
     }
