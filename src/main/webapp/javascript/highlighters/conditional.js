@@ -20,7 +20,7 @@ function convert(text, startEnd) {
     var includingText = text.substr(startEnd.start, startEnd.end - startEnd.start);
     var includingLines = includingText.split("\n");
 
-    var line = beforeLines.length;
+    var line = beforeLines.length - 1;
     var start = beforeLines[beforeLines.length - 1].length;
     var end = includingLines.length > 1 ?
         start + includingLines[0].length :
@@ -36,7 +36,7 @@ function convert(text, startEnd) {
             remainingLength -= includingLines[includingLinesIndex].length;
         }
 
-        retValue.push({line: line + includingLines.length, start: 0, end: remainingLength });
+        retValue.push({line: line + includingLines.length - 2, start: 0, end: remainingLength });
     }
 
     return retValue;
