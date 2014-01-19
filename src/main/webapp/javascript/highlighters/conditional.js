@@ -59,6 +59,15 @@ self.addEventListener('message', function (e) {
     // return an empty array if there is no condition selected
     if (!e.data.condition || !e.data.text) {
         postMessage([]);
+        return;
+    }
+
+    try {
+        var specCondition = new RegExp(e.data.condition);
+    } catch (e) {
+        // bad regex, so don't process anything
+        postMessage([]);
+        return;
     }
 
     /**
@@ -67,19 +76,7 @@ self.addEventListener('message', function (e) {
      */
     var startTagRegex = /<\s*([^>]*?)\s+[^>]*?condition\s*=\s*['"](.*?)['"][^>]*?(\/)?\s*>/;
     var text = e.data.text;
-    var textConditions = e.data.condition.split(":;,");
-    var conditions = [];
     var totalLength = 0;
-
-    for (var textConditionIndex = 0, textConditionCount = textConditions.length; textConditionIndex < textConditionCount; ++textConditionIndex) {
-        var textCondition = textConditions[textConditionIndex];
-        try {
-            conditions.push(new RegExp(textCondition));
-        } catch (e) {
-            // bad regex, so ignore it
-        }
-    }
-
     var retValue = [];
 
     outerloop:
@@ -89,10 +86,12 @@ self.addEventListener('message', function (e) {
             break outerloop;
         }
 
+        var conditions = match[2].split(";:,");
+
         var include = false;
         for (var conditionIndex = 0, conditionCount = conditions.length; conditionIndex < conditionCount; ++conditionIndex) {
             var condition = conditions[conditionIndex];
-            if(condition.exec(match[2])) {
+            if(specCondition.test(condition)) {
                 include = true;
                 break;
             }
