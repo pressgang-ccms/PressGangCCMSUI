@@ -107,9 +107,9 @@ self.addEventListener('message', function (e) {
             // not a self closing element
             if (!match[3]) {
                 // a regex to match any opening tag of the same type as the conditional one we are processing
-                var openTag = new RegExp("<\s*" + match[1] + "\s*.*?>");
-                // a regex to match any closing tag of the same type as the conditial one we are processing
-                var closeTag = new RegExp("<\s*\/\s*" + match[1] + "\s*>");
+                var openTag = new RegExp("<\\s*" + match[1] + "(\\s*>)|(\\s+.*?>)");
+                // a regex to match any closing tag of the same type as the conditional one we are processing
+                var closeTag = new RegExp("<\\s*\/\\s*" + match[1] + "\\s*>");
 
                 var childCount = 0;
 
