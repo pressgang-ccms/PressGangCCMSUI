@@ -29,6 +29,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -107,19 +108,18 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         final JSONObject jsonValue = getSelectedContentSpecValue();
 
         // Apply the conditions
+        String condition = "";
         if (jsonValue.containsKey("condition") || conditionOverride != null) {
-            /*
-                conditionOverride overrides any selection in the combo box
-             */
-            final String condition = conditionOverride != null ? conditionOverride : jsonValue.get("condition").isString().stringValue().trim();
-
-            /*
-                Apply some special rules when no condition is specified
-             */
-            final String actualCondition = condition.isEmpty() ? ServiceConstants.DEFAULT_CONDITION : condition;
-
-            removeConditions(doc, actualCondition);
+            // conditionOverride overrides any selection in the combo box
+            condition = conditionOverride != null ? conditionOverride : jsonValue.get("condition").isString().stringValue().trim();
         }
+
+        // Account for no condition
+        if (GWTUtilities.isStringNullOrEmpty(condition)) {
+            condition = ServiceConstants.DEFAULT_CONDITION;
+        }
+
+        removeConditions(doc, condition);
 
         // Resolve any injections
         InjectionResolver.resolveInjections(doc);
