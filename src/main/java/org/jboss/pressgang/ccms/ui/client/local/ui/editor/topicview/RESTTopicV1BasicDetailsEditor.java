@@ -188,9 +188,18 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
-            if (xmlDoctype.getValue(i).equals(value.getXmlDoctype().name()))  {
-                xmlDoctype.setSelectedIndex(i);
+        if (value.getXmlDoctype() != null) {
+            for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
+                if (xmlDoctype.getValue(i).equals(value.getXmlDoctype().name()))  {
+                    xmlDoctype.setSelectedIndex(i);
+                }
+            }
+        } else {
+            // default to 4.5
+            for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
+                if (xmlDoctype.getValue(i).equals(RESTXMLDoctype.DOCBOOK_45.name()))  {
+                    xmlDoctype.setSelectedIndex(i);
+                }
             }
         }
 
