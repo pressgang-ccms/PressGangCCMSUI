@@ -23,6 +23,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -863,7 +864,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void bindRenderedViewClicks() {
-        /*getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
+        /*getTopicSplitPanelRenderedPresenter().getDisplay().getDiv().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -890,7 +891,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
                 }
             }
-        }); */
+        });*/
     }
 
     private void bindTagButtons() {
