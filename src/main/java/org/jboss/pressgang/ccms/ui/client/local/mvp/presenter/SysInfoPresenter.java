@@ -21,6 +21,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 /**
  * Presenter to add logic to the system information view
  */
+@Dependent
 public class SysInfoPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface{
 
     public static final String HISTORY_TOKEN = "SysInfoView";
