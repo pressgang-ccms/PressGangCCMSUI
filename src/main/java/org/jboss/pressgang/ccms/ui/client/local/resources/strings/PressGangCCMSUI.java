@@ -192,6 +192,9 @@ public interface PressGangCCMSUI extends Constants {
     String Troubleshooting();
 
     @NotNull
+    String SystemInfo();
+
+    @NotNull
     String PleaseWait();
 
     @NotNull
@@ -1255,4 +1258,10 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String TopicFormat();
+
+    @NotNull
+    String HighestRevisionNumber();
+
+    @NotNull
+    String HighestRevisionDate();
 }

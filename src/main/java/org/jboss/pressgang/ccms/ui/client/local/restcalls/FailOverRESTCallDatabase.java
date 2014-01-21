@@ -3,23 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -2034,5 +2019,24 @@ public final class FailOverRESTCallDatabase {
                 display
         );
 
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getSysInfo method
+     * @param
+     * @return A RESTCall that can call the REST getSysInfo method
+     */
+    public static RESTCall getSysInfo() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONSysInfo();
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
     }
 }
