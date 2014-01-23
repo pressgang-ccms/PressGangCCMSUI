@@ -63,7 +63,7 @@ define(
 				}, {
 					// tokens that define structure
 					token: "constant.language",
-					regex: "^\\s*Chapter:|^\\s*Section:|^\\s*Appendix:|^\\s*Part:|^\\s*Process:|^\\s*Preface:|Refer-to:|Prerequisite:|Link-List:|T\\d+|R:\\d+|P:\\d+|\\bN\\d*\\b|X\\d+|T-\\w+"
+					regex: "^\\s*Chapter:|^\\s*Section:|^\\s*Appendix:|^\\s*Part:|^\\s*Process:|^\\s*Preface:|^\\s*Initial Text:|Refer-to:|Prerequisite:|Link-List:|T\\d+|R:\\d+|P:\\d+|\\bN\\d*\\b|X\\d+|T-\\w+"
 				},  {
 					token : "constant.numeric",
 					regex : "\\b[0-9]+\\b"
@@ -97,10 +97,10 @@ define(
 		var FoldMode = exports.FoldMode = function() {};
 		oop.inherits(FoldMode, BaseFoldMode);
 		(function() {
-            this.foldingStartMarker = /^((([\w\d-]+-)?publican.cfg|Entities)\s*=\s*\[|\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:))(?:.*$)/;
+            this.foldingStartMarker = /^((([\w\d-]+-)?publican.cfg|Entities)\s*=\s*\[|\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:|Initial Text:))(?:.*$)/;
             this.getFoldWidgetRange = function(session, foldStyle, row) {
                 var metaDataRe = /^\w[-\w\.\s]+=\s*\[.*$/;
-                var levelRe = /^\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:).*$/
+                var levelRe = /^\s*(Chapter:|Section:|Appendix:|Part:|Process:|Preface:|Initial Text:).*$/
                 var line = session.getLine(row);
                 if (line.match(metaDataRe)) {
                     return this._getFoldMetaDataWidgetRange(session, foldStyle, row);
