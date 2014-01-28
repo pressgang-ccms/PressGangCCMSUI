@@ -40,6 +40,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.Failover
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.SysInfoPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.BlobConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
@@ -300,6 +301,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 display.getTopShortcutView().getMonitoring().setTarget("_blank");
             }
         });
+        display.getTopShortcutView().getSysinfo().setHref("#" + SysInfoPresenter.HISTORY_TOKEN);
     }
 
     private void bindDefaultShortcutButtons() {

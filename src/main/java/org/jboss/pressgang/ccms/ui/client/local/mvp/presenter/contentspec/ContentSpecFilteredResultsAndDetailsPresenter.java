@@ -383,7 +383,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     checkState(contentSpecRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
                     final String rhs = contentSpecRevisionsPresenter.getDisplay().getMergely().getRhs();
                     filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(rhs);
-                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay()}));
+                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay(),
+                            contentSpecRevisionsPresenter.getDisplay()}));
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                 isReadOnlyMode(new ReadOnlyCallback() {
