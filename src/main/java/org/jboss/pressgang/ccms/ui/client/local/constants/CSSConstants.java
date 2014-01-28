@@ -8,6 +8,10 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface SysInfo {
+        String SYSINFO_LABEL = "SysInfoLabel";
+    }
+
     interface Legend {
         String LEGEND_PANEL = "LegendPanel";
         String LEGEND_PARENT_PANEL = "LegendParentPanel";

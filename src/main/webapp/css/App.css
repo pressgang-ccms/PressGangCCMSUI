@@ -1207,3 +1207,7 @@ a.AnchorPushButton, a.AnchorMenuItem {
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
 }
+
+.SysInfoLabel {
+    margin-right: 8px;
+}
