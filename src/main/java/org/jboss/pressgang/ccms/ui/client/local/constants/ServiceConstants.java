@@ -21,7 +21,7 @@ public final class ServiceConstants {
     public static final String DEFAULT_CONDITION = "default";
 
     public static String CS_NODE_TOPIC_TYPES_QUERY = "query;" + CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" +
-            CommonConstants.CS_NODE_TOPIC + "," + CommonConstants.CS_NODE_INNER_TOPIC + "," + CommonConstants.CS_NODE_META_DATA_TOPIC +";";
+            CommonConstants.CS_NODE_TOPIC + "," + CommonConstants.CS_NODE_INITIAL_CONTENT_TOPIC + "," + CommonConstants.CS_NODE_META_DATA_TOPIC +";";
 
     public static String CS_NODE_METADATA_QUERY = "query;" + CommonFilterConstants.CONTENT_SPEC_NODE_TYPE_FILTER_VAR + "=" +
             CommonConstants.CS_NODE_META_DATA + ";";
