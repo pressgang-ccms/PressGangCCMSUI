@@ -1061,10 +1061,6 @@ snippet injectlistitems\n\
 	<!-- InjectListItems: ${1:TOPIC_ID_COMMA_SEPARATED} -->\n\
 snippet injectsequence\n\
 	<!-- InjectSequence: ${1:TOPIC_ID_COMMA_SEPARATED} -->\n\
-snippet injecttext\n\
-	<!-- InjectText: ${1:TOPIC_ID} -->\n\
-snippet injecttitle\n\
-	<!-- InjectTitle: ${1:TOPIC_ID} -->\n\
 snippet promptlinux\n\
 	<prompt>[user@host ${1:path}]\$</prompt> <userinput>${2:user_input}</userinput>\n\
 snippet promptwindows\n\
