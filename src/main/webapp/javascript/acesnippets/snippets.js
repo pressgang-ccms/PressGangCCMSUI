@@ -1051,8 +1051,8 @@ snippet indexterm2\n\
 	<indexterm id='${1:ID}'><primary>${2:primary}</primary><secondary>${3:secondary}</secondary></indexterm>\n\
 snippet indexterm3\n\
 	<indexterm id='${1:ID}'><primary>${2:primary}</primary><secondary>${3:secondary}</secondary><tertiary>${4:tertiary}</tertiary>\n\
-snippet injectimage\n\
-	<!-- InjectImage: ${1:IMAGE_ID} -->\n\
+snippet inject\n\
+	<!-- Inject: ${1:TOPIC_ID} -->\n\
 snippet injectlist\n\
 	<!-- InjectList: ${1:TOPIC_ID_COMMA_SEPARATED} -->\n\
 snippet injectalphasort\n\
