@@ -147,7 +147,7 @@ public class XMLValidator {
 
                 // get the format of the topic
                 var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
-                var formatName = format.@org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::name()();
+                var formatName = format.@org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::name()();
 
                 // if there has been no change to the xml and the format, don't revalidate
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML &&
@@ -161,9 +161,9 @@ public class XMLValidator {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastFormat = formatName;
 
-                    if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_45) {
+                    if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
-                    } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype::DOCBOOK_50) {
+                    } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_50) {
                         text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::addDocbook5Namespaces(Ljava/lang/String;)(text);
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }

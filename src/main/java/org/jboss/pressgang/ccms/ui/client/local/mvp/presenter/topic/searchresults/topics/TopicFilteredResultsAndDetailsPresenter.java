@@ -70,7 +70,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
@@ -391,7 +391,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     newTopic.explicitSetDescription(sourceTopic.getDescription());
                     newTopic.explicitSetLocale(sourceTopic.getLocale());
                     newTopic.explicitSetXml(sourceTopic.getXml());
-                    newTopic.explicitSetXmlDoctype(sourceTopic.getXmlDoctype());
+                    newTopic.explicitSetXmlDoctype(sourceTopic.getXmlFormat());
 
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem().returnIsAddItem()) {
 
@@ -641,7 +641,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * The last doctype that was assigned to the topic
       */
     @org.jetbrains.annotations.Nullable
-    private RESTXMLDoctype lastDocType;
+    private RESTXMLFormat lastDocType;
 
     /**
      * How long it has been since the xml changes
@@ -807,7 +807,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     /**
      * We flush the UI changes to the underlying topic when the topic format has changed. A lot of
-     * processes rely on the xmlDoctype being set to the correct value for things like rendering
+     * processes rely on the xmlFormat being set to the correct value for things like rendering
      * and validation.
      */
     private void bindTopicFormatChange() {
@@ -1556,9 +1556,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         }
 
                         @Override
-                        public RESTXMLDoctype getFormat()
+                        public RESTXMLFormat getFormat()
                         {
-                            return getDisplayedTopic().getXmlDoctype();
+                            return getDisplayedTopic().getXmlFormat();
                         }
                     });
         }
@@ -2356,7 +2356,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             if (this.getDisplayedTopic() != null) {
                 final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml())) ||
-                        (lastDocType == null || lastDocType != this.getDisplayedTopic().getXmlDoctype());
+                        (lastDocType == null || lastDocType != this.getDisplayedTopic().getXmlFormat());
 
                 if (xmlHasChanges) {
                     lastXMLChange = System.currentTimeMillis();
@@ -2376,7 +2376,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 });
 
                 lastXML = this.getDisplayedTopic().getXml();
-                lastDocType = this.getDisplayedTopic().getXmlDoctype();
+                lastDocType = this.getDisplayedTopic().getXmlFormat();
             }
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
@@ -2793,7 +2793,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return true;
                 }
 
-                if (selectedTopic.getXmlDoctype() != displayedTopic.getXmlDoctype()) {
+                if (selectedTopic.getXmlFormat() != displayedTopic.getXmlFormat()) {
                     return true;
                 }
             }

@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 
 /**
  * Instances of this interface are used to pass information back and forth between the class doing
@@ -27,5 +27,5 @@ public interface XMLValidationHelper {
     /**
      * @return The format of the topic
      */
-    RESTXMLDoctype getFormat();
+    RESTXMLFormat getFormat();
 }

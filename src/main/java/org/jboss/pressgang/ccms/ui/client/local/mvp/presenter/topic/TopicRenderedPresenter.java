@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -75,7 +75,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
         try {
             String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
 
-            if (topic.getXmlDoctype() == RESTXMLDoctype.DOCBOOK_50) {
+            if (topic.getXmlFormat() == RESTXMLFormat.DOCBOOK_50) {
                 xml = XMLUtilities.addDocbook5Namespaces(xml);
             }
 

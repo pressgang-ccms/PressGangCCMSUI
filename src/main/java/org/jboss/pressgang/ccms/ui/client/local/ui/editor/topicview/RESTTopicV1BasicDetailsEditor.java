@@ -6,7 +6,7 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLDoctype;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
@@ -169,7 +168,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
 
         xmlDoctype.setEnabled(!readOnly);
         xmlDoctype.clear();
-        for (final RESTXMLDoctype docType : RESTXMLDoctype.values()) {
+        for (final RESTXMLFormat docType : RESTXMLFormat.values()) {
             xmlDoctype.addItem(docType.getCommonName(), docType.name());
         }
 
@@ -188,16 +187,16 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        if (value.getXmlDoctype() != null) {
+        if (value.getXmlFormat() != null) {
             for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
-                if (xmlDoctype.getValue(i).equals(value.getXmlDoctype().name()))  {
+                if (xmlDoctype.getValue(i).equals(value.getXmlFormat().name()))  {
                     xmlDoctype.setSelectedIndex(i);
                 }
             }
         } else {
             // default to 4.5
             for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
-                if (xmlDoctype.getValue(i).equals(RESTXMLDoctype.DOCBOOK_45.name()))  {
+                if (xmlDoctype.getValue(i).equals(RESTXMLFormat.DOCBOOK_45.name()))  {
                     xmlDoctype.setSelectedIndex(i);
                 }
             }
@@ -235,11 +234,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         value.setDescription(description.getValue());
         if (xmlDoctype.getSelectedIndex() != -1)
         {
-            for (final RESTXMLDoctype docType : RESTXMLDoctype.values())
+            for (final RESTXMLFormat docType : RESTXMLFormat.values())
             {
                 if (docType.name().equals(xmlDoctype.getValue(xmlDoctype.getSelectedIndex())))
                 {
-                    value.setXmlDoctype(docType);
+                    value.setXmlFormat(docType);
                     break;
                 }
             }
