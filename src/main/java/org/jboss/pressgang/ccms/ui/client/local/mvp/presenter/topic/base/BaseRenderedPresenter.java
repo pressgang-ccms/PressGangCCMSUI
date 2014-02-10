@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
@@ -27,7 +27,7 @@ public abstract class BaseRenderedPresenter extends BaseTemplatePresenter {
     }
 
     protected String getDTD() {
-        return DocbookDTD.getDtdDoctype();
+        return DocBookDTD.getDtdDoctype();
     }
 
     protected String getXSLTemplate(boolean showImages, boolean showRemarks) {

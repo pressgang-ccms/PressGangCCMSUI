@@ -54,7 +54,7 @@ public class XMLValidator {
 
     private native void checkXML() /*-{
         var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
-        var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
+        var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
         var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
@@ -139,15 +139,16 @@ public class XMLValidator {
                 if (text == null) {
                     text = "";
                 }
-                // Add the doctype that include the standard docbook entities
-                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                // resolve injections and append the xml entities, which are common to docbook 4 and 5
-                // see (http://www.sagehill.net/docbookxsl/Db5Entities.html)
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Ljava/lang/String;)(text);
 
                 // get the format of the topic
                 var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
                 var formatName = format.@org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::name()();
+
+                // Add the doctype that include the standard docbook entities
+                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
+                // resolve injections and append the xml entities, which are common to docbook 4 and 5
+                // see (http://www.sagehill.net/docbookxsl/Db5Entities.html)
+                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Lorg/jboss/pressgang/ccms/rest/v1/entities/enums/RESTXMLFormat;Ljava/lang/String;)(format, text);
 
                 // if there has been no change to the xml and the format, don't revalidate
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML &&
@@ -164,7 +165,7 @@ public class XMLValidator {
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
                     } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_50) {
-                        text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::addDocbook5Namespaces(Ljava/lang/String;)(text);
+                        text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::addDocBook5Namespaces(Ljava/lang/String;)(text);
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }
                 }

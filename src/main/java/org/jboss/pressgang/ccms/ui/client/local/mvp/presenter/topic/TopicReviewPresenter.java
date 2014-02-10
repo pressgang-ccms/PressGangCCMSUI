@@ -19,7 +19,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
@@ -114,7 +114,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                         FailOverRESTCallDatabase.getTopic(ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId()),
                         new RESTCallBack<RESTTopicV1>() {
                             public void success(@NotNull final RESTTopicV1 value) {
-                                final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocbookDTD.getDtdDoctype() + "\n" +
+                                final String xml = Constants.DOCBOOK_XSL_REFERENCE + "\n" + DocBookDTD.getDtdDoctype() + "\n" +
                                         XMLUtilities.removeAllPreamble(
                                         value.getXml());
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),

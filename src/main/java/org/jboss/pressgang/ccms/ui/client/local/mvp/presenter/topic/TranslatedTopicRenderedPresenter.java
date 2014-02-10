@@ -18,6 +18,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicRenderedPresenter;
@@ -84,8 +85,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
         }
     }
 
-    public void displayTopicRendered(final RESTTranslatedTopicV1 translatedTopic, final boolean readOnly,
-            final boolean showImages) {
+    public void displayTopicRendered(final RESTTranslatedTopicV1 translatedTopic, final boolean readOnly, final boolean showImages) {
         getServerSettings(new ServerSettingsCallback() {
             @Override
             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
@@ -95,11 +95,11 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
                     // If we are displaying a revision history topic then merge the revisions together
                     final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();
                     if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getRevisionHistoryTagId())) {
-                        xml = processRevisionHistoryXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                        xml = processRevisionHistoryXML(translatedTopic.getXmlFormat(), xml, translatedTopic.getTranslatedAdditionalXML());
                     } else if (merge && EntityUtilities.topicHasTag(translatedTopic, serverSettings.getEntities().getAuthorGroupTagId())) {
-                        xml = processAuthorGroupXML(xml, translatedTopic.getTranslatedAdditionalXML());
+                        xml = processAuthorGroupXML(translatedTopic.getXmlFormat(), xml, translatedTopic.getTranslatedAdditionalXML());
                     } else {
-                        xml = processXML(xml);
+                        xml = processXML(translatedTopic.getXmlFormat(), xml);
                     }
 
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), new RESTCallBack<IntegerWrapper>() {
@@ -115,7 +115,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
         });
     }
 
-    protected String processRevisionHistoryXML(final String xml, final String additionalXml) {
+    protected String processRevisionHistoryXML(final RESTXMLFormat xmlFormat, final String xml, final String additionalXml) {
         // Check that we have some additional xml to process first
         if (isStringNullOrEmpty(additionalXml)) {
             return xml;
@@ -125,8 +125,8 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
             final Document doc = XMLUtilities.convertStringToDocument(xml);
             final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
 
-            processXML(doc);
-            processXML(additionalDoc);
+            processXML(xmlFormat, doc);
+            processXML(xmlFormat, additionalDoc);
 
             final NodeList revhistories = doc.getElementsByTagName("revhistory");
             if (revhistories.getLength() > 0) {
@@ -177,7 +177,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
         return xml;
     }
 
-    protected String processAuthorGroupXML(final String xml, final String additionalXml) {
+    protected String processAuthorGroupXML(final RESTXMLFormat xmlFormat, final String xml, final String additionalXml) {
         // Check that we have some additional xml to process first
         if (isStringNullOrEmpty(additionalXml)) {
             return xml;
@@ -187,8 +187,8 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
             final Document doc = XMLUtilities.convertStringToDocument(xml);
             final Document additionalDoc = XMLUtilities.convertStringToDocument(additionalXml);
 
-            processXML(doc);
-            processXML(additionalDoc);
+            processXML(xmlFormat, doc);
+            processXML(xmlFormat, additionalDoc);
 
             final NodeList authorGroups = doc.getElementsByTagName("authorgroup");
             final NodeList mergeAuthorGroups = additionalDoc.getElementsByTagName("authorgroup");

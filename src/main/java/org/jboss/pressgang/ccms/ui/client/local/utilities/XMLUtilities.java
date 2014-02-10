@@ -89,7 +89,7 @@ public class XMLUtilities {
      * @param xml The source xml
      * @return the xml with the docbook 5 namespaces added
      */
-    public static String addDocbook5Namespaces(@NotNull final String xml) {
+    public static String addDocBook5Namespaces(@NotNull final String xml) {
         final MatchResult result = SECTION_RE.exec(xml);
         if (result != null) {
             return xml.replace(

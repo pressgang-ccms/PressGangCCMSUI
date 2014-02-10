@@ -4,14 +4,12 @@ import com.google.gwt.http.client.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Holds a copy of the flattened Docbook DTD. This is used for validation, and also to inject the
+ * Holds a copy of the flattened DocBook DTD. This is used for validation, and also to inject the
  * entities (like nbsp) into the XML when rendered. This has to be inline for the XML rendering to
  * work in Firefox, as Firefox will not load external entity files.
  */
-public final class DocbookDTD {
+public final class DocBookDTD {
     private static String ent = "";
-    private static String dummyEnt = "";
-
 
     public static String getDtdDoctype() {
         return getDtdDoctype("");
@@ -19,9 +17,10 @@ public final class DocbookDTD {
 
     public static String getDtdDoctype(final String additionalEntities) {
         if (ent.isEmpty()) {
-            return ent + additionalEntities;
+            return "<!DOCTYPE section [" + additionalEntities + "]>";
+        } else {
+            return "<!DOCTYPE section [" + ent + "\n" + additionalEntities + "]>";
         }
-        return "<!DOCTYPE section [" + ent + "\n" + additionalEntities + "]>";
     }
 
     /**

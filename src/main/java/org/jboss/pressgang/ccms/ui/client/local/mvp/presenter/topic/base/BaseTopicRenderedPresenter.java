@@ -22,9 +22,10 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.DocbookDTD;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
@@ -32,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
+import org.jboss.pressgang.ccms.utils.structures.DocBookVersion;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseRenderedPresenter {
@@ -98,13 +100,13 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         }
     }
 
-    protected String processXML(final String xml) throws DOMParseException {
+    protected String processXML(final RESTXMLFormat xmlFormat, final String xml) throws DOMParseException {
         final Document doc = XMLUtilities.convertStringToDocument(xml);
-        processXML(doc);
+        processXML(xmlFormat, doc);
         return doc.toString();
     }
 
-    protected void processXML(@NotNull final Document doc) {
+    protected void processXML(final RESTXMLFormat xmlFormat, @NotNull final Document doc) {
         final JSONObject jsonValue = getSelectedContentSpecValue();
 
         // Apply the conditions
@@ -122,7 +124,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         removeConditions(doc, condition);
 
         // Resolve any injections
-        InjectionResolver.resolveInjections(doc);
+        InjectionResolver.resolveInjections(xmlFormat, doc);
     }
 
     protected JSONObject getSelectedContentSpecValue() {
@@ -218,7 +220,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         if (!standalone) {
             final JSONObject jsonValue = getSelectedContentSpecValue();
             if (jsonValue.containsKey("entities")) {
-                return DocbookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue());
+                return DocBookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue());
             }
         }
 
