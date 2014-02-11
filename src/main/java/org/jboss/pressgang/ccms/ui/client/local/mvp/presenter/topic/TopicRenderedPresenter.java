@@ -76,7 +76,7 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
             String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
 
             if (topic.getXmlFormat() == RESTXMLFormat.DOCBOOK_50) {
-                xml = XMLUtilities.addDocBook5Namespaces(xml);
+                xml = XMLUtilities.addDocBook50Namespaces(xml);
             }
 
             xml = processXML(topic.getXmlFormat(), xml);
