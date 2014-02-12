@@ -119,7 +119,7 @@ public class XMLUtilities {
                 retValue.append(" version=\"5.0\"");
             }
             retValue.append(result.getGroup(2) + ">");
-            return retValue.toString();
+            return xml.replace(result.getGroup(0), retValue.toString());
         }
 
         return xml;
