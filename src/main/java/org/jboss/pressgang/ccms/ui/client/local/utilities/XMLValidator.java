@@ -165,7 +165,6 @@ public class XMLValidator {
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
                     } else if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_50) {
-                        text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::addDocBook50Namespaces(Ljava/lang/String;)(text);
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook5: true});
                     }
                 }
