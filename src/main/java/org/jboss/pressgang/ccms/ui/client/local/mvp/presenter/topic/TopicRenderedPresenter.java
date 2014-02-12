@@ -73,7 +73,13 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
     @Override
     public void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
         try {
-            final String xml = processXML(topic.getXmlFormat(), cleanXMLAndAddAdditionalContent(topic.getXml(), showImages));
+            String xml = cleanXMLAndAddAdditionalContent(topic.getXml(), showImages);
+
+            if (topic.getXmlFormat() == RESTXMLFormat.DOCBOOK_50) {
+                xml = XMLUtilities.addDocBook50Namespaces(xml);
+            }
+
+            xml = processXML(topic.getXmlFormat(), xml);
 
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml),
                     new RESTCallBack<IntegerWrapper>() {
