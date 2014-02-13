@@ -12,7 +12,9 @@ import org.jetbrains.annotations.Nullable;
 public class TopicSearchUIFields extends BaseTopicSearchUIFields {
 
     private String createdBy;
+    private String notCreatedBy;
     private String editedBy;
+    private String notEditedBy;
 
     @Nullable
     public String getCreatedBy() {
@@ -24,12 +26,30 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
     }
 
     @Nullable
+    public String getNotCreatedBy() {
+        return notCreatedBy;
+    }
+
+    public void setNotCreatedBy(@Nullable final String notCreatedBy) {
+        this.notCreatedBy = notCreatedBy;
+    }
+
+    @Nullable
     public String getEditedBy() {
         return editedBy;
     }
 
     public void setEditedBy(@Nullable final String editedBy) {
         this.editedBy = editedBy;
+    }
+
+    @Nullable
+    public String getNotEditedBy() {
+        return notEditedBy;
+    }
+
+    public void setNotEditedBy(@Nullable final String notEditedBy) {
+        this.notEditedBy = notEditedBy;
     }
 
     public TopicSearchUIFields() {
@@ -48,8 +68,16 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.CREATED_BY_VAR, getCreatedBy()));
         }
 
+        if (!GWTUtilities.isStringNullOrEmpty(getNotCreatedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.NOT_CREATED_BY_VAR, getNotCreatedBy()));
+        }
+
         if (!GWTUtilities.isStringNullOrEmpty(getEditedBy())) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.EDITED_BY_VAR, getEditedBy()));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(getNotEditedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.NOT_EDITED_BY_VAR, getNotEditedBy()));
         }
     }
 
@@ -59,7 +87,9 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
 
         if (filter != null) {
             createdBy = "";
+            notCreatedBy = "";
             editedBy = "";
+            notEditedBy = "";
 
             if (filter.getFilterFields_OTM() != null) {
 
@@ -69,8 +99,12 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
 
                     if (fieldItem.getName().equals(CommonFilterConstants.CREATED_BY_VAR)) {
                         setCreatedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.NOT_CREATED_BY_VAR)) {
+                        setNotCreatedBy(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.EDITED_BY_VAR)) {
                         setEditedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.NOT_EDITED_BY_VAR)) {
+                        setNotEditedBy(fieldItem.getValue());
                     }
                 }
             }
@@ -86,8 +120,16 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
             retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(encodeQueryParameter(createdBy));
         }
 
+        if (!GWTUtilities.isStringNullOrEmpty(notCreatedBy)) {
+            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(encodeQueryParameter(notCreatedBy));
+        }
+
         if (!GWTUtilities.isStringNullOrEmpty(editedBy)) {
             retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(encodeQueryParameter(editedBy));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(notEditedBy)) {
+            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(encodeQueryParameter(notEditedBy));
         }
 
         return retValue.toString();

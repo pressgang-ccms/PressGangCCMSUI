@@ -24,7 +24,9 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
     private String createdBy;
+    private String notCreatedBy;
     private String editedBy;
+    private String notEditedBy;
     @Nullable
     private Date editedAfter;
     @Nullable
@@ -58,12 +60,30 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     }
 
     @Nullable
+    public String getNotCreatedBy() {
+        return notCreatedBy;
+    }
+
+    public void setNotCreatedBy(@Nullable final String notCreatedBy) {
+        this.notCreatedBy = notCreatedBy;
+    }
+
+    @Nullable
     public String getEditedBy() {
         return editedBy;
     }
 
     public void setEditedBy(@Nullable final String editedBy) {
         this.editedBy = editedBy;
+    }
+
+    @Nullable
+    public String getNotEditedBy() {
+        return notEditedBy;
+    }
+
+    public void setNotEditedBy(@Nullable final String notEditedBy) {
+        this.notEditedBy = notEditedBy;
     }
 
     @Nullable
@@ -245,8 +265,16 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.CREATED_BY_VAR, getCreatedBy()));
         }
 
+        if (!GWTUtilities.isStringNullOrEmpty(getNotCreatedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.NOT_CREATED_BY_VAR, getNotCreatedBy()));
+        }
+
         if (!GWTUtilities.isStringNullOrEmpty(getEditedBy())) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.EDITED_BY_VAR, getEditedBy()));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(getNotEditedBy())) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.NOT_EDITED_BY_VAR, getNotEditedBy()));
         }
 
         if (getType() != null) {
@@ -338,7 +366,9 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         if (filter != null) {
 
             createdBy = "";
+            notCreatedBy = "";
             editedBy = "";
+            notEditedBy = "";
             editedAfter = null;
             editedBefore = null;
             editedInLastXDays = null;
@@ -366,8 +396,12 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
 
                     if (fieldItem.getName().equals(CommonFilterConstants.CREATED_BY_VAR)) {
                         setCreatedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.NOT_CREATED_BY_VAR)) {
+                        setNotCreatedBy(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.EDITED_BY_VAR)) {
                         setEditedBy(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.NOT_EDITED_BY_VAR)) {
+                        setNotEditedBy(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR)) {
                         setIds(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_TITLE_FILTER_VAR)) {
@@ -433,8 +467,16 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(encodeQueryParameter(createdBy));
         }
 
+        if (!GWTUtilities.isStringNullOrEmpty(notCreatedBy)) {
+            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(encodeQueryParameter(notCreatedBy));
+        }
+
         if (!GWTUtilities.isStringNullOrEmpty(editedBy)) {
             retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(encodeQueryParameter(editedBy));
+        }
+
+        if (!GWTUtilities.isStringNullOrEmpty(notEditedBy)) {
+            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(encodeQueryParameter(notEditedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(ids)) {
