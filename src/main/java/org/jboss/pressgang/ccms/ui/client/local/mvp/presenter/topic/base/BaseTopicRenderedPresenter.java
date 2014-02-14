@@ -33,7 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
-import org.jboss.pressgang.ccms.utils.structures.DocBookVersion;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?, ?>> extends BaseRenderedPresenter {
@@ -210,9 +209,14 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
 
     public abstract void displayTopicRendered(final T topic, final boolean readOnly, final boolean showImages);
 
-    protected String cleanXMLAndAddAdditionalContent(final String xml, final boolean showImages) {
+    protected String cleanXMLAndAddAdditionalContent(final RESTXMLFormat xmlFormat, final String xml, final boolean showImages) {
         final boolean showRemarks = getDisplay().getRemarks().getValue();
-        return cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone);
+
+        if (xmlFormat == RESTXMLFormat.DOCBOOK_50) {
+            return XMLUtilities.addDocBook50Namespaces(cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone));
+        } else {
+            return cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone);
+        }
     }
 
     @Override

@@ -90,7 +90,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
             @Override
             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                 try {
-                    String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXml(), showImages);
+                    String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXmlFormat(), translatedTopic.getXml(), showImages);
 
                     // If we are displaying a revision history topic then merge the revisions together
                     final Boolean merge = getDisplay().getMergeAdditionalXML().getValue();

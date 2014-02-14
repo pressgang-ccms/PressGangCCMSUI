@@ -28,7 +28,7 @@ public class XMLUtilities {
     private static final RegExp CDATA_RE = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
     private static final RegExp CDATA_START_HANGING_RE = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
     private static final RegExp ELEMENT_RE = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
-    private static final RegExp ROOT_ELE_RE = RegExp.compile("^\\s*<\\s*(\\S+).*?>");
+    private static final RegExp ROOT_ELE_RE = RegExp.compile("^\\s*<\\s*([\\w\\d\\.\\-]+).*?>");
 
     /**
      * Strips out the xml preamble. This is usually done before the XML
