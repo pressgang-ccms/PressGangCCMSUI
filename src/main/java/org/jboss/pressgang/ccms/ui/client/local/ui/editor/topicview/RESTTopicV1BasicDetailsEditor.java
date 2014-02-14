@@ -1,23 +1,30 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DateLabel;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 
@@ -47,7 +54,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     private final Anchor restTopicXML = new Anchor();
     private final Label restTopicWebDav = new Label();
 
-    private final ListBox xmlDoctype = new ListBox();
+    private final ListBox xmlFormat = new ListBox();
 
     @NotNull
     public DateLabel lastModifiedEditor() {
@@ -92,7 +99,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
         title.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TITLE_FIELD);
-        xmlDoctype.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XMLDOCTYPE_FIELD);
+        xmlFormat.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XMLDOCTYPE_FIELD);
         restTopicDetails.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DETAILS_ENDPOINT_FIELD);
         restTopicXML.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XML_ENDPOINT_FIELD);
         restTopicWebDav.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD);
@@ -129,7 +136,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicFormat()));
-        this.setWidget(row, 1, xmlDoctype);
+        this.setWidget(row, 1, xmlFormat);
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDetailsRESTEndpoint()));
@@ -166,10 +173,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
         locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
 
-        xmlDoctype.setEnabled(!readOnly);
-        xmlDoctype.clear();
+        xmlFormat.setEnabled(!readOnly);
+        xmlFormat.clear();
         for (final RESTXMLFormat docType : RESTXMLFormat.values()) {
-            xmlDoctype.addItem(docType.getCommonName(), docType.name());
+            xmlFormat.addItem(docType.getCommonName(), docType.name());
         }
 
         description.setReadOnly(readOnly);
@@ -188,16 +195,16 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         lastModified.setValue(value.getLastModified());
 
         if (value.getXmlFormat() != null) {
-            for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
-                if (xmlDoctype.getValue(i).equals(value.getXmlFormat().name()))  {
-                    xmlDoctype.setSelectedIndex(i);
+            for (int i = 0; i < xmlFormat.getItemCount(); ++i) {
+                if (xmlFormat.getValue(i).equals(value.getXmlFormat().name()))  {
+                    xmlFormat.setSelectedIndex(i);
                 }
             }
         } else {
             // default to 4.5
-            for (int i = 0; i < xmlDoctype.getItemCount(); ++i) {
-                if (xmlDoctype.getValue(i).equals(RESTXMLFormat.DOCBOOK_45.name()))  {
-                    xmlDoctype.setSelectedIndex(i);
+            for (int i = 0; i < xmlFormat.getItemCount(); ++i) {
+                if (xmlFormat.getValue(i).equals(RESTXMLFormat.DOCBOOK_45.name()))  {
+                    xmlFormat.setSelectedIndex(i);
                 }
             }
         }
@@ -232,11 +239,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         value.setTitle(title.getValue());
         value.setLocale(locale.getValue());
         value.setDescription(description.getValue());
-        if (xmlDoctype.getSelectedIndex() != -1)
+        if (xmlFormat.getSelectedIndex() != -1)
         {
             for (final RESTXMLFormat docType : RESTXMLFormat.values())
             {
-                if (docType.name().equals(xmlDoctype.getValue(xmlDoctype.getSelectedIndex())))
+                if (docType.name().equals(xmlFormat.getValue(xmlFormat.getSelectedIndex())))
                 {
                     value.setXmlFormat(docType);
                     break;
@@ -263,6 +270,6 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
 
     @NotNull
     public ListBox getXmlDoctypeEditor() {
-        return xmlDoctype;
+        return xmlFormat;
     }
 }

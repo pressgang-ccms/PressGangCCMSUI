@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.base.BaseSearchFieldUIEditor;
@@ -35,6 +36,7 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     private final TextBox editedBy = new TextBox();
     private final TextBox notEditedBy = new TextBox();
     private final ListBox type = new ListBox();
+    private final ListBox format = new ListBox();
     private final TextBox ids = new TextBox();
     private final TextBox title = new TextBox();
     private final TextBox subtitle = new TextBox();
@@ -130,6 +132,10 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         setWidget(getRowCount(), 0, contentSpecBrandLabel);
         setWidget(getRowCount() - 1, 1, brand);
 
+        @NotNull final Label contentSpecFormatLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecFormat());
+        this.setWidget(this.getRowCount(), 0, contentSpecFormatLabel);
+        this.setWidget(this.getRowCount() - 1, 1, format);
+
         @NotNull final Label contentSpecCopyrightHolderLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecCopyrightHolder());
         setWidget(getRowCount(), 0, contentSpecCopyrightHolderLabel);
         setWidget(getRowCount() - 1, 1, copyrightHolder);
@@ -161,6 +167,12 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         type.addItem("Book Draft", Integer.toString(CommonConstants.CS_BOOK_DRAFT));
         type.addItem("Article", Integer.toString(CommonConstants.CS_ARTICLE));
         type.addItem("Article Draft", Integer.toString(CommonConstants.CS_ARTICLE_DRAFT));
+
+        format.clear();
+        format.addItem("", Integer.toString(-1));
+        for (final RESTXMLFormat docType : RESTXMLFormat.values()) {
+            format.addItem(docType.getCommonName(), RESTXMLFormat.getXMLFormatId(docType).toString());
+        }
     }
 
     @Override
@@ -194,6 +206,13 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         publicanCfg.setValue(value.getPublicanCfg());
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
+
+        if (value.getFormat() == null) {
+            format.setSelectedIndex(0);
+        } else {
+            final RESTXMLFormat format = RESTXMLFormat.getXMLFormat(value.getFormat());
+            this.format.setSelectedIndex(format.ordinal() + 1);
+        }
     }
 
     @Override
@@ -223,6 +242,8 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         value.setPublicanCfg(publicanCfg.getValue());
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
+        final Integer formatValue = Integer.valueOf(format.getValue(format.getSelectedIndex()));
+        value.setFormat(formatValue == -1 ? null : formatValue);
 
         return value;
     }

@@ -2,11 +2,13 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.base;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.SmallTriStatePushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
@@ -41,6 +43,7 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
     private final TextBox includedInContentSpecs = new TextBox();
     private final TextBox notIncludedInContentSpecs = new TextBox();
     private final TextBox freeTextSearch = new TextBox();
+    private final ListBox topicFormat = new ListBox();
     //private final TriStatePushButton hasBugzillaBugs = new TriStatePushButton();
     //private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
     private final SmallTriStatePushButton hasXMLErrors = new SmallTriStatePushButton();
@@ -103,6 +106,10 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         this.setWidget(this.getRowCount(), 0, notTopicTitleLabel);
         this.setWidget(this.getRowCount() - 1, 1, notTitle);
 
+        @NotNull final Label topicFormatLabel = new Label(PressGangCCMSUI.INSTANCE.TopicFormat());
+        this.setWidget(this.getRowCount(), 0, topicFormatLabel);
+        this.setWidget(this.getRowCount() - 1, 1, topicFormat);
+
         @NotNull final Label topicContentsLabel = new Label(PressGangCCMSUI.INSTANCE.TopicContents());
         this.setWidget(this.getRowCount(), 0, topicContentsLabel);
         this.setWidget(this.getRowCount() - 1, 1, contents);
@@ -150,6 +157,12 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         for (int i = 0; i < getRowCount() - 1; ++i) {
             getCellFormatter().addStyleName(i, 1, CSSConstants.FieldEditor.FIELD_VIEW_VALUE_CELL);
         }
+
+        topicFormat.clear();
+        topicFormat.addItem("", Integer.toString(-1));
+        for (final RESTXMLFormat docType : RESTXMLFormat.values()) {
+            topicFormat.addItem(docType.getCommonName(), RESTXMLFormat.getXMLFormatId(docType).toString());
+        }
     }
 
     protected void addMatchFields() {
@@ -183,6 +196,13 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         hasXMLErrors.setState(value.getHasXMLErrors());
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
+
+        if (value.getFormat() == null) {
+            topicFormat.setSelectedIndex(0);
+        } else {
+            final RESTXMLFormat format = RESTXMLFormat.getXMLFormat(value.getFormat());
+            topicFormat.setSelectedIndex(format.ordinal() + 1);
+        }
     }
 
     @Override
@@ -210,6 +230,8 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         value.setHasXMLErrors(hasXMLErrors.getState());
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
+        final Integer formatValue = Integer.valueOf(topicFormat.getValue(topicFormat.getSelectedIndex()));
+        value.setFormat(formatValue == -1 ? null : formatValue);
 
         return value;
     }

@@ -1023,6 +1023,9 @@ public interface PressGangCCMSUI extends Constants {
     String ContentSpecBrand();
 
     @NotNull
+    String ContentSpecFormat();
+
+    @NotNull
     String ContentSpecCopyrightHolder();
 
     @NotNull

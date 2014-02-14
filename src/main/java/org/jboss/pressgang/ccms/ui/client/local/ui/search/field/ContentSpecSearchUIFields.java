@@ -48,6 +48,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
     private String copyrightHolder;
     private String copyrightYear;
     private String publicanCfg;
+    private Integer format;
     private boolean matchAll = MATCH_ALL_DEFAULT;
 
     @Nullable
@@ -240,6 +241,15 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         this.notEditedInLastXDays = notEditedInLastXDays;
     }
 
+    @Nullable
+    public Integer getFormat() {
+        return format;
+    }
+
+    public void setFormat(@Nullable Integer format) {
+        this.format = format;
+    }
+
     public final boolean isMatchAll() {
         return matchAll;
     }
@@ -359,6 +369,11 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             filter.getFilterFields_OTM().addNewItem(
                     createFilterField(CommonFilterConstants.STARTEDITDATE_FILTER_VAR, dateformat.format(getEditedAfter())));
         }
+
+        if (getFormat() != null) {
+            filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.CONTENT_SPEC_FORMAT_FILTER_VAR,
+                    getFormat().toString()));
+        }
     }
 
     @Override
@@ -386,6 +401,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
             copyrightHolder = "";
             copyrightYear = "";
             publicanCfg = "";
+            format = null;
             matchAll = true;
 
             if (filter.getFilterFields_OTM() != null) {
@@ -420,6 +436,12 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                         setAbstractDesc(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_BRAND_FILTER_VAR)) {
                         setBrand(fieldItem.getValue());
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_FORMAT_FILTER_VAR)) {
+                        try {
+                            setFormat(Integer.parseInt(fieldItem.getValue()));
+                        } catch (@NotNull final NumberFormatException ex) {
+                            // do nothing
+                        }
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR)) {
                         setCopyrightHolder(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_YEAR_FILTER_VAR)) {
@@ -513,6 +535,10 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
         if (!GWTUtilities.isStringNullOrEmpty(brand)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_BRAND_FILTER_VAR).append("=").append(
                     encodeQueryParameter(brand));
+        }
+        if (format != null) {
+            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_FORMAT_FILTER_VAR).append("=").append(
+                    encodeQueryParameter(format.toString()));
         }
         if (!GWTUtilities.isStringNullOrEmpty(copyrightHolder)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR).append("=").append(
