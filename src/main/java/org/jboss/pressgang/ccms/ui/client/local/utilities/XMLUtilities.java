@@ -96,35 +96,6 @@ public class XMLUtilities {
         return result == null ? null : result.getGroup(1);
     }
 
-    /**
-     * It is expected that a Docbook 5 book or article will define the namespaces at the root element. But for
-     * validation against a single topic, we need to add these namespaces in in order for the dtd to validate.
-     * @param xml The source xml
-     * @return the xml with the docbook 5 namespaces added
-     */
-    public static String addDocBook50Namespaces(@NotNull final String xml) {
-        final String rootEleName = getRootElementName(xml);
-        final String fixedRootEleName = rootEleName == null ? "section" : rootEleName;
-        final MatchResult result = RegExp.compile("^([\\s\\S]*?)<\\s*" + fixedRootEleName + "(\\s*.*?)>").exec(xml);
-        if (result != null) {
-            final StringBuilder retValue = new StringBuilder(result.getGroup(1));
-            retValue.append("<" + fixedRootEleName);
-            if (!RegExp.compile("xmlns\\s*=\\s*(\"|')http://docbook.org/ns/docbook(\"|')").test(result.getGroup(2))) {
-                retValue.append(" xmlns=\"http://docbook.org/ns/docbook\"");
-            }
-            if (!RegExp.compile("xmlns:xlink\\s*=\\s*(\"|')http://www.w3.org/1999/xlink(\"|')").test(result.getGroup(2))) {
-                retValue.append(" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
-            }
-            if (!RegExp.compile("version\\s*=\\s*(\"|')5.0(\"|')").test(result.getGroup(2))) {
-                retValue.append(" version=\"5.0\"");
-            }
-            retValue.append(result.getGroup(2) + ">");
-            return xml.replace(result.getGroup(0), retValue.toString());
-        }
-
-        return xml;
-    }
-
     public static String removeAllPreamble(@NotNull final String xml) {
         return removeDoctypePreamble(removeXmlPreamble(xml));
     }

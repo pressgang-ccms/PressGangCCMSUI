@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,22 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201402141311";
+    public static final String BUILD = "201402151749";
+
+    public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
+            "<!ENTITY BOOKID \"BOOKID\">\n" +
+            "<!ENTITY YEAR \"YYYY\">\n" +
+            "<!ENTITY TITLE \"TITLE\">\n" +
+            "<!ENTITY HOLDER \"HOLDER\">\n" +
+            "<!ENTITY BZURL \"BZURL\">\n" +
+            "<!ENTITY BZCOMPONENT \"BZCOMPONENT\">\n" +
+            "<!ENTITY BZPRODUCT \"BZPRODUCT\">\n";
+
+    public static final List<String> DUMMY_CS_ENTITY_NAMES = Arrays.asList("PRODUCT", "BOOKID", "YEAR", "TITLE", "HOLDER", "BZURL",
+            "BZCOMPONENT", "BZPRODUCT");
+
+    public static final String DEFAULT_BUGZILLA_URL = "https://bugzilla.redhat.com/";
+    public static final String DEFAULT_BZCOMPONENT = "documentation";
 
     /**
      * A collection of all the Docbook 4.5 entities

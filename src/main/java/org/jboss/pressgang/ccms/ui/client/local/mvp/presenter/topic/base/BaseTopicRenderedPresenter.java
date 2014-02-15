@@ -30,6 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderingInfoDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities;
@@ -213,7 +214,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         final boolean showRemarks = getDisplay().getRemarks().getValue();
 
         if (xmlFormat == RESTXMLFormat.DOCBOOK_50) {
-            return XMLUtilities.addDocBook50Namespaces(cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone));
+            return DocBookUtilities.addDocBook50Namespaces(cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone));
         } else {
             return cleanXMLAndAddAdditionalContent(xml, showImages, showRemarks, standalone);
         }
@@ -223,8 +224,16 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
     protected String getDTD() {
         if (!standalone) {
             final JSONObject jsonValue = getSelectedContentSpecValue();
-            if (jsonValue.containsKey("entities")) {
-                return DocBookDTD.getDtdDoctype(jsonValue.get("entities").isString().stringValue());
+            if (jsonValue.containsKey("entities") && jsonValue.containsKey("customEntities")) {
+                final String entities = jsonValue.get("entities").isString().stringValue();
+                final String customEntities = jsonValue.get("customEntities").isString().stringValue();
+                return DocBookDTD.getDtdDoctype(entities +  "\n" + customEntities);
+            } else if (jsonValue.containsKey("entities")) {
+                final String entities = jsonValue.get("entities").isString().stringValue();
+                return DocBookDTD.getDtdDoctype(entities);
+            } else if (jsonValue.containsKey("customEntities")) {
+                final String customEntities = jsonValue.get("customEntities").isString().stringValue();
+                return DocBookDTD.getDtdDoctype(customEntities);
             }
         }
 

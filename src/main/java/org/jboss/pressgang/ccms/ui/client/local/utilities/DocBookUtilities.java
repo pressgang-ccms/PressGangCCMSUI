@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -144,5 +145,98 @@ public class DocBookUtilities {
         }
 
         return true;
+    }
+
+    /**
+     * It is expected that a Docbook 5 book or article will define the namespaces at the root element. But for
+     * validation against a single topic, we need to add these namespaces in in order for the dtd to validate.
+     * @param xml The source xml
+     * @return the xml with the docbook 5 namespaces added
+     */
+    public static String addDocBook50Namespaces(@NotNull final String xml) {
+        final String rootEleName = XMLUtilities.getRootElementName(xml);
+        final String fixedRootEleName = rootEleName == null ? "section" : rootEleName;
+        final MatchResult result = RegExp.compile("^([\\s\\S]*?)<\\s*" + fixedRootEleName + "(\\s*.*?)>").exec(xml);
+        if (result != null) {
+            final StringBuilder retValue = new StringBuilder(result.getGroup(1));
+            retValue.append("<" + fixedRootEleName);
+            if (!RegExp.compile("xmlns\\s*=\\s*(\"|')http://docbook.org/ns/docbook(\"|')").test(result.getGroup(2))) {
+                retValue.append(" xmlns=\"http://docbook.org/ns/docbook\"");
+            }
+            if (!RegExp.compile("xmlns:xlink\\s*=\\s*(\"|')http://www.w3.org/1999/xlink(\"|')").test(result.getGroup(2))) {
+                retValue.append(" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
+            }
+            if (!RegExp.compile("version\\s*=\\s*(\"|')5.0(\"|')").test(result.getGroup(2))) {
+                retValue.append(" version=\"5.0\"");
+            }
+            retValue.append(result.getGroup(2) + ">");
+            return xml.replace(result.getGroup(0), retValue.toString());
+        }
+
+        return xml;
+    }
+
+    /**
+     * Escapes a String so that it can be used in a Docbook Element, ensuring that any entities or elements are maintained.
+     *
+     * @param content The string to be escaped.
+     * @return The escaped string that can be used in XML.
+     */
+    public static String escapeForXML(final String content) {
+        if (content == null) return "";
+
+        /*
+         * Note: The following characters should be escaped: & < > " '
+         *
+         * However, all but ampersand pose issues when other elements are included in the title.
+         *
+         * eg <title>Product A > Product B<phrase condition="beta">-Beta</phrase></title>
+         *
+         * should become
+         *
+         * <title>Product A &gt; Product B<phrase condition="beta">-Beta</phrase></title>
+         */
+
+        String fixedContent = content.replaceAll("&(?!\\S+?;)", "&amp;");
+
+        // Loop over and find all the XML Elements as they should remain untouched.
+        final LinkedList<String> elements = new LinkedList<String>();
+        if (fixedContent.indexOf('<') != -1) {
+            int index = -1;
+            while ((index = fixedContent.indexOf('<', index + 1)) != -1) {
+                int endIndex = fixedContent.indexOf('>', index);
+                int nextIndex = fixedContent.indexOf('<', index + 1);
+
+                /*
+                  * If the next opening tag is less than the next ending tag, than the current opening tag isn't a match for the next
+                  * ending tag, so continue to the next one
+                  */
+                if (endIndex == -1 || (nextIndex != -1 && nextIndex < endIndex)) {
+                    continue;
+                } else if (index + 1 == endIndex) {
+                    // This is a <> sequence, so it should be ignored as well.
+                    continue;
+                } else {
+                    elements.add(fixedContent.substring(index, endIndex + 1));
+                }
+
+            }
+        }
+
+        // Find all the elements and replace them with a marker
+        String escapedTitle = fixedContent;
+        for (int count = 0; count < elements.size(); count++) {
+            escapedTitle = escapedTitle.replace(elements.get(count), "###" + count + "###");
+        }
+
+        // Perform the replacements on what's left
+        escapedTitle = escapedTitle.replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;");
+
+        // Replace the markers
+        for (int count = 0; count < elements.size(); count++) {
+            escapedTitle = escapedTitle.replace("###" + count + "###", elements.get(count));
+        }
+
+        return escapedTitle;
     }
 }

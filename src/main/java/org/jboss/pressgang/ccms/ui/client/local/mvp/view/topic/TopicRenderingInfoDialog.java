@@ -18,10 +18,12 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
     private SimpleIntegerLabel id = new SimpleIntegerLabel();
     private Label condition = new Label();
     private TextArea entities = new TextArea();
+    private TextArea customEntities = new TextArea();
 
     private Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecID() + ":");
     private Label conditionLabel = new Label(PressGangCCMSUI.INSTANCE.Condition());
-    private Label entitiesLabel = new Label(PressGangCCMSUI.INSTANCE.CustomEntities());
+    private Label entitiesLabel = new Label(PressGangCCMSUI.INSTANCE.Entities());
+    private Label customEntitiesLabel = new Label(PressGangCCMSUI.INSTANCE.CustomEntities());
 
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 
@@ -31,6 +33,8 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
 
         entities.setReadOnly(true);
         entities.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
+        customEntities.setReadOnly(true);
+        customEntities.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
 
         int row = 0;
         layoutPanel.setWidget(row, 0, idLabel);
@@ -42,6 +46,9 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
         layoutPanel.setWidget(++row, 0, entitiesLabel);
         layoutPanel.setWidget(row, 1, entities);
 
+        layoutPanel.setWidget(++row, 0, customEntitiesLabel);
+        layoutPanel.setWidget(row, 1, customEntities);
+
         layoutPanel.setWidget(++row, 0, ok);
         layoutPanel.getFlexCellFormatter().setColSpan(row, 0, 2);
 
@@ -49,10 +56,11 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
             layoutPanel.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL_CELL);
         }
 
-        for (int i = 0; i < row - 1; ++i) {
+        for (int i = 0; i < row - 2; ++i) {
             layoutPanel.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL_CELL);
         }
         layoutPanel.getCellFormatter().addStyleName(row - 1, 1, CSSConstants.TopicView.TOPIC_RENDERING_INFO_ENTITIES_CELL);
+        layoutPanel.getCellFormatter().addStyleName(row - 2, 1, CSSConstants.TopicView.TOPIC_RENDERING_INFO_ENTITIES_CELL);
 
         add(layoutPanel);
 
@@ -80,6 +88,11 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
     }
 
     @NotNull
+    public TextArea getCustomEntities() {
+        return customEntities;
+    }
+
+    @NotNull
     public PushButton getOk() {
         return ok;
     }
@@ -88,5 +101,6 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
         id.setValue(null);
         condition.setText(null);
         entities.setText(null);
+        customEntities.setText(null);
     }
 }

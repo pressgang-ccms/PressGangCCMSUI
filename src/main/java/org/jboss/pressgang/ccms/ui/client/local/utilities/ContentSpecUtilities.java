@@ -1,0 +1,162 @@
+package org.jboss.pressgang.ccms.ui.client.local.utilities;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Strings.isNullOrEmpty;
+
+import java.util.Date;
+
+import com.google.gwt.http.client.URL;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
+
+public class ContentSpecUtilities {
+
+    public static String buildEntities(final RESTContentSpecV1 contentSpec) {
+        return buildEntities(contentSpec, true);
+    }
+
+    public static String buildEntities(final RESTContentSpecV1 contentSpec, final boolean includeCustomEntities) {
+        checkArgument(contentSpec.getChildren_OTM() != null, "The RESTContentSpecV1 children collection should not be null");
+        String title, product, copyrightHolder, copyrightYear, bzServer, bzUrl, bzProduct, bzComponent, bzVersion, entities, format;
+        title = product = copyrightHolder = copyrightYear = bzServer = bzUrl = bzProduct = bzComponent = bzVersion = entities = null;
+        format = CommonConstants.DOCBOOK_45_TITLE;
+
+        // Set the values based on the content spec metadata
+        for (final RESTCSNodeV1 childNode : contentSpec.getChildren_OTM().returnItems()) {
+            // make sure the child node is a Meta Data node
+            if (childNode.getNodeType() != RESTCSNodeTypeV1.META_DATA) continue;
+
+            if (CommonConstants.CS_TITLE_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                title = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_PRODUCT_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                product = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_COPYRIGHT_HOLDER_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                copyrightHolder = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_COPYRIGHT_YEAR_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                copyrightYear = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_BUGZILLA_SERVER_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                bzServer = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_BUGZILLA_URL_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                bzUrl = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_BUGZILLA_PRODUCT_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                bzProduct = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_BUGZILLA_COMPONENT_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                bzComponent = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_BUGZILLA_VERSION_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                bzVersion = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_FORMAT_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                format = childNode.getAdditionalText();
+            } else if (CommonConstants.CS_ENTITIES_TITLE.equalsIgnoreCase(childNode.getTitle())) {
+                entities = childNode.getAdditionalText();
+            }
+        }
+
+        // Find what entities have already been defined
+        final StringBuilder retValue = new StringBuilder(100);
+        final String definedEntities = entities == null ? "" : entities;
+
+        // Add the default entities
+        // BOOKID
+        if (!definedEntities.contains(" BOOKID ")) {
+            final String escapedTitle = title.replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
+            retValue.append("<!ENTITY BOOKID \"").append(escapedTitle).append("\">\n");
+        }
+
+        // PRODUCT
+        if (!definedEntities.contains(" PRODUCT ")) {
+            final String escapedProduct = escapeForXMLEntity(product);
+            retValue.append("<!ENTITY PRODUCT \"").append(escapedProduct).append("\">\n");
+        }
+
+        // TITLE
+        if (!definedEntities.contains(" TITLE ")) {
+            final String escapedTitle = escapeTitleForXMLEntity(title);
+            retValue.append("<!ENTITY TITLE \"").append(escapedTitle).append("\">\n");
+        }
+
+        // YEAR
+        if (!definedEntities.contains(" YEAR ")) {
+            final String year = copyrightYear == null ? Integer.toString(new Date().getYear()) : copyrightYear;
+            retValue.append("<!ENTITY YEAR \"").append(year).append("\">\n");
+        }
+
+        // HOLDER
+        if (!definedEntities.contains(" HOLDER ")) {
+            final String escapedHolder = escapeForXMLEntity(copyrightHolder);
+            retValue.append("<!ENTITY HOLDER \"").append(escapedHolder).append("\">\n");
+        }
+
+        // BZPRODUCT
+        if (!definedEntities.contains(" BZPRODUCT ")) {
+            final String escapedBZProduct = escapeForXMLEntity(bzProduct == null ? product : bzProduct);
+            retValue.append("<!ENTITY BZPRODUCT \"").append(escapedBZProduct).append("\">\n");
+        }
+
+        // BZCOMPONENT
+        if (!definedEntities.contains(" BZCOMPONENT ")) {
+            final String escapedBZComponent = escapeForXMLEntity(bzComponent == null ? Constants.DEFAULT_BZCOMPONENT : bzComponent);
+            retValue.append("<!ENTITY BZCOMPONENT \"").append(escapedBZComponent).append("\">\n");
+        }
+
+        // BZURL
+        if (!definedEntities.contains(" BZURL ")) {
+            final String host = isNullOrEmpty(bzServer) ? Constants.DEFAULT_BUGZILLA_URL : bzServer;
+            final StringBuilder fixedBZURL = new StringBuilder();
+            if (bzUrl == null) {
+                if (CommonConstants.DOCBOOK_50_TITLE.equalsIgnoreCase(format)) {
+                    fixedBZURL.append("<link xlink:href='");
+                } else {
+                    fixedBZURL.append("<ulink url='");
+                }
+                fixedBZURL.append(host);
+                fixedBZURL.append("enter_bug.cgi");
+                // Add in the product specific link details
+                if (bzProduct != null) {
+                    final String encodedProduct = URL.encode(bzProduct);
+                    fixedBZURL.append("?product=").append(escapeForXMLEntity(encodedProduct));
+                    if (bzComponent != null) {
+                        final String encodedComponent = URL.encode(bzComponent);
+                        fixedBZURL.append("&amp;component=").append(escapeForXMLEntity(encodedComponent));
+                    }
+                    if (bzVersion != null) {
+                        final String encodedVersion = URL.encode(bzComponent);
+                        fixedBZURL.append("&amp;version=").append(escapeForXMLEntity(encodedVersion));
+                    }
+                }
+                fixedBZURL.append("'>").append(host);
+                if (CommonConstants.DOCBOOK_50_TITLE.equalsIgnoreCase(format)) {
+                    fixedBZURL.append("</link>");
+                } else {
+                    fixedBZURL.append("</ulink>");
+                }
+            } else {
+                fixedBZURL.append(escapeForXMLEntity(bzUrl));
+            }
+
+            retValue.append("<!ENTITY BZURL \"").append(fixedBZURL).append("\">\n");
+        }
+
+        // Add the custom entities if any exist
+        if (includeCustomEntities && entities != null) {
+            retValue.append(entities.trim());
+        }
+
+        return retValue.toString();
+    }
+
+    protected static String escapeForXMLEntity(final String input) {
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;")
+                .replace("%", "&percnt;");
+    }
+
+    protected static String escapeTitleForXMLEntity(final String input) {
+        return DocBookUtilities.escapeForXML(input).replace("%", "&percnt;");
+    }
+}

@@ -1167,9 +1167,6 @@ public interface PressGangCCMSUI extends Constants {
     String FromSpec();
 
     @NotNull
-    String DefaultContentSpecs();
-
-    @NotNull
     String NoContentSpec();
 
     @NotNull
@@ -1237,6 +1234,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Condition();
+
+    @NotNull
+    String DefaultEntities();
 
     @NotNull
     String CustomEntities();
