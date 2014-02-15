@@ -22,7 +22,7 @@ public class TopicRenderingInfoDialog extends ClosablePopup {
 
     private Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecID() + ":");
     private Label conditionLabel = new Label(PressGangCCMSUI.INSTANCE.Condition());
-    private Label entitiesLabel = new Label(PressGangCCMSUI.INSTANCE.Entities());
+    private Label entitiesLabel = new Label(PressGangCCMSUI.INSTANCE.DefaultEntities());
     private Label customEntitiesLabel = new Label(PressGangCCMSUI.INSTANCE.CustomEntities());
 
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
