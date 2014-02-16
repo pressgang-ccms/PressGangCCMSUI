@@ -444,6 +444,9 @@ public interface PressGangCCMSUI extends Constants {
     String EnableBehaviours();
 
     @NotNull
+    String EnableAutoComplete();
+
+    @NotNull
     String ShowHiddenCharacters();
 
     @NotNull

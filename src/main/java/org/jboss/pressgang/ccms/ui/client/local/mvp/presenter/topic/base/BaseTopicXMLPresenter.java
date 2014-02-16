@@ -181,6 +181,10 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
         final boolean behaviours = Preferences.INSTANCE.getBoolean(Preferences.BEHAVIOURS, true);
         getDisplay().getEditor().setBehavioursEnabled(behaviours);
         getDisplay().getEditorSettingsDialog().getBehaviours().setValue(behaviours);
+
+        final boolean autoComplete = Preferences.INSTANCE.getBoolean(Preferences.AUTO_COMPLETE, false);
+        getDisplay().getEditor().setAutoCompleteEnabled(autoComplete);
+        getDisplay().getEditorSettingsDialog().getAutoComplete().setValue(autoComplete);
     }
 
     /**
@@ -224,6 +228,14 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
                 getDisplay().getEditor().setBehavioursEnabled(event.getValue());
                 Preferences.INSTANCE.saveSetting(Preferences.BEHAVIOURS, event.getValue());
+            }
+        });
+
+        getDisplay().getEditorSettingsDialog().getAutoComplete().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
+                getDisplay().getEditor().setAutoCompleteEnabled(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.AUTO_COMPLETE, event.getValue());
             }
         });
 
