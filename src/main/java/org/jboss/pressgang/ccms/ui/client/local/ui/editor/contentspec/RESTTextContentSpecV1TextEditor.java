@@ -3,13 +3,15 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditorData;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
+import edu.ycp.cs.dh.acegwt.client.tagdb.XMLElementDB;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
+import org.jboss.pressgang.ccms.ui.client.local.data.XMLElementDBLoader;
 
 public final class RESTTextContentSpecV1TextEditor extends SimplePanel implements Editor<RESTTextContentSpecV1> {
     /**
@@ -19,9 +21,13 @@ public final class RESTTextContentSpecV1TextEditor extends SimplePanel implement
      */
     public final AceEditor text;
 
-    public RESTTextContentSpecV1TextEditor(final boolean readOnly, final TagDBLoader tagDBLoader) {
+    public RESTTextContentSpecV1TextEditor(final boolean readOnly, final XMLElementDBLoader XMLElementDBLoader) {
 
-        text = new AceEditor(false, null, null, null, tagDBLoader.getTagDB(), false, true);
+        final XMLElementDB xmlElementDB = XMLElementDBLoader.getXMLElementDB();
+        final AceEditorData data = new AceEditorData();
+        data.setXMLElementDB(xmlElementDB);
+        data.setRestUrl(xmlElementDB.getRestEndpoint());
+        text = new AceEditor(false, data, false, true);
 
         this.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TEXT_EDITOR.getId() + "");
 

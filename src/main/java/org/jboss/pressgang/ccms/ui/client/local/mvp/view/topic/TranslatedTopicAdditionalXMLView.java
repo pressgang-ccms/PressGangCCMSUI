@@ -23,7 +23,7 @@ import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
+import org.jboss.pressgang.ccms.ui.client.local.data.XMLElementDBLoader;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicAdditionalXMLPresenter.TranslatedTopicAdditionalXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -54,7 +54,7 @@ public class TranslatedTopicAdditionalXMLView extends BaseTemplateView implement
     private static final TypoJS negativePhraseDictionary = new TypoJS("javascript/typojs/en_US-negphrase.dic", "javascript/typojs/en_US-neg.aff", "en_US");
 
     @Inject
-    private TagDBLoader tagDBLoader;
+    private XMLElementDBLoader xmlElementDBLoader;
 
     private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final TextArea xmlErrors = new TextArea();
@@ -385,7 +385,7 @@ public class TranslatedTopicAdditionalXMLView extends BaseTemplateView implement
 
         /* SearchUIProjectsEditor is a grid */
         this.editor = new RESTTranslatedTopicV1AdditionalXMLEditor(readOnly, positiveDictionary, negativeDictionary,
-                negativePhraseDictionary, tagDBLoader);
+                negativePhraseDictionary, xmlElementDBLoader);
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */

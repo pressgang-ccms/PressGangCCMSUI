@@ -3,13 +3,14 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditorData;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
+import edu.ycp.cs.dh.acegwt.client.tagdb.XMLElementDB;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.data.TagDBLoader;
+import org.jboss.pressgang.ccms.ui.client.local.data.XMLElementDBLoader;
 
 public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
     /**
@@ -29,8 +30,16 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
             final TypoJS positiveDictionary,
             final TypoJS negativeDictionary,
             final TypoJS negativePhraseDictionary,
-            final TagDBLoader tagDBLoader) {
-        xml = new AceEditor(false, positiveDictionary, negativeDictionary, negativePhraseDictionary, tagDBLoader.getTagDB(), true, false);
+            final XMLElementDBLoader XMLElementDBLoader) {
+
+        final XMLElementDB xmlElementDB = XMLElementDBLoader.getXMLElementDB();
+        final AceEditorData data = new AceEditorData();
+        data.setXMLElementDB(xmlElementDB);
+        data.setNegativeDictionary(negativeDictionary);
+        data.setPositiveDictionary(positiveDictionary);
+        data.setNegativePhraseDictionary(negativePhraseDictionary);
+        data.setRestUrl(xmlElementDB.getRestEndpoint());
+        xml = new AceEditor(false, data, true, false);
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
