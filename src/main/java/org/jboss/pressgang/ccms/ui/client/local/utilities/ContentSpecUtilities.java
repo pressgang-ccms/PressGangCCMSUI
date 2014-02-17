@@ -3,8 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import java.util.Date;
-
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.http.client.URL;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
@@ -79,7 +78,7 @@ public class ContentSpecUtilities {
 
         // YEAR
         if (!definedEntities.contains(" YEAR ")) {
-            final String year = copyrightYear == null ? Integer.toString(new Date().getYear()) : copyrightYear;
+            final String year = copyrightYear == null ? Integer.toString(JsDate.create().getFullYear()) : copyrightYear;
             retValue.append("<!ENTITY YEAR \"").append(year).append("\">\n");
         }
 
