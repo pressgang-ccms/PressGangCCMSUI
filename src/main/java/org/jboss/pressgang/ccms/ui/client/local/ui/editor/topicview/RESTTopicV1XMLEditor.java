@@ -45,7 +45,7 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
 
         xml.setReadOnly(readOnly);
-        xml.setMode(AceEditorMode.XML);
+        xml.setMode(AceEditorMode.DOCBOOK);
         xml.setThemeByName(Constants.DEFAULT_THEME);
 
         this.setWidget(xml);
