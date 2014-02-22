@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.impl.DOMParseException;
+import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 
 public class XMLValidator {
     private final XMLValidationHelper validationHelper;
@@ -52,9 +53,12 @@ public class XMLValidator {
         }
     }-*/;
 
+    private String getEntities() {
+        return DocBookDTD.getDtdDoctype(customEntities);
+    }
+
     private native void checkXML() /*-{
-        var customEntities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::customEntities;
-        var entities = @org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD::getDtdDoctype(Ljava/lang/String;)(customEntities);
+        var entities = this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::getEntities()();
         var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker == null) {
@@ -125,7 +129,12 @@ public class XMLValidator {
                         }
                     }
 
-                    me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::checkXML()();
+                    // Add a slight pause to allow the GC time to cleanup since the validator uses a lot of non-reusable memory
+                    me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::timeout = $wnd.setTimeout(function(me) {
+                        return function(){
+                            me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::checkXML()();
+                        };
+                    }(me), 250)
                 }
             }(this),
                 false);
@@ -144,12 +153,6 @@ public class XMLValidator {
                 var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
                 var formatName = format.@org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::name()();
 
-                // Add the doctype that include the standard docbook entities
-                text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
-                // resolve injections and append the xml entities, which are common to docbook 4 and 5
-                // see (http://www.sagehill.net/docbookxsl/Db5Entities.html)
-                text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Lorg/jboss/pressgang/ccms/rest/v1/entities/enums/RESTXMLFormat;Ljava/lang/String;)(format, text);
-
                 // if there has been no change to the xml and the format, don't revalidate
                 if (text == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML &&
                     formatName == this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastFormat) {
@@ -161,6 +164,12 @@ public class XMLValidator {
                 } else {
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastXML = text;
                     this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.lastFormat = formatName;
+
+                    // Add the doctype that include the standard docbook entities
+                    text = @org.jboss.pressgang.ccms.ui.client.local.utilities.XMLUtilities::removeAllPreamble(Ljava/lang/String;)(text);
+                    // resolve injections and append the xml entities, which are common to docbook 4 and 5
+                    // see (http://www.sagehill.net/docbookxsl/Db5Entities.html)
+                    text = entities + @org.jboss.pressgang.ccms.ui.client.local.utilities.InjectionResolver::resolveInjections(Lorg/jboss/pressgang/ccms/rest/v1/entities/enums/RESTXMLFormat;Ljava/lang/String;)(format, text);
 
                     if (format == @org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat::DOCBOOK_45) {
                         this.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::worker.postMessage({xml: text, docbook4: true});
