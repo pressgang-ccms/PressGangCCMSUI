@@ -76,8 +76,7 @@ snippet programlistingjava\n\
 snippet programlistingxml\n\
 	<programlisting language='XML' role='XML'><![CDATA[\n\
 	${1:code}\n\
-	]]\n\
-	</programlisting>\n\
+	]]></programlisting>\n\
 snippet section\n\
 	<section>\n\
 		<title>${1:title}</title>\n\

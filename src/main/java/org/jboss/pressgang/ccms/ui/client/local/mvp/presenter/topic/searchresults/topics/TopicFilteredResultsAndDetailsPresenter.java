@@ -879,9 +879,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
 
                     final EventTarget eventTarget = event.getNativeEvent().getEventTarget();
-                    if (Element.is(eventTarget)) {
+                    if (com.google.gwt.dom.client.Element.is(eventTarget)) {
 
-                        final Element sender = eventTarget.cast();
+                        final com.google.gwt.dom.client.Element sender = eventTarget.cast();
 
                         final String lineNumber = sender.getAttribute("pressgangeditorlinenumber");
                         if (lineNumber != null) {
