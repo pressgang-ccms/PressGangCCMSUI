@@ -6,7 +6,7 @@
     <groupId>org.jboss.pressgang.ccms</groupId>
     <artifactId>pressgang-ccms-ui</artifactId>
     <packaging>war</packaging>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
 
     <parent>
         <groupId>org.jboss.pressgang</groupId>
@@ -16,8 +16,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <pressgang.ccms.version>1.4-SNAPSHOT</pressgang.ccms.version>
-        <pressgang.ace-client.version>1.4-SNAPSHOT</pressgang.ace-client.version>
+        <pressgang.ccms.version>1.4</pressgang.ccms.version>
+        <pressgang.ace-client.version>1.4</pressgang.ace-client.version>
+        <pressgang.merglygwt.version>1.4</pressgang.merglygwt.version>
         <errai.version>2.3.2.Final</errai.version>
         <gwt.version>2.5.1</gwt.version>
         <gwt.maven.version>2.5.1</gwt.maven.version>
@@ -148,7 +149,7 @@
         <dependency>
             <groupId>org.jboss.pressgang.ccms</groupId>
             <artifactId>mergelygwt-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${pressgang.merglygwt.version}</version>
             <scope>provided</scope>
         </dependency>
 
