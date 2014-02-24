@@ -6,7 +6,7 @@
     <groupId>org.jboss.pressgang.ccms</groupId>
     <artifactId>pressgang-ccms-ui</artifactId>
     <packaging>war</packaging>
-    <version>1.4</version>
+    <version>1.4.1</version>
 
     <parent>
         <groupId>org.jboss.pressgang</groupId>

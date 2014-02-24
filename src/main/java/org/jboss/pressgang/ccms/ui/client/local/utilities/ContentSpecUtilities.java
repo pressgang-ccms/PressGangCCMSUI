@@ -59,19 +59,19 @@ public class ContentSpecUtilities {
 
         // Add the default entities
         // BOOKID
-        if (!definedEntities.contains(" BOOKID ")) {
+        if (!definedEntities.contains(" BOOKID ") && title != null) {
             final String escapedTitle = title.replaceAll(" ", "_").replaceAll("^[^A-Za-z0-9]*", "").replaceAll("[^A-Za-z0-9_.-]", "");
             retValue.append("<!ENTITY BOOKID \"").append(escapedTitle).append("\">\n");
         }
 
         // PRODUCT
-        if (!definedEntities.contains(" PRODUCT ")) {
+        if (!definedEntities.contains(" PRODUCT ") && product != null) {
             final String escapedProduct = escapeForXMLEntity(product);
             retValue.append("<!ENTITY PRODUCT \"").append(escapedProduct).append("\">\n");
         }
 
         // TITLE
-        if (!definedEntities.contains(" TITLE ")) {
+        if (!definedEntities.contains(" TITLE ") && title != null) {
             final String escapedTitle = escapeTitleForXMLEntity(title);
             retValue.append("<!ENTITY TITLE \"").append(escapedTitle).append("\">\n");
         }
@@ -83,13 +83,13 @@ public class ContentSpecUtilities {
         }
 
         // HOLDER
-        if (!definedEntities.contains(" HOLDER ")) {
+        if (!definedEntities.contains(" HOLDER ") && copyrightHolder != null) {
             final String escapedHolder = escapeForXMLEntity(copyrightHolder);
             retValue.append("<!ENTITY HOLDER \"").append(escapedHolder).append("\">\n");
         }
 
         // BZPRODUCT
-        if (!definedEntities.contains(" BZPRODUCT ")) {
+        if (!definedEntities.contains(" BZPRODUCT ") && (product != null || bzProduct != null)) {
             final String escapedBZProduct = escapeForXMLEntity(bzProduct == null ? product : bzProduct);
             retValue.append("<!ENTITY BZPRODUCT \"").append(escapedBZProduct).append("\">\n");
         }
@@ -121,7 +121,7 @@ public class ContentSpecUtilities {
                         fixedBZURL.append("&amp;component=").append(escapeForXMLEntity(encodedComponent));
                     }
                     if (bzVersion != null) {
-                        final String encodedVersion = URL.encode(bzComponent);
+                        final String encodedVersion = URL.encode(bzVersion);
                         fixedBZURL.append("&amp;version=").append(escapeForXMLEntity(encodedVersion));
                     }
                 }
