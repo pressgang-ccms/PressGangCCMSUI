@@ -575,7 +575,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             }
 
                             // Add the content spec to the map
-                            final String productVersion = product + " " + version;
+                            final String productVersion = product + (version == null ? "" : (" " + version));
                             if (!productVersionToContentSpecMap.containsKey(productVersion)) {
                                 productVersionToContentSpecMap.put(productVersion,
                                         new TreeMap<RESTContentSpecV1, List<RESTCSNodeV1>>(new RESTContentSpecIDSort(true)));

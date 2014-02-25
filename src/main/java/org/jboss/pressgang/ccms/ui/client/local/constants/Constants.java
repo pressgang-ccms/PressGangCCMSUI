@@ -15,12 +15,12 @@ public final class Constants {
     /**
      * The UI version
      */
-    public static final String VERSION = "1.4-SNAPSHOT";
+    public static final String VERSION = "1.5-SNAPSHOT";
 
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201402230857";
+    public static final String BUILD = "201402250915";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
