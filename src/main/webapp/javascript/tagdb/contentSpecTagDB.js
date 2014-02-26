@@ -43,7 +43,7 @@ self.addEventListener('message', function (e) {
 			}
 
 			// match anything that looks like a container
-			var containerRE = /^((\s{2})*)(\S+)\s*:/g;
+			var containerRE = /^((\s{2})*)([A-Za-z ]+)\s*:/g;
 			var containerMatch = null;
 			while (containerMatch = containerRE.exec(line)) {
 				var container = containerMatch[3];
