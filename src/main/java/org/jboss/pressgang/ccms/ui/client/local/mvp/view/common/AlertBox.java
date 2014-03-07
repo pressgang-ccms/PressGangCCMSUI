@@ -1,27 +1,28 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.CloseCallback;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A dialog box to replace the browser alert.
@@ -82,6 +83,7 @@ public class AlertBox extends DialogBox {
         for (final HandlerRegistration handlerRegistration : handlers) {
             handlerRegistration.removeHandler();
         }
+        handlers.clear();
 
         if (keyboardEventHandler != null) {
             keyboardEventHandler.removeHandler();

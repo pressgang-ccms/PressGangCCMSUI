@@ -1276,4 +1276,103 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String HighestRevisionDate();
+
+    @NotNull
+    String Processes();
+
+    @NotNull
+    String ProcessID();
+
+    @NotNull
+    String ProcessName();
+
+    @NotNull
+    String ProcessSubmittedTime();
+
+    @NotNull
+    String ProcessEndedTime();
+
+    @NotNull
+    String ProcessStatus();
+
+    @NotNull
+    String ProcessStartedBy();
+
+    @NotNull
+    String ProcessLogs();
+
+    @NotNull
+    String ProcessViewLogs();
+
+    @NotNull
+    String ProcessActions();
+
+    @NotNull
+    String AllProcesses();
+
+    @NotNull
+    String ZanataSyncProcesses();
+
+    @NotNull
+    String ZanataPushProcesses();
+
+    @NotNull
+    String StoppedProcessMessage();
+
+    @NotNull
+    String Refresh();
+
+    @NotNull
+    String Reset();
+
+    @NotNull
+    String SubmittedAfter();
+
+    @NotNull
+    String SubmittedBefore();
+
+    @NotNull
+    String ConfirmStopProcess();
+
+    @NotNull
+    String TranslationUsername();
+
+    @NotNull
+    String TranslationApiKey();
+
+    @NotNull
+    String TranslationContentSpecOnly();
+
+    @NotNull
+    String Start();
+
+    @NotNull
+    String TranslationPush();
+
+    @NotNull
+    String TranslationSync();
+
+    @NotNull
+    String TranslationUsernameMissing();
+
+    @NotNull
+    String TranslationApiKeyMissing();
+
+    @NotNull
+    String ProceedWithoutWaiting();
+
+    @NotNull
+    String ProcessWaitingMessage();
+
+    @NotNull
+    String ProcessPushName();
+
+    @NotNull
+    String ProcessSyncName();
+
+    @NotNull
+    String EnterOptionalName();
+
+    @NotNull
+    String Server();
 }

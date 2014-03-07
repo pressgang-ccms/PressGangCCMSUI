@@ -31,6 +31,20 @@ public interface ImageResources extends ClientBundle {
     ImageResource bigError();
 
     /**
+     * @return A smaller red cross
+     */
+    @NotNull
+    @Source("error16.png")
+    ImageResource error16();
+
+    /**
+     * @return A smaller black and white cross
+     */
+    @NotNull
+    @Source("error16-BW.png")
+    ImageResource error16BW();
+
+    /**
      * @return The application banner
      */
     @NotNull
@@ -82,4 +96,12 @@ public interface ImageResources extends ClientBundle {
     @NotNull
     @Source("info.png")
     ImageResource info();
+
+    @NotNull
+    @Source("loading.gif")
+    ImageResource loading();
+
+    @NotNull
+    @Source("refresh.png")
+    ImageResource refresh16();
 }

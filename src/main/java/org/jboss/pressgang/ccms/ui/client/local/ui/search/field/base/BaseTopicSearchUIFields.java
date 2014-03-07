@@ -459,96 +459,104 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
                 includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         if (!GWTUtilities.isStringNullOrEmpty(ids)) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_IDS_FILTER_VAR).append("=").append(encodeQueryParameter(ids));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_IDS_FILTER_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(ids));
         }
         if (!GWTUtilities.isStringNullOrEmpty(notIds)) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR).append("=").append(encodeQueryParameter(notIds));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(notIds));
         }
         if (!GWTUtilities.isStringNullOrEmpty(description)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(description));
+                    GWTUtilities.encodeQueryParameter(description));
         }
         if (!GWTUtilities.isStringNullOrEmpty(notDescription)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(notDescription));
+                    GWTUtilities.encodeQueryParameter(notDescription));
         }
         if (!GWTUtilities.isStringNullOrEmpty(title)) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR).append("=").append(encodeQueryParameter(title));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(title));
         }
         if (!GWTUtilities.isStringNullOrEmpty(notTitle)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(notTitle));
+                    GWTUtilities.encodeQueryParameter(notTitle));
         }
         if (editedInLastXDays != null) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS).append("=").append(
-                    encodeQueryParameter(editedInLastXDays.toString()));
+                    GWTUtilities.encodeQueryParameter(editedInLastXDays.toString()));
         }
         if (notEditedInLastXDays != null) {
-            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + encodeQueryParameter(
+            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + GWTUtilities.encodeQueryParameter(
                     notEditedInLastXDays.toString()));
         }
         if (!GWTUtilities.isStringNullOrEmpty(contents)) {
-            retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + encodeQueryParameter(contents));
+            retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + GWTUtilities.encodeQueryParameter(contents));
         }
         if (!GWTUtilities.isStringNullOrEmpty(notContents)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(notContents));
+                    GWTUtilities.encodeQueryParameter(notContents));
         }
         if (createdBefore != null) {
             retValue.append(";").append(CommonFilterConstants.ENDDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(createdBefore)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(createdBefore)));
         }
         if (editedBefore != null) {
             retValue.append(";").append(CommonFilterConstants.ENDEDITDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(editedBefore)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(editedBefore)));
         }
         if (editedAfter != null) {
             retValue.append(";").append(CommonFilterConstants.STARTEDITDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(editedAfter)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(editedAfter)));
         }
         if (createdAfter != null) {
             retValue.append(";").append(CommonFilterConstants.STARTDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(createdAfter)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(createdAfter)));
         }
         if (!GWTUtilities.isStringNullOrEmpty(includedInContentSpecs)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC).append("=").append(
-                    encodeQueryParameter(includedInContentSpecs));
+                    GWTUtilities.encodeQueryParameter(includedInContentSpecs));
         }
         if (!GWTUtilities.isStringNullOrEmpty(notIncludedInContentSpecs)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC).append("=").append(
-                    encodeQueryParameter(notIncludedInContentSpecs));
+                    GWTUtilities.encodeQueryParameter(notIncludedInContentSpecs));
         }
         if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(freeTextSearch));
+                    GWTUtilities.encodeQueryParameter(freeTextSearch));
         }
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS).append("=").append(encodeQueryParameter("true"));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS).append("=").append(
+                    GWTUtilities.encodeQueryParameter("true"));
         } else if (hasBugzillaBugs == TriStateSelectionState.UNSELECTED) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS).append("=").append(encodeQueryParameter("true"));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS).append("=").append(
+                    GWTUtilities.encodeQueryParameter("true"));
         }
         if (hasOpenBugzillaBugs == TriStateSelectionState.SELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         } else if (hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         }
         if (hasXMLErrors == TriStateSelectionState.SELECTED) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_XML_ERRORS).append("=").append(encodeQueryParameter("true"));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_XML_ERRORS).append("=").append(
+                    GWTUtilities.encodeQueryParameter("true"));
         } else if (hasXMLErrors == TriStateSelectionState.UNSELECTED) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_NOT_XML_ERRORS).append("=").append(encodeQueryParameter("true"));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_NOT_XML_ERRORS).append("=").append(
+                    GWTUtilities.encodeQueryParameter("true"));
         }
         if (format != null) {
-            retValue.append(";").append(CommonFilterConstants.TOPIC_FORMAT_VAR).append("=").append(encodeQueryParameter(format.toString()));
+            retValue.append(";").append(CommonFilterConstants.TOPIC_FORMAT_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(format.toString()));
         }
 
         if (matchAll) {
             retValue.append(";").append(CommonFilterConstants.LOGIC_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(CommonFilterConstants.AND_LOGIC));
+                    GWTUtilities.encodeQueryParameter(CommonFilterConstants.AND_LOGIC));
         } else {
             retValue.append(";").append(CommonFilterConstants.LOGIC_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(CommonFilterConstants.OR_LOGIC));
+                    GWTUtilities.encodeQueryParameter(CommonFilterConstants.OR_LOGIC));
         }
 
         return retValue.toString();

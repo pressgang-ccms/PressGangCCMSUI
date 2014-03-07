@@ -52,11 +52,6 @@ public class CategoriesFilteredResultsAndCategoryView extends
         super.initialize(true);
     }
 
-    @Override
-    protected void initialiseShortcuts() {
-        super.initialiseShortcuts();
-    }
-
     private void populateTopActionBar() {
         this.addActionButton(this.getDetails());
         this.addActionButton(this.getChildren());

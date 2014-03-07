@@ -44,4 +44,8 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
      */
     boolean hasUnsavedChanges();
 
+    /**
+     * Called after the close method when another presenter is to be displayed.
+     */
+    void destroy();
 }

@@ -423,4 +423,8 @@ final public class GWTUtilities {
 		document.close();
 
 	}-*/;
+
+    public static String encodeQueryParameter(final String value) {
+        return Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(value) : value;
+    }
 }

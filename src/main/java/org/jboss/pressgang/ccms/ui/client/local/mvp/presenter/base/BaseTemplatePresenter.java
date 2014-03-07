@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +19,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
@@ -38,7 +41,26 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEventHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BulkTagSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.DocBuilderViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.FilesFilteredResultsAndFileViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.IntegerConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProcessViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyTagFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SysInfoViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchTagsFieldsAndFiltersViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.SysInfoPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
@@ -48,6 +70,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.Conten
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants.IntegerConstantFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.process.ProcessPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.PropertyTagFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory.PropertyCategoryFilteredResultsAndDetailsPresenter;
@@ -96,6 +119,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * The display that holds the UI elements the user interacts with.
      */
     private BaseTemplateViewInterface display;
+    private final List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
     @Override
     public boolean isOKToProceed() {
@@ -294,6 +318,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTopShortcutView().getIntegerConstants().setHref("#" + IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         display.getTopShortcutView().getPropertyTags().setHref("#" + PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         display.getTopShortcutView().getPropertyTagCategories().setHref("#" + PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
+        display.getTopShortcutView().getProcesses().setHref("#" + ProcessPresenter.HISTORY_TOKEN);
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
@@ -546,6 +571,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+
+        display.getTopShortcutView().getProcesses().setScheduledCommand(new Command() {
+            @Override
+            public void execute() {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new ProcessViewEvent());
+                }
+            }
+        });
     }
 
     private void doQuickSearch(final boolean newWindow) {
@@ -607,7 +641,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         buildServersList();
 
         /* Watch for page closes */
-        Window.addWindowClosingHandler(new ClosingHandler() {
+        handlers.add(Window.addWindowClosingHandler(new ClosingHandler() {
 
             @Override
             public void onWindowClosing(@NotNull final ClosingEvent event) {
@@ -615,9 +649,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                     event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
-        });
+        }));
 
-        this.eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
+        handlers.add(eventBus.addHandler(FailoverEvent.getType(), new FailoverEventHandler() {
             @Override
             public void onFailOverEvent() {
                 ServerDetails.getSavedServer(new ServerDetailsCallback() {
@@ -633,7 +667,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 });
 
             }
-        });
+        }));
 
         display.getHelpMode().addClickHandler(new ClickHandler() {
             @Override
@@ -652,6 +686,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
+    }
+
+    @Override
+    public void destroy() {
+        for (final HandlerRegistration handlerRegistration : handlers) {
+            handlerRegistration.removeHandler();
+        }
+        handlers.clear();
     }
 
     private native void enableHelpOverlay() /*-{

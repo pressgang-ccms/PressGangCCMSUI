@@ -1,5 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -11,10 +15,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.bas
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * The view that combines the topic search results with the individual topic views
@@ -52,15 +52,13 @@ public class TopicFilteredResultsAndDetailsView extends
      * The bulk import dialog box.
      */
     @Inject
-    private
-    BulkImportImpl bulkImport;
+    private BulkImportImpl bulkImport;
 
     /**
      * The bulk overwrite dialog box.
      */
     @Inject
-    private
-    BulkOverwriteImpl bulkOverwrite;
+    private BulkOverwriteImpl bulkOverwrite;
 
     @Override
     @NotNull

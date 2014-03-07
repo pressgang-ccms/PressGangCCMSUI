@@ -9,7 +9,8 @@ import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
+import com.google.gwt.view.client.Range;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
@@ -47,12 +48,14 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
+    public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu,
+            @NotNull final boolean externalLink) {
         return createPushButton(text, subMenu, externalLink, null);
     }
 
     @NotNull
-    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink,
+            @Nullable final String id) {
         @NotNull final PushButton retValue = new PushButton(text);
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
@@ -223,7 +226,20 @@ final public class UIUtilities {
      */
     @NotNull
     public static SimplePager createSimplePager() {
-        return new SimplePager(TextLocation.CENTER, true, Constants.FAST_FORWARD_ROWS, true);
+        return new SimplePager(TextLocation.CENTER, true, Constants.FAST_FORWARD_ROWS, true) {
+            // Fix for the jumping to the last page. See: https://code.google.com/p/google-web-toolkit/issues/detail?id=6163
+            @Override
+            public void setPageStart(int index) {
+                if (getDisplay() != null) {
+                    Range range = getDisplay().getVisibleRange();
+                    int pageSize = range.getLength();
+                    index = Math.max(0, index);
+                    if (index != range.getStart()) {
+                        getDisplay().setVisibleRange(index, pageSize);
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -231,8 +247,18 @@ final public class UIUtilities {
      * @return A new cell table with the default settings
      */
     @NotNull
-    public static <T extends RESTBaseEntityCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {
-        return new CellTable<T>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
+    public static <T extends RESTBaseCollectionItemV1<?, ?>> CellTable<T> createCellTable() {
+        return createCellTable(Constants.MAX_SEARCH_RESULTS);
+    }
+
+    /**
+     * @param <T>      The type of collection item to be displayed by the cell table
+     * @param pageSize The maximum results the table should display per page.
+     * @return A new cell table with the default settings
+     */
+    @NotNull
+    public static <T extends RESTBaseCollectionItemV1<?, ?>> CellTable<T> createCellTable(final int pageSize) {
+        return new CellTable<T>(pageSize, (Resources) GWT.create(TableResources.class));
     }
 
     @NotNull
@@ -251,7 +277,8 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink,
+            @Nullable final String id) {
         @NotNull final AnchorButton retValue = new AnchorButton(text);
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
@@ -313,12 +340,14 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final boolean externalLink) {
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu,
+            @NotNull final boolean externalLink) {
         return createAnchorButton(text, subMenu, externalLink, null);
     }
 
     @NotNull
-    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink,
+            @Nullable final String id) {
         @NotNull final AnchorButton retValue = new AnchorButton(text);
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 

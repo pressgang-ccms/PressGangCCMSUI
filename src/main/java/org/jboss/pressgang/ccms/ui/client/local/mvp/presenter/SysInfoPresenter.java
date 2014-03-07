@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * Presenter to add logic to the system information view
  */
 @Dependent
-public class SysInfoPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface{
+public class SysInfoPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SysInfoView";
 

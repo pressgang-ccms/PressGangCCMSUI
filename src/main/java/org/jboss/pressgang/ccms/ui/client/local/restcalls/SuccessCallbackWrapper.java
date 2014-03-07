@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
-
-import org.jboss.errai.bus.client.api.RemoteCallback;
+import org.jboss.errai.common.client.api.RemoteCallback;
 
 /**
  * Used to return a callback for a successful rest call.

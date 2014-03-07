@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
@@ -18,13 +19,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import org.jboss.errai.bus.client.api.ErrorCallback;
-import org.jboss.errai.bus.client.api.Message;
-import org.jboss.errai.bus.client.api.RemoteCallback;
+import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestErrorCallback;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.systemevents.FailoverEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -32,7 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -148,10 +148,10 @@ public final class FailOverRESTCall {
 
                 final FailureCallbackWrapper failureCallbackWrapper = new FailureCallbackWrapper() {
                     @Override
-                    public ErrorCallback getErrorCallback() {
-                        return new ErrorCallback() {
+                    public RestErrorCallback getErrorCallback() {
+                        return new RestErrorCallback() {
                             @Override
-                            public boolean error(final Message message, final Throwable throwable) {
+                            public boolean error(final Request message, final Throwable throwable) {
                                 /*
                                     Make sure the response it not from a request we just didn't wait long enough for.
                                  */

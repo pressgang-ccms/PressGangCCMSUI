@@ -1,9 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.google.gwt.view.client.AsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * An extension of the AsyncDataProvider class that provides methods for common procedures such as resetting the list,
@@ -28,7 +29,8 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * Reset the provider so no items are shown and the loading widget is displayed.
      */
     public void resetProvider() {
-        this.updateRowCount(0, false);
+        this.updateRowData(0, Collections.EMPTY_LIST);
+        this.updateRowCount(0, true);
     }
 
     /**
