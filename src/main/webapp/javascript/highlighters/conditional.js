@@ -63,7 +63,7 @@ self.addEventListener('message', function (e) {
     }
 
     try {
-        var specCondition = new RegExp(e.data.condition);
+        var specCondition = new RegExp("^(" + e.data.condition + ")$");
     } catch (e) {
         // bad regex, so don't process anything
         postMessage([]);
