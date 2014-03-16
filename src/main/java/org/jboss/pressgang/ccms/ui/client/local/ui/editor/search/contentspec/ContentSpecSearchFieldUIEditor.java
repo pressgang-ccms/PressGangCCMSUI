@@ -21,7 +21,7 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
     /**
      * The default format for the DateBoxes
      */
-    private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getLongDateFormat();
+    private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_LONG);
     /**
      * The name of the group that the matching option checkboxes belong to
      */

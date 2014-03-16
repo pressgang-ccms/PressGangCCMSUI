@@ -1,10 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
@@ -28,7 +32,13 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final PushButton history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
+    private final PushButton processes = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Processes());
     private final PushButton viewInDocBuilder = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true);
+    private final MenuBar menu = new MenuBar();
+    private final MenuBar actionsMenu = new MenuBar(true);
+    private final MenuItem actionsMenuItem = new MenuItem(PressGangCCMSUI.INSTANCE.ProcessActions(), actionsMenu);
+    private final MenuItem pushTranslation = new MenuItem(PressGangCCMSUI.INSTANCE.TranslationPush(), (Command) null);
+    private final MenuItem syncTranslation = new MenuItem(PressGangCCMSUI.INSTANCE.TranslationSync(), (Command) null);
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
@@ -36,6 +46,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final Label historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
     private final Label tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final Label errorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
+    private final Label processesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Processes());
 
     private final PushButton showHideSearchResults = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
 
@@ -120,7 +131,19 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
         populateTopActionBar();
         super.initialize(true);
+        initHelp();
 
+        menu.setAnimationEnabled(true);
+        menu.addItem(actionsMenuItem);
+        actionsMenu.addItem(pushTranslation);
+        actionsMenu.addItem(syncTranslation);
+
+        menu.addStyleName(CSSConstants.ContentSpecView.ACTIONS_MENU);
+        actionsMenu.addStyleName(CSSConstants.ContentSpecView.ACTIONS_SUB_MENU);
+        actionsMenuItem.addStyleName(CSSConstants.ContentSpecView.ACTIONS_MENU_ITEM);
+    }
+
+    protected void initHelp() {
         save.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SAVE.getId() + "");
         showHideSearchResults.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS.getId() + "");
 
@@ -136,9 +159,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         tagsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TAGS.getId() + "");
         history.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
         historyDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
-
     }
-
 
     private void populateTopActionBar() {
         addActionButton(getShowHideSearchResults());
@@ -149,7 +170,9 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         addActionButton(getExtendedProperties());
         addActionButton(getContentSpecTags());
         addActionButton(getHistory());
+        addActionButton(getProcesses());
         addActionButton(getSave());
+        addActionButton(menu);
     }
 
     @Override
@@ -176,7 +199,27 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         return tagsDown;
     }
 
+    @Override
+    public Label getProcessesDown() {
+        return processesDown;
+    }
+
     public PushButton getViewInDocBuilder() {
         return viewInDocBuilder;
+    }
+
+    @Override
+    public PushButton getProcesses() {
+        return processes;
+    }
+
+    @Override
+    public MenuItem getPushTranslation() {
+        return pushTranslation;
+    }
+
+    @Override
+    public MenuItem getSyncTranslation() {
+        return syncTranslation;
     }
 }

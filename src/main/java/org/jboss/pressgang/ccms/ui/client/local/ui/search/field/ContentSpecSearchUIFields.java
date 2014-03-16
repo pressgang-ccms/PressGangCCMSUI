@@ -486,99 +486,103 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                 includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         if (!GWTUtilities.isStringNullOrEmpty(createdBy)) {
-            retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(encodeQueryParameter(createdBy));
+            retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(createdBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(notCreatedBy)) {
-            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(encodeQueryParameter(notCreatedBy));
+            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(notCreatedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(editedBy)) {
-            retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(encodeQueryParameter(editedBy));
+            retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(GWTUtilities.encodeQueryParameter(editedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(notEditedBy)) {
-            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(encodeQueryParameter(notEditedBy));
+            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(notEditedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(ids)) {
-            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR).append("=").append(encodeQueryParameter(ids));
+            retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(ids));
         }
         if (!GWTUtilities.isStringNullOrEmpty(title)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_TITLE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(title));
+                    GWTUtilities.encodeQueryParameter(title));
         }
         if (!GWTUtilities.isStringNullOrEmpty(subtitle)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_SUBTITLE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(subtitle));
+                    GWTUtilities.encodeQueryParameter(subtitle));
         }
         if (!GWTUtilities.isStringNullOrEmpty(product)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_PRODUCT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(product));
+                    GWTUtilities.encodeQueryParameter(product));
         }
         if (!GWTUtilities.isStringNullOrEmpty(version)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_VERSION_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(version));
+                    GWTUtilities.encodeQueryParameter(version));
         }
         if (!GWTUtilities.isStringNullOrEmpty(edition)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_EDITION_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(edition));
+                    GWTUtilities.encodeQueryParameter(edition));
         }
         if (!GWTUtilities.isStringNullOrEmpty(pubsnumber)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_PUBSNUMBER_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(pubsnumber));
+                    GWTUtilities.encodeQueryParameter(pubsnumber));
         }
         if (!GWTUtilities.isStringNullOrEmpty(abstractDesc)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_ABSTRACT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(abstractDesc));
+                    GWTUtilities.encodeQueryParameter(abstractDesc));
         }
         if (!GWTUtilities.isStringNullOrEmpty(brand)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_BRAND_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(brand));
+                    GWTUtilities.encodeQueryParameter(brand));
         }
         if (format != null) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_FORMAT_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(format.toString()));
+                    GWTUtilities.encodeQueryParameter(format.toString()));
         }
         if (!GWTUtilities.isStringNullOrEmpty(copyrightHolder)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_HOLDER_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(copyrightHolder));
+                    GWTUtilities.encodeQueryParameter(copyrightHolder));
         }
         if (!GWTUtilities.isStringNullOrEmpty(copyrightYear)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_COPYRIGHT_YEAR_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(copyrightYear));
+                    GWTUtilities.encodeQueryParameter(copyrightYear));
         }
         if (!GWTUtilities.isStringNullOrEmpty(publicanCfg)) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_PUBLICAN_CFG_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(publicanCfg));
+                    GWTUtilities.encodeQueryParameter(publicanCfg));
         }
         if (type != null) {
             retValue.append(";").append(CommonFilterConstants.CONTENT_SPEC_TYPE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(type.toString()));
+                    GWTUtilities.encodeQueryParameter(type.toString()));
         }
         if (editedInLastXDays != null) {
             retValue.append(";").append(CommonFilterConstants.EDITED_IN_LAST_DAYS).append("=").append(
-                    encodeQueryParameter(editedInLastXDays.toString()));
+                    GWTUtilities.encodeQueryParameter(editedInLastXDays.toString()));
         }
         if (notEditedInLastXDays != null) {
             retValue.append(";").append(CommonFilterConstants.NOT_EDITED_IN_LAST_DAYS).append("=").append(
-                    encodeQueryParameter(notEditedInLastXDays.toString()));
+                    GWTUtilities.encodeQueryParameter(notEditedInLastXDays.toString()));
         }
         if (editedBefore != null) {
             retValue.append(";").append(CommonFilterConstants.ENDEDITDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(editedBefore)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(editedBefore)));
         }
         if (editedAfter != null) {
             retValue.append(";").append(CommonFilterConstants.STARTEDITDATE_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(dateformat.format(editedAfter)));
+                    GWTUtilities.encodeQueryParameter(dateformat.format(editedAfter)));
         }
 
         if (matchAll) {
             retValue.append(";").append(CommonFilterConstants.LOGIC_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(CommonFilterConstants.AND_LOGIC));
+                    GWTUtilities.encodeQueryParameter(CommonFilterConstants.AND_LOGIC));
         } else {
             retValue.append(";").append(CommonFilterConstants.LOGIC_FILTER_VAR).append("=").append(
-                    encodeQueryParameter(CommonFilterConstants.OR_LOGIC));
+                    GWTUtilities.encodeQueryParameter(CommonFilterConstants.OR_LOGIC));
         }
 
         return retValue.toString();

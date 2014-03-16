@@ -50,6 +50,7 @@ public class TopShortcutView extends HorizontalPanel {
     private final AnchorMenuItem blobConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BlobConstants(), false, (Command) null);
     private final AnchorMenuItem propertyTags = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.PropertyTags(), false, (Command) null);
     private final AnchorMenuItem propertyTagCategories = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), false, (Command) null);
+    private final AnchorMenuItem processes = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Processes(), false, (Command) null);
     private final AnchorMenuItem monitoring = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Monitoring(), false, (Command) null);
     private final AnchorMenuItem sysinfo = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.SystemInfo(), false, (Command) null);
 
@@ -89,18 +90,19 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addItem(blobConstants);
         advanced.addItem(propertyTags);
         advanced.addItem(propertyTagCategories);
+        advanced.addItem(processes);
         advanced.addItem(monitoring);
         advanced.addItem(sysinfo);
 
-        this.add(home);
-        this.add(docbuilder);
-        this.add(createTopic);
-        this.add(createContentSpec);
-        this.add(bug);
-        //this.add(reports);
-        this.add(menus);
+        add(home);
+        add(docbuilder);
+        add(createTopic);
+        add(createContentSpec);
+        add(bug);
+        //add(reports);
+        add(menus);
 
-        this.addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
+        addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
 
         menus.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU);
 
@@ -262,5 +264,9 @@ public class TopShortcutView extends HorizontalPanel {
 
     public AnchorMenuItem getSysinfo() {
         return sysinfo;
+    }
+
+    public AnchorMenuItem getProcesses() {
+        return processes;
     }
 }

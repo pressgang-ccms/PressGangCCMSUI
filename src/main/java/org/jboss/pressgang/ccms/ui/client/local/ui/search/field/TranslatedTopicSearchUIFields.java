@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollect
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.base.BaseTopicSearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -99,18 +100,18 @@ public class TranslatedTopicSearchUIFields extends BaseTopicSearchUIFields {
 
         if (latestTranslations == TriStateSelectionState.SELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_LATEST_TRANSLATIONS_FILTER_VAR).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         } else if (latestTranslations == TriStateSelectionState.UNSELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_NOT_LATEST_TRANSLATIONS_FILTER_VAR).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         }
 
         if (latestCompletedTranslations == TriStateSelectionState.SELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_LATEST_COMPLETED_TRANSLATIONS_FILTER_VAR).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         } else if (latestCompletedTranslations == TriStateSelectionState.UNSELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_NOT_LATEST_COMPLETED_TRANSLATIONS_FILTER_VAR).append("=").append(
-                    encodeQueryParameter("true"));
+                    GWTUtilities.encodeQueryParameter("true"));
         }
 
         return retValue.toString();

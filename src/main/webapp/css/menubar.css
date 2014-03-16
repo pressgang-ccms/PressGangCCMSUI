@@ -19,6 +19,15 @@
     border-collapse: collapse;
 }
 
-.gwt-MenuBar-vertical .gwt-MenuItem > div{
-    padding: 3px 8px 3px 8px;
+.gwt-MenuBar-vertical .gwt-MenuItem > div {
+    margin: -3px -8px;
+    padding: 3px 8px;
+}
+
+.gwt-MenuBar-vertical .gwt-MenuItem {
+    padding: 3px 8px;
+}
+
+.gwt-MenuBarPopup {
+    z-index: 10;
 }

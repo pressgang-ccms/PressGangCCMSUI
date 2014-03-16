@@ -56,28 +56,28 @@ td {
     width:100%;
 }
 
-.TopShortcutMenu {
+.TopShortcutMenu, .ContentSpecActionsMenu {
     border-spacing: 0px;
     height:100%;
 }
 
-.TopShortcutMenu table {
+.TopShortcutMenu table, .ContentSpecActionsMenu table {
     border-spacing: 0px;
     height: 100%;
 }
 
-.TopShortcutMenuItem {
+.TopShortcutMenuItem, .ContentSpecActionsMenuItem {
     background-color: #00C618;
     border: 1px solid #009200;
     color: white;
-    padding: 8px;
+    padding: 8px !important;
     height: 100%;
     vertical-align: top;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
-.TopShortcutSubMenu {
+.TopShortcutSubMenu, .ContentSpecActionsSubMenu {
     background-color: #00C618;
     border: 1px solid #009200;
     color: white;
@@ -139,9 +139,7 @@ td {
 
 .ContentCell {
     background-color: white;
-    border-color: rgb(136, 74, 74);
-    border-width: 8px;
-    border-style: solid;
+    border: 8px solid rgb(136, 74, 74);
 }
 
 .HelpCallout td {
@@ -1062,7 +1060,7 @@ html {
     background-color: white;
 }
 
-.FilteredResultsTable {
+.FilteredResultsTable, .ProcessResultsTable {
     width: 100%;
 }
 
@@ -1084,12 +1082,12 @@ html {
     -moz-box-sizing: border-box;
 }
 
-tr.FilteredResultsTableSelectedRow {
+tr.FilteredResultsTableSelectedRow, tr.ProcessResultsTableSelectedRow {
     background-color: #0072C6;
     color: white;
 }
 
-tr[class*='FilteredResultsTableSelectedRow']>td {
+tr[class*='FilteredResultsTableSelectedRow']>td, tr[class*='ProcessResultsTableSelectedRow']>td {
     border-color: #0072C6;
 }
 
@@ -1099,7 +1097,7 @@ textarea {
     border-top: 1px solid #999;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
     padding: 2px 4px;
     border: 1px solid #ccc;
     border-top: 1px solid #999;
@@ -1137,7 +1135,6 @@ textarea[readonly=""], textarea[readonly] , input[readonly], input[readonly=""] 
 
 .ShortcutCollapseMenuHeader {
     background-color: #00C618;
-    border-color: #009200;
     border: 1px solid #005492;
     padding: 3px 3px 3px 2px;
     color: white;
@@ -1210,4 +1207,89 @@ a.AnchorPushButton, a.AnchorMenuItem {
 
 .SysInfoLabel {
     margin-right: 8px;
+}
+
+.ProcessLogsText {
+    width: 800px;
+    height: 500px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+}
+
+.ProcessTabPanel {
+    margin-top: 8px;
+}
+
+.ProcessResultsPanel {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.ProcessResultsPanel > tbody > tr > td:first-child {
+    height: 100%;
+}
+
+.ProcessResultsTableIdColumn, .ProcessResultsTableDateColumn, .ProcessResultsTableLogsColumn,
+.ProcessResultsTableStatusColumn, .ProcessResultsTableStartedByColumn {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.ProcessResultsTable tr {
+    line-height: 35px;
+}
+
+.ProcessResultsTableCancelColumn {
+    width: 1px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.SuccessfulStatus td:nth-child(3), div.SuccessfulStatus {
+    color: #00BB00;
+}
+
+.FailedStatus td:nth-child(3), div.FailedStatus {
+    color: red;
+}
+
+.CheckBoxList {
+    border: 1px solid #BBB;
+    border-radius: 4px;
+}
+
+.ProcessSyncLocaleListBox {
+    max-height: 125px;
+    width: 100%;
+}
+
+.ContentSpecActionsSubMenu td {
+    padding: 8px !important;
+}
+
+.ProcessWaitingButtonPanel {
+    border-spacing: 4px 0px;
+}
+
+table.ProcessWaitingTable {
+    border-spacing: 4px;
+    padding: 0px 4px;
+}
+
+.ProcessWaitingMessage {
+    margin: 4px;
+    overflow: auto;
+    width: 300px;
+}
+
+.ProcessWaitingLabel {
+    font-weight: bold;
+}
+
+.ProcessActionImage {
+    display: inline-block;
+    padding: 0px 3px;
+    cursor: pointer;
 }

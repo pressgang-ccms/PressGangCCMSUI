@@ -1,10 +1,31 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
+
+import java.util.List;
+
+import com.google.common.base.Joiner;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
-import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -20,17 +41,17 @@ public final class FailOverRESTCallDatabase {
     /**
      * The required expansion details for the content spec node.
      */
-    private static final String CSNODE_EXPAND_WITH_CONTENT_SPEC =
-        "{\"branches\":[" +
+    private static final String CSNODE_EXPAND_WITH_CONTENT_SPEC = "{\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}, \"branches\":[" +
-                "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INHERITED_CONDITION_NAME + "\"}}, " +
-                "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.CONTENT_SPEC_NAME + "\"}, \"branches\":[" + "" +
-                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}" +
-                "]}" +
+            "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INHERITED_CONDITION_NAME + "\"}}, " +
+            "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.CONTENT_SPEC_NAME + "\"}, \"branches\":[" + "" +
+            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}" +
             "]}" +
-        "]}";
+            "]}" +
+            "]}";
 
-    private static final String CSNODE_EXPAND = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}}]}";
+    private static final String CSNODE_EXPAND = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants
+            .CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}}]}";
 
     /**
      * The required expansion details for the tags.
@@ -50,21 +71,19 @@ public final class FailOverRESTCallDatabase {
      * <p/>
      * We only need the last 2 revisions to check for save conflicts.
      */
-    private static final String TOPIC_EXPANSION =
-        "{\"branches\":[" +
+    private static final String TOPIC_EXPANSION = "{\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
             "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
-        "]}";
+            "]}";
 
     /**
      * A topic with expanded revisions
      */
-    private static final String TOPIC_REVISIONS_EXPANSION =
-        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[" +
+    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
             "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
             "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-        "]}";
+            "]}";
 
     /**
      * A topic with expanded property tags
@@ -74,48 +93,45 @@ public final class FailOverRESTCallDatabase {
     /**
      * A topic with expanded tags
      */
-    private static final String TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
-            + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+    private static final String TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}," +
+            "\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\"" + RESTTagV1
+            .CATEGORIES_NAME + "\"}}]}";
 
     /**
      * A topic with expanded content specs
      */
-    private static final String TOPIC_CONTENT_SPECS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.CONTENTSPECS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTContentSpecV1 .CHILDREN_NAME + "\"}}]}";
+    private static final String TOPIC_CONTENT_SPECS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.CONTENTSPECS_NAME + "\"}," +
+            "\"branches\":[{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}]}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
      */
-    private static final String TOPIC_EXPANSION_WO_REVISIONS =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-                    "]}";
+    private static final String TOPIC_EXPANSION_WO_REVISIONS = "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+            "]}";
 
     /**
      * The required expansion details for a filter.
      */
-    private static final String FILTER_EXPANSION =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}, \"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.PROJECT_NAME + "\"}}" +
-                    "]}," +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
-                    "]}" +
-                    "]}";
+    private static final String FILTER_EXPANSION = "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}, \"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.PROJECT_NAME + "\"}}" +
+            "]}," +
+            "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
+            "]}" +
+            "]}";
 
-    private static final String TOPIC_TAG_EXPANSION =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
-                    "]}" +
-                    "]}" +
-                    "]}";
+    private static final String TOPIC_TAG_EXPANSION = "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
+            "]}" +
+            "]}" +
+            "]}";
 
     /**
      * The required expansion details for a translated topic. The revisions are required so we can check to see if
@@ -126,13 +142,12 @@ public final class FailOverRESTCallDatabase {
      * <p/>
      * We only need the last 2 revisions to check for save conflicts.
      */
-    private static final String TRANSLATED_TOPIC_EXPANSION =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
-                    TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION  + "," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
-                    "]}";
+    private static final String TRANSLATED_TOPIC_EXPANSION = "{\"branches\":[" +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+            TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
+            "]}";
 
     /**
      * The required expansion details for the projects.
@@ -157,7 +172,8 @@ public final class FailOverRESTCallDatabase {
     /**
      * The required expansion details for the property tags.
      */
-    private static final String PROPERTY_CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyCategoryV1.PROPERTY_TAGS_NAME + "\"}}";
+    private static final String PROPERTY_CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyCategoryV1.PROPERTY_TAGS_NAME +
+            "\"}}";
 
     /**
      * Content specifications need the extended properties expanded
@@ -173,13 +189,13 @@ public final class FailOverRESTCallDatabase {
             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
             "]}";
 
-    public static RESTCall createContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
-                                             @NotNull final String userId) {
+    public static RESTCall createContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
+            @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.createJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
-                        message, flag, userId);
+                restService.createJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag,
+                        userId);
             }
 
             @Override
@@ -189,13 +205,13 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
-    public static RESTCall updateContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message, @NotNull final Integer flag,
-                                             @NotNull final String userId) {
+    public static RESTCall updateContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
+            @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.updateJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec,
-                        message, flag, userId);
+                restService.updateJSONTextContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag,
+                        userId);
             }
 
             @Override
@@ -219,8 +235,7 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
-    public static RESTCall getContentSpecRevision(@NotNull final Integer id,
-                                                  @NotNull final Integer revision) {
+    public static RESTCall getContentSpecRevision(@NotNull final Integer id, @NotNull final Integer revision) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -345,11 +360,12 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String revisionExpand = "{\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                        "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", " +
+                        "\"end\":" + end + "}," +
                         "\"branches\":[" +
-                            "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
-                            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
-                            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
                         "]}" +
                         "]}";
                 restService.getJSONTextContentSpec(id, revisionExpand);
@@ -382,6 +398,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST holdXML method
+     *
      * @param xml The XML to be held by the REST server
      * @return A RESTCall that can call the REST holdXML method
      */
@@ -401,6 +418,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONTag method
+     *
      * @param tag The tag to be saved
      * @return A RESTCall that can call the REST updateJSONTag method
      */
@@ -421,6 +439,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONTag method
+     *
      * @param tag The tag to be created
      * @return A RESTCall that can call the REST createJSONTag method
      */
@@ -441,6 +460,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST something method
+     *
      * @param category The category to be updated
      * @return A RESTCall that can call the REST something method
      */
@@ -461,6 +481,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONCategory method
+     *
      * @param category The category to be created
      * @return A RESTCall that can call the REST createJSONCategory method
      */
@@ -481,6 +502,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONCategories method
+     *
      * @param categories The categories to be saved
      * @return A RESTCall that can call the REST updateJSONCategories method
      */
@@ -500,6 +522,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONTopic method
+     *
      * @param topic The topic to be updated
      * @return A RESTCall that can call the REST updateJSONTopic method
      */
@@ -519,14 +542,15 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONTopic method
-     * @param topic The topic to be updated
+     *
+     * @param topic   The topic to be updated
      * @param message The revision log message
-     * @param flag The flags associated with this revision
-     * @param userId The user that made the changes
+     * @param flag    The flags associated with this revision
+     * @param userId  The user that made the changes
      * @return A RESTCall that can call the REST updateJSONTopic method
      */
-    public static RESTCall saveTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
-                                           @NotNull final Integer flag, @NotNull final String userId) {
+    public static RESTCall saveTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message, @NotNull final Integer flag,
+            @NotNull final String userId) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -542,6 +566,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createTopic method
+     *
      * @param topic The topic to be created
      * @return A RESTCall that can call the REST createTopic method
      */
@@ -561,14 +586,15 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONTopic method
-     * @param topic The topic to be created
+     *
+     * @param topic   The topic to be created
      * @param message The revision log message
-     * @param flag The flags associated with this revision
-     * @param userId The user that made the changes
+     * @param flag    The flags associated with this revision
+     * @param userId  The user that made the changes
      * @return A RESTCall that can call the REST createJSONTopic method
      */
-    public static RESTCall createTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message,
-                                             @NotNull final Integer flag, @NotNull final String userId) {
+    public static RESTCall createTopic(@NotNull final RESTTopicV1 topic, @NotNull final String message, @NotNull final Integer flag,
+            @NotNull final String userId) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -584,6 +610,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONStringConstant method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONStringConstant method
      */
@@ -603,6 +630,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyTags method
+     *
      * @return A RESTCall that can call the REST getJSONPropertyTags method
      */
     public static RESTCall getPropertyTags() {
@@ -622,6 +650,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTags method
+     *
      * @return A RESTCall that can call the REST getJSONTags method
      */
     public static RESTCall getTags() {
@@ -641,6 +670,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTag method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTag method
      */
@@ -661,6 +691,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTag method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTag method
      */
@@ -680,23 +711,23 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
-     * @param id The entity ID
+     *
+     * @param id    The entity ID
      * @param start The start of the revisions
-     * @param end The end of the revision
+     * @param end   The end of the revision
      * @return A RESTCall that can call the REST getJSONTopic method
      */
     public static RESTCall getTopicWithRevisions(@NotNull final Integer id, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String revisionExpand =
-                        "{\"branches\":[" +
-                            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
-                            "\"branches\":[" +
-                                "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
-                                "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                                "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-                            "]}" +
+                final String revisionExpand = "{\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                        "\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                        "]}" +
                         "]}";
                 restService.getJSONTopic(id, revisionExpand);
             }
@@ -709,12 +740,11 @@ public final class FailOverRESTCallDatabase {
     }
 
 
-
-
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
-     * @para id The entity ID
+     *
      * @return A RESTCall that can call the REST getJSONTopic method
+     * @para id The entity ID
      */
     public static RESTCall getTopicWithRevisions(@NotNull final Integer id) {
         return new RESTCall() {
@@ -733,7 +763,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicRevision method
-     * @param id The entity ID
+     *
+     * @param id       The entity ID
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
@@ -754,6 +785,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     *
      * @param queryString The query
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -761,7 +793,8 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"topics\"}, \"branches\":[{\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"topics\"}, \"branches\":[{\"trunk\":{\"name\": " +
+                        "\"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -774,6 +807,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -781,7 +815,8 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"tags\"}}, {\"trunk\":{\"name\": \"revisions\"}, \"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"tags\"}}, {\"trunk\":{\"name\": \"revisions\"}, " +
+                        "" + "\"branches\":[{\"trunk\":{\"name\": \"tags\"}}]}]}";
                 restService.getJSONTopic(id, expand);
             }
 
@@ -793,9 +828,9 @@ public final class FailOverRESTCallDatabase {
     }
 
 
-
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -815,9 +850,9 @@ public final class FailOverRESTCallDatabase {
     }
 
 
-
     /**
      * Create a RESTCall object to call the REST getJSONTranslatedTopic method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTranslatedTopic method
      */
@@ -838,7 +873,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicRevision method
-     * @param id The entity ID
+     *
+     * @param id       The entity ID
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
@@ -859,7 +895,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicRevision method
-     * @param id The entity ID
+     *
+     * @param id       The entity ID
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
@@ -880,6 +917,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method
+     *
      * @param
      * @return A RESTCall that can call the REST getJSONTopic method
      */
@@ -899,6 +937,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONImage method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
@@ -906,8 +945,8 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}," +
+                        "\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.getJSONImage(id, expand);
             }
 
@@ -920,6 +959,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONImage method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
@@ -940,6 +980,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONImage method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONImage method
      */
@@ -960,6 +1001,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONImage method
+     *
      * @param image The image to be updated
      * @return A RESTCall that can call the REST updateJSONImage method
      */
@@ -967,8 +1009,8 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}," +
+                        "\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.updateJSONImage(expand, image);
             }
 
@@ -981,15 +1023,16 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONImage method
-     * @param  image The image to be created
+     *
+     * @param image The image to be created
      * @return A RESTCall that can call the REST createJSONImage method
      */
     public static RESTCall createImage(@NotNull final RESTImageV1 image) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                        + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}," +
+                        "\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
                 restService.createJSONImage(expand, image);
             }
 
@@ -1002,6 +1045,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONFilter method
+     *
      * @param filter The filter to be created
      * @return A RESTCall that can call the REST createJSONFilter method
      */
@@ -1021,6 +1065,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONFilter method
+     *
      * @param filter The filter to be updated
      * @return A RESTCall that can call the REST updateJSONFilter method
      */
@@ -1040,16 +1085,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONFiltersWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONFiltersWithQuery method
      */
     public static RESTCall getFiltersFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONFiltersWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1062,6 +1109,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONFilter method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONFilter method
      */
@@ -1081,6 +1129,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONContentSpecNodesWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONContentSpecNodesWithQuery method
      */
@@ -1100,6 +1149,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONContentSpecNodesWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONContentSpecNodesWithQuery method
      */
@@ -1119,7 +1169,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicRevision method
-     * @param id The entity ID
+     *
+     * @param id       The entity ID
      * @param revision The entity revision
      * @return A RESTCall that can call the REST getJSONTopicRevision method
      */
@@ -1139,16 +1190,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
     public static RESTCall getTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1161,16 +1214,19 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
     public static RESTCall getTopicsWithLogMessagesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[{\"trunk\":{\"name\": \"logDetails\"}}]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[{\"trunk\":{\"name\": " +
+                        "\"logDetails\"}}]}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1183,6 +1239,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
@@ -1203,6 +1260,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
@@ -1211,17 +1269,15 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
 
-                final String expand =
-                    "{" +
+                final String expand = "{" +
                         "\"branches\":[" +
-                            "{" +
-                                "\"trunk\":\"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"," +
-                                "\"branches\":["
-                                    + TOPIC_WITH_PROPERTIES_EXPANSION +
-                                "]" +
-                            "}" +
+                        "{" +
+                        "\"trunk\":\"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"," +
+                        "\"branches\":[" + TOPIC_WITH_PROPERTIES_EXPANSION +
                         "]" +
-                    "}";
+                        "}" +
+                        "]" +
+                        "}";
 
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
@@ -1235,6 +1291,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
      */
@@ -1254,16 +1311,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTranslatedTopicsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONTranslatedTopicsWithQuery method
      */
     public static RESTCall getTranslatedTopicsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTranslatedTopicsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1276,6 +1335,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONTranslatedTopic method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONTranslatedTopic method
      */
@@ -1295,10 +1355,11 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONTranslatedTopic method
-     * @param topic The topic to be updated
+     *
+     * @param topic   The topic to be updated
      * @param message The revision log message
-     * @param flag The flags associated with this revision
-     * @param userId The user that made the changes
+     * @param flag    The flags associated with this revision
+     * @param userId  The user that made the changes
      * @return A RESTCall that can call the REST updateJSONTopic method
      */
     public static RESTCall saveTranslatedTopic(@NotNull final RESTTranslatedTopicV1 topic, @NotNull final String message,
@@ -1318,16 +1379,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST something method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST something method
      */
     public static RESTCall getTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1339,9 +1402,9 @@ public final class FailOverRESTCallDatabase {
     }
 
 
-
     /**
      * Create a RESTCall object to call the REST getJSONTagsWithQuery method
+     *
      * @param queryString The query to use to get the filters
      * @return A RESTCall that can call the REST getJSONTagsWithQuery method
      */
@@ -1362,16 +1425,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONStringConstantsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONStringConstantsWithQuery method
      */
     public static RESTCall getStringConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONStringConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1384,10 +1449,11 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createStringConstant method
+     *
      * @param entity The string constant to create
      * @return A RESTCall that can call the REST createStringConstant method
      */
-    public static RESTCall createStringConstant(@NotNull final RESTStringConstantV1 entity)  {
+    public static RESTCall createStringConstant(@NotNull final RESTStringConstantV1 entity) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
@@ -1403,6 +1469,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONStringConstant method
+     *
      * @param entity The String Constant to update
      * @return A RESTCall that can call the REST updateJSONStringConstant method
      */
@@ -1422,16 +1489,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONIntegerConstantsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONIntegerConstantsWithQuery method
      */
     public static RESTCall getIntegerConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONIntegerConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1444,7 +1513,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONIntegerConstant method
-     * @param  entity The Integer Constant to create
+     *
+     * @param entity The Integer Constant to create
      * @return A RESTCall that can call the REST createJSONIntegerConstant method
      */
     public static RESTCall createIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
@@ -1463,7 +1533,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONIntegerConstant method
-     * @param  entity The Integer Constant to save
+     *
+     * @param entity The Integer Constant to save
      * @return A RESTCall that can call the REST updateJSONIntegerConstant method
      */
     public static RESTCall updateIntegerConstant(@NotNull final RESTIntegerConstantV1 entity) {
@@ -1482,16 +1553,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONBlobConstantsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONBlobConstantsWithQuery method
      */
     public static RESTCall getBlobConstantsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONBlobConstantsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1504,6 +1577,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONBlobConstant method
+     *
      * @param entity The Blob Constant to create
      * @return A RESTCall that can call the REST createJSONBlobConstant method
      */
@@ -1523,6 +1597,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONBlobConstant method
+     *
      * @param entity The Blob Constant to update
      * @return A RESTCall that can call the REST updateJSONBlobConstant method
      */
@@ -1542,6 +1617,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONCategory method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONCategory method
      */
@@ -1562,6 +1638,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONCategory method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONCategory method
      */
@@ -1581,14 +1658,15 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getCategories method
+     *
      * @return A RESTCall that can call the REST getCategories method
      */
     public static RESTCall getCategories() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
-                        + "]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, " +
+                        "\"branches\":[" + CATEGORY_EXPANSION + "]}]}";
                 restService.getJSONCategories(expand);
             }
 
@@ -1601,17 +1679,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONCategoriesWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
      */
     public static RESTCall getUnexpandedCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                        + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1624,17 +1703,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONCategoriesWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONCategoriesWithQuery method
      */
     public static RESTCall getCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                        + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
                 restService.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1647,17 +1727,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONProjectsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONProjectsWithQuery method
      */
     public static RESTCall getProjectsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                        + ", \"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
                 restService.getJSONProjectsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1670,13 +1751,15 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST something method
+     *
      * @return A RESTCall that can call the REST something method
      */
     public static RESTCall getProjects() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, " +
+                        "\"branches\":[" + PROJECT_EXPANSION + "]}]}";
                 restService.getJSONProjects(expand);
             }
 
@@ -1689,7 +1772,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONProject method
-     * @param  id The entity ID
+     *
+     * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONProject method
      */
     public static RESTCall getProject(@NotNull final Integer id) {
@@ -1709,7 +1793,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getUnexpandedProject method
-     * @param  id The entity ID
+     *
+     * @param id The entity ID
      * @return A RESTCall that can call the REST getUnexpandedProject method
      */
     public static RESTCall getUnexpandedProject(@NotNull final Integer id) {
@@ -1728,7 +1813,8 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONProject method
-     * @param  project The project to be saved
+     *
+     * @param project The project to be saved
      * @return A RESTCall that can call the REST updateJSONProject method
      */
     public static RESTCall saveProject(@NotNull final RESTProjectV1 project) {
@@ -1748,6 +1834,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONProject method
+     *
      * @param project The project to be created
      * @return A RESTCall that can call the REST createJSONProject method
      */
@@ -1768,26 +1855,26 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST something method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST something method
      */
     public static RESTCall getImagesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand =
-                    "{" +
+                final String expand = "{" +
                         "\"branches\":[" +
-                            "{" +
-                                "\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}," +
-                                "\"branches\":["
-                                    + IMAGE_EXPANSION +
-                                "]" +
-                            "}" +
+                        "{" +
+                        "\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME +
+                        "\"}," +
+                        "\"branches\":[" + IMAGE_EXPANSION +
                         "]" +
-                    "}";
+                        "}" +
+                        "]" +
+                        "}";
                 restService.getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1800,13 +1887,15 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyCategories method
+     *
      * @return A RESTCall that can call the REST getJSONPropertyCategories method
      */
     public static RESTCall getPropertyTagCategories() {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME +
+                        "\"}}]}";
                 restService.getJSONPropertyCategories(expand);
             }
 
@@ -1819,16 +1908,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyTagsWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONPropertyTagsWithQuery method
      */
     public static RESTCall getPropertyTagsFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + "," +
+                        "\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1841,6 +1932,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyTag method
+     *
      * @param id The entity ID
      * @return A RESTCall that can call the REST getJSONPropertyTag method
      */
@@ -1861,6 +1953,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONPropertyTag method
+     *
      * @param propertyTag The property tag to save
      * @return A RESTCall that can call the REST createJSONPropertyTag method
      */
@@ -1881,6 +1974,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONPropertyTag method
+     *
      * @param propertyTag The property tag to create
      * @return A RESTCall that can call the REST createJSONPropertyTag method
      */
@@ -1901,16 +1995,18 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyCategoriesWithQuery method
+     *
      * @param queryString The query to use to get the filters
-     * @param start The start of the results
-     * @param end The end of the results
+     * @param start       The start of the results
+     * @param end         The end of the results
      * @return A RESTCall that can call the REST getJSONPropertyCategoriesWithQuery method
      */
     public static RESTCall getPropertyCategoriesFromQuery(@NotNull final String queryString, final int start, final int end) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + "," +
+                        "\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
                 restService.getJSONPropertyCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1923,6 +2019,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST getJSONPropertyCategory method
+     *
      * @param id The entity id
      * @return A RESTCall that can call the REST getJSONPropertyCategory method
      */
@@ -1943,6 +2040,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST updateJSONPropertyCategory method
+     *
      * @param propertyCategory The property tag category to save
      * @return A RESTCall that can call the REST updateJSONPropertyCategory method
      */
@@ -1963,6 +2061,7 @@ public final class FailOverRESTCallDatabase {
 
     /**
      * Create a RESTCall object to call the REST createJSONPropertyCategory method
+     *
      * @param propertyCategory The property tag category to create
      * @return A RESTCall that can call the REST createJSONPropertyCategory method
      */
@@ -2006,23 +2105,19 @@ public final class FailOverRESTCallDatabase {
      * @param serverSettingsCallback The callback to call when the locales are loaded
      */
     public static void getServerSettings(@NotNull final ServerSettingsCallback serverSettingsCallback,
-            @NotNull final BaseTemplateViewInterface display,
-            @NotNull final FailOverRESTCall failOverRESTCall) {
-        failOverRESTCall.performRESTCall(
-                getServerSettings(),
-                new RESTCallBack<RESTServerSettingsV1>() {
-                    @Override
-                    public void success(@NotNull final RESTServerSettingsV1 value) {
-                        serverSettingsCallback.serverSettingsLoaded(value);
-                    }
-                },
-                display
-        );
+            @NotNull final BaseTemplateViewInterface display, @NotNull final FailOverRESTCall failOverRESTCall) {
+        failOverRESTCall.performRESTCall(getServerSettings(), new RESTCallBack<RESTServerSettingsV1>() {
+            @Override
+            public void success(@NotNull final RESTServerSettingsV1 value) {
+                serverSettingsCallback.serverSettingsLoaded(value);
+            }
+        }, display);
 
     }
 
     /**
      * Create a RESTCall object to call the REST getSysInfo method
+     *
      * @param
      * @return A RESTCall that can call the REST getSysInfo method
      */
@@ -2036,6 +2131,151 @@ public final class FailOverRESTCallDatabase {
             @Override
             public boolean isRepeatable() {
                 return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProcessesWithQuery method
+     *
+     * @param queryString The query to use to get the filters
+     * @param start       The start of the results
+     * @param end         The end of the results
+     * @return A RESTCall that can call the REST getJSONProcessesWithQuery method
+     */
+    public static RESTCall getProcessesFromQuery(@NotNull final String queryString, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTv1Constants.PROCESSES_EXPANSION_NAME + "\"}}]}";
+
+                if (isStringNullOrEmpty(queryString)) {
+                    restService.getJSONProcesses(expand);
+                } else {
+                    restService.getJSONProcessesWithQuery(new PathSegmentImpl(queryString), expand);
+                }
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProcess method, that expands the logs
+     *
+     * @param processId The id of the process to get the logs for.
+     * @return A RESTCall that can call the REST getJSONProcess method
+     */
+    public static RESTCall getProcessLogs(@NotNull final String processId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTProcessInformationV1.LOGS_NAME + "\"}}]}";
+                restService.getJSONProcess(processId, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProcess method.
+     *
+     * @param processId The id of the process to get.
+     * @return A RESTCall that can call the REST getJSONProcess method
+     */
+    public static RESTCall getProcess(@NotNull final String processId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONProcess(processId, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST stopJSONProcess method.
+     *
+     * @param processId The id of the process to stop.
+     * @return A RESTCall that can call the REST stopJSONProcess method
+     */
+    public static RESTCall stopProcess(@NotNull final String processId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.stopJSONProcess(processId, "");
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONContentSpec method with the processes expanded
+     *
+     * @param id    The content specification id
+     * @param start The start of the results
+     * @param end   The end of the results
+     * @return A RESTCall that can call the REST getJSONContentSpec method with the processes expanded
+     */
+    public static RESTCall getContentSpecProcesses(final int id, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", " +
+                        "\"name\": \"" + RESTContentSpecV1.PROCESSES_NAME + "\"}}]}";
+                restService.getJSONContentSpec(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    public static RESTCall startTranslationPush(@NotNull final Integer contentSpecId, final String serverId, final String processName,
+            final boolean contentSpecOnly, final String username, final String apiKey) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.pushContentSpecForTranslation(contentSpecId, serverId, "", processName, contentSpecOnly, username, apiKey);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    public static RESTCall startTranslationSync(@NotNull final Integer contentSpecId, final String serverId, final String processName,
+            final List<String> locales, final String username, final String apiKey) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.syncContentSpecTranslations(contentSpecId, serverId, "", processName, Joiner.on(",").join(locales), username,
+                        apiKey);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }

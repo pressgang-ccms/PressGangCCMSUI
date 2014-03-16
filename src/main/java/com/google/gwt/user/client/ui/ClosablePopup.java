@@ -47,16 +47,12 @@ public class ClosablePopup extends DialogBox {
         });
 
         if (defaultClose) {
-            addCloseHandler(new ClickHandler() {
+            closeAnchor.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
                     hide();
                 }
             });
         }
-    }
-
-    public void addCloseHandler(ClickHandler handler) {
-        closeAnchor.addClickHandler(handler);
     }
 }

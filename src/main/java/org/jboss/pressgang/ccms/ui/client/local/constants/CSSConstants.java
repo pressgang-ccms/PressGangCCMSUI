@@ -482,6 +482,9 @@ public interface CSSConstants {
 
         String CONTENT_SPEC_VIEW_LABEL_CELL = "ContentSpecViewLabelCell";
         String CONTENT_SPEC_VIEW_DETAIL_CELL = "ContentSpecViewDetailCell";
+        String ACTIONS_MENU = "ContentSpecActionsMenu";
+        String ACTIONS_MENU_ITEM = "ContentSpecActionsMenuItem";
+        String ACTIONS_SUB_MENU = "ContentSpecActionsSubMenu";
     }
 
     interface TopicRevisionView {
@@ -930,5 +933,34 @@ public interface CSSConstants {
          * Assigned to the shortcut menus content, for collapsible menus.
          */
         String SHORTCUT_COLLAPSE_MENU_CONTENT = "ShortcutCollapseMenuContent";
+    }
+
+    interface ProcessLogsDialog {
+        String LOGS_DIALOG_BOX = "ProcessLogsDialog";
+        String LOGS_FIELD = "ProcessLogsText";
+    }
+
+    interface ProcessView {
+        String TAB_PANEL = "ProcessTabPanel";
+        String RESULTS_PANEL = "ProcessResultsPanel";
+        String RESULTS_TABLE = "ProcessResultsTable";
+        String RESULTS_TABLE_ID_COLUMN = "ProcessResultsTableIdColumn";
+        String RESULTS_TABLE_LOGS_COLUMN = "ProcessResultsTableLogsColumn";
+        String RESULTS_TABLE_STATUS_COLUMN = "ProcessResultsTableStatusColumn";
+        String RESULTS_TABLE_STARTED_BY_COLUMN = "ProcessResultsTableStartedByColumn";
+        String RESULTS_TABLE_DATE_COLUMN = "ProcessResultsTableDateColumn";
+        String RESULTS_TABLE_CANCEL_COLUMN = "ProcessResultsTableCancelColumn";
+        String RESULTS_TABLE_SELECTED_ROW = "ProcessResultsTableSelectedRow";
+        String SUCCESSFUL_STATUS = "SuccessfulStatus";
+        String FAILED_STATUS = "FailedStatus";
+        String ACTION_IMAGE = "ProcessActionImage";
+    }
+
+    interface ContentSpecActionsView {
+        String WAITING_TABLE = "ProcessWaitingTable";
+        String WAITING_MESSAGE = "ProcessWaitingMessage";
+        String WAITING_LABEL = "ProcessWaitingLabel";
+        String WAITING_BUTTON_PANEL = "ProcessWaitingButtonPanel";
+        String SYNC_LOCALE_LIST_BOX = "ProcessSyncLocaleListBox";
     }
 }

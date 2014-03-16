@@ -135,6 +135,11 @@ final public class Preferences {
     public static final String BEHAVIOURS = "Behaviours";
     public static final String AUTO_COMPLETE = "AutoComplete";
     public static final String SHOW_LEGEND = "ShowLegend";
+    /**
+     * Saves the last entered username in the translation push/sync dialog box.
+     */
+    public static final String TRANSLATION_USERNAME = "TranslationUsername";
+    public static final String TRANSLATION_SERVER = "TranslationServer";
 
     /**
      * A singleton instance of this class.

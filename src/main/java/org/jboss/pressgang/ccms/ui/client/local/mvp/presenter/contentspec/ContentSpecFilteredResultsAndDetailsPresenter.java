@@ -34,7 +34,13 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -43,11 +49,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -58,6 +66,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.TranslationPushPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.TranslationSyncPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.ReadOnlyPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
@@ -118,6 +128,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         elements are loaded.
      */
     private boolean tagsLoadInitiated = false;
+    /*
+        True when the processes tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean processesLoadInitiated = false;
     /*
         True when the revisions tab is opened for the first time, and the
         elements are loaded.
@@ -180,6 +195,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private ContentSpecTagsPresenter contentSpecTagsPresenter;
     @Inject
     private ContentSpecErrorPresenter contentSpecErrorsPresenter;
+    @Inject
+    private ContentSpecProcessPresenter contentSpecProcessPresenter;
+
+    @Inject
+    private TranslationPushPresenter translationPushPresenter;
+    @Inject
+    private TranslationSyncPresenter translationSyncPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -246,6 +268,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             viewLatestSpecRevision();
 
             contentSpecRevisionsPresenter.reset();
+            contentSpecProcessPresenter.reset();
+            processesLoadInitiated = false;
             revisionsLoadInitiated = false;
             tagsLoadInitiated = false;
             propertyTagsLoadInitiated = false;
@@ -303,6 +327,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         if (!contentSpecRevisionsPresenter.getDisplay().isDisplayingRevisions()) {
                             contentSpecRevisionsPresenter.getDisplay().displayRevisions();
                         }
+                    }
+
+                    if (viewIsInFilter(filter, contentSpecProcessPresenter.getDisplay())) {
+                        contentSpecProcessPresenter.refreshList();
                     }
 
                     /* Redisplay the editor. contentSpecPresenter.getDisplay().getEditor() will be not null after the display method was called
@@ -416,6 +444,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void onClick(final ClickEvent event) {
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecTagsPresenter.getDisplay());
+                }
+            }
+        };
+
+        final ClickHandler processesClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+                    switchView(contentSpecProcessPresenter.getDisplay());
                 }
             }
         };
@@ -727,11 +764,46 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
+        final ActionCompletedCallback<RESTProcessInformationV1> completedProcess = new ActionCompletedCallback<RESTProcessInformationV1>() {
+            @Override
+            public void success(final RESTProcessInformationV1 restProcessInformationV1) {
+                // Update the process list if it has been initialised
+                if (processesLoadInitiated) {
+                    processesLoadInitiated = false;
+                    loadProcesses();
+                }
+            }
+
+            @Override
+            public void failure() {
+                // Do nothing
+            }
+        };
+
+        final Command pushTranslationCommand = new Command() {
+            @Override
+            public void execute() {
+                translationPushPresenter.display(getDisplayedContentSpec(), display);
+                translationPushPresenter.addActionCompletedHandler(completedProcess);
+            }
+        };
+
+        final Command syncTranslationCommand = new Command() {
+            @Override
+            public void execute() {
+                translationSyncPresenter.display(getDisplayedContentSpec(), display);
+                translationSyncPresenter.addActionCompletedHandler(completedProcess);
+            }
+        };
+
         display.getSave().addClickHandler(saveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
         display.getViewInDocBuilder().addClickHandler(viewInDocBuilderClickHandler);
+        display.getProcesses().addClickHandler(processesClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
+        display.getPushTranslation().setScheduledCommand(pushTranslationCommand);
+        display.getSyncTranslation().setScheduledCommand(syncTranslationCommand);
         contentSpecRevisionsPresenter.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
         display.getMessageLogDialog().getCancel().addClickHandler(logMessageCancelClickHandler);
@@ -886,6 +958,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         filteredResultsPresenter.bindExtendedFilteredResults(queryString);
         commonExtendedPropertiesPresenter.bindDetailedChildrenExtended();
         contentSpecTagsPresenter.bindExtended();
+        contentSpecProcessPresenter.bindExtended();
 
         super.bindSearchAndEdit(Preferences.CONTENT_SPEC_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(),
                 contentSpecDetailsPresenter.getDisplay(), filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display,
@@ -1371,6 +1444,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
     }
 
+    /**
+     * This is called when the revisions tab is opened for the first time.
+     */
+    private void loadProcesses() {
+        final RESTTextContentSpecCollectionItemV1 selectedItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+        if (!processesLoadInitiated && selectedItem != null) {
+            processesLoadInitiated = true;
+
+            contentSpecProcessPresenter.getDisplay().setProvider(contentSpecProcessPresenter.generateListProvider(
+                    getDisplayedContentSpec(), null));
+        }
+    }
+
     @Override
     public void parseToken(@NotNull final String historyToken) {
         this.queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
@@ -1575,6 +1661,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 loadPropertyTags();
             }
 
+            if (displayedView == contentSpecProcessPresenter.getDisplay()) {
+                loadProcesses();
+            }
+
             if (displayedView == contentSpecPresenter.getDisplay()) {
                 if (lastVisibleRow != null) {
                     contentSpecPresenter.getDisplay().getEditor().focus();
@@ -1646,6 +1736,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         this.display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
         this.display.replaceTopActionButton(this.display.getContentSpecTagsDown(), this.display.getContentSpecTags());
         this.display.replaceTopActionButton(this.display.getErrorsDown(), this.display.getErrors());
+        this.display.replaceTopActionButton(this.display.getProcessesDown(), this.display.getProcesses());
 
         if (displayedView == this.contentSpecDetailsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
@@ -1659,6 +1750,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             this.display.replaceTopActionButton(this.display.getContentSpecTags(), this.display.getContentSpecTagsDown());
         } else if (displayedView == this.contentSpecErrorsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getErrors(), this.display.getErrorsDown());
+        } else if (displayedView == this.contentSpecProcessPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getProcesses(), this.display.getProcessesDown());
         }
 
         final RESTTextContentSpecV1 displayedContentSpec = getDisplayedContentSpec();
@@ -2184,6 +2277,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         PushButton getViewInDocBuilder();
 
+        PushButton getProcesses();
+
+        MenuItem getPushTranslation();
+
+        MenuItem getSyncTranslation();
+
         Label getTextDown();
 
         Label getErrorsDown();
@@ -2195,6 +2294,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         Label getHistoryDown();
 
         Label getContentSpecTagsDown();
+
+        Label getProcessesDown();
 
         LogMessageInterface getMessageLogDialog();
 

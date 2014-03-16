@@ -117,19 +117,22 @@ public class TopicSearchUIFields extends BaseTopicSearchUIFields {
         final StringBuilder retValue = new StringBuilder(super.getSearchQuery(includeQueryPrefix));
 
         if (!GWTUtilities.isStringNullOrEmpty(createdBy)) {
-            retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(encodeQueryParameter(createdBy));
+            retValue.append(";").append(CommonFilterConstants.CREATED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(createdBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(notCreatedBy)) {
-            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(encodeQueryParameter(notCreatedBy));
+            retValue.append(";").append(CommonFilterConstants.NOT_CREATED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(notCreatedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(editedBy)) {
-            retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(encodeQueryParameter(editedBy));
+            retValue.append(";").append(CommonFilterConstants.EDITED_BY_VAR).append("=").append(GWTUtilities.encodeQueryParameter(editedBy));
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(notEditedBy)) {
-            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(encodeQueryParameter(notEditedBy));
+            retValue.append(";").append(CommonFilterConstants.NOT_EDITED_BY_VAR).append("=").append(
+                    GWTUtilities.encodeQueryParameter(notEditedBy));
         }
 
         return retValue.toString();
