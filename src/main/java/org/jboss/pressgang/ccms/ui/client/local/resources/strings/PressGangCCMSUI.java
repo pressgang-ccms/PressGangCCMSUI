@@ -1311,10 +1311,10 @@ public interface PressGangCCMSUI extends Constants {
     String AllProcesses();
 
     @NotNull
-    String ZanataSyncProcesses();
+    String TranslationSyncProcesses();
 
     @NotNull
-    String ZanataPushProcesses();
+    String TranslationPushProcesses();
 
     @NotNull
     String StoppedProcessMessage();
