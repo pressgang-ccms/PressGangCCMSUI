@@ -384,7 +384,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
 
         /* SearchUIProjectsEditor is a grid */
         this.editor = new RESTTopicV1XMLEditor(readOnly, positiveDictionary, negativeDictionary, negativePhraseDictionary,
-                xmlElementDBLoader);
+                xmlElementDBLoader, topic == null ? null : topic.getXmlFormat());
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */

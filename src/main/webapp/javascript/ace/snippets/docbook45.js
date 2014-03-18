@@ -1,4 +1,4 @@
-define("ace/snippets/docbook",["require","exports","module"],function(e,t,n){t.snippetText="snippet CDATA\n\
+define("ace/snippets/docbook45",["require","exports","module"],function(e,t,n){t.snippetText="snippet CDATA\n\
 	<![CDATA[\n\
 	${1:content}\n\
 	]]>\n\
@@ -313,4 +313,4 @@ snippet inlinemediaobject\n\
 			<imagedata fileref='images/${1:imageid}.png'/>\n\
 		</imageobject>\n\
 	</inlinemediaobject>\n\
-",t.scope="docbook"})
+",t.scope="docbook45"})

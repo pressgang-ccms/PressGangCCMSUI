@@ -47,6 +47,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
@@ -58,6 +59,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -978,6 +980,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /* Save any changes to the xml editor */
             if (lastDisplayedView == this.topicXMLPresenter.getDisplay()) {
                 this.topicXMLPresenter.getDisplay().getDriver().flush();
+            }
+
+            // Make sure the mode is up to date
+            if (displayedView == topicXMLPresenter.getDisplay()) {
+                final RESTXMLFormat format = getDisplayedTopic().getXmlFormat();
+                final AceEditorMode mode;
+                if (format == RESTXMLFormat.DOCBOOK_50) {
+                    mode = AceEditorMode.DOCBOOK_50;
+                } else {
+                    mode = AceEditorMode.DOCBOOK_45;
+                }
+
+                if (topicXMLPresenter.getDisplay().getEditor().getMode() != mode) {
+                    topicXMLPresenter.getDisplay().getEditor().setMode(mode);
+                }
             }
 
             postAfterSwitchView(displayedView);

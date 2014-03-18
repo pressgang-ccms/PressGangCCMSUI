@@ -55,11 +55,14 @@ var snippetCompleter = {
                 var caption = s.name || s.tabTrigger;
                 if (!caption)
                     continue;
-                completions.push({
-                    caption: caption,
-                    snippet: s.content,
-                    meta: s.tabTrigger && !s.name ? s.tabTrigger + "\u21E5 " : "snippet"
-                });
+                // lnewson: limit to snippets that start with the prefix
+                if (caption.indexOf(prefix) === 0) {
+                    completions.push({
+                        caption: caption,
+                        snippet: s.content,
+                        meta: s.tabTrigger && !s.name ? s.tabTrigger + "\u21E5 " : "snippet"
+                    });
+                }
             }
         }, this);
         callback(null, completions);

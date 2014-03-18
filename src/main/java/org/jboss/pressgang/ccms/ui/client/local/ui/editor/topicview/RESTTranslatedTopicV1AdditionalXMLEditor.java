@@ -40,7 +40,7 @@ public final class RESTTranslatedTopicV1AdditionalXMLEditor extends SimplePanel 
         translatedAdditionalXML.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
 
         translatedAdditionalXML.setReadOnly(readOnly);
-        translatedAdditionalXML.setMode(AceEditorMode.DOCBOOK);
+        translatedAdditionalXML.setMode(AceEditorMode.DOCBOOK_45);
         translatedAdditionalXML.setThemeByName(Constants.DEFAULT_THEME);
 
         this.setWidget(translatedAdditionalXML);

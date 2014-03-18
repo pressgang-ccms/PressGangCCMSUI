@@ -8,6 +8,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.tagdb.XMLElementDB;
 import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.XMLElementDBLoader;
@@ -24,13 +25,10 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
     /**
      * @param readOnly           true if the UI created by this editor should be readonly, and false otherwise
      * @param positiveDictionary a reference to the dictionary used by the ACE editor spell checking
+     * @param xmlFormat
      */
-    public RESTTopicV1XMLEditor(
-            final boolean readOnly,
-            final TypoJS positiveDictionary,
-            final TypoJS negativeDictionary,
-            final TypoJS negativePhraseDictionary,
-            final XMLElementDBLoader XMLElementDBLoader) {
+    public RESTTopicV1XMLEditor(final boolean readOnly, final TypoJS positiveDictionary, final TypoJS negativeDictionary,
+            final TypoJS negativePhraseDictionary, final XMLElementDBLoader XMLElementDBLoader, final RESTXMLFormat xmlFormat) {
 
         final XMLElementDB xmlElementDB = XMLElementDBLoader.getXMLElementDB();
         final AceEditorData data = new AceEditorData();
@@ -45,7 +43,11 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
 
         xml.setReadOnly(readOnly);
-        xml.setMode(AceEditorMode.DOCBOOK);
+        if (xmlFormat == RESTXMLFormat.DOCBOOK_50) {
+            xml.setMode(AceEditorMode.DOCBOOK_50);
+        } else {
+            xml.setMode(AceEditorMode.DOCBOOK_45);
+        }
         xml.setThemeByName(Constants.DEFAULT_THEME);
 
         this.setWidget(xml);

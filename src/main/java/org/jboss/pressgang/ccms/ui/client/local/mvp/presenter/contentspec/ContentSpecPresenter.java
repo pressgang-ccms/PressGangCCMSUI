@@ -108,12 +108,36 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
         final boolean hidden = Preferences.INSTANCE.getBoolean(Preferences.SHOW_HIDDEN_CHARACTERS, false);
         display.getEditor().setShowInvisibles(hidden);
         display.getEditorSettingsDialog().getShowInvisibles().setValue(hidden);
+
+        final boolean behaviours = Preferences.INSTANCE.getBoolean(Preferences.BEHAVIOURS, true);
+        getDisplay().getEditor().setBehavioursEnabled(behaviours);
+        getDisplay().getEditorSettingsDialog().getBehaviours().setValue(behaviours);
+
+        final boolean autoComplete = Preferences.INSTANCE.getBoolean(Preferences.AUTO_COMPLETE, false);
+        getDisplay().getEditor().setAutoCompleteEnabled(autoComplete);
+        getDisplay().getEditorSettingsDialog().getAutoComplete().setValue(autoComplete);
     }
 
     /**
      * Bind the button clicks for the ACE editor buttons
      */
     protected void bindEditorSettingsButtons() {
+        getDisplay().getEditorSettingsDialog().getBehaviours().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
+                getDisplay().getEditor().setBehavioursEnabled(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.BEHAVIOURS, event.getValue());
+            }
+        });
+
+        getDisplay().getEditorSettingsDialog().getAutoComplete().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
+                getDisplay().getEditor().setAutoCompleteEnabled(event.getValue());
+                Preferences.INSTANCE.saveSetting(Preferences.AUTO_COMPLETE, event.getValue());
+            }
+        });
+
         display.getEditorSettingsDialog().getLineWrap().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<Boolean> event) {
