@@ -287,7 +287,7 @@ var SnippetManager = function() {
                 return s.getTabSize();
             case "FILENAME":
             case "FILEPATH":
-                return "ace.ajax.org";
+                return "";
             case "FULLNAME":
                 return "Ace";
         }
@@ -441,8 +441,9 @@ var SnippetManager = function() {
                 continue;
             var id = p.tabstopId;
             var i1 = tokens.indexOf(p, i + 1);
-            if (expanding[id] == p) { 
-                expanding[id] = null;
+            if (expanding[id]) {
+                if (expanding[id] === p)
+                    expanding[id] = null;
                 continue;
             }
             
@@ -1024,7 +1025,7 @@ var Autocomplete = function() {
     this.detach = function() {
         this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
         this.editor.off("changeSelection", this.changeListener);
-        this.editor.off("blur", this.changeListener);
+        this.editor.off("blur", this.blurListener);
         this.editor.off("mousedown", this.mousedownListener);
         this.editor.off("mousewheel", this.mousewheelListener);
         this.changeTimer.cancel();
@@ -1234,7 +1235,7 @@ var FilteredList = function(array, filterText, mutateData) {
         var prev = null;
         var prevMeta = null;
         matches = matches.filter(function(item){
-            var caption = item.value || item.caption || item.snippet; 
+            var caption = item.value || item.caption || item.snippet;
             if (caption === prev && prevMeta === item.meta) return false;
             prev = caption;
             prevMeta = item.meta;
@@ -1340,8 +1341,7 @@ var AcePopup = function(parentNode) {
 
     popup.on("mousedown", function(e) {
         var pos = e.getDocumentPosition();
-        popup.moveCursorToPosition(pos);
-        popup.selection.clearSelection();
+        popup.selection.moveToPosition(pos);
         selectionMarker.start.row = selectionMarker.end.row = pos.row;
         e.stop();
     });
@@ -1669,4 +1669,8 @@ define('ace/autocomplete/text_completer', ['require', 'exports', 'module' , 'ace
             };
         }));
     };
-});
+});;
+                (function() {
+                    window.require(["ace/ext/language_tools"], function() {});
+                })();
+            
