@@ -1502,6 +1502,7 @@ define('ace/mode/docbook50_completions', ['require', 'exports', 'module'], funct
         var iterator = new TokenIterator(session, pos.row, pos.column);
         var token = iterator.stepBackward();
         var lastClosingToken = null;
+        var isClosingTag = token.value.match('</');
         var found = false;
         var stack = [];
         while (token && !found) {
@@ -1514,6 +1515,9 @@ define('ace/mode/docbook50_completions', ['require', 'exports', 'module'], funct
                 } else if (stack.length > 0 && stack[stack.length - 1] === token.value) {
                     // opening tag
                     stack.pop();
+                } else if (isClosingTag) {
+                    // this should be the opening tag
+                    isClosingTag = false;
                 } else {
                     // parent tag
                     found = true;

@@ -1629,6 +1629,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         commonExtendedPropertiesPresenter.close();
         contentSpecTagsPresenter.close();
         contentSpecDetailsPresenter.close();
+        contentSpecProcessPresenter.close();
 
         keyboardEventHandler.removeHandler();
     }
