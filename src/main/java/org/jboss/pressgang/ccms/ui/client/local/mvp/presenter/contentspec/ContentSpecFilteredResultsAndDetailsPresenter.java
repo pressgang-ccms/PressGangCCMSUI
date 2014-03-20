@@ -998,7 +998,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        createWorkers();
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
+                createWorkers(serverDetails.getRestEndpoint());
+            }
+        });
 
         disableButtonsInReadonlyMode();
 
@@ -1481,7 +1486,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     /**
      * Create the web works required to highlight the topics.
      */
-    private native void createWorkers() /*-{
+    private native void createWorkers(final String restUrl) /*-{
 
         this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker = new Worker("javascript/highlighters/age.js");
         var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::lastEditWorker;
@@ -1496,7 +1501,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                 if (message.event == 'topicDetails') {
 
-                    console.log("Recieved topicDetails message");
+                    console.log("Received topicDetails message");
 
                     var cache = message.data;
 
@@ -1556,9 +1561,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         }
                     }
 
-                    // recursilevly call the function until some text has changed
+                    // recursively call the function until some text has changed
                     var checkText = function () {
-                        // the editior may have changed if we saved the content spec
+                        // the editor may have changed if we saved the content spec
                         var aceEditor = textEditorDisplay.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecPresenter.Display::getEditor()();
                         var text = aceEditor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
                         if (!lastText || lastText != text || !lastEditor || lastEditor !== aceEditor) {
@@ -1596,6 +1601,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter::textUpdaterTimeout =
                 $wnd.setTimeout(sendText, 1000);
         }
+
+        // Send the REST server to load the age information from
+        var json = JSON.stringify({event: "init", restUrl: restUrl});
+        worker.postMessage(json);
 
         sendText();
     }-*/;
