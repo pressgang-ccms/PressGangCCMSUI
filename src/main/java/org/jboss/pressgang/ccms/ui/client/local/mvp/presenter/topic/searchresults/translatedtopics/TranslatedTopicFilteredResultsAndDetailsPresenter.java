@@ -611,6 +611,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                             translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().setText(errorMsg);
                             if (isError) {
                                 getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                                lastAdditionalXML = null;
+                                lastXML = null;
                             }
 
                             // If this is the first time we have validated the xml and it is ok, render the xml

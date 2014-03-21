@@ -1549,6 +1549,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             if (isError) {
                                 getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
                                 getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                                lastXML = null;
                             }
 
                             // If this is the first time we have validated the xml and it is ok, render the xml
