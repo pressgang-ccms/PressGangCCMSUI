@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -44,8 +45,10 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -53,6 +56,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -63,8 +67,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -72,6 +78,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -109,6 +116,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagInCategoryCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
@@ -147,6 +155,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * determine if any changes were made.
      */
     private String lastNewTopicTemplate;
+    private RESTXMLFormat lastNewTopicFormat;
+    private String lastNewTopicLocale;
 
     /*
         True when the XML elements dialog is opened for the first time, and the
@@ -973,7 +983,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 object, final String value) {
                         if (isOKToProceed()) {
                             checkState(object != null && object.getItem() != null,
-                                    "The referenced column should have a valid " + "content spec reference");
+                                    "The referenced column should have a valid content spec reference");
 
                             getFailOverRESTCall().performRESTCall(
                                     FailOverRESTCallDatabase.getTopicRevisionWithProperties(getDisplayedTopic().getId(),
@@ -1275,7 +1285,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 displayedTopic.setContentSpecs_OTM(retValue.getContentSpecs_OTM());
 
                                 // update the view
-                                initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
+                                initializeViews(Arrays.<BaseTemplateViewInterface>asList(getTopicContentSpecsPresenter().getDisplay()));
                             } finally {
                                 LOGGER.log(Level.INFO,
                                         "EXIT TopicFilteredResultsAndDetailsPresenter.loadContentSpecs() topicWithContentSpecsCallback" +
@@ -1288,7 +1298,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             topicWithContentSpecsCallback, getTopicContentSpecsPresenter().getDisplay());
                 } else {
                     // update the view
-                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicContentSpecsPresenter().getDisplay()}));
+                    initializeViews(Arrays.<BaseTemplateViewInterface>asList(getTopicContentSpecsPresenter().getDisplay()));
                 }
             }
         } finally {
@@ -1815,9 +1825,86 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             topicReviewPresenter.getDisplay().getEndAndRejectReview().addClickHandler(endAndRejectReviewClickhandler);
 
             addKeyboardShortcutEvents(getTopicXMLPresenter().getDisplay(), display);
+            bindCreateWizardButtons();
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
         }
+    }
+
+    protected void bindCreateWizardButtons() {
+        final ClickHandler createHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                final CreateWizard createWizard = display.getCreateWizard();
+                final String title = createWizard.getTopicTitle().getValue();
+                final String formatName = createWizard.getFormats().getValue(createWizard.getFormats().getSelectedIndex());
+                final RESTXMLFormat format = RESTXMLFormat.valueOf(formatName);
+                final String typeIdString = createWizard.getTypes().getValue(createWizard.getTypes().getSelectedIndex());
+                final Integer typeId = isStringNullOrEmpty(typeIdString) ? null : Integer.parseInt(typeIdString);
+                final String locale = createWizard.getLocales().getValue(createWizard.getLocales().getSelectedIndex());
+
+                final RESTCallBack<RESTTagV1> callback = new RESTCallBack<RESTTagV1>() {
+                    @Override
+                    public void success(final RESTTagV1 type) {
+                        createNewTopic(title, format, type, locale);
+                    }
+                };
+
+                display.getCreateWizard().getDialog().hide();
+                if (typeId != null) {
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTag(typeId), callback, display);
+                } else {
+                    callback.success(null);
+                }
+            }
+        };
+
+        final ClickHandler cancelHandler = new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                display.getCreateWizard().getDialog().hide();
+            }
+        };
+
+        display.getCreateWizard().getOk().addClickHandler(createHandler);
+        display.getCreateWizard().getCancel().addClickHandler(cancelHandler);
+    }
+
+    protected void initAndDisplayCreateWizard() {
+        final RESTCallBack<RESTCategoryV1> callback = new RESTCallBack<RESTCategoryV1>() {
+            @Override
+            public void success(final RESTCategoryV1 retValue) {
+                checkArgument(retValue.getTags() != null, "The returned category should have an expanded tags collection");
+
+                // Add the types
+                display.getCreateWizard().getTypes().clear();
+                display.getCreateWizard().getTypes().addItem("");
+                final List<RESTTagInCategoryCollectionItemV1> items = retValue.getTags().getItems();
+                Collections.sort(items, new RESTTagInCategoryCollectionItemNameSort(true));
+                for (final RESTTagInCategoryCollectionItemV1 tagItem : items) {
+                    final RESTTagInCategoryV1 tag = tagItem.getItem();
+                    display.getCreateWizard().getTypes().addItem(tag.getName(), Integer.toString(tag.getId()));
+                }
+
+                display.getCreateWizard().getLocales().clear();
+                for (final String locale : locales) {
+                    display.getCreateWizard().getLocales().addItem(locale, locale);
+                    if (locale.equals(defaultLocale)) {
+                        display.getCreateWizard().getLocales().setSelectedIndex(display.getCreateWizard().getLocales().getItemCount() - 1);
+                    }
+                }
+
+                display.getCreateWizard().getDialog().center();
+            }
+        };
+
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                getFailOverRESTCall().performRESTCall(
+                        FailOverRESTCallDatabase.getCategory(serverSettings.getEntities().getTypeCategoryId()), callback, display);
+            }
+        });
     }
 
     /**
@@ -2215,10 +2302,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
             getSearchResultPresenter().getDisplay().getCreate().addClickHandler(new ClickHandler() {
-
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    createNewTopic();
+                if (!hasUnsavedChanges()) {
+                    initAndDisplayCreateWizard();
+                } else {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                }
                 }
             });
 
@@ -2329,7 +2419,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.displayNewTopic()");
 
             if (defaultLocale != null && locales != null && startWithNewTopic) {
-                createNewTopic();
+                initAndDisplayCreateWizard();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.displayNewTopic()");
@@ -2766,7 +2856,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return true;
                 }
 
-                if (displayedTopic.getLocale() != null && !displayedTopic.getLocale().equals(defaultLocale)) {
+                if (displayedTopic.getXmlFormat() != null && displayedTopic.getXmlFormat() != lastNewTopicFormat) {
+                    return true;
+                }
+
+                if (displayedTopic.getLocale() != null && !displayedTopic.getLocale().equals(lastNewTopicLocale)) {
                     return true;
                 }
 
@@ -2815,7 +2909,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * Called to create a new topic
      */
-    private void createNewTopic() {
+    private void createNewTopic(@NotNull final String topicTitle, final RESTXMLFormat format, @NotNull final RESTTagV1 type,
+            @NotNull final String locale) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.createNewTopic()");
 
@@ -2834,20 +2929,41 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
                     topicCollectionItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
+                    String xml = retValue.getValue().trim();
+
+                    // Replace the title for normal topics
+                    if (xml.startsWith("<section") && !isStringNullOrEmpty(topicTitle)) {
+                        xml = xml.replace("<title>.*?</title>", "<title>" + topicTitle + "</title>");
+                    }
+
                     // create the topic, and add to the wrapper
                     final RESTTopicV1 restTopic = new RESTTopicV1();
                     restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
                     restTopic.setTags(new RESTTagCollectionV1());
                     restTopic.setRevisions(new RESTTopicCollectionV1());
                     restTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-                    restTopic.setLocale(defaultLocale);
-                    restTopic.setXml(retValue.getValue().trim());
+                    restTopic.setLocale(locale);
+                    restTopic.setXmlFormat(format);
+                    restTopic.setXml(xml);
+                    restTopic.setTitle(topicTitle);
                     topicCollectionItem.setItem(restTopic);
+
+                    if (type != null) {
+                        // Add the type
+                        final RESTTagCollectionV1 tags = new RESTTagCollectionV1();
+                        if (type.getProjects() == null) {
+                            type.setProjects(new RESTProjectCollectionV1());
+                        }
+                        tags.addNewItem(type);
+                        restTopic.setTags(tags);
+                    }
 
                     // make a note of the default template. this is used to ensure that if
                     // no changes are made to the topic beyond the default template, the unsaved
                     // changes warning does not appear.
-                    lastNewTopicTemplate = retValue.getValue().trim();
+                    lastNewTopicTemplate = xml;
+                    lastNewTopicFormat = format;
+                    lastNewTopicLocale = locale;
 
                     // the topic won't show up in the list of topics until it is saved, so the
                     // selected item is null
@@ -2863,7 +2979,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             getServerSettings(new ServerSettingsCallback() {
                 @Override
                 public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getTopicTemplateStringConstantId()), callback,
+                    final Integer stringConstantId;
+                    if (type != null) {
+                        if (serverSettings.getEntities().getAuthorGroupTagId().equals(type.getId())) {
+                            stringConstantId = serverSettings.getEntities().getAuthorGroupTopicTemplateStringConstantId();
+                        } else if (serverSettings.getEntities().getAbstractTagId().equals(type.getId())) {
+                            stringConstantId = serverSettings.getEntities().getAbstractTopicTemplateStringConstantId();
+                        } else if (serverSettings.getEntities().getRevisionHistoryTagId().equals(type.getId())) {
+                            stringConstantId = serverSettings.getEntities().getRevisionHistoryTopicTemplateStringConstantId();
+                        } else if (serverSettings.getEntities().getLegalNoticeTagId().equals(type.getId())) {
+                            stringConstantId = serverSettings.getEntities().getLegalNoticeTopicTemplateStringConstantId();
+                        } else {
+                            stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                        }
+                    } else {
+                        stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                    }
+
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(stringConstantId), callback,
                             display);
                 }
             });
@@ -3550,6 +3683,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         @NotNull
         BulkOverwrite getBulkOverwrite();
 
+        @NotNull
+        CreateWizard getCreateWizard();
+
         /**
          * @return The button this is used show csps
          */
@@ -3600,5 +3736,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         void setLoaded();
 
+    }
+
+    public interface CreateWizard {
+        @NotNull
+        DialogBox getDialog();
+        ListBox getTypes();
+        ListBox getFormats();
+        ListBox getLocales();
+        TextBox getTopicTitle();
+        PushButton getOk();
+        PushButton getCancel();
     }
 }

@@ -240,6 +240,9 @@ public interface PressGangCCMSUI extends Constants {
     String TopicLocale();
 
     @NotNull
+    String TopicType();
+
+    @NotNull
     String TopicDescription();
 
     @NotNull

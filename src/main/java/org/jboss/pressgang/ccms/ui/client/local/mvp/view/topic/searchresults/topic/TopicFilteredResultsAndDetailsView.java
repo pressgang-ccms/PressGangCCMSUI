@@ -60,6 +60,12 @@ public class TopicFilteredResultsAndDetailsView extends
     @Inject
     private BulkOverwriteImpl bulkOverwrite;
 
+    /**
+     * The create topic dialog box.
+     */
+    @Inject
+    private CreateWizardImpl createWizard;
+
     @Override
     @NotNull
     public PushButton getReview() {
@@ -82,6 +88,12 @@ public class TopicFilteredResultsAndDetailsView extends
     @NotNull
     public TopicFilteredResultsAndDetailsPresenter.BulkOverwrite getBulkOverwrite() {
         return bulkOverwrite;
+    }
+
+    @NotNull
+    @Override
+    public TopicFilteredResultsAndDetailsPresenter.CreateWizard getCreateWizard() {
+        return createWizard;
     }
 
     @Override
