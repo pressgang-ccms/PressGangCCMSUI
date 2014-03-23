@@ -400,14 +400,20 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
                 return [];
 
             var retValue = []
-            var c = line.charAt(startCol - 1);
+
+            // Check to see if the prefix looks like it is the start of a reference
+            var looksLikeReference = false;
+            references.forEach(function(element) {
+                if (element.indexOf(prefix) === 0)
+                    looksLikeReference = true;
+            });
 
             // attribute
-            if (hasType(token, 'attribute') && (startCol === 1 || c !== '['))
+            if (hasType(token, 'attribute') && !looksLikeReference)
                 retValue = retValue.concat(this.getAttributeCompletions(state, session, pos, prefix));
 
             // reference (this will be "attribute" until a colon is typed)
-            if (hasType(token, 'reference') || (hasType(token, 'attribute') && c === '['))
+            if (hasType(token, 'reference') || (hasType(token, 'attribute') && looksLikeReference))
                 retValue = retValue.concat(this.getReferenceCompletions(state, session, pos, prefix));
 
             return retValue;
