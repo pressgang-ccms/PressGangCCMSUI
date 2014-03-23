@@ -86,7 +86,7 @@ self.addEventListener('message', function (e) {
             break outerloop;
         }
 
-        var conditions = match[2].split(";:,");
+        var conditions = match[2].split(/;|:|,/);
 
         var include = false;
         for (var conditionIndex = 0, conditionCount = conditions.length; conditionIndex < conditionCount; ++conditionIndex) {
