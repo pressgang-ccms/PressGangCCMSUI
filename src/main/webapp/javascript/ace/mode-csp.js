@@ -403,19 +403,12 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
 
             var retValue = []
 
-            // Check to see if the prefix looks like it is the start of a reference
-            var looksLikeReference = false;
-            references.forEach(function(element) {
-                if (element.indexOf(cleanedPrefix) === 0)
-                    looksLikeReference = true;
-            });
-
             // attribute
-            if (hasType(token, 'attribute') && !looksLikeReference)
+            if (hasType(token, 'attribute'))
                 retValue = retValue.concat(this.getAttributeCompletions(openingBrace));
 
             // reference (this will be "attribute" until a colon is typed)
-            if (hasType(token, 'reference') || (hasType(token, 'attribute') && looksLikeReference))
+            if (hasType(token, 'reference') || (hasType(token, 'attribute') && openingBrace))
                 retValue = retValue.concat(this.getReferenceCompletions(openingBrace));
 
             return retValue;
