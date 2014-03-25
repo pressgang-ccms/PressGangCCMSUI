@@ -1599,7 +1599,7 @@ exports.parForEach = function(array, fn, callback) {
     }
 }
 
-var ID_REGEX = /[a-zA-Z_0-9\$-]/;
+var ID_REGEX = /[\w\[\$-]/;
 
 exports.retrievePrecedingIdentifier = function(text, pos, regex) {
     regex = regex || ID_REGEX;
@@ -1630,7 +1630,7 @@ exports.retrieveFollowingIdentifier = function(text, pos, regex) {
 define('ace/autocomplete/text_completer', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
     var Range = require("ace/range").Range;
     
-    var splitRegex = /[^a-zA-Z_0-9\$\-]+/;
+    var splitRegex = /[^\w\$\-]+/;
 
     function getWordIndex(doc, pos) {
         var textBefore = doc.getTextRange(Range.fromPoints({row: 0, column:0}, pos));

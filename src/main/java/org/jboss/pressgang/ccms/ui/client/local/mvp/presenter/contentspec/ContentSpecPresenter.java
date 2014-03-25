@@ -113,7 +113,7 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
         getDisplay().getEditor().setBehavioursEnabled(behaviours);
         getDisplay().getEditorSettingsDialog().getBehaviours().setValue(behaviours);
 
-        final boolean autoComplete = Preferences.INSTANCE.getBoolean(Preferences.AUTO_COMPLETE, false);
+        final boolean autoComplete = Preferences.INSTANCE.getBoolean(Preferences.AUTO_COMPLETE, true);
         getDisplay().getEditor().setAutoCompleteEnabled(autoComplete);
         getDisplay().getEditorSettingsDialog().getAutoComplete().setValue(autoComplete);
     }
