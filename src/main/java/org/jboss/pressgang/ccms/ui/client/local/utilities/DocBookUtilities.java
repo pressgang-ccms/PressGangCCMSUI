@@ -160,16 +160,25 @@ public class DocBookUtilities {
         if (result != null) {
             final StringBuilder retValue = new StringBuilder(result.getGroup(1));
             retValue.append("<" + fixedRootEleName);
-            if (!RegExp.compile("xmlns\\s*=\\s*(\"|')http://docbook.org/ns/docbook(\"|')").test(result.getGroup(2))) {
-                retValue.append(" xmlns=\"http://docbook.org/ns/docbook\"");
-            }
-            if (!RegExp.compile("xmlns:xlink\\s*=\\s*(\"|')http://www.w3.org/1999/xlink(\"|')").test(result.getGroup(2))) {
+
+            // Clean out the normal attributes
+            String fixedAttributes = result.getGroup(2);
+            // Remove any current namespace declaration
+            fixedAttributes = fixedAttributes.replaceFirst(" xmlns\\s*=\\s*('|\").*?('|\")", "");
+            // Remove any current version declaration
+            fixedAttributes = fixedAttributes.replaceFirst(" version\\s*=\\s*('|\").*?('|\")", "");
+            // Remove any current xlink namespace declaration
+            fixedAttributes = fixedAttributes.replaceFirst(" xmlns:xlink\\s*=\\s*('|\").*?('|\")", "");
+
+            // Add the generic attributes
+            retValue.append(" xmlns=\"http://docbook.org/ns/docbook\"");
+            retValue.append(" version=\"5.0\"");
+            if (!rootEleName.equalsIgnoreCase("info")) {
+                // Info is not allowed to have xlink declared for the DocBook 5.0 DTD
                 retValue.append(" xmlns:xlink=\"http://www.w3.org/1999/xlink\"");
             }
-            if (!RegExp.compile("version\\s*=\\s*(\"|')5.0(\"|')").test(result.getGroup(2))) {
-                retValue.append(" version=\"5.0\"");
-            }
-            retValue.append(result.getGroup(2) + ">");
+
+            retValue.append(fixedAttributes + ">");
             return xml.replace(result.getGroup(0), retValue.toString());
         }
 

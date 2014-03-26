@@ -58,6 +58,11 @@ define(
                         push: "reference"
                     },
                     {
+                        token: ["text", "keyword.info", "keyword.operator.separator"],
+                        regex: "(\\[\\s*)(Info)(:)",
+                        push: "info"
+                    },
+                    {
                         token: "lparen",
                         regex: "\\[",
                         push: "attributes"
@@ -125,6 +130,25 @@ define(
                 ],
 
                 "reference" : [
+                    {
+                        token: "lparen",
+                        regex: "\\[",
+                        push: "attributes"
+                    },
+                    {
+                        include: "id"
+                    },
+                    {
+                        token: "rparen",
+                        regex: "]",
+                        next: "pop"
+                    },
+                    {
+                        defaultToken : "text.reference"
+                    }
+                ],
+
+                "info" : [
                     {
                         token: "lparen",
                         regex: "\\[",
@@ -368,7 +392,8 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
     var references = [
         "Refer-to",
         "Prerequisite",
-        "Link-List"
+        "Link-List",
+        "Info"
     ];
 
     function hasType(token, type) {

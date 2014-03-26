@@ -1533,45 +1533,45 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
             xmlValidator = new XMLValidator(new XMLValidationHelper() {
-                        @Override
-                        public AceEditor getEditor() {
-                            return getTopicXMLPresenter().getDisplay().getEditor();
-                        }
+                @Override
+                public AceEditor getEditor() {
+                    return getTopicXMLPresenter().getDisplay().getEditor();
+                }
 
-                        @Override
-                        public String getError() {
-                            return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
-                        }
+                @Override
+                public String getError() {
+                    return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
+                }
 
-                        @Override
-                        public void setError(final String errorMsg, final boolean isError) {
-                            getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
-                            if (isError) {
-                                getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                                getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                                lastXML = null;
+                @Override
+                public void setError(final String errorMsg, final boolean isError) {
+                    getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+                    if (isError) {
+                        getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                        getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                        lastXML = null;
+                    }
+
+                    // If this is the first time we have validated the xml and it is ok, render the xml
+                    if (hasXMLErrors == null && !isError) {
+                        isReadOnlyMode(new ReadOnlyCallback() {
+                            @Override
+                            public void readonlyCallback(boolean readOnly) {
+                                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
                             }
+                        });
+                    }
 
-                            // If this is the first time we have validated the xml and it is ok, render the xml
-                            if (hasXMLErrors == null && !isError) {
-                                isReadOnlyMode(new ReadOnlyCallback() {
-                                    @Override
-                                    public void readonlyCallback(boolean readOnly) {
-                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                                    }
-                                });
-                            }
+                    hasXMLErrors = isError;
+                }
 
-                            hasXMLErrors = isError;
-                        }
-
-                        @Override
-                        public RESTXMLFormat getFormat()
-                        {
-                            return getDisplayedTopic().getXmlFormat();
-                        }
-                    });
+                @Override
+                public RESTXMLFormat getFormat()
+                {
+                    return getDisplayedTopic().getXmlFormat();
+                }
+            });
         }
         return xmlValidator;
     }
@@ -2990,6 +2990,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             stringConstantId = serverSettings.getEntities().getRevisionHistoryTopicTemplateStringConstantId();
                         } else if (serverSettings.getEntities().getLegalNoticeTagId().equals(type.getId())) {
                             stringConstantId = serverSettings.getEntities().getLegalNoticeTopicTemplateStringConstantId();
+                        } else if (serverSettings.getEntities().getInfoTagId().equals(type.getId())) {
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getInfoTopicTemplateStringConstantId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getSectionInfoTopicTemplateStringConstantId();
+                            }
                         } else {
                             stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
                         }
