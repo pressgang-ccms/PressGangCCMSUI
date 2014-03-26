@@ -21,9 +21,9 @@ import org.jetbrains.annotations.NotNull;
 /**
 
  */
-public class ContentSpecFilteredResultsAndDetailsView extends
-        BaseSearchAndEditView<RESTTextContentSpecV1, RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1> implements
-        ContentSpecFilteredResultsAndDetailsPresenter.Display {
+public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditView<RESTTextContentSpecV1,
+        RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1> implements ContentSpecFilteredResultsAndDetailsPresenter
+        .Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
@@ -144,21 +144,43 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     }
 
     protected void initHelp() {
-        save.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SAVE.getId() + "");
-        showHideSearchResults.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS.getId() + "");
+        save.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SAVE.getId() + "");
+        showHideSearchResults.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS.getId() + "");
 
-        text.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_CONTENT_SPEC.getId() + "");
-        textDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_CONTENT_SPEC.getId() + "");
-        errors.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VALIDATION_MESSAGES.getId() + "");
-        errorsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VALIDATION_MESSAGES.getId() + "");
-        details.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROPERTIES.getId() + "");
-        detailsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROPERTIES.getId() + "");
-        extendedProperties.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_EXTENDED_PROPERTIES.getId() + "");
-        extendedPropertiesDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_EXTENDED_PROPERTIES.getId() + "");
-        tags.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TAGS.getId() + "");
-        tagsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TAGS.getId() + "");
-        history.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
-        historyDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
+        text.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_CONTENT_SPEC.getId() + "");
+        textDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_CONTENT_SPEC.getId() + "");
+        errors.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VALIDATION_MESSAGES.getId() + "");
+        errorsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VALIDATION_MESSAGES.getId() + "");
+        details.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROPERTIES.getId() + "");
+        detailsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROPERTIES.getId() + "");
+        extendedProperties.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_EXTENDED_PROPERTIES.getId() + "");
+        extendedPropertiesDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_EXTENDED_PROPERTIES.getId() + "");
+        tags.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TAGS.getId() + "");
+        tagsDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_TAGS.getId() + "");
+        history.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
+        historyDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
+        viewInDocBuilder.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VIEW_IN_DOCBUILDER + "");
+        processes.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROCESSES.getId() + "");
+        processesDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROCESSES.getId() + "");
+        actionsMenu.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_ACTIONS.getId() + "");
     }
 
     private void populateTopActionBar() {
