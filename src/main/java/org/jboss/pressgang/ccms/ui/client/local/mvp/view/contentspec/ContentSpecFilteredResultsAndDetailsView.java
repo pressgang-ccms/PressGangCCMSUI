@@ -179,7 +179,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
                 ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROCESSES.getId() + "");
         processesDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
                 ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROCESSES.getId() + "");
-        actionsMenu.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
+        menu.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
                 ServiceConstants.HELP_TOPICS.CONTENT_SPEC_ACTIONS.getId() + "");
     }
 
