@@ -609,11 +609,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                         @Override
                         public void setError(final String errorMsg, final boolean isError) {
                             translatedTopicAdditionalXMLPresenter.getDisplay().getXmlErrors().setText(errorMsg);
-                            if (isError) {
-                                getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                                lastAdditionalXML = null;
-                                lastXML = null;
-                            }
 
                             // If this is the first time we have validated the xml and it is ok, render the xml
                             if (hasXMLErrors == null && !isError) {
@@ -860,32 +855,39 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
 
             if (getDisplayedTopic() != null) {
-                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getDisplayedTopic().getXml());
-                final boolean mergingChanges = translatedTopicRenderedPresenter.getDisplay().getMergeAdditionalXML().getValue() ||
-                        translatedTopicSplitPanelRenderedPresenter.getDisplay().getMergeAdditionalXML().getValue();
-                final boolean additionalXmlHasChanges = mergingChanges && lastAdditionalXML != null && !lastAdditionalXML.equals(
-                        getDisplayedTopic().getTranslatedAdditionalXML());
+                if (hasXMLErrors()) {
+                    getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    lastAdditionalXML = null;
+                    lastXML = null;
+                } else {
+                    final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getDisplayedTopic().getXml());
+                    final boolean mergingChanges = translatedTopicRenderedPresenter.getDisplay().getMergeAdditionalXML().getValue() ||
+                            translatedTopicSplitPanelRenderedPresenter.getDisplay().getMergeAdditionalXML().getValue();
+                    final boolean additionalXmlHasChanges = mergingChanges && lastAdditionalXML != null && !lastAdditionalXML.equals(
+                            getDisplayedTopic().getTranslatedAdditionalXML());
 
-                if (xmlHasChanges || additionalXmlHasChanges) {
-                    lastXMLChange = System.currentTimeMillis();
-                }
+                    if (xmlHasChanges || additionalXmlHasChanges) {
+                        lastXMLChange = System.currentTimeMillis();
+                    }
 
-                final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
-                        .REFRESH_RATE_WTH_IMAGES;
+                    final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
+                            .REFRESH_RATE_WTH_IMAGES;
 
-                if (forceUpdate || xmlHasChanges || additionalXmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
-                    isDisplayingImage = timeToDisplayImage;
-                    isReadOnlyMode(new ReadOnlyCallback() {
-                        @Override
-                        public void readonlyCallback(final boolean readOnly) {
-                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, isDisplayingImage);
-                        }
-                    });
-                }
+                    if (forceUpdate || xmlHasChanges || additionalXmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                        isDisplayingImage = timeToDisplayImage;
+                        isReadOnlyMode(new ReadOnlyCallback() {
+                            @Override
+                            public void readonlyCallback(final boolean readOnly) {
+                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, isDisplayingImage);
+                            }
+                        });
+                    }
 
-                lastXML = getDisplayedTopic().getXml();
-                if (mergingChanges) {
-                    lastAdditionalXML = getDisplayedTopic().getTranslatedAdditionalXML();
+                    lastXML = getDisplayedTopic().getXml();
+                    if (mergingChanges) {
+                        lastAdditionalXML = getDisplayedTopic().getTranslatedAdditionalXML();
+                    }
                 }
             }
         } finally {

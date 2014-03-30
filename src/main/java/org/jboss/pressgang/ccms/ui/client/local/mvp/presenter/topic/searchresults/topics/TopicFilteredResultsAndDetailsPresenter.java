@@ -1402,21 +1402,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Nullable
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
-        try {
-            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+        RESTTopicV1 sourceTopic = null;
 
-            RESTTopicV1 sourceTopic = null;
-
-            if (topicRevisionsPresenter.getDisplay().getRevisionTopic() != null) {
-                sourceTopic = topicRevisionsPresenter.getDisplay().getRevisionTopic();
-            } else if (this.getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
-                sourceTopic = this.getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
-            }
-
-            return sourceTopic;
-        } finally {
-            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+        if (topicRevisionsPresenter.getDisplay().getRevisionTopic() != null) {
+            sourceTopic = topicRevisionsPresenter.getDisplay().getRevisionTopic();
+        } else if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+            sourceTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
         }
+
+        return sourceTopic;
     }
 
     @Override
@@ -1546,11 +1540,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void setError(final String errorMsg, final boolean isError) {
                     getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
-                    if (isError) {
-                        getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                        getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                        lastXML = null;
-                    }
 
                     // If this is the first time we have validated the xml and it is ok, render the xml
                     if (hasXMLErrors == null && !isError) {
@@ -2445,29 +2434,35 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 + "because the rendered view was refreshed before the XML editor was bound.");
             }
 
-            if (this.getDisplayedTopic() != null) {
-                final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml())) ||
-                        (lastDocType == null || lastDocType != this.getDisplayedTopic().getXmlFormat());
+            if (getDisplayedTopic() != null) {
+                if (hasXMLErrors()) {
+                    getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    lastXML = null;
+                } else {
+                    final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(getDisplayedTopic().getXml())) ||
+                            (lastDocType == null || lastDocType != getDisplayedTopic().getXmlFormat());
 
-                if (xmlHasChanges) {
-                    lastXMLChange = System.currentTimeMillis();
-                }
-
-                final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
-                        .REFRESH_RATE_WTH_IMAGES;
-
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        if (!hasXMLErrors() && (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))) {
-                            isDisplayingImage = timeToDisplayImage;
-                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
-                        }
+                    if (xmlHasChanges) {
+                        lastXMLChange = System.currentTimeMillis();
                     }
-                });
 
-                lastXML = this.getDisplayedTopic().getXml();
-                lastDocType = this.getDisplayedTopic().getXmlFormat();
+                    final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
+                            .REFRESH_RATE_WTH_IMAGES;
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                                isDisplayingImage = timeToDisplayImage;
+                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
+                            }
+                        }
+                    });
+
+                    lastXML = getDisplayedTopic().getXml();
+                    lastDocType = getDisplayedTopic().getXmlFormat();
+                }
             }
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
