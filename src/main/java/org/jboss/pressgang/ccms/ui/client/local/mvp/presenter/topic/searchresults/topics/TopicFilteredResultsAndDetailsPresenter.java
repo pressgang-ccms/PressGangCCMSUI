@@ -2306,7 +2306,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (!hasUnsavedChanges()) {
                     initAndDisplayCreateWizard();
                 } else {
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
                 }
                 }
             });
@@ -2987,24 +2987,40 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final Integer stringConstantId;
                     if (type != null) {
                         if (serverSettings.getEntities().getAuthorGroupTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getAuthorGroupTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50AuthorGroupTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45AuthorGroupTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getAbstractTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getAbstractTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50AbstractTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45AbstractTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getRevisionHistoryTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getRevisionHistoryTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50RevisionHistoryTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45RevisionHistoryTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getLegalNoticeTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getLegalNoticeTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50LegalNoticeTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45LegalNoticeTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getInfoTagId().equals(type.getId())) {
                             if (format == RESTXMLFormat.DOCBOOK_50) {
-                                stringConstantId = serverSettings.getEntities().getInfoTopicTemplateStringConstantId();
+                                stringConstantId = serverSettings.getEntities().getDocBook50InfoTopicTemplateId();
                             } else {
-                                stringConstantId = serverSettings.getEntities().getSectionInfoTopicTemplateStringConstantId();
+                                stringConstantId = serverSettings.getEntities().getDocBook45InfoTopicTemplateId();
                             }
                         } else {
-                            stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                            stringConstantId = serverSettings.getEntities().getTopicTemplateId();
                         }
                     } else {
-                        stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                        stringConstantId = serverSettings.getEntities().getTopicTemplateId();
                     }
 
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(stringConstantId), callback,

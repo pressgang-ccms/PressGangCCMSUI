@@ -920,7 +920,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 @Override
                 public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     getFailOverRESTCall().performRESTCall(
-                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
+                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateId()),
                             callback, display);
                 }
             });
