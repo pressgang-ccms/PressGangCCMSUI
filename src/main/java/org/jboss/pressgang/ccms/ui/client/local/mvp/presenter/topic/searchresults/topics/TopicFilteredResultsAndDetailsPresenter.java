@@ -1317,17 +1317,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             migrated to a content spec entity.
          */
         if (getDisplayedTopic().getId() != null) {
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
-                new RESTCallBack<RESTTopicCollectionV1>() {
-                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                        if (retValue.getSize() != 0) {
-                            if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
-                                getEventBus().fireEvent(
-                                        new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
-                            }
-                        }
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                    final Integer contentSpecTagId = serverSettings.getEntities().getContentSpecTagId();
+                    if (contentSpecTagId != null) {
+                        final String query = "query;tag" + contentSpecTagId + "=1;topicIds=" + getDisplayedTopic().getId();
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(query),
+                            new RESTCallBack<RESTTopicCollectionV1>() {
+                                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                                    if (retValue.getSize() != 0) {
+                                        if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
+                                            getEventBus().fireEvent(
+                                                    new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
+                                        }
+                                    }
+                                }
+                            });
                     }
-                });
+                }
+            });
         }
     }
 
