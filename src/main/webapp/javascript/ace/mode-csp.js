@@ -60,7 +60,7 @@ define(
                     {
                         token: ["text", "keyword.info", "keyword.operator.separator"],
                         regex: "(\\[\\s*)(Info)(:)",
-                        push: "info"
+                        push: "attributes"
                     },
                     {
                         token: "lparen",
@@ -130,25 +130,6 @@ define(
                 ],
 
                 "reference" : [
-                    {
-                        token: "lparen",
-                        regex: "\\[",
-                        push: "attributes"
-                    },
-                    {
-                        include: "id"
-                    },
-                    {
-                        token: "rparen",
-                        regex: "]",
-                        next: "pop"
-                    },
-                    {
-                        defaultToken : "text.reference"
-                    }
-                ],
-
-                "info" : [
                     {
                         token: "lparen",
                         regex: "\\[",
