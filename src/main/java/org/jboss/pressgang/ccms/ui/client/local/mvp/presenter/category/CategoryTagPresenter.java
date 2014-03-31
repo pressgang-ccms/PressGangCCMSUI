@@ -181,7 +181,7 @@ public class CategoryTagPresenter
 
                         displayNewFixedList(getPossibleChildrenProviderData().getItems());
                     } else {
-                        resetProvider();
+                        resetProvider(false);
                     }
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.EnhancedAsyncDataProvider() EnhancedAsyncDataProvider.onRangeChanged()");

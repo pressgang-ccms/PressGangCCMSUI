@@ -161,7 +161,7 @@ public class ProcessPresenter
 
     protected void resetProvider(int selectedTab) {
         if (resultsPresenter.getDisplay().getProvider() != null) {
-            resultsPresenter.getDisplay().getProvider().resetProvider();
+            resultsPresenter.getDisplay().getProvider().resetProvider(true);
             resultsPresenter.getDisplay().getResults().setPageStart(0);
         }
         resultsPresenter.getDisplay().setProvider(

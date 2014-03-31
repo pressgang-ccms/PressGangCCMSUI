@@ -183,7 +183,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
     public void reset() {
         providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
         if (getDisplay().getProvider() != null) {
-            getDisplay().getProvider().resetProvider();
+            getDisplay().getProvider().resetProvider(true);
             getDisplay().setProvider(null);
         }
         getDisplay().setRevisionTopic(null);
@@ -203,7 +203,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
-                resetProvider();
+                resetProvider(false);
                 if (topic.getId() != null) {
                     final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
                         @Override

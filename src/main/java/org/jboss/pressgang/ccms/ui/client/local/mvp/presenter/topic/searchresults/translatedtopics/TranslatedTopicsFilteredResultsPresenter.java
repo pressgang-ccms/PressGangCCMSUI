@@ -142,7 +142,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         }
 
         if (display.getProvider() != null) {
-            display.getProvider().resetProvider();
+            display.getProvider().resetProvider(false);
         }
 
         display.setProvider(generateListProvider(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + initialQuery.toString(), display));

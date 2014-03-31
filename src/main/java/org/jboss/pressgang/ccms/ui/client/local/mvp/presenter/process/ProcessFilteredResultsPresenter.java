@@ -160,7 +160,7 @@ public class ProcessFilteredResultsPresenter extends BaseTemplatePresenter imple
     public void reset() {
         providerData = new ProviderUpdateData<RESTProcessInformationCollectionItemV1>();
         if (getDisplay().getProvider() != null) {
-            getDisplay().getProvider().resetProvider();
+            getDisplay().getProvider().resetProvider(true);
             getDisplay().setProvider(null);
         }
     }

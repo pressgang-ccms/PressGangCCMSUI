@@ -172,7 +172,7 @@ public class TagCategoriesPresenter
 
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
-                    resetProvider();
+                    resetProvider(false);
                 }
 
             }
