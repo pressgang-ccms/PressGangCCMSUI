@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -33,7 +34,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
     private final PushButton processes = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Processes());
-    private final PushButton viewInDocBuilder = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true);
+    private final AnchorButton viewInDocBuilder = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true);
     private final MenuBar menu = new MenuBar();
     private final MenuBar actionsMenu = new MenuBar(true);
     private final MenuItem actionsMenuItem = new MenuItem(PressGangCCMSUI.INSTANCE.ProcessActions(), actionsMenu);
@@ -226,7 +227,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         return processesDown;
     }
 
-    public PushButton getViewInDocBuilder() {
+    public AnchorButton getViewInDocBuilder() {
         return viewInDocBuilder;
     }
 
