@@ -175,7 +175,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         historyDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
                 ServiceConstants.HELP_TOPICS.CONTENT_SPEC_REVISIONS.getId() + "");
         viewInDocBuilder.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
-                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VIEW_IN_DOCBUILDER + "");
+                ServiceConstants.HELP_TOPICS.CONTENT_SPEC_VIEW_IN_DOCBUILDER.getId() + "");
         processes.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
                 ServiceConstants.HELP_TOPICS.CONTENT_SPEC_PROCESSES.getId() + "");
         processesDown.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR,
