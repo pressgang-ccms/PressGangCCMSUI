@@ -2938,7 +2938,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     // Replace the title for normal topics
                     if (xml.startsWith("<section") && !isStringNullOrEmpty(topicTitle)) {
-                        xml = xml.replace("<title>.*?</title>", "<title>" + topicTitle + "</title>");
+                        xml = xml.replaceFirst("<title>.*?</title>", "<title>" + topicTitle + "</title>");
                     }
 
                     // create the topic, and add to the wrapper
