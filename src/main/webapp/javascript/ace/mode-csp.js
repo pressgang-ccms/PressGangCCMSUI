@@ -58,6 +58,11 @@ define(
                         push: "reference"
                     },
                     {
+                        token: ["text", "keyword.info", "keyword.operator.separator"],
+                        regex: "(\\[\\s*)(Info)(:)",
+                        push: "attributes"
+                    },
+                    {
                         token: "lparen",
                         regex: "\\[",
                         push: "attributes"
@@ -368,7 +373,8 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
     var references = [
         "Refer-to",
         "Prerequisite",
-        "Link-List"
+        "Link-List",
+        "Info"
     ];
 
     function hasType(token, type) {
@@ -384,36 +390,37 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
 
     (function() {
         this.getCompletions = function(state, session, pos, prefix) {
+            var cleanedPrefix = prefix.replace(/^\[/, "");
+            var openingBrace = prefix.indexOf("[") === 0;
             var token = session.getTokenAt(pos.row, pos.column);
             var line = session.getLine(pos.row);
-            var startCol = pos.column - prefix.length;
+            var startCol = pos.column - cleanedPrefix.length;
 
             // root element (metadata + containers)
             if (startCol === 0)
-                return this.getRootCompletions(state, session, pos, prefix);
+                return this.getRootCompletions(state, session, pos);
 
             // containers
-            if (line.slice(0, pos.column).trim() === prefix)
-                return this.getContainerCompletions(state, session, pos, prefix);
+            if (line.slice(0, pos.column).trim() === cleanedPrefix)
+                return this.getContainerCompletions(pos, cleanedPrefix);
 
             if (!token)
                 return [];
 
             var retValue = []
-            var c = line.charAt(startCol - 1);
 
             // attribute
-            if (hasType(token, 'attribute') && (startCol === 1 || c !== '['))
-                retValue = retValue.concat(this.getAttributeCompletions(state, session, pos, prefix));
+            if (hasType(token, 'attribute'))
+                retValue = retValue.concat(this.getAttributeCompletions(openingBrace));
 
             // reference (this will be "attribute" until a colon is typed)
-            if (hasType(token, 'reference') || (hasType(token, 'attribute') && c === '['))
-                retValue = retValue.concat(this.getReferenceCompletions(state, session, pos, prefix));
+            if (hasType(token, 'reference') || (hasType(token, 'attribute') && openingBrace))
+                retValue = retValue.concat(this.getReferenceCompletions(openingBrace));
 
             return retValue;
         };
 
-        this.getRootCompletions = function(state, session, pos, prefix) {
+        this.getRootCompletions = function() {
             var allMetadata = metadata.map(function(element){
                 return {
                     value: element,
@@ -432,7 +439,7 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
             return allMetadata.concat(allContainers);
         };
 
-        this.getContainerCompletions = function(state, session, pos, prefix) {
+        this.getContainerCompletions = function(pos, prefix) {
             var allContainers;
             if (pos.column > (2 + prefix.length)) {
                 // section, process and initial text can be the only 2nd level child containers
@@ -449,29 +456,34 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
             });
         };
 
-        this.getAttributeCompletions = function(state, session, pos, prefix) {
+        this.getAttributeCompletions = function(openingBrace) {
             return attributes.map(function(attribute){
+                var attrVal = (openingBrace ? "[" : "") + attribute;
                 if (attribute == "rev") {
                     return {
                         caption: attribute,
-                        snippet: attribute + ": $0",
+                        value: attrVal,
+                        snippet: attrVal + ": $0",
                         meta: "attribute"
                     };
                 } else {
                     return {
                         caption: attribute,
-                        snippet: attribute + " = $0",
+                        value: attrVal,
+                        snippet: attrVal + " = $0",
                         meta: "attribute"
                     };
                 }
             });
         };
 
-        this.getReferenceCompletions = function(state, session, pos, prefix) {
+        this.getReferenceCompletions = function(openingBrace) {
             return references.map(function(reference){
+                var referenceVal = (openingBrace ? "[" : "") + reference;
                 return {
                     caption: reference,
-                    snippet: reference + ": $0",
+                    value: referenceVal,
+                    snippet: referenceVal + ": $0",
                     meta: "reference"
                 };
             });

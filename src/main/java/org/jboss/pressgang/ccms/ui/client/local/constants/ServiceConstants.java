@@ -129,7 +129,10 @@ public final class ServiceConstants {
         CONTENT_SPEC_TAGS(23274),
         CONTENT_SPEC_REVISIONS(23275),
         CONTENT_SPEC_SAVE(23277),
-        CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS(23281);
+        CONTENT_SPEC_SHOW_HIDE_SEARCH_RESULTS(23281),
+        CONTENT_SPEC_VIEW_IN_DOCBUILDER(30193),
+        CONTENT_SPEC_PROCESSES(30194),
+        CONTENT_SPEC_ACTIONS(30195);
 
         private final int id;
         public int getId() {

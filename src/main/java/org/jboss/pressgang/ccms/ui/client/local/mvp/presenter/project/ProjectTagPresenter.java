@@ -152,7 +152,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
 
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
-                    resetProvider();
+                    resetProvider(false);
                 }
 
             }

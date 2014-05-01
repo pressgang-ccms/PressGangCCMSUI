@@ -218,7 +218,7 @@ public class CommonExtendedPropertiesPresenter
 
                         displayNewFixedList(getExistingProviderData().getItems());
                     } else {
-                        this.resetProvider();
+                        resetProvider(false);
                     }
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
@@ -239,7 +239,7 @@ public class CommonExtendedPropertiesPresenter
                 if (getPossibleChildrenProviderData().getItems() != null) {
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
-                    resetProvider();
+                    resetProvider(false);
                 }
 
             }
@@ -267,7 +267,7 @@ public class CommonExtendedPropertiesPresenter
                     getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 }
             };
-            getDisplay().getPossibleChildrenProvider().resetProvider();
+            getDisplay().getPossibleChildrenProvider().resetProvider(false);
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getPropertyTags(), callback, display);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");

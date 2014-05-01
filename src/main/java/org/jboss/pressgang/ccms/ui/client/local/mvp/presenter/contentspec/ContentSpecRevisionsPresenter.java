@@ -123,7 +123,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
     public void reset() {
         providerData = new ProviderUpdateData<RESTTextContentSpecCollectionItemV1>();
         if (getDisplay().getProvider() != null) {
-            getDisplay().getProvider().resetProvider();
+            getDisplay().getProvider().resetProvider(true);
             getDisplay().setProvider(null);
         }
         getDisplay().setRevisionContentSpec(null);
@@ -145,7 +145,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                 EnhancedAsyncDataProvider<RESTTextContentSpecCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTextContentSpecCollectionItemV1> list) {
-                resetProvider();
+                resetProvider(false);
                 if (contentSpec.getId() != null) {
                     final RESTCallBack<RESTTextContentSpecV1> callback = new RESTCallBack<RESTTextContentSpecV1>() {
                         @Override

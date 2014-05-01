@@ -34,6 +34,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AnchorButton;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -264,6 +265,27 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
             }
 
+            if (displayedItem.getItem().getId() != null) {
+                // Set the href for the docbuilder url
+                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                    @Override
+                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                        getServerSettings(new ServerSettingsCallback() {
+                            @Override
+                            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                                String docBuilderUrl = serverSettings.getDocBuilderUrl();
+                                docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
+                                if (!docBuilderUrl.endsWith("/")) {
+                                    docBuilderUrl += "/";
+                                }
+                                display.getViewInDocBuilder().setHref(docBuilderUrl + displayedItem.getItem().getId());
+                                display.getViewInDocBuilder().setTarget("_blank");
+                            }
+                        });
+                    }
+                });
+            }
+
             /* Disable the topic revision view */
             viewLatestSpecRevision();
 
@@ -454,24 +476,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecProcessPresenter.getDisplay());
                 }
-            }
-        };
-
-        final ClickHandler viewInDocBuilderClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                    @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        // TODO: This url should be part of the servers.json file
-                        final RESTTextContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-                        if (displayedEntity.getId() != null) {
-                            Window.open(Constants.DOCBUILDER_SERVER + "/" + displayedEntity.getId(), null, null);
-                        } else {
-                            AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveTheContentSpec());
-                        }
-                    }
-                });
             }
         };
 
@@ -799,7 +803,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         display.getSave().addClickHandler(saveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
-        display.getViewInDocBuilder().addClickHandler(viewInDocBuilderClickHandler);
         display.getProcesses().addClickHandler(processesClickHandler);
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
         display.getPushTranslation().setScheduledCommand(pushTranslationCommand);
@@ -920,7 +923,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 @Override
                 public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     getFailOverRESTCall().performRESTCall(
-                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateStringConstantId()),
+                            FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateId()),
                             callback, display);
                 }
             });
@@ -1740,13 +1743,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
-        this.display.replaceTopActionButton(this.display.getTextDown(), this.display.getText());
-        this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
-        this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
-        this.display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
-        this.display.replaceTopActionButton(this.display.getContentSpecTagsDown(), this.display.getContentSpecTags());
-        this.display.replaceTopActionButton(this.display.getErrorsDown(), this.display.getErrors());
-        this.display.replaceTopActionButton(this.display.getProcessesDown(), this.display.getProcesses());
+        display.replaceTopActionButton(this.display.getTextDown(), this.display.getText());
+        display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+        display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
+        display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
+        display.replaceTopActionButton(this.display.getContentSpecTagsDown(), this.display.getContentSpecTags());
+        display.replaceTopActionButton(this.display.getErrorsDown(), this.display.getErrors());
+        display.replaceTopActionButton(this.display.getProcessesDown(), this.display.getProcesses());
 
         if (displayedView == this.contentSpecDetailsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
@@ -1783,6 +1786,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getErrors().removeStyleName(CSSConstants.Common.WARNING);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             getDisplay().getErrorsDown().removeStyleName(CSSConstants.Common.WARNING);
+        }
+
+        if (displayedContentSpec.getId() != null) {
+            getDisplay().getViewInDocBuilder().setVisible(true);
+        } else {
+            getDisplay().getViewInDocBuilder().setVisible(false);
         }
 
         isReadOnlyMode(new ReadOnlyCallback() {
@@ -2285,7 +2294,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         PushButton getContentSpecTags();
 
-        PushButton getViewInDocBuilder();
+        AnchorButton getViewInDocBuilder();
 
         PushButton getProcesses();
 

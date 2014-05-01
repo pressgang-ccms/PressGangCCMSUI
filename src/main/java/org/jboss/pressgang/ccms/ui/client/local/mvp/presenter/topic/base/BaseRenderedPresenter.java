@@ -16,10 +16,15 @@ public abstract class BaseRenderedPresenter extends BaseTemplatePresenter {
             retValue = DocBookUtilities.escapeAllCustomEntities(retValue);
         }
 
-        // If the root node is <authorgroup> or <legalnotice> then we need to wrap it in
+        // If the root node is <authorgroup>, <legalnotice> or an info element then we need to wrap it in
         // <book><bookinfo>...</bookinfo></book> for it to render.
         if (retValue.matches("^\\s*<(authorgroup|legalnotice)(\\s|.)*")) {
             retValue = "<book><bookinfo>" + retValue + "</bookinfo></book>";
+        } else if (retValue.matches("^\\s*<(sectioninfo|info)(\\s|.)*")) {
+            // Change sectioninfo to bookinfo as it doesn't require a title
+            retValue = retValue.replaceAll("<sectioninfo( .*?)?(?=>)", "<bookinfo")
+                    .replaceAll("</sectioninfo( .*?)?(?=>)", "</bookinfo");
+            retValue = "<book>" + retValue + "</book>";
         }
 
         final String xslTemplate = getXSLTemplate(showImages, showRemarks);

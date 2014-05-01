@@ -215,6 +215,18 @@ public class XMLValidator {
                     }
                 }
             }
+
+            // If the root node is an info node, then make sure <title>, <subtitle> or <titleabbrev> cannot be used.
+            if (doc.getDocumentElement().getNodeName().equalsIgnoreCase("info")
+                    || doc.getDocumentElement().getNodeName() .equalsIgnoreCase("sectioninfo")) {
+                final List<Node> invalidElements = XMLUtilities.getDirectChildNodes(doc.getDocumentElement(), "title", "subtitle",
+                        "titleabbrev");
+                for (final Node invalidElement : invalidElements) {
+                    final int line = entitiesLines + Integer.parseInt(((Element) invalidElement).getAttribute("pressgangeditorlinenumber")) - 1;
+                    retValue.append("topic.xml:" + line + ": element " + invalidElement.getNodeName() + " cannot be used in an info " +
+                            "topic\n");
+                }
+            }
         }
 
         return retValue.toString();

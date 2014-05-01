@@ -1317,17 +1317,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             migrated to a content spec entity.
          */
         if (getDisplayedTopic().getId() != null) {
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery("query;tag268=1;topicIds=" + getDisplayedTopic().getId()),
-                new RESTCallBack<RESTTopicCollectionV1>() {
-                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                        if (retValue.getSize() != 0) {
-                            if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
-                                getEventBus().fireEvent(
-                                        new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
-                            }
-                        }
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                    final Integer contentSpecTagId = serverSettings.getEntities().getContentSpecTagId();
+                    if (contentSpecTagId != null) {
+                        final String query = "query;tag" + contentSpecTagId + "=1;topicIds=" + getDisplayedTopic().getId();
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicsFromQuery(query),
+                            new RESTCallBack<RESTTopicCollectionV1>() {
+                                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                                    if (retValue.getSize() != 0) {
+                                        if (Window.confirm(PressGangCCMSUI.INSTANCE.OldContentSpec() + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec2().replace("#", getDisplayedTopic().getId().toString()) + "\n\n" + PressGangCCMSUI.INSTANCE.OldContentSpec3())) {
+                                            getEventBus().fireEvent(
+                                                    new ContentSpecSearchResultsAndContentSpecViewEvent("query;contentSpecIds=" + getDisplayedTopic().getId(), false));
+                                        }
+                                    }
+                                }
+                            });
                     }
-                });
+                }
+            });
         }
     }
 
@@ -1402,21 +1411,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Nullable
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
-        try {
-            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+        RESTTopicV1 sourceTopic = null;
 
-            RESTTopicV1 sourceTopic = null;
-
-            if (topicRevisionsPresenter.getDisplay().getRevisionTopic() != null) {
-                sourceTopic = topicRevisionsPresenter.getDisplay().getRevisionTopic();
-            } else if (this.getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
-                sourceTopic = this.getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
-            }
-
-            return sourceTopic;
-        } finally {
-            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+        if (topicRevisionsPresenter.getDisplay().getRevisionTopic() != null) {
+            sourceTopic = topicRevisionsPresenter.getDisplay().getRevisionTopic();
+        } else if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+            sourceTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
         }
+
+        return sourceTopic;
     }
 
     @Override
@@ -1533,45 +1536,40 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected XMLValidator getXmlValidator() {
         if (xmlValidator == null) {
             xmlValidator = new XMLValidator(new XMLValidationHelper() {
-                        @Override
-                        public AceEditor getEditor() {
-                            return getTopicXMLPresenter().getDisplay().getEditor();
-                        }
+                @Override
+                public AceEditor getEditor() {
+                    return getTopicXMLPresenter().getDisplay().getEditor();
+                }
 
-                        @Override
-                        public String getError() {
-                            return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
-                        }
+                @Override
+                public String getError() {
+                    return getTopicXMLPresenter().getDisplay().getXmlErrors().getText();
+                }
 
-                        @Override
-                        public void setError(final String errorMsg, final boolean isError) {
-                            getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
-                            if (isError) {
-                                getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                                getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
-                                lastXML = null;
+                @Override
+                public void setError(final String errorMsg, final boolean isError) {
+                    getTopicXMLPresenter().getDisplay().getXmlErrors().setText(errorMsg);
+
+                    // If this is the first time we have validated the xml and it is ok, render the xml
+                    if (hasXMLErrors == null && !isError) {
+                        isReadOnlyMode(new ReadOnlyCallback() {
+                            @Override
+                            public void readonlyCallback(boolean readOnly) {
+                                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
                             }
+                        });
+                    }
 
-                            // If this is the first time we have validated the xml and it is ok, render the xml
-                            if (hasXMLErrors == null && !isError) {
-                                isReadOnlyMode(new ReadOnlyCallback() {
-                                    @Override
-                                    public void readonlyCallback(boolean readOnly) {
-                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                                    }
-                                });
-                            }
+                    hasXMLErrors = isError;
+                }
 
-                            hasXMLErrors = isError;
-                        }
-
-                        @Override
-                        public RESTXMLFormat getFormat()
-                        {
-                            return getDisplayedTopic().getXmlFormat();
-                        }
-                    });
+                @Override
+                public RESTXMLFormat getFormat()
+                {
+                    return getDisplayedTopic().getXmlFormat();
+                }
+            });
         }
         return xmlValidator;
     }
@@ -2308,7 +2306,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (!hasUnsavedChanges()) {
                     initAndDisplayCreateWizard();
                 } else {
-                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
                 }
                 }
             });
@@ -2445,29 +2443,35 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 + "because the rendered view was refreshed before the XML editor was bound.");
             }
 
-            if (this.getDisplayedTopic() != null) {
-                final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml())) ||
-                        (lastDocType == null || lastDocType != this.getDisplayedTopic().getXmlFormat());
+            if (getDisplayedTopic() != null) {
+                if (hasXMLErrors()) {
+                    getTopicRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    getTopicSplitPanelRenderedPresenter().getDisplay().displayError(PressGangCCMSUI.INSTANCE.UnableToRenderGeneric());
+                    lastXML = null;
+                } else {
+                    final boolean xmlHasChanges = (lastXML == null || !lastXML.equals(getDisplayedTopic().getXml())) ||
+                            (lastDocType == null || lastDocType != getDisplayedTopic().getXmlFormat());
 
-                if (xmlHasChanges) {
-                    lastXMLChange = System.currentTimeMillis();
-                }
-
-                final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
-                        .REFRESH_RATE_WTH_IMAGES;
-
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(final boolean readOnly) {
-                        if (!hasXMLErrors() && (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))) {
-                            isDisplayingImage = timeToDisplayImage;
-                            getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
-                        }
+                    if (xmlHasChanges) {
+                        lastXMLChange = System.currentTimeMillis();
                     }
-                });
 
-                lastXML = this.getDisplayedTopic().getXml();
-                lastDocType = this.getDisplayedTopic().getXmlFormat();
+                    final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants
+                            .REFRESH_RATE_WTH_IMAGES;
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                                isDisplayingImage = timeToDisplayImage;
+                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(),readOnly, isDisplayingImage);
+                            }
+                        }
+                    });
+
+                    lastXML = getDisplayedTopic().getXml();
+                    lastDocType = getDisplayedTopic().getXmlFormat();
+                }
             }
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
@@ -2983,18 +2987,40 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final Integer stringConstantId;
                     if (type != null) {
                         if (serverSettings.getEntities().getAuthorGroupTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getAuthorGroupTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50AuthorGroupTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45AuthorGroupTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getAbstractTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getAbstractTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50AbstractTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45AbstractTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getRevisionHistoryTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getRevisionHistoryTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50RevisionHistoryTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45RevisionHistoryTopicTemplateId();
+                            }
                         } else if (serverSettings.getEntities().getLegalNoticeTagId().equals(type.getId())) {
-                            stringConstantId = serverSettings.getEntities().getLegalNoticeTopicTemplateStringConstantId();
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50LegalNoticeTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45LegalNoticeTopicTemplateId();
+                            }
+                        } else if (serverSettings.getEntities().getInfoTagId().equals(type.getId())) {
+                            if (format == RESTXMLFormat.DOCBOOK_50) {
+                                stringConstantId = serverSettings.getEntities().getDocBook50InfoTopicTemplateId();
+                            } else {
+                                stringConstantId = serverSettings.getEntities().getDocBook45InfoTopicTemplateId();
+                            }
                         } else {
-                            stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                            stringConstantId = serverSettings.getEntities().getTopicTemplateId();
                         }
                     } else {
-                        stringConstantId = serverSettings.getEntities().getTopicTemplateStringConstantId();
+                        stringConstantId = serverSettings.getEntities().getTopicTemplateId();
                     }
 
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(stringConstantId), callback,

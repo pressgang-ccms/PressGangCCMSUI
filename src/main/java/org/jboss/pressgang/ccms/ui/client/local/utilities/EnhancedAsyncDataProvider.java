@@ -28,9 +28,11 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
     /**
      * Reset the provider so no items are shown and the loading widget is displayed.
      */
-    public void resetProvider() {
-        this.updateRowData(0, Collections.EMPTY_LIST);
-        this.updateRowCount(0, true);
+    public void resetProvider(boolean resetRowCount) {
+        updateRowData(0, Collections.EMPTY_LIST);
+        if (resetRowCount) {
+            updateRowCount(0, true);
+        }
     }
 
     /**
@@ -41,8 +43,8 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param startRow The row that this async load represents
      */
     public void displayAsynchronousList(@NotNull final List<T> items, final int listSize, final int startRow) {
-        this.updateRowData(startRow, items);
-        this.updateRowCount(listSize, true);
+        updateRowData(startRow, items);
+        updateRowCount(listSize, true);
 
     }
 
@@ -54,8 +56,8 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param startRow The row that this async load represents
      */
     public void displayFuzzyAsynchronousList(@NotNull final List<T> items, final int listSize, final int startRow) {
-        this.updateRowData(startRow, items);
-        this.updateRowCount(listSize, false);
+        updateRowData(startRow, items);
+        updateRowCount(listSize, false);
     }
 
     /**
@@ -65,8 +67,8 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param items The items to be displayed
      */
     public void displayNewFixedList(@NotNull final List<T> items) {
-        this.updateRowData(0, items);
-        this.updateRowCount(items.size(), true);
+        updateRowData(0, items);
+        updateRowCount(items.size(), true);
     }
 
 }
