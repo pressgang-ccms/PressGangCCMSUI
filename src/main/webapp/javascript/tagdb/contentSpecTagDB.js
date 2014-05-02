@@ -57,7 +57,7 @@ self.addEventListener('message', function (e) {
             }
 
             // match anything that looks like element relationship metadata
-            var referenceMetadataRE = /(\s*\[)((R|P|L).*?)\s*:\s*/g;
+            var referenceMetadataRE = /(\s*\[)((R|P|L|Info).*?)\s*:\s*/g;
             var referenceMatch = null;
             while (referenceMatch = referenceMetadataRE.exec(line)) {
                 var element = referenceMatch[2];
