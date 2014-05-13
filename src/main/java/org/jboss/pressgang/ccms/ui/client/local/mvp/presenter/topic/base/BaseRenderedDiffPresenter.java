@@ -94,10 +94,14 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
     }
 
     public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
-        loadTopics(topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
+        loadTopics(topicId, topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffCallback callback) {
+    public void loadTopics(@NotNull final Integer firstTopicId, @NotNull final Integer secondTopicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
+        loadTopics(firstTopicId, secondTopicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
+    }
+
+    public void loadTopics(@NotNull final Integer firstTopicId, @NotNull final Integer secondTopicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffCallback callback) {
         final RESTCallBack<RESTTopicV1> callback1 = new RESTCallBack<RESTTopicV1>() {
             @Override
             public void success(@NotNull final RESTTopicV1 retValue1) {
@@ -141,14 +145,20 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
                 };
 
                 if (secondRevision == null) {
-                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback2, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(secondTopicId), callback2, display);
                 } else {
-                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, secondRevision), callback2, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(secondTopicId, secondRevision), callback2, display);
                 }
             }
         };
 
-        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, firstRevision), callback1, display);
+        if (firstRevision == null) {
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(firstTopicId), callback1, display);
+        } else {
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(firstTopicId, firstRevision), callback1, display);
+        }
+
+
     }
 
     /**

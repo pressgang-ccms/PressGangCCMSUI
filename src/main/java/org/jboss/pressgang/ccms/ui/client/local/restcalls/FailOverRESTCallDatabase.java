@@ -739,6 +739,31 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
+    /**
+     * Create a RESTCall object to call the REST getJSONTopicsWithQuery method
+     *
+     * @param id    The entity ID
+     * @param start The start of the similar topics
+     * @param end   The end of the similar topics
+     * @return A RESTCall that can call the REST getJSONTopicsWithQuery method
+     */
+    public static RESTCall getSimilarTopics(@NotNull final Integer id, final int start, final int end) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String revisionExpand = "{\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}" +
+                        "]}";
+                restService.getJSONTopicsWithQuery(new PathSegmentImpl("query;minHash=" + id + ":0.6"), revisionExpand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
 
     /**
      * Create a RESTCall object to call the REST getJSONTopic method

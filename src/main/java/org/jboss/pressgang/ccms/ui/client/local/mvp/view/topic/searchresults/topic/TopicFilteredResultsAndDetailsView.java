@@ -38,11 +38,13 @@ public class TopicFilteredResultsAndDetailsView extends
      * The revisions button.
      */
     private final PushButton history;
+    private final PushButton duplicates;
     private final PushButton csps;
     /**
      * The label used to represent the history button in a down state.
      */
     private final Label historyDown;
+    private final Label duplicatesDown;
     private final Label cspsDown;
 
     private PushButton review = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Review());
@@ -110,6 +112,18 @@ public class TopicFilteredResultsAndDetailsView extends
 
     @Override
     @NotNull
+    public Label getDuplicatesDown() {
+        return duplicatesDown;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getDuplicates() {
+        return duplicates;
+    }
+
+    @Override
+    @NotNull
     public PushButton getSave() {
         return save;
     }
@@ -132,9 +146,11 @@ public class TopicFilteredResultsAndDetailsView extends
         /* Build the action bar icons */
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
         history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        duplicates = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
         csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
         historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        duplicatesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
         cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
         addActionButton(csps);

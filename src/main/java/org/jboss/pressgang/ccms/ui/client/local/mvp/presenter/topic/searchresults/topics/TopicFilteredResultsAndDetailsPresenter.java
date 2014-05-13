@@ -92,13 +92,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicContentSpecsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicReviewPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.RenderedDiffCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.ReviewTopicStartRevisionFound;
@@ -173,6 +167,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         elements are loaded.
      */
     private boolean revisionsLoadInitiated = false;
+    /*
+       True when the revisions tab is opened for the first time, and the
+       elements are loaded.
+    */
+    private boolean duplicatesLoadInitiated = false;
     /*
         True when the property tags tab is opened for the first time, and the
         elements are loaded.
@@ -587,6 +586,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Inject
     private TopicRevisionsPresenter topicRevisionsPresenter;
     @Inject
+    private TopicDuplicatesPresenter topicDuplicatesPresenter;
+    @Inject
     private TopicReviewPresenter topicReviewPresenter;
     @Inject
     private TopicRenderedPresenter topicRenderedPresenter;
@@ -756,6 +757,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         topicContentSpecsPresenter.bindChildrenExtended();
         topicRevisionsPresenter.bindRenderedDiff(topicRevisionsPresenter.getDisplay());
+        topicDuplicatesPresenter.bindRenderedDiff(topicDuplicatesPresenter.getDisplay());
         topicReviewPresenter.bindRenderedDiff(topicReviewPresenter.getDisplay());
 
         bindTagButtons();
@@ -764,6 +766,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         /* Bind logic to the revisions buttons */
         bindViewTopicRevisionButton();
+
+        /* Bind logic to the duplicates buttons */
+        bindViewTopicDuplicateButton();
 
         bindRenderedViewClicks();
 
@@ -878,6 +883,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          */
         getTopicContentSpecsPresenter().close();
         topicRevisionsPresenter.close();
+        topicDuplicatesPresenter.close();
         keyboardEventHandler.removeHandler();
     }
 
@@ -1124,6 +1130,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         viewLatestTopicRevision();
 
         topicRevisionsPresenter.reset();
+        topicDuplicatesPresenter.reset();
         resetAllInitialLoads();
     }
 
@@ -1408,6 +1415,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    /**
+     * This is called when the duplicates tab is opened for the first time.
+     */
+    private void loadDuplicates() {
+        if (!duplicatesLoadInitiated) {
+            duplicatesLoadInitiated = true;
+
+            topicDuplicatesPresenter.getDisplay().setProvider(topicDuplicatesPresenter.generateListProvider(getDisplayedTopic()));
+        }
+    }
+
     @Nullable
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
@@ -1436,6 +1454,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
             } else if (displayedView == this.topicRevisionsPresenter.getDisplay()) {
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
+            } else if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
+                this.getDisplay().replaceTopActionButton(this.getDisplay().getDuplicates(), this.getDisplay().getDuplicatesDown());
             } else if (displayedView == getTopicContentSpecsPresenter().getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getCsps(), getDisplay().getCspsDown());
             } else if (displayedView == topicReviewPresenter.getDisplay()) {
@@ -1475,6 +1495,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Otherwise switch back to the view of revisions.
                 */
                 this.topicRevisionsPresenter.getDisplay().displayRevisions();
+            }
+
+            if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
+                /*
+                    Load the initial set of revisions.
+                */
+                loadDuplicates();
+            } else {
+                /*
+                    Otherwise switch back to the view of duplicates.
+                */
+                this.topicDuplicatesPresenter.getDisplay().displayDuplicates();
             }
 
             /* Set the projects combo box as the focused element */
@@ -1589,65 +1621,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
 
-            topicRevisionsPresenter.getDisplay().getDone().addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
-                            .getRevision()) {
-                        checkState(topicRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
-                        final String rhs = topicRevisionsPresenter.getDisplay().getMergely().getRhs();
-                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(rhs);
-                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay(),
-                                topicRevisionsPresenter.getDisplay()}));
-                    }
-                    topicRevisionsPresenter.getDisplay().displayRevisions();
 
-                    isReadOnlyMode(new ReadOnlyCallback() {
-                        @Override
-                        public void readonlyCallback(final boolean readOnly) {
-                            getDisplay().getSave().setEnabled(!readOnly);
-                        }
-                    });
-                }
-            });
-
-            topicRevisionsPresenter.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    topicRevisionsPresenter.getDisplay().displayRevisions();
-
-                    isReadOnlyMode(new ReadOnlyCallback() {
-                        @Override
-                        public void readonlyCallback(final boolean readOnly) {
-                            getDisplay().getSave().setEnabled(!readOnly);
-                        }
-                    });
-                }
-            });
-
-            topicRevisionsPresenter.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
-                            getRenderedDiffRevision() + ";" + getDisplayedTopic().getRevision();
-
-                    getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
-                }
-            });
-
-            topicRevisionsPresenter.getDisplay().getCancel().addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    topicRevisionsPresenter.getDisplay().displayRevisions();
-                    isReadOnlyMode(new ReadOnlyCallback() {
-                        @Override
-                        public void readonlyCallback(final boolean readOnly) {
-                            getDisplay().getSave().setEnabled(!readOnly);
-                        }
-                    });
-
-                }
-            });
 
             /* Build up a click handler to save the topic */
             final ClickHandler saveClickHandler = new ClickHandler() {
@@ -1681,6 +1655,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicRevisionsPresenter.getDisplay());
+                    }
+                }
+            };
+
+            final ClickHandler topicDuplicatesClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicDuplicatesPresenter.getDisplay());
                     }
                 }
             };
@@ -2269,6 +2252,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
 
                     /*
+                        The duplicates display always displays details from the main topic, and not the selected revision.
+                    */
+                    if (viewIsInFilter(filter, topicDuplicatesPresenter.getDisplay())) {
+                        LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
+
+                        topicDuplicatesPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
+                        topicDuplicatesPresenter.refreshList();
+                        // make sure the duplicates list is displayed and not the diff view if it was previously open
+                        if (!topicDuplicatesPresenter.getDisplay().isDisplayingRevisions()) {
+                            topicDuplicatesPresenter.getDisplay().displayDuplicates();
+                        }
+                    }
+
+                    /*
                         Bind logic to the tag buttons
                      */
                     if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
@@ -2506,8 +2503,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
-            if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
-                    .getRevision()) {
+            if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision()) {
                 if (topicRevisionsPresenter.getDisplay().getMergely() != null && !topicRevisionsPresenter.getDisplay().getMergely()
                         .getLhs().equals(
                         getDisplayedTopic().getXml())) {
@@ -2520,6 +2516,28 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
              */
             topicRevisionsPresenter.getDisplay().displayRevisions();
+        }
+
+        if (displayedView != topicDuplicatesPresenter.getDisplay() &&
+                lastDisplayedView == topicDuplicatesPresenter.getDisplay() &&
+                !topicDuplicatesPresenter.getDisplay().isDisplayingRevisions()) {
+
+            checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
+            checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
+
+
+            if (topicDuplicatesPresenter.getDisplay().getMergely() != null && !topicDuplicatesPresenter.getDisplay().getMergely()
+                    .getLhs().equals(
+                            getDisplayedTopic().getXml())) {
+                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+            }
+
+
+            /*
+                If the user moved away from the revisions screen, return to the revision list. This is a safety net
+                in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
+             */
+            topicDuplicatesPresenter.getDisplay().displayDuplicates();
         }
 
         flushChanges();
@@ -2677,6 +2695,167 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * Bind behaviour to the view buttons in the topic revisions cell table
      */
+    private void bindViewTopicDuplicateButton() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicDuplicateButton()");
+
+            topicDuplicatesPresenter.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 duplicateTopic, final String value) {
+                    topicDuplicatesPresenter.getDisplay().setButtonsEnabled(false);
+
+                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                        @Override
+                        public void success(@NotNull final RESTTopicV1 retValue) {
+                            checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+
+                            /*
+                                It is possible to switch away from the view while this request was loading. If we
+                                have done so, don't show the merge view.
+                             */
+                            if (lastDisplayedView == topicDuplicatesPresenter.getDisplay()) {
+
+                                topicDuplicatesPresenter.getDisplay().displayDiff(retValue.getXml(), false, getDisplayedTopic().getXml());
+
+                                /*
+                                    We can't save while merging.
+                                 */
+                                getDisplay().getSave().setEnabled(false);
+                            }
+
+                            topicDuplicatesPresenter.getDisplay().setButtonsEnabled(true);
+                        }
+                    };
+
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(duplicateTopic.getItem().getId()), callback, topicDuplicatesPresenter.getDisplay());
+
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+
+                    try {
+                        LOGGER.log(Level.INFO,
+                                "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicDuplicateButton() FieldUpdater.update()");
+
+                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null,
+                                "There should be a displayed collection item.");
+                        checkState(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem() != null,
+                                "The displayed collection item to reference a valid entity.");
+                        checkState(getDisplayedTopic() != null, "There should be a displayed item.");
+
+                        displayRevision(revisionTopic.getItem());
+
+                        if (topicDuplicatesPresenter.getProviderData().isValid()) {
+                            topicDuplicatesPresenter.getDisplay().getProvider().displayAsynchronousList(
+                                    topicDuplicatesPresenter.getProviderData().getItems(), topicDuplicatesPresenter.getProviderData().getSize(),
+                                    topicDuplicatesPresenter.getProviderData().getStartRow());
+                        }
+                    } finally {
+                        LOGGER.log(Level.INFO,
+                                "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicDuplicateButton() FieldUpdater.update()");
+                    }
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getHTMLDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 duplicateTopic, final String value) {
+
+                    topicDuplicatesPresenter.getDisplay().setButtonsEnabled(false);
+                    setRenderedDiffRevision(duplicateTopic.getItem().getRevision());
+
+                    topicDuplicatesPresenter.loadTopics(
+                            getDisplayedTopic().getId(),
+                            duplicateTopic.getItem().getId(),
+                            null,
+                            null,
+                            display.getHiddenAttachmentArea(),
+                            new RenderedDiffCallback() {
+                                @Override
+                                public void success() {
+                                    topicDuplicatesPresenter.getDisplay().setButtonsEnabled(true);
+                                }
+
+                                @Override
+                                public void failed() {
+                                    topicDuplicatesPresenter.getDisplay().setButtonsEnabled(true);
+                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                                }
+                            });
+
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+
+                    checkState(topicDuplicatesPresenter.getDisplay().getMergely() != null, "mergely should not be null");
+                    final String rhs = topicDuplicatesPresenter.getDisplay().getMergely().getRhs();
+                    getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(rhs);
+                    initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay(),topicDuplicatesPresenter.getDisplay()}));
+
+                    topicDuplicatesPresenter.getDisplay().displayDuplicates();
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicDuplicatesPresenter.getDisplay().displayDuplicates();
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
+                            topicDuplicatesPresenter.getDisplay().getDuplicateTopic();
+
+                    getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+            });
+
+            topicDuplicatesPresenter.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicDuplicatesPresenter.getDisplay().displayDuplicates();
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
+
+                }
+            });
+
+
+        } finally {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicDuplicateButton()");
+        }
+    }
+
+    /**
+     * Bind behaviour to the view buttons in the topic revisions cell table  and associated view
+     */
     private void bindViewTopicRevisionButton() {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
@@ -2753,7 +2932,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
                     setRenderedDiffRevision(revisionTopic.getItem().getRevision());
 
-                    topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), revisionTopic.getItem().getRevision(),
+                    topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), getDisplayedTopic().getId(), revisionTopic.getItem().getRevision(),
                             getDisplayedTopic().getRevision(), display.getHiddenAttachmentArea(), new RenderedDiffCallback() {
                         @Override
                         public void success() {
@@ -2764,6 +2943,66 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         public void failed() {
                             topicRevisionsPresenter.getDisplay().setButtonsEnabled(true);
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotDisplayRenderedDiff());
+                        }
+                    });
+
+                }
+            });
+
+            topicRevisionsPresenter.getDisplay().getDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    if (getDisplayedTopic().getRevision() == getSearchResultPresenter().getProviderData().getDisplayedItem().getItem()
+                            .getRevision()) {
+                        checkState(topicRevisionsPresenter.getDisplay().getMergely() != null, "mergely should not be null");
+                        final String rhs = topicRevisionsPresenter.getDisplay().getMergely().getRhs();
+                        getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().setXml(rhs);
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLPresenter().getDisplay(),
+                                topicRevisionsPresenter.getDisplay()}));
+                    }
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
+                }
+            });
+
+            topicRevisionsPresenter.getDisplay().getHTMLDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
+
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
+                        }
+                    });
+                }
+            });
+
+            topicRevisionsPresenter.getDisplay().getHtmlOpenDiff().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
+                            getRenderedDiffRevision() + ";" + getDisplayedTopic().getRevision();
+
+                    getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+            });
+
+            topicRevisionsPresenter.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicRevisionsPresenter.getDisplay().displayRevisions();
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
+                            getDisplay().getSave().setEnabled(!readOnly);
                         }
                     });
 
@@ -3703,6 +3942,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @NotNull
         Label getHistoryDown();
+
+        @NotNull
+        PushButton getDuplicates();
+
+        @NotNull
+        Label getDuplicatesDown();
 
         @NotNull
         BulkImport getBulkImport();

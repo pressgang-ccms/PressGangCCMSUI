@@ -1378,4 +1378,16 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Server();
+
+    @NotNull
+    String Newer();
+
+    @NotNull
+    String Older();
+
+    @NotNull
+    String NewerOrOlder();
+
+    @NotNull
+    String Duplicates();
 }
