@@ -155,6 +155,7 @@ public class TopicFilteredResultsAndDetailsView extends
 
         addActionButton(csps);
         addActionButton(history);
+        addActionButton(duplicates);
         //addActionButton(review);
         addActionButton(save);
     }

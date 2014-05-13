@@ -1799,6 +1799,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             searchResultPresenter.getDisplay().getBulkOverwrite().addClickHandler(bulkOverwrite);
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHandler);
+            getDisplay().getDuplicates().addClickHandler(topicDuplicatesClickHandler);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
             getDisplay().getReview().addClickHandler(reviewClickHandler);
 
