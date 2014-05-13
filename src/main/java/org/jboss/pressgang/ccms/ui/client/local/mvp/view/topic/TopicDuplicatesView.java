@@ -1,10 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
@@ -76,6 +79,10 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
      */
     private final DisableableButtonCell htmlDiffButtonCell = new DisableableButtonCell();
     /**
+     * A HTML field used to display the specs a topic belongs to
+     */
+    private final SafeHtmlCell specsCell = new SafeHtmlCell();
+    /**
      * Holds the mergely elements and the ok/cancel buttons
      */
     private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
@@ -145,32 +152,36 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
             return "";
         }
     };
-    /**
-     * The column displaying the revision message.
-     */
+
+
     @NotNull
-    private final TextColumn<RESTTopicCollectionItemV1> contentSpecs = new TextColumn<RESTTopicCollectionItemV1>() {
-        @Override
+    private final Column<RESTTopicCollectionItemV1, SafeHtml> contentSpecs = new Column<RESTTopicCollectionItemV1, SafeHtml>(specsCell) {
         @NotNull
-        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
+        @Override
+        public SafeHtml getValue(@Nullable final RESTTopicCollectionItemV1 object) {
+            final SafeHtmlBuilder specs = new SafeHtmlBuilder();
             if (object != null && object.getItem() != null && object.getItem().getContentSpecs_OTM() != null && object.getItem().getContentSpecs_OTM().getSize() != 0) {
-                final StringBuilder specs = new StringBuilder();
+
                 for (final RESTContentSpecCollectionItemV1 contentSpec : object.getItem().getContentSpecs_OTM().getItems()) {
-                    if (specs.length() != 0) {
-                        specs.append("\n");
-                    }
+                    String title = null;
+                    String version = null;
+                    String product = null;
 
                     for (final RESTCSNodeCollectionItemV1 specNode : contentSpec.getItem().getChildren_OTM().getItems()) {
-                        if (specNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
-                                specNode.getItem().getTitle().equals("Title")) {
-                            specs.append(specNode.getItem().getAdditionalText());
-                            break;
+                        if (specNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA) {
+                            if (specNode.getItem().getTitle().equals("Title")) {
+                                title = specNode.getItem().getAdditionalText();
+                            } else if (specNode.getItem().getTitle().equals("Product")) {
+                                product = specNode.getItem().getAdditionalText();
+                            } else if (specNode.getItem().getTitle().equals("Version")) {
+                                version = specNode.getItem().getAdditionalText();
+                            }
                         }
                     }
+                    specs.appendHtmlConstant("<div>" + title + " (" + product + " " + version + ")</div>");
                 }
-                return specs.toString();
             }
-            return "";
+            return specs.toSafeHtml();
         }
     };
 
