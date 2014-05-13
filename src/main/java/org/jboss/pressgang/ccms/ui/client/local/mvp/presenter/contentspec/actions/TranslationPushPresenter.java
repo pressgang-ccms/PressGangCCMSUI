@@ -105,7 +105,8 @@ public class TranslationPushPresenter extends BaseActionPresenter {
 
             // Start the push
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.startTranslationPush(contentSpec.getId(), serverId, processName,
-                    display.getContentSpecOnly().getValue(), username, apikey), callback, parentDisplay);
+                    display.getContentSpecOnly().getValue(), display.getDisableCopyTrans().getValue(), username, apikey), callback,
+                    parentDisplay);
 
         }
     };
@@ -175,6 +176,8 @@ public class TranslationPushPresenter extends BaseActionPresenter {
         TextBox getApiKey();
 
         CheckBox getContentSpecOnly();
+
+        CheckBox getDisableCopyTrans();
 
         ListBox getServers();
 

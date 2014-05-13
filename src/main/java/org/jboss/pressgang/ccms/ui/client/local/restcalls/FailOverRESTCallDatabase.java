@@ -2250,11 +2250,12 @@ public final class FailOverRESTCallDatabase {
     }
 
     public static RESTCall startTranslationPush(@NotNull final Integer contentSpecId, final String serverId, final String processName,
-            final boolean contentSpecOnly, final String username, final String apiKey) {
+            final boolean contentSpecOnly, final boolean disableCopyTrans, final String username, final String apiKey) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.pushContentSpecForTranslation(contentSpecId, serverId, "", processName, contentSpecOnly, username, apiKey);
+                restService.pushContentSpecForTranslation(contentSpecId, serverId, "", processName, contentSpecOnly, disableCopyTrans,
+                        username, apiKey);
             }
 
             @Override
