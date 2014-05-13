@@ -95,7 +95,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
                 /*
                     Load the revisions and create a diff
                  */
-                loadTopics(topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach, new RenderedDiffCallback() {
+                loadTopics(topic.getId(), topic.getId(), revision.getRevision(), topic.getRevision(), hiddenAttach, new RenderedDiffCallback() {
                     @Override
                     public void success() {
                     }
