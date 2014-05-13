@@ -248,7 +248,9 @@ td {
 .EditedOneMonthLegend,
 .EditedOneYearLegend,
 .EditedOlderLegend,
-.XMLErrorLegend
+.XMLErrorLegend,
+.RenderedDiffAddedText,
+.RenderedDiffRemovedText
 {
     margin: 2px;
     padding: 2px;

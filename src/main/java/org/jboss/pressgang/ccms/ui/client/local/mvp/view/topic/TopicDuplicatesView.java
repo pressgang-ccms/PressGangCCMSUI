@@ -11,8 +11,12 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicDuplicatesPresenter;
@@ -137,6 +141,34 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
             if (object != null && object.getItem() != null && object.getItem().getLastModified() != null) {
                 return object.getItem().getLastModified().after(mainTopic.getLastModified()) ?
                         PressGangCCMSUI.INSTANCE.Newer() : PressGangCCMSUI.INSTANCE.Older();
+            }
+            return "";
+        }
+    };
+    /**
+     * The column displaying the revision message.
+     */
+    @NotNull
+    private final TextColumn<RESTTopicCollectionItemV1> contentSpecs = new TextColumn<RESTTopicCollectionItemV1>() {
+        @Override
+        @NotNull
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
+            if (object != null && object.getItem() != null && object.getItem().getContentSpecs_OTM() != null && object.getItem().getContentSpecs_OTM().getSize() != 0) {
+                final StringBuilder specs = new StringBuilder();
+                for (final RESTContentSpecCollectionItemV1 contentSpec : object.getItem().getContentSpecs_OTM().getItems()) {
+                    if (specs.length() != 0) {
+                        specs.append("\n");
+                    }
+
+                    for (final RESTCSNodeCollectionItemV1 specNode : contentSpec.getItem().getChildren_OTM().getItems()) {
+                        if (specNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA &&
+                                specNode.getItem().getTitle().equals("Title")) {
+                            specs.append(specNode.getItem().getAdditionalText());
+                            break;
+                        }
+                    }
+                }
+                return specs.toString();
             }
             return "";
         }
@@ -302,6 +334,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
         results.addColumn(topicId, PressGangCCMSUI.INSTANCE.TopicID());
         results.addColumn(lastModified, PressGangCCMSUI.INSTANCE.TopicLastModified());
         results.addColumn(newerOrOlder, PressGangCCMSUI.INSTANCE.NewerOrOlder());
+        results.addColumn(contentSpecs, PressGangCCMSUI.INSTANCE.TopicContentSpecs());
 
 
         /*results.addColumnStyleName(0, CSSConstants.TopicRevisionView.TOPIC_REVISION_NUMBER_COLUMN);

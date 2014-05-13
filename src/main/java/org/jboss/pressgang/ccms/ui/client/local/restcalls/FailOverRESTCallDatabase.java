@@ -752,8 +752,22 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String revisionExpand = "{\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"topics\", \"start\":" + start + ", \"end\":" + end + "}}]}";
+                final String revisionExpand =
+                    "{" +
+                        "\"branches\":[" +
+                            "{" +
+                                "\"trunk\":{\"name\": \"topics\", \"start\":" + start + ", \"end\":" + end + "}," +
+                                "\"branches\":[" +
+                                    "{" +
+                                        "\"trunk\":{\"name\": \"" + RESTTopicV1.CONTENTSPECS_NAME + "\"}," +
+                                        "\"branches\":[" +
+                                            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}" +
+                                        "]" +
+                                    "}" +
+                                "]" +
+                            "}" +
+                        "]" +
+                    "}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl("query;minHash=" + id + ":0.6"), revisionExpand);
             }
 
