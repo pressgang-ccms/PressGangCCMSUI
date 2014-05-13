@@ -346,6 +346,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         styleGuide.addStyleName(CSSConstants.Legend.TAG_MATCH_LEGEND);
         legendPanel.add(styleGuide);
 
+        final Label removedText = new Label(PressGangCCMSUI.INSTANCE.DuplicateRedText());
+        removedText.addStyleName(CSSConstants.Legend.RENDERED_DIFF_REMOVED_TEXT_LEGEND);
+        legendPanel.add(removedText);
+
+        final Label addedText = new Label(PressGangCCMSUI.INSTANCE.DuplicateGreenText());
+        addedText.addStyleName(CSSConstants.Legend.RENDERED_DIFF_ADDED_TEXT_LEGEND);
+        legendPanel.add(addedText);
+
         if (Preferences.INSTANCE.getBoolean(Preferences.SHOW_LEGEND, true)) {
             horizontalPanel.add(legendPanel);
             horizontalPanel.add(hideLegend);

@@ -46,6 +46,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
      */
     private static final int BUTTON_PANEL_HEIGHT = 44;
 
+
     private boolean readOnly = false;
 
     /**
@@ -341,6 +342,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
         htmlButtonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         htmlButtonPanel.add(htmlDone);
         htmlButtonPanel.add(htmlOpenDiff);
+
 
         htmlDiffPanel.addSouth(htmlButtonPanel, BUTTON_PANEL_HEIGHT);
         htmlDiffPanel.add(htmlDiffParent);

@@ -256,6 +256,15 @@ td {
     font-size: smaller;
 }
 
+.RenderedDiffAddedText {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
+.RenderedDiffRemovedText {
+    background-color: rgba(255,0,0,0.5);
+    text-decoration: line-through;
+}
+
 .dayOld, .ace_marker-layer .dayOld, .EditedOneDayLegend  {
     background-color: rgba(0, 0, 255, 0.20);
 }
