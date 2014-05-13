@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseRenderedDiffPresenter;
@@ -208,19 +209,19 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
                 resetProvider(false);
                 if (topic.getId() != null) {
-                    final RESTCallBack<RESTTopicV1> callback = new RESTCallBack<RESTTopicV1>() {
+                    final RESTCallBack<RESTTopicCollectionV1> callback = new RESTCallBack<RESTTopicCollectionV1>() {
                         @Override
-                        public void success(@NotNull final RESTTopicV1 retValue) {
-                            checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
-                            checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
+                        public void success(@NotNull final RESTTopicCollectionV1 retValue) {
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                            if (retValue.getRevisions().getItems().size() != 0) {
-                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
-                                checkArgument(retValue.getRevisions().getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
+                            if (retValue.getItems().size() != 0) {
+                                checkArgument(retValue.getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
+                                checkArgument(retValue.getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
                             }
 
-                            providerData.setItems(retValue.getRevisions().getItems());
-                            providerData.setSize(retValue.getRevisions().getSize());
+                            providerData.setItems(retValue.getItems());
+                            providerData.setSize(retValue.getSize());
                             displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                         }
                     };
@@ -230,8 +231,7 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
                     final int length = list.getVisibleRange().getLength();
                     final int end = start + length;
 
-                    getFailOverRESTCall().performRESTCall(
-                            FailOverRESTCallDatabase.getSimilarTopics(topic.getId(), start, end), callback, display);
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getSimilarTopics(topic.getId(), start, end), callback, display);
                 } else {
                     providerData.resetToEmpty();
                     displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());

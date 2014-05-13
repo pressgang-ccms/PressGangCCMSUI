@@ -752,7 +752,7 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String revisionExpand = "{\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}}";
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl("query;minHash=" + id + ":0.6"), revisionExpand);
             }
 
