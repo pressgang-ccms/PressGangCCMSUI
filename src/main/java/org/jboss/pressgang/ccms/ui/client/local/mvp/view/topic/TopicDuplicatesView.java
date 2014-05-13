@@ -494,7 +494,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
     }
 
     @Override
-    public boolean isDisplayingRevisions() {
+    public boolean isDisplayingDuplicates() {
         return isDisplayingDuplicates;
     }
 

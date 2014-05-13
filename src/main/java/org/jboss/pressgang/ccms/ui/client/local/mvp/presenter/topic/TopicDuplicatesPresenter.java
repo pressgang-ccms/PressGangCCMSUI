@@ -84,7 +84,7 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
          * @return true if the view is displaying the list of revisions, and false if
          * it is in any other state (i.e. showing or in the process of showing a diff).
          */
-        boolean isDisplayingRevisions();
+        boolean isDisplayingDuplicates();
 
         boolean isButtonsEnabled();
 
@@ -144,7 +144,7 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
         display.getTopActionGrandParentPanel().removeFromParent();
 
         if (topicID != null) {
-            loadTopics(topicID, secondTopicId, null, null, new RenderedDiffCallback() {
+            loadTopics(topicID, null, secondTopicId, null, new RenderedDiffCallback() {
                 @Override
                 public void success() {
                 }
@@ -161,10 +161,10 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
     @Override
     protected void displayRenderedHTML() {
         /*
-            Check isDisplayingRevisions() here because the user may have
+            Check isDisplayingDuplicates() here because the user may have
             moved off the view.
         */
-        if (!display.isDisplayingRevisions()) {
+        if (!display.isDisplayingDuplicates()) {
             super.displayRenderedHTML();
         }
     }
@@ -214,11 +214,6 @@ public class TopicDuplicatesPresenter extends BaseRenderedDiffPresenter {
                         public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
-
-                            if (retValue.getItems().size() != 0) {
-                                checkArgument(retValue.getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
-                                checkArgument(retValue.getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
-                            }
 
                             providerData.setItems(retValue.getItems());
                             providerData.setSize(retValue.getSize());

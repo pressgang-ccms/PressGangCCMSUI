@@ -93,11 +93,61 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
         });
     }
 
-    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
-        loadTopics(topicId, topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
+    public void loadTopics(@NotNull final String firstXml, @NotNull final Integer secondTopicId, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
+        loadTopics(firstXml, secondTopicId, secondRevision, display.getHiddenAttachmentArea(), callback);
     }
 
-    public void loadTopics(@NotNull final Integer firstTopicId, @NotNull final Integer secondTopicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
+    public void loadTopics(@NotNull final String firstXml, @NotNull final Integer secondTopicId, @Nullable final Integer secondRevision, @NotNull final Panel hiddenAttach, @NotNull final RenderedDiffCallback callback) {
+        final RESTCallBack<RESTTopicV1> callback2 = new RESTCallBack<RESTTopicV1>() {
+            @Override
+            public void success(@NotNull final RESTTopicV1 retValue2) {
+
+                final RESTCallBack<IntegerWrapper> hold1 = new RESTCallBack<IntegerWrapper>() {
+                    @Override
+                    public void success(@NotNull final IntegerWrapper holdValue1) {
+                        final RESTCallBack<IntegerWrapper> hold2 = new RESTCallBack<IntegerWrapper>() {
+                            @Override
+                            public void success(@NotNull final IntegerWrapper holdValue2) {
+                                renderXML(holdValue1.value, holdValue2.value, hiddenAttach);
+
+                                callback.success();
+                            }
+
+                            @Override
+                            public void failed() {
+                                callback.failed();
+                            }
+                        };
+
+                        final String xml = cleanXMLAndAddAdditionalContent(retValue2.getXml(), true, false, true);
+                        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold2, display, true);
+                    }
+
+                    @Override
+                    public void failed() {
+                        callback.failed();
+                    }
+
+                };
+
+                final String xml = cleanXMLAndAddAdditionalContent(firstXml, true, false, true);
+                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold1, display, true);
+
+            }
+        };
+
+        if (secondRevision == null) {
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(secondTopicId), callback2, display);
+        } else {
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(secondTopicId, secondRevision), callback2, display);
+        }
+    }
+
+    public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
+        loadTopics(topicId, firstRevision, topicId, secondRevision, display.getHiddenAttachmentArea(), callback);
+    }
+
+    public void loadTopics(@NotNull final Integer firstTopicId, @NotNull final Integer firstRevision, @NotNull final Integer secondTopicId, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
         loadTopics(firstTopicId, secondTopicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
     }
 
@@ -127,8 +177,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
                                 };
 
                                 final String xml = cleanXMLAndAddAdditionalContent(retValue2.getXml(), true, false, true);
-                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold2, display,
-                                        true);
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold2, display, true);
                             }
 
                             @Override
@@ -157,8 +206,6 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
         } else {
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(firstTopicId, firstRevision), callback1, display);
         }
-
-
     }
 
     /**

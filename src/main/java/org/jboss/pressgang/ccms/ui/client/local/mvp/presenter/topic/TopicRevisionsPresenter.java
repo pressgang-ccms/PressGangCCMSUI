@@ -155,7 +155,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
     @Override
     protected void displayRenderedHTML() {
         /*
-            Check isDisplayingRevisions() here because the user may have
+            Check isDisplayingDuplicates() here because the user may have
             moved off the view.
         */
         if (!display.isDisplayingRevisions()) {

@@ -88,6 +88,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDiffEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.RenderedDuplicateDiffEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TopicSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -676,7 +677,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * true after the topics have been loaded
      */
     private boolean topicListLoaded = false;
-    private Integer renderedDiffRevision;
+    /**
+     * Used to track which revision or id we are looking at in the revisions or duplicated topics views
+     */
+    private Integer renderedDiffIdOrRevision;
 
     private final Map<Integer, Integer> topicRevisionViewData = new HashMap<Integer, Integer>();
 
@@ -1446,6 +1450,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postEnableAndDisableActionButtons()");
 
             this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
+            this.getDisplay().replaceTopActionButton(this.getDisplay().getDuplicatesDown(), this.getDisplay().getDuplicates());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getCspsDown(), getDisplay().getCsps());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getReviewDown(), getDisplay().getReview());
@@ -2261,7 +2266,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         topicDuplicatesPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
                         topicDuplicatesPresenter.refreshList();
                         // make sure the duplicates list is displayed and not the diff view if it was previously open
-                        if (!topicDuplicatesPresenter.getDisplay().isDisplayingRevisions()) {
+                        if (!topicDuplicatesPresenter.getDisplay().isDisplayingDuplicates()) {
                             topicDuplicatesPresenter.getDisplay().displayDuplicates();
                         }
                     }
@@ -2521,18 +2526,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         if (displayedView != topicDuplicatesPresenter.getDisplay() &&
                 lastDisplayedView == topicDuplicatesPresenter.getDisplay() &&
-                !topicDuplicatesPresenter.getDisplay().isDisplayingRevisions()) {
+                !topicDuplicatesPresenter.getDisplay().isDisplayingDuplicates()) {
 
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
             checkState(getSearchResultPresenter().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
 
-
-            if (topicDuplicatesPresenter.getDisplay().getMergely() != null && !topicDuplicatesPresenter.getDisplay().getMergely()
-                    .getLhs().equals(
-                            getDisplayedTopic().getXml())) {
+            if (topicDuplicatesPresenter.getDisplay().getMergely() != null &&
+                    !topicDuplicatesPresenter.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
-
 
             /*
                 If the user moved away from the revisions screen, return to the revision list. This is a safety net
@@ -2735,7 +2737,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             topicDuplicatesPresenter.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 duplicateTopic, final String value) {
 
                     try {
                         LOGGER.log(Level.INFO,
@@ -2747,13 +2749,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 "The displayed collection item to reference a valid entity.");
                         checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                        displayRevision(revisionTopic.getItem());
-
-                        if (topicDuplicatesPresenter.getProviderData().isValid()) {
-                            topicDuplicatesPresenter.getDisplay().getProvider().displayAsynchronousList(
-                                    topicDuplicatesPresenter.getProviderData().getItems(), topicDuplicatesPresenter.getProviderData().getSize(),
-                                    topicDuplicatesPresenter.getProviderData().getStartRow());
-                        }
+                        getEventBus().fireEvent(
+                                new TopicSearchResultsAndTopicViewEvent("query;topicIds=" + duplicateTopic.getItem().getId(), false));
                     } finally {
                         LOGGER.log(Level.INFO,
                                 "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicDuplicateButton() FieldUpdater.update()");
@@ -2766,18 +2763,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 duplicateTopic, final String value) {
 
                     topicDuplicatesPresenter.getDisplay().setButtonsEnabled(false);
-                    setRenderedDiffRevision(duplicateTopic.getItem().getRevision());
+                    setRenderedDiffIdOrRevision(duplicateTopic.getItem().getId());
 
+                    /*
+                        We only display duplicates for the latest revision
+                     */
                     topicDuplicatesPresenter.loadTopics(
-                            getDisplayedTopic().getId(),
+                            getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getXml(),
                             duplicateTopic.getItem().getId(),
-                            null,
                             null,
                             display.getHiddenAttachmentArea(),
                             new RenderedDiffCallback() {
                                 @Override
                                 public void success() {
                                     topicDuplicatesPresenter.getDisplay().setButtonsEnabled(true);
+
+                                    /*if (lastDisplayedView != topicDuplicatesPresenter.getDisplay()) {
+                                        if (!topicDuplicatesPresenter.getDisplay().isDisplayingDuplicates()) {
+                                            topicDuplicatesPresenter.getDisplay().displayDuplicates();
+                                        }
+                                    }*/
                                 }
 
                                 @Override
@@ -2828,9 +2833,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
-                            topicDuplicatesPresenter.getDisplay().getDuplicateTopic();
+                            getRenderedDiffIdOrRevision();
 
-                    getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                    getEventBus().fireEvent(new RenderedDuplicateDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             });
 
@@ -2931,7 +2936,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
                     topicRevisionsPresenter.getDisplay().setButtonsEnabled(false);
-                    setRenderedDiffRevision(revisionTopic.getItem().getRevision());
+                    setRenderedDiffIdOrRevision(revisionTopic.getItem().getRevision());
 
                     topicRevisionsPresenter.loadTopics(getDisplayedTopic().getId(), getDisplayedTopic().getId(), revisionTopic.getItem().getRevision(),
                             getDisplayedTopic().getRevision(), display.getHiddenAttachmentArea(), new RenderedDiffCallback() {
@@ -2990,7 +2995,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     final String query = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getId() + ";" +
-                            getRenderedDiffRevision() + ";" + getDisplayedTopic().getRevision();
+                            getRenderedDiffIdOrRevision() + ";" + getDisplayedTopic().getRevision();
 
                     getEventBus().fireEvent(new RenderedDiffEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -3029,10 +3034,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /* Reset the reference to the revision topic */
             viewLatestTopicRevision();
 
-            if (!revisionTopic.getRevision().equals(
-                    getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
+            if (!revisionTopic.getRevision().equals(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 topicRevisionsPresenter.getDisplay().setRevisionTopic(revisionTopic);
+                getDisplay().getDuplicates().setEnabled(false);
+            } else {
+                getDisplay().getDuplicates().setEnabled(true);
             }
 
             /* Initialize the views with the new topic being displayed */
@@ -3690,12 +3697,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * The revision that was used to generate the rendered diff
      */
-    private Integer getRenderedDiffRevision() {
-        return renderedDiffRevision;
+    private Integer getRenderedDiffIdOrRevision() {
+        return renderedDiffIdOrRevision;
     }
 
-    private void setRenderedDiffRevision(@Nullable final Integer renderedDiffRevision) {
-        this.renderedDiffRevision = renderedDiffRevision;
+    private void setRenderedDiffIdOrRevision(@Nullable final Integer renderedDiffIdOrRevision) {
+        this.renderedDiffIdOrRevision = renderedDiffIdOrRevision;
     }
 
     private interface ReturnCurrentTopic {

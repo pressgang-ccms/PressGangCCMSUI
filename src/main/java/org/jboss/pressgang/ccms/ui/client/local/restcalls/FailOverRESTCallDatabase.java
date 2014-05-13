@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
@@ -752,7 +753,7 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String revisionExpand = "{\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}}]}";
+                        "{\"trunk\":{\"name\": \"topics\", \"start\":" + start + ", \"end\":" + end + "}}]}";
                 restService.getJSONTopicsWithQuery(new PathSegmentImpl("query;minHash=" + id + ":0.6"), revisionExpand);
             }
 
