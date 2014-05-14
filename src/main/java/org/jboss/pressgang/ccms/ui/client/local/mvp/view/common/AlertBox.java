@@ -97,7 +97,9 @@ public class AlertBox extends DialogBox {
      * @param closeHandler A handler that is called when the ok button is clicked. Once clicked, the handler is removed.
      */
     static public void setMessageAndDisplay(@NotNull final String message, @NotNull final CloseHandler closeHandler) {
-        handlers.add(INSTANCE.addCloseHandler(closeHandler));
+        if (closeHandler != null) {
+            handlers.add(INSTANCE.addCloseHandler(closeHandler));
+        }
         setMessageAndDisplay(message);
     }
 

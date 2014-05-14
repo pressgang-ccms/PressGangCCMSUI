@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseActionPresenter {
+public abstract class BaseActionPresenter<T> {
     /**
      * The GWT event bus.
      */
@@ -25,7 +25,7 @@ public abstract class BaseActionPresenter {
 
     private RESTServerSettingsV1 serverSettings;
 
-    private List<ActionCompletedCallback<RESTProcessInformationV1>> callbacks = new ArrayList<ActionCompletedCallback<RESTProcessInformationV1>>();
+    private List<ActionCompletedCallback<T>> callbacks = new ArrayList<ActionCompletedCallback<T>>();
 
     protected void getServerSettings(@NotNull final ServerSettingsCallback settingsCallback) {
         if (serverSettings == null) {
@@ -51,15 +51,15 @@ public abstract class BaseActionPresenter {
         return failOverRESTCall;
     }
 
-    protected List<ActionCompletedCallback<RESTProcessInformationV1>> getCallbacks() {
+    protected List<ActionCompletedCallback<T>> getCallbacks() {
         return callbacks;
     }
 
-    public void addActionCompletedHandler(final ActionCompletedCallback<RESTProcessInformationV1> callback) {
+    public void addActionCompletedHandler(final ActionCompletedCallback<T> callback) {
         callbacks.add(callback);
     }
 
-    public void removeActionCompletedHandler(final ActionCompletedCallback<RESTProcessInformationV1> callback) {
+    public void removeActionCompletedHandler(final ActionCompletedCallback<T> callback) {
         callbacks.remove(callback);
     }
 

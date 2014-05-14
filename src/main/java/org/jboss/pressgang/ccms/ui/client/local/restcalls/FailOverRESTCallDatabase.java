@@ -2280,4 +2280,35 @@ public final class FailOverRESTCallDatabase {
             }
         };
     }
+
+    public static RESTCall freezeContentSpec(@NotNull final Integer contentSpecId, @NotNull final String message,
+            final boolean useLatestRevisions, final boolean createNewSpec, @NotNull final Integer flag, @NotNull final String userId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.freezeJSONTextContentSpec(contentSpecId, "{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}",
+                        useLatestRevisions, createNewSpec, message, flag, userId);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    public static RESTCall previewContentSpecSnapshot(@NotNull final Integer contentSpecId, final boolean useLatestRevisions,
+            final boolean createNewSpec) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.previewTEXTContentSpecFreeze(contentSpecId, useLatestRevisions, createNewSpec);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
 }

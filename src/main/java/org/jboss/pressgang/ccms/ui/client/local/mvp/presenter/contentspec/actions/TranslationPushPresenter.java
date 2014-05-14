@@ -32,7 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jetbrains.annotations.NotNull;
 
-public class TranslationPushPresenter extends BaseActionPresenter {
+public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInformationV1> {
     @Inject
     private Display display;
     @Inject

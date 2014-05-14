@@ -67,6 +67,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.FreezePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.TranslationPushPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.TranslationSyncPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
@@ -203,6 +204,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private TranslationPushPresenter translationPushPresenter;
     @Inject
     private TranslationSyncPresenter translationSyncPresenter;
+    @Inject
+    private FreezePresenter freezePresenter;
 
     /**
      * The category query string extracted from the history token
@@ -800,6 +803,53 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         };
 
+        final ActionCompletedCallback<RESTTextContentSpecV1> completedFreeze = new ActionCompletedCallback<RESTTextContentSpecV1>() {
+            @Override
+            public void success(final RESTTextContentSpecV1 retValue) {
+                final boolean newSpec = !retValue.getId().equals(getDisplayedContentSpec().getId());
+
+                // Create the contentspec wrapper
+                final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
+                        RESTTextContentSpecCollectionItemV1();
+                contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
+
+                // create the content spec, and add to the wrapper
+                contentSpecCollectionItem.setItem(retValue);
+
+                // Update the displayed content spec
+                filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
+                filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
+
+                if (newSpec) {
+                    // We need to swap the text with the invalid text
+                    ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
+                    filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
+                    filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
+
+                    setSearchResultsVisible(true);
+                }
+
+                initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                    add(contentSpecPresenter.getDisplay());
+                }});
+                updateDisplayWithNewEntityData(false);
+            }
+
+            @Override
+            public void failure() {
+                // Do nothing
+            }
+        };
+
+        final Command freezeCommand = new Command() {
+            @Override
+            public void execute() {
+                freezePresenter.display(getDisplayedContentSpec(), display);
+                freezePresenter.addActionCompletedHandler(completedFreeze);
+            }
+        };
+
         display.getSave().addClickHandler(saveClickHandler);
         display.getHistory().addClickHandler(revisionsClickHandler);
         display.getContentSpecTags().addClickHandler(tagsClickHandler);
@@ -807,6 +857,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         display.getMessageLogDialog().getOk().addClickHandler(logMessageOkClickHandler);
         display.getPushTranslation().setScheduledCommand(pushTranslationCommand);
         display.getSyncTranslation().setScheduledCommand(syncTranslationCommand);
+        display.getFreeze().setScheduledCommand(freezeCommand);
         contentSpecRevisionsPresenter.getDisplay().getDone().addClickHandler(revisionDoneClickHandler);
         contentSpecRevisionsPresenter.getDisplay().getCancel().addClickHandler(revisionCancelClickHandler);
         display.getMessageLogDialog().getCancel().addClickHandler(logMessageCancelClickHandler);
@@ -2301,6 +2352,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         MenuItem getPushTranslation();
 
         MenuItem getSyncTranslation();
+
+        MenuItem getFreeze();
 
         Label getTextDown();
 
