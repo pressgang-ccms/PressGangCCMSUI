@@ -317,10 +317,10 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
                     createFilterField(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC, getNotIncludedInContentSpecs()));
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(getFreeTextSearch())) {
+        /*if (!GWTUtilities.isStringNullOrEmpty(getFreeTextSearch())) {
             filter.getFilterFields_OTM().addNewItem(
                     createFilterField(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR, getFreeTextSearch()));
-        }
+        }*/
 
         if (isMatchAll() != MATCH_ALL_DEFAULT) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.LOGIC_FILTER_VAR, isMatchAll() + ""));
@@ -423,9 +423,9 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
                         setIncludedInContentSpecs(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
                         setNotIncludedInContentSpecs(fieldItem.getValue());
-                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
+                    } /*else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
                         setFreeTextSearch(fieldItem.getValue());
-                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_FORMAT_VAR)) {
+                    } */else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_FORMAT_VAR)) {
                         try {
                             setFormat(Integer.parseInt(fieldItem.getValue()));
                         } catch (@NotNull final NumberFormatException ex) {
@@ -521,10 +521,10 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
             retValue.append(";").append(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC).append("=").append(
                     GWTUtilities.encodeQueryParameter(notIncludedInContentSpecs));
         }
-        if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
+        /*if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR).append("=").append(
                     GWTUtilities.encodeQueryParameter(freeTextSearch));
-        }
+        }*/
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS).append("=").append(
                     GWTUtilities.encodeQueryParameter("true"));

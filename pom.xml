@@ -472,7 +472,7 @@
                         <executions>
                             <execution>
                                 <configuration>
-                                    <extraJvmArgs>-Xmx1024m -Xss1024k</extraJvmArgs>
+                                    <extraJvmArgs>-Xmx2048m -Xss2048k</extraJvmArgs>
                                 </configuration>
                                 <goals>
                                     <goal>compile</goal>
@@ -785,7 +785,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>${gwt.maven.version}</version>
                 <configuration>
-                    <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+                    <extraJvmArgs>-Xmx4096M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
                     <optimizationLevel>9</optimizationLevel>
                     <enableClosureCompiler>true</enableClosureCompiler>
                     <!--<localWorkers>2</localWorkers> -->
