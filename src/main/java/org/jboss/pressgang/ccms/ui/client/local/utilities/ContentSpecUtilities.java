@@ -84,7 +84,7 @@ public class ContentSpecUtilities {
 
         // HOLDER
         if (!definedEntities.contains(" HOLDER ") && copyrightHolder != null) {
-            final String escapedHolder = escapeForXMLEntity(copyrightHolder);
+            final String escapedHolder = escapeTitleForXMLEntity(copyrightHolder);
             retValue.append("<!ENTITY HOLDER \"").append(escapedHolder).append("\">\n");
         }
 

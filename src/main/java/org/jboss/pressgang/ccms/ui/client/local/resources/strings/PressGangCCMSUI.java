@@ -1347,6 +1347,9 @@ public interface PressGangCCMSUI extends Constants {
     String TranslationContentSpecOnly();
 
     @NotNull
+    String TranslationDisableCopyTrans();
+
+    @NotNull
     String Start();
 
     @NotNull
@@ -1378,6 +1381,24 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Server();
+
+    @NotNull
+    String Preview();
+
+    @NotNull
+    String UseLatestRevisions();
+
+    @NotNull
+    String FreezeNewContentSpec();
+
+    @NotNull
+    String FreezeContentSpec();
+
+    @NotNull
+    String ContentSpecFreezeSuccess();
+
+    @NotNull
+    String ContentSpecFreezeSuccessWithID();
 
     @NotNull
     String Newer();

@@ -32,7 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jetbrains.annotations.NotNull;
 
-public class TranslationPushPresenter extends BaseActionPresenter {
+public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInformationV1> {
     @Inject
     private Display display;
     @Inject
@@ -105,7 +105,8 @@ public class TranslationPushPresenter extends BaseActionPresenter {
 
             // Start the push
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.startTranslationPush(contentSpec.getId(), serverId, processName,
-                    display.getContentSpecOnly().getValue(), username, apikey), callback, parentDisplay);
+                    display.getContentSpecOnly().getValue(), display.getDisableCopyTrans().getValue(), username, apikey), callback,
+                    parentDisplay);
 
         }
     };
@@ -175,6 +176,8 @@ public class TranslationPushPresenter extends BaseActionPresenter {
         TextBox getApiKey();
 
         CheckBox getContentSpecOnly();
+
+        CheckBox getDisableCopyTrans();
 
         ListBox getServers();
 

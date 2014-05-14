@@ -965,4 +965,9 @@ public interface CSSConstants {
         String WAITING_BUTTON_PANEL = "ProcessWaitingButtonPanel";
         String SYNC_LOCALE_LIST_BOX = "ProcessSyncLocaleListBox";
     }
+
+    interface FreezePreviewDialog {
+        String PREVIEW_DIALOG_BOX = "FreezePreviewDialog";
+        String PREVIEW_FIELD = "FreezePreviewText";
+    }
 }

@@ -40,6 +40,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final MenuItem actionsMenuItem = new MenuItem(PressGangCCMSUI.INSTANCE.ProcessActions(), actionsMenu);
     private final MenuItem pushTranslation = new MenuItem(PressGangCCMSUI.INSTANCE.TranslationPush(), (Command) null);
     private final MenuItem syncTranslation = new MenuItem(PressGangCCMSUI.INSTANCE.TranslationSync(), (Command) null);
+    private final MenuItem freeze = new MenuItem(PressGangCCMSUI.INSTANCE.FreezeContentSpec(), (Command) null);
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
@@ -138,6 +139,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         menu.addItem(actionsMenuItem);
         actionsMenu.addItem(pushTranslation);
         actionsMenu.addItem(syncTranslation);
+        actionsMenu.addItem(freeze);
 
         menu.addStyleName(CSSConstants.ContentSpecView.ACTIONS_MENU);
         actionsMenu.addStyleName(CSSConstants.ContentSpecView.ACTIONS_SUB_MENU);
@@ -244,5 +246,10 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     @Override
     public MenuItem getSyncTranslation() {
         return syncTranslation;
+    }
+
+    @Override
+    public MenuItem getFreeze() {
+        return freeze;
     }
 }

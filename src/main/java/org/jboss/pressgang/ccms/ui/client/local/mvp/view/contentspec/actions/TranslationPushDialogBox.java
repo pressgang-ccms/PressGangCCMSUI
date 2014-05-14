@@ -26,6 +26,7 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
     private final TextBox username = new TextBox();
     private final PasswordTextBox apiKey = new PasswordTextBox();
     private final CheckBox contentSpecOnly = new CheckBox(PressGangCCMSUI.INSTANCE.TranslationContentSpecOnly());
+    private final CheckBox disableCopyTrans = new CheckBox(PressGangCCMSUI.INSTANCE.TranslationDisableCopyTrans());
     private final ListBox servers = new ListBox();
 
     private final PushButton start = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Start());
@@ -49,10 +50,12 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
         layout.setWidget(3, 0, apiKeyLabel);
         layout.setWidget(3, 1, apiKey);
         layout.setWidget(4, 0, contentSpecOnly);
-        layout.setWidget(5, 0, buttonPanel);
+        layout.setWidget(5, 0, disableCopyTrans);
+        layout.setWidget(6, 0, buttonPanel);
 
         layout.getFlexCellFormatter().setColSpan(4, 0, 2);
         layout.getFlexCellFormatter().setColSpan(5, 0, 2);
+        layout.getFlexCellFormatter().setColSpan(6, 0, 2);
         servers.setWidth("100%");
 
         name.getElement().setPropertyString("placeholder", PressGangCCMSUI.INSTANCE.EnterOptionalName());
@@ -81,6 +84,11 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
     }
 
     @Override
+    public CheckBox getDisableCopyTrans() {
+        return disableCopyTrans;
+    }
+
+    @Override
     public ListBox getServers() {
         return servers;
     }
@@ -106,6 +114,7 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
         username.setText("");
         apiKey.setText("");
         servers.clear();
-        contentSpecOnly.setEnabled(true);
+        contentSpecOnly.setValue(false);
+        disableCopyTrans.setValue(false);
     }
 }

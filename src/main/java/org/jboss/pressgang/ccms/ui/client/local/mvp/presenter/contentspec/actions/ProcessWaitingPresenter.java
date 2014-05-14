@@ -24,7 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jetbrains.annotations.NotNull;
 
-public class ProcessWaitingPresenter extends BaseActionPresenter {
+public class ProcessWaitingPresenter extends BaseActionPresenter<RESTProcessInformationV1> {
     private static final int DEFAULT_REFRESH_TIME = 10;
     private static final int ONE_SEC_MS = 1000;
 

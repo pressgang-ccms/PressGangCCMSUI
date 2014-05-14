@@ -1220,7 +1220,7 @@ a.AnchorPushButton, a.AnchorMenuItem {
     margin-right: 8px;
 }
 
-.ProcessLogsText {
+.ProcessLogsText, .FreezePreviewText {
     width: 800px;
     height: 500px;
     box-sizing: border-box;
