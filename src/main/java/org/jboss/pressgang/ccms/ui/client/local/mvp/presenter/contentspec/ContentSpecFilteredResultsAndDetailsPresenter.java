@@ -444,6 +444,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
                         getDisplay().getSave().setEnabled(!readOnly);
+                        getDisplay().getActionsMenu().setEnabled(!readOnly);
                     }
                 });
             }
@@ -458,6 +459,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void readonlyCallback(boolean readOnly) {
                         getDisplay().getSave().setEnabled(!readOnly);
+                        getDisplay().getActionsMenu().setEnabled(!readOnly);
                     }
                 });
 
@@ -1069,6 +1071,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                 display.getSave().setEnabled(!serverDetails.isReadOnly());
+                display.getActionsMenu().setEnabled(!serverDetails.isReadOnly());
                 filteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
             }
         });
@@ -1218,6 +1221,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 // We can't save while merging.
                                 getDisplay().getSave().setEnabled(false);
+                                getDisplay().getActionsMenu().setEnabled(false);
                             }
 
                             contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
@@ -1849,6 +1853,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void readonlyCallback(final boolean readOnly) {
                 getDisplay().getSave().setEnabled(!readOnly);
+                getDisplay().getActionsMenu().setEnabled(!readOnly);
             }
         });
     }
@@ -2354,6 +2359,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         MenuItem getSyncTranslation();
 
         MenuItem getFreeze();
+
+        MenuItem getActionsMenu();
 
         Label getTextDown();
 

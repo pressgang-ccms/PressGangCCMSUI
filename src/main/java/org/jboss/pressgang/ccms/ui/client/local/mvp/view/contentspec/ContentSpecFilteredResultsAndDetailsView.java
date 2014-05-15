@@ -252,4 +252,9 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     public MenuItem getFreeze() {
         return freeze;
     }
+
+    @Override
+    public MenuItem getActionsMenu() {
+        return actionsMenuItem;
+    }
 }
