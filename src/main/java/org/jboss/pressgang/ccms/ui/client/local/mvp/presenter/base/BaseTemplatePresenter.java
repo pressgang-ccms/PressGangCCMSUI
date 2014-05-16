@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -765,5 +766,34 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      */
     protected void setDataAttribute(@NotNull final Element element, @NotNull final Integer id) {
         element.setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, id.toString());
+    }
+
+    protected Map<String, String> parseTokenFragment(final String fragment) {
+        final Map<String, String> retValue = new HashMap<String, String>();
+
+        final String[] split = fragment.split(";");
+        for (int i = 0; i < split.length; i++) {
+            final String s = split[i];
+            if (Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON.equals(s)) {
+                final StringBuilder builder = new StringBuilder();
+                for (int j = i + 1; j < split.length; j++) {
+                    builder.append(split[j]).append(";");
+                }
+                retValue.put(s, builder.toString());
+            } else {
+                final String[] keyValue = s.split("=", 2);
+                final String key = keyValue[0];
+                final String value;
+                if (keyValue.length > 1) {
+                    value = keyValue[1];
+                } else {
+                    value = null;
+                }
+
+                retValue.put(key, value);
+            }
+        }
+
+        return retValue;
     }
 }

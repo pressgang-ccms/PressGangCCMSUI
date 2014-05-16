@@ -20,7 +20,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201405141523";
+    public static final String BUILD = "201405161207";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1223,8 +1223,13 @@ public final class Constants {
      * This path segment defines the initial topic view state.
      */
     public static final String TOPIC_VIEW_DATA_PREFIX = TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON + ";";
+
+    public static final String ENTITY_ID_PREFIX_WO_SEMICOLON = "id";
+    public static final String ENTITY_ID_PREFIX = ENTITY_ID_PREFIX_WO_SEMICOLON + ";";
+    public static final String ACTION_PREFIX_WO_SEMICOLON = "action";
+    public static final String ACTION_PREFIX = ACTION_PREFIX_WO_SEMICOLON + ";";
     /**
-     * The deafult size of the xml error split panels.
+     * The default size of the xml error split panels.
      */
     public static final int XML_ERRORS_SPLIT_PANEL_SIZE = 64;
     /**

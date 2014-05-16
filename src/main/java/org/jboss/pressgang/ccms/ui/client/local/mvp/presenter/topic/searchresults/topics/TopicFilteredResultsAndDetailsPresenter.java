@@ -37,8 +37,6 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
@@ -2337,12 +2335,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             String queryString = removeHistoryToken(historyToken, TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
             setQueryString(queryString);
 
-            if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
+            if (queryString.contains(Constants.TOPIC_VIEW_DATA_PREFIX)) {
+                queryString = queryString.replace(Constants.TOPIC_VIEW_DATA_PREFIX, Constants.TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON + "=");
+            }
+
+            final Map<String, String> tokens = parseTokenFragment(queryString);
+
+            if (tokens.containsKey(Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
                 startWithNewTopic = true;
                 setQueryString(null);
+            } else if (tokens.containsKey(Constants.ENTITY_ID_PREFIX_WO_SEMICOLON)) {
+                final String id = tokens.get(Constants.ENTITY_ID_PREFIX_WO_SEMICOLON);
+                setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + id);
             } else {
-                if (queryString.startsWith(Constants.TOPIC_VIEW_DATA_PREFIX)) {
-
+                // Get the topic view data
+                if (tokens.containsKey(Constants.TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON)) {
                     /*
                         Topic view data is in the form of:
                         topicViewData;1234=r:321234
@@ -2359,49 +2366,39 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     topicRevisionViewData.clear();
 
-                    final String topicViewDataRegex = Constants.TOPIC_VIEW_DATA_PREFIX + "(.*?)(;" + Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + ")";
+                    final String topicViewData = tokens.get(Constants.TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON);
 
-                    final RegExp regExp = RegExp.compile(topicViewDataRegex);
-                    final MatchResult matcher = regExp.exec(queryString);
+                    final String[] topicViewDataElements = topicViewData.split(";");
+                    for (int i = 0; i < topicViewDataElements.length; ++i) {
+                        final String[] details = topicViewDataElements[i].split("=");
+                        if (details.length == 2) {
+                            try {
+                                final Integer topicId = Integer.parseInt(details[0]);
+                                final String[] settings = details[1].split(",");
 
-                    if (matcher != null && matcher.getGroupCount() >= 2) {
-
-                        for (int i = 0; i < matcher.getGroupCount(); ++i) {
-                            LOGGER.log(Level.INFO, matcher.getGroup(i));
-                        }
-
-                        final String topicViewData = matcher.getGroup(1);
-
-                        final String[] topicViewDataElements = topicViewData.split(";");
-                        for (int i = 0; i < topicViewDataElements.length; ++i) {
-                            final String[] details = topicViewDataElements[i].split("=");
-                            if (details.length == 2) {
-                                try {
-                                    final Integer topicId = Integer.parseInt(details[0]);
-                                    final String[] settings = details[1].split(",");
-
-                                    for (@NotNull final String setting : settings) {
+                                for (@NotNull final String setting : settings) {
                                         /* A directive to display a particular revision of a topic */
-                                        if (setting.startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
-                                            topicRevisionViewData.put(topicId,
-                                                    Integer.parseInt(setting.replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
-                                        }
+                                    if (setting.startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
+                                        topicRevisionViewData.put(topicId,
+                                                Integer.parseInt(setting.replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
                                     }
-                                } catch (@NotNull final NumberFormatException ex) {
-                                    // A badly formed url. Ignore this.
                                 }
+                            } catch (@NotNull final NumberFormatException ex) {
+                                // A badly formed url. Ignore this.
                             }
                         }
-
-                        queryString = queryString.replaceFirst(Constants.TOPIC_VIEW_DATA_PREFIX + topicViewData + ";", "");
                     }
                 }
 
-                if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
-                    /* Make sure that the query string has at least the prefix */
-                    setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
+                // Get the query
+                if (tokens.containsKey(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                    setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX + tokens.get(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON));
                 }
+            }
+
+            if (tokens.isEmpty()) {
+                // Make sure that the query string has at least the prefix
+                setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
             }
 
         } finally {
