@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +51,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -152,11 +154,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private List<String> locales;
 
     /**
-     * true after the locales have been loaded
-     */
-    private boolean localesLoaded = false;
-
-    /**
      * true after the default locale has been loaded
      */
     @Nullable
@@ -212,6 +209,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private String queryString;
 
+    private String action;
+
     private boolean displayingSearchResults = true;
 
     private Integer lastVisibleRow = null;
@@ -226,6 +225,62 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      */
     private JavaScriptObject textUpdaterTimeout;
 
+    private final ActionCompletedCallback<RESTProcessInformationV1> completedProcessCallback = new
+            ActionCompletedCallback<RESTProcessInformationV1>() {
+        @Override
+        public void success(final RESTProcessInformationV1 restProcessInformationV1) {
+            // Update the process list if it has been initialised
+            if (processesLoadInitiated) {
+                processesLoadInitiated = false;
+                loadProcesses();
+            }
+        }
+
+        @Override
+        public void failure() {
+            // Do nothing
+        }
+    };
+
+    private final ActionCompletedCallback<RESTTextContentSpecV1> completedFreezeCallback = new
+            ActionCompletedCallback<RESTTextContentSpecV1>() {
+        @Override
+        public void success(final RESTTextContentSpecV1 retValue) {
+            final boolean newSpec = !retValue.getId().equals(getDisplayedContentSpec().getId());
+
+            // Create the contentspec wrapper
+            final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
+                    RESTTextContentSpecCollectionItemV1();
+            contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
+
+            // create the content spec, and add to the wrapper
+            contentSpecCollectionItem.setItem(retValue);
+
+            // Update the displayed content spec
+            filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
+            filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
+
+            if (newSpec) {
+                // We need to swap the text with the invalid text
+                ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
+                filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
+                filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
+
+                setSearchResultsVisible(true);
+            }
+
+            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
+                add(contentSpecPresenter.getDisplay());
+            }});
+            updateDisplayWithNewEntityData(false);
+        }
+
+        @Override
+        public void failure() {
+            // Do nothing
+        }
+    };
 
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
@@ -444,6 +499,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void readonlyCallback(final boolean readOnly) {
                         getDisplay().getSave().setEnabled(!readOnly);
+                        getDisplay().getActionsMenu().setEnabled(!readOnly);
                     }
                 });
             }
@@ -458,6 +514,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void readonlyCallback(boolean readOnly) {
                         getDisplay().getSave().setEnabled(!readOnly);
+                        getDisplay().getActionsMenu().setEnabled(!readOnly);
                     }
                 });
 
@@ -771,27 +828,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        final ActionCompletedCallback<RESTProcessInformationV1> completedProcess = new ActionCompletedCallback<RESTProcessInformationV1>() {
-            @Override
-            public void success(final RESTProcessInformationV1 restProcessInformationV1) {
-                // Update the process list if it has been initialised
-                if (processesLoadInitiated) {
-                    processesLoadInitiated = false;
-                    loadProcesses();
-                }
-            }
-
-            @Override
-            public void failure() {
-                // Do nothing
-            }
-        };
-
         final Command pushTranslationCommand = new Command() {
             @Override
             public void execute() {
                 translationPushPresenter.display(getDisplayedContentSpec(), display);
-                translationPushPresenter.addActionCompletedHandler(completedProcess);
+                translationPushPresenter.addActionCompletedHandler(completedProcessCallback);
             }
         };
 
@@ -799,46 +840,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void execute() {
                 translationSyncPresenter.display(getDisplayedContentSpec(), display);
-                translationSyncPresenter.addActionCompletedHandler(completedProcess);
-            }
-        };
-
-        final ActionCompletedCallback<RESTTextContentSpecV1> completedFreeze = new ActionCompletedCallback<RESTTextContentSpecV1>() {
-            @Override
-            public void success(final RESTTextContentSpecV1 retValue) {
-                final boolean newSpec = !retValue.getId().equals(getDisplayedContentSpec().getId());
-
-                // Create the contentspec wrapper
-                final RESTTextContentSpecCollectionItemV1 contentSpecCollectionItem = new
-                        RESTTextContentSpecCollectionItemV1();
-                contentSpecCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
-
-                // create the content spec, and add to the wrapper
-                contentSpecCollectionItem.setItem(retValue);
-
-                // Update the displayed content spec
-                filteredResultsPresenter.getProviderData().setDisplayedItem(contentSpecCollectionItem.clone(true));
-                filteredResultsPresenter.setSelectedItem(contentSpecCollectionItem);
-
-                if (newSpec) {
-                    // We need to swap the text with the invalid text
-                    ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
-
-                    filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
-                    filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
-
-                    setSearchResultsVisible(true);
-                }
-
-                initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                    add(contentSpecPresenter.getDisplay());
-                }});
-                updateDisplayWithNewEntityData(false);
-            }
-
-            @Override
-            public void failure() {
-                // Do nothing
+                translationSyncPresenter.addActionCompletedHandler(completedProcessCallback);
             }
         };
 
@@ -846,7 +848,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void execute() {
                 freezePresenter.display(getDisplayedContentSpec(), display);
-                freezePresenter.addActionCompletedHandler(completedFreeze);
+                freezePresenter.addActionCompletedHandler(completedFreezeCallback);
             }
         };
 
@@ -999,6 +1001,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         ComponentContentSpecV1.fixDisplayedText(retValue);
                         displayCallback.displayNewEntity(retValue);
+
+                        if ("Freeze".equalsIgnoreCase(action)) {
+                            freezePresenter.display(retValue, getDisplay());
+                            freezePresenter.addActionCompletedHandler(completedFreezeCallback);
+                        } else if ("TranslationPush".equalsIgnoreCase(action)) {
+                            translationPushPresenter.display(retValue, getDisplay());
+                            translationPushPresenter.addActionCompletedHandler(completedProcessCallback);
+                        } else if ("TranslationSync".equalsIgnoreCase(action)) {
+                            translationSyncPresenter.display(retValue, getDisplay());
+                            translationSyncPresenter.addActionCompletedHandler(completedProcessCallback);
+                        }
                     }
                 };
 
@@ -1069,6 +1082,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                 display.getSave().setEnabled(!serverDetails.isReadOnly());
+                display.getActionsMenu().setEnabled(!serverDetails.isReadOnly());
                 filteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
             }
         });
@@ -1218,6 +1232,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                                 // We can't save while merging.
                                 getDisplay().getSave().setEnabled(false);
+                                getDisplay().getActionsMenu().setEnabled(false);
                             }
 
                             contentSpecRevisionsPresenter.getDisplay().setButtonsEnabled(true);
@@ -1305,28 +1320,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private void viewLatestSpecRevision() {
         contentSpecRevisionsPresenter.getDisplay().setRevisionContentSpec(null);
     }
-
-//    private void displayPropertyTags() {
-//        try {
-//            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
-//
-//            final RESTTextContentSpecV1 displayedItem = getDisplayedContentSpec();
-//
-//            checkState(displayedItem.getProperties() != null,
-//                    "The displayed entity or revision needs to have a valid properties collection");
-//
-//            /*
-//                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
-//                lead to the properties collection being null.
-//            */
-//            Collections.sort(displayedItem.getProperties().getItems(),
-//                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-//            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
-//
-//        } finally {
-//            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
-//        }
-//    }
 
     /**
      * Gets the tags, so they can be displayed and added to topics. Unlike the ContentSpecTagsPresenter.getTags() method,
@@ -1519,15 +1512,23 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     @Override
     public void parseToken(@NotNull final String historyToken) {
         this.queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
+        action = null;
 
-        if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
+        final Map<String, String> tokens = parseTokenFragment(queryString);
+
+        if (tokens.containsKey(Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
             startWithNewSpec = true;
             queryString = null;
-        } else {
-            if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
-                /* Make sure that the query string has at least the prefix */
-                queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+        } else if (tokens.containsKey(Constants.ENTITY_ID_PREFIX_WO_SEMICOLON)) {
+            final String id = tokens.get(Constants.ENTITY_ID_PREFIX_WO_SEMICOLON);
+            queryString = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.CONTENT_SPEC_IDS_FILTER_VAR + "=" + id;
+
+            if (tokens.containsKey(Constants.ACTION_PREFIX_WO_SEMICOLON)) {
+                action = tokens.get(Constants.ACTION_PREFIX_WO_SEMICOLON);
             }
+        } else if (!tokens.containsKey(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+            /* Make sure that the query string has at least the prefix */
+            queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
     }
 
@@ -1693,6 +1694,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         contentSpecTagsPresenter.close();
         contentSpecDetailsPresenter.close();
         contentSpecProcessPresenter.close();
+        freezePresenter.close();
 
         keyboardEventHandler.removeHandler();
     }
@@ -1849,6 +1851,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             @Override
             public void readonlyCallback(final boolean readOnly) {
                 getDisplay().getSave().setEnabled(!readOnly);
+                getDisplay().getActionsMenu().setEnabled(!readOnly);
             }
         });
     }
@@ -1972,9 +1975,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         "The displayed collection item to reference a valid entity and have a valid tags collection.");
                 return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
             }
-        },
-        ContentSpecFilteredResultsAndDetailsPresenter.this,
-        new BindRemoveButtons() {
+        }, ContentSpecFilteredResultsAndDetailsPresenter.this, new BindRemoveButtons() {
             @Override
             public void bindRemoveButtons() {
                 bindTagEditingButtons();
@@ -2354,6 +2355,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         MenuItem getSyncTranslation();
 
         MenuItem getFreeze();
+
+        MenuItem getActionsMenu();
 
         Label getTextDown();
 
