@@ -42,11 +42,7 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
     private final TextBox notDescription = new TextBox();
     private final TextBox includedInContentSpecs = new TextBox();
     private final TextBox notIncludedInContentSpecs = new TextBox();
-    // Removing hibernate search for easier deployment in a cluster (https://bugzilla.redhat.com/show_bug.cgi?id=1090748)
-    //private final TextBox freeTextSearch = new TextBox();
     private final ListBox topicFormat = new ListBox();
-    //private final TriStatePushButton hasBugzillaBugs = new TriStatePushButton();
-    //private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
     private final SmallTriStatePushButton hasXMLErrors = new SmallTriStatePushButton();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
@@ -135,18 +131,6 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         this.setWidget(this.getRowCount(), 0, notIncludedInContentSpecLabel);
         this.setWidget(this.getRowCount() - 1, 1, notIncludedInContentSpecs);
 
-        /*@NotNull final Label freeTextSearchLabel = new Label(PressGangCCMSUI.INSTANCE.FreeTextSearch());
-        this.setWidget(this.getRowCount(), 0, freeTextSearchLabel);
-        this.setWidget(this.getRowCount() - 1, 1, freeTextSearch);*/
-
-        /*final Label hasBugzillaBugsLabels = new Label(PressGangCCMSUI.INSTANCE.HasBugzillaBugs());
-        this.setWidget(this.getRowCount(), 0, hasBugzillaBugsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, hasBugzillaBugs);
-
-        final Label hasOpenBugzillaBugsLabels = new Label(PressGangCCMSUI.INSTANCE.HasOpenBugzillaBugs());
-        this.setWidget(this.getRowCount(), 0, hasOpenBugzillaBugsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, hasOpenBugzillaBugs);*/
-
         final Label hasXMLErrorsLabels = new Label(PressGangCCMSUI.INSTANCE.HasXMLErrors());
         this.setWidget(this.getRowCount(), 0, hasXMLErrorsLabels);
         this.setWidget(this.getRowCount() - 1, 1, hasXMLErrors);
@@ -191,9 +175,6 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         notDescription.setValue(value.getNotDescription());
         includedInContentSpecs.setValue(value.getIncludedInContentSpecs());
         notIncludedInContentSpecs.setValue(value.getNotIncludedInContentSpecs());
-        //freeTextSearch.setValue(value.getFreeTextSearch());
-        /*hasBugzillaBugs.setState(value.getHasBugzillaBugs());
-        hasOpenBugzillaBugs.setState(value.getHasOpenBugzillaBugs());*/
         hasXMLErrors.setState(value.getHasXMLErrors());
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
@@ -225,9 +206,6 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         value.setNotDescription(notDescription.getValue());
         value.setIncludedInContentSpecs(includedInContentSpecs.getValue());
         value.setNotIncludedInContentSpecs(notIncludedInContentSpecs.getValue());
-        //value.setFreeTextSearch(freeTextSearch.getValue());
-        /*value.setHasBugzillaBugs(hasBugzillaBugs.getState());
-        value.setHasOpenBugzillaBugs(hasOpenBugzillaBugs.getState());*/
         value.setHasXMLErrors(hasXMLErrors.getState());
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());

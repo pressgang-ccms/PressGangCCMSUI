@@ -45,7 +45,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
     private String notDescription;
     private String includedInContentSpecs;
     private String notIncludedInContentSpecs;
-    private String freeTextSearch;
     private Integer format;
     private TriStateSelectionState hasBugzillaBugs = TriStateSelectionState.NONE;
     private TriStateSelectionState hasOpenBugzillaBugs = TriStateSelectionState.NONE;
@@ -167,15 +166,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
 
     public void setNotIncludedInContentSpecs(@Nullable final String notIncludedInContentSpecs) {
         this.notIncludedInContentSpecs = notIncludedInContentSpecs;
-    }
-
-    @Nullable
-    public String getFreeTextSearch() {
-        return freeTextSearch;
-    }
-
-    public void setFreeTextSearch(@Nullable final String freeTextSearch) {
-        this.freeTextSearch = freeTextSearch;
     }
 
     @Nullable
@@ -317,11 +307,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
                     createFilterField(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC, getNotIncludedInContentSpecs()));
         }
 
-//        if (!GWTUtilities.isStringNullOrEmpty(getFreeTextSearch())) {
-//            filter.getFilterFields_OTM().addNewItem(
-//                    createFilterField(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR, getFreeTextSearch()));
-//        }
-
         if (isMatchAll() != MATCH_ALL_DEFAULT) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.LOGIC_FILTER_VAR, isMatchAll() + ""));
         }
@@ -378,7 +363,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
             notDescription = "";
             includedInContentSpecs = "";
             notIncludedInContentSpecs = "";
-            freeTextSearch = "";
             format = null;
             hasBugzillaBugs = TriStateSelectionState.NONE;
             hasOpenBugzillaBugs = TriStateSelectionState.NONE;
@@ -423,8 +407,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
                         setIncludedInContentSpecs(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
                         setNotIncludedInContentSpecs(fieldItem.getValue());
-//                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
-//                        setFreeTextSearch(fieldItem.getValue());
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_FORMAT_VAR)) {
                         try {
                             setFormat(Integer.parseInt(fieldItem.getValue()));
@@ -521,10 +503,6 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
             retValue.append(";").append(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC).append("=").append(
                     GWTUtilities.encodeQueryParameter(notIncludedInContentSpecs));
         }
-//        if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
-//            retValue.append(";").append(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR).append("=").append(
-//                    GWTUtilities.encodeQueryParameter(freeTextSearch));
-//        }
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED) {
             retValue.append(";").append(CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS).append("=").append(
                     GWTUtilities.encodeQueryParameter("true"));
