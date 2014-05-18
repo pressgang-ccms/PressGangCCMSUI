@@ -1223,6 +1223,12 @@ public final class Constants {
      * This path segment defines the initial topic view state.
      */
     public static final String TOPIC_VIEW_DATA_PREFIX = TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON + ";";
+
+    public static final String ENTITY_ID_PREFIX_WO_SEMICOLON = "id";
+    public static final String ENTITY_ID_PREFIX = ENTITY_ID_PREFIX_WO_SEMICOLON + ";";
+    public static final String ACTION_PREFIX_WO_SEMICOLON = "action";
+    public static final String ACTION_PREFIX = ACTION_PREFIX_WO_SEMICOLON + ";";
+
     /**
      * The deafult size of the xml error split panels.
      */
