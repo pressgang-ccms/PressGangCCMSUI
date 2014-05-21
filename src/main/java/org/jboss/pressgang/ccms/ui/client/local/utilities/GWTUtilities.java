@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
@@ -368,6 +371,32 @@ final public class GWTUtilities {
         }
 
         return b.equals(a);
+    }
+
+    /**
+     * Compares two lists for equality, considering null and empty lists to be equal.
+     *
+     * @param a The first list
+     * @param b The second list
+     * @return true if both lists are either null or empty, or if both lists are equal
+     */
+    public static <T> boolean listsEqual(@Nullable final List<T> a, @Nullable final List<T> b) {
+        if ((a == null || a.isEmpty()) && (b == null || b.isEmpty())) {
+            return true;
+        }
+
+        if (a != null) {
+            return a.equals(b);
+        }
+
+        if (a.size() != b.size()) {
+            return false;
+        } else {
+            final Set<T> intersect = new HashSet<T>(a);
+            intersect.addAll(b);
+            intersect.removeAll(a);
+            return intersect.size() == 0;
+        }
     }
 
     /**

@@ -1304,3 +1304,130 @@ table.ProcessWaitingTable {
     padding: 0px 3px;
     cursor: pointer;
 }
+
+.SettingsLocaleTable {
+    margin: auto;
+}
+
+.SettingsLocaleCell, .SettingsOtherCell {
+    border: 1px solid #000000;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.SettingsLocaleCellScroll, .SettingsOtherCellScroll {
+    width: 100px;
+    height: 150px;
+}
+
+.SettingsLocaleCellList div div,
+.SettingsOtherCellList div div {
+    padding: 0px 2px;
+}
+
+.gwt-DisclosurePanel-open.SettingsDisclosurePanel .header {
+    border-bottom: 1px solid black;
+}
+
+.SettingsDisclosurePanel {
+    border: 1px solid black;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.SettingsDisclosurePanel .header {
+    background-color: #EFEFEF;
+    border-spacing: 0px;
+    color: black;
+    width: 100%;
+    font-weight: bold;
+}
+
+.SettingsDisclosurePanel .header table {
+    padding: 4px 4px;
+}
+
+.SettingsDisclosurePanel .content {
+    margin: auto;
+    padding: 4px;
+    width: 100%;
+}
+
+.SettingsEntitiesField {
+    width: 70px;
+    text-align: center;
+}
+
+.SettingsEntitiesTable tr:nth-child(even) {
+    background-color: #f1f5f9;
+}
+
+.SettingsEntitiesTable>tbody>tr>td {
+    width: 50%;
+}
+
+.SettingsEntitiesTable table {
+    width: 100%;
+    padding: 3px 4px;
+}
+
+.SettingsActionPanel, .SettingsPanel {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+}
+
+.SettingsTable {
+    width: 100%;
+}
+
+.SettingsLabel {
+    width: 100px;
+    white-space: nowrap;
+}
+
+.SettingsLabel div {
+    padding: 4px;
+}
+
+.SettingsField input {
+    width: 98%
+}
+
+.SettingsZanataTable input,
+.SettingsUndefinedTable input {
+    display: inline-block;
+    width: 100%;
+    min-width: 20px;
+}
+
+.SettingsZanataTable tfoot th {
+    padding-right: 0px;
+}
+
+.SettingsZanataNameFooter input,
+.SettingsZanataProjectVersionFooter input {
+    width: 100px;
+}
+
+.SettingsZanataIDFooter input {
+    width: 80px;
+}
+
+.SettingsZanataProjectFooter input {
+    width: 120px;
+}
+
+.SettingsZanataURLFooter {
+    padding-right: 10px !important;
+    width: 100%
+}
+
+.SettingsKeyFooter {
+    width: 40%;
+}
+
+.SettingsValueFooter {
+    width: 100%;
+}

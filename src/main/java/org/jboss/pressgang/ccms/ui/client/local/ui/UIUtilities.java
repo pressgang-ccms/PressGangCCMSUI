@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.view.client.Range;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
@@ -247,7 +246,7 @@ final public class UIUtilities {
      * @return A new cell table with the default settings
      */
     @NotNull
-    public static <T extends RESTBaseCollectionItemV1<?, ?>> CellTable<T> createCellTable() {
+    public static <T> CellTable<T> createCellTable() {
         return createCellTable(Constants.MAX_SEARCH_RESULTS);
     }
 
@@ -257,7 +256,7 @@ final public class UIUtilities {
      * @return A new cell table with the default settings
      */
     @NotNull
-    public static <T extends RESTBaseCollectionItemV1<?, ?>> CellTable<T> createCellTable(final int pageSize) {
+    public static <T> CellTable<T> createCellTable(final int pageSize) {
         return new CellTable<T>(pageSize, (Resources) GWT.create(TableResources.class));
     }
 

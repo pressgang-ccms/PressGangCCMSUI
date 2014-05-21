@@ -53,6 +53,7 @@ public class TopShortcutView extends HorizontalPanel {
     private final AnchorMenuItem processes = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Processes(), false, (Command) null);
     private final AnchorMenuItem monitoring = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Monitoring(), false, (Command) null);
     private final AnchorMenuItem sysinfo = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.SystemInfo(), false, (Command) null);
+    private final AnchorMenuItem serverSettings = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.ServerSettings(), false, (Command) null);
 
     private final AnchorMenuItem images = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Images(), false, (Command) null);
     private final AnchorMenuItem files = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.Files(), false, (Command) null);
@@ -93,6 +94,7 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addItem(processes);
         advanced.addItem(monitoring);
         advanced.addItem(sysinfo);
+        advanced.addItem(serverSettings);
 
         add(home);
         add(docbuilder);
@@ -268,5 +270,9 @@ public class TopShortcutView extends HorizontalPanel {
 
     public AnchorMenuItem getProcesses() {
         return processes;
+    }
+
+    public AnchorMenuItem getServerSettings() {
+        return serverSettings;
     }
 }

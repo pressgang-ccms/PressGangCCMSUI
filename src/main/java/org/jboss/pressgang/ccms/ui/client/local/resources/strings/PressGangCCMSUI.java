@@ -1417,4 +1417,46 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String DuplicateGreenText();
+
+    @NotNull
+    String Application();
+
+    @NotNull
+    String ServerSettings();
+
+    @NotNull
+    String StringConstantUITemplates();
+
+    @NotNull
+    String StringConstantBuildTemplates();
+
+    @NotNull
+    String SettingsCustomEntities();
+
+    @NotNull
+    String ZanataServerID();
+
+    @NotNull
+    String ZanataServerName();
+
+    @NotNull
+    String ZanataServerProject();
+
+    @NotNull
+    String ZanataServerProjectVersion();
+
+    @NotNull
+    String SettingsKey();
+
+    @NotNull
+    String SettingsValue();
+
+    @NotNull
+    String MandatoryValuesMissing();
+
+    @NotNull
+    String ZanataServerAlreadyExists();
+
+    @NotNull
+    String UndefinedSettingAlreadyExists();
 }

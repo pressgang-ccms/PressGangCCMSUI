@@ -2350,4 +2350,24 @@ public final class FailOverRESTCallDatabase {
             }
         };
     }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONServerSettings method
+     *
+     * @param entity The Server settings to save
+     * @return A RESTCall that can call the REST updateJSONServerSettings method
+     */
+    public static RESTCall updateServerSettings(@NotNull final RESTServerSettingsV1 entity) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONServerSettings(entity);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
 }
