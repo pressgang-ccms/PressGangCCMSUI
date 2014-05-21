@@ -50,6 +50,7 @@ public class AlertBox extends DialogBox {
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final HTML message = new HTML();
     private final VerticalPanel verticalPanel = new VerticalPanel();
+    private String messageText;
 
     private AlertBox() {
         this.setModal(true);
@@ -80,6 +81,7 @@ public class AlertBox extends DialogBox {
 
     static private void close() {
         INSTANCE.hide();
+        INSTANCE.messageText = null;
         for (final HandlerRegistration handlerRegistration : handlers) {
             handlerRegistration.removeHandler();
         }
@@ -108,10 +110,31 @@ public class AlertBox extends DialogBox {
      * @param message The message to display
      */
     static public void setMessageAndDisplay(@NotNull final String message) {
-        checkState(!INSTANCE.isShowing(), "setMessageAndDisplay() should not be called when the alert is already displayed. Second message was \"" + message + "\"");
-        INSTANCE.setMessage(message);
-        INSTANCE.center();
-        keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
+
+
+        if (INSTANCE.messageText == null) {
+            /*
+                INSTANCE.messageText will be null if we are displaying a fresh error. In this case we set the message
+                to the one being provided.
+            */
+            INSTANCE.messageText = message;
+        } else {
+            /*
+                INSTANCE.messageText will not be null if we are displaying a secondary error. In this case we append
+                to the existing message.
+            */
+            INSTANCE.messageText += "\n\n" + message;
+        }
+
+        INSTANCE.setMessage(INSTANCE.messageText);
+
+        /*
+            Display and position the message box if it is not already visible.
+         */
+        if (!INSTANCE.isShowing()) {
+            INSTANCE.center();
+            keyboardEventHandler = Event.addNativePreviewHandler(keyboardShortcutPreviewHandler);
+        }
     }
 
     static public void setMessage(@NotNull final String message) {
