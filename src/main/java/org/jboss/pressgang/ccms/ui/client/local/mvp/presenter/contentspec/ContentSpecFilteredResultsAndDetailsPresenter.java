@@ -1694,6 +1694,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         contentSpecTagsPresenter.close();
         contentSpecDetailsPresenter.close();
         contentSpecProcessPresenter.close();
+        translationSyncPresenter.close();
+        translationPushPresenter.close();
         freezePresenter.close();
 
         keyboardEventHandler.removeHandler();
