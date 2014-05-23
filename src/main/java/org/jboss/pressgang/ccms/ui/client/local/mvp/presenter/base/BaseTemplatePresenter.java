@@ -55,6 +55,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProcessVie
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyTagFilteredResultsAndDetailsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ServerSettingsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SysInfoViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
@@ -154,6 +155,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         } else {
             settingsCallback.serverSettingsLoaded(serverSettings);
         }
+    }
+
+    protected void setServerSettings(@NotNull RESTServerSettingsV1 serverSettings) {
+        this.serverSettings = serverSettings;
     }
 
     /**
@@ -578,6 +583,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void execute() {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new ProcessViewEvent());
+                }
+            }
+        });
+
+        display.getTopShortcutView().getServerSettings().setScheduledCommand(new Command() {
+            @Override
+            public void execute() {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new ServerSettingsViewEvent());
                 }
             }
         });

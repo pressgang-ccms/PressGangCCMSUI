@@ -970,4 +970,32 @@ public interface CSSConstants {
         String PREVIEW_DIALOG_BOX = "FreezePreviewDialog";
         String PREVIEW_FIELD = "FreezePreviewText";
     }
+
+    interface SettingsView {
+        String LOCALES_TABLE = "SettingsLocaleTable";
+        String LOCALES_CELL = "SettingsLocaleCell";
+        String LOCALES_CELL_LIST = "SettingsLocaleCellList";
+        String LOCALES_CELL_SCROLL = "SettingsLocaleCellScroll";
+        String DISCLOSURE_PANEL = "SettingsDisclosurePanel";
+        String ENTITIES_LABEL = "SettingsEntitiesLabel";
+        String ENTITIES_FIELD = "SettingsEntitiesField";
+        String ENTITIES_TABLE = "SettingsEntitiesTable";
+        String SETTINGS_PANEL = "SettingsPanel";
+        String SETTINGS_ACTION_PANEL = "SettingsActionPanel";
+        String SETTINGS_TABLE = "SettingsTable";
+        String SETTINGS_LABEL = "SettingsLabel";
+        String SETTINGS_FIELD = "SettingsField";
+        String ZANATA_TABLE = "SettingsZanataTable";
+        String ZANATA_ID_FOOTER = "SettingsZanataIDFooter";
+        String ZANATA_NAME_FOOTER = "SettingsZanataNameFooter";
+        String ZANATA_URL_FOOTER = "SettingsZanataURLFooter";
+        String ZANATA_PROJECT_FOOTER = "SettingsZanataProjectFooter";
+        String ZANATA_PROJECT_VERSION_FOOTER = "SettingsZanataProjectVersionFooter";
+        String UNDEFINED_TABLE = "SettingsUndefinedTable";
+        String KEY_FOOTER = "SettingsKeyFooter";
+        String VALUE_FOOTER = "SettingsValueFooter";
+        String OTHER_CELL_LIST = "SettingsOtherCellList";
+        String OTHER_CELL_SCROLL = "SettingsOtherCellScroll";
+        String OTHER_CELL = "SettingsOtherCell";
+    }
 }
