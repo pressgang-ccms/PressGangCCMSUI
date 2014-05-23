@@ -31,6 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -163,17 +164,17 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
             if (object != null && object.getItem() != null && object.getItem().getContentSpecs_OTM() != null && object.getItem().getContentSpecs_OTM().getSize() != 0) {
 
                 for (final RESTContentSpecCollectionItemV1 contentSpec : object.getItem().getContentSpecs_OTM().getItems()) {
-                    String title = null;
-                    String version = null;
-                    String product = null;
+                    String title = "";
+                    String version = "";
+                    String product = "";
 
                     for (final RESTCSNodeCollectionItemV1 specNode : contentSpec.getItem().getChildren_OTM().getItems()) {
                         if (specNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA) {
-                            if (specNode.getItem().getTitle().equals("Title")) {
+                            if (specNode.getItem().getTitle().equals(CommonConstants.CS_TITLE_TITLE) && specNode.getItem().getAdditionalText() != null) {
                                 title = specNode.getItem().getAdditionalText();
-                            } else if (specNode.getItem().getTitle().equals("Product")) {
+                            } else if (specNode.getItem().getTitle().equals(CommonConstants.CS_PRODUCT_TITLE) && specNode.getItem().getAdditionalText() != null) {
                                 product = specNode.getItem().getAdditionalText();
-                            } else if (specNode.getItem().getTitle().equals("Version")) {
+                            } else if (specNode.getItem().getTitle().equals(CommonConstants.CS_VERSION_TITLE) && specNode.getItem().getAdditionalText() != null) {
                                 version = specNode.getItem().getAdditionalText();
                             }
                         }
@@ -194,27 +195,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            viewButtonCell.setEnabled(buttonsEnabled);
-
-            /*
-             * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
-             * editable instead of read only.
-             */
-            if (mainTopic != null && object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
-                if (duplicateTopic == null || duplicateTopic.getRevision().equals(mainTopic.getRevision())) {
-                    viewButtonCell.setEnabled(false);
-                    return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
-                } else {
-                    return PressGangCCMSUI.INSTANCE.Edit();
-                }
-            }
-
-            if (duplicateTopic == null || (object != null && object.getItem() != null && !duplicateTopic.getRevision().equals(object.getItem().getRevision()))) {
-                return PressGangCCMSUI.INSTANCE.View();
-            }
-
-            viewButtonCell.setEnabled(false);
-            return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
+            return PressGangCCMSUI.INSTANCE.Open();
         }
     };
     /**
@@ -339,7 +320,7 @@ public class TopicDuplicatesView extends BaseTemplateView implements TopicDuplic
 
         this.getPanel().addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_BASE_PANEL);
 
-        results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
+        results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.Open());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
         results.addColumn(htmlDiffButton, PressGangCCMSUI.INSTANCE.HTMLDiff());
         results.addColumn(topicId, PressGangCCMSUI.INSTANCE.TopicID());
