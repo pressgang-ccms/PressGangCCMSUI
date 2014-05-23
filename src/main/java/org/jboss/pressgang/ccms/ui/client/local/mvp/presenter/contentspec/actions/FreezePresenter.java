@@ -11,6 +11,7 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClosablePopup;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
@@ -43,6 +44,7 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
             final String username = display.getUsername().getText().trim();
             final boolean createNewSpec = display.getCreateNewSpec().getValue();
             final boolean useLatestRevisions = display.getUseLatestRevisions().getValue();
+            final Integer maxTopicRevision = display.getMaxTopicRevision().getValue();
 
             if (username.isEmpty()) {
                 display.getDialogBox().hide();
@@ -92,7 +94,8 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
                     // Create the snapshot
                     getFailOverRESTCall().performRESTCall(
                             FailOverRESTCallDatabase.freezeContentSpec(contentSpec.getId(), message.toString(), useLatestRevisions,
-                                    createNewSpec, flag, serverSettings.getEntities().getUnknownUserId().toString()), callback,
+                                    maxTopicRevision, createNewSpec, flag, serverSettings.getEntities().getUnknownUserId().toString()),
+                            callback,
                             parentDisplay);
                 }
             });
@@ -104,6 +107,7 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
         public void onClick(ClickEvent event) {
             final boolean createNewSpec = display.getCreateNewSpec().getValue();
             final boolean useLatestRevisions = display.getUseLatestRevisions().getValue();
+            final Integer maxTopicRevision = display.getMaxTopicRevision().getValue();
 
             // Create the callback
             final RESTCallBack<String> callback = new RESTCallBack<String>() {
@@ -122,7 +126,9 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
             };
 
             getFailOverRESTCall().performRESTCall(
-                    FailOverRESTCallDatabase.previewContentSpecSnapshot(contentSpec.getId(), useLatestRevisions, createNewSpec), callback,
+                    FailOverRESTCallDatabase.previewContentSpecSnapshot(contentSpec.getId(), useLatestRevisions, maxTopicRevision,
+                            createNewSpec),
+                    callback,
                     parentDisplay);
         }
     };
@@ -168,6 +174,8 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
         CheckBox getCreateNewSpec();
 
         PushButton getPreview();
+
+        IntegerBox getMaxTopicRevision();
     }
 
     public interface PreviewDialogBox {

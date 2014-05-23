@@ -1459,4 +1459,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String UndefinedSettingAlreadyExists();
+
+    @NotNull
+    String MaxTopicRevision();
 }

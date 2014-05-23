@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -14,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions.FreezePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.WholeNumbersValidator;
 import org.jetbrains.annotations.NotNull;
 
 public class FreezeDialogBox extends DialogBox implements FreezePresenter.Display {
@@ -27,6 +29,7 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
     private final RadioButton majorChange = new RadioButton(CHANGE_TYPE_GROUP, "");
     private final TextArea message = new TextArea();
     private final TextBox username = new TextBox();
+    private final IntegerBox maxTopicRevision = new IntegerBox();
 
     private final CheckBox latestRevisions = new CheckBox(PressGangCCMSUI.INSTANCE.UseLatestRevisions());
     private final CheckBox newContentSpec = new CheckBox(PressGangCCMSUI.INSTANCE.FreezeNewContentSpec());
@@ -45,6 +48,8 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
         cancel.getElement().setId(Constants.ElementIDs.CANCEL_SAVE_DIALOG.getId());
         ok.getElement().setId(Constants.ElementIDs.OK_SAVE_DIALOG.getId());
 
+        new WholeNumbersValidator(maxTopicRevision);
+
         int row = 0;
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.Message()));
         layout.setWidget(row, 1, message);
@@ -52,6 +57,10 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
         ++row;
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.Username()));
         layout.setWidget(row, 1, username);
+
+        ++row;
+        layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MaxTopicRevision()));
+        layout.setWidget(row, 1, maxTopicRevision);
 
         ++row;
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MinorChange()));
@@ -122,6 +131,12 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
 
     @NotNull
     @Override
+    public IntegerBox getMaxTopicRevision() {
+        return maxTopicRevision;
+    }
+
+    @NotNull
+    @Override
     public RadioButton getMajorChange() {
         return majorChange;
     }
@@ -144,6 +159,7 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
         minorChange.setValue(true);
         latestRevisions.setValue(false);
         newContentSpec.setValue(false);
+        maxTopicRevision.setValue(null);
     }
 
     @Override
