@@ -1465,4 +1465,34 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String MaxTopicRevision();
+
+    @NotNull
+    String ZanataServers();
+
+    @NotNull
+    String CustomSettings();
+
+    @NotNull
+    String Other();
+
+    @NotNull
+    String DefaultLocale();
+
+    @NotNull
+    String JMSUpdateFrequency();
+
+    @NotNull
+    String ReadOnly();
+
+    @NotNull
+    String DocBuilderURL();
+
+    @NotNull
+    String UIURL();
+
+    @NotNull
+    String SEOCategoryIDs();
+
+    @NotNull
+    String DocBookTemplateIDs();
 }

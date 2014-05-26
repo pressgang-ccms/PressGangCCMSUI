@@ -16,25 +16,26 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.WholeNumbersValidator;
 import org.jetbrains.annotations.NotNull;
 
 public final class RESTServerSettingsV1DetailsEditor extends FlexTable implements Editor<RESTServerSettingsV1> {
-    private final DisclosurePanel zanataDetailsPanel = new DisclosurePanel("Zanata Servers");
-    private final DisclosurePanel localeDetailsPanel = new DisclosurePanel("Locales");
+    private final DisclosurePanel zanataDetailsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.ZanataServers());
+    private final DisclosurePanel localeDetailsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.Locales());
     private final FlexTable localeDetailsTable = new FlexTable();
-    private final DisclosurePanel customSettingsPanel = new DisclosurePanel("Custom Settings");
-    private final DisclosurePanel otherPanel = new DisclosurePanel("Other");
+    private final DisclosurePanel customSettingsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.CustomSettings());
+    private final DisclosurePanel otherPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.Other());
     private final FlexTable otherTable = new FlexTable();
 
-    private final Label uiUrlLabel = new Label("User Interface URL");
+    private final Label uiUrlLabel = new Label(PressGangCCMSUI.INSTANCE.UIURL());
     private final TextBox uiUrl = new TextBox();
-    private final Label docBuilderUrlLabel = new Label("DocBuilder URL");
+    private final Label docBuilderUrlLabel = new Label(PressGangCCMSUI.INSTANCE.DocBuilderURL());
     private final TextBox docBuilderUrl = new TextBox();
-    private final CheckBox readOnly = new CheckBox("Read Only");
-    private final Label jmsUpdateFrequencyLabel = new Label("JMS Update Frequency");
+    private final CheckBox readOnly = new CheckBox(PressGangCCMSUI.INSTANCE.ReadOnly());
+    private final Label jmsUpdateFrequencyLabel = new Label(PressGangCCMSUI.INSTANCE.JMSUpdateFrequency());
     private final SimpleIntegerBox jmsUpdateFrequency = new SimpleIntegerBox();
-    private final Label defaultLocaleLabel = new Label("Default Locale:");
+    private final Label defaultLocaleLabel = new Label(PressGangCCMSUI.INSTANCE.DefaultLocale() + ":");
     private final ValueListBox<String> defaultLocale = new ValueListBox<String>(new Renderer<String>() {
         @Override
         public String render(String object) {
@@ -48,8 +49,8 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
     private final LocalesEditor localesEditor = new LocalesEditor();
     private final RESTZanataServerSettingsCollectionV1Editor zanataServersEditor;
     private final RESTServerUndefinedSettingsCollectionV1Editor customSettingsEditor;
-    private final OtherSettingsEditor seoCategoryIds = new OtherSettingsEditor("SEO Category IDs");
-    private final OtherSettingsEditor docBookTemplateIds = new OtherSettingsEditor("DocBook Template IDs");
+    private final OtherSettingsEditor seoCategoryIds = new OtherSettingsEditor(PressGangCCMSUI.INSTANCE.SEOCategoryIDs());
+    private final OtherSettingsEditor docBookTemplateIds = new OtherSettingsEditor(PressGangCCMSUI.INSTANCE.DocBookTemplateIDs());
 
     @NotNull
     public TextBox uiUrlEditor() {
