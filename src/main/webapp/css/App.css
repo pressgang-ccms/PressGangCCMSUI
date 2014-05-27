@@ -622,7 +622,9 @@ html {
     border-color: rgb(49, 0, 99);
 }
 
-.TextButton.gwt-PushButton-up-disabled, .gwt-MenuItem-disabled {
+.TextButton.gwt-PushButton-up-disabled,
+.TextButton.gwt-CustomButton-up-disabled,
+.gwt-MenuItem-disabled {
     background-color: #B4B4B4;
     cursor: default;
 }

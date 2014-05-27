@@ -39,6 +39,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -203,14 +204,14 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         buildHelpDatabase();
         bindTabSelections();
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                imageComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
-                imageComponent.getDisplay().getAddLocale().setEnabled(!serverDetails.isReadOnly());
-                imageComponent.getDisplay().getRemoveLocale().setEnabled(!serverDetails.isReadOnly());
-                imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
-                imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                imageComponent.getDisplay().getSave().setEnabled(!readOnly);
+                imageComponent.getDisplay().getAddLocale().setEnabled(!readOnly);
+                imageComponent.getDisplay().getRemoveLocale().setEnabled(!readOnly);
+                imageFilteredResultsComponent.getDisplay().getCreate().setEnabled(!readOnly);
+                imageFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!readOnly);
             }
         });
     }

@@ -9,12 +9,11 @@ import javax.inject.Inject;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -80,10 +79,10 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
         final RESTCallBack<RESTPropertyTagV1> callback = new RESTCallBack<RESTPropertyTagV1>() {
             @Override
             public void success(@NotNull final RESTPropertyTagV1 retValue) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        display.display(retValue, serverDetails.isReadOnly());
+                    public void readonlyCallback(boolean readOnly) {
+                        display.display(retValue, readOnly);
                     }
                 });
             }

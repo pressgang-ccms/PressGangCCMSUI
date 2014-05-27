@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -18,7 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -55,15 +54,15 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void loadSearchLocales() {
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+            public void readonlyCallback(final boolean readOnly) {
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
                     public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                         final List<String> locales = serverSettings.getLocales();
                         Collections.sort(locales);
-                        localePresenter.getDisplay().display(locales, serverDetails.isReadOnly());
+                        localePresenter.getDisplay().display(locales, readOnly);
                     }
                 });
             }
@@ -82,10 +81,10 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull ServerDetails serverDetails) {
-                        tagsPresenter.getDisplay().displayExtended(retValue, null, serverDetails.isReadOnly(), isShowBulkTags());
+                    public void readonlyCallback(boolean readOnly) {
+                        tagsPresenter.getDisplay().displayExtended(retValue, null, readOnly, isShowBulkTags());
                     }
                 });
             }

@@ -42,7 +42,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -59,7 +59,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -503,11 +502,11 @@ public class TagsFilteredResultsAndDetailsPresenter
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getSave().setEnabled(!serverDetails.isReadOnly());
-                filteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                filteredResultsComponent.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }
@@ -944,12 +943,12 @@ public class TagsFilteredResultsAndDetailsPresenter
         displayableViews.add(categoriesComponent.getDisplay());
         displayableViews.add(commonExtendedPropertiesPresenter.getDisplay());
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+            public void readonlyCallback(boolean readOnly) {
                 for (@NotNull final BaseCustomViewInterface view : displayableViews) {
                     if (viewIsInFilter(filter, view)) {
-                        view.display(displayedTag, serverDetails.isReadOnly());
+                        view.display(displayedTag, readOnly);
                     }
                 }
             }

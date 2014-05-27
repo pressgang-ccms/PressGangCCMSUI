@@ -1072,18 +1072,24 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
-        disableButtonsInReadonlyMode();
+        isReadOnlyMode(new ReadOnlyCallback() {
+            @Override
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                display.getActionsMenu().setEnabled(!readOnly);
+            }
+        });
 
         buildLegend();
     }
 
     private void disableButtonsInReadonlyMode() {
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getSave().setEnabled(!serverDetails.isReadOnly());
-                display.getActionsMenu().setEnabled(!serverDetails.isReadOnly());
-                filteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                display.getActionsMenu().setEnabled(!readOnly);
+                filteredResultsPresenter.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }
@@ -1849,13 +1855,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             getDisplay().getViewInDocBuilder().setVisible(false);
         }
 
-        isReadOnlyMode(new ReadOnlyCallback() {
-            @Override
-            public void readonlyCallback(final boolean readOnly) {
-                getDisplay().getSave().setEnabled(!readOnly);
-                getDisplay().getActionsMenu().setEnabled(!readOnly);
-            }
-        });
+        disableButtonsInReadonlyMode();
     }
 
     @Nullable
@@ -1877,11 +1877,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         }
     }
 
+    @Override
     public void isReadOnlyMode(@NotNull final ReadOnlyCallback readOnlyCallback) {
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                readOnlyCallback.readonlyCallback(contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null || serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                final boolean isDisplayingRevisions = contentSpecRevisionsPresenter.getDisplay().getRevisionContentSpec() != null;
+                readOnlyCallback.readonlyCallback(readOnly || isDisplayingRevisions);
             }
         });
     }

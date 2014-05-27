@@ -21,7 +21,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -35,7 +35,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.blobconstant.RESTBlobConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -99,10 +98,11 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem()
+                        .getItem(), readOnly);
             }
         });
         bindUploadButton();
@@ -247,11 +247,11 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
             super.bindSearchAndEdit(Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, blobConstantPresenter.getDisplay(), blobConstantPresenter.getDisplay(),
                     blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
 
-            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            isReadOnlyMode(new ReadOnlyCallback() {
                 @Override
-                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                    display.getSave().setEnabled(!serverDetails.isReadOnly());
-                    blobConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+                public void readonlyCallback(@NotNull final boolean readonly) {
+                    display.getSave().setEnabled(!readonly);
+                    blobConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!readonly);
                 }
             });
         } finally {

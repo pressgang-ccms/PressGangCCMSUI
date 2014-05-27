@@ -21,7 +21,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.IntegerConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -35,7 +35,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.integerconstant.RESTIntegerConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -91,10 +90,11 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
         checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                integerConstantPresenter.getDisplay().display(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                integerConstantPresenter.getDisplay().display(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem
+                        ().getItem(), readOnly);
             }
         });
     }
@@ -161,11 +161,11 @@ public class IntegerConstantFilteredResultsAndDetailsPresenter extends
 
         display.getSave().addClickHandler(saveClickHandler);
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getSave().setEnabled(!serverDetails.isReadOnly());
-                integerConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                integerConstantFilteredResultsPresenter.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }

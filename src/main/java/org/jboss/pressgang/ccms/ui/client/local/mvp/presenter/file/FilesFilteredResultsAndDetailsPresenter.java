@@ -38,6 +38,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollec
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -202,17 +203,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         populateLocales();
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                    @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        fileComponent.getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
-                        fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
-                        fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!serverDetails.isReadOnly());
-                    }
-                });
+            public void readonlyCallback(boolean readOnly) {
+                fileComponent.getDisplay().getSave().setEnabled(!readOnly);
+                fileFilteredResultsComponent.getDisplay().getCreate().setEnabled(!readOnly);
+                fileFilteredResultsComponent.getDisplay().getBulkUpload().setEnabled(!readOnly);
             }
         });
     }

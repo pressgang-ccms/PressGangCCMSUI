@@ -843,13 +843,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private void disableButtonsInReadonlyMode() {
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                getDisplay().getSave().setEnabled(!serverDetails.isReadOnly());
-                searchResultPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
-                searchResultPresenter.getDisplay().getBulkImport().setEnabled(!serverDetails.isReadOnly());
-                searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                getDisplay().getSave().setEnabled(!readOnly);
+                searchResultPresenter.getDisplay().getCreate().setEnabled(!readOnly);
+                searchResultPresenter.getDisplay().getBulkImport().setEnabled(!readOnly);
+                searchResultPresenter.getDisplay().getBulkOverwrite().setEnabled(!readOnly);
             }
         });
     }
@@ -1676,10 +1676,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onClick(@NotNull final ClickEvent event) {
                     if (!hasUnsavedChanges()) {
                         loadAllTags();
-                        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        TopicFilteredResultsAndDetailsPresenter.super.isReadOnlyMode(new ReadOnlyCallback() {
                             @Override
-                            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                                display.getBulkImport().getTagsView().display(bulkImportTemplate, serverDetails.isReadOnly());
+                            public void readonlyCallback(boolean readOnly) {
+                                display.getBulkImport().getTagsView().display(bulkImportTemplate, readOnly);
                                 bindBulkImportTagEditingButtons();
                                 display.getBulkImport().getDialog().center();
                             }
@@ -2289,10 +2289,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     public void isReadOnlyMode(@NotNull final ReadOnlyCallback readOnlyCallback) {
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                readOnlyCallback.readonlyCallback(topicRevisionsPresenter.getDisplay().getRevisionTopic() != null || serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                final boolean isDisplayingRevisions = topicRevisionsPresenter.getDisplay().getRevisionTopic() != null;
+                readOnlyCallback.readonlyCallback(readOnly || isDisplayingRevisions);
             }
         });
     }

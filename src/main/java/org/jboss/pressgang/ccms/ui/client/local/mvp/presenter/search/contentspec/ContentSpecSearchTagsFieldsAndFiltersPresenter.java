@@ -27,6 +27,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndContentSpecViewEvent;
@@ -89,10 +90,10 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants
                         .FILTER_CONTENT_SPEC);
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                fieldsComponent.getDisplay().display(filterItem.getItem(), serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                fieldsComponent.getDisplay().display(filterItem.getItem(), readOnly);
             }
         });
 
@@ -140,11 +141,11 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
 
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, serverDetails.isReadOnly(), false);
-                        fieldsComponent.getDisplay().display(displayedFilter, serverDetails.isReadOnly());
+                    public void readonlyCallback(boolean readOnly) {
+                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, readOnly, false);
+                        fieldsComponent.getDisplay().display(displayedFilter, readOnly);
                     }
                 });
             }

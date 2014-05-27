@@ -29,7 +29,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -47,7 +47,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -164,11 +163,11 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         bindExistingChildrenAddAndRemoveButtons();
         bindExistingChildrenRowClick();
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getSave().setEnabled(!serverDetails.isReadOnly());
-                filteredResultsPresenter.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                filteredResultsPresenter.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }
@@ -267,22 +266,24 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
             checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-            ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            isReadOnlyMode(new ReadOnlyCallback() {
                 @Override
-                public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                public void readonlyCallback(boolean readOnly) {
                     /* We need to initialize the view so the cell table buttons can display the correct labels */
                     if (viewIsInFilter(filter, categoryTagPresenter.getDisplay())) {
-                        categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
-                        categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                        categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                , readOnly);
+                        categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem
+                                ().getItem(), readOnly);
                     }
 
                     /* Initialize the properties view */
                     if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-                        categoryPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                        categoryPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                                readOnly);
                     }
                 }
             });
-
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.initializeViews()");

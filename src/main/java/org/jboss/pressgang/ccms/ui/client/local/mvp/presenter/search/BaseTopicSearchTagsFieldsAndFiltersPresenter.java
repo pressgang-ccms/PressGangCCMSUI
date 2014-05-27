@@ -42,6 +42,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -111,10 +112,10 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         getLocalePresenter().bindExtended();
         getSearchFilterResultsAndFilterPresenter().bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                getFieldsPresenter().getDisplay().display(filterItem.getItem(), serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                getFieldsPresenter().getDisplay().display(filterItem.getItem(), readOnly);
             }
         });
 
@@ -144,12 +145,12 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         super.bindExtended();
         buildHelpDatabase();
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                getDisplay().getApplyBulkTags().setEnabled(!serverDetails.isReadOnly());
-                getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!serverDetails.isReadOnly());
-                getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                getDisplay().getApplyBulkTags().setEnabled(!readOnly);
+                getSearchFilterResultsAndFilterPresenter().getDisplay().getOverwrite().setEnabled(!readOnly);
+                getSearchFilterResultsAndFilterPresenter().getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }
@@ -173,11 +174,11 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
 
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, serverDetails.isReadOnly(), isShowBulkTags());
-                        getFieldsPresenter().getDisplay().display(displayedFilter, serverDetails.isReadOnly());
+                    public void readonlyCallback(boolean readOnly) {
+                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, readOnly, isShowBulkTags());
+                        getFieldsPresenter().getDisplay().display(displayedFilter, readOnly);
                     }
                 });
 

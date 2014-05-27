@@ -36,6 +36,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -80,6 +81,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic.TopicSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.ReadOnlyPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
@@ -96,7 +98,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Matthew Casperson
  */
-abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView {
+abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView, ReadOnlyPresenter {
 
     private static final RegExp ID_SEARCH = RegExp.compile(",*(\\s*\\d+\\s*,+)*\\s*\\d+\\s*,*");
     private static final RegExp CS_ID_SEARCH = RegExp.compile(",*(\\s*CS\\s*\\d+\\s*,+)*\\s*CS\\s*\\d+\\s*,*", "i");
@@ -157,8 +159,22 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         }
     }
 
-    protected void setServerSettings(@NotNull RESTServerSettingsV1 serverSettings) {
+    protected void setServerSettings(@NotNull final RESTServerSettingsV1 serverSettings) {
         this.serverSettings = serverSettings;
+    }
+
+    public void isReadOnlyMode(@NotNull final ReadOnlyCallback callback) {
+        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+            @Override
+            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+                getServerSettings(new ServerSettingsCallback() {
+                    @Override
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        callback.readonlyCallback(serverSettings.isReadOnly() || serverDetails.isReadOnly());
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -693,14 +709,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             ;
         });
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getTopShortcutView().getCreateContentSpec().setEnabled(!serverDetails.isReadOnly());
-                display.getTopShortcutView().getCreateTopic().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getTopShortcutView().getCreateContentSpec().setEnabled(!readOnly);
+                display.getTopShortcutView().getCreateTopic().setEnabled(!readOnly);
             }
         });
-
     }
 
     @Override

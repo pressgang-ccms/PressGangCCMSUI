@@ -27,7 +27,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagIn
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagInPropertyCategoryV1;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.PropertyCategoryFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -45,7 +45,6 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -187,11 +186,11 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 }
         );
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                display.getSave().setEnabled(!serverDetails.isReadOnly());
-                filteredResultsComponent.getDisplay().getCreate().setEnabled(!serverDetails.isReadOnly());
+            public void readonlyCallback(boolean readOnly) {
+                display.getSave().setEnabled(!readOnly);
+                filteredResultsComponent.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
     }
@@ -266,10 +265,11 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                                 filteredResultsComponent.getProviderData().getStartRow(),
                                 filteredResultsComponent.getProviderData().getItems());
 
-                        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                        isReadOnlyMode(new ReadOnlyCallback() {
                             @Override
-                            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                                tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                            public void readonlyCallback(boolean readOnly) {
+                                tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                        , readOnly);
                             }
                         });
 
@@ -436,17 +436,17 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
+            public void readonlyCallback(boolean readOnly) {
                 for (@NotNull final BaseCustomViewInterface<RESTPropertyCategoryV1> view : displayableViews) {
                     if (viewIsInFilter(filter, view)) {
-                        view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                        view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), readOnly);
                     }
                 }
 
                 if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-                    tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), serverDetails.isReadOnly());
+                    tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), readOnly);
                 }
             }
         });
