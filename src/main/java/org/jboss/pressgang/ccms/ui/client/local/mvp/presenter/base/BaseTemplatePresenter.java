@@ -709,6 +709,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             ;
         });
 
+        disableTopShortcutButtonsInReadOnlyMode();
+    }
+
+    protected void disableTopShortcutButtonsInReadOnlyMode() {
         isReadOnlyMode(new ReadOnlyCallback() {
             @Override
             public void readonlyCallback(boolean readOnly) {

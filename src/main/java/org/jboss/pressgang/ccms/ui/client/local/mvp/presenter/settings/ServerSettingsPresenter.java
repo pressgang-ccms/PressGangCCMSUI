@@ -181,6 +181,9 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
 
                                     // Display the success message
                                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
+
+                                    // If readonly was changed then we need to disable the shortcut buttons
+                                    disableTopShortcutButtonsInReadOnlyMode();
                                 }
                             };
 
