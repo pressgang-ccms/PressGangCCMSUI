@@ -759,7 +759,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         topicContentSpecsPresenter.bindChildrenExtended();
         topicRevisionsPresenter.bindRenderedDiff(topicRevisionsPresenter.getDisplay());
-        topicDuplicatesPresenter.bindRenderedDiff(topicDuplicatesPresenter.getDisplay());
+        //topicDuplicatesPresenter.bindRenderedDiff(topicDuplicatesPresenter.getDisplay());
         topicReviewPresenter.bindRenderedDiff(topicReviewPresenter.getDisplay());
 
         bindTagButtons();
@@ -770,7 +770,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         bindViewTopicRevisionButton();
 
         /* Bind logic to the duplicates buttons */
-        bindViewTopicDuplicateButton();
+        //bindViewTopicDuplicateButton();
 
         bindRenderedViewClicks();
 
@@ -885,7 +885,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
          */
         getTopicContentSpecsPresenter().close();
         topicRevisionsPresenter.close();
-        topicDuplicatesPresenter.close();
+        //topicDuplicatesPresenter.close();
         keyboardEventHandler.removeHandler();
     }
 
@@ -1132,7 +1132,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         viewLatestTopicRevision();
 
         topicRevisionsPresenter.reset();
-        topicDuplicatesPresenter.reset();
+        //topicDuplicatesPresenter.reset();
         resetAllInitialLoads();
     }
 
@@ -1457,9 +1457,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
             } else if (displayedView == this.topicRevisionsPresenter.getDisplay()) {
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
-            } else if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
+            } /*else if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getDuplicates(), this.getDisplay().getDuplicatesDown());
-            } else if (displayedView == getTopicContentSpecsPresenter().getDisplay()) {
+            } */else if (displayedView == getTopicContentSpecsPresenter().getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getCsps(), getDisplay().getCspsDown());
             } else if (displayedView == topicReviewPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getReview(), getDisplay().getReviewDown());
@@ -1500,17 +1500,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 this.topicRevisionsPresenter.getDisplay().displayRevisions();
             }
 
-            if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
-                /*
-                    Load the initial set of revisions.
-                */
+            /*if (displayedView == this.topicDuplicatesPresenter.getDisplay()) {
+                // Load the initial set of revisions.
                 loadDuplicates();
             } else {
-                /*
-                    Otherwise switch back to the view of duplicates.
-                */
+                // Otherwise switch back to the view of duplicates.
                 this.topicDuplicatesPresenter.getDisplay().displayDuplicates();
-            }
+            }*/
 
             /* Set the projects combo box as the focused element */
             if (displayedView == this.getTopicTagsPresenter().getDisplay() && getTopicTagsPresenter().getDisplay().getProjectsList()
@@ -1662,14 +1658,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            final ClickHandler topicDuplicatesClickHandler = new ClickHandler() {
+            /*final ClickHandler topicDuplicatesClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultPresenter().getProviderData().getDisplayedItem() != null) {
                         switchView(topicDuplicatesPresenter.getDisplay());
                     }
                 }
-            };
+            };*/
 
             final ClickHandler bulkImport = new ClickHandler() {
                 @Override
@@ -1802,7 +1798,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             searchResultPresenter.getDisplay().getBulkOverwrite().addClickHandler(bulkOverwrite);
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHandler);
-            getDisplay().getDuplicates().addClickHandler(topicDuplicatesClickHandler);
+            //getDisplay().getDuplicates().addClickHandler(topicDuplicatesClickHandler);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
             getDisplay().getReview().addClickHandler(reviewClickHandler);
 
@@ -2258,7 +2254,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     /*
                         The duplicates display always displays details from the main topic, and not the selected revision.
                     */
-                    if (viewIsInFilter(filter, topicDuplicatesPresenter.getDisplay())) {
+                    /*if (viewIsInFilter(filter, topicDuplicatesPresenter.getDisplay())) {
                         LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
 
                         topicDuplicatesPresenter.getDisplay().display(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem(), readOnly);
@@ -2267,7 +2263,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         if (!topicDuplicatesPresenter.getDisplay().isDisplayingDuplicates()) {
                             topicDuplicatesPresenter.getDisplay().displayDuplicates();
                         }
-                    }
+                    }*/
 
                     /*
                         Bind logic to the tag buttons
@@ -2522,7 +2518,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             topicRevisionsPresenter.getDisplay().displayRevisions();
         }
 
-        if (displayedView != topicDuplicatesPresenter.getDisplay() &&
+        /*if (displayedView != topicDuplicatesPresenter.getDisplay() &&
                 lastDisplayedView == topicDuplicatesPresenter.getDisplay() &&
                 !topicDuplicatesPresenter.getDisplay().isDisplayingDuplicates()) {
 
@@ -2534,12 +2530,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
 
-            /*
-                If the user moved away from the revisions screen, return to the revision list. This is a safety net
-                in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
-             */
+            //If the user moved away from the revisions screen, return to the revision list. This is a safety net
+            //in case the rendered diff never rendered one or more of the revisions, as it will remove the spinner.
             topicDuplicatesPresenter.getDisplay().displayDuplicates();
-        }
+        }*/
 
         flushChanges();
         return true;
