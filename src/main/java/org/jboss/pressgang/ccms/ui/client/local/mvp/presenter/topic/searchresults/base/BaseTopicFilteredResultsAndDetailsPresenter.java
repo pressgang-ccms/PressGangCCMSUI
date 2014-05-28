@@ -892,6 +892,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     protected abstract RESTBaseTopicV1<?, ?, ?> getDisplayedTopic();
 
+    @Override
+    protected void disableTopShortcutButtonsInReadOnlyMode() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
+            @Override
+            public void readonlyCallback(boolean readOnly) {
+                getDisplay().getTopShortcutView().getCreateContentSpec().setEnabled(!readOnly);
+                getDisplay().getTopShortcutView().getCreateTopic().setEnabled(!readOnly);
+            }
+        });
+    }
 
     /**
      * This method will replace the top action buttons with their disabled labels based on the

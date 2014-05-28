@@ -1084,12 +1084,23 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private void disableButtonsInReadonlyMode() {
-        isReadOnlyMode(new ReadOnlyCallback() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
             @Override
             public void readonlyCallback(boolean readOnly) {
                 display.getSave().setEnabled(!readOnly);
                 display.getActionsMenu().setEnabled(!readOnly);
                 filteredResultsPresenter.getDisplay().getCreate().setEnabled(!readOnly);
+            }
+        });
+    }
+
+    @Override
+    protected void disableTopShortcutButtonsInReadOnlyMode() {
+        super.isReadOnlyMode(new ReadOnlyCallback() {
+            @Override
+            public void readonlyCallback(boolean readOnly) {
+                getDisplay().getTopShortcutView().getCreateContentSpec().setEnabled(!readOnly);
+                getDisplay().getTopShortcutView().getCreateTopic().setEnabled(!readOnly);
             }
         });
     }
