@@ -143,7 +143,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
     }
 
     public void loadTopics(@NotNull final Integer topicId, @NotNull final Integer firstRevision, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
-        loadTopics(topicId, firstRevision, topicId, secondRevision, display.getHiddenAttachmentArea(), callback);
+        loadTopics(topicId, topicId, firstRevision, secondRevision, display.getHiddenAttachmentArea(), callback);
     }
 
     public void loadTopics(@NotNull final Integer firstTopicId, @NotNull final Integer firstRevision, @NotNull final Integer secondTopicId, @Nullable final Integer secondRevision, @NotNull final RenderedDiffCallback callback) {
