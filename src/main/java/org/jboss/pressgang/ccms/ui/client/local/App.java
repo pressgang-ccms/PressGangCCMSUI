@@ -90,7 +90,7 @@ public class App {
 
                     final RootLayoutPanel root = RootLayoutPanel.get();
 
-                    appController.go(root);
+                    appController.initAndGo(root);
                 }
             });
         } finally {

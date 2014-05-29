@@ -1,5 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit;
 
+import static com.google.common.base.Preconditions.checkState;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -19,12 +25,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @param <T> The entity type
@@ -98,8 +98,6 @@ abstract public class BaseSearchAndEditPresenter<
             @NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindSearchAndEdit()");
-
-            super.bind(display);
 
             this.entityPropertiesView = entityPropertiesView;
             this.filteredResultsDisplay = filteredResultsDisplay;

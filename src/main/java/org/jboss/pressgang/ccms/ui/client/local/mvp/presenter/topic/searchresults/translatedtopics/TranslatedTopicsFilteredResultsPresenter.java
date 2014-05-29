@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -16,7 +15,6 @@ import java.util.TreeMap;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
@@ -77,8 +75,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtendedFilteredResults(queryString);
     }
 

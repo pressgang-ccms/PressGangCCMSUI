@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -14,7 +13,6 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
@@ -86,8 +84,7 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindDetailedChildrenExtended();
     }
 

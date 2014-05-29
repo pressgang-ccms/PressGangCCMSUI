@@ -1,14 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.Collections;
 
 import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
@@ -63,8 +61,7 @@ public class TopicReviewPresenter extends BaseRenderedDiffPresenter {
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         super.bindRenderedDiff(display);
     }
 

@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,7 +15,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
@@ -117,8 +114,7 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
     public abstract Display getDisplay();
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, getDisplay());
+    protected void go() {
         bindExtended();
     }
 
@@ -129,8 +125,6 @@ public abstract class BaseTopicXMLPresenter extends BaseTemplatePresenter {
 
     @Override
     public void bindExtended() {
-        super.bind(getDisplay());
-
         final int splitHeight = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_XML_ERRORS_SPLIT_WIDTH,
                 Constants.XML_ERRORS_SPLIT_PANEL_SIZE);
         getDisplay().initialize(splitHeight);

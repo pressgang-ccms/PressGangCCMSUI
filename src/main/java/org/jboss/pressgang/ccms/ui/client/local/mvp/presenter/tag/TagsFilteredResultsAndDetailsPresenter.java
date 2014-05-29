@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -18,7 +17,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
@@ -451,11 +449,9 @@ public class TagsFilteredResultsAndDetailsPresenter
     };
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    protected void go() {
         try {
             LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.go()");
-
-            clearContainerAndAddTopLevelPanel(container, display);
             bindSearchAndEditExtended(queryString);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.go()");
@@ -465,6 +461,11 @@ public class TagsFilteredResultsAndDetailsPresenter
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public Display getDisplay() {
+        return display;
     }
 
     @Override

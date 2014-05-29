@@ -25,7 +25,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -332,13 +331,13 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
      * @return The display.
      */
     @Override
-    protected Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        super.go(container);
+    public void go() {
+        super.go();
 
         getTopicXMLPresenter().getDisplay().getXmlErrors().removeFromParent();
     }

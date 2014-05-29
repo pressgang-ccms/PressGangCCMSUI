@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks;
 
@@ -15,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
@@ -268,11 +266,10 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    protected void go() {
         try {
             LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsAndDetailsPresenter.go()");
 
-            clearContainerAndAddTopLevelPanel(container, display);
             bindSearchAndEditExtended(queryString);
         } finally {
             LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.go()");
@@ -282,6 +279,11 @@ public class BlobConstantFilteredResultsAndDetailsPresenter extends
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public Display getDisplay() {
+        return display;
     }
 
     @Override

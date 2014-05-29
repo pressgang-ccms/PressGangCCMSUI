@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
@@ -10,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
@@ -65,9 +63,8 @@ public class CategoryFilteredResultsPresenter extends BaseFilteredResultsPresent
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedFilteredResults(this.queryString);
+    protected void go() {
+        bindExtendedFilteredResults(queryString);
     }
 
     @Override
@@ -77,7 +74,7 @@ public class CategoryFilteredResultsPresenter extends BaseFilteredResultsPresent
 
     @Override
     public void parseToken(@NotNull final String searchToken) {
-        this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
+        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     public void bindExtendedFilteredResults(@NotNull final String queryString) {

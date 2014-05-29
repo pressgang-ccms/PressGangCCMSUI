@@ -1,11 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTSystemStatsV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -30,14 +27,17 @@ public class SysInfoPresenter extends BaseTemplatePresenter implements BaseTempl
     private Display display;
 
     @Override
+    public Display getDisplay() {
+        return display;
+    }
+
+    @Override
     public void parseToken(@NotNull final String historyToken) {
 
     }
 
     @Override
     public void bindExtended() {
-        super.bind(display);
-
         getFailOverRESTCall().performRESTCall(
                 FailOverRESTCallDatabase.getSysInfo(),
                 new RESTCallBack<RESTSystemStatsV1>() {
@@ -48,9 +48,8 @@ public class SysInfoPresenter extends BaseTemplatePresenter implements BaseTempl
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    public void go() {
         display.setViewShown(true);
-        clearContainerAndAddTopLevelPanel(container, display);
         bindExtended();
     }
 

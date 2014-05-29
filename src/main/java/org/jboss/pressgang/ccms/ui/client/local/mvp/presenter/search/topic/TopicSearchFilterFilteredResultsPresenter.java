@@ -1,13 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic;
 
-import com.google.gwt.user.client.ui.HasWidgets;
+import javax.enterprise.context.Dependent;
+
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.utils.constants.CommonConstants;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
 
 @Dependent
 public class TopicSearchFilterFilteredResultsPresenter extends BaseSearchFilterFilteredResultsPresenter {
@@ -23,7 +22,7 @@ public class TopicSearchFilterFilteredResultsPresenter extends BaseSearchFilterF
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    protected void go() {
         bindExtendedFilteredResults(getQuery());
     }
 }

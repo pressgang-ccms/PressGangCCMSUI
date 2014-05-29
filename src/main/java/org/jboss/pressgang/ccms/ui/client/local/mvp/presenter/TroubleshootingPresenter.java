@@ -1,14 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
-import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jetbrains.annotations.NotNull;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jetbrains.annotations.NotNull;
 
 @Dependent
 public class TroubleshootingPresenter extends BaseTemplatePresenter {
@@ -23,8 +20,12 @@ public class TroubleshootingPresenter extends BaseTemplatePresenter {
     private Display display;
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    public Display getDisplay() {
+        return display;
+    }
+
+    @Override
+    public void go() {
         bindExtended();
     }
 
@@ -34,12 +35,11 @@ public class TroubleshootingPresenter extends BaseTemplatePresenter {
     }
 
     public void bindExtended() {
-        super.bind(display);
+
     }
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-
 
     }
 }

@@ -1,7 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Logger;
+
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -10,12 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEdito
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Logger;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
 public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
@@ -53,9 +50,8 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    public void go() {
         display.setViewShown(true);
-        clearContainerAndAddTopLevelPanel(container, display);
         bindExtended();
     }
 
@@ -64,8 +60,9 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
 
     }
 
+    @Override
     public void bindExtended() {
-        bind(display);
+
     }
 
     @Override

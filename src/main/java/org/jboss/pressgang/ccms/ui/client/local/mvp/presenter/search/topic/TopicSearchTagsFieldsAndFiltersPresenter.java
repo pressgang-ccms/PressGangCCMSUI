@@ -37,7 +37,7 @@ public class TopicSearchTagsFieldsAndFiltersPresenter extends BaseTopicSearchTag
     }
 
     @Override
-    protected Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 

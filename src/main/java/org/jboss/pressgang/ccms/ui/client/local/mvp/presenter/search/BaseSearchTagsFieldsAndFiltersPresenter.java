@@ -34,7 +34,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      */
     private boolean showBulkTags;
 
-    protected abstract Display getDisplay();
+    public abstract Display getDisplay();
 
     protected abstract BaseSearchFieldPresenter getFieldsPresenter();
 
@@ -49,7 +49,6 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     public void bindExtended() {
-        bind(getDisplay());
         buildHelpDatabase();
     }
 

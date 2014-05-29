@@ -1,14 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
@@ -48,8 +46,7 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtendedFilteredResults(queryString);
     }
 
@@ -59,7 +56,6 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     }
 
     public void bindExtendedFilteredResults(@NotNull final String queryString) {
-
         super.bindFilteredResults(queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }

@@ -1,13 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.translatedtopic;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterFilteredResultsPresenter;
@@ -41,12 +38,10 @@ public class TranslatedTopicSearchFilterResultsAndFilterPresenter extends BaseSe
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-
+    protected void go() {
         try {
             LOGGER.log(Level.INFO, "ENTER TranslatedTopicSearchFilterResultsAndFilterPresenter.go()");
 
-            clearContainerAndAddTopLevelPanel(container, getDisplay());
             bindSearchAndEditExtended(Constants.QUERY_PATH_SEGMENT_PREFIX +
                     CommonFilterConstants.FILTER_TYPE_FILTER_VAR + "=" + CommonConstants.FILTER_TOPIC);
 

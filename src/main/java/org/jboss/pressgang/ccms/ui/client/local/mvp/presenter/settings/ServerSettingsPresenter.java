@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.settings;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks;
 
@@ -16,7 +15,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -78,8 +76,6 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
 
     @Override
     public void bindExtended() {
-        super.bind(display);
-
         getServerSettings(new ServerSettingsCallback() {
             @Override
             public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
@@ -96,8 +92,7 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
     }
 
     @Override
-    public void go(@NotNull HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtended();
     }
 

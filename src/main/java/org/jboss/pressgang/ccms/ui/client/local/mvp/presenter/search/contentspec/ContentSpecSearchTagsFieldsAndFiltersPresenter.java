@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec;
 
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -11,7 +10,6 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
@@ -73,11 +71,9 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
     private SaveFilterDialogInterface saveFilterDialog;
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    protected void go() {
         final RESTFilterCollectionItemV1 filterItem = new RESTFilterCollectionItemV1();
         filterItem.setItem(new RESTFilterV1());
-
-        clearContainerAndAddTopLevelPanel(container, display);
 
         display.setViewShown(true);
 
@@ -114,7 +110,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
     }
 
     @Override
-    protected Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 

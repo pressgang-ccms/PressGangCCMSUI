@@ -37,7 +37,7 @@ public class TranslatedTopicSearchTagsFieldsAndFiltersPresenter extends BaseTopi
     }
 
     @Override
-    protected Display getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 

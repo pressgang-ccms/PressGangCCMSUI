@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -9,7 +8,6 @@ import javax.inject.Inject;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTTextContentSpecCollectionItemV1;
@@ -102,8 +100,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtended();
     }
 
@@ -112,7 +109,7 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
     }
 
     public void bindExtended() {
-        super.bind(display);
+
     }
 
     @Override

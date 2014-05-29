@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.process;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.logging.Level;
@@ -12,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -58,8 +55,6 @@ public class ProcessPresenter
 
     @Override
     public void bindExtended() {
-        super.bind(display);
-
         resultsPresenter.bindExtended();
 
         // Display the search results
@@ -78,14 +73,18 @@ public class ProcessPresenter
     }
 
     @Override
-    public void go(@NotNull HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtended();
     }
 
     @Override
     public void close() {
         resultsPresenter.close();
+    }
+
+    @Override
+    public Display getDisplay() {
+        return display;
     }
 
     protected String getSelectedTabQueryString(@NotNull final Integer selectedTab) {

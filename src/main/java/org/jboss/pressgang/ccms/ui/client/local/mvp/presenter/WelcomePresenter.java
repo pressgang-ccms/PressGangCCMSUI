@@ -1,14 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AnchorButton;
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
@@ -38,9 +35,13 @@ public class WelcomePresenter extends BaseRenderedPresenter implements BaseTempl
     private Display display;
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    public Display getDisplay() {
+        return display;
+    }
+
+    @Override
+    public void go() {
         display.setViewShown(true);
-        clearContainerAndAddTopLevelPanel(container, display);
         bindExtended();
     }
 
@@ -51,8 +52,6 @@ public class WelcomePresenter extends BaseRenderedPresenter implements BaseTempl
 
     @Override
     public void bindExtended() {
-        super.bind(display);
-
         display.getEdit().setHref(
                 "#" + BaseTopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX +
                         CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ServiceConstants.HELP_TOPICS.WELCOME_VIEW_CONTENT_TOPIC.getId());

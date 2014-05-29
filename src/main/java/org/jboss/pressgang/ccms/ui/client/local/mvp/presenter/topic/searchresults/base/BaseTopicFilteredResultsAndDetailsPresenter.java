@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 
 import javax.inject.Inject;
@@ -41,7 +40,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -194,7 +192,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     /**
      * @return The view that corresponds to this parent presenter.
      */
-    protected abstract Display getDisplay();
+    public abstract Display getDisplay();
 
     @NotNull
     protected TopicXMLPresenter getTopicXMLPresenter() {
@@ -236,14 +234,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-
+    protected void go() {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.go()");
-
-            clearContainerAndAddTopLevelPanel(container, getDisplay());
             bindSearchAndEditExtended(queryString);
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.go()");
         }
@@ -1297,36 +1291,30 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             view.display(topicToDisplay, readOnly);
                         }
                     }
-                }
-            });
 
-            /* We display the rendered view with images */
-            /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
-            /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
-                topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreamble(topicToDisplay.getXml()), isReadOnlyMode(),
-                true);
-            }*/
+                    /* We display the rendered view with images */
+                    /* This is commented out because once the list of conditions is loaded the rendered view will be updated */
+                    /*if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
+                        topicRenderedPresenter.displayTopicRendered(GWTUtilities.removeAllPreamble(topicToDisplay.getXml()), isReadOnlyMode(),
+                        true);
+                    }*/
 
-            /* We initially display the split pane rendered view without images */
-            /*if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
-                topicSplitPanelRenderedPresenter.displayTopicRendered(
-                        addLineNumberAttributesToXML(GWTUtilities.removeAllPreamble(topicToDisplay.getXml())), isReadOnlyMode(), false);
-            }*/
+                    /* We initially display the split pane rendered view without images */
+                    /*if (viewIsInFilter(filter, topicSplitPanelRenderedPresenter.getDisplay())) {
+                        topicSplitPanelRenderedPresenter.displayTopicRendered(
+                                addLineNumberAttributesToXML(GWTUtilities.removeAllPreamble(topicToDisplay.getXml())), isReadOnlyMode(), false);
+                    }*/
 
-            /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called
-            above */
-            if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
-                LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
-                topicXMLPresenter.loadEditorSettings();
-                topicXMLPresenter.getDisplay().getEditor().redisplay();
-            }
+                    /* Redisplay the editor. topicXMLPresenter.getDisplay().getEditor() will be not null after the display method was called
+                    above */
+                    if (viewIsInFilter(filter, topicXMLPresenter.getDisplay())) {
+                        LOGGER.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
+                        topicXMLPresenter.loadEditorSettings();
+                        topicXMLPresenter.getDisplay().getEditor().redisplay();
+                    }
 
-            LOGGER.log(Level.INFO, "\tInitializing topic presenters");
+                    LOGGER.log(Level.INFO, "\tInitializing topic presenters");
 
-            isReadOnlyMode(new ReadOnlyCallback() {
-                @Override
-                public void readonlyCallback(boolean readOnly) {
-                    final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
                     if (viewIsInFilter(filter, topicPropertyTagPresenter.getDisplay())) {
                         topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay, readOnly);
                     }
@@ -1334,10 +1322,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     if (viewIsInFilter(filter, topicSourceURLsPresenter.getDisplay())) {
                         topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay, readOnly);
                     }
+
+                    postInitializeViews(filter);
                 }
             });
-
-            postInitializeViews(filter);
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeViews()");

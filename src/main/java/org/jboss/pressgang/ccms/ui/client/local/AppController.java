@@ -86,6 +86,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
+
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -182,9 +184,9 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
+    public void initAndGo(@NotNull HasWidgets container) {
         try {
-            LOGGER.log(Level.INFO, "ENTER AppController.go()");
+            LOGGER.log(Level.INFO, "ENTER AppController.init()");
 
             this.container = container;
             bind();
@@ -197,13 +199,18 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                 History.fireCurrentHistoryState();
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT AppController.go()");
+            LOGGER.log(Level.INFO, "EXIT AppController.init()");
         }
     }
 
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public BaseTemplateViewInterface getDisplay() {
+        return null;
     }
 
     @Override
@@ -214,7 +221,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             final String token = event.getValue();
 
             if (token != null) {
-                Optional<? extends BaseTemplatePresenterInterface> presenter = Optional.absent();
+                final Optional<? extends BaseTemplatePresenterInterface> presenter;
 
                 if (token.startsWith(SysInfoPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SysInfoPresenter.class);
@@ -303,6 +310,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(ProcessPresenter.class);
                 } else if (token.startsWith(ServerSettingsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ServerSettingsPresenter.class);
+                } else {
+                    presenter = Optional.absent();
                 }
 
                 if (presenter.isPresent()) {
@@ -313,7 +322,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
                     LOGGER.log(Level.INFO, "Displaying Presenter");
                     presenter.get().parseToken(token);
-                    presenter.get().go(this.container);
+                    presenter.get().initAndGo(this.container);
 
                     lastPresenter = presenter.get();
                 }

@@ -1,18 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
+import javax.inject.Inject;
+import java.util.List;
+
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUILocaleEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocales;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-import java.util.List;
 
 /**
  * The presenter used to display the locales in a search.
@@ -47,12 +45,11 @@ public class SearchLocalePresenter extends BaseTemplatePresenter implements Base
 
     @Override
     public void bindExtended() {
-        bind(display);
+
     }
 
     @Override
-    public void go(@NotNull final HasWidgets container) {
-        GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
+    protected void go() {
         bindExtended();
     }
 

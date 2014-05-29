@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
@@ -9,8 +11,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @see BaseChildrenPresenterInterface
@@ -70,7 +70,6 @@ public abstract class BaseChildrenPresenter<
      */
     protected void bindChildren(@NotNull final BaseChildrenViewInterface display) {
         this.display = display;
-        super.bind(display);
     }
 
     /**
@@ -139,7 +138,6 @@ public abstract class BaseChildrenPresenter<
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final T parent) {
 
     }
-
 
     protected boolean isReadOnly() {
         return readOnly;

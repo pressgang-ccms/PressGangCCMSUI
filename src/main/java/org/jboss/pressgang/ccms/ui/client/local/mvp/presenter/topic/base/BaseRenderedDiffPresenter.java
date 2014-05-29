@@ -83,7 +83,6 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
     public void bindRenderedDiff(@NotNull final Display display) {
         this.display = display;
 
-        super.bind(display);
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {

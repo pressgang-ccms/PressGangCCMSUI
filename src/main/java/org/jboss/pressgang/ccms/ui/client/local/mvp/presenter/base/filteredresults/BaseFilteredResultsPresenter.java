@@ -71,7 +71,6 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseEntityColle
      * @param display     The filtered results view
      */
     protected void bindFilteredResults(@NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
-        super.bind(display);
         displayQueryElements(queryString);
     }
 

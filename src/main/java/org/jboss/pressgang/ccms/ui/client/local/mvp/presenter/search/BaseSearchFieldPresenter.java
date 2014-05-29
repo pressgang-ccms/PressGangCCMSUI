@@ -29,7 +29,7 @@ public abstract class BaseSearchFieldPresenter extends BaseTemplatePresenter imp
 
     @Override
     public void bindExtended() {
-        bind(getDisplay());
+
     }
 
     @Override
