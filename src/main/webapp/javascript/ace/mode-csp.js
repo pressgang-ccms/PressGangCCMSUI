@@ -125,7 +125,7 @@ define(
                 "id" : [
                     {
                         token: "constant.numeric",
-                        regex: "\\bN\\b|\\b(N|X|C|T)\\d+\\b|\\b\\d+\\b|\\bT-\\w+\\b"
+                        regex: "\\bN\\b|\\b(N|X|C|T)\\d+\\b|\\b\\d+\\b|\\bT-\\w+\\b|Common\\s+Content"
                     }
                 ],
 
@@ -151,7 +151,7 @@ define(
                 "metadata": [
                     {
                         token: "keyword.metadata",
-                        regex: "^(CHECKSUM|ID|Title|Subtitle|Edition|Book Version|Pubsnumber|Product|Description|Copyright Holder|Copyright Year|Version|Bug Links|BZProduct|BZComponent|BZVersion|BZKeywords|BZServer|BZURL|Type|Brand Logo|Brand|publican.cfg|Inline Injection|Format|BZ Assignee|GroupId|ArtifactId|Additional Files|Files|JIRAProject|JIRAComponent|JIRAVersion|JIRALabels|JIRAServer|BZPRODUCT|BZCOMPONENT|BZVERSION|Output Style|spaces|Debug|Entities|[-\\w\\d]+-publican.cfg|Default publican.cfg|Index|POM Version|Locale)",
+                        regex: "^(CHECKSUM|ID|Title|Subtitle|Edition|Book Version|Pubsnumber|Product|Description|Copyright Holder|Copyright Year|Version|Bug Links|BZProduct|BZComponent|BZVersion|BZKeywords|BZServer|BZURL|Type|Brand Logo|Brand|publican.cfg|Inline Injection|Format|BZ Assignee|GroupId|ArtifactId|Additional Files|Files|JIRAProject|JIRAComponent|JIRAVersion|JIRALabels|JIRAServer|BZPRODUCT|BZCOMPONENT|BZVERSION|Output Style|spaces|Debug|Entities|[-\\w\\d]+-publican.cfg|Default publican.cfg|Index|POM Version|Locale|Default Preface)",
                         next: [
                             {
                                 include: "space"
@@ -349,7 +349,8 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
         "Revision History",
         "Feedback",
         "Legal Notice",
-        "Author Group"
+        "Author Group",
+        "Default Preface"
     ];
     
     var containers = [
