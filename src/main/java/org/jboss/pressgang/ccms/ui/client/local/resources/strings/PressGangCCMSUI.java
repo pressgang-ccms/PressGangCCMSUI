@@ -1495,4 +1495,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String DocBookTemplateIDs();
+
+    @NotNull
+    String CanNotPushUnfrozenContentSpec();
 }

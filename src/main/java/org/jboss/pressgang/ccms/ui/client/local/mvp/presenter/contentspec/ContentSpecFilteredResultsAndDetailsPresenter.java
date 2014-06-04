@@ -324,21 +324,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             if (displayedItem.getItem().getId() != null) {
                 // Set the href for the docbuilder url
-                ServerDetails.getSavedServer(new ServerDetailsCallback() {
+                getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                        getServerSettings(new ServerSettingsCallback() {
-                            @Override
-                            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
-                                String docBuilderUrl = serverSettings.getDocBuilderUrl();
-                                docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
-                                if (!docBuilderUrl.endsWith("/")) {
-                                    docBuilderUrl += "/";
-                                }
-                                display.getViewInDocBuilder().setHref(docBuilderUrl + displayedItem.getItem().getId());
-                                display.getViewInDocBuilder().setTarget("_blank");
-                            }
-                        });
+                    public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                        String docBuilderUrl = serverSettings.getDocBuilderUrl();
+                        docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
+                        if (!docBuilderUrl.endsWith("/")) {
+                            docBuilderUrl += "/";
+                        }
+                        display.getViewInDocBuilder().setHref(docBuilderUrl + displayedItem.getItem().getId());
+                        display.getViewInDocBuilder().setTarget("_blank");
                     }
                 });
             }
@@ -830,8 +825,38 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final Command pushTranslationCommand = new Command() {
             @Override
             public void execute() {
-                translationPushPresenter.display(getDisplayedContentSpec(), display);
-                translationPushPresenter.addActionCompletedHandler(completedProcessCallback);
+                if (hasUnsavedChanges()) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+                } else {
+                    getServerSettings(new ServerSettingsCallback() {
+                        @Override
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            final ActionCompletedCallback<RESTTextContentSpecV1> callback = new
+                                    ActionCompletedCallback<RESTTextContentSpecV1>() {
+                                @Override
+                                public void success(RESTTextContentSpecV1 restTextContentSpecV1) {
+                                    if (ComponentContentSpecV1.hasTag(getDisplayedContentSpec(), serverSettings.getEntities().getFrozenTagId())) {
+                                        translationPushPresenter.display(getDisplayedContentSpec(), display);
+                                        translationPushPresenter.addActionCompletedHandler(completedProcessCallback);
+                                    } else {
+                                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotPushUnfrozenContentSpec());
+                                    }
+                                }
+
+                                @Override
+                                public void failure() {
+                                    // Not used so do nothing
+                                }
+                            };
+
+                            if (!tagsLoadInitiated) {
+                                loadTags(callback, getDisplay());
+                            } else {
+                                callback.success(getDisplayedContentSpec());
+                            }
+                        }
+                    });
+                }
             }
         };
 
@@ -846,8 +871,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final Command freezeCommand = new Command() {
             @Override
             public void execute() {
-                freezePresenter.display(getDisplayedContentSpec(), display);
-                freezePresenter.addActionCompletedHandler(completedFreezeCallback);
+                if (!hasUnsavedChanges()) {
+                    freezePresenter.display(getDisplayedContentSpec(), display);
+                    freezePresenter.addActionCompletedHandler(completedFreezeCallback);
+                } else {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+                }
             }
         };
 
@@ -1383,6 +1412,29 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * the empty entity and then loading the collections.
      */
     private void loadTags() {
+        loadTags(new ActionCompletedCallback<RESTTextContentSpecV1>() {
+            @Override
+            public void success(RESTTextContentSpecV1 restTextContentSpecV1) {
+                /* update the view */
+                initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
+            }
+
+            @Override
+            public void failure() {
+                // Not used, so do nothing
+            }
+        }, contentSpecTagsPresenter.getDisplay());
+    }
+
+    /**
+     * The tags for a content spec are loaded as separate operations to minimize the amount of data initially sent when a
+     * content spec is displayed.
+     * <p/>
+     * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
+     * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
+     * the empty entity and then loading the collections.
+     */
+    private void loadTags(final ActionCompletedCallback<RESTTextContentSpecV1> callback, final BaseTemplateViewInterface display) {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags()");
 
@@ -1403,8 +1455,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     @Override
                     public void success(@NotNull final RESTTextContentSpecV1 retValue) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" +
-                                    ".doSuccessAction" + "()");
+                            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadTags() " +
+                                    "contentSpecWithTagsCallback.doSuccessAction" + "()");
 
                             /*
                                 There is a small chance that in between loading the content spec's details and
@@ -1425,18 +1477,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             /* copy the revisions into the displayed Topic */
                             getDisplayedContentSpec().setTags(retValue.getTags());
 
-                            /* update the view */
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecTagsPresenter.getDisplay()}));
+                            callback.success(retValue);
                         } finally {
                             LOGGER.log(Level.INFO,
-                                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback" + "" +
+                                    "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags() contentSpecWithTagsCallback" +
                                             ".doSuccessAction()");
                         }
                     }
                 };
 
                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getContentSpecRevisionWithTags(id, revision),
-                        contentSpecWithTagsCallback, contentSpecTagsPresenter.getDisplay());
+                        contentSpecWithTagsCallback, display);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadTags()");

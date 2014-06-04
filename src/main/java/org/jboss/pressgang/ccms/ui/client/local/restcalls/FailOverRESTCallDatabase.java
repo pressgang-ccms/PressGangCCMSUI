@@ -2293,7 +2293,7 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.pushContentSpecForTranslation(contentSpecId, serverId, "", processName, contentSpecOnly, disableCopyTrans,
-                        username, apiKey);
+                        false, username, apiKey);
             }
 
             @Override
