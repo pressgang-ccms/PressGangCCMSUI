@@ -529,6 +529,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
             Collections.sort(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+
+            // Translated topics don't have an XML validator attached so start up assuming the xml is valid
+            hasXMLErrors = false;
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
         }
