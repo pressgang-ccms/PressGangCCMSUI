@@ -243,7 +243,7 @@ public class XMLUtilities {
             /* true if the last line had a hanging cdata start */
             boolean inCData = false;
             int i = 0;
-            for (final String line : topicXML.split("\n")) {
+            for (final String line : topicXML.split("(\r)?\n")) {
                 ++i;
 
                 /* true if the last line had a hanging cdata start and we did not find an end in this line */
@@ -285,10 +285,6 @@ public class XMLUtilities {
                     }
 
                     singleLineCData.put("#CDATAPLACEHOLDER" + marker + "#", matcher.getGroup(0));
-                }
-
-                for (final String marker : singleLineCData.keySet()) {
-                    fixedLine = fixedLine.replace(singleLineCData.get(marker), marker);
                 }
 
                 final Map<String, String> startHangingCData = new HashMap<String, String>();
