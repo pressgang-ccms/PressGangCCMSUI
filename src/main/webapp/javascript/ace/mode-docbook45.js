@@ -1737,6 +1737,7 @@ define('ace/mode/docbook45_completions', ['require', 'exports', 'module'], funct
         };
 
         this.getTagCompletions = function(state, session, pos, prefix) {
+            var openingTag = prefix.indexOf("<") === 0;
             var parent = findTagParentName(session, pos);
             var elements;
             if (parent) {
@@ -1744,9 +1745,11 @@ define('ace/mode/docbook45_completions', ['require', 'exports', 'module'], funct
             } else {
                 elements = allElements;
             }
-            return elements.map(function(element){
+            return elements.map(function(element) {
+                var elementVal = (openingTag ? "<" : "") + element;
                 return {
-                    value: element,
+                    caption: element,
+                    value: elementVal,
                     meta: "tag"
                 };
             });
@@ -1757,7 +1760,7 @@ define('ace/mode/docbook45_completions', ['require', 'exports', 'module'], funct
             if (!tagName)
                 return [];
             var attributes = elementMap[tagName]["attributes"];
-            return attributes.map(function(attribute){
+            return attributes.map(function(attribute) {
                 return {
                     caption: attribute,
                     snippet: attribute + '="$0"',

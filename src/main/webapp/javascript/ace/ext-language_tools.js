@@ -1599,7 +1599,7 @@ exports.parForEach = function(array, fn, callback) {
     }
 }
 
-var ID_REGEX = /[\w\[\$-]/;
+var ID_REGEX = /[\w\[\$<-]/;
 
 exports.retrievePrecedingIdentifier = function(text, pos, regex) {
     regex = regex || ID_REGEX;
