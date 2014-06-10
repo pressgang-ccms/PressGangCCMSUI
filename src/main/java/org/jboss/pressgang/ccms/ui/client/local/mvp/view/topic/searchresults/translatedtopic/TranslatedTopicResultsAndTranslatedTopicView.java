@@ -6,7 +6,9 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics
+        .TranslatedTopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base.BaseSearchResultsAndTopicView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -18,6 +20,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResultsAndTopicView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
         implements TranslatedTopicFilteredResultsAndDetailsPresenter.Display {
+
+    /**
+     * An instance of the message log dialog box
+     */
+    private final LogMessageView messageLogDialog = new LogMessageView();
 
     /**
      * The save button.
@@ -48,6 +55,12 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
     @Override
     public Label getAdditionalXMLDown() {
         return additionalXMLDown;
+    }
+
+    @NotNull
+    @Override
+    public LogMessageView getMessageLogDialog() {
+        return messageLogDialog;
     }
 
     public TranslatedTopicResultsAndTranslatedTopicView() {

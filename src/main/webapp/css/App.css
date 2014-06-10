@@ -1433,3 +1433,17 @@ table.ProcessWaitingTable {
 .SettingsValueFooter {
     width: 100%;
 }
+
+#MessageSaveDialog {
+    width: 95%;
+    height: 4em;
+}
+
+#UsernameSaveDialog {
+    width: 95%;
+}
+
+#ContentSpecListSaveDialog {
+    height: 230px;
+    margin: 10px 0px;
+}

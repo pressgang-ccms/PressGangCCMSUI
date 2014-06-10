@@ -678,7 +678,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             @Override
                             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(
-                                        FailOverRESTCallDatabase.createContentSpec(updatedSpec, message.toString(), flag,
+                                        FailOverRESTCallDatabase.createTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
                             }
                         });
@@ -778,7 +778,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             @Override
                             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(
-                                        FailOverRESTCallDatabase.updateContentSpec(updatedSpec, message.toString(), flag,
+                                        FailOverRESTCallDatabase.updateTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                             }
                         });

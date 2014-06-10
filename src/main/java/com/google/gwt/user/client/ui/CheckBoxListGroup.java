@@ -3,31 +3,36 @@ package com.google.gwt.user.client.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.client.HasDirection;
+import com.google.gwt.user.client.Element;
 
-public class CheckBoxList extends Composite {
-    private final ScrollPanel scroller = new ScrollPanel();
+public class CheckBoxListGroup extends Composite {
+    private final HTMLPanel rootPanel;
     private final VerticalPanel panel = new VerticalPanel();
-    private final List<Widget> checkBoxes = new ArrayList<Widget>();
+    private final String name;
+    private final List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
 
-    public CheckBoxList() {
-        initWidget(scroller);
-        scroller.setWidget(panel);
-        addStyleName("CheckBoxList");
-    }
+    public CheckBoxListGroup(final String name) {
+        this.name = name;
 
-    /**
-     * Removes all items from the list box.
-     */
-    public void clear() {
-        for (final Widget widget : checkBoxes) {
-            if (widget instanceof CheckBoxListGroup) {
-                ((CheckBoxListGroup) widget).clear();
-            }
-        }
+        // Create the outer element
+        rootPanel = new HTMLPanel("");
+        initWidget(rootPanel);
+        getElement().addClassName("CheckBoxListGroup");
 
-        checkBoxes.clear();
-        panel.clear();
+        // Create the header element
+        final Element header = Document.get().createDivElement().cast();
+        header.setInnerText(name);
+        header.getStyle().setFontWeight(Style.FontWeight.BOLD);
+        getElement().appendChild(header);
+
+        // Add the panel
+        panel.addStyleName("CheckBoxListGroupContent");
+        final Element content = panel.getElement();
+        content.getStyle().setMarginLeft(10, Style.Unit.PX);
+        rootPanel.add(panel);
     }
 
     public void addItem(final String label, final String value) {
@@ -40,24 +45,6 @@ public class CheckBoxList extends Composite {
         checkBox.setValue(checked);
         panel.add(checkBox);
         checkBoxes.add(checkBox);
-    }
-
-    public void addGroupItem(final CheckBoxListGroup group) {
-        panel.add(group);
-        checkBoxes.add(group);
-    }
-
-    /**
-     * Removes the item at the specified index.
-     *
-     * @param index the index of the item to be removed
-     * @throws IndexOutOfBoundsException if the index is out of range
-     */
-    public void removeItem(int index) {
-        checkIndex(index);
-        final Widget checkBox = checkBoxes.get(index);
-        checkBox.removeFromParent();
-        checkBoxes.remove(index);
     }
 
     /**
@@ -78,12 +65,7 @@ public class CheckBoxList extends Composite {
      */
     public String getItemText(int index) {
         checkIndex(index);
-        final Widget widget = checkBoxes.get(index);
-        if (widget instanceof CheckBox) {
-            return ((CheckBox) widget).getText();
-        } else {
-            return null;
-        }
+        return checkBoxes.get(index).getText();
     }
 
     /**
@@ -110,12 +92,7 @@ public class CheckBoxList extends Composite {
         if (text == null) {
             throw new NullPointerException("Cannot set an option to have null text");
         }
-        final Widget widget = checkBoxes.get(index);
-        if (widget instanceof CheckBox) {
-            ((CheckBox) widget).setText(text, dir);
-        } else {
-            throw new IllegalArgumentException("Cannot set the text for a CheckBoxList group");
-        }
+        checkBoxes.get(index).setText(text, dir);
     }
 
     /**
@@ -127,12 +104,7 @@ public class CheckBoxList extends Composite {
      */
     public boolean isItemSelected(int index) {
         checkIndex(index);
-        final Widget widget = checkBoxes.get(index);
-        if (widget instanceof CheckBox) {
-            return ((CheckBox) widget).getValue();
-        } else {
-            throw new IllegalArgumentException("Cannot get the value for a CheckBoxList group");
-        }
+        return checkBoxes.get(index).getValue();
     }
 
     /**
@@ -144,22 +116,14 @@ public class CheckBoxList extends Composite {
      */
     public void setItemSelected(int index, boolean selected) {
         checkIndex(index);
-        final Widget widget = checkBoxes.get(index);
-        if (widget instanceof CheckBox) {
-            ((CheckBox) widget).setValue(selected);
-        } else {
-            throw new IllegalArgumentException("Cannot set the value for a CheckBoxList group");
-        }
+        checkBoxes.get(index).setValue(selected);
     }
 
     public List<Integer> getSelectedIndexes() {
         final List<Integer> retValue = new ArrayList<Integer>();
         for (int i = 0; i < checkBoxes.size(); i++) {
-            final Widget widget = checkBoxes.get(i);
-            if (widget instanceof CheckBox) {
-                if (((CheckBox) widget).getValue()) {
-                    retValue.add(i);
-                }
+            if (checkBoxes.get(i).getValue()) {
+                retValue.add(i);
             }
         }
         return retValue;
@@ -173,39 +137,33 @@ public class CheckBoxList extends Composite {
     public List<String> getSelectedItemValues() {
         final List<String> retValue = new ArrayList<String>();
         for (int i = 0; i < checkBoxes.size(); i++) {
-            final Widget widget = checkBoxes.get(i);
-            if (widget instanceof CheckBox) {
-                final CheckBox checkBox = (CheckBox) widget;
-                if (checkBox.getValue()) {
-                    retValue.add(checkBox.getFormValue());
-                }
-            } else {
-                retValue.addAll(((CheckBoxListGroup) widget).getSelectedItemValues());
+            final CheckBox checkBox = checkBoxes.get(i);
+            if (checkBox.getValue()) {
+                retValue.add(checkBox.getFormValue());
             }
         }
         return retValue;
-    }
-
-    /**
-     * Gets the value associated with the item at a given index.
-     *
-     * @param index the index of the item to be retrieved
-     * @return the item's associated value
-     * @throws IndexOutOfBoundsException if the index is out of range
-     */
-    public String getValue(int index) {
-        checkIndex(index);
-        final Widget widget = checkBoxes.get(index);
-        if (widget instanceof CheckBox) {
-            return ((CheckBox) widget).getFormValue();
-        } else {
-            throw new IllegalArgumentException("Cannot get the value for a CheckBoxList group");
-        }
     }
 
     private void checkIndex(int index) {
         if (index < 0 || index >= getItemCount()) {
             throw new IndexOutOfBoundsException();
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    protected List<CheckBox> getCheckBoxes() {
+        return checkBoxes;
+    }
+
+    /**
+     * Removes all items from the list box.
+     */
+    public void clear() {
+        checkBoxes.clear();
+        panel.clear();
     }
 }

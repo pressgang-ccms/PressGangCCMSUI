@@ -30,6 +30,9 @@ public class TopicFilteredResultsAndDetailsView extends
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(TopicFilteredResultsAndDetailsView.class.getName());
+
+    private LogMessageAndContentSpecListView messageLogAndContentSpecListDialog = new LogMessageAndContentSpecListView();
+
     /**
      * The save button.
      */
@@ -138,6 +141,12 @@ public class TopicFilteredResultsAndDetailsView extends
     @Override
     public Label getCspsDown() {
         return cspsDown;
+    }
+
+    @NotNull
+    @Override
+    public LogMessageAndContentSpecListView getMessageLogDialog() {
+        return messageLogAndContentSpecListDialog;
     }
 
     public TopicFilteredResultsAndDetailsView() {

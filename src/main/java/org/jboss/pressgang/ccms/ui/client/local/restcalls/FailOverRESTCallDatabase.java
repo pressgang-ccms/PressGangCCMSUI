@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
@@ -44,6 +45,7 @@ public final class FailOverRESTCallDatabase {
     private static final String CSNODE_EXPAND_WITH_CONTENT_SPEC = "{\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTv1Constants.CONTENT_SPEC_NODE_EXPANSION_NAME + "\"}, \"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INHERITED_CONDITION_NAME + "\"}}, " +
+            "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.INFO_TOPIC_NODE_NAME + "\"}}, " +
             "{\"trunk\":{\"name\": \"" + RESTCSNodeV1.CONTENT_SPEC_NAME + "\"}, \"branches\":[" + "" +
             "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}" +
             "]}" +
@@ -189,7 +191,7 @@ public final class FailOverRESTCallDatabase {
             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
             "]}";
 
-    public static RESTCall createContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
+    public static RESTCall createTextContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
             @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
@@ -205,7 +207,7 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
-    public static RESTCall updateContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
+    public static RESTCall updateTextContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
             @NotNull final Integer flag, @NotNull final String userId) {
         return new RESTCall() {
             @Override
@@ -290,6 +292,21 @@ public final class FailOverRESTCallDatabase {
             @Override
             public boolean isRepeatable() {
                 return true;
+            }
+        };
+    }
+
+    public static RESTCall updateCSNodes(@NotNull final RESTCSNodeCollectionV1 csNodes, @NotNull final String message,
+            @NotNull final Integer flag, @NotNull final String userId) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONContentSpecNodes("", csNodes, message, flag, userId);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
             }
         };
     }

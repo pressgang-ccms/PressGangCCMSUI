@@ -1,6 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimplePanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -9,7 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.DisplaySplitViewCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -25,11 +28,6 @@ public abstract class BaseSearchResultsAndTopicView<
         U extends RESTBaseEntityCollectionV1<T, U, V>,
         V extends RESTBaseEntityCollectionItemV1<T, U, V>> extends
         BaseSearchAndEditView<T, U, V> implements BaseTopicFilteredResultsAndDetailsPresenter.Display<T, U, V> {
-
-    /**
-     * An instance of the message log dialog box
-     */
-    private final LogMessageView messageLogDialog = new LogMessageView();
 
     /**
      * The type of split used to display the rendered XML
@@ -198,12 +196,6 @@ public abstract class BaseSearchResultsAndTopicView<
     @Override
     public PushButton getExtendedProperties() {
         return extendedProperties;
-    }
-
-    @NotNull
-    @Override
-    public LogMessageView getMessageLogDialog() {
-        return messageLogDialog;
     }
 
     @Override

@@ -1498,4 +1498,13 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CanNotPushUnfrozenContentSpec();
+
+    @NotNull
+    String SelectContentSpecsToUpdate();
+
+    @NotNull
+    String NoteOnlyCSNodesWithRevisionDisplayed();
+
+    @NotNull
+    String FailedToUpdateCSNodes();
 }

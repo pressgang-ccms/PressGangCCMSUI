@@ -151,6 +151,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     protected boolean customEntitiesLoaded = false;
     protected String customEntities = "";
+    protected RESTCSNodeCollectionV1 topicCSNodes = null;
 
     /**
      * Null until validation has been done, and true if xml validation indicates that the XML is valid. The topic
@@ -522,184 +523,186 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         };
     }
 
-    /**
-     * Get all the content specs associated with this topic and list them
-     */
-    private void findAndDisplayContentSpecs() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayContentSpecs()");
-
-            clearRenderContentSpecListBox(getTopicRenderedPresenter().getDisplay().getContentSpecs());
-            clearRenderContentSpecListBox(getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs());
-
-            /*
-                Don't attempt to find content specs on new topics
-             */
-            final RESTBaseTopicV1<?, ?, ?> topic = getDisplayedTopic();
-            if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
+    protected void findContentSpecNodes(final RESTCallBack<RESTCSNodeCollectionV1> callBack, final BaseTemplateViewInterface display) {
+        // Don't attempt to find content specs on new topics
+        final RESTBaseTopicV1<?, ?, ?> topic = getDisplayedTopic();
+        if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
+            if (topicCSNodes == null) {
                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
                         ServiceConstants.CS_NODE_TOPIC_TYPES_QUERY + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" +
                                 topic.getId() + ";"), new RESTCallBack<RESTCSNodeCollectionV1>() {
                     @Override
                     public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
-                        checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
+                        topicCSNodes = retValue;
+                        callBack.success(retValue);
+                    }
+                }, display);
+            } else {
+                callBack.success(topicCSNodes);
+            }
+        } else {
+            callBack.success(null);
+        }
+    }
 
-                        final Map<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>> productVersionToContentSpecMap = new TreeMap<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>>();
-                        final Map<Integer, String> contentSpecTitles = new HashMap<Integer, String>();
+    /**
+     * Get all the content specs associated with this topic and list them
+     */
+    private void displayContentSpecs(final RESTCSNodeCollectionV1 retValue) {
+        clearRenderContentSpecListBox(getTopicRenderedPresenter().getDisplay().getContentSpecs());
+        clearRenderContentSpecListBox(getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs());
 
-                        // Get the csnodes that have conditions or custom entities
-                        for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
-                            checkState(node.getItem().getContentSpec() != null,
-                                    "The content spec node should have an expanded content spec property");
+        if (retValue != null) {
+            checkArgument(retValue.getItems() != null, "The returned node collection should have an expanded collection");
 
-                            final List<RESTCSNodeV1> nodes = new ArrayList<RESTCSNodeV1>();
+            final Map<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>> productVersionToContentSpecMap = new TreeMap<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>>();
+            final Map<Integer, String> contentSpecTitles = new HashMap<Integer, String>();
 
-                            // If the node has a condition then add it
-                            if (!isStringNullOrEmpty(node.getItem().getInheritedCondition())) {
-                                nodes.add(node.getItem());
-                            }
+            // Get the csnodes that have conditions or custom entities
+            for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
+                checkState(node.getItem().getContentSpec() != null,
+                        "The content spec node should have an expanded content spec property");
 
-                            // Check for entities on the nodes content spec
-                            final RESTContentSpecV1 contentSpec = node.getItem().getContentSpec();
-                            String product = null;
-                            String version = null;
-                            for (final RESTCSNodeCollectionItemV1 csNode : contentSpec.getChildren_OTM().getItems()) {
-                                // Only worry about metadata nodes
-                                if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA) {
-                                    if (csNode.getItem().getTitle().equals(CommonConstants.CS_TITLE_TITLE)) {
-                                        contentSpecTitles.put(contentSpec.getId(), csNode.getItem().getAdditionalText());
-                                    } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_ENTITIES_TITLE)) {
-                                        nodes.add(csNode.getItem());
-                                    } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_PRODUCT_TITLE)) {
-                                        product = csNode.getItem().getAdditionalText();
-                                    } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_VERSION_TITLE)) {
-                                        version = csNode.getItem().getAdditionalText();
-                                    }
-                                }
-                            }
+                final List<RESTCSNodeV1> nodes = new ArrayList<RESTCSNodeV1>();
 
-                            // Add the content spec to the map
-                            final String productVersion = product + (version == null ? "" : (" " + version));
-                            if (!productVersionToContentSpecMap.containsKey(productVersion)) {
-                                productVersionToContentSpecMap.put(productVersion,
-                                        new TreeMap<RESTContentSpecV1, List<RESTCSNodeV1>>(new RESTContentSpecIDSort(true)));
-                            }
+                // If the node has a condition then add it
+                if (!isStringNullOrEmpty(node.getItem().getInheritedCondition())) {
+                    nodes.add(node.getItem());
+                }
 
-                            productVersionToContentSpecMap.get(productVersion).put(contentSpec, nodes);
-                        }
-
-                        // Clear the <select> and add the default [NONE] option
-                        clearRenderContentSpecListBox(getTopicRenderedPresenter().getDisplay().getContentSpecs());
-                        clearRenderContentSpecListBox(getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs());
-                        getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
-                        getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
-
-                        final SelectElement s1 = getTopicRenderedPresenter().getDisplay().getContentSpecs().getElement().cast();
-                        final SelectElement s2 = getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getElement().cast();
-
-                        // Populate the Content Specs ListBox
-                        for (final Map.Entry<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>> entry :
-                                productVersionToContentSpecMap.entrySet()) {
-                            final String productVersion = entry.getKey();
-                            final Map<RESTContentSpecV1, List<RESTCSNodeV1>> contentSpecToNodes = entry.getValue();
-
-                            // Create the <optgroup>
-                            final OptGroupElement groupElement = Document.get().createOptGroupElement();
-                            groupElement.setLabel(productVersion);
-
-                            for (final Map.Entry<RESTContentSpecV1, List<RESTCSNodeV1>> entry2 : contentSpecToNodes.entrySet()) {
-                                final RESTContentSpecV1 contentSpec = entry2.getKey();
-                                final List<RESTCSNodeV1> contentSpecNodes = entry2.getValue();
-                                final String formattedTitle = getFormattedContentSpecTitle(contentSpec, contentSpecTitles);
-                                final String entities = ContentSpecUtilities.buildEntities(contentSpec, false);
-
-                                // Generate a JSON object to hold the data for us.
-                                final JSONObject o = new JSONObject();
-                                o.put("id", new JSONNumber(contentSpec.getId()));
-
-                                if (!isStringNullOrEmpty(entities)) {
-                                    o.put("entities", new JSONString(entities.trim()));
-                                }
-
-                                for (final RESTCSNodeV1 node : contentSpecNodes) {
-                                    if (!isStringNullOrEmpty(node.getInheritedCondition())) {
-                                        o.put("condition", new JSONString(node.getInheritedCondition()));
-                                    } else if (CommonConstants.CS_ENTITIES_TITLE.equalsIgnoreCase(node.getTitle())) {
-                                        o.put("customEntities", new JSONString(node.getAdditionalText().trim()));
-                                    }
-                                }
-                                final String value = o.toString();
-
-                                final OptionElement optElement = Document.get().createOptionElement();
-                                optElement.setText(formattedTitle);
-                                optElement.setValue(value);
-                                groupElement.appendChild(optElement);
-                            }
-
-                            s1.appendChild(groupElement);
-                            s2.appendChild(groupElement.cloneNode(true));
-                        }
-
-                        // Select the saved value and trigger the rendering
-                        final String key = Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId();
-                        final String savedValue = Preferences.INSTANCE.getString(key, null);
-                        if (isStringNullOrEmpty(savedValue)) {
-                            getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(0);
-                            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(0);
-                            notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
-
-                            if (!hasXMLErrors()) {
-                                isReadOnlyMode(new ReadOnlyCallback() {
-                                    @Override
-                                    public void readonlyCallback(final boolean readOnly) {
-                                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                                    }
-                                });
-                            }
-                        } else {
-                            for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getContentSpecs().getItemCount(); i < length; ++i) {
-                                if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(i).contains("\"id\":" + savedValue)) {
-                                    getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
-                                    getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
-                                    notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
-
-                                    if (!hasXMLErrors()) {
-                                        isReadOnlyMode(new ReadOnlyCallback() {
-                                        @Override
-                                        public void readonlyCallback(final boolean readOnly) {
-                                                getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
-                                                getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
-                                            }
-                                        });
-                                    }
-                                    break;
-                                }
-                            }
+                // Check for entities on the nodes content spec
+                final RESTContentSpecV1 contentSpec = node.getItem().getContentSpec();
+                String product = null;
+                String version = null;
+                for (final RESTCSNodeCollectionItemV1 csNode : contentSpec.getChildren_OTM().getItems()) {
+                    // Only worry about metadata nodes
+                    if (csNode.getItem().getNodeType() == RESTCSNodeTypeV1.META_DATA) {
+                        if (csNode.getItem().getTitle().equals(CommonConstants.CS_TITLE_TITLE)) {
+                            contentSpecTitles.put(contentSpec.getId(), csNode.getItem().getAdditionalText());
+                        } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_ENTITIES_TITLE)) {
+                            nodes.add(csNode.getItem());
+                        } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_PRODUCT_TITLE)) {
+                            product = csNode.getItem().getAdditionalText();
+                        } else if (csNode.getItem().getTitle().equals(CommonConstants.CS_VERSION_TITLE)) {
+                            version = csNode.getItem().getAdditionalText();
                         }
                     }
-                });
-            } else {
-                getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
-                getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+                }
+
+                // Add the content spec to the map
+                final String productVersion = product + (version == null ? "" : (" " + version));
+                if (!productVersionToContentSpecMap.containsKey(productVersion)) {
+                    productVersionToContentSpecMap.put(productVersion,
+                            new TreeMap<RESTContentSpecV1, List<RESTCSNodeV1>>(new RESTContentSpecIDSort(true)));
+                }
+
+                productVersionToContentSpecMap.get(productVersion).put(contentSpec, nodes);
+            }
+
+            // Clear the <select> and add the default [NONE] option
+            clearRenderContentSpecListBox(getTopicRenderedPresenter().getDisplay().getContentSpecs());
+            clearRenderContentSpecListBox(getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs());
+            getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+
+            final SelectElement s1 = getTopicRenderedPresenter().getDisplay().getContentSpecs().getElement().cast();
+            final SelectElement s2 = getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().getElement().cast();
+
+            // Populate the Content Specs ListBox
+            for (final Map.Entry<String, Map<RESTContentSpecV1, List<RESTCSNodeV1>>> entry :
+                    productVersionToContentSpecMap.entrySet()) {
+                final String productVersion = entry.getKey();
+                final Map<RESTContentSpecV1, List<RESTCSNodeV1>> contentSpecToNodes = entry.getValue();
+
+                // Create the <optgroup>
+                final OptGroupElement groupElement = Document.get().createOptGroupElement();
+                groupElement.setLabel(productVersion);
+
+                for (final Map.Entry<RESTContentSpecV1, List<RESTCSNodeV1>> entry2 : contentSpecToNodes.entrySet()) {
+                    final RESTContentSpecV1 contentSpec = entry2.getKey();
+                    final List<RESTCSNodeV1> contentSpecNodes = entry2.getValue();
+                    final String formattedTitle = getFormattedContentSpecTitle(contentSpec, contentSpecTitles);
+                    final String entities = ContentSpecUtilities.buildEntities(contentSpec, false);
+
+                    // Generate a JSON object to hold the data for us.
+                    final JSONObject o = new JSONObject();
+                    o.put("id", new JSONNumber(contentSpec.getId()));
+
+                    if (!isStringNullOrEmpty(entities)) {
+                        o.put("entities", new JSONString(entities.trim()));
+                    }
+
+                    for (final RESTCSNodeV1 node : contentSpecNodes) {
+                        if (!isStringNullOrEmpty(node.getInheritedCondition())) {
+                            o.put("condition", new JSONString(node.getInheritedCondition()));
+                        } else if (CommonConstants.CS_ENTITIES_TITLE.equalsIgnoreCase(node.getTitle())) {
+                            o.put("customEntities", new JSONString(node.getAdditionalText().trim()));
+                        }
+                    }
+                    final String value = o.toString();
+
+                    final OptionElement optElement = Document.get().createOptionElement();
+                    optElement.setText(formattedTitle);
+                    optElement.setValue(value);
+                    groupElement.appendChild(optElement);
+                }
+
+                s1.appendChild(groupElement);
+                s2.appendChild(groupElement.cloneNode(true));
+            }
+
+            // Select the saved value and trigger the rendering
+            final String key = Preferences.TOPIC_CONTENT_SPEC + getDisplayedTopic().getId();
+            final String savedValue = Preferences.INSTANCE.getString(key, null);
+            if (isStringNullOrEmpty(savedValue)) {
+                getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(0);
+                getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(0);
                 notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
 
-                /*
-                    Trigger the initial render
-                 */
                 if (!hasXMLErrors()) {
                     isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(boolean readOnly) {
+                        @Override
+                        public void readonlyCallback(final boolean readOnly) {
                             getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
                             getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
                         }
                     });
                 }
+            } else {
+                for (int i = 0, length = getTopicRenderedPresenter().getDisplay().getContentSpecs().getItemCount(); i < length; ++i) {
+                    if (getTopicRenderedPresenter().getDisplay().getContentSpecs().getValue(i).contains("\"id\":" + savedValue)) {
+                        getTopicRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
+                        getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().setSelectedIndex(i);
+                        notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
 
+                        if (!hasXMLErrors()) {
+                            isReadOnlyMode(new ReadOnlyCallback() {
+                            @Override
+                            public void readonlyCallback(final boolean readOnly) {
+                                    getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                                    getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                                }
+                            });
+                        }
+                        break;
+                    }
+                }
             }
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.findAndDisplayContentSpecs()");
+        } else {
+            getTopicRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+            getTopicSplitPanelRenderedPresenter().getDisplay().getContentSpecs().addItem(PressGangCCMSUI.INSTANCE.NoContentSpec(), "");
+            notifyAceEditorOfCondition(getTopicRenderedPresenter().getDisplay().getContentSpecs());
+
+            // Trigger the initial render
+            if (!hasXMLErrors()) {
+                isReadOnlyMode(new ReadOnlyCallback() {
+                    @Override
+                    public void readonlyCallback(boolean readOnly) {
+                        getTopicRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, true);
+                        getTopicSplitPanelRenderedPresenter().displayTopicRendered(getDisplayedTopic(), readOnly, false);
+                    }
+                });
+            }
         }
     }
 
@@ -841,6 +844,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             preLoadAdditionalDisplayedItemData();
 
+            topicCSNodes = null;
+
             enableAndDisableActionButtons(lastDisplayedView);
 
             /* fix the rendered view buttons */
@@ -855,7 +860,12 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /* Display the list of property tags */
             topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultPresenter().getProviderData().getDisplayedItem().getItem());
 
-            findAndDisplayContentSpecs();
+            findContentSpecNodes(new RESTCallBack<RESTCSNodeCollectionV1>() {
+                @Override
+                public void success(final RESTCSNodeCollectionV1 retValue) {
+                    displayContentSpecs(retValue);
+                }
+            }, null);
 
             /* enable or disable the rendering of remarks */
             final boolean remarksEnabled = Preferences.INSTANCE.getBoolean(
@@ -868,7 +878,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
         }
-
     }
 
     /**

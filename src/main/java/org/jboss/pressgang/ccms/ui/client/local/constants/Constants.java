@@ -20,7 +20,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406051449";
+    public static final String BUILD = "201406111017";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1591,6 +1591,7 @@ public final class Constants {
         MESSAGE_SAVE_DIALOG("MessageSaveDialog"),
         MAJOR_CHANGE_SAVE_DIALOG("MajorChangeSaveDialog"),
         MINOR_CHANGE_SAVE_DIALOG("MinorChangeSaveDialog"),
+        CONTENT_SPEC_LIST_SAVE_DIALOG("ContentSpecListSaveDialog"),
         OK_SAVE_DIALOG("OKSaveDialog"),
         CANCEL_SAVE_DIALOG("CancelSaveDialog"),
         RENDERED_PANE_TOPIC_EDIT_BUTTON_ID("RenderedPaneTopicEditButton"),
