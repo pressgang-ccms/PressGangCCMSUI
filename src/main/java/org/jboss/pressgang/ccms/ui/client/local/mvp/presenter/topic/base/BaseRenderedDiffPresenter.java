@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.Panel;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.rest.v1.entities.wrapper.IntegerWrapper;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -14,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.DocBookUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -175,7 +177,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
                                     }
                                 };
 
-                                final String xml = cleanXMLAndAddAdditionalContent(retValue2.getXml(), true, false, true);
+                                final String xml = cleanXMLAndAddAdditionalContent(retValue2.getXmlFormat(), retValue2.getXml(), true);
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold2, display, true);
                             }
 
@@ -186,7 +188,7 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
 
                         };
 
-                        final String xml = cleanXMLAndAddAdditionalContent(retValue1.getXml(), true, false, true);
+                        final String xml = cleanXMLAndAddAdditionalContent(retValue1.getXmlFormat(), retValue1.getXml(), true);
                         getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.holdXML(xml), hold1, display, true);
 
                     }
@@ -204,6 +206,14 @@ abstract public class BaseRenderedDiffPresenter extends BaseRenderedPresenter {
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(firstTopicId), callback1, display);
         } else {
             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(firstTopicId, firstRevision), callback1, display);
+        }
+    }
+
+    protected String cleanXMLAndAddAdditionalContent(final RESTXMLFormat xmlFormat, final String xml, final boolean showImages) {
+        if (xmlFormat == RESTXMLFormat.DOCBOOK_50) {
+            return DocBookUtilities.addDocBook50Namespaces(cleanXMLAndAddAdditionalContent(xml, showImages, false, true));
+        } else {
+            return cleanXMLAndAddAdditionalContent(xml, showImages, false, true);
         }
     }
 
