@@ -282,14 +282,14 @@ abstract public class BaseSearchAndEditPresenter<
                     try {
                         LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
 
-                        if (!isOKToProceed()) {
-                            return;
-                        }
-
                         final V selectedItem = event.getValue();
+                        if (!selectedItem.equals(filteredResultsComponent.getProviderData().getSelectedItem())) {
+                            if (!isOKToProceed()) {
+                                return;
+                            }
 
-                        loadNewEntity(getNewEntityCallback, selectedItem);
-
+                            loadNewEntity(getNewEntityCallback, selectedItem);
+                        }
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
                     }
