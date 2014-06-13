@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +9,15 @@ import com.google.gwt.xml.client.Comment;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 
 public class XMLValidator {
+    private static final String[] DATE_FORMATS = new String[]{"MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "yyyy/MM/dd", "EEE MMM dd yyyy",
+            "EEE, MMM dd yyyy", "EEE MMM dd yyyy Z", "EEE dd MMM yyyy", "EEE, dd MMM yyyy", "EEE dd MMM yyyy Z", "yyyyMMdd",
+            "yyyyMMdd'T'HHmmss.SSSZ"};
+
     private final XMLValidationHelper validationHelper;
     private String customEntities = "";
     /**
@@ -184,7 +190,7 @@ public class XMLValidator {
 
     public String doAdditionalDocBookValidation(final String xml, final String entities) {
         final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
-        final int entitiesLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
+        final int numEntityLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
         Document doc = null;
         try {
             doc = XMLUtilities.convertStringToDocument(entities + xmlWithLineNumbers);
@@ -198,7 +204,7 @@ public class XMLValidator {
             final List<Node> tables = XMLUtilities.getChildNodes(doc.getDocumentElement(), "table", "informaltable");
             for (final Node table : tables) {
                 if (!DocBookUtilities.validateTableRows((Element) table)) {
-                    final int line = entitiesLines + Integer.parseInt(((Element) table).getAttribute("pressgangeditorlinenumber")) - 1;
+                    final int line = numEntityLines + getLineNumberFromElement((Element) table);;
                     retValue.append("topic.xml:" + line + ": element table: validity error : cols declaration doesn't match the " +
                             "number of entry elements\n");
                 }
@@ -222,15 +228,81 @@ public class XMLValidator {
                 final List<Node> invalidElements = XMLUtilities.getDirectChildNodes(doc.getDocumentElement(), "title", "subtitle",
                         "titleabbrev");
                 for (final Node invalidElement : invalidElements) {
-                    final int line = entitiesLines + Integer.parseInt(((Element) invalidElement).getAttribute("pressgangeditorlinenumber")) - 1;
+                    final int line = numEntityLines + getLineNumberFromElement((Element) invalidElement);
                     retValue.append("topic.xml:" + line + ": element " + invalidElement.getNodeName() + " cannot be used in an info " +
                             "topic\n");
                 }
             }
+
+            // Check that the revision history has valid numbers and dates
+            final NodeList revhistories = doc.getElementsByTagName("revhistory");
+            if (revhistories.getLength() > 0) {
+                validateRevisionHistory(retValue, doc, numEntityLines);
+            }
         }
 
         return retValue.toString();
-    };
+    }
+
+    /**
+     * Validates a Revision History XML DOM Document to ensure that the content is valid for use with Publican.
+     *
+     * @param doc         The DOM Document that represents the XML that is to be validated.
+     * @return Null if there weren't any errors otherwise an error message that states what is wrong.
+     */
+    public static void validateRevisionHistory(final StringBuilder messages, final Document doc, final int entitiesLines) {
+
+        // Find each <revnumber> element and make sure it matches the publican regex
+        final NodeList revisions = doc.getElementsByTagName("revision");
+        Date previousDate = null;
+        for (int i = 0; i < revisions.getLength(); i++) {
+            final Element revision = (Element) revisions.item(i);
+            final NodeList revnumbers = revision.getElementsByTagName("revnumber");
+            final Element revnumber = revnumbers.getLength() == 1 ? (Element) revnumbers.item(0) : null;
+            final NodeList dates = revision.getElementsByTagName("date");
+            final Element date = dates.getLength() == 1 ? (Element) dates.item(0) : null;
+
+            // Make sure the rev number is valid and the order is correct
+            if (revnumber != null && !XMLUtilities.getNodeText(revnumber).matches("^([0-9.]*)-([0-9.]*)$")) {
+                final int line = entitiesLines + getLineNumberFromElement(revnumber);
+                messages.append(
+                        "topic.xml:" + line + ": element " + revnumber.getNodeName() + ": validity error : revnumber must match \"^([0-9" +
+                                ".]*)-([0-9.]*)$\"\n");
+            } else if (revnumber == null) {
+                final int line = entitiesLines + getLineNumberFromElement(revision);
+                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing revnumber element\n");
+            }
+
+            // Check the dates are in chronological order
+            if (date != null) {
+                try {
+                    final Date revisionDate = DateUtilities.parseDateStrictly(DateUtilities.cleanDate(XMLUtilities.getNodeText(date)),
+                            DATE_FORMATS);
+                    if (previousDate != null && revisionDate.after(previousDate)) {
+                        final int line = entitiesLines + getLineNumberFromElement(date);
+                        messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : the date is not" +
+                                " in descending chronological order\n");
+                        return;
+                    }
+
+                    previousDate = revisionDate;
+                } catch (Exception e) {
+                    final int line = entitiesLines + getLineNumberFromElement(date);
+                    messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : the date is not" +
+                            " a valid\n");
+                    return;
+                }
+            } else {
+                final int line = entitiesLines + getLineNumberFromElement(revision);
+                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing date " +
+                        "element\n");
+            }
+        }
+    }
+
+    protected static Integer getLineNumberFromElement(final Element element) {
+        return Integer.parseInt(((Element) element).getAttribute("pressgangeditorlinenumber")) - 1;
+    }
 
     public boolean isCheckingXML() {
         return checkingXML;
