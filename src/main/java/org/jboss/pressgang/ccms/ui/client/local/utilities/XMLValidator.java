@@ -288,8 +288,7 @@ public class XMLValidator {
                     previousDate = revisionDate;
                 } catch (Exception e) {
                     final int line = entitiesLines + getLineNumberFromElement(date);
-                    messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : the date is not" +
-                            " a valid\n");
+                    messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : either the date is invalid, or it is incorrectly formatted. The recommended format is \"Tuesday 17 June 2014\"\n");
                     return;
                 }
             } else {
