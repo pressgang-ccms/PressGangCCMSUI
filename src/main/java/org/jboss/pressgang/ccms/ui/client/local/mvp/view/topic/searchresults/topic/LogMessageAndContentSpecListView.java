@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.CheckBoxList;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -27,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public class LogMessageAndContentSpecListView extends DialogBox implements LogMessageAndContentSpecListInterface {
+    private static int TAB_PANEL_BASE_HEIGHT = 40;
 
     /**
      * Used to group the radio buttons
@@ -114,11 +118,24 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
         tabPanel.add(createWrapperPanel(contentSpecLayout), PressGangCCMSUI.INSTANCE.TopicContentSpecs());
 
         final VerticalPanel rootPanel = new VerticalPanel();
+        tabPanel.setHeight("175px");
         tabPanel.setWidth("500px");
-        tabPanel.setHeight("350px");
         rootPanel.add(tabPanel);
         rootPanel.add(buttonPanel);
         add(rootPanel);
+
+        tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(final SelectionEvent<Integer> event) {
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        final SimpleLayoutPanel tabWidget = (SimpleLayoutPanel) tabPanel.getWidget(event.getSelectedItem());
+                        tabPanel.setHeight((TAB_PANEL_BASE_HEIGHT + tabWidget.getWidget().getOffsetHeight()) + "px");
+                    }
+                });
+            }
+        });
 
         reset();
     }
