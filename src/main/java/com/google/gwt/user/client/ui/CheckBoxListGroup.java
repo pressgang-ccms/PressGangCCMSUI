@@ -40,9 +40,18 @@ public class CheckBoxListGroup extends Composite {
     }
 
     public void addItem(final String label, final String value, final boolean checked) {
+        addItem(label, value, checked, true);
+    }
+
+    public void addItem(final String label, final String value, final boolean checked, boolean enabled) {
         final CheckBox checkBox = new CheckBox(label);
         checkBox.setFormValue(value);
         checkBox.setValue(checked);
+        checkBox.setEnabled(enabled);
+        addItem(checkBox);
+    }
+
+    public void addItem(final CheckBox checkBox) {
         panel.add(checkBox);
         checkBoxes.add(checkBox);
     }

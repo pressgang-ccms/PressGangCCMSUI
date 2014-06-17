@@ -12,9 +12,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +48,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.CheckBoxListGroup;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
@@ -1675,7 +1678,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (retValue != null) {
                     // Iterate through and map nodes to content spec ids
                     final Map<RESTContentSpecV1, List<RESTCSNodeV1>> contentSpecIdToNodes = new HashMap<RESTContentSpecV1, List<RESTCSNodeV1>>();
-                    final Map<String, List<RESTContentSpecV1>> contentSpecProdVerToContentSpec = new TreeMap<String, List<RESTContentSpecV1>>();
+                    final Map<String, Set<RESTContentSpecV1>> contentSpecProdVerToContentSpec = new TreeMap<String,
+                            Set<RESTContentSpecV1>>();
                     for (final RESTCSNodeV1 csNode : retValue.returnItems()) {
                         // Check its a topic node or an info topic node
                         if (!(Constants.TOPIC_CS_NODE_TYPES.contains(csNode.getNodeType()) || csNode.getInfoTopicNode() != null)) {
@@ -1692,13 +1696,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         contentSpecIdToNodes.get(contentSpec).add(csNode);
 
                         if (!contentSpecProdVerToContentSpec.containsKey(prodVersion)) {
-                            contentSpecProdVerToContentSpec.put(prodVersion, new ArrayList<RESTContentSpecV1>());
+                            contentSpecProdVerToContentSpec.put(prodVersion, new HashSet<RESTContentSpecV1>());
                         }
                         contentSpecProdVerToContentSpec.get(prodVersion).add(contentSpec);
                     }
 
                     // Add the items to the checkbox list id
-                    for (final Map.Entry<String, List<RESTContentSpecV1>> entry : contentSpecProdVerToContentSpec.entrySet()) {
+                    for (final Map.Entry<String, Set<RESTContentSpecV1>> entry : contentSpecProdVerToContentSpec.entrySet()) {
                         final CheckBoxListGroup group = new CheckBoxListGroup(entry.getKey());
 
                         for (final RESTContentSpecV1 contentSpec : entry.getValue()) {
@@ -1727,7 +1731,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 o.put("id", new JSONNumber(contentSpec.getId()));
                                 o.put("nodes", array);
 
-                                group.addItem(buildContentSpecName(contentSpec), o.toString());
+                                final boolean hasNoErrors = isStringNullOrEmpty(contentSpec.getFailedContentSpec());
+                                final String name = buildContentSpecName(contentSpec) + (hasNoErrors ? "" : " - Invalid");
+
+                                final CheckBox checkBox = new CheckBox(name);
+                                checkBox.setFormValue(o.toString());
+                                checkBox.setValue(false);
+                                checkBox.setEnabled(hasNoErrors);
+                                if (!hasNoErrors) {
+                                    checkBox.addStyleName(CSSConstants.Common.ERROR);
+                                }
+
+                                group.addItem(checkBox);
                             }
                         }
 

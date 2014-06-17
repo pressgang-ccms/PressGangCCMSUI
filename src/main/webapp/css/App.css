@@ -1447,3 +1447,7 @@ table.ProcessWaitingTable {
     height: 230px;
     margin: 10px 0px;
 }
+
+.gwt-CheckBox.Error {
+    color: #ff0000;
+}
