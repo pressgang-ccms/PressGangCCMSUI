@@ -1112,7 +1112,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     }
 
     private void disableButtonsInReadonlyMode() {
-        super.isReadOnlyMode(new ReadOnlyCallback() {
+        isReadOnlyMode(new ReadOnlyCallback() {
             @Override
             public void readonlyCallback(boolean readOnly) {
                 display.getSave().setEnabled(!readOnly);
