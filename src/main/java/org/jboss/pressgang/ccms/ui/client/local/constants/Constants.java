@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,7 +21,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406161145";
+    public static final String BUILD = "201406171023";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1238,6 +1239,10 @@ public final class Constants {
         "18px",
         "20px"
     };
+
+    public static final List<RESTCSNodeTypeV1> TOPIC_CS_NODE_TYPES = Arrays.asList(RESTCSNodeTypeV1.INITIAL_CONTENT_TOPIC,
+            RESTCSNodeTypeV1.META_DATA_TOPIC,
+            RESTCSNodeTypeV1.TOPIC);
 
     /**
      * The attribute that holds a DocBook condition

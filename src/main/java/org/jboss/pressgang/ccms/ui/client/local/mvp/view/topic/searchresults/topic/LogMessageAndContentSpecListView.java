@@ -30,7 +30,8 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public class LogMessageAndContentSpecListView extends DialogBox implements LogMessageAndContentSpecListInterface {
-    private static int TAB_PANEL_BASE_HEIGHT = 40;
+    private static final int TAB_PANEL_BASE_HEIGHT = 40;
+    private static final String TAB_PANEL_ORIGINAL_HEIGHT = "175px";
 
     /**
      * Used to group the radio buttons
@@ -118,7 +119,7 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
         tabPanel.add(createWrapperPanel(contentSpecLayout), PressGangCCMSUI.INSTANCE.TopicContentSpecs());
 
         final VerticalPanel rootPanel = new VerticalPanel();
-        tabPanel.setHeight("175px");
+        tabPanel.setHeight(TAB_PANEL_ORIGINAL_HEIGHT);
         tabPanel.setWidth("500px");
         rootPanel.add(tabPanel);
         rootPanel.add(buttonPanel);
@@ -187,7 +188,8 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
         message.setText("");
         minorChange.setValue(true);
         contentSpecList.clear();
-        tabPanel.selectTab(0);
+        tabPanel.selectTab(0, false);
+        tabPanel.setHeight(TAB_PANEL_ORIGINAL_HEIGHT);
     }
 
     @Override

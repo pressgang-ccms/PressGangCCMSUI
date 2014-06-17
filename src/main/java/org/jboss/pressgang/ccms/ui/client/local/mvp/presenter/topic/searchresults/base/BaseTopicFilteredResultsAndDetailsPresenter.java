@@ -523,14 +523,18 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         };
     }
 
-    protected void findContentSpecNodes(final RESTCallBack<RESTCSNodeCollectionV1> callBack, final BaseTemplateViewInterface display) {
+    protected void findContentSpecNodes(final RESTCallBack<RESTCSNodeCollectionV1> callBack, final BaseTemplateViewInterface display,
+            final boolean useCachedValues) {
         // Don't attempt to find content specs on new topics
         final RESTBaseTopicV1<?, ?, ?> topic = getDisplayedTopic();
         if (getSearchResultPresenter().getProviderData().getSelectedItem() != null) {
-            if (topicCSNodes == null) {
+            if (!useCachedValues || topicCSNodes == null) {
                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getCSNodesWithContentSpecExpandedFromQuery(
-                        ServiceConstants.CS_NODE_TOPIC_TYPES_QUERY + CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" +
-                                topic.getId() + ";"), new RESTCallBack<RESTCSNodeCollectionV1>() {
+                        Constants.QUERY_PATH_SEGMENT_PREFIX +
+                            CommonFilterConstants.CONTENT_SPEC_NODE_ENTITY_ID_FILTER_VAR + "=" + topic.getId() + ";" +
+                            CommonFilterConstants.CONTENT_SPEC_NODE_INFO_TOPIC_ID_FILTER_VAR + "=" + topic.getId() + ";" +
+                            CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC),
+                        new RESTCallBack<RESTCSNodeCollectionV1>() {
                     @Override
                     public void success(@NotNull final RESTCSNodeCollectionV1 retValue) {
                         topicCSNodes = retValue;
@@ -562,6 +566,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
                 checkState(node.getItem().getContentSpec() != null,
                         "The content spec node should have an expanded content spec property");
+
+                // Check its a topic node or an info topic node
+                if (!(Constants.TOPIC_CS_NODE_TYPES.contains(node.getItem().getNodeType()) || node.getItem().getInfoTopicNode() != null)) {
+                    continue;
+                }
 
                 final List<RESTCSNodeV1> nodes = new ArrayList<RESTCSNodeV1>();
 
@@ -865,7 +874,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 public void success(final RESTCSNodeCollectionV1 retValue) {
                     displayContentSpecs(retValue);
                 }
-            }, null);
+            }, null, true);
 
             /* enable or disable the rendering of remarks */
             final boolean remarksEnabled = Preferences.INSTANCE.getBoolean(

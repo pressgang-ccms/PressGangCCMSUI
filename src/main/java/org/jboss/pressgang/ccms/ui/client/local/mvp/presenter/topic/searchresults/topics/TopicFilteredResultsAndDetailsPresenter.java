@@ -313,7 +313,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     switchView(topicRevisionsPresenter.getDisplay());
                     updateContentSpecs(retValue, PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                 } else {
-                    updateContentSpecs(retValue, PressGangCCMSUI.INSTANCE.SaveSuccess());
+                    updateContentSpecs(retValue, PressGangCCMSUI.INSTANCE.TopicSaveSuccess());
                 }
             } finally {
                 LOGGER.log(Level.INFO, "EXIT RESTCallBack.success()");
@@ -328,6 +328,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @Override
         public void failed() {
+            getDisplay().getMessageLogDialog().reset();
             getTopicXMLPresenter().getDisplay().getEditor().redisplay();
             // This forces the xml validation to rehighlight the invalid rows
             getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
@@ -391,6 +392,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @Override
         public void failed() {
+            getDisplay().getMessageLogDialog().reset();
             getTopicXMLPresenter().getDisplay().getEditor().redisplay();
             // This forces the xml validation to rehighlight the invalid rows
             getTopicXMLPresenter().getDisplay().getXmlErrors().setText("");
@@ -429,7 +431,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 infoNode.setId((int) infoId.doubleValue());
                                 infoNode.explicitSetTopicRevision(updatedTopic.getRevision());
                             } else {
-                                csNode.explicitSetTitle(updatedTopic.getTitle());
+                                // Only update initial content or regular topic titles
+                                if (RESTCSNodeTypeV1.TOPIC.name().equalsIgnoreCase(nodeType.stringValue())
+                                        || RESTCSNodeTypeV1.INITIAL_CONTENT_TOPIC.name().equalsIgnoreCase(nodeType.stringValue())) {
+                                    csNode.explicitSetTitle(updatedTopic.getTitle());
+                                }
                                 csNode.explicitSetEntityRevision(updatedTopic.getRevision());
                             }
                             updatedCSNodes.addUpdateItem(csNode);
@@ -444,6 +450,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public void success(final RESTCSNodeCollectionV1 retValue) {
                             AlertBox.setMessageAndDisplay(topicSuccessMessage);
+                        }
+
+                        @Override
+                        public void failed() {
+                            AlertBox.setMessageAndDisplay(topicSuccessMessage + "\n\n" + PressGangCCMSUI.INSTANCE.FailedToUpdateCSNodes());
                         }
                     };
 
@@ -461,7 +472,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateCSNodes(updatedCSNodes,
                                     message.toString(), flag, serverSettings.getEntities().getUnknownUserId().toString()),
-                                    updateCSNodesCallback, getDisplay());
+                                    updateCSNodesCallback, getDisplay(), true);
                         }
                     });
                 }
@@ -1666,6 +1677,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     final Map<RESTContentSpecV1, List<RESTCSNodeV1>> contentSpecIdToNodes = new HashMap<RESTContentSpecV1, List<RESTCSNodeV1>>();
                     final Map<String, List<RESTContentSpecV1>> contentSpecProdVerToContentSpec = new TreeMap<String, List<RESTContentSpecV1>>();
                     for (final RESTCSNodeV1 csNode : retValue.returnItems()) {
+                        // Check its a topic node or an info topic node
+                        if (!(Constants.TOPIC_CS_NODE_TYPES.contains(csNode.getNodeType()) || csNode.getInfoTopicNode() != null)) {
+                            continue;
+                        }
+
+                        // Add the node and it's content spec to the map
                         final RESTContentSpecV1 contentSpec = csNode.getContentSpec();
                         final String prodVersion = buildContentSpecProdVersionName(contentSpec);
 
@@ -1722,7 +1739,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 TopicFilteredResultsAndDetailsPresenter.super.configureMessageDialog();
             }
-        }, getDisplay());
+        }, getDisplay(), false);
     }
 
     protected String buildContentSpecName(final RESTContentSpecV1 contentSpec) {
