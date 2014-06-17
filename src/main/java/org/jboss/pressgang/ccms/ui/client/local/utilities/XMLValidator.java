@@ -270,7 +270,8 @@ public class XMLValidator {
                                 ".]*)-([0-9.]*)$\"\n");
             } else if (revnumber == null) {
                 final int line = entitiesLines + getLineNumberFromElement(revision);
-                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing revnumber element\n");
+                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing <revnumber> " +
+                        "element\n");
             }
 
             // Check the dates are in chronological order
@@ -288,13 +289,12 @@ public class XMLValidator {
                     previousDate = revisionDate;
                 } catch (Exception e) {
                     final int line = entitiesLines + getLineNumberFromElement(date);
-                    messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : the date is not" +
-                            " a valid\n");
+                    messages.append("topic.xml:" + line + ": element " + date.getNodeName() + ": validity error : either the date is invalid, or it is incorrectly formatted\n");
                     return;
                 }
             } else {
                 final int line = entitiesLines + getLineNumberFromElement(revision);
-                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing date " +
+                messages.append("topic.xml:" + line + ": element " + revision.getNodeName() + ": validity error : missing <date> " +
                         "element\n");
             }
         }
