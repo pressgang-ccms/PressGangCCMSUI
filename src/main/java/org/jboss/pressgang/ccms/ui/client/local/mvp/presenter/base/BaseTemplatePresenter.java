@@ -82,6 +82,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.Proper
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory.PropertyCategoryFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.contentspec.ContentSpecSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.topic.TopicSearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.settings.ServerSettingsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.ReadOnlyPresenter;
@@ -368,6 +369,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
         getDisplay().getTopShortcutView().getSysinfo().setHref("#" + SysInfoPresenter.HISTORY_TOKEN);
+        getDisplay().getTopShortcutView().getServerSettings().setHref("#" + ServerSettingsPresenter.HISTORY_TOKEN);
     }
 
     private void bindDefaultShortcutButtons() {
