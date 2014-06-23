@@ -1227,8 +1227,15 @@ var FilteredList = function(array, filterText, mutateData) {
 
         this.filterText = str;
         matches = this.filterCompletions(matches, this.filterText);
+        // lnewson: update the sort algorithm to do a locale compare when the weight is the same
         matches = matches.sort(function(a, b) {
-            return b.exactMatch - a.exactMatch || b.score - a.score;
+            if (b.exactMatch == a.exactMatch && b.score == a.score) {
+                var captionA = a.value || a.caption || a.snippet;
+                var captionB = b.value || b.caption || b.snippet;
+                return captionA.localeCompare(captionB);
+            } else {
+                return b.exactMatch - a.exactMatch || b.score - a.score;
+            }
         });
 
         // lnewson: update unique filtering to take meta into account
