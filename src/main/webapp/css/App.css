@@ -1451,3 +1451,15 @@ table.ProcessWaitingTable {
 .gwt-CheckBox.Error {
     color: #ff0000;
 }
+
+.TopicSourceURLResults, .TopicSourceURLResults input {
+    width: 100%;
+}
+
+.TopicSourceURLResults button {
+    white-space: nowrap;
+}
+
+.TopicSourceURLResultsURLField, .TopicSourceURLResultsTitleField {
+    width: 45%;
+}

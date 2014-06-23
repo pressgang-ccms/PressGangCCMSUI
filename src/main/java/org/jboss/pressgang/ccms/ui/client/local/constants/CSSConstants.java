@@ -998,4 +998,10 @@ public interface CSSConstants {
         String OTHER_CELL_SCROLL = "SettingsOtherCellScroll";
         String OTHER_CELL = "SettingsOtherCell";
     }
+
+    public interface TopicSourceURLView {
+        String TOPIC_SOURCE_URL_RESULTS = "TopicSourceURLResults";
+        String TOPIC_SOURCE_URL_RESULTS_URL_COLUMN = "TopicSourceURLResultsURLField";
+        String TOPIC_SOURCE_URL_RESULTS_TITLE_COLUMN = "TopicSourceURLResultsTitleField";
+    }
 }
