@@ -7,13 +7,13 @@
 }
 
 .gwt-MenuItem.gwt-MenuItem-selected {
-    background: #009200;
+    background: #2e2e2e;
 }
 
 .gwt-MenuBar-vertical {
     margin-top: 0px;
     margin-left: 0px;
-    background: #00C618;
+    background: #030303;
 }
 .gwt-MenuBar-vertical table {
     border-collapse: collapse;

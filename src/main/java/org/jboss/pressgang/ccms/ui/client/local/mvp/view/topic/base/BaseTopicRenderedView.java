@@ -5,13 +5,8 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -35,6 +30,9 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
     private static final String LOADING_IFRAME = "LoadingIFrame";
     private static final String LOADED_IFRAME = "LoadedIFrame";
     private static final String HIDDEN_IFRAME = "HiddenIFrame";
+    /**
+     * The scroll panel used to hold the view action buttons.
+     */
     private final FlexTable layoutPanel = new FlexTable();
     private final ListBox contentSpecs = new ListBox(false);
     private final CheckBox remarks = new CheckBox(PressGangCCMSUI.INSTANCE.EnableRemarks());
@@ -80,6 +78,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         this.getPanel().setWidget(layoutPanel);
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
         errorLabel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_LABEL);
+        renderingOptions.addStyleName(CSSConstants.TopicView.TOPIC_RENDERING_OPTIONS_PARENT);
 
         renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.RenderContentSpec()));
         renderingOptions.setWidget(0, 1, contentSpecs);
@@ -87,11 +86,11 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         renderingOptions.setWidget(1, 0, remarks);
         renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 3);
 
-        layoutPanel.setWidget(0, 0, renderingOptions);
+        addLocalActionButton(renderingOptions);
 
-        layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_CELL);
-        layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
-        layoutPanel.getFlexCellFormatter().addStyleName(3, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
+        layoutPanel.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL);
 
         ServerDetails.getSavedServer(new ServerDetailsCallback() {
             @Override
@@ -100,9 +99,6 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
                 addEventListener();
             }
         });
-
-        // Hide the action bar since it's not needed
-        getTopActionGrandParentPanel().removeFromParent();
     }
 
     protected FlexTable getRenderingOptions() {
@@ -155,7 +151,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
     private void displayRendered() {
         if (loadingiframe != null) {
-            final int next = displayingRow == 2 ? 3 : 2;
+            final int next = displayingRow == 1 ? 2 : 1;
             /*
                 Hide the outgoing iframe, and display the incoming one.
             */
@@ -236,7 +232,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
 
         errorLabel.setText(errorMessage);
 
-        layoutPanel.setWidget(1, 0, errorLabel);
+        layoutPanel.setWidget(0, 0, errorLabel);
     }
 
     @Override

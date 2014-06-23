@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
@@ -25,8 +24,6 @@ import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
-import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
-import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCall;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
@@ -93,12 +90,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
     /**
-     * Defines the panel that holds the page title and the other content.
+     * Defines the panel that holds the shortcut bar, content and footer.
      */
-    private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.EM);
+    private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
     /**
-     * Defines the panel that holds the shortcut bar, content and footer.
+     * Defines the panel that holds the shortcut bar and content.
      */
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
     /**
@@ -109,6 +106,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * The panel that holds the page title label.
      */
     private final HorizontalPanel pageTitleParentLayoutPanel = new HorizontalPanel();
+    /**
+     * The application title label.
+     */
+    private final Label applicationTitle = new Label(PressGangCCMSUI.INSTANCE.PressGangCCMS());
     /**
      * The page title label.
      */
@@ -238,6 +239,18 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     public SimplePanel getFooterPanelCustomContent() {
         return footerPanelCustomContent;
+    }
+
+    @Override
+    @NotNull
+    public DockLayoutPanel getSecondLevelLayoutPanel() {
+        return secondLevelLayoutPanel;
+    }
+
+    @Override
+    @NotNull
+    public DockLayoutPanel getThirdLevelLayoutPanel() {
+        return thirdLevelLayoutPanel;
     }
 
     /**
@@ -445,29 +458,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         this.pageName = pageName;
 
         /* Set the heading */
-        headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
-        final Image pgImage = new Image(ImageResources.INSTANCE.headingBanner());
-        pgImage.addStyleName(CSSConstants.Template.PRESSGANG_HEADER_IMAGE);
-        headingBanner.setWidget(0, 0, pgImage);
+        headingBanner.addStyleName(CSSConstants.Template.APPLICATION_HEADING_PANEL);
 
-        topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
-        topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
-
-        /*
-            Add the hidden DOM attachment area
-         */
-        hiddenAttachmentArea.setVisible(false);
-        topLevelLayoutPanel.addSouth(hiddenAttachmentArea, 0);
-
-        /* Set the second level layout */
-        secondLevelLayoutPanel.addStyleName(CSSConstants.Template.SECOND_LEVEL_LAYOUT_PANEL);
-        topLevelLayoutPanel.add(secondLevelLayoutPanel);
+        applicationTitle.addStyleName(CSSConstants.Template.APPLICATION_TITLE);
+        headingBanner.setWidget(0, 0, applicationTitle);
 
         /* Set the page title */
         pageTitle.setText(pageName);
         pageTitle.addStyleName(CSSConstants.Template.PAGE_TITLE);
-        pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-        pageTitleParentLayoutPanel.add(pageTitle);
+        headingBanner.setWidget(1, 0, pageTitle);
 
         /* Add the quick search box */
         quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
@@ -480,14 +479,25 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         quickSearchPanel.add(getQuickSearch());
 
         quickSearchParentPanel.add(quickSearchPanel);
-        pageTitleParentLayoutPanel.add(quickSearchParentPanel);
 
-        pageTitleParentLayoutPanel.addStyleName(CSSConstants.Template.PAGE_TITLE_PARENT_LAYOUT_PANEL);
-        secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, Constants.PAGE_TITLE_BAR_HEIGHT);
+        headingBanner.setWidget(0, 2, quickSearchParentPanel);
+        headingBanner.getFlexCellFormatter().setRowSpan(0, 2, 2);
+
+        topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
+        topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
+
+        /*
+            Add the hidden DOM attachment area
+         */
+        hiddenAttachmentArea.setVisible(false);
+        topLevelLayoutPanel.addSouth(hiddenAttachmentArea, 0);
+
 
         /* Set the remaining content */
-        thirdLevelLayoutPanel.addStyleName(CSSConstants.Template.THIRD_LEVEL_LAYOUT_PANEL);
-        secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
+        secondLevelLayoutPanel.addStyleName(CSSConstants.Template.THIRD_LEVEL_LAYOUT_PANEL);
+        topLevelLayoutPanel.add(secondLevelLayoutPanel);
+
+
 
         /* Set the action bar panel */
         topActionGrandParentPanel.addStyleName(CSSConstants.Template.TOP_ACTION_GRANDPARENT_PANEL);
@@ -505,15 +515,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         topActionGrandParentPanel.setWidget(topActionParentPanel);
 
-        thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
-
         /* Set the footer panel */
         footerPanel.addStyleName(CSSConstants.Template.FOOTER_PANEL);
 
-        thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
+        secondLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
-        //thirdLevelLayoutPanel.addWest(shortcuts, Constants.SHORTCUT_BAR_WIDTH);
+        thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
+        thirdLevelLayoutPanel.add(panel);
 
+        secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
 
         /* Add the version */
         version.addStyleName(CSSConstants.Template.VERSION_LABEL);
@@ -529,8 +539,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         /* Add the content panel */
         panel.addStyleName(CSSConstants.Template.CONTENT_LAYOUT_PANEL);
 
-        thirdLevelLayoutPanel.add(panel);
-
         /* Build the shortcut panel */
         initialiseShortcuts();
     }
@@ -538,6 +546,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     protected void initialiseShortcuts() {
         //shortcuts.initialise();
         headingBanner.setWidget(0, 1, topShortcutView);
+        headingBanner.getFlexCellFormatter().setRowSpan(0, 1, 2);
         headingBanner.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.Template.TOP_SHORTCUT_PANEL_CELL);
     }
 

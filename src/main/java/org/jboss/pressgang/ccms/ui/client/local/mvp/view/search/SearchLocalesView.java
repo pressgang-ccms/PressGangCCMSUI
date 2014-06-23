@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.SimplePanel;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchLocalePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -39,8 +41,14 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
         driver.edit(searchUILocales);
-        /* Add the projects */
-        this.getPanel().setWidget(editor);
+
+
+        final SimplePanel localesPanel = new SimplePanel();
+        localesPanel.addStyleName(CSSConstants.SearchView.LOCALE_PANEL);
+        localesPanel.setWidget(editor);
+
+         /* Add the projects */
+        this.getPanel().setWidget(localesPanel);
     }
 
     @Override

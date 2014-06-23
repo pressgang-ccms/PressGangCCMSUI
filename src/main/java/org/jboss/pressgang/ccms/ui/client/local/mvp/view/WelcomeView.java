@@ -24,7 +24,10 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
         panel.setWidget(0, 0, edit);
         panel.setWidget(1, 0, content);
 
-        this.getPanel().setWidget(panel);
+        //this.getPanel().setWidget(panel);
+
+        // just show the content. If you want an edit button, comment this out and uncomment the line above
+        this.getPanel().setWidget(content);
 
         panel.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
         panel.getFlexCellFormatter().setHeight(1, 0, "100%");

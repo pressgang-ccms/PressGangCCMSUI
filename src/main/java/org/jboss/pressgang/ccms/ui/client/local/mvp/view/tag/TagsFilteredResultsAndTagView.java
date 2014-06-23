@@ -15,7 +15,7 @@ public class TagsFilteredResultsAndTagView
         extends BaseSearchAndEditView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
         implements TagsFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton tagDetails = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
     private final PushButton tagProjects = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagProjects());

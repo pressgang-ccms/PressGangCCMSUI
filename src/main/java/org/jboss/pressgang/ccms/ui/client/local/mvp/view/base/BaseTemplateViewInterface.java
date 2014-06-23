@@ -201,6 +201,12 @@ public interface BaseTemplateViewInterface {
     @NotNull
     PushButton getHelpMode();
 
+    @NotNull
+    DockLayoutPanel getSecondLevelLayoutPanel();
+
+    @NotNull
+    DockLayoutPanel getThirdLevelLayoutPanel();
+
     /**
      * Replaces a widget in the top action panel with another widget.
      *

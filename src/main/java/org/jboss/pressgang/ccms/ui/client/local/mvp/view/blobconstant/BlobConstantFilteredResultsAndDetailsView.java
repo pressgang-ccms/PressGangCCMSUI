@@ -15,7 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 public class BlobConstantFilteredResultsAndDetailsView extends BaseSearchAndEditView<RESTBlobConstantV1, RESTBlobConstantCollectionV1,
         RESTBlobConstantCollectionItemV1> implements BlobConstantFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
 
 
     @Override

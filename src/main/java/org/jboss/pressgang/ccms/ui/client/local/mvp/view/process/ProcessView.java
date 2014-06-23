@@ -76,6 +76,8 @@ public class ProcessView extends BaseTemplateView implements ProcessPresenter.Di
     public ProcessView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Processes());
 
+        panel.addStyleName(CSSConstants.ProcessView.PROCESS_PANEL);
+
         processListTable.add(allProcesses, PressGangCCMSUI.INSTANCE.AllProcesses());
         processListTable.add(zanataSyncProcesses, PressGangCCMSUI.INSTANCE.TranslationSyncProcesses());
         processListTable.add(zanataPushProcesses, PressGangCCMSUI.INSTANCE.TranslationPushProcesses());

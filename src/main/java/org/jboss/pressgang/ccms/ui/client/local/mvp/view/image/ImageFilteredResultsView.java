@@ -19,7 +19,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
     private final TextBox imageIdFilter = new TextBox();
     private final TextBox imageDescriptionFilter = new TextBox();
     private final TextBox imageOriginalFileNameFilter = new TextBox();
-    private final PushButton bulkUpload = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkImageUpload());
+    private final PushButton bulkUpload = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkImageUpload());
 
     @NotNull
     public PushButton getBulkUpload() {

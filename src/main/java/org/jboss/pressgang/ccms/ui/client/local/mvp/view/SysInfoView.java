@@ -25,6 +25,7 @@ public class SysInfoView extends BaseTemplateView implements SysInfoPresenter.Di
     public SysInfoView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SystemInfo());
 
+        layout.addStyleName(CSSConstants.SysInfo.SYS_INFO_PANEL);
         revNumLabel.addStyleName(CSSConstants.SysInfo.SYSINFO_LABEL);
         revDateLabel.addStyleName(CSSConstants.SysInfo.SYSINFO_LABEL);
 
@@ -34,6 +35,7 @@ public class SysInfoView extends BaseTemplateView implements SysInfoPresenter.Di
         layout.setWidget(1, 1, revDate);
 
         this.getPanel().setWidget(layout);
+
 
         // Remove the action bar since it's not needed
         getTopActionGrandParentPanel().removeFromParent();

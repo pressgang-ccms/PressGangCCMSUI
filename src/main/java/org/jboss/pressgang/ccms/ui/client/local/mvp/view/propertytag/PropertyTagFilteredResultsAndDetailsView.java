@@ -14,7 +14,7 @@ public class PropertyTagFilteredResultsAndDetailsView extends
         BaseSearchAndEditView<RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1> implements
         PropertyTagFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagDetails());
     private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
 

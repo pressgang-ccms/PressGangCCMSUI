@@ -27,36 +27,49 @@ final public class UIUtilities {
     }
 
     @NotNull
+    public static PushButton createTopPushButton(@NotNull final String text) {
+        return createPushButton(text, false, false, true, null);
+    }
+
+    @NotNull
+    public static PushButton createTopPushButton(@NotNull final String text, @NotNull final String id) {
+        return createPushButton(text, false, false, true, id);
+    }
+
+    @NotNull
     public static PushButton createPushButton(@NotNull final String text) {
-        return createPushButton(text, false, false);
+        return createPushButton(text, false, false, false, null);
     }
 
     @NotNull
     public static PushButton createPushButton(@NotNull final String text, @NotNull final String id) {
-        return createPushButton(text, false, false, id);
+        return createPushButton(text, false, false, false, id);
     }
 
     @NotNull
     public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu) {
-        return createPushButton(text, subMenu, false);
+        return createPushButton(text, subMenu, false, false, null);
     }
 
     @NotNull
     public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
-        return createPushButton(text, subMenu, false, id);
+        return createPushButton(text, subMenu, false, false, id);
     }
 
     @NotNull
     public static PushButton createPushButton(@NotNull final String text, @NotNull final boolean subMenu,
             @NotNull final boolean externalLink) {
-        return createPushButton(text, subMenu, externalLink, null);
+        return createPushButton(text, subMenu, externalLink, false, null);
     }
 
     @NotNull
-    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink,
-            @Nullable final String id) {
+    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink, final boolean actionButton, @Nullable final String id) {
         @NotNull final PushButton retValue = new PushButton(text);
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+
+        if (actionButton) {
+            retValue.addStyleName(CSSConstants.Common.TOP_BUTTON);
+        }
 
         if (subMenu) {
             retValue.addStyleName(CSSConstants.Common.SUB_MENU);
@@ -87,9 +100,8 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink,
-            @Nullable final String id) {
-        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink, id);
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink, false, id);
 
         retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         if (id != null) {
@@ -276,9 +288,11 @@ final public class UIUtilities {
     }
 
     @NotNull
-    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink,
-            @Nullable final String id) {
-        @NotNull final AnchorButton retValue = new AnchorButton(text);
+    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+        final AnchorButton retValue = new AnchorButton(text);
+
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {
@@ -287,7 +301,7 @@ final public class UIUtilities {
             retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
         }
 
-        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+
         if (id != null) {
             retValue.getElement().setId(id);
         }
@@ -325,7 +339,7 @@ final public class UIUtilities {
 
     @NotNull
     public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final String id) {
-        return createAnchorButton(text, false, false, id);
+        return createAnchorButton(text, false, false, false, id);
     }
 
     @NotNull
@@ -335,19 +349,24 @@ final public class UIUtilities {
 
     @NotNull
     public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
-        return createAnchorButton(text, subMenu, false, id);
+        return createAnchorButton(text, subMenu, false, false, id);
     }
 
     @NotNull
     public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu,
             @NotNull final boolean externalLink) {
-        return createAnchorButton(text, subMenu, externalLink, null);
+        return createAnchorButton(text, subMenu, externalLink, false, null);
     }
 
     @NotNull
-    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink,
+    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink, final boolean actionButton,
             @Nullable final String id) {
         @NotNull final AnchorButton retValue = new AnchorButton(text);
+
+        if (actionButton) {
+            retValue.addStyleName(CSSConstants.Common.TOP_BUTTON);
+        }
+
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {

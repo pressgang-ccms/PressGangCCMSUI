@@ -16,7 +16,7 @@ public class StringConstantFilteredResultsAndDetailsView extends
         BaseSearchAndEditView<RESTStringConstantV1, RESTStringConstantCollectionV1, RESTStringConstantCollectionItemV1> implements
         StringConstantFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
 
 
     @Override

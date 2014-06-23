@@ -14,7 +14,7 @@ public class ProjectsFilteredResultsAndProjectView extends
         BaseSearchAndEditView<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         ProjectsFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
     private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
 

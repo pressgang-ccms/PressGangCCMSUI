@@ -18,7 +18,7 @@ public class FileFilteredResultsView extends BaseFilteredResultsView<RESTFileCol
     private final TextBox fileIdFilter = new TextBox();
     private final TextBox fileDescriptionFilter = new TextBox();
     private final TextBox fileNameFilter = new TextBox();
-    private final PushButton bulkUpload = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkFileUpload());
+    private final PushButton bulkUpload = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkFileUpload());
 
     @NotNull
     public PushButton getBulkUpload() {

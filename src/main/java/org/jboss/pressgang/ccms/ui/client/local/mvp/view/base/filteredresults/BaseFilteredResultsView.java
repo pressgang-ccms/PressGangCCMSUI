@@ -25,7 +25,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseEntityCollection
     /**
      * The button that initiates a new search
      */
-    private final PushButton entitySearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton entitySearch = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Search());
     /**
      * The button that creates a new entity
      */
@@ -57,7 +57,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseEntityCollection
     public BaseFilteredResultsView(@NotNull final String applicationName, @NotNull final String pageName, final String createLabel) {
         super(applicationName, pageName);
 
-        create = UIUtilities.createPushButton(createLabel);
+        create = UIUtilities.createTopPushButton(createLabel);
 
         // Configure the selector to display the selected result
         results.setSelectionModel(selectionModel);

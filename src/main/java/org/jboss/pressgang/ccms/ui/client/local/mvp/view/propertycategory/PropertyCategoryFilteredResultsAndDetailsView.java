@@ -13,7 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 public class PropertyCategoryFilteredResultsAndDetailsView extends BaseSearchAndEditView<RESTPropertyCategoryV1, RESTPropertyCategoryCollectionV1, RESTPropertyCategoryCollectionItemV1>
         implements PropertyCategoryFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedPropertyCategoryDetails());
     private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedPropertyCategoryExtendedProperties());
 

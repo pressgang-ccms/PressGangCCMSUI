@@ -10,6 +10,7 @@ public interface CSSConstants {
 
     interface SysInfo {
         String SYSINFO_LABEL = "SysInfoLabel";
+        String SYS_INFO_PANEL = "SysInfoPanel";
     }
 
     interface Legend {
@@ -82,7 +83,10 @@ public interface CSSConstants {
          * The style applied to the header image
          */
         String PRESSGANG_HEADER_IMAGE = "PressGangHeaderImage";
-
+        /**
+         * Assigned to the doc layout panel below the page heading.
+         */
+        String APPLICATION_HEADING_PANEL = "ApplicationHeadingPanel";
         /**
          * The style added to the panel that holds the top shortcut buttons and menus
          */
@@ -123,6 +127,10 @@ public interface CSSConstants {
          * Assigned to the doc layout panel below the page heading.
          */
         String SECOND_LEVEL_LAYOUT_PANEL = "SecondLevelLayoutPanel";
+        /**
+         * The class assigned to the application title label.
+         */
+        String APPLICATION_TITLE = "ApplicationTitle";
         /**
          * The class assigned to the page title label.
          */
@@ -208,6 +216,10 @@ public interface CSSConstants {
      * These styles are applied to the topic and translated topic search views.
      */
     interface SearchView {
+        /**
+         * The style applied to the panel that holds the locales
+         */
+        String LOCALE_PANEL = "LocalePanel";
         /**
          * The style applied to the cell that appears above the
          * category logic options.
@@ -554,6 +566,8 @@ public interface CSSConstants {
         String TOPIC_RENDERED_VIEW_IFRAME_TABLE_DISPLAYING_CELL = "TopicRenderedViewIFrameTableDisplayingCell";
         String TOPIC_RENDERING_INFO_ENTITIES_CELL = "TopicRenderingInfoEntitiesCell";
 
+        String TOPIC_RENDERING_OPTIONS_PARENT = "TopicRenderingOptionsParent";
+
         String TOPIC_XML_VIEW_PANEL = "TopicXMLViewPanel";
         String TOPIC_XML_ERRORS = "TopicXMLErrors";
         String TOPIC_XML_VIEW_ACE_PANEL = "TopicXMLViewACEPanel";
@@ -873,9 +887,13 @@ public interface CSSConstants {
          */
         String LEFT_TAB_LABEL = "LeftTabLabel";
         /**
-         * Assigned to image buttons that are top tabs
+         * Assigned to action buttons that are top tabs
          */
         String TOP_TAB_BUTTON = "TopTab";
+        /**
+         * Assigned to action button
+         */
+        String TOP_BUTTON = "TopButton";
         /**
          * Assigned to image buttons that are top tabs
          */
@@ -943,6 +961,7 @@ public interface CSSConstants {
     }
 
     interface ProcessView {
+        String PROCESS_PANEL = "ProcessPanel";
         String TAB_PANEL = "ProcessTabPanel";
         String RESULTS_PANEL = "ProcessResultsPanel";
         String RESULTS_TABLE = "ProcessResultsTable";

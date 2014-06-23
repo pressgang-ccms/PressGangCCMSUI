@@ -23,7 +23,7 @@ public class ContentSpecSearchFieldView extends BaseTemplateView implements Cont
      */
     private final ContentSpecSearchUIFields contentSpecSearchUIFields = new ContentSpecSearchUIFields();
 
-    private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchContentSpecs = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
     private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());

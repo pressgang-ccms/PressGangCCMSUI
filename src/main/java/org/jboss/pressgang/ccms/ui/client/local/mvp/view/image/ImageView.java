@@ -23,11 +23,11 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
     private RESTImageV1Editor editor = new RESTImageV1Editor();
     private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
 
-    private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
-    private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton viewImage = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewImage(), false, true);
-    private final PushButton findTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.FindTopics());
+    private final PushButton addLocale = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
+    private final PushButton removeLocale = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton viewImage = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewImage(), false, true, true, null);
+    private final PushButton findTopics = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.FindTopics());
     private final AddLocaleDialog addLocaleDialog = new AddLocaleDialog();
 
     /**

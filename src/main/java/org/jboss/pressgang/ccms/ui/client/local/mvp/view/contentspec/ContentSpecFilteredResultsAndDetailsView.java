@@ -26,7 +26,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         RESTTextContentSpecCollectionV1, RESTTextContentSpecCollectionItemV1> implements ContentSpecFilteredResultsAndDetailsPresenter
         .Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
@@ -34,7 +34,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
     private final PushButton processes = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Processes());
-    private final AnchorButton viewInDocBuilder = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true);
+    private final AnchorButton viewInDocBuilder = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true, true, null);
     private final MenuBar menu = new MenuBar();
     private final MenuBar actionsMenu = new MenuBar(true);
     private final MenuItem actionsMenuItem = new MenuItem(PressGangCCMSUI.INSTANCE.ProcessActions(), actionsMenu);
@@ -50,7 +50,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final Label errorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
     private final Label processesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Processes());
 
-    private final PushButton showHideSearchResults = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
+    private final PushButton showHideSearchResults = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
 
     /**
      * An instance of the message log dialog box

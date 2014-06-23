@@ -61,7 +61,7 @@ public abstract class BaseSearchResultsAndTopicView<
     private final PushButton renderedSplitClose;
     private final PushButton renderedSplitOpen;
 
-    private final PushButton showHideSearchResults = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
+    private final PushButton showHideSearchResults = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
 
     protected boolean readOnly = false;
 
@@ -210,7 +210,7 @@ public abstract class BaseSearchResultsAndTopicView<
 
         /* Build the action bar icons */
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true, Constants.ElementIDs.RENDERED_PANE_TOPIC_EDIT_BUTTON_ID.getId());
-        rendered = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.RenderedView(), Constants.ElementIDs.RENDERED_VIEW_TOPIC_EDIT_BUTTON_ID.getId());
+        rendered = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.RenderedView(), Constants.ElementIDs.RENDERED_VIEW_TOPIC_EDIT_BUTTON_ID.getId());
         xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing(), Constants.ElementIDs.XML_EDITING_TOPIC_EDIT_BUTTON_ID.getId());
         fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties(), Constants.ElementIDs.PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
         extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.ElementIDs.EXTENDED_PROPERTIES_TOPIC_EDIT_BUTTON_ID.getId());
@@ -227,13 +227,13 @@ public abstract class BaseSearchResultsAndTopicView<
         urlsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls(), Constants.ElementIDs.SOURCE_URLS_TOPIC_EDIT_BUTTON_ID.getId());
 
         renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-        renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
+        renderedNoSplit = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
         renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
-        renderedVerticalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
+        renderedVerticalSplit = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
         renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
-        renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
+        renderedHorizontalSplit = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
         renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
-        renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
+        renderedSplitClose = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
         // add the filtered results panel
         getSplitPanel().clear();

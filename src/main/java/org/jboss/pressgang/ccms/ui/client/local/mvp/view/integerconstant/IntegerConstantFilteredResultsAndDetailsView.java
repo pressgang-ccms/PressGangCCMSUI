@@ -16,7 +16,7 @@ public class IntegerConstantFilteredResultsAndDetailsView extends
         BaseSearchAndEditView<RESTIntegerConstantV1, RESTIntegerConstantCollectionV1, RESTIntegerConstantCollectionItemV1> implements
         IntegerConstantFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
 
 
     @Override

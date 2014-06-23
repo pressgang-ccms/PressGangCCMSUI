@@ -21,8 +21,8 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
      */
     private final WaitingDialog waiting = new WaitingDialog();
 
-    private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
-    private final PushButton downloadZip = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadContentSpecZip());
+    private final PushButton searchContentSpecs = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
+    private final PushButton downloadZip = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.DownloadContentSpecZip());
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());

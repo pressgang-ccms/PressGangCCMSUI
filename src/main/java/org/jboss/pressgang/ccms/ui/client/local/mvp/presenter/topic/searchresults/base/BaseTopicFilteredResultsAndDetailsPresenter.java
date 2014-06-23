@@ -770,8 +770,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final double searchResultsWidth = Preferences.INSTANCE.getDouble(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
 
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, isDisplayingSearchResults(),
-                    getTopicSplitPanelRenderedPresenter().getDisplay().getPanel(), searchResultsWidth, renderedPanelSize);
+            getDisplay().initialize(
+                    false,
+                    split,
+                    isDisplayingSearchResults(),
+                    getTopicSplitPanelRenderedPresenter().getDisplay().getThirdLevelLayoutPanel(),
+                    searchResultsWidth,
+                    renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
         } finally {
@@ -821,7 +826,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                         if (getTopicSplitPanelRenderedPresenter().getDisplay().getPanel().isAttached()) {
                             double splitSize = getDisplay().getSplitPanel().getSplitPosition(
-                                    getTopicSplitPanelRenderedPresenter().getDisplay().getPanel().getParent());
+                                    getTopicSplitPanelRenderedPresenter().getDisplay().getThirdLevelLayoutPanel().getParent());
 
                             /*
                              * Saves the width of the split screen

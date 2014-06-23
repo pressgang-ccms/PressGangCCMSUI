@@ -156,6 +156,9 @@ public interface PressGangCCMSUI extends Constants {
     String Search();
 
     @NotNull
+    String SearchMenu();
+
+    @NotNull
     String SearchTopics();
 
     @NotNull
@@ -1099,6 +1102,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Entities();
+
+    @NotNull
+    String EntitiesMenu();
 
     @NotNull
     String SameText();

@@ -16,9 +16,9 @@ import javax.enterprise.context.Dependent;
 public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
         implements TopicFilteredResultsPresenter.Display {
 
-    private final PushButton bulkImport = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
-    private final PushButton bulkOverwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
-    private final PushButton atomFeed = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ATOMFeed(), false, true);
+    private final PushButton bulkImport = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
+    private final PushButton bulkOverwrite = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
+    private final PushButton atomFeed = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ATOMFeed(), false, true, true, null);
 
     @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {

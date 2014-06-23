@@ -52,7 +52,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The height of the button panel in the merge view
      */
-    private static final int BUTTON_PANEL_HEIGHT = 44;
+    private static final int BUTTON_PANEL_HEIGHT = 48;
 
     private boolean readOnly = false;
 

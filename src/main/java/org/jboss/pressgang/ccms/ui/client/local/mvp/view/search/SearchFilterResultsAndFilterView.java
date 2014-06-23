@@ -23,10 +23,10 @@ public class SearchFilterResultsAndFilterView extends BaseSearchAndEditView<
         RESTFilterCollectionItemV1>
         implements BaseSearchFilterResultsAndFilterPresenter.Display {
 
-    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
-    private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
-    private final PushButton load = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Load());
-    private final PushButton loadAndSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
+    private final PushButton create = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Create());
+    private final PushButton overwrite = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
+    private final PushButton load = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Load());
+    private final PushButton loadAndSearch = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
 
     public SearchFilterResultsAndFilterView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters(), false);

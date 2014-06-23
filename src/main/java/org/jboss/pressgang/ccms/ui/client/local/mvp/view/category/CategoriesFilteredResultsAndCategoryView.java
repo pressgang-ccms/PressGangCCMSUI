@@ -14,7 +14,7 @@ public class CategoriesFilteredResultsAndCategoryView extends
         BaseSearchAndEditView<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> implements
         CategoriesFilteredResultsAndDetailsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
     private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
 

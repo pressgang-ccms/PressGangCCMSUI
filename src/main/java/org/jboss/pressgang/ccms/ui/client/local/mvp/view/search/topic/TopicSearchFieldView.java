@@ -23,7 +23,7 @@ public class TopicSearchFieldView extends BaseTemplateView implements TopicSearc
      */
     private final TopicSearchUIFields topicSearchUIFields = new TopicSearchUIFields();
 
-    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchTopics = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());

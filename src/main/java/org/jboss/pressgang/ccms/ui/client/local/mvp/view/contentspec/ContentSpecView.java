@@ -32,7 +32,7 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
     public RESTTextContentSpecV1TextEditor editor;
 
     private final EditorSettingsDialog editorSettingsDialog = new EditorSettingsDialog();
-    private final PushButton settings = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
+    private final PushButton settings = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
 
     private final ContentSpecPresenter.ContentSpecTextPresenterDriver driver = GWT.create(ContentSpecPresenter.ContentSpecTextPresenterDriver.class);
 

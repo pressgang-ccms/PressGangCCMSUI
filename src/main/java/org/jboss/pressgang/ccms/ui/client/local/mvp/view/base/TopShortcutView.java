@@ -40,8 +40,8 @@ public class TopShortcutView extends HorizontalPanel {
     private final AnchorMenuBar entities = new AnchorMenuBar(true);
     private final AnchorMenuBar advanced = new AnchorMenuBar(true);
 
-    private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Search(), search);
-    private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Entities(), entities);
+    private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.SearchMenu(), search);
+    private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.EntitiesMenu(), entities);
     private final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);
 
     private final AnchorMenuItem bulkTagging = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command) null);

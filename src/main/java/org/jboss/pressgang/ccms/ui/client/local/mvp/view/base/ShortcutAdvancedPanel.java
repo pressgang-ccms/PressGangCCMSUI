@@ -16,7 +16,7 @@ public class ShortcutAdvancedPanel extends ShortcutDisclosurePanel {
     private final ToggleButton integerConstants = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.IntegerConstants(), Constants.ElementIDs.INTEGER_CONSTANTS_NAVIGATION_BUTTON_ID.getId());
     private final ToggleButton propertyTags = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTags(), Constants.ElementIDs.EXTENDED_PROPERTIES_NAVIGATION_BUTTON_ID.getId());
     private final ToggleButton propertyTagCategories = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories(), Constants.ElementIDs.EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true, Constants.ElementIDs.MONITORING_NAVIGATION_BUTTON_ID.getId());
+    private final PushButton monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true, false, Constants.ElementIDs.MONITORING_NAVIGATION_BUTTON_ID.getId());
 
     public ShortcutAdvancedPanel(final String header) {
         super(header);

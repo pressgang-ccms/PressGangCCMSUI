@@ -27,7 +27,7 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
     private final Label appSettingsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Application());
     private final PushButton entitySettings = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Entities());
     private final Label entitySettingsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Entities());
-    private final PushButton saveButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton saveButton = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
 
     private final ServerSettingsPresenter.ServerSettingsPresenterDriver settingsDriver = GWT.create(
             ServerSettingsPresenter.ServerSettingsPresenterDriver.class);

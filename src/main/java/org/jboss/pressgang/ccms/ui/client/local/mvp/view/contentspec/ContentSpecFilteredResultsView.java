@@ -16,8 +16,8 @@ import javax.enterprise.context.Dependent;
 public class ContentSpecFilteredResultsView extends BaseFilteredResultsView<RESTTextContentSpecCollectionItemV1>
         implements ContentSpecFilteredResultsPresenter.Display {
 
-    private final PushButton bulkImport = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
-    private final PushButton bulkOverwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
+    private final PushButton bulkImport = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
+    private final PushButton bulkOverwrite = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
 
     @NotNull
     private final TextColumn<RESTTextContentSpecCollectionItemV1> idColumn = new TextColumn<RESTTextContentSpecCollectionItemV1>() {
