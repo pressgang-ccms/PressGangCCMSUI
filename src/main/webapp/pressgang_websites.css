@@ -25,7 +25,7 @@
     top: 2px;
     height: 0;
     width: 0;
-    border-bottom: 10px solid #9999ff;
+    border-bottom: 10px solid #0099d3;
     border-left: 10px dotted transparent;
     border-right: 10px dotted transparent;
     z-index: 1;
@@ -74,7 +74,7 @@
     top: -12px;
     height: 0;
     width: 0;
-    border-top: 10px solid #9999ff;
+    border-top: 10px solid #0099d3;
     border-left: 10px dotted transparent;
     border-right: 10px dotted transparent;
     z-index: 1;
@@ -82,7 +82,7 @@
 
 .pressgang_websites_divContainerUp
 {
-    background-color: #9999ff;
+    background-color: #0099d3;
     border: solid 1px #ffffff;
     position: relative;
     top: -1px;
@@ -92,7 +92,7 @@
 
 .pressgang_websites_divContainerDown
 {
-    background-color: #9999ff;
+    background-color: #0099d3;
     border: solid 1px #ffffff;
     position: relative;
     top: 1px;
@@ -102,7 +102,7 @@
 
 .pressgang_websites_divContainerNone
 {
-    background-color: #9999ff;
+    background-color: #0099d3;
     border: solid 1px #ffffff;
     position: relative;
     width: 512px;
@@ -137,7 +137,7 @@
     top: -10px;
     height: 0;
     width: 0;
-    border-right: 10px solid #9999ff;
+    border-right: 10px solid #0099d3;
     border-top: 10px dotted transparent;
     border-bottom: 10px dotted transparent;
     z-index: 1;
@@ -145,7 +145,7 @@
 
 .pressgang_websites_divContainerLeft
 {
-    background-color: #9999ff;
+    background-color: #0099d3;
     border: solid 1px #ffffff;
     position: relative;
     left: -1px;
@@ -173,7 +173,7 @@
     top: -10px;
     height: 0;
     width: 0;
-    border-left: 10px solid #9999ff;
+    border-left: 10px solid #0099d3;
     border-top: 10px dotted transparent;
     border-bottom: 10px dotted transparent;
     z-index: 1;
@@ -181,7 +181,7 @@
 
 .pressgang_websites_divContainerRight
 {
-    background-color: #9999ff;
+    background-color: #0099d3;
     border: solid 1px #ffffff;
     position: relative;
     left: 1px;
