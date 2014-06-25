@@ -1,17 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -134,6 +123,13 @@ public interface BaseTemplateViewInterface {
      */
     @NotNull
     String getApplicationName();
+
+    /**
+     *
+     * @return The home button
+     */
+    @NotNull
+    Anchor getHome();
 
     @NotNull
     TopShortcutView getTopShortcutView();

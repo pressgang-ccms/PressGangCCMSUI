@@ -325,7 +325,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     private void bindShortcutLinks() {
         // Base
-        getDisplay().getTopShortcutView().getHome().setHref("#" + WelcomePresenter.HISTORY_TOKEN);
+        getDisplay().getHome().setHref("#" + WelcomePresenter.HISTORY_TOKEN);
         getDisplay().getTopShortcutView().getDocbuilder().setHref("#" + DocBuilderPresenter.HISTORY_TOKEN);
         getDisplay().getTopShortcutView().getCreateTopic().setHref("#" + TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX);
         getDisplay().getTopShortcutView().getCreateContentSpec().setHref("#" + ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";"
@@ -375,7 +375,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     private void bindDefaultShortcutButtons() {
         final HyperlinkImpl hyperlinkImpl = GWT.create(HyperlinkImpl.class);
         // Shortcut button menus
-        getDisplay().getTopShortcutView().getHome().addClickHandler(new ClickHandler() {
+        getDisplay().getHome().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
@@ -755,7 +755,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     private void buildHelpDatabase() {
         setDataAttribute(getDisplay().getTopShortcutView().getDocbuilder(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
-        setDataAttribute(getDisplay().getTopShortcutView().getHome(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
+        setDataAttribute(getDisplay().getHome(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getCreateTopic(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
         setDataAttribute(getDisplay().getTopShortcutView().getSearchTopics().getElement(),

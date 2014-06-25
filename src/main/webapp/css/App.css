@@ -550,13 +550,15 @@ html {
     background-image: none;
     background-origin: padding-box;
     background-size: auto;
+
+    border-width: 1px;
+    border-style: solid;
     border-bottom-color: rgba(0, 0, 0, 0);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
     border-top-color: rgba(0, 0, 0, 0);
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-left-color: rgba(32, 32, 32, 0.5);
+    border-right-color: rgba(32, 32, 32, 0.5);
     color: rgb(207, 207, 207);
+    margin-left: -1px;
 
     vertical-align: top;
     padding-left: 12px;
@@ -644,15 +646,15 @@ html {
     background-image: none;
     background-origin: padding-box;
     background-size: auto;
+
+    border-width: 1px;
+    border-style: solid;
     border-bottom-color: rgba(0, 0, 0, 0);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
     border-top-color: rgba(0, 0, 0, 0);
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-left-color: rgba(32, 32, 32, 0.5);
+    border-right-color: rgba(32, 32, 32, 0.5);
     color: rgb(207, 207, 207);
-    border-left-style: none;
-    border-right-style: none;
+    margin-left: -1px;
 
     padding-left: 12px;
     padding-right: 12px;
@@ -670,14 +672,14 @@ html {
     background-repeat: repeat-x;
     background-size: auto;
     border-bottom-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-top-color: rgb(92, 92, 92);
     border-top-style: solid;
     border-top-width: 1px;
     color: rgb(207, 207, 207);
-    border-left-style: none;
-    border-right-style: none;
 }
 
 .DownLabel {
@@ -784,6 +786,9 @@ html {
     white-space: nowrap;
     font-size: x-large;
     min-width: 400px;
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
 }
 
 .PageTitle {

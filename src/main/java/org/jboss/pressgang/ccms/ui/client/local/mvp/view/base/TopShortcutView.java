@@ -21,8 +21,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  * Constructs the shortcut panel to be displayed at the top of the screen.
  */
 public class TopShortcutView extends HorizontalPanel {
-    private final AnchorButton home = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Home(),
-            Constants.ElementIDs.HOME_NAVIGATION_BUTTON_ID.getId());
     private final AnchorButton docbuilder = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
             Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
     private final AnchorButton createTopic = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
@@ -96,7 +94,6 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addItem(sysinfo);
         advanced.addItem(serverSettings);
 
-        add(home);
         add(docbuilder);
         add(createTopic);
         add(createContentSpec);
@@ -154,10 +151,6 @@ public class TopShortcutView extends HorizontalPanel {
         search.addDomHandler(focusHandler, FocusEvent.getType());
         entities.addDomHandler(focusHandler, FocusEvent.getType());
         advanced.addDomHandler(focusHandler, FocusEvent.getType());
-    }
-
-    public AnchorButton getHome() {
-        return home;
     }
 
     public AnchorButton getDocbuilder() {
