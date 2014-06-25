@@ -357,7 +357,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
                             public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
-                                fileComponent.getDisplay().removeWaitOperation();
+                                display.removeWaitOperation();
                             }
                         });
 

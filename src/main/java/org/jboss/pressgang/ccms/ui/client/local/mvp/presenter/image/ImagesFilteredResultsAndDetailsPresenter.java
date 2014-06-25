@@ -440,7 +440,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
                             public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
-                                imageComponent.getDisplay().removeWaitOperation();
+                                display.removeWaitOperation();
                             }
                         });
 
