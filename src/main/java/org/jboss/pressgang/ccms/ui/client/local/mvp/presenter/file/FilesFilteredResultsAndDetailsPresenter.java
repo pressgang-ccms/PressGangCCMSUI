@@ -272,17 +272,20 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     checkState(fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
                             "The selected collection item to reference a valid entity.");
 
-                    retValue.cloneInto(fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                    retValue.cloneInto(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                    cloneIntoFile(retValue, fileFilteredResultsComponent.getProviderData().getSelectedItem().getItem());
+                    cloneIntoFile(retValue, fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                 } else {
+                    // create the file, and add to the wrapper
                     final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
                     fileCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
-
-                    // create the file, and add to the wrapper
                     fileCollectionItem.setItem(retValue);
 
+                    // Clone the new item, as we alter content in the displayed item, so this shouldn't be reflected in the selected item
+                    final RESTFileCollectionItemV1 displayedFileCollectionItem = fileCollectionItem.clone(false);
+                    cloneIntoFile(retValue, displayedFileCollectionItem.getItem());
+
                     // Update the displayed file
-                    fileFilteredResultsComponent.getProviderData().setDisplayedItem(fileCollectionItem.clone(true));
+                    fileFilteredResultsComponent.getProviderData().setDisplayedItem(displayedFileCollectionItem);
                     fileFilteredResultsComponent.setSelectedItem(fileCollectionItem);
                 }
 
@@ -296,6 +299,30 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FileUploadFailure());
             }
         };
+    }
+
+    /**
+     * Clones a file and it's language file making sure not to clone the file data as if it is too large you will get an error as per
+     * https://bugzilla.redhat.com/show_bug.cgi?id=1026589. Additionally since the file data cannot change via the editor we really aren't
+     * concerned with it being cloned and only care about the additional attributes
+     *
+     * @param source
+     * @param output
+     */
+    private void cloneIntoFile(final RESTFileV1 source, final RESTFileV1 output) {
+        source.cloneInto(output, false);
+        if (source.getLanguageFiles_OTM() != null) {
+            final RESTLanguageFileCollectionV1 languageImages = new RESTLanguageFileCollectionV1();
+            output.setLanguageFiles_OTM(languageImages);
+
+            for (final RESTLanguageFileCollectionItemV1 languageImage : source.getLanguageFiles_OTM().getItems()) {
+                final RESTLanguageFileCollectionItemV1 outputLanguageImage = languageImage.clone(false);
+                if (languageImage.getItem() != null) {
+                    outputLanguageImage.setItem(languageImage.getItem().clone(false));
+                }
+                languageImages.getItems().add(outputLanguageImage);
+            }
+        }
     }
 
     @NotNull

@@ -355,17 +355,20 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null,
                             "The selected collection item to reference a valid entity.");
 
-                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                    cloneIntoImage(retValue, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem());
+                    cloneIntoImage(retValue, imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                 } else {
+                    // create the image, and add to the wrapper
                     final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
                     imageCollectionItem.setState(RESTBaseEntityCollectionItemV1.UNCHANGED_STATE);
-
-                    // create the image, and add to the wrapper
                     imageCollectionItem.setItem(retValue);
 
+                    // Clone the new item, as we alter content in the displayed item, so this shouldn't be reflected in the selected item
+                    final RESTImageCollectionItemV1 displayedImageCollectionItem = imageCollectionItem.clone(false);
+                    cloneIntoImage(retValue, displayedImageCollectionItem.getItem());
+
                     // Update the displayed image
-                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(imageCollectionItem.clone(true));
+                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(displayedImageCollectionItem);
                     imageFilteredResultsComponent.setSelectedItem(imageCollectionItem);
                 }
 
@@ -379,6 +382,30 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
             }
         };
+    }
+
+    /**
+     * Clones a image and it's language images making sure not to clone the image data as if it is too large you will get an error as per
+     * https://bugzilla.redhat.com/show_bug.cgi?id=1026589. Additionally since the image data cannot change via the editor we really
+     * aren't concerned with it being cloned and only care about the additional attributes
+     *
+     * @param source
+     * @param output
+     */
+    private void cloneIntoImage(final RESTImageV1 source, final RESTImageV1 output) {
+        source.cloneInto(output, false);
+        if (source.getLanguageImages_OTM() != null) {
+            final RESTLanguageImageCollectionV1 languageImages = new RESTLanguageImageCollectionV1();
+            output.setLanguageImages_OTM(languageImages);
+
+            for (final RESTLanguageImageCollectionItemV1 languageImage : source.getLanguageImages_OTM().getItems()) {
+                final RESTLanguageImageCollectionItemV1 outputLanguageImage = languageImage.clone(false);
+                if (languageImage.getItem() != null) {
+                    outputLanguageImage.setItem(languageImage.getItem().clone(false));
+                }
+                languageImages.getItems().add(outputLanguageImage);
+            }
+        }
     }
 
     @NotNull
