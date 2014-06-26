@@ -5,7 +5,7 @@ import javax.enterprise.context.Dependent;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.DisableEditTextCell;
+import com.google.gwt.user.client.ui.DisableTextInputCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
@@ -31,7 +31,7 @@ public class CommonExtendedPropertyView extends BaseExtendedChildrenView<
     /**
      * The column to display the assigned property tag's value.
      */
-    private final DisableEditTextCell valueTextCell = new DisableEditTextCell();
+    private final DisableTextInputCell valueTextCell = new DisableTextInputCell();
     @NotNull
     private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagValueColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(valueTextCell) {
         @Override

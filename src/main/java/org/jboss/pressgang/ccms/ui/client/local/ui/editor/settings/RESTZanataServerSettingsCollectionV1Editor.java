@@ -10,7 +10,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisableEditTextCell;
+import com.google.gwt.user.client.ui.DisableTextInputCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.TextInputHeader;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -41,7 +41,7 @@ public final class RESTZanataServerSettingsCollectionV1Editor extends Composite 
         }
     };
 
-    private DisableEditTextCell nameCell = new DisableEditTextCell();
+    private DisableTextInputCell nameCell = new DisableTextInputCell();
     private Column<RESTZanataServerSettingsCollectionItemV1, String> nameColumn = new Column<RESTZanataServerSettingsCollectionItemV1,
             String>(nameCell) {
         @Override
@@ -52,7 +52,7 @@ public final class RESTZanataServerSettingsCollectionV1Editor extends Composite 
         }
     };
 
-    private DisableEditTextCell urlCell = new DisableEditTextCell();
+    private DisableTextInputCell urlCell = new DisableTextInputCell();
     private Column<RESTZanataServerSettingsCollectionItemV1, String> urlColumn = new Column<RESTZanataServerSettingsCollectionItemV1,
             String>(urlCell) {
         @Override
@@ -63,7 +63,7 @@ public final class RESTZanataServerSettingsCollectionV1Editor extends Composite 
         }
     };
 
-    private DisableEditTextCell projectCell = new DisableEditTextCell();
+    private DisableTextInputCell projectCell = new DisableTextInputCell();
     private Column<RESTZanataServerSettingsCollectionItemV1, String> projectColumn = new Column<RESTZanataServerSettingsCollectionItemV1,
             String>(projectCell) {
         @Override
@@ -74,7 +74,7 @@ public final class RESTZanataServerSettingsCollectionV1Editor extends Composite 
         }
     };
 
-    private DisableEditTextCell versionCell = new DisableEditTextCell();
+    private DisableTextInputCell versionCell = new DisableTextInputCell();
     private Column<RESTZanataServerSettingsCollectionItemV1, String> versionColumn = new Column<RESTZanataServerSettingsCollectionItemV1,
             String>(versionCell) {
         @Override

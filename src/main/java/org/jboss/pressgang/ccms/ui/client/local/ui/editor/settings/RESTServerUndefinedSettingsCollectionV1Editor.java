@@ -9,7 +9,7 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisableEditTextCell;
+import com.google.gwt.user.client.ui.DisableTextInputCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.TextInputHeader;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -34,7 +34,7 @@ public final class RESTServerUndefinedSettingsCollectionV1Editor extends Composi
     private boolean readOnly;
 
 
-    private DisableEditTextCell keyCell = new DisableEditTextCell();
+    private DisableTextInputCell keyCell = new DisableTextInputCell();
     private Column<RESTServerUndefinedSettingCollectionItemV1, String> keyColumn = new Column<RESTServerUndefinedSettingCollectionItemV1,
             String>(keyCell) {
         @Override
@@ -45,7 +45,7 @@ public final class RESTServerUndefinedSettingsCollectionV1Editor extends Composi
         }
     };
 
-    private DisableEditTextCell valueCell = new DisableEditTextCell();
+    private DisableTextInputCell valueCell = new DisableTextInputCell();
     private Column<RESTServerUndefinedSettingCollectionItemV1, String> valueColumn = new Column<RESTServerUndefinedSettingCollectionItemV1,
             String>(valueCell) {
         @Override

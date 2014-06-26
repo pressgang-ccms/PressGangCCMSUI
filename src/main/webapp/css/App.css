@@ -73,6 +73,23 @@ td {
     height: 100%;
 }
 
+.TopShortcutMenuItem, .ContentSpecActionsMenuItem {
+    background-color: #00C618;
+    border: 1px solid #009200;
+    color: white;
+    padding: 8px !important;
+    height: 100%;
+    vertical-align: top;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.TopShortcutSubMenu, .ContentSpecActionsSubMenu {
+    background-color: #00C618;
+    border: 1px solid #009200;
+    color: white;
+}
+
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
 .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField, .TopicViewLocaleField,
 .TopicViewDescriptionField, .PossibleChildrenResultsPanel, .TopicTagViewParentProjectsTable, .SearchResultsPanel,
@@ -197,8 +214,6 @@ td {
     width: 100%;
     height: 100%;
     border: none;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
 .TopicRevisionDiffButtonPanel {
@@ -341,7 +356,7 @@ td {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     border: none;
-    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-family: sans-serif;
     width: 100%;
     height: 100%;
 }
@@ -366,10 +381,6 @@ td {
     height: 5em;
 }
 
-.ViewActionButtonsParentPanelScroll, .ResultsActionButtonsParentPanelScroll, .TopActionParentPanel {
-    background-image: linear-gradient(rgb(29, 29, 29) 0%, rgb(3, 3, 3) 100%);
-}
-
 /*
     The div referenced here is created by a scroll panel. We need to set it's height so
     the action buttons don't decrease in side when the horizontal scroll bar is present.
@@ -377,14 +388,14 @@ td {
     space below the action buttons which will be filled by the scroll bar.
  */
 .ViewActionButtonsParentPanelScroll>div, .ResultsActionButtonsParentPanelScroll>div, .TopActionParentPanel {
-    height: 76px;
+    height: 84px;
 }
 
 .TopActionParentPanel {
     overflow: hidden;
     border-spacing: 0px;
-    /*padding-top: 8px;
-    padding-bottom: 8px;*/
+    padding-top: 8px;
+    padding-bottom: 8px;
     /*bottom: 16px !important;*/
 }
 
@@ -500,7 +511,7 @@ td {
 body {
     background-color: #ffffff;
     color: black;
-    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
     font-size: small;
     margin: 0px;
     padding: 0px;
@@ -526,14 +537,12 @@ html {
     width: 100%;
     border-spacing: 0px;
     height: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
     /*padding-bottom: 8px;
     padding-top: 8px;    */
 }
 
 .TopActionPanel td, .RenderedSplitViewMenuTable td {
-    /*padding: 1px;*/
+    padding: 1px;
     height: 100%;
 }
 
@@ -542,168 +551,27 @@ html {
 }
 
 .gwt-ToggleButton-down {
-    /*background-color: #005492 !important;*/
-}
-
-.TopShortcutMenuItem, .ContentSpecActionsMenuItem {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: none;
-    background-origin: padding-box;
-    background-size: auto;
-
-    border-width: 1px;
-    border-style: solid;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(32, 32, 32, 0.5);
-    border-right-color: rgba(32, 32, 32, 0.5);
-    color: rgb(207, 207, 207);
-    margin-left: -1px;
-
-    vertical-align: top;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    height: 100%;
-    text-align: center;
-    cursor: pointer;
-}
-
-.TopShortcutSubMenu, .ContentSpecActionsSubMenu {
-    border: 1px solid #030303;
-    color: rgb(207, 207, 207);
+    background-color: #005492 !important;
 }
 
 .TextButton {
-    background-color: rgb(238, 238, 238);
-    background-image: linear-gradient(rgb(250, 250, 250) 0%, rgb(237, 237, 237) 100%);
-    background-repeat: repeat-x;
-    border-bottom-color: rgb(183, 183, 183);
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-image-outset: 0px;
-    border-image-repeat: stretch;
-    border-image-slice: 100%;
-    border-image-source: none;
-    border-image-width: 1;
-    border-left-color: rgb(183, 183, 183);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(183, 183, 183);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(183, 183, 183);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
-    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 3px 0px;
-    color: rgb(77, 82, 88);
-
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    background-color: #0072C6;
+    border: 1px solid #005492;
+    padding: 8px;
+    color: white;
     height: 100%;
     text-align: center;
+    -moz-box-sizing: border-box;
     cursor: pointer;
-}
-
-.TextButton:hover {
-    background-color: rgb(238, 238, 238);
-    background-image: none;
-    background-repeat: repeat-x;
-    border-bottom-color: rgb(183, 183, 183);
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-image-outset: 0px;
-    border-image-repeat: stretch;
-    border-image-slice: 100%;
-    border-image-source: none;
-    border-image-width: 1;
-    border-left-color: rgb(183, 183, 183);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(183, 183, 183);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(183, 183, 183);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
-    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 3px 0px;
-    color: rgb(77, 82, 88);
-}
-
-.TopTab, .TopButton, .SubMenu {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: none;
-    background-origin: padding-box;
-    background-size: auto;
-
-    border-width: 1px;
-    border-style: solid;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(32, 32, 32, 0.5);
-    border-right-color: rgba(32, 32, 32, 0.5);
-    color: rgb(207, 207, 207);
-    margin-left: -1px;
-
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    height: 100%;
-    text-align: center;
-    cursor: pointer;
-}
-
-.TopTab:hover, .TopButton:hover, .SubMenu:hover {
-    background-color: rgb(29, 29, 29);
-    background-image: linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
-    background-origin: padding-box;
-    background-repeat: repeat-x;
-    background-size: auto;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-color: rgb(92, 92, 92);
-    border-top-style: solid;
-    border-top-width: 1px;
-    color: rgb(207, 207, 207);
 }
 
 .DownLabel {
-    background-color: rgb(48, 48, 48);
-    background-image: linear-gradient(rgb(67, 67, 67) 0%, rgb(48, 48, 48) 100%);
-    background-origin: padding-box;
-    background-repeat: repeat-x;
-    background-size: auto;
-    border-bottom-color: rgb(48, 48, 48);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-color: rgb(105, 105, 105);
-    border-top-style: solid;
-    border-top-width: 1px;
-    box-shadow: none;
-    color: rgb(241, 241, 241);
-
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    height: 100%;
-    text-align: center;
     cursor: default;
+}
+
+.TextButton.TopTab, .DownLabel.TopTab {
+    border-radius: 0.5em 0.5em 0px 0px;
+    text-align: center;
 }
 
 .TextButton.LeftTab, .DownLabel.LeftTab {
@@ -711,23 +579,7 @@ html {
     text-align: center;
 }
 
-.TextButton.Error {
-    background-image: linear-gradient(#880303 0%, #303030 100%);
-}
-
-.TextButton.Error:hover, .DownLabel.Error {
-    background-image: linear-gradient(#CC0303 0%, #303030 100%);
-}
-
-.TextButton.Warning {
-    background-image: linear-gradient(#FF6603 0%, #303030 100%);
-}
-
-.TextButton.Warning:hover, .DownLabel.Warning {
-    background-image: linear-gradient(#FF8803 0%, #303030 100%);
-}
-
-/*.TextButton.SubMenu {
+.TextButton.SubMenu {
     background-color: #00C618;
     border-color: #009200;
 }
@@ -735,6 +587,36 @@ html {
 .TextButton.ExternalLink {
     background-color: rgb(93, 0, 146);
     border-color: rgb(49, 0, 99);
+}
+
+.TextButton.Error {
+    background-color: #C60000;
+    border-color: #920000;
+}
+
+.TextButton.Error:hover, .DownLabel.Error {
+    background-color: #920000;
+    border-color: #920000;
+}
+
+.TextButton.Warning {
+    background-color: #FF8000;
+    border-color: #FF6000;
+}
+
+.TextButton.Warning:hover, .DownLabel.Warning {
+    background-color: #FF6000;
+    border-color: #FF6000;
+}
+
+.TextButton:hover, .DownLabel {
+    background-color: #005492;
+    border: 1px solid #005492;
+    padding: 8px;
+    color: white;
+    height: 100%;
+    text-align: center;
+    -moz-box-sizing: border-box;
 }
 
 .TextButton.SubMenu:hover {
@@ -746,28 +628,12 @@ html {
     background-color: rgb(49, 0, 99);
     border-color: rgb(49, 0, 99);
 }
-*/
-
-
-
 
 .TextButton.gwt-PushButton-up-disabled,
 .TextButton.gwt-CustomButton-up-disabled,
 .gwt-MenuItem-disabled {
-    color: rgb(64, 64, 64);
+    background-color: #B4B4B4;
     cursor: default;
-}
-
-.TextButton.gwt-PushButton-up-disabled:hover,
-.TextButton.gwt-CustomButton-up-disabled:hover,
-.gwt-MenuItem-disabled:hover {
-    background-color: transparent;
-    background-image: none;
-    border-top-style: none;
-}
-
-.ContentLayoutPanel {
-
 }
 
 .ContentLayoutPanel>div {
@@ -777,23 +643,9 @@ html {
 .PageTitleParentLayoutPanel {
     background-color: #EFEFEF;
     padding-left: 1em;
+    font-size: x-large;
     width: 100%;
     height: 100%;
-}
-
-.ApplicationTitle {
-    margin-left: 10px;
-    white-space: nowrap;
-    font-size: x-large;
-    min-width: 400px;
-    text-decoration: none;
-    color: inherit;
-    display: inline-block;
-}
-
-.PageTitle {
-    margin-left: 10px;
-    word-wrap: break-word;
 }
 
 .QuickSearchParentPanel {
@@ -804,6 +656,10 @@ html {
 
 .QuickSearchTextBox {
     margin-right: 10px;
+}
+
+.ProjectsLayout, .CategoriesLayout {
+    height: 100%;
 }
 
 .ProjectsLayout td {
@@ -840,12 +696,24 @@ html {
     height: 6em;
     vertical-align: top;
     border: 0px;
-    color: rgb(77, 82, 88);
-    background-image: linear-gradient(rgb(250, 250, 250) 0%, rgb(237, 237, 237) 100%);
+    color: white;
+    /*background-color: #0097B4;*/
+    background-image: linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(36, 50, 70)), color-stop(0.66, rgb(59, 77, 100)));
 }
 
 .CustomButton:hover {
-    background-color: rgb(238, 238, 238);
+    /*background-color: #1AAAC5;*/
+    background-image: linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(52, 73, 102)), color-stop(0.66, rgb(90, 118, 153)));
 }
 
 .CustomButtonDown {
@@ -854,7 +722,13 @@ html {
     vertical-align: top;
     border: 0px;
     color: white;
-    background-image: linear-gradient(rgb(28, 172, 232) 0%, rgb(25, 152, 204) 100%);
+    /*background-color: #006F85;*/
+    background-image: linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(13, 18, 26)), color-stop(0.66, rgb(45, 59, 76)));
 }
 
 .CustomButtonText {
@@ -869,11 +743,11 @@ html {
 }
 
 .CustomButtonTagsInclued {
-    /*color: greenyellow; */
+    color: greenyellow;
 }
 
 .CustomButtonTagsExcluded {
-    /*color: #FF3333*/
+    color: #FF3333
 }
 
 .TopicSearchResultsAndViewParentPanel {
@@ -881,7 +755,7 @@ html {
 }
 
 .EntityViewLayoutPanel {
-    /*margin-left: 8px;*/
+    margin-left: 8px;
 }
 
 .ContentSpecErrors, .TopicViewDescriptionField, .FilterViewDescriptionField, .StringConstantViewValueField, .PropertyCategoryViewDescriptionField, .PropertyTagViewDescriptionField {
@@ -974,9 +848,9 @@ html {
 }
 
 .ThirdLevelLayoutPanel {
-    /*margin-left: 8px;
+    margin-left: 8px;
     margin-right: 8px;
-    margin-bottom: 8px;*/
+    /*margin-bottom: 8px;*/
 }
 
 .TopicRenderedViewDiv {
@@ -985,12 +859,12 @@ html {
 }
 
 .TopicViewLayoutPanel {
-    /*margin-left: 8px;
-    margin-bottom: 8px;*/
+    margin-left: 8px;
+    margin-bottom: 8px;
 }
 
 .ResultsViewLayoutPanel {
-    /*margin-right: 8px;*/
+    margin-right: 8px;
 }
 
 .TopicTagViewProjectRow {
@@ -1036,7 +910,7 @@ html {
 }
 
 .TopicTagViewProjectsTable>tbody>tr:nth-child(even) td {
-    background-color: rgb(212, 237, 250);
+    background-color: #E2EFFC;
 }
 
 .TopicTagViewCategoriesTable {
@@ -1124,8 +998,8 @@ html {
 }
 
 .TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsParentPanel, .EntitySearchTagsResultButtonsParentPanel {
-    /*padding-top: 8px;
-    padding-bottom: 8px;*/
+    padding-top: 8px;
+    padding-bottom: 8px;
     border-spacing: 0px;
     height: 100%;
 }
@@ -1134,25 +1008,8 @@ html {
     height: 100%;
 }
 
-.FilteredResultsPanel,
-.FieldViewPanel,
-.FilterViewPanel,
-.SettingsPanel,
-.SysInfoPanel,
-.LocalePanel,
-.WelcomeViewPanel {
-    padding: 10px;
-}
-
-.ProjectsLayout,
-.ProcessPanel,
 .EntitySearchTopicViewDetailsPanel {
-    top: 10px !important;
-    right: 10px !important;
-    bottom: 10px !important;
-    left: 10px !important;
-    height: auto  !important;;
-    width: auto !important;;
+    margin-bottom: 8px;
 }
 
 .TopicSearchTopicViewButtonsPanel>div {
@@ -1160,7 +1017,7 @@ html {
 }
 
 .LogicHeaderCell {
-    background-color: rgb(0, 153, 211);
+    background-color: rgb(0, 114, 198);
     color: white;
     font-weight: bold;
     text-align: center;
@@ -1246,12 +1103,12 @@ html {
 }
 
 tr.FilteredResultsTableSelectedRow, tr.ProcessResultsTableSelectedRow {
-    background: #0099d3;
+    background-color: #0072C6;
     color: white;
 }
 
 tr[class*='FilteredResultsTableSelectedRow']>td, tr[class*='ProcessResultsTableSelectedRow']>td {
-    border-color: #0099d3;
+    border-color: #0072C6;
 }
 
 textarea {
@@ -1524,11 +1381,11 @@ table.ProcessWaitingTable {
     padding: 3px 4px;
 }
 
-/*.SettingsActionPanel, .SettingsPanel {
+.SettingsActionPanel, .SettingsPanel {
     margin-left: auto;
     margin-right: auto;
     width: 1000px;
-}*/
+}
 
 .SettingsTable {
     width: 100%;
@@ -1600,6 +1457,18 @@ table.ProcessWaitingTable {
 
 .gwt-CheckBox.Error {
     color: #ff0000;
+}
+
+.TopicSourceURLResults, .TopicSourceURLResults input {
+    width: 100%;
+}
+
+.TopicSourceURLResults button {
+    white-space: nowrap;
+}
+
+.TopicSourceURLResultsURLField, .TopicSourceURLResultsTitleField {
+    width: 45%;
 }
 
 .TopicRenderingOptionsParent {

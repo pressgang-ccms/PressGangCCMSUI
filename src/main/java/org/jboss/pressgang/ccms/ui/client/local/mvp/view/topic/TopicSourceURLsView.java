@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.ui.DisableEditTextCell;
+import com.google.gwt.user.client.ui.DisableTextInputCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PushButton;
@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollection
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -35,7 +36,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     /**
      * The column to display the source url.
      */
-    private final DisableEditTextCell urlTextCell = new DisableEditTextCell();
+    private final DisableTextInputCell urlTextCell = new DisableTextInputCell();
     @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> urlValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(urlTextCell) {
         @Override
@@ -52,7 +53,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     /**
      * The column to display the source url.
      */
-    private final DisableEditTextCell nameTextCell = new DisableEditTextCell();
+    private final DisableTextInputCell nameTextCell = new DisableTextInputCell();
     @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> nameValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(nameTextCell) {
         @Override
@@ -114,6 +115,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
         addButtonPanel.add(add);
         this.getPossibleChildrenResultsPanel().add(addButtonPanel);
 
+        // Add styling
+        getPossibleChildrenResults().addStyleName(CSSConstants.TopicSourceURLView.TOPIC_SOURCE_URL_RESULTS);
+        getPossibleChildrenResultsPanel().addStyleName(CSSConstants.TopicSourceURLView.TOPIC_SOURCE_URL_RESULTS);
+        getPossibleChildrenResults().addColumnStyleName(0, CSSConstants.TopicSourceURLView.TOPIC_SOURCE_URL_RESULTS_URL_COLUMN);
+        getPossibleChildrenResults().addColumnStyleName(1, CSSConstants.TopicSourceURLView.TOPIC_SOURCE_URL_RESULTS_TITLE_COLUMN);
     }
 
     @NotNull
