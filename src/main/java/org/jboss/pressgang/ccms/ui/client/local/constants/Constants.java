@@ -21,7 +21,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406261321";
+    public static final String BUILD = "201406261331";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1320,7 +1320,7 @@ public final class Constants {
     /**
      * The maximum length of the title before it is truncated
      */
-    public static final int MAX_PAGE_TITLE_LENGTH = 70;
+    public static final int MAX_PAGE_TITLE_LENGTH = 20;
 
     /**
      * The prefix used to identify a topic's initial revision
@@ -1396,7 +1396,7 @@ public final class Constants {
     /**
      * The height of the header banner in the template.
      */
-    public static final int HEADING_BANNER_HEIGHT = 55;
+    public static final int HEADING_BANNER_HEIGHT = 60;
     /**
      * The size of the split panel dividers.
      */
@@ -1408,7 +1408,7 @@ public final class Constants {
     /**
      * The height of the action bars.
      */
-    public static final int ACTION_BAR_HEIGHT = 92;
+    public static final int ACTION_BAR_HEIGHT = 76;
     /**
      * The height of the spacer to add to the shortcut bar to make up for the loss of the action bar.
      * This value is ACTION_BAR_HEIGHT - (border spacing * 2)
