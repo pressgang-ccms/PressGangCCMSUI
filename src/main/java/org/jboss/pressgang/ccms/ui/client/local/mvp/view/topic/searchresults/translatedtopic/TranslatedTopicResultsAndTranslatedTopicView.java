@@ -74,7 +74,6 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
         getXml().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
         getXmlDown().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
 
-        insertActionButton(additionalXML, getFields());
         addActionButton(save, true);
 
         // Remove the action button bar since we have none to display

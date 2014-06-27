@@ -650,7 +650,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     public void insertLocalActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget) {
-        insertActionButton(newWidget, oldWidget, this.getTopViewSpecificRightActionPanel());
+        insertLocalActionButton(newWidget, oldWidget, false);
+    }
+
+    public void insertLocalActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, boolean endOfTabs) {
+        insertActionButton(newWidget, oldWidget, this.getTopViewSpecificRightActionPanel(), endOfTabs);
     }
 
     /**
