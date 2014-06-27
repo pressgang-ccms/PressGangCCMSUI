@@ -614,7 +614,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
     }
 
-    public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, @NotNull final FlexTable table) {
+    public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, @NotNull final FlexTable table, boolean endOfTabs) {
         /* Early out if the existing widget isn't actually attached */
         if (!oldWidget.isAttached() || oldWidget.getParent() != table) {
             return;
@@ -626,6 +626,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             table.insertCell(0, oldWidgetColumn + 1);
         }
         table.setWidget(0, oldWidgetColumn + 1, newWidget);
+
+        if (endOfTabs) {
+            table.getFlexCellFormatter().addStyleName(0, oldWidgetColumn + 1, CSSConstants.Template.END_TAB_BUTTONS);
+        }
     }
 
     private int getWidgetColumn(final Widget widget, final FlexTable table) {
@@ -662,7 +666,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget) {
-        insertActionButton(newWidget, oldWidget, this.getTopActionPanel());
+        insertActionButton(newWidget, oldWidget, false);
+    }
+
+    public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, boolean endOfTabs) {
+        insertActionButton(newWidget, oldWidget, this.getTopActionPanel(), endOfTabs);
     }
 
     /**

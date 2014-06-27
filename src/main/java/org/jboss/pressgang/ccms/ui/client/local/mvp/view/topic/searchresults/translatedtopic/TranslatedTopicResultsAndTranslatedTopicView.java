@@ -67,14 +67,15 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
         /* Build the action bar icons */
-        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
+        save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
         additionalXML = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.AdditionalXml());
         additionalXMLDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.AdditionalXml());
 
         getXml().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
         getXmlDown().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
 
-        addActionButton(save);
+        insertActionButton(additionalXML, getFields());
+        addActionButton(save, true);
 
         // Remove the action button bar since we have none to display
         getResultsActionButtonsParentPanelScroll().removeFromParent();
