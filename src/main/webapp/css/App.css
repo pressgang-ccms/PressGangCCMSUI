@@ -553,6 +553,10 @@ html {
     padding-right: 5px;
 }
 
+.TopShortcutMenu > table {
+    border-collapse: collapse;
+}
+
 .TopShortcutMenuItem, .ContentSpecActionsMenuItem {
     background-color: rgba(0, 0, 0, 0);
     background-image: none;
@@ -563,8 +567,8 @@ html {
     border-style: solid;
     border-bottom-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(255, 255, 255, 0.1);
-    border-right-color: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(48, 48, 48, 1);
+    border-right-color: rgba(48, 48, 48, 1);
     color: rgb(207, 207, 207);
     margin-left: -1px;
 
@@ -660,8 +664,8 @@ html {
     border-style: solid;
     border-bottom-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(255, 255, 255, 0.1);
-    border-right-color: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(48, 48, 48, 1);
+    border-right-color: rgba(48, 48, 48, 1);
     color: rgb(207, 207, 207);
     margin-left: -1px;
 
@@ -696,7 +700,9 @@ html {
     border-top-right-radius: 10px;
     border-style: solid;
     border-width: 1px;
-    border-color: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(48, 48, 48, 1);
+    border-right-color: rgba(48, 48, 48, 1);
+    border-top-color: rgba(48, 48, 48, 1);
 }
 
 .TopTab:hover {
