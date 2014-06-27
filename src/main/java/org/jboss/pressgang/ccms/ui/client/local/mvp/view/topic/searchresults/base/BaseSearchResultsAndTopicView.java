@@ -240,7 +240,7 @@ public abstract class BaseSearchResultsAndTopicView<
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
         getSplitPanel().setWidgetMinSize(this.getResultsViewLayoutPanel(), Constants.MINIMUM_SPLIT_SIZE);
 
-        this.populateTopActionBar();
+        this.getTopActionPanel().removeAllRows();
     }
 
     /**
@@ -349,22 +349,5 @@ public abstract class BaseSearchResultsAndTopicView<
     public void showSplitViewButtons() {
         getTopActionParentPanel().clear();
         getTopActionParentPanel().add(renderedSplitViewMenu);
-    }
-
-    /**
-     * This method is called to initialize the buttons that should appear in the top action bar.
-     */
-    private void populateTopActionBar() {
-        this.getTopActionPanel().removeAllRows();
-
-        addActionButton(this.getShowHideSearchResults());
-        addActionButton(this.getRenderedSplit(), true);
-        addActionButton(this.getRendered());
-        addActionButton(this.getXml());
-        addActionButton(this.getFields());
-        addActionButton(this.getExtendedProperties());
-        addActionButton(this.getUrls());
-        addActionButton(this.getTopicTags());
-        //addActionButton(this.getBugs());
     }
 }

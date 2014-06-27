@@ -162,6 +162,15 @@ public class TopicFilteredResultsAndDetailsView extends
         duplicatesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
         cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
+        addActionButton(this.getShowHideSearchResults());
+        addActionButton(this.getRenderedSplit(), true);
+        addActionButton(this.getRendered());
+        addActionButton(this.getXml());
+        addActionButton(this.getFields());
+        addActionButton(this.getExtendedProperties());
+        addActionButton(this.getUrls());
+        addActionButton(this.getTopicTags());
+        //addActionButton(this.getBugs());
         addActionButton(csps);
         addActionButton(history, true);
         //addActionButton(duplicates);

@@ -74,7 +74,17 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
         getXml().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
         getXmlDown().setText(PressGangCCMSUI.INSTANCE.OriginalXML());
 
-        addActionButton(save, true);
+        addActionButton(this.getShowHideSearchResults());
+        addActionButton(this.getRenderedSplit(), true);
+        addActionButton(this.getRendered());
+        addActionButton(this.getXml());
+        addActionButton(this.getFields());
+        addActionButton(this.getExtendedProperties());
+        addActionButton(this.getUrls());
+        addActionButton(this.getTopicTags(), true);
+        //addActionButton(this.getBugs());
+
+        addActionButton(save);
 
         // Remove the action button bar since we have none to display
         getResultsActionButtonsParentPanelScroll().removeFromParent();
