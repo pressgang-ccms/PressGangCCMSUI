@@ -185,6 +185,9 @@ public interface CSSConstants {
          * Assigned to the table that holds the tabs above the filtered results table.
          */
         String FILTERED_RESULTS_TAB_MENU_TABLE = "FilteredResultsTabMenu";
+
+        String START_TAB_BUTTONS = "StartTabButtons";
+        String END_TAB_BUTTONS = "EndTabButtons";
     }
 
 

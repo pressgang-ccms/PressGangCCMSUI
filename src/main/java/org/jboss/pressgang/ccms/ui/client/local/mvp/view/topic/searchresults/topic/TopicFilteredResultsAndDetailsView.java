@@ -154,16 +154,16 @@ public class TopicFilteredResultsAndDetailsView extends
 
         /* Build the action bar icons */
         save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save(), Constants.ElementIDs.SAVE_TOPIC_EDIT_BUTTON_ID.getId());
-        history = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
-        duplicates = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
-        csps = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
+        history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        duplicates = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
+        csps = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
         historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
         duplicatesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Duplicates(), Constants.ElementIDs.REVISIONS_TOPIC_EDIT_BUTTON_ID.getId());
         cspsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecifications(), Constants.ElementIDs.CONTENT_SPECS_TOPIC_EDIT_BUTTON_ID.getId());
 
         addActionButton(csps);
-        addActionButton(history);
+        addActionButton(history, true);
         //addActionButton(duplicates);
         addActionButton(save);
     }

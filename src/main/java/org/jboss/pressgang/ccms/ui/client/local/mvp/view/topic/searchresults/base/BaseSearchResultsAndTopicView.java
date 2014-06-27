@@ -358,7 +358,7 @@ public abstract class BaseSearchResultsAndTopicView<
         this.getTopActionPanel().removeAllRows();
 
         addActionButton(this.getShowHideSearchResults());
-        addActionButton(this.getRenderedSplit());
+        addActionButton(this.getRenderedSplit(), true);
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getFields());

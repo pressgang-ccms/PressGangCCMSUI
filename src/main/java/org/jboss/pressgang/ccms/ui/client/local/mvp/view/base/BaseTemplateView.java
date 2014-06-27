@@ -597,6 +597,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     public void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table) {
+        addActionButton(widget, table, false);
+    }
+
+    public void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table, boolean endOfTabs) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
@@ -604,6 +608,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
 
         table.setWidget(0, columns, widget);
+
+        if (endOfTabs) {
+            table.getFlexCellFormatter().addStyleName(0, columns, CSSConstants.Template.END_TAB_BUTTONS);
+        }
     }
 
     public void insertActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget, @NotNull final FlexTable table) {
@@ -639,6 +647,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     public void insertLocalActionButton(@NotNull final Widget newWidget, @NotNull final Widget oldWidget) {
         insertActionButton(newWidget, oldWidget, this.getTopViewSpecificRightActionPanel());
+    }
+
+    /**
+     * @param widget The widget to add as an action button
+     * @param endOfTabs True if the cell holding the widget should be styled as if it is starting a group of widgets
+     */
+    public void addActionButton(@NotNull final Widget widget, boolean endOfTabs) {
+        addActionButton(widget, this.getTopActionPanel(), endOfTabs);
     }
 
     public void addActionButton(@NotNull final Widget widget) {

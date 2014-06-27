@@ -6,12 +6,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.AnchorButton;
-import com.google.gwt.user.client.ui.AnchorMenuBar;
-import com.google.gwt.user.client.ui.AnchorMenuItem;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -20,7 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 /**
  * Constructs the shortcut panel to be displayed at the top of the screen.
  */
-public class TopShortcutView extends HorizontalPanel {
+public class TopShortcutView extends FlexTable {
     private final AnchorButton docbuilder = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
             Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
     private final AnchorButton createTopic = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
@@ -94,12 +89,14 @@ public class TopShortcutView extends HorizontalPanel {
         advanced.addItem(sysinfo);
         advanced.addItem(serverSettings);
 
-        add(docbuilder);
-        add(createTopic);
-        add(createContentSpec);
-        add(bug);
+        setWidget(0, 0, docbuilder);
+        setWidget(0, 1, createTopic);
+        setWidget(0, 2, createContentSpec);
+        setWidget(0, 3, bug);
         //add(reports);
-        add(menus);
+        setWidget(0, 4, menus);
+
+        getFlexCellFormatter().addStyleName(0, 3, CSSConstants.Template.END_TAB_BUTTONS);
 
         addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
 
