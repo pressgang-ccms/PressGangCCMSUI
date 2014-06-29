@@ -680,18 +680,10 @@ html {
 .TopTab:hover, .TopButton:hover, .SubMenu:hover {
     background-color: rgb(29, 29, 29);
     background-image: linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
-    background-origin: padding-box;
-    background-repeat: repeat-x;
-    background-size: auto;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
     border-top-color: rgb(92, 92, 92);
-    border-top-style: solid;
-    border-top-width: 1px;
-    color: rgb(207, 207, 207);
+    border-left-color: rgba(48, 48, 48, 1);
+    border-right-color: rgba(48, 48, 48, 1);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 .TopTab {
@@ -790,7 +782,7 @@ html {
 .gwt-MenuItem-disabled:hover {
     background-color: transparent;
     background-image: none;
-    border-top-style: none;
+    border-top-color: rgba(0, 0, 0, 0);
 }
 
 .ContentLayoutPanel {
@@ -1168,7 +1160,6 @@ html {
     height: 100%;
 }
 
-.FilteredResultsPanel,
 .FieldViewPanel,
 .FilterViewPanel,
 .SettingsPanel,
