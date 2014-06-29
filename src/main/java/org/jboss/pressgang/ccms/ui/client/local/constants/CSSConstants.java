@@ -571,6 +571,8 @@ public interface CSSConstants {
 
         String TOPIC_RENDERING_OPTIONS_PARENT = "TopicRenderingOptionsParent";
 
+        String TOPIC_RENDERING_OPTIONS_SPECS = "TopicRenderingOptionsSpecs";
+
         String TOPIC_XML_VIEW_PANEL = "TopicXMLViewPanel";
         String TOPIC_XML_ERRORS = "TopicXMLErrors";
         String TOPIC_XML_VIEW_ACE_PANEL = "TopicXMLViewACEPanel";

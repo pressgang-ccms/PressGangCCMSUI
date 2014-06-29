@@ -500,10 +500,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
         topActionParentPanel.setWidget(0, 1, topViewSpecificLeftActionPanel);
-         /* A spacer cell, to push the next cell to the right */
-        topActionParentPanel.setWidget(0, 2, new SimplePanel());
-        topActionParentPanel.getFlexCellFormatter().setWidth(0, 2, "100%");
-        topActionParentPanel.setWidget(0, 3, topViewSpecificRightActionPanel);
+        /* Make 100% wide to push the next cell to the right */
+        topActionParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        topActionParentPanel.setWidget(0, 2, topViewSpecificRightActionPanel);
 
         topActionGrandParentPanel.setWidget(topActionParentPanel);
 

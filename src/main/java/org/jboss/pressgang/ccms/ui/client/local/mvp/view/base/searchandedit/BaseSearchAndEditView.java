@@ -229,10 +229,10 @@ abstract public class BaseSearchAndEditView<
         this.viewViewSpecificActionButtonsPanel.clear();
 
         viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
-        /* A spacer cell, to push the next cell to the right */
-        viewActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
+        /* Make 100% wide to push the next cell to the right */
+        viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 0, "100%");
         viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
-        viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+
 
         if (addCustomActionButtonFields) {
             this.viewActionButtonsPanel.add(this.getTopActionPanel());
@@ -261,10 +261,9 @@ abstract public class BaseSearchAndEditView<
         this.resultsViewSpecificActionButtonsPanel.clear();
 
         resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
-        /* A spacer cell, to push the next cell to the right */
-        resultsActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
-        resultsActionButtonsParentPanel.setWidget(0, 2, resultsViewSpecificActionButtonsPanel);
-        resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        /* Make 100% wide to push the next cell to the right */
+        resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 0, "100%");
+        resultsActionButtonsParentPanel.setWidget(0, 1, resultsViewSpecificActionButtonsPanel);
 
         if (filteredResultsView != null) {
             this.getResultsPanel().setWidget(filteredResultsView.getPanel());

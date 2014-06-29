@@ -65,7 +65,7 @@ public class TopicSearchFieldView extends BaseTemplateView implements TopicSearc
 
         /* Build the action bar icons */
         addActionButton(searchTopics);
-        addActionButton(tagsSearch);
+        addActionButton(tagsSearch, true);
         addActionButton(fields);
         //addActionButton(locales);
         addActionButton(filters);

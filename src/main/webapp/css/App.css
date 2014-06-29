@@ -703,6 +703,7 @@ html {
     border-left-color: rgba(48, 48, 48, 1);
     border-right-color: rgba(48, 48, 48, 1);
     border-top-color: rgba(48, 48, 48, 1);
+    max-width: 80px;
 }
 
 .TopTab:hover {
@@ -1651,4 +1652,8 @@ table.ProcessWaitingTable {
 .TopicRenderingOptionsParent {
     color: rgb(207, 207, 207);
     white-space: nowrap;
+}
+
+.TopicRenderingOptionsSpecs {
+    width:100%;
 }

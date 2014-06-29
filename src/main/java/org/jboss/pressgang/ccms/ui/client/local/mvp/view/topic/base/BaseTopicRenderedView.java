@@ -79,6 +79,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         layoutPanel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE);
         errorLabel.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_LABEL);
         renderingOptions.addStyleName(CSSConstants.TopicView.TOPIC_RENDERING_OPTIONS_PARENT);
+        contentSpecs.addStyleName(CSSConstants.TopicView.TOPIC_RENDERING_OPTIONS_SPECS);
 
         renderingOptions.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.RenderContentSpec()));
         renderingOptions.setWidget(0, 1, contentSpecs);
@@ -86,7 +87,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         renderingOptions.setWidget(1, 0, remarks);
         renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 3);
 
-        addActionButton(renderingOptions);
+        getTopViewSpecificLeftActionPanel().setWidget(renderingOptions);
 
         layoutPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_CELL);
         layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);
