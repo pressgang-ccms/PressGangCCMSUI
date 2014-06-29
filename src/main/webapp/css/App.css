@@ -366,10 +366,6 @@ td {
     height: 5em;
 }
 
-.ViewActionButtonsParentPanelScroll, .ResultsActionButtonsParentPanelScroll, .TopActionParentPanel {
-    background-image: linear-gradient(rgb(29, 29, 29) 0%, rgb(3, 3, 3) 100%);
-}
-
 /*
     The div referenced here is created by a scroll panel. We need to set it's height so
     the action buttons don't decrease in side when the horizontal scroll bar is present.
@@ -378,6 +374,7 @@ td {
  */
 .ViewActionButtonsParentPanelScroll>div, .ResultsActionButtonsParentPanelScroll>div, .TopActionParentPanel {
     height: 76px;
+    background-image: linear-gradient(rgb(29, 29, 29) 0%, rgb(3, 3, 3) 100%);
 }
 
 .TopActionParentPanel {
@@ -1164,6 +1161,7 @@ html {
     padding-bottom: 8px;*/
     border-spacing: 0px;
     height: 100%;
+    background-image: linear-gradient(rgb(29, 29, 29) 0%, rgb(3, 3, 3) 100%);
 }
 
 .EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel {

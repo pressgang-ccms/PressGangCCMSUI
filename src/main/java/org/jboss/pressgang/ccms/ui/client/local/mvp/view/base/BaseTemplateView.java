@@ -511,7 +511,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         secondLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
-        thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
+        thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_PARENT_HEIGHT);
         thirdLevelLayoutPanel.add(panel);
 
         secondLevelLayoutPanel.add(thirdLevelLayoutPanel);

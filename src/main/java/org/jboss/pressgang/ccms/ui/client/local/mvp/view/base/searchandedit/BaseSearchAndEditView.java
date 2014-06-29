@@ -144,8 +144,8 @@ abstract public class BaseSearchAndEditView<
             viewActionButtonsParentPanelScroll.setWidget(viewActionButtonsParentPanel);
             resultsActionButtonsParentPanelScroll.setWidget(resultsActionButtonsParentPanel);
 
-            resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanelScroll, Constants.ACTION_BAR_HEIGHT);
-            viewLayoutPanel.addNorth(viewActionButtonsParentPanelScroll, Constants.ACTION_BAR_HEIGHT);
+            resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanelScroll, Constants.ACTION_BAR_PARENT_HEIGHT);
+            viewLayoutPanel.addNorth(viewActionButtonsParentPanelScroll, Constants.ACTION_BAR_PARENT_HEIGHT);
         }
 
         resultsViewLayoutPanel.add(resultsPanel);

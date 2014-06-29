@@ -34,9 +34,6 @@ public class ShortcutView extends ShortcutPanel {
     private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true, false, Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
     private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true, false, Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
-    private boolean spacerEnabled = false;
-    private SimplePanel spacer = new SimplePanel();
-
     @NotNull
     public ShortcutAdvancedPanel getAdvancedSubMenu() {
         return advancedShortcutPanel;
@@ -105,36 +102,5 @@ public class ShortcutView extends ShortcutPanel {
                 }
             }
         });
-    }
-
-    public void setSpacerEnabled(boolean enabled) {
-        if (enabled && !spacerEnabled) {
-            insert(spacer, 0);
-            setCellHeight(spacer, Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
-            spacerEnabled = true;
-        } else if (!enabled && spacerEnabled) {
-            remove(spacer);
-            spacerEnabled = false;
-        }
-    }
-
-    public boolean isSpacerEnabled() {
-        return spacerEnabled;
-    }
-
-    /**
-     * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
-     * the template action bar, which is removed.
-     * <p/>
-     * The button supplied to this method is placed in the spacer cell.
-     */
-    public void setSpacerButton(@NotNull final PushButton button) {
-        // Ensure that the spacer is being shown
-        if (!isSpacerEnabled()) {
-            setSpacerEnabled(true);
-        }
-        final FlowPanel panel = new FlowPanel();
-        panel.add(button);
-        spacer.setWidget(panel);
     }
 }

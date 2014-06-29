@@ -21,7 +21,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406300733";
+    public static final String BUILD = "201406300816";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1401,23 +1401,12 @@ public final class Constants {
      * The size of the split panel dividers.
      */
     public static final int SPLIT_PANEL_DIVIDER_SIZE = 5;
+
     /**
-     * The size of the page title bar, in EM.
+     * The height of the container holding the action bars. This is larger than height defined in the
+     * .TopActionParentPanel class to account for the scrollbar
      */
-    public static final int PAGE_TITLE_BAR_HEIGHT = 4;
-    /**
-     * The height of the action bars.
-     */
-    public static final int ACTION_BAR_HEIGHT = 76;
-    /**
-     * The height of the spacer to add to the shortcut bar to make up for the loss of the action bar.
-     * This value is ACTION_BAR_HEIGHT - (border spacing * 2)
-     */
-    public static final int SHORTCUT_BAR_SPACER_HEIGHT = ACTION_BAR_HEIGHT - (2 * 2);
-    /**
-     * The width of the shortcut bar.
-     */
-    public static final int SHORTCUT_BAR_WIDTH = 120;
+    public static final int ACTION_BAR_PARENT_HEIGHT = 96;
     /**
      * The height of the footer.
      */
@@ -1426,10 +1415,6 @@ public final class Constants {
      * The maximum number of results to return in a search result.
      */
     public static final int MAX_SEARCH_RESULTS = 15;
-    /**
-     * The ID of the default server, as defined in the ServerDetails.SERVERS collection.
-     */
-    public static final int DEFAULT_SERVER = 2;
     /**
      * The report that run a report with no other options.
      */
