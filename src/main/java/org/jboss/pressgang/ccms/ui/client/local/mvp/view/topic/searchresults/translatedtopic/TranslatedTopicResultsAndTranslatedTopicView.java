@@ -85,8 +85,5 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
         //addActionButton(this.getBugs());
 
         addActionButton(save);
-
-        // Remove the action button bar since we have none to display
-        getResultsActionButtonsParentPanelScroll().removeFromParent();
     }
 }

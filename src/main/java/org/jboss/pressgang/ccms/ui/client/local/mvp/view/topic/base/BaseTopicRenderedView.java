@@ -86,7 +86,7 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         renderingOptions.setWidget(1, 0, remarks);
         renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 3);
 
-        addLocalActionButton(renderingOptions);
+        addActionButton(renderingOptions);
 
         layoutPanel.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_ERROR_CELL);
         layoutPanel.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.TopicView.TOPIC_RENDERED_VIEW_IFRAME_TABLE_LOADING_CELL);

@@ -75,7 +75,7 @@ public class TopicSearchFieldView extends BaseTemplateView implements TopicSearc
     public void display(final RESTFilterV1 filter, final boolean readOnly) {
         topicSearchUIFields.initialize(filter);
         /* SearchUIProjectsEditor is a grid */
-        @NotNull final TopicSearchFieldUIEditor editor = new TopicSearchFieldUIEditor();
+        final TopicSearchFieldUIEditor editor = new TopicSearchFieldUIEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

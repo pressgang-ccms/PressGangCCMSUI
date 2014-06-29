@@ -94,7 +94,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
     protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider() {
         getProviderData().resetToEmpty();
 
-        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
                 displayNewFixedList(getProviderData().getItems());

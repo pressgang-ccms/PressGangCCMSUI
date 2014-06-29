@@ -21,7 +21,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406271231";
+    public static final String BUILD = "201406300654";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +

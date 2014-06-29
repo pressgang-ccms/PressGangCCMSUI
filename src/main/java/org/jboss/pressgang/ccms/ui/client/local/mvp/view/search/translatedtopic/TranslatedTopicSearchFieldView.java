@@ -65,7 +65,7 @@ public class TranslatedTopicSearchFieldView extends BaseTemplateView implements 
 
         /* Build the action bar icons */
         addActionButton(searchTopics);
-        addActionButton(tagsSearch);
+        addActionButton(tagsSearch, true);
         addActionButton(fields);
         //addActionButton(locales);
         addActionButton(filters);
@@ -75,7 +75,7 @@ public class TranslatedTopicSearchFieldView extends BaseTemplateView implements 
     public void display(final RESTFilterV1 filter, final boolean readOnly) {
         topicSearchUIFields.initialize(filter);
         /* SearchUIProjectsEditor is a grid */
-        @NotNull final TranslatedTopicSearchFieldUIEditor editor = new TranslatedTopicSearchFieldUIEditor();
+        final TranslatedTopicSearchFieldUIEditor editor = new TranslatedTopicSearchFieldUIEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

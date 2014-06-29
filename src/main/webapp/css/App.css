@@ -523,7 +523,7 @@ html {
 }
 
 .TopActionPanel, .RenderedSplitViewMenuTable {
-    width: 100%;
+    /*width: 100%;*/
     border-spacing: 0px;
     height: 100%;
     padding-left: 10px;

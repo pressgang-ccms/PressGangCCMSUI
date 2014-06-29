@@ -20,7 +20,6 @@ public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicC
     private final PushButton bulkOverwrite = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
     private final PushButton atomFeed = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ATOMFeed(), false, true, true, null);
 
-    @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         @NotNull
@@ -32,7 +31,6 @@ public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicC
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> titleColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         @NotNull

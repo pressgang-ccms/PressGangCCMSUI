@@ -59,10 +59,8 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
     private String queryString;
 
-    private final Map<String, String> localeQueries = new TreeMap<String, String>();
-    private final Map<PushButton, Label> tabButtonsAndLabels = new HashMap<PushButton, Label>();
+
     private final StringBuilder commonQuery = new StringBuilder();
-    private PushButton lastLocaleClicked;
 
     @NotNull
     public Display getDisplay() {
@@ -91,10 +89,11 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         getServerSettings(new ServerSettingsCallback() {
             @Override
             public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                final Map<PushButton, Label> tabButtonsAndLabels = new HashMap<PushButton, Label>();
                 // Get the common query and locales that will make up the grouped results
                 final List<String> locales = serverSettings.getLocales();
                 Collections.sort(locales);
-                breakDownQuery(locales);
+                final Map<String, String> localeQueries = breakDownQuery(locales);
 
                 // Add "tabs" for the locales
                 boolean first = true;
@@ -103,18 +102,18 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                     final Label localeTabDown = UIUtilities.createTopTabDownLabel(locale);
                     tabButtonsAndLabels.put(localeTab, localeTabDown);
 
-                    display.addActionButton(localeTab, display.getTabPanel());
+                    display.addActionButton(localeTab);
 
-                    @NotNull final ClickHandler clickHandler = new ClickHandler() {
+                    final ClickHandler clickHandler = new ClickHandler() {
                         @Override
                         public void onClick(final ClickEvent event) {
                             displayLocaleResults(localeQueries.get(locale));
 
                             for (final PushButton tab : tabButtonsAndLabels.keySet()) {
-                                display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab, display.getTabPanel());
+                                display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab);
                             }
 
-                            display.replaceTopActionButton(localeTab, localeTabDown, display.getTabPanel());
+                            display.replaceTopActionButton(localeTab, localeTabDown);
                         }
                     };
 
@@ -133,7 +132,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
     private void displayLocaleResults(@Nullable final String localeSearch) {
         /* Initially we display the results from the first locale */
-        @NotNull final StringBuilder initialQuery = new StringBuilder(commonQuery.toString());
+        final StringBuilder initialQuery = new StringBuilder(commonQuery.toString());
         if (localeSearch != null) {
             initialQuery.append(";").append(localeSearch);
         }
@@ -160,7 +159,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider() {
         getProviderData().resetToEmpty();
 
-        @NotNull final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTranslatedTopicCollectionItemV1> list) {
 
@@ -175,7 +174,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     @NotNull
     @Override
     protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTranslatedTopicCollectionItemV1> list) {
 
@@ -219,8 +218,9 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     /**
      * Break down the query into individual locales
      */
-    private void breakDownQuery(@NotNull final List<String> locales) {
+    private Map<String, String> breakDownQuery(@NotNull final List<String> locales) {
 
+        final Map<String, String> localeQueries = new TreeMap<String, String>();
         final String queryWithoutPrefix = queryString.replaceFirst(Constants.QUERY_PATH_SEGMENT_PREFIX, "");
         final String[] queryOptions = queryWithoutPrefix.split(";");
 
@@ -266,6 +266,8 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                 }
             }
         }
+
+        return localeQueries;
     }
 
 }

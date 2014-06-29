@@ -17,7 +17,6 @@ import javax.enterprise.context.Dependent;
 public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView<RESTTranslatedTopicCollectionItemV1>
         implements TranslatedTopicsFilteredResultsPresenter.Display {
 
-    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> idColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
         @NotNull
@@ -29,7 +28,6 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> revisionColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
         @NotNull
@@ -41,7 +39,6 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
-    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> titleColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
         @NotNull
@@ -61,8 +58,8 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         getResults().addColumn(revisionColumn, PressGangCCMSUI.INSTANCE.TopicRevision());
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
 
-        
-        /* remove the search and create buttons */
-        this.getTopActionPanel().removeAllRows();
+        /* Unlike every other results view, the translated topic results don't have a search or create button */
+        this.getEntitySearch().removeFromParent();
+        this.getCreate().removeFromParent();
     }
 }
