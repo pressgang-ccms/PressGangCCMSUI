@@ -596,10 +596,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     public void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table) {
-        addActionButton(widget, table, false);
+        addActionButton(widget, table, false, false);
     }
 
-    public void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table, boolean endOfTabs) {
+    public void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table, boolean endOfTabs, boolean startOfTabs) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
@@ -610,6 +610,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         if (endOfTabs) {
             table.getFlexCellFormatter().addStyleName(0, columns, CSSConstants.Template.END_TAB_BUTTONS);
+        }
+
+        if (startOfTabs) {
+            table.getFlexCellFormatter().addStyleName(0, columns, CSSConstants.Template.START_TAB_BUTTONS);
         }
     }
 
@@ -658,10 +662,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     /**
      * @param widget The widget to add as an action button
-     * @param endOfTabs True if the cell holding the widget should be styled as if it is starting a group of widgets
+     * @param endOfTabs True if the cell holding the widget should be styled as if it is ending a group of widgets
      */
     public void addActionButton(@NotNull final Widget widget, boolean endOfTabs) {
-        addActionButton(widget, this.getTopActionPanel(), endOfTabs);
+        addActionButton(widget, this.getTopActionPanel(), endOfTabs, false);
+    }
+
+    /**
+     * @param widget The widget to add as an action button
+     * @param endOfTabs True if the cell holding the widget should be styled as if it is ending a group of widgets
+     * @param startOfTabs True if the cell holding the widget should be styled as if it is starting a group of widgets
+     */
+    public void addActionButton(@NotNull final Widget widget, boolean endOfTabs, boolean startOfTabs) {
+        addActionButton(widget, this.getTopActionPanel(), endOfTabs, startOfTabs);
     }
 
     public void addActionButton(@NotNull final Widget widget) {

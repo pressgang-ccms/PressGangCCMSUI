@@ -42,7 +42,7 @@ public class BaseTopicSearchTagsFieldsAndFiltersView extends
         addActionButton(downloadZip);
         addActionButton(downloadCSV);
         addActionButton(applyBulkTags);
-        addActionButton(tagsSearch);
+        addActionButton(tagsSearch, false, true);
         addActionButton(fields);
         addActionButton(locales);
         addActionButton(filters);

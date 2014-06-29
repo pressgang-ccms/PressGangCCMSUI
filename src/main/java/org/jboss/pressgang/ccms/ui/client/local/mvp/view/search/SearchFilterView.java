@@ -33,7 +33,7 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     @Override
     public void display(final RESTFilterV1 entity, final boolean readonly) {
         /* SearchUIProjectsEditor is a grid */
-        @NotNull final RESTFilterV1BasicDetailsEditor editor = new RESTFilterV1BasicDetailsEditor(readonly);
+        final RESTFilterV1BasicDetailsEditor editor = new RESTFilterV1BasicDetailsEditor(readonly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

@@ -676,6 +676,8 @@ html {
     height: 100%;
     text-align: center;
     cursor: pointer;
+
+    max-width: 60px;
 }
 
 .TopTab:hover, .TopButton:hover, .SubMenu:hover {
@@ -703,7 +705,6 @@ html {
     border-left-color: rgba(48, 48, 48, 1);
     border-right-color: rgba(48, 48, 48, 1);
     border-top-color: rgba(48, 48, 48, 1);
-    max-width: 80px;
 }
 
 .TopTab:hover {
