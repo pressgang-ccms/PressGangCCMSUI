@@ -71,6 +71,7 @@ td {
 .TopShortcutMenu table, .ContentSpecActionsMenu table {
     border-spacing: 0px;
     height: 100%;
+    margin-left: -1px;
 }
 
 .VersionLabel, .AceEditorParent, .TopicViewIDField, .TopicViewRevisionNumberField, .TopicViewTitleField,
@@ -648,7 +649,6 @@ html {
     border-top-style: solid;
     border-top-width: 1px;
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 3px 0px;
-    color: rgb(77, 82, 88);
 }
 
 .TopTab, .TopButton, .SubMenu {

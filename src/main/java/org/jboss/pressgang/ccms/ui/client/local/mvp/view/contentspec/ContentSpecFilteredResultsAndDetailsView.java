@@ -188,14 +188,14 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
 
     private void populateTopActionBar() {
         addActionButton(getShowHideSearchResults());
-        addActionButton(getViewInDocBuilder());
+        addActionButton(getViewInDocBuilder(), true);
         addActionButton(getText());
         addActionButton(getErrors());
         addActionButton(getDetails());
         addActionButton(getExtendedProperties());
         addActionButton(getContentSpecTags());
         addActionButton(getHistory());
-        addActionButton(getProcesses());
+        addActionButton(getProcesses(), true);
         addActionButton(getSave());
         addActionButton(menu);
     }
