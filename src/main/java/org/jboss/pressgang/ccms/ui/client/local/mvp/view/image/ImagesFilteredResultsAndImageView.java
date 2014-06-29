@@ -68,7 +68,7 @@ public class ImagesFilteredResultsAndImageView extends
 
             this.description.addStyleName(CSSConstants.BulkImageUploadDialog.DESCRIPTION_FIELD);
 
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);

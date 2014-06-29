@@ -8,6 +8,7 @@
 /** the tab bar */
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
     height: 100%;
+    padding-left: 1px;
 }
 
 /** the individual tab in the tab bar */
@@ -40,10 +41,17 @@
     box-sizing: border-box;
     color: rgb(77, 82, 88);
     height:100%;
+    margin-left: -1px;
+    cursor: pointer;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     color: rgb(0, 153, 211);
+}
+
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected:hover {
+    color: rgb(0, 153, 211);
+    cursor:default;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
@@ -71,5 +79,13 @@
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
-    padding: 0px 4px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    font-size:14px;
+}
+
+.gwt-TabLayoutPanelTab:hover {
+    color: rgb(34, 34, 34);
 }

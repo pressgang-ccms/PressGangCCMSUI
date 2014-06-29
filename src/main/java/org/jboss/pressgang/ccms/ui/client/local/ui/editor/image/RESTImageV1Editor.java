@@ -42,7 +42,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final TextArea bareXmlTemplate = new TextArea();
 
-    private final TabLayoutPanel imageTemplateTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
+    private final TabLayoutPanel imageTemplateTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
 
     private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
 

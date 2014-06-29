@@ -66,7 +66,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
     }
 
     public RESTLanguageImageCollectionV1Editor() {
-        super(Constants.TAB_PANEL_HEIGHT, Unit.EM);
+        super(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
         this.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_LANGUAGE_IMAGE_TAB_PANEL);
     }
 }

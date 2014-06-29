@@ -21,7 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 public class ProcessView extends BaseTemplateView implements ProcessPresenter.Display {
 
-    private final TabLayoutPanel processListTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
+    private final TabLayoutPanel processListTable = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
     private final HeaderPanel panel = new HeaderPanel();
     private final SimpleLayoutPanel processPanel = new SimpleLayoutPanel();
     private final FlexTable filterPanel = new FlexTable();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gwt.dom.client.Style;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406300859";
+    public static final String BUILD = "201406300914";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1265,9 +1266,13 @@ public final class Constants {
     public static final String DEFAULT_FONT_SIZE = "12px";
 
     /**
-     * The height of the tabs in a tab panel, in EMs
+     * The height of the tabs in a tab panel, in px
      */
-    public static final float TAB_PANEL_HEIGHT = 2;
+    public static final float TAB_PANEL_HEIGHT = 35;
+    /**
+     * The units that the height of the table is measured in
+     */
+    public static final Style.Unit TAB_PANEL_HEIGHT_FORMAT = Style.Unit.PX;
 
     /**
      * The JSON Key for a recently failed failed server id

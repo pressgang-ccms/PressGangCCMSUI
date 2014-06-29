@@ -38,7 +38,7 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
      */
     private static final String CHANGE_TYPE_GROUP = "ChangeType";
 
-    private final TabLayoutPanel tabPanel = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Style.Unit.EM);
+    private final TabLayoutPanel tabPanel = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
 
     private final FlexTable messageLayout = new FlexTable();
     private final FlexTable contentSpecLayout = new FlexTable();
