@@ -7,7 +7,8 @@
 }
 
 .gwt-MenuItem.gwt-MenuItem-selected {
-    background: #2e2e2e;
+    background-color: rgb(29, 29, 29);
+    background-image: linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
 }
 
 .gwt-MenuBar-vertical {
