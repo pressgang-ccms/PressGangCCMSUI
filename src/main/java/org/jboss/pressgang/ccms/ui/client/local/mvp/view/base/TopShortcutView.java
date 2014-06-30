@@ -22,9 +22,9 @@ public class TopShortcutView extends FlexTable {
             Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
     private final AnchorButton createContentSpec = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
             Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton bug = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true,
+    private final AnchorButton bug = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateBug(), false,
             Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(), false, true,
+    private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(),
             Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
     private final AnchorMenuBar menus = new AnchorMenuBar();
@@ -96,6 +96,7 @@ public class TopShortcutView extends FlexTable {
         //add(reports);
         setWidget(0, 4, menus);
 
+        getFlexCellFormatter().addStyleName(0, 2, CSSConstants.Template.END_TAB_BUTTONS);
         getFlexCellFormatter().addStyleName(0, 3, CSSConstants.Template.END_TAB_BUTTONS);
 
         addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);

@@ -274,34 +274,25 @@ final public class UIUtilities {
 
     @NotNull
     public static AnchorButton createMenuButton(final String text) {
-        return createMenuButton(text, false, false);
+        return createMenuButton(text, true, null);
     }
 
     @NotNull
     public static AnchorButton createMenuButton(final String text, @NotNull final String id) {
-        return createMenuButton(text, false, false, id);
+        return createMenuButton(text, true, id);
     }
 
     @NotNull
-    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink) {
-        return createMenuButton(text, subMenu, externalLink, null);
-    }
-
-    @NotNull
-    public static AnchorButton createMenuButton(final String text, final boolean subMenu, final boolean externalLink, @Nullable final String id) {
+    public static AnchorButton createMenuButton(final String text, final boolean topTab, @Nullable final String id) {
         final AnchorButton retValue = new AnchorButton(text);
-
-        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
 
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
-        if (subMenu) {
-            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
-        } else if (externalLink) {
-            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+        if (topTab) {
+            retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        }  {
+            retValue.addStyleName(CSSConstants.Common.TOP_BUTTON);
         }
-
-
         if (id != null) {
             retValue.getElement().setId(id);
         }
