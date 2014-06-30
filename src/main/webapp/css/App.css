@@ -746,29 +746,6 @@ html {
     background-image: linear-gradient(#FF8803 0%, #303030 100%);
 }
 
-/*.TextButton.SubMenu {
-    background-color: #00C618;
-    border-color: #009200;
-}
-
-.TextButton.ExternalLink {
-    background-color: rgb(93, 0, 146);
-    border-color: rgb(49, 0, 99);
-}
-
-.TextButton.SubMenu:hover {
-    background-color: #009200;
-    border-color: #009200;
-}
-
-.TextButton.ExternalLink:hover {
-    background-color: rgb(49, 0, 99);
-    border-color: rgb(49, 0, 99);
-}
-*/
-
-
-
 
 .TextButton.gwt-PushButton-up-disabled,
 .TextButton.gwt-CustomButton-up-disabled,

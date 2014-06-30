@@ -34,7 +34,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
     private final PushButton processes = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Processes());
-    private final AnchorButton viewInDocBuilder = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), false, true, true, null);
+    private final AnchorButton viewInDocBuilder = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ViewInDocBuilder(), true);
     private final MenuBar menu = new MenuBar();
     private final MenuBar actionsMenu = new MenuBar(true);
     private final MenuItem actionsMenuItem = new MenuItem(PressGangCCMSUI.INSTANCE.ProcessActions(), actionsMenu);

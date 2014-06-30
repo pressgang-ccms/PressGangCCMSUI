@@ -325,33 +325,16 @@ final public class UIUtilities {
 
     @NotNull
     public static AnchorButton createAnchorButton(@NotNull final String text) {
-        return createAnchorButton(text, false, false);
+        return createAnchorButton(text, false, null);
     }
 
     @NotNull
-    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final String id) {
-        return createAnchorButton(text, false, false, false, id);
+    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean actionButton) {
+        return createAnchorButton(text, actionButton, null);
     }
 
     @NotNull
-    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu) {
-        return createAnchorButton(text, subMenu, false);
-    }
-
-    @NotNull
-    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu, @NotNull final String id) {
-        return createAnchorButton(text, subMenu, false, false, id);
-    }
-
-    @NotNull
-    public static AnchorButton createAnchorButton(@NotNull final String text, @NotNull final boolean subMenu,
-            @NotNull final boolean externalLink) {
-        return createAnchorButton(text, subMenu, externalLink, false, null);
-    }
-
-    @NotNull
-    public static AnchorButton createAnchorButton(final String text, final boolean subMenu, final boolean externalLink, final boolean actionButton,
-            @Nullable final String id) {
+    public static AnchorButton createAnchorButton(final String text, final boolean actionButton, @Nullable final String id) {
         @NotNull final AnchorButton retValue = new AnchorButton(text);
 
         if (actionButton) {
@@ -359,12 +342,6 @@ final public class UIUtilities {
         }
 
         retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
-
-        if (subMenu) {
-            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
-        } else if (externalLink) {
-            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
-        }
 
         if (id != null) {
             retValue.getElement().setId(id);

@@ -204,17 +204,6 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
     }
 
-    /*bookIcon.src = "book.png";
-    bookIcon.style.width = bookIcon.style.height = "16px";
-    bookLink.style.top = "4px";
-    bookLink.style.right = "24px";
-    bookLink.style.zIndex = 2;
-    bookLink.appendChild(bookIcon);
-    contentDiv.appendChild(bookLink);
-    bookLink.onclick = pressgang_website_get_iframe_url(iframe, function(name) {
-        window.open(pressgang_website_doc_base + "#" + name);
-    });*/
-
     closeIcon.src = "close.png";
     closeIcon.style.width = closeIcon.style.height = "16px";
     closeLink.style.top = "4px";
@@ -732,6 +721,7 @@ pressgang_website_callback = function(data) {
 
         var changedPositionFromStatic = [];
         var changedPositionFromDefault = [];
+        var changedBackgroundFromTransparent = [];
         var displaying = false;
         var zIndexDiff = 0;
 
@@ -840,6 +830,31 @@ pressgang_website_callback = function(data) {
                     }
 
                     element.style.zIndex += zIndexDiff;
+
+                    /*
+                        Take any transparent items and assign the colour of the parent background.
+                     */
+                    var backgroundColor = window.getComputedStyle(element).backgroundColor;
+                    var backgroundImage = window.getComputedStyle(element).backgroundImage;
+                    if ((backgroundColor === "rgba(0, 0, 0, 0)" || backgroundColor === "transparent") && backgroundImage === "none") {
+                        changedBackgroundFromTransparent.push(element);
+                        element.style.backgroundColor = "white";
+
+                        var parentNode = element.parentNode;
+                        while (parentNode !== null) {
+                            var parentBackgroundColor = window.getComputedStyle(parentNode).backgroundColor;
+                            var parentBackgroundImage = window.getComputedStyle(parentNode).backgroundImage;
+                            if (parentBackgroundColor !== "rgba(0, 0, 0, 0)" && parentBackgroundColor !== "transparent") {
+                                element.style.backgroundColor = parentBackgroundColor;
+                                break;
+                            } else if (parentBackgroundImage !== "none") {
+                                element.style.backgroundImage = parentBackgroundImage;
+                                break;
+                            }
+
+                            parentNode = parentNode.parentNode;
+                        }
+                    }
                 }
 
             }
@@ -964,8 +979,13 @@ pressgang_website_callback = function(data) {
                 changedPositionFromDefault[i].style.position = "";
             }
 
+            for (var i = 0, count = changedBackgroundFromTransparent.length; i < count; ++i) {
+                changedBackgroundFromTransparent[i].style.backgroundColor = "transparent";
+            }
+
             changedPositionFromDefault = [];
             changedPositionFromStatic = [];
+            changedBackgroundFromTransparent = [];
             zIndexDiff = 0;
         }
     }
