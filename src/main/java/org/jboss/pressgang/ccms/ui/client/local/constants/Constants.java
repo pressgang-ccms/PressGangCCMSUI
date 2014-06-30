@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.enums.RESTCSNodeTypeV1;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201406251649";
+    public static final String BUILD = "201406271024";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1448,6 +1449,8 @@ public final class Constants {
      * true for the new REST API, and false for older versions.
      */
     public static final boolean ENCODE_QUERY_OPTIONS = true;
+
+    public static final String TYPO_JS_DIR_LOCATION = GWT.getHostPageBaseURL() + "javascript/typojs/";
 
     /**
      * The reference to the XSL file, to be added to any XML being rendered by the browser

@@ -384,8 +384,7 @@ public class TranslatedTopicAdditionalXMLView extends BaseTemplateView implement
     public void display(final RESTTranslatedTopicV1 topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
-        this.editor = new RESTTranslatedTopicV1AdditionalXMLEditor(readOnly, positiveDictionary, negativeDictionary,
-                negativePhraseDictionary, xmlElementDBLoader);
+        this.editor = new RESTTranslatedTopicV1AdditionalXMLEditor(readOnly, Constants.TYPO_JS_DIR_LOCATION, xmlElementDBLoader);
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
