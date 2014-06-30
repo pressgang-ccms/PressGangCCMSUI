@@ -59,7 +59,7 @@ public class PropertyTagFilteredResultsAndDetailsView extends
 
     private void populateTopActionBar() {
         this.addActionButton(this.getDetails());
-        this.addActionButton(this.getChildren());
-        this.addActionButton(this.getSave(), true);
+        this.addActionButton(this.getChildren(), true);
+        this.addActionButton(this.getSave());
     }
 }

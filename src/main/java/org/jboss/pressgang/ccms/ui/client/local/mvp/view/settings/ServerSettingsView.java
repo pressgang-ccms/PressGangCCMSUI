@@ -75,8 +75,8 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ServerSettings());
 
         addActionButton(appSettingsDown);
-        addActionButton(entitySettings);
-        addActionButton(saveButton, true);
+        addActionButton(entitySettings, true);
+        addActionButton(saveButton);
 
         serverEntitiesPanel.addStyleName(CSSConstants.SettingsView.SETTINGS_PANEL);
         serverSettingsPanel.addStyleName(CSSConstants.SettingsView.SETTINGS_PANEL);
