@@ -863,6 +863,11 @@ html {
     color: white;
     /*background-color: #006F85;*/
     background-image: linear-gradient(rgb(28, 172, 232) 0%, rgb(25, 152, 204) 100%);
+
+    border-width: 1px;
+    border-radius: 1px;
+    border-color: rgb(38, 125, 161);
+    border-style: solid;
 }
 
 .CustomButtonText {
