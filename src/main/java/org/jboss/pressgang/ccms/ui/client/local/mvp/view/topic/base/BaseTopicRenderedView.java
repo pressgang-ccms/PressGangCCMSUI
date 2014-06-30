@@ -85,7 +85,6 @@ public abstract class BaseTopicRenderedView extends BaseTemplateView implements 
         renderingOptions.setWidget(0, 1, contentSpecs);
         renderingOptions.setWidget(0, 2, renderingInfo);
         renderingOptions.setWidget(1, 0, remarks);
-        renderingOptions.getFlexCellFormatter().setColSpan(1, 0, 3);
 
         getTopViewSpecificLeftActionPanel().setWidget(renderingOptions);
 

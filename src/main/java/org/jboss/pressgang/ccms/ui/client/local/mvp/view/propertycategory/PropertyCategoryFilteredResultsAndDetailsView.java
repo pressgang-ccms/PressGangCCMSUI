@@ -59,6 +59,6 @@ public class PropertyCategoryFilteredResultsAndDetailsView extends BaseSearchAnd
     private void populateTopActionBar() {
         this.addActionButton(this.getDetails());
         this.addActionButton(this.getChildren());
-        this.addActionButton(this.getSave());
+        this.addActionButton(this.getSave(), true);
     }
 }

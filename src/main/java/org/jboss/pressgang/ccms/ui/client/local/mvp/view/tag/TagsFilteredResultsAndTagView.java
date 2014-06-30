@@ -84,7 +84,7 @@ public class TagsFilteredResultsAndTagView
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
         this.addActionButton(this.getExtendedProperties());
-        this.addActionButton(this.getSave());
+        this.addActionButton(this.getSave(), true);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
 
         addActionButton(appSettingsDown);
         addActionButton(entitySettings);
-        addActionButton(saveButton);
+        addActionButton(saveButton, true);
 
         serverEntitiesPanel.addStyleName(CSSConstants.SettingsView.SETTINGS_PANEL);
         serverSettingsPanel.addStyleName(CSSConstants.SettingsView.SETTINGS_PANEL);

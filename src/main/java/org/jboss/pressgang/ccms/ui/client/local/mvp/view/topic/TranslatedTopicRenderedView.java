@@ -16,8 +16,7 @@ public class TranslatedTopicRenderedView extends BaseTopicRenderedView implement
     public TranslatedTopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.RenderedView());
 
-        getRenderingOptions().setWidget(2, 0, mergeAdditionalXML);
-        getRenderingOptions().getFlexCellFormatter().setColSpan(2, 0, 3);
+        getRenderingOptions().setWidget(1, 1, mergeAdditionalXML);
         mergeAdditionalXML.setValue(true);
     }
 

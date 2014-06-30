@@ -65,7 +65,7 @@ public class ContentSpecSearchFieldView extends BaseTemplateView implements Cont
 
         /* Build the action bar icons */
         addActionButton(searchContentSpecs);
-        addActionButton(tagsSearch);
+        addActionButton(tagsSearch, true);
         addActionButton(fields);
         addActionButton(locales);
         addActionButton(filters);
