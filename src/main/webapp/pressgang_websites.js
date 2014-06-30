@@ -773,7 +773,7 @@ pressgang_website_callback = function(data) {
 
             overlayDiv.id = pressgang_website_dimmerOverlayID;
             overlayDiv.style.zIndex = dimmerOverlayZIndex;
-            overlayDiv.style.backgroundColor = "#00618A";
+            overlayDiv.style.backgroundColor = "rgb(0, 45, 65)";
             overlayDiv.style.opacity= 0.9;
             overlayDiv.style.position = "fixed";
             overlayDiv.style.top = 0;
