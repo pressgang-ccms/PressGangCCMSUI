@@ -808,7 +808,7 @@ html {
 
 .QuickSearchTextBox {
     margin: 0px;
-    height: 100%;
+    height: 24px;
 }
 
 .ProjectsLayout, .CategoriesLayout {
