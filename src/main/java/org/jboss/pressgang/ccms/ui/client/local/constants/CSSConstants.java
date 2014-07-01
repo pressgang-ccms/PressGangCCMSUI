@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    interface FontAwesome {
+        String FONT_AWESOME = "fa";
+        String FONT_AWESOME_SEARCH = "fa-search";
+    }
+
     interface SysInfo {
         String SYSINFO_LABEL = "SysInfoLabel";
         String SYS_INFO_PANEL = "SysInfoPanel";

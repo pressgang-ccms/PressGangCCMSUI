@@ -147,7 +147,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The button used to execute the quick search.
      */
-    private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
+    private final PushButton quickSearch = UIUtilities.createPushButton("");
 
     /**
      * A hidden element that displays can attach elements to that need to be in the DOM to work (like iFrames)
@@ -469,6 +469,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         quickSearchPanel.add(quickSearchQuery);
         quickSearchPanel.add(getQuickSearch());
+        getQuickSearch().addStyleName(CSSConstants.FontAwesome.FONT_AWESOME);
+        getQuickSearch().addStyleName(CSSConstants.FontAwesome.FONT_AWESOME_SEARCH);
+        getQuickSearch().getElement().setPropertyString("placeholder", PressGangCCMSUI.INSTANCE.QuickSearch());
 
         quickSearchParentPanel.add(quickSearchPanel);
 
