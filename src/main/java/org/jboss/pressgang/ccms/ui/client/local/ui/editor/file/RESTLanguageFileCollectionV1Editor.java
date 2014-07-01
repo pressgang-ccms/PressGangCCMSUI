@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +55,7 @@ public final class RESTLanguageFileCollectionV1Editor extends TabLayoutPanel imp
     }
 
     public RESTLanguageFileCollectionV1Editor() {
-        super(2, Unit.EM);
+        super(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
         addStyleName(CSSConstants.FileView.FILE_VIEW_LANGUAGE_FILE_TAB_PANEL);
     }
 }
