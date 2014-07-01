@@ -9,6 +9,7 @@
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
     height: 100%;
     padding-left: 1px;
+    z-index: 1;
 }
 
 /** the individual tab in the tab bar */
@@ -17,7 +18,7 @@
     background-image: none;
     background-origin: padding-box;
     background-size: auto;
-    border-bottom-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgb(221, 221, 221);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-style: solid;
@@ -47,11 +48,16 @@
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
     color: rgb(0, 153, 211);
+    border-bottom-color: transparent;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected:hover {
     color: rgb(0, 153, 211);
     cursor:default;
+}
+
+.gwt-TabLayoutPanel > div:nth-child(3) {
+    margin-top: -1px;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
