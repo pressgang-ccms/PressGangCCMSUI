@@ -1564,7 +1564,7 @@ table.ProcessWaitingTable {
 }*/
 
 .SettingsTable {
-    width: 100%;
+    max-width: 1000px;
 }
 
 .SettingsLabel {
