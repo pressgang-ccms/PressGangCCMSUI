@@ -481,6 +481,9 @@ td {
 .DialogBoxOKCancelPanel {
     margin-left: auto;
     border-spacing: 4px;
+    margin-top: 15px;
+    padding-left: 20px;
+    padding-top: 19px;
 }
 
 .ImageViewLanguageImageUploadButtonsCell {
