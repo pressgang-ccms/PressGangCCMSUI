@@ -17,7 +17,6 @@ import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -73,9 +72,6 @@ public class App {
             LOGGER.log(Level.INFO, "ENTER App.startApp()");
 
             GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
-
-            /* Inject the CSS file */
-            CSSResources.INSTANCE.appCss().ensureInjected();
 
             /* Load the DTD file used for validation and rendering */
             DocBookDTD.loadDtd();

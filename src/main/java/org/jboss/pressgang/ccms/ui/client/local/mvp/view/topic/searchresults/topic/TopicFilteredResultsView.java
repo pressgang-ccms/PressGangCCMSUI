@@ -54,6 +54,11 @@ public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicC
         addActionButton(bulkImport);
         addActionButton(bulkOverwrite);
         addActionButton(atomFeed);
+
+        /*
+            We don't filter search results from here
+         */
+        getFilterTable().removeFromParent();
     }
 
     @NotNull

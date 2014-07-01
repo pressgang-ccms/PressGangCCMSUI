@@ -751,7 +751,7 @@ html {
 .TextButton.gwt-PushButton-up-disabled,
 .TextButton.gwt-CustomButton-up-disabled,
 .gwt-MenuItem-disabled {
-    color: rgb(64, 64, 64);
+    color: rgba(127, 127, 127, 0.5);
     cursor: default;
 }
 
@@ -760,6 +760,9 @@ html {
 .gwt-MenuItem-disabled:hover {
     background-color: transparent;
     background-image: none;
+}
+
+.TopButton.gwt-PushButton-up-disabled:hover {
     border-top-color: rgba(0, 0, 0, 0);
 }
 
@@ -1155,18 +1158,19 @@ html {
 .SysInfoPanel,
 .LocalePanel,
 .WelcomeViewPanel {
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .ProjectsLayout,
 .ProcessPanel,
 .EntitySearchTopicViewDetailsPanel {
-    top: 10px !important;
     right: 10px !important;
     bottom: 10px !important;
     left: 10px !important;
-    height: auto  !important;;
-    width: auto !important;;
+    height: auto  !important;
+    width: auto !important;
 }
 
 .TopicSearchTopicViewButtonsPanel>div {
@@ -1235,6 +1239,8 @@ html {
 .FilteredResultsPanel {
     width: 100%;
     background-color: white;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .FilteredResultsTable, .ProcessResultsTable {
@@ -1259,13 +1265,23 @@ html {
     -moz-box-sizing: border-box;
 }
 
-tr.FilteredResultsTableSelectedRow, tr.ProcessResultsTableSelectedRow {
-    background: #0099d3;
-    color: white;
-}
+tr.FilteredResultsTableSelectedRow, tr.ProcessResultsTableSelectedRow, tr[class*='FilteredResultsTableSelectedRow']>td, tr[class*='ProcessResultsTableSelectedRow']>td {
+    background: rgb(213, 236, 249);
+    color: rgb(51, 51, 51);
+    border-bottom-color: rgb(167, 202, 223);
+    background-color: rgb(213, 236, 249);
 
-tr[class*='FilteredResultsTableSelectedRow']>td, tr[class*='ProcessResultsTableSelectedRow']>td {
-    border-color: #0099d3;
+    border-top-width: 1px;
+    border-top-color: rgb(209, 209, 209);
+    border-top-style: solid;
+
+    border-left-width: 1px;
+    border-left-color: rgb(209, 209, 209);
+    border-left-style: solid;
+
+    border-right-width: 1px;
+    border-right-color: rgb(209, 209, 209);
+    border-right-style: solid;
 }
 
 textarea {

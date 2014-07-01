@@ -61,5 +61,10 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         /* Unlike every other results view, the translated topic results don't have a search or create button */
         this.getEntitySearch().removeFromParent();
         this.getCreate().removeFromParent();
+
+        /*
+            We don't filter search results from here
+        */
+        getFilterTable().removeFromParent();
     }
 }
