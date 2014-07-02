@@ -32,7 +32,7 @@ public class App {
      * The Errai event bus.
      */
     @NotNull
-    private final EventBus eventBus = new SimpleEventBus();
+    private static final EventBus eventBus = new SimpleEventBus();
 
     /**
      * The controller that handles the transitions between views.

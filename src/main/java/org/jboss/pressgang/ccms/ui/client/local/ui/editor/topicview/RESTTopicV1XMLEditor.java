@@ -6,7 +6,6 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorData;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.tagdb.XMLElementDB;
-import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -23,19 +22,18 @@ public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RE
 
 
     /**
-     * @param readOnly           true if the UI created by this editor should be readonly, and false otherwise
-     * @param positiveDictionary a reference to the dictionary used by the ACE editor spell checking
+     * @param readOnly      true if the UI created by this editor should be readonly, and false otherwise
+     * @param typoJsBaseUrl a reference to the dictionary used by the ACE editor spell checking
      * @param xmlFormat
      */
-    public RESTTopicV1XMLEditor(final boolean readOnly, final TypoJS positiveDictionary, final TypoJS negativeDictionary,
-            final TypoJS negativePhraseDictionary, final XMLElementDBLoader XMLElementDBLoader, final RESTXMLFormat xmlFormat) {
+    public RESTTopicV1XMLEditor(final boolean readOnly, final String typoJsBaseUrl, final XMLElementDBLoader XMLElementDBLoader,
+            final RESTXMLFormat xmlFormat) {
 
         final XMLElementDB xmlElementDB = XMLElementDBLoader.getXMLElementDB();
         final AceEditorData data = new AceEditorData();
         data.setXMLElementDB(xmlElementDB);
-        data.setNegativeDictionary(negativeDictionary);
-        data.setPositiveDictionary(positiveDictionary);
-        data.setNegativePhraseDictionary(negativePhraseDictionary);
+        data.setTypoJsBaseUrl(typoJsBaseUrl);
+        data.setTypeJsLang("en_US");
         data.setRestUrl(xmlElementDB.getRestEndpoint());
         xml = new AceEditor(false, data, true, false);
 

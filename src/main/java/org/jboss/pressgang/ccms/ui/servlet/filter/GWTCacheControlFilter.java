@@ -1,9 +1,15 @@
 package org.jboss.pressgang.ccms.ui.servlet.filter;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * {@link Filter} to add cache control headers for GWT generated files to ensure
@@ -18,8 +24,10 @@ import java.io.IOException;
  * @author Sean Flanigan <sflaniga@redhat.com>
  */
 public class GWTCacheControlFilter implements Filter {
-
-    private static final long ONE_DAY_MS = 86400000L;
+    private static final Pattern JS_AND_IMAGES_RE = Pattern.compile(".*?\\.(js|png|jpg|jpeg|gif|css|ico)$");
+    private static final long ONE_MIN_MS = 60 * 1000L;
+    private static final long ONE_HOUR_MS = ONE_MIN_MS * 60;
+    private static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
     private static final long ONE_YEAR_MS = ONE_DAY_MS * 365;
 
     public void destroy() {
@@ -43,6 +51,16 @@ public class GWTCacheControlFilter implements Filter {
             long now = System.currentTimeMillis();
             httpResponse.setDateHeader("Date", now);
             httpResponse.setDateHeader("Expires", now + ONE_YEAR_MS);
+        } else if (requestURI.endsWith(".dic") || requestURI.endsWith(".aff")) {
+            // Cache dictionaries for a day
+            long now = System.currentTimeMillis();
+            httpResponse.setDateHeader("Date", now);
+            httpResponse.setDateHeader("Expires", now + ONE_DAY_MS);
+        } else if (JS_AND_IMAGES_RE.matcher(requestURI).matches()) {
+            // Cache images, css and javascript files for 10 minutes
+            long now = System.currentTimeMillis();
+            httpResponse.setDateHeader("Date", now);
+            httpResponse.setDateHeader("Expires", now + (10 * ONE_MIN_MS));
         }
 
         filterChain.doFilter(request, response);

@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -44,14 +43,6 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
 
     private RESTTopicV1XMLEditor editor;
-
-    /**
-     * An instance of the typo.js library, to be passed to the instance of the ACE editor. This object seems to stick
-     * around, and consumes a not insignificant amount of memory, so it is initialized once for the duration of the application.
-     */
-    private static final TypoJS positiveDictionary = new TypoJS();
-    private static final TypoJS negativeDictionary = new TypoJS("javascript/typojs/en_US-neg.dic", "javascript/typojs/en_US-neg.aff", "en_US");
-    private static final TypoJS negativePhraseDictionary = new TypoJS("javascript/typojs/en_US-negphrase.dic", "javascript/typojs/en_US-neg.aff", "en_US");
 
     @Inject
     private XMLElementDBLoader xmlElementDBLoader;
@@ -383,15 +374,15 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
-        this.editor = new RESTTopicV1XMLEditor(readOnly, positiveDictionary, negativeDictionary, negativePhraseDictionary,
-                xmlElementDBLoader, topic == null ? null : topic.getXmlFormat());
+        editor = new RESTTopicV1XMLEditor(readOnly, Constants.TYPO_JS_DIR_LOCATION, xmlElementDBLoader,
+                topic == null ? null : topic.getXmlFormat());
         /* Initialize the driver with the top-level editor */
-        this.driver.initialize(this.editor);
+        driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
-        this.driver.edit(topic);
+        driver.edit(topic);
 
         editorParent.clear();
-        editorParent.add(this.editor);
+        editorParent.add(editor);
     }
 
 
