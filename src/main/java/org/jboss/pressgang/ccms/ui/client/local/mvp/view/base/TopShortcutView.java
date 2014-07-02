@@ -18,20 +18,21 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 public class TopShortcutView extends FlexTable {
     private final AnchorButton docbuilder = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.DocBuilder(),
             Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton createTopic = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateTopic(),
-            Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton createContentSpec = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
-            Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
 
     private final AnchorMenuBar menus = new AnchorMenuBar();
 
+    private final AnchorMenuBar create = new AnchorMenuBar(true);
     private final AnchorMenuBar search = new AnchorMenuBar(true);
     private final AnchorMenuBar entities = new AnchorMenuBar(true);
     private final AnchorMenuBar advanced = new AnchorMenuBar(true);
 
+    private final MenuItem createSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Create(), create);
     private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.SearchMenu(), search);
     private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.EntitiesMenu(), entities);
     private final MenuItem adminSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Administration(), advanced);
+
+    private final AnchorMenuItem createTopic = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.CreateTopic(), false, (Command) null);
+    private final AnchorMenuItem createContentSpec = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.CreateContentSpec(), false, (Command) null);
 
     private final AnchorMenuItem bulkTagging = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command) null);
     private final AnchorMenuItem stringConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.StringConstants(), false, (Command) null);
@@ -60,9 +61,13 @@ public class TopShortcutView extends FlexTable {
         menus.setAutoOpen(true);
         menus.setAnimationEnabled(true);
 
+        menus.addItem(createSubMenu);
         menus.addItem(entitiesSubMenu);
         menus.addItem(searchSubMenu);
         menus.addItem(adminSubMenu);
+
+        create.addItem(createTopic);
+        create.addItem(createContentSpec);
 
         search.addItem(searchTopics);
         search.addItem(searchContentSpec);
@@ -86,20 +91,18 @@ public class TopShortcutView extends FlexTable {
         advanced.addItem(serverSettings);
 
         setWidget(0, 0, docbuilder);
-        setWidget(0, 1, createTopic);
-        setWidget(0, 2, createContentSpec);
-        setWidget(0, 3, menus);
-
-        getFlexCellFormatter().addStyleName(0, 2, CSSConstants.Template.END_TAB_BUTTONS);
+        setWidget(0, 1, menus);
 
         addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
 
         menus.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU);
 
+        create.addStyleName(CSSConstants.Template.TOP_SHORTCUT_SUB_MENU);
         search.addStyleName(CSSConstants.Template.TOP_SHORTCUT_SUB_MENU);
         entities.addStyleName(CSSConstants.Template.TOP_SHORTCUT_SUB_MENU);
         advanced.addStyleName(CSSConstants.Template.TOP_SHORTCUT_SUB_MENU);
 
+        createSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
         searchSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
         entitiesSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
         adminSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
@@ -135,10 +138,12 @@ public class TopShortcutView extends FlexTable {
         };
 
         menus.addDomHandler(mouseOutHandler, MouseOutEvent.getType());
+        create.addDomHandler(mouseOutHandler, MouseOutEvent.getType());
         search.addDomHandler(mouseOutHandler, MouseOutEvent.getType());
         entities.addDomHandler(mouseOutHandler, MouseOutEvent.getType());
         advanced.addDomHandler(mouseOutHandler, MouseOutEvent.getType());
         menus.addDomHandler(focusHandler, FocusEvent.getType());
+        create.addDomHandler(focusHandler, FocusEvent.getType());
         search.addDomHandler(focusHandler, FocusEvent.getType());
         entities.addDomHandler(focusHandler, FocusEvent.getType());
         advanced.addDomHandler(focusHandler, FocusEvent.getType());
@@ -148,11 +153,11 @@ public class TopShortcutView extends FlexTable {
         return docbuilder;
     }
 
-    public AnchorButton getCreateTopic() {
+    public AnchorMenuItem getCreateTopic() {
         return createTopic;
     }
 
-    public AnchorButton getCreateContentSpec() {
+    public AnchorMenuItem getCreateContentSpec() {
         return createContentSpec;
     }
 

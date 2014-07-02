@@ -404,39 +404,33 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        getDisplay().getTopShortcutView().getCreateTopic().addClickHandler(new ClickHandler() {
+        getDisplay().getTopShortcutView().getCreateTopic().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    eatEvent((Event) event.getNativeEvent());
-                    /* don't try and launch the page again */
-                    if (History.getToken().startsWith(
-                            TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                        return;
-                    }
+            public void execute() {
+                /* don't try and launch the page again */
+                if (History.getToken().startsWith(
+                        TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                    return;
+                }
 
-                    if (isOKToProceed()) {
-                        eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
-                    }
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new TopicSearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
 
-        getDisplay().getTopShortcutView().getCreateContentSpec().addClickHandler(new ClickHandler() {
+        getDisplay().getTopShortcutView().getCreateContentSpec().setScheduledCommand(new Command() {
             @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    eatEvent((Event) event.getNativeEvent());
-                    /* don't try and launch the page again */
-                    if (History.getToken().startsWith(
-                            ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
-                                    .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
-                        return;
-                    }
+            public void execute() {
+                /* don't try and launch the page again */
+                if (History.getToken().startsWith(
+                        ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants
+                                .CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
+                    return;
+                }
 
-                    if (isOKToProceed()) {
-                        eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
-                    }
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new ContentSpecSearchResultsAndContentSpecViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
@@ -751,7 +745,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     private void buildHelpDatabase() {
         setDataAttribute(getDisplay().getTopShortcutView().getDocbuilder(), ServiceConstants.HELP_TOPICS.DOCBUILDER_VIEW_TOPIC.getId());
         setDataAttribute(getDisplay().getHome(), ServiceConstants.HELP_TOPICS.HOME_VIEW_TOPIC.getId());
-        setDataAttribute(getDisplay().getTopShortcutView().getCreateTopic(), ServiceConstants.HELP_TOPICS.CREATE_TOPIC_VIEW_TOPIC.getId());
 
         setDataAttribute(getDisplay().getTopShortcutView().getSearchTopics().getElement(),
                 ServiceConstants.HELP_TOPICS.SEARCH_TOPICS_VIEW.getId());
