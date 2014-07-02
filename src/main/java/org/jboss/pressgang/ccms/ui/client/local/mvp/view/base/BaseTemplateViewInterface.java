@@ -198,6 +198,9 @@ public interface BaseTemplateViewInterface {
     PushButton getHelpMode();
 
     @NotNull
+    AnchorButton getReportBugButton();
+
+    @NotNull
     DockLayoutPanel getSecondLevelLayoutPanel();
 
     @NotNull

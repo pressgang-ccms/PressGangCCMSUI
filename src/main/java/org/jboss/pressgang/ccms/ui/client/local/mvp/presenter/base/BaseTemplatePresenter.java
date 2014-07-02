@@ -282,8 +282,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * Called to bind the UI elements to event handlers.
      */
     private void bindStandardButtons() {
+        final HyperlinkImpl hyperlinkImpl = GWT.create(HyperlinkImpl.class);
+
         bindShortcutLinks();
-        bindDefaultShortcutButtons();
+        bindDefaultShortcutButtons(hyperlinkImpl);
         bindAdvancedShortcutButtons();
 
         getDisplay().getQuickSearchQuery().addKeyPressHandler(new KeyPressHandler() {
@@ -321,6 +323,20 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 doQuickSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        // Setup the report a bug button
+        getDisplay().getReportBugButton().setHref(Constants.BUGZILLA_URL);
+        getDisplay().getReportBugButton().setTarget("_blank");
+
+        getDisplay().getReportBugButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
+                    eatEvent((Event) event.getNativeEvent());
+                    Window.open(Constants.BUGZILLA_URL, "_blank", "");
+                }
+            }
+        });
     }
 
     private void bindShortcutLinks() {
@@ -330,16 +346,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         getDisplay().getTopShortcutView().getCreateTopic().setHref("#" + TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX);
         getDisplay().getTopShortcutView().getCreateContentSpec().setHref("#" + ContentSpecFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";"
                 + Constants.CREATE_PATH_SEGMENT_PREFIX);
-
-        ServerDetails.getSavedServer(new ServerDetailsCallback() {
-            @Override
-            public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                getDisplay().getTopShortcutView().getReports().setHref(serverDetails.getReportUrl());
-                getDisplay().getTopShortcutView().getReports().setTarget("_blank");
-            }
-        });
-        getDisplay().getTopShortcutView().getBug().setHref(Constants.BUGZILLA_URL);
-        getDisplay().getTopShortcutView().getBug().setTarget("_blank");
 
         // Search SubMenu
         getDisplay().getTopShortcutView().getSearchTopics().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN);
@@ -372,8 +378,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         getDisplay().getTopShortcutView().getServerSettings().setHref("#" + ServerSettingsPresenter.HISTORY_TOKEN);
     }
 
-    private void bindDefaultShortcutButtons() {
-        final HyperlinkImpl hyperlinkImpl = GWT.create(HyperlinkImpl.class);
+    private void bindDefaultShortcutButtons(final HyperlinkImpl hyperlinkImpl) {
         // Shortcut button menus
         getDisplay().getHome().addClickHandler(new ClickHandler() {
             @Override
@@ -436,17 +441,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        getDisplay().getTopShortcutView().getBug().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    eatEvent((Event) event.getNativeEvent());
-                    Window.open(Constants.BUGZILLA_URL, "_blank", "");
-                }
-            }
-        });
-
-        getDisplay().getTopShortcutView().getReports().addClickHandler(new ClickHandler() {
+        getDisplay().getReportBugButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
@@ -766,8 +761,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(getDisplay().getTopShortcutView().getTags().getElement(), ServiceConstants.HELP_TOPICS.TAGS_VIEW.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getCategories().getElement(), ServiceConstants.HELP_TOPICS.CATEGORIES_VIEW.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getProjects().getElement(), ServiceConstants.HELP_TOPICS.PROJECTS_VIEW.getId());
-        setDataAttribute(getDisplay().getTopShortcutView().getReports().getElement(), ServiceConstants.HELP_TOPICS.REPORTS.getId());
-        setDataAttribute(getDisplay().getTopShortcutView().getBug().getElement(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
+        setDataAttribute(getDisplay().getReportBugButton().getElement(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getFiles().getElement(), ServiceConstants.HELP_TOPICS.FILES.getId());
 
         setDataAttribute(getDisplay().getTopShortcutView().getEntitiesSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());

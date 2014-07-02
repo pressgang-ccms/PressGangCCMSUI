@@ -161,6 +161,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final ListBox servers = new ListBox();
 
     private final PushButton helpMode = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Help());
+    private final AnchorButton reportBug = UIUtilities.createAnchorButton(PressGangCCMSUI.INSTANCE.ReportBug(), false,
+            Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
 
     @Override
     @NotNull
@@ -181,6 +183,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @NotNull
     public PushButton getHelpMode() {
         return helpMode;
+    }
+
+    @Override
+    @NotNull
+    public AnchorButton getReportBugButton() {
+        return reportBug;
     }
 
     /**
@@ -526,7 +534,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, footerPanel.getCellCount(0), footerPanelCustomContent);
         footerPanel.getCellFormatter().addStyleName(0, footerPanel.getCellCount(0) - 1, CSSConstants.Template.CUSTOM_FOOTER_PANEL);
 
-        /* Add the help button */
+        /* Add the help and report bug buttons */
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), reportBug);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), helpMode);
 
         /* Add the content panel */

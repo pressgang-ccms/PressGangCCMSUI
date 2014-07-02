@@ -1,8 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ToggleButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -31,7 +29,7 @@ public class ShortcutView extends ShortcutPanel {
     private final ToggleButton docbuilder = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.DocBuilder(), Constants.ElementIDs.DOCBUILDER_NAVIGATION_BUTTON_ID.getId());
     private final ToggleButton createTopic = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateTopic(), Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
     private final ToggleButton createContentSpec = UIUtilities.createLeftSideTabToggleButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(), Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
-    private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true, false, Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
+    private final PushButton bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ReportBug(), false, true, false, Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
     private final PushButton reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true, false, Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
     @NotNull

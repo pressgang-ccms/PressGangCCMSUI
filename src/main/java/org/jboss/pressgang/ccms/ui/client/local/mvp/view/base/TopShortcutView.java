@@ -22,10 +22,6 @@ public class TopShortcutView extends FlexTable {
             Constants.ElementIDs.CREATE_TOPIC_NAVIGATION_BUTTON_ID.getId());
     private final AnchorButton createContentSpec = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateContentSpec(),
             Constants.ElementIDs.CREATE_SPEC_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton bug = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.CreateBug(), false,
-            Constants.ElementIDs.CREATE_BUG_NAVIGATION_BUTTON_ID.getId());
-    private final AnchorButton reports = UIUtilities.createMenuButton(PressGangCCMSUI.INSTANCE.Reports(),
-            Constants.ElementIDs.REPORTS_NAVIGATION_BUTTON_ID.getId());
 
     private final AnchorMenuBar menus = new AnchorMenuBar();
 
@@ -92,12 +88,9 @@ public class TopShortcutView extends FlexTable {
         setWidget(0, 0, docbuilder);
         setWidget(0, 1, createTopic);
         setWidget(0, 2, createContentSpec);
-        setWidget(0, 3, bug);
-        //add(reports);
-        setWidget(0, 4, menus);
+        setWidget(0, 3, menus);
 
         getFlexCellFormatter().addStyleName(0, 2, CSSConstants.Template.END_TAB_BUTTONS);
-        getFlexCellFormatter().addStyleName(0, 3, CSSConstants.Template.END_TAB_BUTTONS);
 
         addStyleName(CSSConstants.Template.TOP_SHORTCUT_PANEL);
 
@@ -161,14 +154,6 @@ public class TopShortcutView extends FlexTable {
 
     public AnchorButton getCreateContentSpec() {
         return createContentSpec;
-    }
-
-    public AnchorButton getBug() {
-        return bug;
-    }
-
-    public AnchorButton getReports() {
-        return reports;
     }
 
     public AnchorMenuItem getBulkTagging() {

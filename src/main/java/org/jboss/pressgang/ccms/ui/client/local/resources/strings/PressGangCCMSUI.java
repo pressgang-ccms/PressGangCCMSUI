@@ -402,7 +402,7 @@ public interface PressGangCCMSUI extends Constants {
     String Reports();
 
     @NotNull
-    String CreateBug();
+    String ReportBug();
 
     @NotNull
     String RenderedPane();
