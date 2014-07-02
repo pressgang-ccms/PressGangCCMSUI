@@ -738,6 +738,15 @@ html {
     display: inline-block;
 }
 
+.ApplicationTitle:before {
+    content: url(../images/pressgang_icon_32px.png);
+    padding-right: 5px;
+    vertical-align: bottom;
+    height: 32px;
+    display: inline-block;
+    padding-top: 2px;
+}
+
 .PageTitle {
     margin-left: 10px;
     word-wrap: break-word;
