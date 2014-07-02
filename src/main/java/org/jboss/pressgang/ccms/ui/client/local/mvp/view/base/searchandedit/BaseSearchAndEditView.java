@@ -255,20 +255,15 @@ abstract public class BaseSearchAndEditView<
      */
     @Override
     public void displaySearchResultsView(@Nullable final BaseFilteredResultsViewInterface<V> filteredResultsView) {
-        this.getResultsPanel().clear();
-        this.resultsActionButtonsParentPanel.clear();
-        this.resultsActionButtonsPanel.clear();
-        this.resultsViewSpecificActionButtonsPanel.clear();
+        getResultsPanel().clear();
+        resultsActionButtonsParentPanel.clear();
+        resultsActionButtonsPanel.clear();
 
         resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
-        /* Make 100% wide to push the next cell to the right */
-        resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 0, "100%");
-        resultsActionButtonsParentPanel.setWidget(0, 1, resultsViewSpecificActionButtonsPanel);
 
         if (filteredResultsView != null) {
-            this.getResultsPanel().setWidget(filteredResultsView.getPanel());
-            this.resultsActionButtonsPanel.add(filteredResultsView.getTopActionPanel());
-            this.resultsViewSpecificActionButtonsPanel.add(filteredResultsView.getTopViewSpecificRightActionPanel());
+            getResultsPanel().setWidget(filteredResultsView.getPanel());
+            resultsActionButtonsPanel.add(filteredResultsView.getTopActionPanel());
         }
     }
 
