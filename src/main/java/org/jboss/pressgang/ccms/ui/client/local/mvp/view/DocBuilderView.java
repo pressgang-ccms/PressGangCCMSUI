@@ -15,7 +15,7 @@ public class DocBuilderView extends BaseTemplateView implements DocBuilderPresen
     private final Frame iFrame;
 
     public DocBuilderView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Welcome());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.DocBuilder());
         iFrame = new Frame();
         iFrame.setWidth("100%");
         iFrame.setHeight("100%");
