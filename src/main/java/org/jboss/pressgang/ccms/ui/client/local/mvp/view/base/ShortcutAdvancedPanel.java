@@ -59,7 +59,7 @@ public class ShortcutAdvancedPanel extends ShortcutDisclosurePanel {
     }
 
     public void initialise() {
-        // Advanced Sub Menu
+        // Administration Sub Menu
         add(bulkTagging);
         add(stringConstants);
         add(blobConstants);

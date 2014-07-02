@@ -588,7 +588,7 @@ public interface PressGangCCMSUI extends Constants {
     String Categories();
 
     @NotNull
-    String Advanced();
+    String Administration();
 
     @NotNull
     String TagID();

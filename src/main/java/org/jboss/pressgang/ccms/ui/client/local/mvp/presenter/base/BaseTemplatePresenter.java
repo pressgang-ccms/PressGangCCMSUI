@@ -359,7 +359,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         getDisplay().getTopShortcutView().getCategories().setHref("#" + CategoriesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         getDisplay().getTopShortcutView().getProjects().setHref("#" + ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
 
-        // Advanced SubMenu
+        // Administration SubMenu
         getDisplay().getTopShortcutView().getBulkTagging().setHref("#" + TopicSearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         getDisplay().getTopShortcutView().getBlobConstants().setHref("#" + BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
         getDisplay().getTopShortcutView().getStringConstants().setHref("#" + StringConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.QUERY_PATH_SEGMENT_PREFIX);
@@ -765,7 +765,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(getDisplay().getTopShortcutView().getFiles().getElement(), ServiceConstants.HELP_TOPICS.FILES.getId());
 
         setDataAttribute(getDisplay().getTopShortcutView().getEntitiesSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
-        setDataAttribute(getDisplay().getTopShortcutView().getAdvancedSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
+        setDataAttribute(getDisplay().getTopShortcutView().getAdminSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getSearchSubMenu().getElement(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
 
         setDataAttribute(getDisplay().getTopShortcutView().getSearchContentSpec().getElement(),

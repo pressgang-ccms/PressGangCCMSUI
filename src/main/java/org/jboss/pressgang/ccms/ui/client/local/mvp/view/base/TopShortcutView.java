@@ -31,7 +31,7 @@ public class TopShortcutView extends FlexTable {
 
     private final MenuItem searchSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.SearchMenu(), search);
     private final MenuItem entitiesSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.EntitiesMenu(), entities);
-    private final MenuItem advancedSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Advanced(), advanced);
+    private final MenuItem adminSubMenu = new MenuItem(PressGangCCMSUI.INSTANCE.Administration(), advanced);
 
     private final AnchorMenuItem bulkTagging = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.BulkTagging(), false, (Command) null);
     private final AnchorMenuItem stringConstants = new AnchorMenuItem(PressGangCCMSUI.INSTANCE.StringConstants(), false, (Command) null);
@@ -62,7 +62,7 @@ public class TopShortcutView extends FlexTable {
 
         menus.addItem(searchSubMenu);
         menus.addItem(entitiesSubMenu);
-        menus.addItem(advancedSubMenu);
+        menus.addItem(adminSubMenu);
 
         search.addItem(searchTopics);
         search.addItem(searchContentSpec);
@@ -102,7 +102,7 @@ public class TopShortcutView extends FlexTable {
 
         searchSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
         entitiesSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
-        advancedSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
+        adminSubMenu.addStyleName(CSSConstants.Template.TOP_SHORTCUT_MENU_ITEM);
 
         // Set up auto hiding
         final Timer timer = new Timer() {
@@ -236,8 +236,8 @@ public class TopShortcutView extends FlexTable {
         return entitiesSubMenu;
     }
 
-    public MenuItem getAdvancedSubMenu() {
-        return advancedSubMenu;
+    public MenuItem getAdminSubMenu() {
+        return adminSubMenu;
     }
 
     public AnchorMenuItem getSysinfo() {

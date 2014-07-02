@@ -14,7 +14,7 @@ public class ShortcutView extends ShortcutPanel {
     /**
      * The panel that holds the shortcut buttons visible when the advanced submenu is open.
      */
-    private final ShortcutAdvancedPanel advancedShortcutPanel = new ShortcutAdvancedPanel(PressGangCCMSUI.INSTANCE.Advanced());
+    private final ShortcutAdvancedPanel advancedShortcutPanel = new ShortcutAdvancedPanel(PressGangCCMSUI.INSTANCE.Administration());
 
     /**
      * The panel that holds the shortcut buttons visible when the entities submenu is open.

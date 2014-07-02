@@ -577,7 +577,7 @@ html {
     -moz-box-sizing: border-box;
     cursor: pointer;
 
-    max-width: 70px;
+    width: 70px;
 }
 
 .TopShortcutSubMenu, .ContentSpecActionsSubMenu {
