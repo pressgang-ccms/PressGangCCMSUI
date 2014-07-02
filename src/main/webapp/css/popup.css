@@ -59,11 +59,11 @@
 }
 
 .gwt-DialogBox .dialogTopLeft {
-    background-color: white;
+    background-color: rgb(248, 248, 248);
 }
 
 .gwt-DialogBox .dialogTopRight {
-    background-color: white;
+    background-color: rgb(248, 248, 248);
 }
 
 .gwt-DialogBox .dialogBottomLeft {
