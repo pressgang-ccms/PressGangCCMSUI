@@ -560,25 +560,18 @@ html {
 }
 
 .TopShortcutMenuItem, .ContentSpecActionsMenuItem {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: none;
+    background: rgba(0, 0, 0, 0) none;
     background-origin: padding-box;
     background-size: auto;
 
-    border-width: 1px;
-    border-style: solid;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(48, 48, 48, 1);
+    border: 1px solid rgba(0, 0, 0, 0);
     border-right-color: rgba(48, 48, 48, 1);
+    border-left-color: rgba(48, 48, 48, 1);
     color: rgb(207, 207, 207);
     margin-left: -1px;
 
     vertical-align: top;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 12px;
     height: 100%;
     text-align: center;
     -moz-box-sizing: border-box;
@@ -591,89 +584,47 @@ html {
 }
 
 .TextButton {
-    background-color: rgb(238, 238, 238);
-    background-image: linear-gradient(rgb(250, 250, 250) 0%, rgb(237, 237, 237) 100%);
-    background-repeat: repeat-x;
-    border-bottom-color: rgb(183, 183, 183);
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    background: rgb(238, 238, 238) linear-gradient(rgb(250, 250, 250) 0%, rgb(237, 237, 237) 100%) repeat-x;
     border-image-outset: 0px;
     border-image-repeat: stretch;
     border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
-    border-left-color: rgb(183, 183, 183);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(183, 183, 183);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(183, 183, 183);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-radius: 1px;
+    border: 1px solid rgb(183, 183, 183);
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 3px 0px;
     color: rgb(77, 82, 88);
 
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding: 6px 12px;
     height: 100%;
     text-align: center;
     cursor: pointer;
 }
 
 .TextButton:hover {
-    background-color: rgb(238, 238, 238);
-    background-image: none;
-    background-repeat: repeat-x;
-    border-bottom-color: rgb(183, 183, 183);
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    background: rgb(238, 238, 238) none repeat-x;
     border-image-outset: 0px;
     border-image-repeat: stretch;
     border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
-    border-left-color: rgb(183, 183, 183);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(183, 183, 183);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(183, 183, 183);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-radius: 1px;
+    border: 1px solid rgb(183, 183, 183);
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 3px 0px;
 }
 
 .TopTab, .TopButton, .SubMenu {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: none;
+    background: rgba(0, 0, 0, 0) none;
     background-origin: padding-box;
     background-size: auto;
 
-    border-width: 1px;
-    border-style: solid;
-    border-bottom-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(48, 48, 48, 1);
+    border: 1px solid rgba(0, 0, 0, 0);
     border-right-color: rgba(48, 48, 48, 1);
+    border-left-color: rgba(48, 48, 48, 1);
     color: rgb(207, 207, 207);
     margin-left: -1px;
 
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 12px;
     height: 100%;
     text-align: center;
     cursor: pointer;
@@ -682,22 +633,19 @@ html {
 }
 
 .TopTab:hover, .TopButton:hover, .SubMenu:hover {
-    background-color: rgb(29, 29, 29);
-    background-image: linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
+    background: rgb(29, 29, 29) linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
+    border-color: rgba(48, 48, 48, 1);
     border-top-color: rgb(92, 92, 92);
-    border-left-color: rgba(48, 48, 48, 1);
-    border-right-color: rgba(48, 48, 48, 1);
     border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 .TopTab {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-left-color: rgba(48, 48, 48, 1);
-    border-right-color: rgba(48, 48, 48, 1);
+    border: 1px solid;
     border-top-color: rgba(48, 48, 48, 1);
+    border-right-color: rgba(48, 48, 48, 1);
+    border-left-color: rgba(48, 48, 48, 1);
 }
 
 .TopTab:hover {
@@ -706,17 +654,11 @@ html {
 }
 
 .DownLabel {
-    background-color: rgb(48, 48, 48);
-    background-image: linear-gradient(rgb(67, 67, 67) 0%, rgb(48, 48, 48) 100%);
     background-origin: padding-box;
-    background-repeat: repeat-x;
+    background: rgb(48, 48, 48) linear-gradient(rgb(67, 67, 67) 0%, rgb(48, 48, 48) 100%) repeat-x;
     background-size: auto;
-    border-bottom-color: rgb(48, 48, 48);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-color: rgb(105, 105, 105);
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-top: 1px solid rgb(105, 105, 105);
+    border-bottom: 1px solid rgb(48, 48, 48);
     box-shadow: none;
     color: rgb(241, 241, 241);
 
@@ -761,8 +703,7 @@ html {
 .TextButton.gwt-PushButton-up-disabled:hover,
 .TextButton.gwt-CustomButton-up-disabled:hover,
 .gwt-MenuItem-disabled:hover {
-    background-color: transparent;
-    background-image: none;
+    background: transparent none;
 }
 
 .TopButton.gwt-PushButton-up-disabled:hover {
@@ -848,14 +789,11 @@ html {
     width: 14em;
     height: 6em;
     vertical-align: top;
-    border: 0px;
     color: rgb(77, 82, 88);
     background-image: linear-gradient(rgb(250, 250, 250) 0%, rgb(237, 237, 237) 100%);
 
-    border-width: 1px;
     border-radius: 1px;
-    border-color: rgb(183, 183, 183);
-    border-style: solid;
+    border: 1px solid rgb(183, 183, 183);
 }
 
 .CustomButton:hover {
@@ -866,15 +804,12 @@ html {
     width: 14em;
     height: 6em;
     vertical-align: top;
-    border: 0px;
     color: white;
     /*background-color: #006F85;*/
     background-image: linear-gradient(rgb(28, 172, 232) 0%, rgb(25, 152, 204) 100%);
 
-    border-width: 1px;
     border-radius: 1px;
-    border-color: rgb(38, 125, 161);
-    border-style: solid;
+    border: 1px solid rgb(38, 125, 161);
 }
 
 .CustomButtonText {
@@ -1269,22 +1204,14 @@ html {
 }
 
 tr.FilteredResultsTableSelectedRow, tr.ProcessResultsTableSelectedRow, tr[class*='FilteredResultsTableSelectedRow']>td, tr[class*='ProcessResultsTableSelectedRow']>td {
-    background: rgb(213, 236, 249);
     color: rgb(51, 51, 51);
+    background: rgb(213, 236, 249);
+
+    border-color: rgb(209, 209, 209);
+    border-top: 1px solid;
+    border-right: 1px solid;
     border-bottom-color: rgb(167, 202, 223);
-    background-color: rgb(213, 236, 249);
-
-    border-top-width: 1px;
-    border-top-color: rgb(209, 209, 209);
-    border-top-style: solid;
-
-    border-left-width: 1px;
-    border-left-color: rgb(209, 209, 209);
-    border-left-style: solid;
-
-    border-right-width: 1px;
-    border-right-color: rgb(209, 209, 209);
-    border-right-style: solid;
+    border-left: 1px solid;
 }
 
 textarea {

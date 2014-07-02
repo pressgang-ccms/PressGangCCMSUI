@@ -7,11 +7,9 @@ table.diff {
 
 table.diff tbody th {
     background: #EED;
-    border-color: #BBC;
     color: #886;
     padding: .5em .5em 0 1em;
-    border-style: solid;
-    border-width: .1em;
+    border: .1em solid #BBC;
 }
 
 table.diff td {

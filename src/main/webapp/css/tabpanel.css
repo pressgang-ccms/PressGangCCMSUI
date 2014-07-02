@@ -14,31 +14,16 @@
 
 /** the individual tab in the tab bar */
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
-    background-color: rgb(255, 255, 255);
-    background-image: none;
+    background: rgb(255, 255, 255) none;
     background-origin: padding-box;
     background-size: auto;
-    border-bottom-color: rgb(221, 221, 221);
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
     border-image-outset: 0px;
     border-image-repeat: stretch;
     border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
-    border-left-color: rgb(221, 221, 221);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(221, 221, 221);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(221, 221, 221);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-radius: 1px 1px 0px 0px;
+    border: 1px solid rgb(221, 221, 221);
     box-sizing: border-box;
     color: rgb(77, 82, 88);
     height:100%;
@@ -61,34 +46,17 @@
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
-    border-bottom-color: rgb(221, 221, 221);
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
     border-image-outset: 0px;
     border-image-repeat: stretch;
     border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
-    border-left-color: rgb(221, 221, 221);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-color: rgb(221, 221, 221);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-top-color: rgb(221, 221, 221);
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
+    border-radius: 1px 1px 0px 0px;
+    border: 1px solid rgb(221, 221, 221);
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
-    padding-bottom: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 5px;
+    padding: 5px 15px;
     font-size:14px;
 }
 
