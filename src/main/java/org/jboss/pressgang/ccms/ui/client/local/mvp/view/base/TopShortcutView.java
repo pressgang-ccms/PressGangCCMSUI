@@ -60,8 +60,8 @@ public class TopShortcutView extends FlexTable {
         menus.setAutoOpen(true);
         menus.setAnimationEnabled(true);
 
-        menus.addItem(searchSubMenu);
         menus.addItem(entitiesSubMenu);
+        menus.addItem(searchSubMenu);
         menus.addItem(adminSubMenu);
 
         search.addItem(searchTopics);
