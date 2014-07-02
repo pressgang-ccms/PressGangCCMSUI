@@ -127,7 +127,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             getDisplay().removeTopActionButton(getDisplay().getApplyBulkTags());
         }
 
-        displayTags();
+        displayFields();
 
         // Set a blank filter as the current displayed item
         getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()

@@ -97,7 +97,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
         loadSearchTags();
         loadSearchLocales();
 
-        displayTags();
+        displayFields();
 
         // Set a blank filter as the current displayed item
         getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
