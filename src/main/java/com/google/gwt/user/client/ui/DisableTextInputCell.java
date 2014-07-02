@@ -1,6 +1,9 @@
 package com.google.gwt.user.client.ui;
 
 import com.google.gwt.cell.client.TextInputCell;
+import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
@@ -20,6 +23,14 @@ public final class DisableTextInputCell extends TextInputCell {
             super.render(context, value, sb);
         } else {
             sb.append(SafeHtmlUtils.fromString(value));
+        }
+    }
+
+    @Override
+    public void onBrowserEvent(Context context, Element parent, String value,
+            NativeEvent event, ValueUpdater<String> valueUpdater) {
+        if (enabled) {
+            super.onBrowserEvent(context, parent, value, event, valueUpdater);
         }
     }
 
