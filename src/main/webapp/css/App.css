@@ -1536,6 +1536,7 @@ table.ProcessWaitingTable {
     display: inline-block;
     width: 100%;
     min-width: 20px;
+    margin-right: 5px;
 }
 
 .SettingsZanataTable tfoot th {
@@ -1556,7 +1557,7 @@ table.ProcessWaitingTable {
 }
 
 .SettingsZanataURLFooter {
-    padding-right: 10px !important;
+    padding-right: 15px !important;
     width: 100%
 }
 
