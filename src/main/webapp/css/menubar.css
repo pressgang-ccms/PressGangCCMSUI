@@ -17,13 +17,10 @@
 
 .gwt-MenuBar-vertical {
     margin-top: 0px;
-    margin-left: 0px;
-    background-color: #fff;
+    margin-left: -1px;
+    margin-right: -1px;
     border: 1px solid #b6b6b6;
     color: #333;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    background-clip: padding-box;
 }
 .gwt-MenuBar-vertical table {
     border-collapse: collapse;
@@ -43,4 +40,9 @@
     z-index: 1000;
     margin-top: 1px;
     margin-left: -1px;
+    background-color: #fff;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    clip: auto !important;
 }
