@@ -654,6 +654,18 @@ html {
     max-width: 60px;
 }
 
+.TopTab {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid rgba(48, 48, 48, 1);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.TopTab:hover {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
 .TopTab:hover, .TopButton:hover, .SubMenu:hover {
     background: rgb(29, 29, 29) linear-gradient(rgb(54, 54, 54) 0%, rgb(29, 29, 29) 100%);
     border-color: rgba(48, 48, 48, 1);
@@ -665,6 +677,11 @@ html {
     display: table;
     border: none !important;
     padding: 0px 12px;
+    border-radius: 0px !important;
+}
+
+.TopShortcutPanel div.TopButton:hover {
+    border-radius: 0px !important;
 }
 
 .TopShortcutPanel div.TopButton div {
@@ -681,10 +698,7 @@ html {
     box-shadow: none;
     color: rgb(241, 241, 241);
 
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 12px;
     height: 100%;
     text-align: center;
     cursor: default;
