@@ -1607,3 +1607,8 @@ table.ProcessWaitingTable {
 .TopicRenderingOptionsSpecs {
     width:100%;
 }
+
+.SimplePager {
+    float: right;
+    border-collapse: collapse;
+}

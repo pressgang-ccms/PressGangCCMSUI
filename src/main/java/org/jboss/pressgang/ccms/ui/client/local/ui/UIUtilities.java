@@ -237,7 +237,7 @@ final public class UIUtilities {
      */
     @NotNull
     public static SimplePager createSimplePager() {
-        return new SimplePager(TextLocation.CENTER, true, Constants.FAST_FORWARD_ROWS, true) {
+        final SimplePager simplePager = new SimplePager(TextLocation.CENTER, true, Constants.FAST_FORWARD_ROWS, true) {
             // Fix for the jumping to the last page. See: https://code.google.com/p/google-web-toolkit/issues/detail?id=6163
             @Override
             public void setPageStart(int index) {
@@ -251,6 +251,8 @@ final public class UIUtilities {
                 }
             }
         };
+        simplePager.addStyleName(CSSConstants.Common.SIMPLE_PAGER);
+        return simplePager;
     }
 
     /**

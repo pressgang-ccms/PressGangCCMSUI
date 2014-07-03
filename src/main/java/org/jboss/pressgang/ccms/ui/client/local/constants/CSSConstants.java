@@ -940,6 +940,8 @@ public interface CSSConstants {
 
         String CUSTOM_BUTTON = "CustomButton";
         String CUSTOM_BUTTON_DOWN = "CustomButtonDown";
+
+        String SIMPLE_PAGER = "SimplePager";
     }
 
     public interface Shortcut {
