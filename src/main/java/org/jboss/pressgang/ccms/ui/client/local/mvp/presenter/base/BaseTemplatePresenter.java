@@ -435,21 +435,6 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        getDisplay().getReportBugButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                if (hyperlinkImpl.handleAsClick((Event) event.getNativeEvent())) {
-                    eatEvent((Event) event.getNativeEvent());
-                    ServerDetails.getSavedServer(new ServerDetailsCallback() {
-                        @Override
-                        public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
-                            Window.open(serverDetails.getReportUrl(), "_blank", "");
-                        }
-                    });
-                }
-            }
-        });
-
         getDisplay().getTopShortcutView().getSearchTopics().setScheduledCommand(new Command() {
             @Override
             public void execute() {
