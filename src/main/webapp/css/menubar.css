@@ -41,4 +41,6 @@
 
 .gwt-MenuBarPopup {
     z-index: 1000;
+    margin-top: 1px;
+    margin-left: -1px;
 }
