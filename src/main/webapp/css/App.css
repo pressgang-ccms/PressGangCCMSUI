@@ -698,10 +698,7 @@ html {
     box-shadow: none;
     color: rgb(241, 241, 241);
 
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 12px;
     height: 100%;
     text-align: center;
     cursor: default;

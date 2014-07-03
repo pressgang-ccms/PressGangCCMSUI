@@ -38,8 +38,8 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
 
         addActionButton(searchContentSpecs);
         addActionButton(downloadZip);
+        addActionButton(fields, false, true);
         addActionButton(tags);
-        addActionButton(fields);
         addActionButton(locales);
         addActionButton(filters);
     }
