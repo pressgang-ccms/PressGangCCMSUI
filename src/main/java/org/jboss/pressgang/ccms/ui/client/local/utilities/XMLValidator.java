@@ -11,6 +11,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
+import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.data.DocBookDTD;
 
 public class XMLValidator {
@@ -81,7 +82,8 @@ public class XMLValidator {
                     // Do additional DocBook validation
                     if (theseErrors == "") {
                         var text = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
-                        theseErrors = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::doAdditionalDocBookValidation(Ljava/lang/String;Ljava/lang/String;)(text, entities)
+                        var format = helper.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidationHelper::getFormat()();
+                        theseErrors = me.@org.jboss.pressgang.ccms.ui.client.local.utilities.XMLValidator::doAdditionalDocBookValidation(Ljava/lang/String;Ljava/lang/String;Lorg/jboss/pressgang/ccms/rest/v1/entities/enums/RESTXMLFormat;)(text, entities, format);
                     }
 
                     if (theseErrors == "" && oldErrors == "") {
@@ -188,8 +190,14 @@ public class XMLValidator {
         }
     }-*/;
 
-    public String doAdditionalDocBookValidation(final String xml, final String entities) {
-        final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(XMLUtilities.removeAllPreamble(xml));
+    public String doAdditionalDocBookValidation(final String xml, final String entities, final RESTXMLFormat format) {
+        final String fixedXML;
+        if (format == RESTXMLFormat.DOCBOOK_50) {
+            fixedXML = DocBookUtilities.addDocBook50Namespaces(XMLUtilities.removeAllPreamble(xml));
+        } else {
+            fixedXML = XMLUtilities.removeAllPreamble(xml);
+        }
+        final String xmlWithLineNumbers = XMLUtilities.addLineNumberAttributesToXML(fixedXML);
         final int numEntityLines = entities.indexOf("\n") == -1 ? 0 : entities.split("\n").length;
         Document doc = null;
         try {
@@ -200,11 +208,23 @@ public class XMLValidator {
 
         final StringBuilder retValue = new StringBuilder();
         if (doc != null) {
+            // Make sure nested sections aren't used
+            if (doc.getDocumentElement().getNodeName().equalsIgnoreCase("section")) {
+                final NodeList subSections = doc.getDocumentElement().getElementsByTagName("section");
+                if (subSections.getLength() > 0) {
+                    for (int i = 0; i < subSections.getLength(); i++) {
+                        final int line = numEntityLines + getLineNumberFromElement((Element) subSections.item(i));
+                        retValue.append("topic.xml:" + line + ": element section: validity error : Nested sections cannot be " +
+                                "used in topics. Please consider breaking the content into multiple topics\n");
+                    }
+                }
+            }
+
             // Validate that the table cols declaration matches the number of entries for each table row
             final List<Node> tables = XMLUtilities.getChildNodes(doc.getDocumentElement(), "table", "informaltable");
             for (final Node table : tables) {
                 if (!DocBookUtilities.validateTableRows((Element) table)) {
-                    final int line = numEntityLines + getLineNumberFromElement((Element) table);;
+                    final int line = numEntityLines + getLineNumberFromElement((Element) table);
                     retValue.append("topic.xml:" + line + ": element table: validity error : cols declaration doesn't match the " +
                             "number of entry elements\n");
                 }
