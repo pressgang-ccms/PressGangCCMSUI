@@ -1,22 +1,28 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ThreeTextAndImageButtonSearchUICategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
-
-import static com.google.common.base.Preconditions.checkState;
 
 public final class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
     private static final int COLUMNS = 2;
@@ -37,7 +43,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private final RadioButton externalLogicAnd = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
     private final RadioButton externalLogicOr = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
 
-    final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
+    final ThreeTextAndImageButtonSearchUICategoryEditor summary = new ThreeTextAndImageButtonSearchUICategoryEditor();
     private final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
     private SearchUITagEditor selectedCategory;
 
@@ -122,12 +128,12 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         this.searchUIProject = searchUIProject;
         this.showBulkTags = showBulkTags;
 
-        this.summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
+        summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
         tagsTable.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_LAYOUT);
         tagsTable.getElement().setAttribute(Constants.PRESSGANG_WEBSITES_HELP_OVERLAY_DATA_ATTR, ServiceConstants.HELP_TOPICS.SEARCH_TAGS_TABLE.getId() + "");
-        this.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_SCROLL);
+        addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_SCROLL);
 
-        this.setWidget(tagsTable);
+        setWidget(tagsTable);
 
          /*
             Build up the internal and external category logic ui elements. We do this here because
@@ -230,7 +236,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             in this case it allows us to complete the loop from SearchUITagEditor to SearchUITag and then back to
             the FourTextAndImageButtonSearchUICategoryEditor.
          */
-        this.summary.asEditor().setValue(value.getSummary());
+        summary.asEditor().setValue(value.getSummary());
 
         /* flush the value of the category logic checkboxes */
         value.setExternalLogicAnd(externalLogicAnd.getValue());

@@ -21,6 +21,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
@@ -68,7 +70,7 @@ public final class SearchUICategory extends SearchUIBase {
     public TagSummary getSummary() {
         int includedTags = 0;
         int excludedTags = 0;
-        for (@NotNull final SearchUITag tag : this.myTags) {
+        for (@NotNull final SearchUITag tag : myTags) {
             if (tag.getState() == TriStateSelectionState.SELECTED) {
                 ++includedTags;
             } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
@@ -76,7 +78,7 @@ public final class SearchUICategory extends SearchUIBase {
             }
         }
 
-        return new TagSummary(this.getName(), this.myTags.size(), includedTags, excludedTags);
+        return new TagSummary(getName(), myTags.size(), includedTags, excludedTags);
     }
 
     /**
@@ -84,7 +86,7 @@ public final class SearchUICategory extends SearchUIBase {
      */
     @NotNull
     public List<SearchUITag> getMyTags() {
-        return this.myTags;
+        return myTags;
     }
 
     public boolean isInternalLogicAnd() {
@@ -123,7 +125,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @return The number of tags held by this category
      */
     public int getChildCount() {
-        return this.myTags.size();
+        return myTags.size();
     }
 
     /**
@@ -134,7 +136,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @param tags     The tags collection from which tags will be selected for this category
      * @param filter   The filter that defines the state of the tags
      */
-    public void populateCategories(@NotNull final RESTProjectCollectionItemV1 project, @NotNull final RESTCategoryInTagCollectionItemV1 category,
+    public void populateCategories(@NotNull final RESTProjectV1 project, @NotNull final RESTCategoryInTagV1 category,
                                    @NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategories()");
@@ -146,9 +148,9 @@ public final class SearchUICategory extends SearchUIBase {
                 for (@NotNull final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
 
-                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) &&
+                    if (filterCategory.getItem().getCategory().getId().equals(category.getId()) &&
                             filterCategory.getItem().getProject() != null &&
-                            filterCategory.getItem().getProject().getId().equals(project.getItem().getId())) {
+                            filterCategory.getItem().getProject().getId().equals(project.getId())) {
                         if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE)) {
                             internalLogicAnd = true;
                             internalLogicOr = !internalLogicAnd;
@@ -177,7 +179,7 @@ public final class SearchUICategory extends SearchUIBase {
                                 if (arg == null) {
                                     return false;
                                 }
-                                return arg.getItem().getId().equals(category.getItem().getId());
+                                return arg.getItem().getId().equals(category.getId());
                             }
                         });
 
@@ -188,19 +190,19 @@ public final class SearchUICategory extends SearchUIBase {
                         if (arg == null) {
                             return false;
                         }
-                        return arg.getItem().getId().equals(project.getItem().getId());
+                        return arg.getItem().getId().equals(project.getId());
                     }
                 });
 
                 if (matchingCategory.isPresent() && matchingProject.isPresent()) {
-                    @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, this.mutuallyExclusiveCategory, filter);
-                    if (!this.myTags.contains(searchUITag)) {
-                        this.myTags.add(searchUITag);
+                    @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, mutuallyExclusiveCategory, filter);
+                    if (!myTags.contains(searchUITag)) {
+                        myTags.add(searchUITag);
                     }
                 }
             }
 
-            Collections.sort(this.myTags, new SearchUINameSort());
+            Collections.sort(myTags, new SearchUINameSort());
         } finally {
             //LOGGER.log(Level.INFO, "EXIT SearchUICategory.populateCategories()");
         }
@@ -258,16 +260,16 @@ public final class SearchUICategory extends SearchUIBase {
                             });
 
                     if (matchingCategory.isPresent()) {
-                        @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, this.mutuallyExclusiveCategory, filter);
-                        if (!this.myTags.contains(searchUITag)) {
-                            this.myTags.add(searchUITag);
+                        @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, mutuallyExclusiveCategory, filter);
+                        if (!myTags.contains(searchUITag)) {
+                            myTags.add(searchUITag);
                         }
                     }
 
                 }
             }
 
-            Collections.sort(this.myTags, new SearchUINameSort());
+            Collections.sort(myTags, new SearchUINameSort());
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchUICategory.populateCategoriesWithoutProject()");
         }
@@ -324,28 +326,28 @@ public final class SearchUICategory extends SearchUIBase {
          * @return The name of the Category
          */
         public String getName() {
-            return this.name;
+            return name;
         }
 
         /**
          * @return The number of tiles under this category
          */
         public int getTagCount() {
-            return this.tagCount;
+            return tagCount;
         }
 
         /**
          * @return The number of tags that are to be included in the search
          */
         public int getIncludedTags() {
-            return this.includedTags;
+            return includedTags;
         }
 
         /**
          * @return The number of tags that are to be excluded from the search
          */
         public int getExcludedTags() {
-            return this.excludedTags;
+            return excludedTags;
         }
 
     }

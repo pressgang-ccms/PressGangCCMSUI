@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.ui.TriStateSelectionState;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -58,7 +59,7 @@ public class SearchUIProjects implements SearchViewBase {
      * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
      */
     public SearchUIProjects(@NotNull final RESTTagCollectionV1 tags) {
-        initialize(tags, null);
+        initializeFromTags(tags, null);
     }
 
     /**
@@ -66,7 +67,22 @@ public class SearchUIProjects implements SearchViewBase {
      * @param filter The filter that defines the state of the tags
      */
     public SearchUIProjects(@NotNull final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
-        initialize(tags, filter);
+        initializeFromTags(tags, filter);
+    }
+
+    /**
+     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     */
+    public SearchUIProjects(@NotNull final RESTProjectCollectionV1 projects) {
+        initializeFromProjects(projects, null);
+    }
+
+    /**
+     * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param filter The filter that defines the state of the tags
+     */
+    public SearchUIProjects(@NotNull final RESTProjectCollectionV1 projects, final RESTFilterV1 filter) {
+        initializeFromProjects(projects, filter);
     }
 
 
@@ -75,45 +91,66 @@ public class SearchUIProjects implements SearchViewBase {
      */
     @NotNull
     public List<SearchUIProject> getProjects() {
-        return this.projects;
+        return projects;
     }
 
     /**
      * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
      * @param filter The filter that defines the state of the tags
      */
-    public void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
-        try {
-            //LOGGER.log(Level.INFO, "ENTER SearchUIProjects.initialize()");
+    public void initializeFromTags(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
+        projects.clear();
 
-            this.projects.clear();
+        for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
-            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
-
-                /* Tags to be removed should not show up */
-                for (@NotNull final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
-                    @NotNull final SearchUIProject searchUIProject = new SearchUIProject(project);
-                    if (!this.projects.contains(searchUIProject)) {
-                        searchUIProject.populateCategories(project, tags, filter);
-                        this.projects.add(searchUIProject);
-                    }
+            /* Tags to be removed should not show up */
+            for (@NotNull final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
+                @NotNull final SearchUIProject searchUIProject = new SearchUIProject(project);
+                if (!projects.contains(searchUIProject)) {
+                    searchUIProject.setFilter(filter);
+                    searchUIProject.populateCategories(project.getItem(), tags, filter);
+                    projects.add(searchUIProject);
                 }
             }
+        }
 
-            Collections.sort(this.projects, new SearchUINameSort());
+        initialiseInternal(tags, filter);
+    }
 
-            /*
-             * Add the common project to the start of the list. Do this after all the projects have been added, so it won't get
-             * confused with a project that might be called common.
-             */
-            @NotNull final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
-            common.populateCategoriesWithoutProject(tags, filter);
-            if (common.getChildCount() != 0) {
-                this.projects.addFirst(common);
+    /**
+     * @param projects The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param filter   The filter that defines the state of the tags
+     */
+    public void initializeFromProjects(@NotNull final RESTProjectCollectionV1 projects, @Nullable final RESTFilterV1 filter) {
+        this.projects.clear();
+
+        /* Tags to be removed should not show up */
+        for (@NotNull final RESTProjectCollectionItemV1 project : projects.returnExistingCollectionItems()) {
+            @NotNull final SearchUIProject searchUIProject = new SearchUIProject(project);
+            if (!this.projects.contains(searchUIProject)) {
+                searchUIProject.setFilter(filter);
+                this.projects.add(searchUIProject);
             }
-        } finally {
-            //LOGGER.log(Level.INFO, "EXIT SearchUIProjects.initialize()");
+        }
+
+        initialiseInternal(null, filter);
+    }
+
+    protected void initialiseInternal(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
+        Collections.sort(projects, new SearchUINameSort());
+
+        /*
+         * Add the common project to the start of the list. Do this after all the projects have been added, so it won't get
+         * confused with a project that might be called common.
+         */
+        @NotNull final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
+        if (tags == null) {
+            projects.addFirst(common);
+        } else if (tags.getItems() != null) {
+            common.setFilter(filter);
+            common.populateCategoriesWithoutProject(tags, filter);
+            projects.addFirst(common);
         }
     }
 
@@ -212,7 +249,7 @@ public class SearchUIProjects implements SearchViewBase {
 
         final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
-        for (@NotNull final SearchUIProject project : this.projects) {
+        for (@NotNull final SearchUIProject project : projects) {
             for (@NotNull final SearchUICategory category : project.getCategories()) {
 
                 /*

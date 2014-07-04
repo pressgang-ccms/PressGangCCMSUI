@@ -59,7 +59,7 @@ public final class FailOverRESTCallDatabase {
      * The required expansion details for the tags.
      */
     private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTagV1.PROPERTIES_NAME + "\"}}," +
             "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
 
     /**
@@ -155,6 +155,8 @@ public final class FailOverRESTCallDatabase {
      * The required expansion details for the projects.
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
+    private static final String PROJECT_WITH_CATEGORIES_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}, " +
+            "\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
 
     /**
      * The required expansion details for the images.
@@ -1467,7 +1469,11 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}, " +
+                        "\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}" +
+                        "]}]}";
                 restService.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
             }
 
@@ -1808,13 +1814,20 @@ public final class FailOverRESTCallDatabase {
      * Create a RESTCall object to call the REST something method
      *
      * @return A RESTCall that can call the REST something method
+     * @param expandTags
      */
-    public static RESTCall getProjects() {
+    public static RESTCall getProjects(final boolean expandTags) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, " +
-                        "\"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                final String expand;
+                if (expandTags) {
+                    expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME +
+                            "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+                } else {
+                    expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME +
+                            "\"}}]}";
+                }
                 restService.getJSONProjects(expand);
             }
 
@@ -1836,6 +1849,27 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+                restService.getJSONProject(id, expand);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST getJSONProject method
+     *
+     * @param id The entity ID
+     * @return A RESTCall that can call the REST getJSONProject method
+     */
+    public static RESTCall getProjectTagsWithCategories(@NotNull final Integer id) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                final String expand = "{\"branches\":[" + PROJECT_WITH_CATEGORIES_EXPANSION + "]}";
                 restService.getJSONProject(id, expand);
             }
 

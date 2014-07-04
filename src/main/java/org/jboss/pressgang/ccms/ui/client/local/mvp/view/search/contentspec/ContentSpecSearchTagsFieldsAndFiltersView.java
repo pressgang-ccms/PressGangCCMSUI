@@ -26,12 +26,12 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
-    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SavedFilters());
 
     private final Label tagsSearchDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final Label fieldsDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
     private final Label localesDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
-    private final Label filtersDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Filters());
+    private final Label filtersDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SavedFilters());
 
     public ContentSpecSearchTagsFieldsAndFiltersView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
@@ -41,7 +41,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersView extends
         addActionButton(fields, false, true);
         addActionButton(tags);
         addActionButton(locales);
-        addActionButton(filters);
+        addActionButton(filters, false, true);
     }
 
     @Override

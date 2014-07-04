@@ -384,6 +384,9 @@ public interface PressGangCCMSUI extends Constants {
     String Filters();
 
     @NotNull
+    String SavedFilters();
+
+    @NotNull
     String Bugs();
 
     @NotNull
@@ -1516,4 +1519,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String FailedToUpdateCSNodes();
+
+    @NotNull
+    String FilterSuccessfullyLoaded();
 }

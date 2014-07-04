@@ -25,7 +25,7 @@ public class TranslatedTopicSearchFieldView extends BaseTemplateView implements 
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SavedFilters());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
     private final Label fields = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
@@ -65,10 +65,10 @@ public class TranslatedTopicSearchFieldView extends BaseTemplateView implements 
 
         /* Build the action bar icons */
         addActionButton(searchTopics);
-        addActionButton(tagsSearch, true);
-        addActionButton(fields);
-        //addActionButton(locales);
-        addActionButton(filters);
+        addActionButton(fields, true);
+        addActionButton(tagsSearch);
+        addActionButton(locales);
+        addActionButton(filters, true);
     }
 
     @Override

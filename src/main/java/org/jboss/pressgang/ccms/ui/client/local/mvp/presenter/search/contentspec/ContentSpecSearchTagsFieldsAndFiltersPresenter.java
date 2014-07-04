@@ -13,7 +13,6 @@ import com.google.gwt.user.client.Window;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -33,6 +32,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchF
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.BaseSearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SaveFilterDialogInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
@@ -94,7 +95,6 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
         });
 
         bindSearchButtons();
-        loadSearchTags();
         loadSearchLocales();
 
         displayFields();
@@ -128,7 +128,7 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
      * Adds logic to the filter action buttons
      */
     @Override
-    protected void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
+    protected void bindFilterActionButtons() {
         final ClickHandler loadClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -140,8 +140,10 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(boolean readOnly) {
-                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, readOnly, false);
+                        setTagsLoaded(false);
                         fieldsComponent.getDisplay().display(displayedFilter, readOnly);
+
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
                     }
                 });
             }
@@ -171,8 +173,10 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 /* Save any changes back to the underlying object */
-                fieldsComponent.getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                getFieldsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
 
@@ -295,7 +299,9 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(
@@ -311,7 +317,9 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(

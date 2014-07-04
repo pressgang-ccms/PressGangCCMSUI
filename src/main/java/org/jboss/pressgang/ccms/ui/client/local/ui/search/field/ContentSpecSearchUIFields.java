@@ -356,7 +356,7 @@ public class ContentSpecSearchUIFields extends BaseSearchUIFields {
                     createFilterField(CommonFilterConstants.NOT_EDITED_IN_LAST_DAYS, getNotEditedInLastXDays().toString()));
         }
 
-        if (this.isMatchAll() != MATCH_ALL_DEFAULT) {
+        if (isMatchAll() != MATCH_ALL_DEFAULT) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.LOGIC_FILTER_VAR, isMatchAll() + ""));
         }
 

@@ -172,7 +172,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
             }
         };
 
-        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getProjects(), callback, display);
+        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getProjects(true), callback, display);
     }
 }
 

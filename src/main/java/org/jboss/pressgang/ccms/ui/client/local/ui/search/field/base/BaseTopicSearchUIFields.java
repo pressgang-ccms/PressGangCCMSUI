@@ -271,7 +271,7 @@ public class BaseTopicSearchUIFields extends BaseSearchUIFields {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR, getTitle()));
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotTitle())) {
+        if (!GWTUtilities.isStringNullOrEmpty(getNotTitle())) {
             filter.getFilterFields_OTM().addNewItem(createFilterField(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR, getNotTitle()));
         }
 

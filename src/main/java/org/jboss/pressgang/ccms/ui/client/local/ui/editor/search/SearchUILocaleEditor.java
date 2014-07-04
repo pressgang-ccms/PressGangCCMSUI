@@ -23,7 +23,7 @@ public final class SearchUILocaleEditor extends FlexTable implements LeafValueEd
 
     @Override
     public void setValue(@Nullable final SearchUILocales value) {
-        this.removeAllRows();
+        removeAllRows();
         buttonsMap.clear();
 
         if (value != null) {
@@ -40,8 +40,8 @@ public final class SearchUILocaleEditor extends FlexTable implements LeafValueEd
 
                 buttonsMap.put(button, locale);
 
-                this.setWidget(fixedIndex, column * 2, label);
-                this.setWidget(fixedIndex, (column * 2) + 1, button);
+                setWidget(fixedIndex, column * 2, label);
+                setWidget(fixedIndex, (column * 2) + 1, button);
 
                 ++index;
             }

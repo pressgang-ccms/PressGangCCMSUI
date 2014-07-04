@@ -26,12 +26,12 @@ public class BaseTopicSearchTagsFieldsAndFiltersView extends
     private final PushButton downloadCSV = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.DownloadTopicCSV());
     private final PushButton applyBulkTags = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.ApplyBulkTags());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SavedFilters());
     private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
 
     private final Label tagsSearchDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
-    private final Label filtersDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Filters());
+    private final Label filtersDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SavedFilters());
     private final Label fieldsDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
     private final Label localesDownLabel = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
@@ -45,7 +45,7 @@ public class BaseTopicSearchTagsFieldsAndFiltersView extends
         addActionButton(fields, false, true);
         addActionButton(tagsSearch);
         addActionButton(locales);
-        addActionButton(filters);
+        addActionButton(filters, false, true);
     }
 
     @Override

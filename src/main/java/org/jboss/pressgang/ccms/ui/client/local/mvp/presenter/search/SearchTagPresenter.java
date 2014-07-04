@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import java.util.logging.Logger;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -22,7 +23,11 @@ public class SearchTagPresenter extends BaseTemplatePresenter implements BaseTem
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }
 
-        void displayExtended(@NotNull final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly, final boolean showBulkTags);
+        void displayExtended(@NotNull final RESTProjectCollectionV1 projectCollection, final RESTFilterV1 filter, final boolean readOnly,
+                final boolean showBulkTags);
+
+        void displayExtended(@NotNull final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly,
+                final boolean showBulkTags);
 
         SearchUIProjects getSearchUIProjects();
 

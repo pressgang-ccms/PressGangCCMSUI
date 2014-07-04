@@ -133,8 +133,8 @@ public final class ContentSpecSearchFieldUIEditor extends BaseSearchFieldUIEdito
         setWidget(getRowCount() - 1, 1, brand);
 
         @NotNull final Label contentSpecFormatLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecFormat());
-        this.setWidget(this.getRowCount(), 0, contentSpecFormatLabel);
-        this.setWidget(this.getRowCount() - 1, 1, format);
+        setWidget(getRowCount(), 0, contentSpecFormatLabel);
+        setWidget(getRowCount() - 1, 1, format);
 
         @NotNull final Label contentSpecCopyrightHolderLabel = new Label(PressGangCCMSUI.INSTANCE.ContentSpecCopyrightHolder());
         setWidget(getRowCount(), 0, contentSpecCopyrightHolderLabel);

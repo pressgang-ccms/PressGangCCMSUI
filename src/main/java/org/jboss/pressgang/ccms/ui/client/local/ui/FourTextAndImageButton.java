@@ -1,7 +1,8 @@
-package com.google.gwt.user.client.ui;
+package org.jboss.pressgang.ccms.ui.client.local.ui;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.TextAndImageButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 public class FourTextAndImageButton extends TextAndImageButton {

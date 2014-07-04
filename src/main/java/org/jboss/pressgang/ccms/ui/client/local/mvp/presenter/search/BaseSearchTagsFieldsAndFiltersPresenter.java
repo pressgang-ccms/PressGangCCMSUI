@@ -8,8 +8,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -33,6 +36,7 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      * true if we are showing bulk tag buttons, and false otherwise.
      */
     private boolean showBulkTags;
+    private boolean tagsLoaded = false;
 
     public abstract Display getDisplay();
 
@@ -44,10 +48,19 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         return tagsPresenter;
     }
 
+    protected boolean isTagsLoaded() {
+        return tagsLoaded;
+    }
+
+    protected void setTagsLoaded(final boolean tagsLoaded) {
+        this.tagsLoaded = tagsLoaded;
+    }
+
     protected SearchLocalePresenter getLocalePresenter() {
         return localePresenter;
     }
 
+    @Override
     public void bindExtended() {
         buildHelpDatabase();
     }
@@ -72,30 +85,52 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      * Gets the tags from the REST server
      */
     protected void loadSearchTags() {
+        final RESTFilterCollectionItemV1 selectedFilter = getSearchFilterResultsAndFilterPresenter()
+                .getSearchFilterFilteredResultsPresenter().getProviderData().getSelectedItem();
 
-        final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
-            @Override
-            public void success(@NotNull final RESTTagCollectionV1 retValue) {
-                /* Bind the load, load and search and overwrite buttons */
-                bindFilterActionButtons(retValue);
+        // If no filter is defined, or the filter has no tags then lazy load the tags, otherwise we need to eager load them
+        if (selectedFilter == null
+                || selectedFilter.getItem() == null
+                || selectedFilter.getItem().getFilterTags_OTM() == null
+                || selectedFilter.getItem().getFilterTags_OTM().getItems().size() <= 0) {
+            final RESTFilterV1 displayedFilter = selectedFilter == null ? null : selectedFilter.getItem();
 
-                /* Display the tags */
-                isReadOnlyMode(new ReadOnlyCallback() {
-                    @Override
-                    public void readonlyCallback(boolean readOnly) {
-                        tagsPresenter.getDisplay().displayExtended(retValue, null, readOnly, isShowBulkTags());
-                    }
-                });
-            }
-        };
+            final RESTCallBack<RESTProjectCollectionV1> callback = new RESTCallBack<RESTProjectCollectionV1>() {
+                @Override
+                public void success(@NotNull final RESTProjectCollectionV1 retValue) {
+                    /* Display the tags */
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(boolean readOnly) {
+                            tagsPresenter.getDisplay().displayExtended(retValue, displayedFilter, readOnly, isShowBulkTags());
+                        }
+                    });
+                }
+            };
 
-        getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getDisplay());
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getProjects(false), callback, getDisplay());
+        } else {
+            final RESTCallBack<RESTTagCollectionV1> callback = new RESTCallBack<RESTTagCollectionV1>() {
+                @Override
+                public void success(@NotNull final RESTTagCollectionV1 retValue) {
+                    /* Display the tags */
+                    isReadOnlyMode(new ReadOnlyCallback() {
+                        @Override
+                        public void readonlyCallback(boolean readOnly) {
+                            tagsPresenter.getDisplay().displayExtended(retValue, selectedFilter.getItem(), readOnly, isShowBulkTags());
+                        }
+                    });
+                }
+            };
+
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTags(), callback, getDisplay());
+        }
     }
 
     /**
      * Adds logic to the filter action buttons
      */
-    protected abstract void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags);
+    protected abstract void bindFilterActionButtons();
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
@@ -135,6 +170,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
         getDisplay().getFields().addClickHandler(fieldsHandler);
         getDisplay().getLocales().addClickHandler(localesHandler);
         getDisplay().getFilters().addClickHandler(filtersHandler);
+
+        /* Bind the load, load and search and overwrite buttons */
+        bindFilterActionButtons();
     }
 
     protected void resetTopActionButtons() {
@@ -158,6 +196,11 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     }
 
     protected void displayTags() {
+        if (!tagsLoaded) {
+            tagsLoaded = true;
+            loadSearchTags();
+        }
+
         getDisplay().getPanel().clear();
         getDisplay().getPanel().setWidget(tagsPresenter.getDisplay().getPanel());
         resetTopActionButtons();
@@ -207,11 +250,11 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
     /**
      * Assign help info to the UI elements exposed by this presenter.
      */
-    private void buildHelpDatabase() {
+    protected void buildHelpDatabase() {
         setDataAttribute(getDisplay().getDownloadZip(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_ZIP.getId());
-        setDataAttribute(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(), ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
+        setDataAttribute(tagsPresenter.getDisplay().getEditor().getProjectButtonPanel(),
+                ServiceConstants.HELP_TOPICS.SEARCH_PROJECTS_COLUMN.getId());
     }
-
 
     public interface Display extends BaseTemplateViewInterface {
 

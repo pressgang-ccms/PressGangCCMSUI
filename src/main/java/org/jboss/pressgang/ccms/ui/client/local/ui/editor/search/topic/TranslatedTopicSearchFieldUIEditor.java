@@ -20,12 +20,12 @@ public final class TranslatedTopicSearchFieldUIEditor extends BaseTopicSearchFie
 
     protected void addAdditionalFields() {
         final Label latestTranslationsLabels = new Label(PressGangCCMSUI.INSTANCE.LatestTranslations());
-        this.setWidget(this.getRowCount(), 0, latestTranslationsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, latestTranslations);
+        setWidget(getRowCount(), 0, latestTranslationsLabels);
+        setWidget(getRowCount() - 1, 1, latestTranslations);
 
         final Label latestCompletedTranslationsLabels = new Label(PressGangCCMSUI.INSTANCE.LatestCompletedTranslations());
-        this.setWidget(this.getRowCount(), 0, latestCompletedTranslationsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, latestCompletedTranslations);
+        setWidget(getRowCount(), 0, latestCompletedTranslationsLabels);
+        setWidget(getRowCount() - 1, 1, latestCompletedTranslations);
     }
 
     @Override

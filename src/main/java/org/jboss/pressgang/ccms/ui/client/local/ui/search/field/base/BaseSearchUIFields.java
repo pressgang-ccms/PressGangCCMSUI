@@ -8,14 +8,14 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseSearchUIFields implements SearchViewBase {
 
-    public BaseSearchUIFields() {
+    protected BaseSearchUIFields() {
 
     }
 
     /**
      * @param filter The filter that defines the state of the tags
      */
-    public BaseSearchUIFields(@Nullable final RESTFilterV1 filter) {
+    protected BaseSearchUIFields(@Nullable final RESTFilterV1 filter) {
         initialize(filter);
     }
 

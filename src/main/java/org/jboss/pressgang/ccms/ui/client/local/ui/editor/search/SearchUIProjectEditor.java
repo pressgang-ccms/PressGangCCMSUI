@@ -9,12 +9,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagPresenter.Display.SearchPresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ThreeTextAndImageButtonSearchUIProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
@@ -28,7 +28,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     private SearchUIProject value;
     private final boolean showBulkTags;
 
-    final FourTextAndImageButtonSearchUIProjectEditor summary = new FourTextAndImageButtonSearchUIProjectEditor();
+    final ThreeTextAndImageButtonSearchUIProjectEditor summary = new ThreeTextAndImageButtonSearchUIProjectEditor();
     final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
     private final FlexTable categoriesButtonPanel = new FlexTable();
     private final ScrollPanel scroll = new ScrollPanel();
@@ -58,19 +58,19 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         @NotNull
         @Override
         public SearchUICategoryEditor create(final int index) {
-            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this, showBulkTags);
+            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(driver, SearchUIProjectEditor.this, showBulkTags);
 
-            SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
+            categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 
             subEditor.summary.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     selectedCategory = subEditor;
 
-                    if (SearchUIProjectEditor.this.getCenter() != null) {
-                        SearchUIProjectEditor.this.remove(SearchUIProjectEditor.this.getCenter());
+                    if (getCenter() != null) {
+                        remove(getCenter());
                     }
-                    SearchUIProjectEditor.this.add(subEditor);
+                    add(subEditor);
 
                     /* Untoggle the other buttons */
                     for (@NotNull final SearchUICategoryEditor editor : categories.getEditors()) {
@@ -95,7 +95,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
 
         @Override
         public void setIndex(@NotNull final SearchUICategoryEditor subEditor, final int index) {
-            SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor);
+            categoriesButtonPanel.setWidget(index, 0, subEditor);
         }
     }
 
@@ -106,7 +106,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         this.searchUIProjects = searchUIProjects;
         this.showBulkTags = showBulkTags;
 
-        this.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_LAYOUT);
+        addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_LAYOUT);
         summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
 
         categoriesButtonPanel.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_BUTTONS_LAYOUT);
@@ -118,7 +118,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         scroll.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_SCROLL_PANEL);
 
         scroll.setWidget(categoriesButtonPanel);
-        this.addWest(scroll, BUTTON_COLUMN_WIDTH);
+        addWest(scroll, BUTTON_COLUMN_WIDTH);
 
         summary.addClickHandler(new ClickHandler() {
             @Override
@@ -137,7 +137,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
 
     @Override
     public void flush() {
-        this.summary.asEditor().setValue(value.getSummary());
+        summary.asEditor().setValue(value.getSummary());
     }
 
     @Override

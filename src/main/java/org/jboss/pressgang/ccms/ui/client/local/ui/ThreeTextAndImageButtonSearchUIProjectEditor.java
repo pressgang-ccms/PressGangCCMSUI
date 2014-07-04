@@ -1,4 +1,4 @@
-package com.google.gwt.user.client.ui;
+package org.jboss.pressgang.ccms.ui.client.local.ui;
 
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Matthew Casperson
  */
-public final class FourTextAndImageButtonSearchUIProjectEditor extends FourTextAndImageButton implements
+public final class ThreeTextAndImageButtonSearchUIProjectEditor extends ThreeTextAndImageButton implements
         IsEditor<LeafValueEditor<SearchUIProject.CategorySummary>> {
     private SearchUIProject.CategorySummary details;
 
-    public FourTextAndImageButtonSearchUIProjectEditor() {
+    public ThreeTextAndImageButtonSearchUIProjectEditor() {
 
     }
 
@@ -30,13 +30,12 @@ public final class FourTextAndImageButtonSearchUIProjectEditor extends FourTextA
                 details = value;
 
                 setText(value.getName());
-                setText2(PressGangCCMSUI.INSTANCE.CategoryCount() + ": " + value.getCategoryCount());
-                setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
-                setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
+                setText2(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
+                setText3(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 
-                div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_INCLUDED + ""
+                div2.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_INCLUDED + ""
                         : CSSConstants.Common.CUSTOM_BUTTON_TEXT);
-                div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_EXCLUDED + ""
+                div3.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_EXCLUDED + ""
                         : CSSConstants.Common.CUSTOM_BUTTON_TEXT);
             }
 

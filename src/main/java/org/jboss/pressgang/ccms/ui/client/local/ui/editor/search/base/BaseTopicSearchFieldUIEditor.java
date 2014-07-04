@@ -49,7 +49,7 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
 
     private T value;
 
-    public BaseTopicSearchFieldUIEditor() {
+    protected BaseTopicSearchFieldUIEditor() {
         new NumbersAndCommaValidator(ids);
         new NumbersAndCommaValidator(notIds);
     }
@@ -58,82 +58,82 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
         final Label topicCreatedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedAfter());
         createdAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         createdAfter.getTextBox().setReadOnly(true);
-        this.setWidget(this.getRowCount(), 0, topicCreatedAfterLabel);
-        this.setWidget(this.getRowCount() - 1, 1, createdAfter);
+        setWidget(getRowCount(), 0, topicCreatedAfterLabel);
+        setWidget(getRowCount() - 1, 1, createdAfter);
 
         final Label topicCreatedBeforeLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedBefore());
         createdBefore.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         createdBefore.getTextBox().setReadOnly(true);
-        this.setWidget(this.getRowCount(), 0, topicCreatedBeforeLabel);
-        this.setWidget(this.getRowCount() - 1, 1, createdBefore);
+        setWidget(getRowCount(), 0, topicCreatedBeforeLabel);
+        setWidget(getRowCount() - 1, 1, createdBefore);
 
         final Label topicEditedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicEditedAfter());
         editedAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         editedAfter.getTextBox().setReadOnly(true);
-        this.setWidget(this.getRowCount(), 0, topicEditedAfterLabel);
-        this.setWidget(this.getRowCount() - 1, 1, editedAfter);
+        setWidget(getRowCount(), 0, topicEditedAfterLabel);
+        setWidget(getRowCount() - 1, 1, editedAfter);
 
         final Label topicEditedBeforeLabel = new Label(PressGangCCMSUI.INSTANCE.TopicEditedBefore());
         editedBefore.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         editedBefore.getTextBox().setReadOnly(true);
-        this.setWidget(this.getRowCount(), 0, topicEditedBeforeLabel);
-        this.setWidget(this.getRowCount() - 1, 1, editedBefore);
+        setWidget(getRowCount(), 0, topicEditedBeforeLabel);
+        setWidget(getRowCount() - 1, 1, editedBefore);
 
         final Label topicEditedInLastXDaysLabels = new Label(PressGangCCMSUI.INSTANCE.TopicsEditedInLastXDays());
-        this.setWidget(this.getRowCount(), 0, topicEditedInLastXDaysLabels);
-        this.setWidget(this.getRowCount() - 1, 1, editedInLastXDays);
+        setWidget(getRowCount(), 0, topicEditedInLastXDaysLabels);
+        setWidget(getRowCount() - 1, 1, editedInLastXDays);
 
         final Label topicNotEditedInLastXDaysLabels = new Label(PressGangCCMSUI.INSTANCE.TopicsNotEditedInLastXDays());
-        this.setWidget(this.getRowCount(), 0, topicNotEditedInLastXDaysLabels);
-        this.setWidget(this.getRowCount() - 1, 1, notEditedInLastXDays);
+        setWidget(getRowCount(), 0, topicNotEditedInLastXDaysLabels);
+        setWidget(getRowCount() - 1, 1, notEditedInLastXDays);
 
         final Label topicsIDLabel = new Label(PressGangCCMSUI.INSTANCE.TopicIds());
-        this.setWidget(this.getRowCount(), 0, topicsIDLabel);
-        this.setWidget(this.getRowCount() - 1, 1, ids);
+        setWidget(getRowCount(), 0, topicsIDLabel);
+        setWidget(getRowCount() - 1, 1, ids);
 
         final Label notTopicsIDLabel = new Label(PressGangCCMSUI.INSTANCE.NotTopicIds());
-        this.setWidget(this.getRowCount(), 0, notTopicsIDLabel);
-        this.setWidget(this.getRowCount() - 1, 1, notIds);
+        setWidget(getRowCount(), 0, notTopicsIDLabel);
+        setWidget(getRowCount() - 1, 1, notIds);
 
         final Label topicTitleLabel = new Label(PressGangCCMSUI.INSTANCE.TopicTitle());
-        this.setWidget(this.getRowCount(), 0, topicTitleLabel);
-        this.setWidget(this.getRowCount() - 1, 1, title);
+        setWidget(getRowCount(), 0, topicTitleLabel);
+        setWidget(getRowCount() - 1, 1, title);
 
         final Label notTopicTitleLabel = new Label(PressGangCCMSUI.INSTANCE.NotTopicTitle());
-        this.setWidget(this.getRowCount(), 0, notTopicTitleLabel);
-        this.setWidget(this.getRowCount() - 1, 1, notTitle);
+        setWidget(getRowCount(), 0, notTopicTitleLabel);
+        setWidget(getRowCount() - 1, 1, notTitle);
 
         final Label topicFormatLabel = new Label(PressGangCCMSUI.INSTANCE.TopicFormat());
-        this.setWidget(this.getRowCount(), 0, topicFormatLabel);
-        this.setWidget(this.getRowCount() - 1, 1, topicFormat);
+        setWidget(getRowCount(), 0, topicFormatLabel);
+        setWidget(getRowCount() - 1, 1, topicFormat);
 
         final Label topicContentsLabel = new Label(PressGangCCMSUI.INSTANCE.TopicContents());
-        this.setWidget(this.getRowCount(), 0, topicContentsLabel);
-        this.setWidget(this.getRowCount() - 1, 1, contents);
+        setWidget(getRowCount(), 0, topicContentsLabel);
+        setWidget(getRowCount() - 1, 1, contents);
 
         final Label notTopicContentsLabel = new Label(PressGangCCMSUI.INSTANCE.NotTopicContents());
-        this.setWidget(this.getRowCount(), 0, notTopicContentsLabel);
-        this.setWidget(this.getRowCount() - 1, 1, notContents);
+        setWidget(getRowCount(), 0, notTopicContentsLabel);
+        setWidget(getRowCount() - 1, 1, notContents);
 
         final Label topicDescriptionLabel = new Label(PressGangCCMSUI.INSTANCE.TopicDescription());
-        this.setWidget(this.getRowCount(), 0, topicDescriptionLabel);
-        this.setWidget(this.getRowCount() - 1, 1, description);
+        setWidget(getRowCount(), 0, topicDescriptionLabel);
+        setWidget(getRowCount() - 1, 1, description);
 
         final Label notTopicDescriptionLabel = new Label(PressGangCCMSUI.INSTANCE.NotTopicDescription());
-        this.setWidget(this.getRowCount(), 0, notTopicDescriptionLabel);
-        this.setWidget(this.getRowCount() - 1, 1, notDescription);
+        setWidget(getRowCount(), 0, notTopicDescriptionLabel);
+        setWidget(getRowCount() - 1, 1, notDescription);
 
         final Label includedInContentSpecLabel = new Label(PressGangCCMSUI.INSTANCE.IncludedInContentSpec());
-        this.setWidget(this.getRowCount(), 0, includedInContentSpecLabel);
-        this.setWidget(this.getRowCount() - 1, 1, includedInContentSpecs);
+        setWidget(getRowCount(), 0, includedInContentSpecLabel);
+        setWidget(getRowCount() - 1, 1, includedInContentSpecs);
 
         final Label notIncludedInContentSpecLabel = new Label(PressGangCCMSUI.INSTANCE.NotIncludedInContentSpec());
-        this.setWidget(this.getRowCount(), 0, notIncludedInContentSpecLabel);
-        this.setWidget(this.getRowCount() - 1, 1, notIncludedInContentSpecs);
+        setWidget(getRowCount(), 0, notIncludedInContentSpecLabel);
+        setWidget(getRowCount() - 1, 1, notIncludedInContentSpecs);
 
         final Label hasXMLErrorsLabels = new Label(PressGangCCMSUI.INSTANCE.HasXMLErrors());
-        this.setWidget(this.getRowCount(), 0, hasXMLErrorsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, hasXMLErrors);
+        setWidget(getRowCount(), 0, hasXMLErrorsLabels);
+        setWidget(getRowCount() - 1, 1, hasXMLErrors);
 
         for (int i = 0; i < getRowCount(); ++i) {
             getCellFormatter().addStyleName(i, 0, CSSConstants.FieldEditor.FIELD_VIEW_LABEL_CELL);
@@ -151,8 +151,8 @@ public abstract class BaseTopicSearchFieldUIEditor<T extends BaseTopicSearchUIFi
     }
 
     protected void addMatchFields() {
-        this.setWidget(this.getRowCount(), 0, matchAll);
-        this.setWidget(this.getRowCount() - 1, 1, matchAny);
+        setWidget(getRowCount(), 0, matchAll);
+        setWidget(getRowCount() - 1, 1, matchAny);
     }
 
     @Override

@@ -116,7 +116,6 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
         });
 
         bindSearchButtons();
-        loadSearchTags();
         loadSearchLocales();
 
         /*
@@ -139,7 +138,6 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
     @Override
     public void bindExtended() {
         super.bindExtended();
-        buildHelpDatabase();
 
         isReadOnlyMode(new ReadOnlyCallback() {
             @Override
@@ -160,7 +158,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
      * Adds logic to the filter action buttons
      */
     @Override
-    protected void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
+    protected void bindFilterActionButtons() {
         final ClickHandler loadClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -173,8 +171,10 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
                     public void readonlyCallback(boolean readOnly) {
-                        getTagsPresenter().getDisplay().displayExtended(tags, displayedFilter, readOnly, isShowBulkTags());
+                        setTagsLoaded(false);
                         getFieldsPresenter().getDisplay().display(displayedFilter, readOnly);
+
+                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
                     }
                 });
 
@@ -211,7 +211,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 /* Save any changes back to the underlying object */
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
 
                 final RESTFilterV1 displayedFilter = getSearchFilterResultsAndFilterPresenter().getSearchFilterFilteredResultsPresenter()
                         .getProviderData().getDisplayedItem().getItem();
@@ -346,7 +348,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
@@ -365,7 +369,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
@@ -553,7 +559,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
     /**
      * Assign help info to the UI elements exposed by this presenter.
      */
-    private void buildHelpDatabase() {
+    @Override
+    protected void buildHelpDatabase() {
+        super.buildHelpDatabase();
         setDataAttribute(getDisplay().getDownloadCSV(), ServiceConstants.HELP_TOPICS.SEARCH_DOWNLOAD_CSV.getId());
     }
 
