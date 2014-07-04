@@ -383,7 +383,7 @@ td {
     space below the action buttons which will be filled by the scroll bar.
  */
 .ViewActionButtonsParentPanelScroll>div, .ResultsActionButtonsParentPanelScroll>div, .TopActionParentPanel {
-    height: 76px;
+    height: 69px;
     background-image: linear-gradient(rgb(29, 29, 29) 0%, rgb(3, 3, 3) 100%);
 }
 
@@ -550,6 +550,7 @@ html {
 
 .TopActionPanel {
     position: relative;
+    line-height: 1.3;
 }
 
 .gwt-ToggleButton-down {

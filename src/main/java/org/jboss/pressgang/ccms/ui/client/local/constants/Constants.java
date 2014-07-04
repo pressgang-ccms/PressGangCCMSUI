@@ -23,7 +23,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201407031407";
+    public static final String BUILD = "201407041225";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1412,7 +1412,7 @@ public final class Constants {
      * The height of the container holding the action bars. This is larger than height defined in the
      * .TopActionParentPanel class to account for the scrollbar
      */
-    public static final int ACTION_BAR_PARENT_HEIGHT = 96;
+    public static final int ACTION_BAR_PARENT_HEIGHT = 87;
     /**
      * The height of the footer.
      */
