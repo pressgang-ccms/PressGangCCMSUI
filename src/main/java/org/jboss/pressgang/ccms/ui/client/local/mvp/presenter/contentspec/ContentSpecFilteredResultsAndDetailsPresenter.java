@@ -1117,6 +1117,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void readonlyCallback(boolean readOnly) {
                 display.getSave().setEnabled(!readOnly);
                 display.getActionsMenu().setEnabled(!readOnly);
+            }
+        });
+
+        super.isReadOnlyMode(new ReadOnlyCallback() {
+            @Override
+            public void readonlyCallback(boolean readOnly) {
                 filteredResultsPresenter.getDisplay().getCreate().setEnabled(!readOnly);
             }
         });
