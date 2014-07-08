@@ -742,6 +742,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         setDataAttribute(getDisplay().getReportBugButton().getElement(), ServiceConstants.HELP_TOPICS.CREATE_BUG.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getFiles().getElement(), ServiceConstants.HELP_TOPICS.FILES.getId());
 
+        setDataAttribute(getDisplay().getTopShortcutView().getCreateSubMenu().getElement(), ServiceConstants.HELP_TOPICS.CREATE.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getEntitiesSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ENTITIES.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getAdminSubMenu().getElement(), ServiceConstants.HELP_TOPICS.ADVANCED.getId());
         setDataAttribute(getDisplay().getTopShortcutView().getSearchSubMenu().getElement(), ServiceConstants.HELP_TOPICS.SEARCH.getId());
