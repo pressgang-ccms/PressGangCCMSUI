@@ -1483,7 +1483,7 @@ public final class Constants {
      * The Bugzilla link for this product.
      */
     public static final String BUGZILLA_URL = BUGZILLA_BASE_URL + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1" +
-            ".7&cf_build_id=UI%20Build%20" + BUILD;
+            ".8&cf_build_id=UI%20Build%20" + BUILD;
     /**
      * A link to the survey.
      */
