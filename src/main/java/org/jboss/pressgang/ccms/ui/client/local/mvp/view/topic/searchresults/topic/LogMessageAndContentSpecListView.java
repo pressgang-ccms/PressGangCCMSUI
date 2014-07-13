@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.CheckBoxList;
@@ -20,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.LogMessageAndContentSpecListInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -120,7 +120,7 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
 
         final VerticalPanel rootPanel = new VerticalPanel();
         tabPanel.setHeight(TAB_PANEL_ORIGINAL_HEIGHT);
-        tabPanel.setWidth("500px");
+        tabPanel.setWidth(LogMessageView.DEFAULT_WIDTH);
         rootPanel.add(tabPanel);
         rootPanel.add(buttonPanel);
         add(rootPanel);
