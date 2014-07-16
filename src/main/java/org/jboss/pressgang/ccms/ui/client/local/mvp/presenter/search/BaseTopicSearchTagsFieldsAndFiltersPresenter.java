@@ -405,7 +405,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getTagsPresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
@@ -425,7 +427,9 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 getFieldsPresenter().getDisplay().getDriver().flush();
-                getTagsPresenter().getDisplay().getDriver().flush();
+                if (isTagsLoaded()) {
+                    getTagsPresenter().getDisplay().getDriver().flush();
+                }
                 getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
