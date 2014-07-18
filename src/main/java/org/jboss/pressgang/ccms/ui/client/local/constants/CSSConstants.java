@@ -220,6 +220,11 @@ public interface CSSConstants {
         String WELCOME_VIEW_PANEL_PARENT = "WelcomeViewPanelParent";
     }
 
+    interface LogMessageDialog {
+        String TAB_CONTENT_PANEL = "LogMessageTabContentPanel";
+        String ROOT_PANEL = "LogMessagePanel";
+    }
+
     /**
      * These styles are applied to the topic and translated topic search views.
      */

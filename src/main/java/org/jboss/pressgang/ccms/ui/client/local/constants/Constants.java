@@ -18,12 +18,12 @@ public final class Constants {
     /**
      * The UI version
      */
-    public static final String VERSION = "1.8";
+    public static final String VERSION = "1.9-SNAPSHOT";
 
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201407100955";
+    public static final String BUILD = "201407181134";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1586,6 +1586,7 @@ public final class Constants {
         EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID("ExtendedPropertyCategoriesNavigationButton"),
         MONITORING_NAVIGATION_BUTTON_ID("MonitoringNavigationButton"),
         USERNAME_SAVE_DIALOG("UsernameSaveDialog"),
+        MAX_TOPIC_REV_DIALOG("MaxTopicRevisionDialog"),
         MESSAGE_SAVE_DIALOG("MessageSaveDialog"),
         MAJOR_CHANGE_SAVE_DIALOG("MajorChangeSaveDialog"),
         MINOR_CHANGE_SAVE_DIALOG("MinorChangeSaveDialog"),

@@ -21,8 +21,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public class LogMessageView extends DialogBox implements LogMessageInterface {
-    public static final String DEFAULT_WIDTH = "500px";
-
     /**
      * Used to group the radio buttons
      */
@@ -111,7 +109,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         ++row;
         layout.setWidget(row, 0, buttonPanel);
         layout.getFlexCellFormatter().setColSpan(row, 0, 2);
-        layout.setWidth(DEFAULT_WIDTH);
+        layout.addStyleName(CSSConstants.LogMessageDialog.ROOT_PANEL);
 
         add(layout);
 

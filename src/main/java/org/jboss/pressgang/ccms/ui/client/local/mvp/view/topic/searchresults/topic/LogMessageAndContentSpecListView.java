@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.CheckBoxList;
@@ -11,15 +10,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.LogMessageAndContentSpecListInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -30,15 +28,14 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public class LogMessageAndContentSpecListView extends DialogBox implements LogMessageAndContentSpecListInterface {
-    private static final int TAB_PANEL_BASE_HEIGHT = 40;
-    private static final String TAB_PANEL_ORIGINAL_HEIGHT = "175px";
 
     /**
      * Used to group the radio buttons
      */
     private static final String CHANGE_TYPE_GROUP = "ChangeType";
 
-    private final TabLayoutPanel tabPanel = new TabLayoutPanel(Constants.TAB_PANEL_HEIGHT, Constants.TAB_PANEL_HEIGHT_FORMAT);
+    private final TabBar tabBar = new TabBar();
+    private final FlexTable rootPanel = new FlexTable();
 
     private final FlexTable messageLayout = new FlexTable();
     private final FlexTable contentSpecLayout = new FlexTable();
@@ -91,8 +88,8 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
     }
 
     @Override
-    public TabLayoutPanel getTabLayoutPanel() {
-        return tabPanel;
+    public TabBar getTabBar() {
+        return tabBar;
     }
 
     @Override
@@ -115,26 +112,29 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
         setupMessageTab();
         setupContentSpecTab();
 
-        tabPanel.add(createWrapperPanel(messageLayout), PressGangCCMSUI.INSTANCE.Message());
-        tabPanel.add(createWrapperPanel(contentSpecLayout), PressGangCCMSUI.INSTANCE.TopicContentSpecs());
+        final SimplePanel tabContent = new SimplePanel();
+        tabContent.addStyleName(CSSConstants.LogMessageDialog.TAB_CONTENT_PANEL);
+        tabContent.setWidget(messageLayout);
 
-        final VerticalPanel rootPanel = new VerticalPanel();
-        tabPanel.setHeight(TAB_PANEL_ORIGINAL_HEIGHT);
-        tabPanel.setWidth(LogMessageView.DEFAULT_WIDTH);
-        rootPanel.add(tabPanel);
-        rootPanel.add(buttonPanel);
+        tabBar.addTab(PressGangCCMSUI.INSTANCE.Message());
+        tabBar.addTab(PressGangCCMSUI.INSTANCE.TopicContentSpecs());
+        tabBar.setHeight(Constants.TAB_PANEL_HEIGHT + "px");
+        tabBar.setWidth("100%");
+
+        rootPanel.setWidget(0, 0, tabBar);
+        rootPanel.setWidget(1, 0, tabContent);
+        rootPanel.setWidget(2, 0, buttonPanel);
+        rootPanel.addStyleName(CSSConstants.LogMessageDialog.ROOT_PANEL);
         add(rootPanel);
 
-        tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
+        tabBar.addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(final SelectionEvent<Integer> event) {
-                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                    @Override
-                    public void execute() {
-                        final SimpleLayoutPanel tabWidget = (SimpleLayoutPanel) tabPanel.getWidget(event.getSelectedItem());
-                        tabPanel.setHeight((TAB_PANEL_BASE_HEIGHT + tabWidget.getWidget().getOffsetHeight()) + "px");
-                    }
-                });
+                if (event.getSelectedItem() == 1) {
+                    tabContent.setWidget(contentSpecLayout);
+                } else {
+                    tabContent.setWidget(messageLayout);
+                }
             }
         });
 
@@ -188,8 +188,7 @@ public class LogMessageAndContentSpecListView extends DialogBox implements LogMe
         message.setText("");
         minorChange.setValue(true);
         contentSpecList.clear();
-        tabPanel.selectTab(0, false);
-        tabPanel.setHeight(TAB_PANEL_ORIGINAL_HEIGHT);
+        tabBar.selectTab(0, true);
     }
 
     @Override
