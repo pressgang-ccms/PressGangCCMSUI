@@ -408,7 +408,7 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
                 if (isTagsLoaded()) {
                     getTagsPresenter().getDisplay().getDriver().flush();
                 }
-                getTagsPresenter().getDisplay().getDriver().flush();
+                getLocalePresenter().getDisplay().getDriver().flush();
 
                 final String query = getTagsPresenter().getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + getFieldsPresenter().getDisplay().getFields().getSearchQuery(false)
