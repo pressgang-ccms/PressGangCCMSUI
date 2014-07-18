@@ -17,7 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pressgang.ccms.version>1.9-SNAPSHOT</pressgang.ccms.version>
-        <pressgang.ace-client.version>1.8</pressgang.ace-client.version>
+        <pressgang.ace-client.version>1.9-SNAPSHOT</pressgang.ace-client.version>
         <pressgang.merglygwt.version>1.4</pressgang.merglygwt.version>
         <errai.version>2.4.4.Final</errai.version>
         <gwt.version>2.5.1</gwt.version>
