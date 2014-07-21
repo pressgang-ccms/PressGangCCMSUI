@@ -312,7 +312,7 @@ public class TranslatedTopicAdditionalXMLView extends BaseTemplateView implement
     private final XmlTemplatesDialog xmlTemplatesDialog = new XmlTemplatesDialog();
     private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
     private final EditorSettingsDialog editorSettingsDialog = new EditorSettingsDialog();
-    private final PushButton settings = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
+    private final PushButton settings = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.EditorSettings());
 
     @NotNull
     @Override
