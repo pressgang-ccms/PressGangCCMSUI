@@ -40,6 +40,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -170,11 +171,20 @@ public abstract class BaseTopicSearchTagsFieldsAndFiltersPresenter extends BaseS
 
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void readonlyCallback(boolean readOnly) {
+                    public void readonlyCallback(final boolean readOnly) {
                         setTagsLoaded(false);
-                        getFieldsPresenter().getDisplay().display(displayedFilter, readOnly);
+                        loadSearchTags(new ActionCompletedCallback<RESTTagCollectionV1>() {
+                            @Override
+                            public void success(final RESTTagCollectionV1 restTagCollectionV1) {
+                                setTagsLoaded(true);
+                                getFieldsPresenter().getDisplay().display(displayedFilter, readOnly);
 
-                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
+                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
+                            }
+
+                            @Override
+                            public void failure() {}
+                        });
                     }
                 });
 

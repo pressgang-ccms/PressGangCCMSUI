@@ -13,6 +13,7 @@ import com.google.gwt.user.client.Window;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -24,6 +25,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTFilterTypeV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -139,11 +141,20 @@ public class ContentSpecSearchTagsFieldsAndFiltersPresenter extends BaseSearchTa
 
                 isReadOnlyMode(new ReadOnlyCallback() {
                     @Override
-                    public void readonlyCallback(boolean readOnly) {
+                    public void readonlyCallback(final boolean readOnly) {
                         setTagsLoaded(false);
-                        fieldsComponent.getDisplay().display(displayedFilter, readOnly);
+                        loadSearchTags(new ActionCompletedCallback<RESTTagCollectionV1>() {
+                            @Override
+                            public void success(final RESTTagCollectionV1 restTagCollectionV1) {
+                                setTagsLoaded(true);
+                                getFieldsPresenter().getDisplay().display(displayedFilter, readOnly);
 
-                        AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
+                                AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.FilterSuccessfullyLoaded());
+                            }
+
+                            @Override
+                            public void failure() {}
+                        });
                     }
                 });
             }
