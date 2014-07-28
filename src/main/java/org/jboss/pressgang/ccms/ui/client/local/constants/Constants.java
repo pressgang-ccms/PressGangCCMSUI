@@ -1,22 +1,3 @@
-/*
-  Copyright 2011-2014 Red Hat
-
-  This file is part of PresGang CCMS.
-
-  PresGang CCMS is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  PresGang CCMS is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with PresGang CCMS.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
 import java.util.ArrayList;
@@ -37,12 +18,12 @@ public final class Constants {
     /**
      * The UI version
      */
-    public static final String VERSION = "1.8-SNAPSHOT";
+    public static final String VERSION = "1.9-SNAPSHOT";
 
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201407090643";
+    public static final String BUILD = "201407240939";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1502,7 +1483,7 @@ public final class Constants {
      * The Bugzilla link for this product.
      */
     public static final String BUGZILLA_URL = BUGZILLA_BASE_URL + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1" +
-            ".7&cf_build_id=UI%20Build%20" + BUILD;
+            ".8&cf_build_id=UI%20Build%20" + BUILD;
     /**
      * A link to the survey.
      */
@@ -1605,6 +1586,7 @@ public final class Constants {
         EXTENDED_PROPERTY_CATEGORIES_NAVIGATION_BUTTON_ID("ExtendedPropertyCategoriesNavigationButton"),
         MONITORING_NAVIGATION_BUTTON_ID("MonitoringNavigationButton"),
         USERNAME_SAVE_DIALOG("UsernameSaveDialog"),
+        MAX_TOPIC_REV_DIALOG("MaxTopicRevisionDialog"),
         MESSAGE_SAVE_DIALOG("MessageSaveDialog"),
         MAJOR_CHANGE_SAVE_DIALOG("MajorChangeSaveDialog"),
         MINOR_CHANGE_SAVE_DIALOG("MinorChangeSaveDialog"),

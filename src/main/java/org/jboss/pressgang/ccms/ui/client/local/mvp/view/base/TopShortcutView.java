@@ -275,4 +275,8 @@ public class TopShortcutView extends FlexTable {
     public AnchorMenuItem getServerSettings() {
         return serverSettings;
     }
+
+    public MenuItem getCreateSubMenu() {
+        return createSubMenu;
+    }
 }

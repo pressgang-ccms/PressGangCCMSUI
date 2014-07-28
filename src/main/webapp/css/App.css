@@ -1422,6 +1422,10 @@ a.AnchorPushButton, a.AnchorMenuItem {
     border-radius: 4px;
 }
 
+.CheckBoxListGroup div {
+    padding: 0px 4px;
+}
+
 .ProcessSyncLocaleListBox {
     max-height: 125px;
     width: 100%;
@@ -1589,7 +1593,7 @@ table.ProcessWaitingTable {
     height: 4em;
 }
 
-#UsernameSaveDialog {
+#UsernameSaveDialog, #MaxTopicRevisionDialog {
     width: 95%;
 }
 
@@ -1623,7 +1627,21 @@ table.ProcessWaitingTable {
     width:100%;
 }
 
-/*.SimplePager {
-    float: right;
-    border-collapse: collapse;
-}*/
+.LogMessagePanel {
+    width: 500px;
+    border-spacing: 0px;
+    white-space: nowrap;
+}
+
+.LogMessageTabContentPanel {
+    border-image-outset: 0px;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-radius: 1px 1px 0px 0px;
+    border: 1px solid rgb(221, 221, 221);
+    border-top: none;
+    padding-left: 3px;
+    padding-top: 3px;
+}

@@ -32,6 +32,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -104,6 +105,10 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
      * Gets the tags from the REST server
      */
     protected void loadSearchTags() {
+        loadSearchTags(null);
+    }
+
+    protected void loadSearchTags(final ActionCompletedCallback<RESTTagCollectionV1> completedCallback) {
         final RESTFilterCollectionItemV1 selectedFilter = getSearchFilterResultsAndFilterPresenter()
                 .getSearchFilterFilteredResultsPresenter().getProviderData().getSelectedItem();
 
@@ -121,6 +126,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
                     isReadOnlyMode(new ReadOnlyCallback() {
                         @Override
                         public void readonlyCallback(boolean readOnly) {
+                            if (completedCallback != null) {
+                                completedCallback.success(null);
+                            }
                             tagsPresenter.getDisplay().displayExtended(retValue, displayedFilter, readOnly, isShowBulkTags());
                         }
                     });
@@ -136,6 +144,9 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
                     isReadOnlyMode(new ReadOnlyCallback() {
                         @Override
                         public void readonlyCallback(boolean readOnly) {
+                            if (completedCallback != null) {
+                                completedCallback.success(retValue);
+                            }
                             tagsPresenter.getDisplay().displayExtended(retValue, selectedFilter.getItem(), readOnly, isShowBulkTags());
                         }
                     });

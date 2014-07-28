@@ -40,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public class LogMessageView extends DialogBox implements LogMessageInterface {
-
     /**
      * Used to group the radio buttons
      */
@@ -129,8 +128,9 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         ++row;
         layout.setWidget(row, 0, buttonPanel);
         layout.getFlexCellFormatter().setColSpan(row, 0, 2);
+        layout.addStyleName(CSSConstants.LogMessageDialog.ROOT_PANEL);
 
-        this.add(layout);
+        add(layout);
 
         reset();
     }

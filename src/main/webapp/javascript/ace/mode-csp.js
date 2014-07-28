@@ -79,7 +79,7 @@ define(
                 "attributes": [
                     {
                         token: "entity.other.attribute-name",
-                        regex: "(W|w)riter|URL|(D|d)escription|rev"
+                        regex: "(W|w)riter|URL|Fixed\\s+URL|(D|d)escription|rev"
                     },
                     {
                         token: "entity.other.attribute-name",
@@ -368,6 +368,7 @@ define('ace/mode/csp_completions', ['require', 'exports', 'module'], function(re
         "writer",
         "description",
         "URL",
+        "Fixed URL",
         "rev"
     ];
 

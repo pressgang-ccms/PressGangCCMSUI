@@ -62,6 +62,7 @@ public class FreezeDialogBox extends DialogBox implements FreezePresenter.Displa
         setGlassEnabled(true);
         message.getElement().setId(Constants.ElementIDs.MESSAGE_SAVE_DIALOG.getId());
         username.getElement().setId(Constants.ElementIDs.USERNAME_SAVE_DIALOG.getId());
+        maxTopicRevision.getElement().setId(Constants.ElementIDs.MAX_TOPIC_REV_DIALOG.getId());
         minorChange.getElement().setId(Constants.ElementIDs.MINOR_CHANGE_SAVE_DIALOG.getId());
         majorChange.getElement().setId(Constants.ElementIDs.MAJOR_CHANGE_SAVE_DIALOG.getId());
         cancel.getElement().setId(Constants.ElementIDs.CANCEL_SAVE_DIALOG.getId());

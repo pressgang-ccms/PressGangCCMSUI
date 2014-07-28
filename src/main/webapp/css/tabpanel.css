@@ -63,3 +63,53 @@
 .gwt-TabLayoutPanelTab:hover {
     color: rgb(34, 34, 34);
 }
+
+/** the tab bar */
+.gwt-TabBar {
+    height: 100%;
+    z-index: 1;
+    border-spacing: 0px;
+}
+
+.gwt-TabBar td {
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+.gwt-TabBarFirst-wrapper {
+    display: none;
+}
+
+/** the individual tab in the tab bar */
+.gwt-TabBar .gwt-TabBarItem-wrapper {
+    background: rgb(255, 255, 255) none;
+    background-origin: padding-box;
+    background-size: auto;
+    border-image-outset: 0px;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-radius: 1px 1px 0px 0px;
+    border: 1px solid rgb(221, 221, 221);
+    box-sizing: border-box;
+    color: rgb(77, 82, 88);
+    height:100%;
+    margin-left: -1px;
+    cursor: pointer;
+}
+
+.gwt-TabBar .gwt-TabBarItem-wrapper-selected {
+    color: rgb(0, 153, 211);
+    border-bottom-color: transparent;
+}
+
+.gwt-TabBar .gwt-TabBarItem-wrapper-selected:hover {
+    color: rgb(0, 153, 211);
+    cursor:default;
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+    padding: 5px 15px;
+    font-size:14px;
+    outline: none;
+}

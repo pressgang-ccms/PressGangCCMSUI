@@ -58,6 +58,7 @@ public final class RESTTextContentSpecV1TextEditor extends SimplePanel implement
         text.setTheme(AceEditorTheme.ECLIPSE);
         text.setUseSoftTabs(true);
         text.setTabSize(2);
+        text.enableAutoCodeFolding("Fixed\\s+URL\\s*=\\s*.*?(?=(\\]|,|$))", "");
 
         this.setWidget(text);
     }
