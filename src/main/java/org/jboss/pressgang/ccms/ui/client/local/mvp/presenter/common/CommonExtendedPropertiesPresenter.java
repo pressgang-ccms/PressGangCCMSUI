@@ -170,7 +170,7 @@ public class CommonExtendedPropertiesPresenter
                      */
 
                     if (object.returnIsAddItem()) {
-                        object.getItem().setValue(value);
+                        object.getItem().explicitSetValue(value);
                     } else {
                         object.setState(REMOVE_STATE);
 
@@ -179,7 +179,7 @@ public class CommonExtendedPropertiesPresenter
                         restAssignedPropertyTagV1.setId(object.getItem().getId());
                         restAssignedPropertyTagV1.setName(object.getItem().getName());
                         restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
-                        restAssignedPropertyTagV1.setValue(value);
+                        restAssignedPropertyTagV1.explicitSetValue(value);
 
                         parent.getProperties().addNewItem(restAssignedPropertyTagV1);
 
