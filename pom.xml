@@ -430,8 +430,7 @@
                             <warSourceDirectory>src/main/webapp/</warSourceDirectory>
                             <webappDirectory>src/main/webapp/</webappDirectory>
                             <webXml>src/jboss7/web.xml</webXml>
-                            <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@
-                            </outputFileNameMapping>
+                            <outputFileNameMapping>@{artifactId}@-@{version}@.@{extension}@</outputFileNameMapping>
                             <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class</packagingExcludes>
                             <outputDirectory>deployments</outputDirectory>
                         </configuration>
@@ -528,7 +527,7 @@
                             <warSourceDirectory>war.cache</warSourceDirectory>
                             <webappDirectory>war.cache</webappDirectory>
                             <webXml>src/jboss7/web.xml</webXml>
-                            <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@
+                            <outputFileNameMapping>@{artifactId}@-@{version}@.@{extension}@
                             </outputFileNameMapping>
                             <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class</packagingExcludes>
 
@@ -813,9 +812,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${warplugin.version}</version>
                 <configuration>
-                    <warName>${project.artifactId}</warName>
-                    <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@
-                    </outputFileNameMapping>
+                    <warName>${project.artifactId}-${project.version}</warName>
+                    <outputFileNameMapping>@{artifactId}@-@{version}@.@{extension}@</outputFileNameMapping>
                     <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class,**/org/jboss/pressgang/ccms/ui/client/**,
                         **/org/jboss/errai/**, **/com/google/gwt/**</packagingExcludes>
 
