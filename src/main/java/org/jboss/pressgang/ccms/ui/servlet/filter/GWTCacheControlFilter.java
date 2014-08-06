@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * @author Sean Flanigan <sflaniga@redhat.com>
  */
 public class GWTCacheControlFilter implements Filter {
-    private static final Pattern JS_AND_IMAGES_RE = Pattern.compile(".*?\\.(js|png|jpg|jpeg|gif|css|ico)$");
+    private static final Pattern JS_AND_IMAGES_RE = Pattern.compile(".*?\\.(js|png|jpg|jpeg|gif|svg|css|ico|otf|ttf|woff|eot)$");
     private static final long ONE_MIN_MS = 60 * 1000L;
     private static final long ONE_HOUR_MS = ONE_MIN_MS * 60;
     private static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
