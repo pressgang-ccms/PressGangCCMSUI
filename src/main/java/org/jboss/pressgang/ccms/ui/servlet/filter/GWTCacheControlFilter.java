@@ -27,6 +27,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -43,7 +44,8 @@ import java.util.regex.Pattern;
  * @author Sean Flanigan <sflaniga@redhat.com>
  */
 public class GWTCacheControlFilter implements Filter {
-    private static final Pattern JS_AND_IMAGES_RE = Pattern.compile(".*?\\.(js|png|jpg|jpeg|gif|svg|css|ico|otf|ttf|woff|eot)$");
+    private static final Pattern JS_AND_IMAGES_RE = Pattern.compile(".*?\\.(js|png|jpg|jpeg|gif|svg|css|ico)$");
+    private static final Pattern FONT_RE = Pattern.compile(".*?\\.(otf|ttf|woff|eot)$");
     private static final long ONE_MIN_MS = 60 * 1000L;
     private static final long ONE_HOUR_MS = ONE_MIN_MS * 60;
     private static final long ONE_DAY_MS = ONE_HOUR_MS * 24;
@@ -61,6 +63,7 @@ public class GWTCacheControlFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String requestURI = httpRequest.getRequestURI();
 
+        boolean matchesCacheRule = false;
         if (requestURI.contains(".nocache.")) {
             long now = System.currentTimeMillis();
             httpResponse.setDateHeader("Date", now);
@@ -70,18 +73,34 @@ public class GWTCacheControlFilter implements Filter {
             long now = System.currentTimeMillis();
             httpResponse.setDateHeader("Date", now);
             httpResponse.setDateHeader("Expires", now + ONE_YEAR_MS);
-        } else if (requestURI.endsWith(".dic") || requestURI.endsWith(".aff")) {
-            // Cache dictionaries for a day
+            matchesCacheRule = true;
+        } else if (requestURI.endsWith(".dic") || requestURI.endsWith(".aff") || FONT_RE.matcher(requestURI).matches()) {
+            // Cache fonts and dictionaries for a day
             long now = System.currentTimeMillis();
             httpResponse.setDateHeader("Date", now);
             httpResponse.setDateHeader("Expires", now + ONE_DAY_MS);
+            matchesCacheRule = true;
         } else if (JS_AND_IMAGES_RE.matcher(requestURI).matches()) {
             // Cache images, css and javascript files for 10 minutes
             long now = System.currentTimeMillis();
             httpResponse.setDateHeader("Date", now);
             httpResponse.setDateHeader("Expires", now + (10 * ONE_MIN_MS));
+            matchesCacheRule = true;
         }
 
-        filterChain.doFilter(request, response);
+        if (matchesCacheRule) {
+            // If a caching rule has been used then we don't want the etag set by tomcat/jboss-web,
+            // so create a wrapper that won't set an etag
+            final HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(httpResponse) {
+                public void setHeader(String name, String value) {
+                    if (!"etag".equalsIgnoreCase(name)) {
+                        super.setHeader(name, value);
+                    }
+                }
+            };
+            filterChain.doFilter(request, responseWrapper);
+        } else {
+            filterChain.doFilter(request, response);
+        }
     }
 }
