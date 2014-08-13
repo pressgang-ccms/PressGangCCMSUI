@@ -1028,9 +1028,10 @@ public interface CSSConstants {
 
     interface SettingsView {
         String LOCALES_TABLE = "SettingsLocaleTable";
-        String LOCALES_CELL = "SettingsLocaleCell";
-        String LOCALES_CELL_LIST = "SettingsLocaleCellList";
-        String LOCALES_CELL_SCROLL = "SettingsLocaleCellScroll";
+        String LOCALE_ID_FOOTER = "SettingsLocaleIDFooter";
+        String LOCALE_VALUE_FOOTER = "SettingsLocaleValueFooter";
+        String LOCALE_TRANSLATION_VALUE_FOOTER = "SettingsLocaleTranslationValueFooter";
+        String LOCALE_BUILD_VALUE_FOOTER = "SettingsLocaleBuildValueFooter";
         String DISCLOSURE_PANEL = "SettingsDisclosurePanel";
         String ENTITIES_LABEL = "SettingsEntitiesLabel";
         String ENTITIES_FIELD = "SettingsEntitiesField";

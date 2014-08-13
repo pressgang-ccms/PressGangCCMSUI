@@ -22,6 +22,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -53,7 +54,7 @@ public class ContentSpecDetailsView extends BaseTemplateView implements ContentS
 
     @Override
     public void displayContentSpecDetails(@NotNull final RESTTextContentSpecV1 topic, final boolean readOnly,
-            @NotNull final List<String> locales) {
+            @NotNull final List<RESTLocaleV1> locales) {
         /* SearchUIProjectsEditor is a grid */
         @NotNull final RESTTextContentSpecV1BasicDetailsEditor editor = new RESTTextContentSpecV1BasicDetailsEditor(readOnly, locales);
         /* Initialize the driver with the top-level editor */

@@ -26,6 +26,7 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
@@ -211,6 +212,9 @@ public final class FailOverRESTCallDatabase {
             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
             "]}";
+
+    private static final String LOCALES_EXPAND = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.LOCALES_EXPANSION_NAME +
+            "\"}}]}";
 
     public static RESTCall createTextContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
             @NotNull final Integer flag, @NotNull final String userId) {
@@ -2208,6 +2212,25 @@ public final class FailOverRESTCallDatabase {
     }
 
     /**
+     * Create a RESTCall object to call the REST getJSONServerSettings method
+     *
+     * @return
+     */
+    public static RESTCall getLocales() {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.getJSONLocales(LOCALES_EXPAND);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return true;
+            }
+        };
+    }
+
+    /**
      * Retrieve a list of locales from the server.
      *
      * @param serverSettingsCallback The callback to call when the locales are loaded
@@ -2217,7 +2240,12 @@ public final class FailOverRESTCallDatabase {
         failOverRESTCall.performRESTCall(getServerSettings(), new RESTCallBack<RESTServerSettingsV1>() {
             @Override
             public void success(@NotNull final RESTServerSettingsV1 value) {
-                serverSettingsCallback.serverSettingsLoaded(value);
+                failOverRESTCall.performRESTCall(getLocales(), new RESTCallBack<RESTLocaleCollectionV1>() {
+                    @Override
+                    public void success(@NotNull final RESTLocaleCollectionV1 locales) {
+                        serverSettingsCallback.serverSettingsLoaded(value, locales);
+                    }
+                });
             }
         }, display);
 
@@ -2441,6 +2469,46 @@ public final class FailOverRESTCallDatabase {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
                 restService.updateJSONServerSettings(entity);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST updateJSONLocales method
+     *
+     * @param entities The Locales to update
+     * @return A RESTCall that can call the REST updateJSONLocales method
+     */
+    public static RESTCall updateLocales(@NotNull final RESTLocaleCollectionV1 entities) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.updateJSONLocales(LOCALES_EXPAND, entities);
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Create a RESTCall object to call the REST createJSONLocales method
+     *
+     * @param entities The locales to create
+     * @return A RESTCall that can call the REST createJSONLocales method
+     */
+    public static RESTCall createLocales(@NotNull final RESTLocaleCollectionV1 entities) {
+        return new RESTCall() {
+            @Override
+            public void call(@NotNull final RESTInterfaceV1 restService) {
+                restService.createJSONLocales(LOCALES_EXPAND, entities);
             }
 
             @Override

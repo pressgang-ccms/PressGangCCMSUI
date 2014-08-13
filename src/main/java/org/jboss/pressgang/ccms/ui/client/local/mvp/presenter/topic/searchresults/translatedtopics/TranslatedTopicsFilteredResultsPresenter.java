@@ -37,10 +37,12 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -50,6 +52,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -107,12 +110,12 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 final Map<PushButton, Label> tabButtonsAndLabels = new HashMap<PushButton, Label>();
                 // Get the common query and locales that will make up the grouped results
-                final List<String> locales = serverSettings.getLocales();
-                Collections.sort(locales);
-                final Map<String, String> localeQueries = breakDownQuery(locales);
+                final List<RESTLocaleV1> localesList = locales.returnItems();
+                Collections.sort(localesList, new RESTLocaleV1Sort());
+                final Map<String, String> localeQueries = breakDownQuery(localesList);
 
                 // Add "tabs" for the locales
                 boolean first = true;
@@ -237,7 +240,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     /**
      * Break down the query into individual locales
      */
-    private Map<String, String> breakDownQuery(@NotNull final List<String> locales) {
+    private Map<String, String> breakDownQuery(@NotNull final List<RESTLocaleV1> locales) {
 
         final Map<String, String> localeQueries = new TreeMap<String, String>();
         final String queryWithoutPrefix = queryString.replaceFirst(Constants.QUERY_PATH_SEGMENT_PREFIX, "");
@@ -269,7 +272,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
             /*
                 Add a query for every locale, except those that were excluded
              */
-            for (final String locale : locales) {
+            for (final RESTLocaleV1 locale : locales) {
 
                 boolean isExcluded = false;
                 for (@NotNull final String query : excludedLocales) {
@@ -281,7 +284,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                 }
 
                 if (!isExcluded) {
-                    localeQueries.put(locale, CommonFilterConstants.MATCH_LOCALE + "1=" + locale + "1");
+                    localeQueries.put(locale.getValue(), CommonFilterConstants.MATCH_LOCALE + "1=" + locale.getValue() + "1");
                 }
             }
         }

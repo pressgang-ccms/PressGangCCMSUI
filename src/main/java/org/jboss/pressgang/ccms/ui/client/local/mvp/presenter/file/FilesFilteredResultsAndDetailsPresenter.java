@@ -48,6 +48,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageFileCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItemV1;
@@ -55,6 +56,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageFileCollec
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageFileV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -72,6 +74,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTLanguageFileV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -163,7 +166,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     /**
      * A reference to the StringConstants that holds the locales.
      */
-    private List<String> locales;
+    private List<RESTLocaleV1> locales;
 
     @Inject
     private Display display;
@@ -345,7 +348,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     }
 
     @NotNull
-    private List<String> getUnassignedLocales() {
+    private List<RESTLocaleV1> getUnassignedLocales() {
 
         checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem() != null,
                 "There should be a displayed collection item.");
@@ -354,7 +357,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
         checkState(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null,
                 "The displayed collection item to reference a valid entity and have a valid collection of language files.");
 
-        final List<String> newLocales = new ArrayList<String>(locales);
+        final List<RESTLocaleV1> newLocales = new ArrayList<RESTLocaleV1>(locales);
 
         /* Make it so you can't add a locale if it already exists */
         if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null) {
@@ -370,9 +373,9 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     private void populateLocales() {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                locales = serverSettings.getLocales();
-                Collections.sort(locales);
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
+                FilesFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+                Collections.sort(FilesFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 finishLoading();
             }
         });
@@ -464,7 +467,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                                     for (final RESTLanguageFileCollectionItemV1 languageFile : sourceFile.getLanguageFiles_OTM()
                                             .returnDeletedAndAddedCollectionItems()) {
                                         // Make sure we don't add the current selection
-                                        if (!languageFile.getItem().getLocale().equalsIgnoreCase(editor.self.getItem().getLocale())) {
+                                        if (!languageFile.getItem().getLocale().equals(editor.self.getItem().getLocale())) {
                                             updateFile.getLanguageFiles_OTM().getItems().add(languageFile);
                                         }
                                     }
@@ -678,7 +681,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                         fileComponent.getDisplay().getEditor().languageFiles_OTMEditor().itemsEditor().setValue(
                                 fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM()
                                         .returnExistingAddedAndUpdatedCollectionItems());
-                        fileComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedFile.getItem().getLocale());
+                        final RESTLocaleV1 locale = selectedFile.getItem().getLocale();
+                        fileComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(locale.getValue(), locale.getId().toString());
 
                         // Rebind the file upload buttons
                         bindFileUploadButtons();
@@ -700,13 +704,15 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
                 final String selectedLocale = fileComponent.getDisplay().getAddLocaleDialog().getLocales().getItemText(
                         fileComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
+                final Integer selectedLocaleId = Integer.parseInt(fileComponent.getDisplay().getAddLocaleDialog().getLocales().getValue(
+                        fileComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex()));
 
                 // Don't add locales twice
                 RESTLanguageFileCollectionItemV1 existingLanguageFileItem = null;
                 if (fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM() != null) {
                     for (@NotNull final RESTLanguageFileCollectionItemV1 langFile : fileFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageFiles_OTM().getItems()) {
-                        if (langFile.getItem().getLocale().equals(selectedLocale)) {
+                        if (langFile.getItem().getLocale().getId().equals(selectedLocaleId)) {
                             if (langFile.returnIsRemoveItem()) {
                                 // The language file exists, but has been removed from the display
                                 existingLanguageFileItem = langFile;
@@ -725,8 +731,12 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                     languageFileItem = new RESTLanguageFileCollectionItemV1();
                     languageFileItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
+                    final RESTLocaleV1 tempLocale = new RESTLocaleV1();
+                    tempLocale.setId(selectedLocaleId);
+                    tempLocale.setValue(selectedLocale);
+
                     final RESTLanguageFileV1 languageFile = new RESTLanguageFileV1();
-                    languageFile.explicitSetLocale(selectedLocale);
+                    languageFile.explicitSetLocale(tempLocale);
                     languageFileItem.setItem(languageFile);
                     fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageFiles_OTM().addNewItem(languageFile);
                 } else {
@@ -821,8 +831,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (isOKToProceed()) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                            final String defaultLocale = serverSettings.getDefaultLocale();
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                            final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
 
                             // Create the file wrapper
                             final RESTFileCollectionItemV1 fileCollectionItem = new RESTFileCollectionItemV1();
@@ -875,8 +885,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                            final String defaultLocale = serverSettings.getDefaultLocale();
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                            final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
                             createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
                                     display.getBulkUploadDialog().getFilePath().getText(), 0,
                                     display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(),
@@ -897,7 +907,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
      * @param files       The collection of file selected on the disk
      * @param ids         A list of the newly created image ids
      */
-    private void createNewFile(@NotNull final String description, @NotNull final String locale, @NotNull final String filePath,
+    private void createNewFile(@NotNull final String description, @NotNull final RESTLocaleV1 locale, @NotNull final String filePath,
             final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
 
@@ -1002,7 +1012,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
 
         if (viewIsInFilter(filter, fileComponent.getDisplay())) {
             fileComponent.getDisplay().displayExtended(fileFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false,
-                    getUnassignedLocales().toArray(new String[0]));
+                    getUnassignedLocales().toArray(new RESTLocaleV1[0]));
         }
 
         bindFileUploadButtons();

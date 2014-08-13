@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimpleIntegerLabel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueListBox;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
@@ -53,15 +54,19 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     private RESTTopicV1 value;
     private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final SimpleIntegerLabel revision = new SimpleIntegerLabel();
-    private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
+    private final ValueListBox<RESTLocaleV1> locale = new ValueListBox<RESTLocaleV1>(new Renderer<RESTLocaleV1>() {
 
         @Override
-        public String render(final String object) {
-            return object;
+        public String render(final RESTLocaleV1 object) {
+            if (object == null) {
+                return "";
+            } else {
+                return object.getValue();
+            }
         }
 
         @Override
-        public void render(final String object, final Appendable appendable) throws IOException {
+        public void render(final RESTLocaleV1 object, final Appendable appendable) throws IOException {
         }
     });
     private final TextArea title = new TextArea();
@@ -96,7 +101,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     }
 
     @NotNull
-    public ValueListBox<String> localeEditor() {
+    public ValueListBox<RESTLocaleV1> localeEditor() {
         return locale;
     }
 
@@ -183,14 +188,14 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_CELL);
     }
 
-    public void initialize(final boolean readOnly, @Nullable final List<String> locales) {
+    public void initialize(final boolean readOnly, @Nullable final List<RESTLocaleV1> locales) {
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
 
         /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
-        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
+        locale.setValue(locales == null || locales.isEmpty() ? null : locales.get(0));
+        locale.setAcceptableValues(locales == null ? new ArrayList<RESTLocaleV1>() : locales);
 
         xmlFormat.setEnabled(!readOnly);
         xmlFormat.clear();

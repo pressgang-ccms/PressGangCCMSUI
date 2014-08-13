@@ -19,9 +19,13 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 
+import javax.enterprise.context.Dependent;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.SimplePanel;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchLocalePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -29,9 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUILocaleEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocales;
 import org.jetbrains.annotations.NotNull;
-
-import javax.enterprise.context.Dependent;
-import java.util.List;
 
 /**
  * The search locales view.
@@ -51,7 +52,7 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     }
 
     @Override
-    public void display(@NotNull final List<String> entity, final boolean readonly) {
+    public void display(@NotNull final List<RESTLocaleV1> entity, final boolean readonly) {
         searchUILocales.initialize(entity);
 
         /* SearchUIProjectsEditor is a grid */

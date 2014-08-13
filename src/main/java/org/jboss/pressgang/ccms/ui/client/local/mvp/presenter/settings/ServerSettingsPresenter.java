@@ -26,6 +26,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,7 +39,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.SingleSelectionModel;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUndefinedSettingCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLocaleCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTServerUndefinedEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTServerUndefinedSettingCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTZanataServerSettingsCollectionItemV1;
@@ -47,8 +50,8 @@ import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerUndefinedEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerUndefinedSettingV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTZanataServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -56,8 +59,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.LocalesEditor;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.OtherSettingsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTLocaleCollectionV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTServerEntitiesV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTServerSettingsV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTServerUndefinedEntitiesCollectionV1Editor;
@@ -81,8 +85,33 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
     @Inject
     private Display display;
 
+    private final RESTLocaleV1Sort localesSort = new RESTLocaleV1Sort();
     private RESTServerSettingsV1 currentServerSettings;
+    private RESTLocaleCollectionV1 currentLocales;
     private SimplePanel displayedView;
+
+    final RESTCallBack<RESTLocaleCollectionV1> localeCallback = new RESTCallBack<RESTLocaleCollectionV1>() {
+        @Override
+        public void success(@NotNull final RESTLocaleCollectionV1 locales) {
+            setLocales(locales);
+
+            getServerSettings(new ServerSettingsCallback() {
+                @Override
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, @NotNull RESTLocaleCollectionV1 locales) {
+                    // Load the server setting and initialise the views
+                    loadData(serverSettings, locales);
+                    // Bind the editor buttons
+                    bindEditorButtons();
+
+                    // Display the success message
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
+
+                    // If readonly was changed then we need to disable the shortcut buttons
+                    disableTopShortcutButtonsInReadOnlyMode();
+                }
+            });
+        }
+    };
 
     @Override
     public void parseToken(@NotNull String historyToken) {
@@ -93,13 +122,16 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         return display;
     }
 
+    private boolean localesUpdated;
+    private boolean localesCreated;
+
     @Override
     public void bindExtended() {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 // Load the server setting and initialise the views
-                loadData(serverSettings);
+                loadData(serverSettings, locales);
 
                 // Bind the buttons
                 bindActionButtons();
@@ -112,6 +144,7 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
 
     @Override
     protected void go() {
+        display.setViewShown(true);
         bindExtended();
     }
 
@@ -119,12 +152,12 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
     public void close() {
     }
 
-    protected void loadData(final RESTServerSettingsV1 serverSettings) {
+    protected void loadData(final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
         currentServerSettings = serverSettings.clone(true);
-        display.display(currentServerSettings, false);
+        currentLocales = new RESTLocaleCollectionV1();
+        locales.cloneInto(currentLocales, true);
+        display.display(currentServerSettings, currentLocales, false);
 
-        display.getSettingsEditor().localesEditor().getAvailableLocalesDataProvider().setList(getAvailableLocales(currentServerSettings));
-        display.getSettingsEditor().localesEditor().getLocalesTable().setVisibleRange(0, currentServerSettings.getLocales().size());
         display.getSettingsEditor().defaultLocaleEditor().setAcceptableValues(getDefaultLocales());
     }
 
@@ -178,32 +211,79 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
             public void onClick(ClickEvent event) {
                 getDisplay().getServerSettingsDriver().flush();
                 getDisplay().getServerEntitiesDriver().flush();
+                getDisplay().getLocalesDriver().flush();
 
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 defaultSettings) {
-                        if (hasUnsavedChanges(defaultSettings)) {
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 defaultSettings,
+                            final RESTLocaleCollectionV1 defaultLocales) {
+                        final boolean hasUnsavedSettings = hasUnsavedChanges(defaultSettings);
+                        final boolean hasUnsavedLocales = hasUnsavedChanges(defaultLocales);
+                        if (hasUnsavedLocales || hasUnsavedSettings) {
                             final RESTCallBack<RESTServerSettingsV1> callback = new RESTCallBack<RESTServerSettingsV1>() {
                                 @Override
                                 public void success(@NotNull final RESTServerSettingsV1 retValue) {
                                     setServerSettings(retValue);
 
-                                    // Load the server setting and initialise the views
-                                    loadData(retValue);
-                                    // Bind the editor buttons
-                                    bindEditorButtons();
+                                    if (hasUnsavedLocales) {
+                                        /*
+                                         * Locales need to be updated in a two step process (one to create new values and one to create
+                                         * old values), so we store the state in a global variable and when move on when both values
+                                         * have been set to true.
+                                         */
+                                        localesCreated = false;
+                                        localesUpdated = false;
 
-                                    // Display the success message
-                                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                        final RESTLocaleCollectionV1 updatedLocales = getLocaleUpdateChanges(currentLocales);
+                                        final RESTLocaleCollectionV1 newLocales = getLocaleCreateChanges(currentLocales);
 
-                                    // If readonly was changed then we need to disable the shortcut buttons
-                                    disableTopShortcutButtonsInReadOnlyMode();
+                                        final RESTCallBack<RESTLocaleCollectionV1> updatedLocalesCallback = new RESTCallBack<RESTLocaleCollectionV1>() {
+                                            @Override
+                                            public void success(final RESTLocaleCollectionV1 retValue) {
+                                                localesUpdated = true;
+                                                if (localesUpdated && localesCreated) {
+                                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getLocales(), localeCallback, display);
+                                                }
+                                            }
+                                        };
+
+                                        final RESTCallBack<RESTLocaleCollectionV1> createdLocalesCallback = new
+                                                RESTCallBack<RESTLocaleCollectionV1>() {
+                                            @Override
+                                            public void success(final RESTLocaleCollectionV1 retValue) {
+                                                localesCreated = true;
+                                                if (localesUpdated && localesCreated) {
+                                                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getLocales(), localeCallback, display);
+                                                }
+                                            }
+                                        };
+
+                                        if (updatedLocales.getItems().isEmpty()) {
+                                            updatedLocalesCallback.success(null);
+                                        } else {
+                                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateLocales(updatedLocales),
+                                                    updatedLocalesCallback, display);
+                                        }
+
+                                        if (newLocales.getItems().isEmpty()) {
+                                            createdLocalesCallback.success(null);
+                                        } else {
+                                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createLocales(newLocales),
+                                                    createdLocalesCallback, display);
+                                        }
+                                    } else {
+                                        localeCallback.success(currentLocales);
+                                    }
                                 }
                             };
 
-                            final RESTServerSettingsV1 newServerSettings = syncChanges(currentServerSettings, defaultSettings);
-                            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateServerSettings(newServerSettings),
-                                    callback, display);
+                            if (hasUnsavedSettings) {
+                                final RESTServerSettingsV1 newServerSettings = syncChanges(currentServerSettings, defaultSettings);
+                                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.updateServerSettings(newServerSettings),
+                                        callback, display);
+                            } else {
+                                callback.success(currentServerSettings);
+                            }
                         } else {
                             AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                         }
@@ -214,62 +294,37 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
     }
 
     protected void bindLocalesButtons() {
-        display.getSettingsEditor().localesEditor().getAdd().addClickHandler(new ClickHandler() {
+        final RESTLocaleCollectionV1Editor localesEditor = display.getLocalesEditor();
+        localesEditor.getRemoveColumn().setFieldUpdater(new FieldUpdater<RESTLocaleCollectionItemV1, String>() {
             @Override
-            public void onClick(ClickEvent event) {
-                final LocalesEditor localesEditor = display.getSettingsEditor().localesEditor();
-                final SingleSelectionModel<String> selectionModel = (SingleSelectionModel<String>) localesEditor.getAvailableLocalesTable
-                        ().getSelectionModel();
-
-                if (selectionModel.getSelectedObject() != null) {
-                    // Update the data values
-                    localesEditor.asEditor().addValue(selectionModel.getSelectedObject());
-                    localesEditor.getAvailableLocalesDataProvider().getList().remove(selectionModel.getSelectedObject());
-
-                    // Sort the list alphabetically
-                    Collections.sort(localesEditor.getLocalesDataProvider().getList());
-
-                    // Refresh both lists so that it includes the new data
-                    localesEditor.getLocalesDataProvider().refresh();
-                    localesEditor.getAvailableLocalesDataProvider().refresh();
-
-                    selectionModel.clear();
-
-                    // Add the value from the default locales
-                    display.getSettingsEditor().defaultLocaleEditor().setAcceptableValues(getDefaultLocales());
-                }
+            public void update(final int index, final RESTLocaleCollectionItemV1 object, String value) {
+                localesEditor.itemsEditor().removeValue(object);
+                localesEditor.getDataProvider().refresh();
             }
         });
 
-        display.getSettingsEditor().localesEditor().getRemove().addClickHandler(new ClickHandler() {
+        display.getLocalesEditor().getAddButtonFooter().setUpdater(new ValueUpdater<String>() {
             @Override
-            public void onClick(ClickEvent event) {
-                final LocalesEditor localesEditor = display.getSettingsEditor().localesEditor();
-                final SingleSelectionModel<String> selectionModel = (SingleSelectionModel<String>) localesEditor.getLocalesTable()
-                        .getSelectionModel();
+            public void update(String value) {
+                final RESTLocaleV1 newLocale = localesEditor.getNewItemFromFooter();
 
-                if (selectionModel.getSelectedObject() != null) {
-                    // Update the data values
-                    localesEditor.asEditor().removeValue(selectionModel.getSelectedObject());
-                    localesEditor.getAvailableLocalesDataProvider().getList().add(selectionModel.getSelectedObject());
+                if (isStringNullOrEmpty(newLocale.getValue()) || isStringNullOrEmpty(
+                        newLocale.getBuildValue()) || isStringNullOrEmpty(newLocale.getTranslationValue())) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.MandatoryValuesMissing());
+                } else if (doesLocaleAlreadyExist(localesEditor.getDataProvider().getList(), newLocale.getValue())) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.LocaleAlreadyExists() + " " + newLocale.getValue());
+                } else {
+                    final RESTLocaleCollectionItemV1 item = new RESTLocaleCollectionItemV1();
+                    item.setItem(newLocale);
+                    item.setState(RESTLocaleCollectionItemV1.ADD_STATE);
 
-                    // Sort the list alphabetically
-                    Collections.sort(localesEditor.getAvailableLocalesDataProvider().getList());
-
-                    // Refresh both lists so that it includes the new data
-                    localesEditor.getLocalesDataProvider().refresh();
-                    localesEditor.getAvailableLocalesDataProvider().refresh();
-
-                    selectionModel.clear();
-
-                    // Remove the value from the default locales
-                    final List<String> locales = getDefaultLocales();
-                    final String selectedDefault = display.getSettingsEditor().defaultLocaleEditor().getValue();
-                    if (!locales.contains(selectedDefault)) {
-                        display.getSettingsEditor().defaultLocaleEditor().setValue("");
-                    }
-                    display.getSettingsEditor().defaultLocaleEditor().setAcceptableValues(locales);
+                    localesEditor.itemsEditor().addValue(item);
+                    localesEditor.resetFooter();
+                    localesEditor.getDataProvider().refresh();
                 }
+
+                // Add the value from the default locales
+                display.getSettingsEditor().defaultLocaleEditor().setAcceptableValues(getDefaultLocales());
             }
         });
     }
@@ -453,11 +508,8 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         if (!GWTUtilities.integerEquals(displayedItem.getJmsUpdateFrequency(), defaultSettings.getJmsUpdateFrequency())) {
             newServerSettings.explicitSetJmsUpdateFrequency(displayedItem.getJmsUpdateFrequency());
         }
-        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedItem.getDefaultLocale(), defaultSettings.getDefaultLocale())) {
+        if (!GWTUtilities.objectEquals(displayedItem.getDefaultLocale(), defaultSettings.getDefaultLocale())) {
             newServerSettings.explicitSetDefaultLocale(displayedItem.getDefaultLocale());
-        }
-        if (!GWTUtilities.listsEqual(displayedItem.getLocales(), defaultSettings.getLocales())) {
-            newServerSettings.explicitSetLocales(displayedItem.getLocales());
         }
         if (!GWTUtilities.listsEqual(displayedItem.getDocBookTemplateIds(), defaultSettings.getDocBookTemplateIds())) {
             newServerSettings.explicitSetDocBookTemplateIds(displayedItem.getDocBookTemplateIds());
@@ -534,6 +586,32 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         return newServerSettings;
     }
 
+    protected RESTLocaleCollectionV1 getLocaleUpdateChanges(final RESTLocaleCollectionV1 displayedItem) {
+        final RESTLocaleCollectionV1 updatedLocales = new RESTLocaleCollectionV1();
+
+        for (final RESTLocaleCollectionItemV1 item : displayedItem.getItems()) {
+            if (!(item.returnIsAddItem() || item.returnIsRemoveItem())
+                    && item.getItem().getConfiguredParameters() != null
+                    && !item.getItem().getConfiguredParameters().isEmpty()) {
+                updatedLocales.getItems().add(item);
+            }
+        }
+
+        return updatedLocales;
+    }
+
+    protected RESTLocaleCollectionV1 getLocaleCreateChanges(final RESTLocaleCollectionV1 displayedItem) {
+        final RESTLocaleCollectionV1 createdLocales = new RESTLocaleCollectionV1();
+
+        for (final RESTLocaleCollectionItemV1 item : displayedItem.getItems()) {
+            if (item.returnIsAddItem()) {
+                createdLocales.getItems().add(item);
+            }
+        }
+
+        return createdLocales;
+    }
+
     public boolean hasUnsavedChanges(final RESTServerSettingsV1 defaultSettings) {
         // sync the UI with the underlying value
         getDisplay().getServerSettingsDriver().flush();
@@ -554,10 +632,7 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         if (!GWTUtilities.integerEquals(displayedItem.getJmsUpdateFrequency(), defaultSettings.getJmsUpdateFrequency())) {
             return true;
         }
-        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedItem.getDefaultLocale(), defaultSettings.getDefaultLocale())) {
-            return true;
-        }
-        if (!GWTUtilities.listsEqual(displayedItem.getLocales(), defaultSettings.getLocales())) {
+        if (!GWTUtilities.objectEquals(displayedItem.getDefaultLocale(), defaultSettings.getDefaultLocale())) {
             return true;
         }
         if (!GWTUtilities.listsEqual(displayedItem.getDocBookTemplateIds(), defaultSettings.getDocBookTemplateIds())) {
@@ -580,19 +655,38 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         return false;
     }
 
-    protected List<String> getAvailableLocales(final RESTServerSettingsV1 serverSettings) {
-        final List<String> availableLocales = new ArrayList<String>(Constants.AVAILABLE_LOCALES);
-        for (final String locale : serverSettings.getLocales()) {
-            availableLocales.remove(locale);
-        }
-        return availableLocales;
+    public boolean hasUnsavedChanges(final RESTLocaleCollectionV1 defaultLocales) {
+        // Sync the changes
+        getDisplay().getLocalesDriver().flush();
+
+        final RESTLocaleCollectionV1 displayedLocales = currentLocales;
+
+        return !GWTUtilities.listsEqual(displayedLocales.getItems(), defaultLocales.getItems());
     }
 
-    protected List<String> getDefaultLocales() {
-        final List<String> locales = new ArrayList<String>(display.getSettingsEditor().localesEditor().getLocalesDataProvider().getList());
-        locales.add("");
-        Collections.sort(locales);
+    protected List<RESTLocaleV1> getDefaultLocales() {
+        final List<RESTLocaleCollectionItemV1> localeItems = new ArrayList<RESTLocaleCollectionItemV1>(display.getLocalesEditor().getDataProvider().getList());
+        final LinkedList<RESTLocaleV1> locales = new LinkedList<RESTLocaleV1>();
+
+        for (final RESTLocaleCollectionItemV1 localeItem : localeItems) {
+            if (localeItem.getState() != RESTLocaleCollectionItemV1.REMOVE_STATE) {
+                locales.add(localeItem.getItem());
+            }
+        }
+
+        Collections.sort(locales, localesSort);
+        locales.addFirst(null);
         return locales;
+    }
+
+    protected boolean doesLocaleAlreadyExist(final List<RESTLocaleCollectionItemV1> locales, final String value) {
+        for (final RESTLocaleCollectionItemV1 item : locales) {
+            if (value.equals(item.getItem().getValue())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected boolean doesZanataServerAlreadyExist(final List<RESTZanataServerSettingsCollectionItemV1> servers, final String id) {
@@ -624,6 +718,10 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
     public interface ServerEntitiesPresenterDriver extends SimpleBeanEditorDriver<RESTServerEntitiesV1, RESTServerEntitiesV1DetailsEditor> {
     }
 
+    // Empty interface declaration, similar to UiBinder
+    public interface LocalesPresenterDriver extends SimpleBeanEditorDriver<RESTLocaleCollectionV1, RESTLocaleCollectionV1Editor> {
+    }
+
     public interface Display extends BaseTemplateViewInterface {
         SimplePanel getServerSettingsPanel();
 
@@ -639,7 +737,7 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
 
         PushButton getSaveButton();
 
-        void display(RESTServerSettingsV1 serverSettings, boolean readonly);
+        void display(RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales, boolean readonly);
 
         SimpleBeanEditorDriver<RESTServerSettingsV1, RESTServerSettingsV1DetailsEditor> getServerSettingsDriver();
 
@@ -648,5 +746,9 @@ public class ServerSettingsPresenter extends BaseTemplatePresenter implements Ba
         SimpleBeanEditorDriver<RESTServerEntitiesV1, RESTServerEntitiesV1DetailsEditor> getServerEntitiesDriver();
 
         RESTServerEntitiesV1DetailsEditor getEntitiesEditor();
+
+        SimpleBeanEditorDriver<RESTLocaleCollectionV1, RESTLocaleCollectionV1Editor> getLocalesDriver();
+
+        RESTLocaleCollectionV1Editor getLocalesEditor();
     }
 }

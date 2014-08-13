@@ -47,6 +47,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -319,7 +320,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                             getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveTranslatedTopic(newTopic, message.toString(), flag,
                                     serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                         }
@@ -572,7 +573,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 if (isExtendedTopic(serverSettings)) {
                     if (displayedView == getTopicXMLPresenter().getDisplay()) {
                         getDisplay().insertActionButton(getDisplay().getAdditionalXML(), getDisplay().getXmlDown());

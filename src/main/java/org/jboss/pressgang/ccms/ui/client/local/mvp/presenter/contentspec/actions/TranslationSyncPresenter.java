@@ -36,11 +36,13 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTZanataServerSettingsCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTZanataServerSettingsCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTZanataServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -50,6 +52,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jetbrains.annotations.NotNull;
 
 public class TranslationSyncPresenter extends BaseActionPresenter<RESTProcessInformationV1> {
@@ -138,9 +141,9 @@ public class TranslationSyncPresenter extends BaseActionPresenter<RESTProcessInf
         display.getUsername().setText(Preferences.INSTANCE.getString(Preferences.TRANSLATION_USERNAME, ""));
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
                 // Build up the locale list
-                initLocales(new ArrayList(serverSettings.getLocales()));
+                initLocales(locales.returnItems());
                 initServers(serverSettings.getZanataSettings());
 
                 display.getDialogBox().center();
@@ -148,13 +151,13 @@ public class TranslationSyncPresenter extends BaseActionPresenter<RESTProcessInf
         });
     }
 
-    protected void initLocales(final List<String> locales) {
+    protected void initLocales(final List<RESTLocaleV1> locales) {
         locales.remove(contentSpec.getLocale());
-        Collections.sort(locales);
+        Collections.sort(locales, new RESTLocaleV1Sort());
 
         display.getLocales().clear();
-        for (final String locale : locales) {
-            display.getLocales().addItem(locale, locale, true);
+        for (final RESTLocaleV1 locale : locales) {
+            display.getLocales().addItem(locale.getValue(), locale.getTranslationValue(), true);
         }
     }
 

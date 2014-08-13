@@ -19,22 +19,28 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DateLabel;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerLabel;
+import com.google.gwt.user.client.ui.ValueListBox;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTextContentSpecV1> {
 
@@ -44,15 +50,19 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
     private RESTTextContentSpecV1 value;
     private final SimpleIntegerLabel id = new SimpleIntegerLabel();
     private final SimpleIntegerLabel revision = new SimpleIntegerLabel();
-    private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
+    private final ValueListBox<RESTLocaleV1> locale = new ValueListBox<RESTLocaleV1>(new Renderer<RESTLocaleV1>() {
 
         @Override
-        public String render(final String object) {
-            return object;
+        public String render(final RESTLocaleV1 object) {
+            if (object == null) {
+                return "";
+            } else {
+                return object.getValue();
+            }
         }
 
         @Override
-        public void render(final String object, final Appendable appendable) throws IOException {
+        public void render(final RESTLocaleV1 object, final Appendable appendable) throws IOException {
         }
     });
     private final DateLabel lastModified = new DateLabel(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
@@ -68,7 +78,7 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
     }
 
     @NotNull
-    public ValueListBox<String> localeEditor() {
+    public ValueListBox<RESTLocaleV1> localeEditor() {
         return locale;
     }
 
@@ -82,7 +92,7 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         return id;
     }
 
-    public RESTTextContentSpecV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
+    public RESTTextContentSpecV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<RESTLocaleV1> locales) {
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_PANEL);
@@ -90,8 +100,8 @@ public final class RESTTextContentSpecV1BasicDetailsEditor extends Grid implemen
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
         /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue(locales == null || locales.isEmpty() ? "" : locales.get(0));
-        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
+        locale.setValue(locales == null || locales.isEmpty() ? null : locales.get(0));
+        locale.setAcceptableValues(locales == null ? new ArrayList<RESTLocaleV1>() : locales);
 
         id.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_REVISION_NUMBER_FIELD);

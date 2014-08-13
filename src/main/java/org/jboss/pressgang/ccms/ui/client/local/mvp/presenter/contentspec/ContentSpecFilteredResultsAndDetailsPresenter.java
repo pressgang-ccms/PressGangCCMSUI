@@ -60,6 +60,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -71,6 +72,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
@@ -101,6 +103,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDataba
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTextContentSpecCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTTextContentSpecV1BasicDetailsEditor;
@@ -168,13 +171,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     /**
      * A list of locales retrieved from the server
      */
-    private List<String> locales;
+    private List<RESTLocaleV1> locales;
 
     /**
      * true after the default locale has been loaded
      */
     @Nullable
-    private String defaultLocale = null;
+    private RESTLocaleV1 defaultLocale = null;
 
     /**
      * true after the topics have been loaded
@@ -345,7 +348,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 // Set the href for the docbuilder url
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                    public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                         String docBuilderUrl = serverSettings.getDocBuilderUrl();
                         docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
                         if (!docBuilderUrl.endsWith("/")) {
@@ -695,7 +698,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                    RESTLocaleCollectionV1 locales) {
                                 getFailOverRESTCall().performRESTCall(
                                         FailOverRESTCallDatabase.createTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
@@ -795,7 +799,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                    RESTLocaleCollectionV1 locales) {
                                 getFailOverRESTCall().performRESTCall(
                                         FailOverRESTCallDatabase.updateTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
@@ -849,7 +854,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                             final ActionCompletedCallback<RESTTextContentSpecV1> callback = new
                                     ActionCompletedCallback<RESTTextContentSpecV1>() {
                                 @Override
@@ -1021,7 +1026,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                     getFailOverRESTCall().performRESTCall(
                             FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateId()),
                             callback, display);
@@ -1103,9 +1108,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                locales = serverSettings.getLocales();
-                Collections.sort(locales);
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
+                ContentSpecFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+                Collections.sort(ContentSpecFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 defaultLocale = serverSettings.getDefaultLocale();
                 displayNewContentSpec();
                 displayInitialContentSpec(getNewEntityCallback);

@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.WholeNumbersValidator;
@@ -55,19 +56,23 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
     private final Label jmsUpdateFrequencyLabel = new Label(PressGangCCMSUI.INSTANCE.JMSUpdateFrequency());
     private final SimpleIntegerBox jmsUpdateFrequency = new SimpleIntegerBox();
     private final Label defaultLocaleLabel = new Label(PressGangCCMSUI.INSTANCE.DefaultLocale() + ":");
-    private final ValueListBox<String> defaultLocale = new ValueListBox<String>(new Renderer<String>() {
+    private final ValueListBox<RESTLocaleV1> defaultLocale = new ValueListBox<RESTLocaleV1>(new Renderer<RESTLocaleV1>() {
         @Override
-        public String render(String object) {
-            return object;
+        public String render(RESTLocaleV1 object) {
+            if (object != null) {
+                return object.getValue();
+            } else {
+                return "";
+            }
         }
 
         @Override
-        public void render(String object, Appendable appendable) throws IOException {
+        public void render(RESTLocaleV1 object, Appendable appendable) throws IOException {
         }
     });
-    private final LocalesEditor localesEditor = new LocalesEditor();
     private final RESTZanataServerSettingsCollectionV1Editor zanataServersEditor;
     private final RESTServerUndefinedSettingsCollectionV1Editor customSettingsEditor;
+    private final RESTLocaleCollectionV1Editor localesEditor;
     private final OtherSettingsEditor seoCategoryIds = new OtherSettingsEditor(PressGangCCMSUI.INSTANCE.SEOCategoryIDs());
     private final OtherSettingsEditor docBookTemplateIds = new OtherSettingsEditor(PressGangCCMSUI.INSTANCE.DocBookTemplateIDs());
 
@@ -92,12 +97,7 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
     }
 
     @NotNull
-    public LocalesEditor localesEditor() {
-        return localesEditor;
-    }
-
-    @NotNull
-    public ValueListBox<String> defaultLocaleEditor() {
+    public ValueListBox<RESTLocaleV1> defaultLocaleEditor() {
         return defaultLocale;
     }
 
@@ -121,9 +121,15 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
         return seoCategoryIds;
     }
 
+    @Ignore
+    public RESTLocaleCollectionV1Editor getLocalesEditor() {
+        return localesEditor;
+    }
+
     public RESTServerSettingsV1DetailsEditor(final boolean readOnly) {
         zanataServersEditor = new RESTZanataServerSettingsCollectionV1Editor(readOnly);
         customSettingsEditor = new RESTServerUndefinedSettingsCollectionV1Editor(readOnly);
+        localesEditor = new RESTLocaleCollectionV1Editor(readOnly);
 
         uiUrl.setReadOnly(readOnly);
         docBuilderUrl.setReadOnly(readOnly);

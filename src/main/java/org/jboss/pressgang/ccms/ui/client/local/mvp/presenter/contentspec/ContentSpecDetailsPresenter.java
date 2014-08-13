@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
@@ -45,7 +46,7 @@ public class ContentSpecDetailsPresenter extends BaseTemplatePresenter {
     }
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTTextContentSpecV1, RESTTextContentSpecV1, RESTTextContentSpecV1BasicDetailsEditor> {
-        void displayContentSpecDetails(final RESTTextContentSpecV1 topic, final boolean readOnly, final List<String> locales);
+        void displayContentSpecDetails(final RESTTextContentSpecV1 topic, final boolean readOnly, final List<RESTLocaleV1> locales);
     }
 
     @Nullable

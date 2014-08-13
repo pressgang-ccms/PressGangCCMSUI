@@ -19,26 +19,33 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.ImagePresenterDriver;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.ImagePresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
+    private final RESTLocaleV1Sort localeSort = new RESTLocaleV1Sort();
     private RESTImageV1Editor editor = new RESTImageV1Editor();
     private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
 
@@ -170,7 +177,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
     }
 
     @Override
-    public void displayExtended(@Nullable final RESTImageV1 image, final boolean readOnly, @Nullable final String[] locales) {
+    public void displayExtended(@Nullable final RESTImageV1 image, final boolean readOnly, @Nullable final RESTLocaleV1[] locales) {
         if (image == null) {
             throw new IllegalArgumentException("image cannot be null");
         }
@@ -188,13 +195,13 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         this.getPanel().setWidget(editor);
 
         /* Sort the array */
-        final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
-        Collections.sort(localesList);
+        final List<RESTLocaleV1> localesList = new ArrayList<RESTLocaleV1>(Arrays.asList(locales));
+        Collections.sort(localesList, localeSort);
 
         /* populate the locales list box */
-        this.addLocaleDialog.locales.clear();
-        for (final String locale : localesList) {
-            this.addLocaleDialog.locales.addItem(locale);
+        addLocaleDialog.locales.clear();
+        for (final RESTLocaleV1 locale : localesList) {
+            addLocaleDialog.locales.addItem(locale.getValue(), locale.getId().toString());
         }
 
         /* Make sure the dialog box is closed */

@@ -19,26 +19,33 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.file;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter.FilePresenterDriver;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class FileView extends BaseTemplateView implements FilePresenter.Display {
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFileV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.file.FilePresenter.FilePresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.file.RESTFileV1Editor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+public class FileView extends BaseTemplateView implements FilePresenter.Display {
+    private final RESTLocaleV1Sort localeSort = new RESTLocaleV1Sort();
     private RESTFileV1Editor editor;
     private final FilePresenterDriver driver = GWT.create(FilePresenterDriver.class);
 
@@ -163,7 +170,7 @@ public class FileView extends BaseTemplateView implements FilePresenter.Display 
     }
 
     @Override
-    public void displayExtended(@Nullable final RESTFileV1 file, final boolean readOnly, @Nullable final String[] locales) {
+    public void displayExtended(@Nullable final RESTFileV1 file, final boolean readOnly, @Nullable final RESTLocaleV1[] locales) {
         if (file == null) {
             throw new IllegalArgumentException("file cannot be null");
         }
@@ -180,13 +187,13 @@ public class FileView extends BaseTemplateView implements FilePresenter.Display 
         this.getPanel().setWidget(editor);
 
         /* Sort the array */
-        final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
-        Collections.sort(localesList);
+        final List<RESTLocaleV1> localesList = new ArrayList<RESTLocaleV1>(Arrays.asList(locales));
+        Collections.sort(localesList, localeSort);
 
         /* populate the locales list box */
-        this.addLocaleDialog.locales.clear();
-        for (final String locale : localesList) {
-            this.addLocaleDialog.locales.addItem(locale);
+        addLocaleDialog.locales.clear();
+        for (final RESTLocaleV1 locale : localesList) {
+            addLocaleDialog.locales.addItem(locale.getValue(), locale.getId().toString());
         }
 
         /* Make sure the dialog box is closed */

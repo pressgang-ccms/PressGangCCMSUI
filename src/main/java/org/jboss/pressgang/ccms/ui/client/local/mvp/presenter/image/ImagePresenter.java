@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
@@ -50,7 +51,7 @@ public class ImagePresenter extends BaseTemplatePresenter {
             DialogBox getDialogBox();
         }
 
-        void displayExtended(final RESTImageV1 image, final boolean readOnly, final String[] locales);
+        void displayExtended(final RESTImageV1 image, final boolean readOnly, final RESTLocaleV1[] locales);
 
         PushButton getRemoveLocale();
 

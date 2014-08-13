@@ -55,6 +55,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.impl.HyperlinkImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.AllServerDetailsCallback;
@@ -141,6 +142,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     private FailOverRESTCall failOverRESTCall;
 
     private RESTServerSettingsV1 serverSettings;
+    private RESTLocaleCollectionV1 locales;
 
     private final List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
@@ -172,7 +174,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 disableTopShortcutButtonsInReadOnlyMode();
                 go();
             }
@@ -188,18 +190,23 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         if (serverSettings == null) {
             FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value) {
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value, final RESTLocaleCollectionV1 localesValue) {
                     serverSettings = value;
-                    settingsCallback.serverSettingsLoaded(serverSettings);
+                    locales = localesValue;
+                    settingsCallback.serverSettingsLoaded(serverSettings, locales);
                 }
             }, getDisplay(), failOverRESTCall);
         } else {
-            settingsCallback.serverSettingsLoaded(serverSettings);
+            settingsCallback.serverSettingsLoaded(serverSettings, locales);
         }
     }
 
     protected void setServerSettings(@NotNull final RESTServerSettingsV1 serverSettings) {
         this.serverSettings = serverSettings;
+    }
+
+    protected void setLocales(@NotNull final RESTLocaleCollectionV1 locales) {
+        this.locales = locales;
     }
 
     public void isReadOnlyMode(@NotNull final ReadOnlyCallback callback) {
@@ -208,7 +215,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             public void serverDetailsFound(@NotNull final ServerDetails serverDetails) {
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                         callback.readonlyCallback(serverSettings.isReadOnly() || serverDetails.isReadOnly());
                     }
                 });

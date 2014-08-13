@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.shared.EventBus;
-import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -43,20 +43,22 @@ public abstract class BaseActionPresenter<T> {
     private FailOverRESTCall failOverRESTCall;
 
     private RESTServerSettingsV1 serverSettings;
+    private RESTLocaleCollectionV1 locales;
 
     private List<ActionCompletedCallback<T>> callbacks = new ArrayList<ActionCompletedCallback<T>>();
 
     protected void getServerSettings(@NotNull final ServerSettingsCallback settingsCallback) {
-        if (serverSettings == null) {
+        if (serverSettings == null || locales == null) {
             FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value) {
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value, @NotNull RESTLocaleCollectionV1 localesValue) {
                     serverSettings = value;
-                    settingsCallback.serverSettingsLoaded(serverSettings);
+                    locales = localesValue;
+                    settingsCallback.serverSettingsLoaded(serverSettings, localesValue);
                 }
             }, null, failOverRESTCall);
         } else {
-            settingsCallback.serverSettingsLoaded(serverSettings);
+            settingsCallback.serverSettingsLoaded(serverSettings, locales);
         }
     }
 

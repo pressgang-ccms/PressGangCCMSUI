@@ -82,6 +82,7 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -99,6 +100,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -150,6 +152,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagInCategoryCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.topic.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -191,7 +194,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private String lastNewTopicTemplate;
     private RESTXMLFormat lastNewTopicFormat;
-    private String lastNewTopicLocale;
+    private RESTLocaleV1 lastNewTopicLocale;
 
     /*
         True when the XML elements dialog is opened for the first time, and the
@@ -482,7 +485,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                final RESTLocaleCollectionV1 locales) {
                             final String user = getDisplay().getMessageLogDialog().getUsername().getText().trim();
                             final StringBuilder message = new StringBuilder();
                             if (!user.isEmpty()) {
@@ -601,7 +605,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                    RESTLocaleCollectionV1 locales) {
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
                                         serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
                             }
@@ -625,7 +630,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                    RESTLocaleCollectionV1 locales) {
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, message.toString(), flag,
                                         serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                             }
@@ -660,7 +666,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                         getFailOverRESTCall().performRESTCall(
                                 FailOverRESTCallDatabase.saveTopic(
                                         reviewUpdateTopic,
@@ -759,7 +765,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * true after the default locale has been loaded
      */
     @org.jetbrains.annotations.Nullable
-    private String defaultLocale = null;
+    private RESTLocaleV1 defaultLocale = null;
 
     /**
      * The last xml that was rendered
@@ -784,7 +790,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * A list of locales retrieved from the server
      */
-    private List<String> locales;
+    private List<RESTLocaleV1> locales;
 
     /**
      * true after the locales have been loaded
@@ -912,9 +918,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                locales = serverSettings.getLocales();
-                Collections.sort(locales);
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                TopicFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+                Collections.sort(TopicFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 defaultLocale = serverSettings.getDefaultLocale();
                 displayNewTopic();
                 displayInitialTopic(getNewEntityCallback);
@@ -1122,7 +1128,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                     getServerSettings(new ServerSettingsCallback() {
                                         @Override
-                                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                                                RESTLocaleCollectionV1 locales) {
                                             boolean found = false;
                                             for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                                 if (prop.getItem().getId() == serverSettings.getEntities().getFixedUrlPropertyTagId()) {
@@ -1454,7 +1461,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (getDisplayedTopic().getId() != null) {
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                     final Integer contentSpecTagId = serverSettings.getEntities().getContentSpecTagId();
                     if (contentSpecTagId != null) {
                         final String query = "query;tag" + contentSpecTagId + "=1;topicIds=" + getDisplayedTopic().getId();
@@ -2065,12 +2072,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 final RESTXMLFormat format = RESTXMLFormat.valueOf(formatName);
                 final String typeIdString = createWizard.getTypes().getValue(createWizard.getTypes().getSelectedIndex());
                 final Integer typeId = isStringNullOrEmpty(typeIdString) ? null : Integer.parseInt(typeIdString);
-                final String locale = createWizard.getLocales().getValue(createWizard.getLocales().getSelectedIndex());
+                final String locale = createWizard.getLocales().getItemText(createWizard.getLocales().getSelectedIndex());
+                final String localeId = createWizard.getLocales().getValue(createWizard.getLocales().getSelectedIndex());
+
+                // Setup a copy of the locale entity
+                final RESTLocaleV1 localeEntity = new RESTLocaleV1();
+                localeEntity.setValue(locale);
+                localeEntity.setId(Integer.parseInt(localeId));
 
                 final RESTCallBack<RESTTagV1> callback = new RESTCallBack<RESTTagV1>() {
                     @Override
                     public void success(final RESTTagV1 type) {
-                        createNewTopic(title, format, type, locale);
+                        createNewTopic(title, format, type, localeEntity);
                     }
                 };
 
@@ -2111,8 +2124,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 display.getCreateWizard().getLocales().clear();
-                for (final String locale : locales) {
-                    display.getCreateWizard().getLocales().addItem(locale, locale);
+                for (final RESTLocaleV1 locale : locales) {
+                    display.getCreateWizard().getLocales().addItem(locale.getValue(), locale.getId().toString());
                     if (locale.equals(defaultLocale)) {
                         display.getCreateWizard().getLocales().setSelectedIndex(display.getCreateWizard().getLocales().getItemCount() - 1);
                     }
@@ -2124,7 +2137,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 getFailOverRESTCall().performRESTCall(
                         FailOverRESTCallDatabase.getCategory(serverSettings.getEntities().getTypeCategoryId()), callback, display);
             }
@@ -2141,7 +2154,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
                 // If the tags have not been loaded, the tags collection will be null.
@@ -2179,7 +2192,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
                 reviewUpdateTopic = new RESTTopicV1();
@@ -2315,7 +2328,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                        public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                             try {
                                 final String result = reader.getStringResult();
 
@@ -3364,7 +3377,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle())) {
                     return true;
                 }
-                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale())) {
+                if (!GWTUtilities.objectEquals(selectedTopic.getLocale(), displayedTopic.getLocale())) {
                     return true;
                 }
                 if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(),
@@ -3398,7 +3411,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * Called to create a new topic
      */
     private void createNewTopic(@NotNull final String topicTitle, final RESTXMLFormat format, @NotNull final RESTTagV1 type,
-            @NotNull final String locale) {
+            @NotNull final RESTLocaleV1 locale) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.createNewTopic()");
 
@@ -3466,7 +3479,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
+                        final RESTLocaleCollectionV1 locales) {
                     final Integer stringConstantId;
                     if (type != null) {
                         if (serverSettings.getEntities().getAuthorGroupTagId().equals(type.getId())) {
@@ -3553,7 +3567,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getDocBookElementsStringConstantId()), callback,
                             display);
                 }
@@ -3572,7 +3586,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 // Get the list of template string constant ids from the StringConstant
                 final List<Integer> xmlTemplateIds = serverSettings.getDocBookTemplateIds();
                 final Map<String, String> data = new TreeMap<String, String>();

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
@@ -58,7 +59,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     }
 
     @Override
-    public void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<String> locales) {
+    public void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<RESTLocaleV1> locales) {
         /* SearchUIProjectsEditor is a grid */
         editor.initialize(readOnly, locales);
         /* Initialize the driver with the top-level editor */

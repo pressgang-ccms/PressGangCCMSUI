@@ -1541,4 +1541,19 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String FilterSuccessfullyLoaded();
+
+    @NotNull
+    String LocaleID();
+
+    @NotNull
+    String LocaleValue();
+
+    @NotNull
+    String LocaleTranslationValue();
+
+    @NotNull
+    String LocaleBuildValue();
+
+    @NotNull
+    String LocaleAlreadyExists();
 }

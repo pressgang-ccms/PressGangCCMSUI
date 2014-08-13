@@ -48,6 +48,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
@@ -56,6 +57,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerDetailsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
@@ -75,6 +77,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.FailOverRESTCallDatabase;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCallBack;
 import org.jboss.pressgang.ccms.ui.client.local.server.ServerDetails;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTLocaleV1Sort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -160,7 +163,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     /**
      * A reference to the StringConstants that holds the locales.
      */
-    private List<String> locales;
+    private List<RESTLocaleV1> locales;
 
     @Inject
     private Display display;
@@ -428,7 +431,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     }
 
     @NotNull
-    private List<String> getUnassignedLocales() {
+    private List<RESTLocaleV1> getUnassignedLocales() {
 
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null,
                 "There should be a displayed collection item.");
@@ -437,7 +440,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
         checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null,
                 "The displayed collection item to reference a valid entity and have a valid collection of language images.");
 
-        final List<String> newLocales = new ArrayList<String>(locales);
+        final List<RESTLocaleV1> newLocales = new ArrayList<RESTLocaleV1>(locales);
 
         /* Make it so you can't add a locale if it already exists */
         if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
@@ -453,9 +456,9 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     private void populateLocales() {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                locales = serverSettings.getLocales();
-                Collections.sort(locales);
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
+                ImagesFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+                Collections.sort(ImagesFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 finishLoading();
             }
         });
@@ -538,7 +541,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                                     for (final RESTLanguageImageCollectionItemV1 languageImage : sourceImage.getLanguageImages_OTM()
                                             .returnDeletedAndAddedCollectionItems()) {
                                         // Make sure we don't add the current selection
-                                        if (!languageImage.getItem().getLocale().equalsIgnoreCase(editor.self.getItem().getLocale())) {
+                                        if (!languageImage.getItem().getLocale().equals(editor.self.getItem().getLocale())) {
                                             updateImage.getLanguageImages_OTM().getItems().add(languageImage);
                                         }
                                     }
@@ -697,7 +700,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                         imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().setValue(
                                 imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM()
                                         .returnExistingAddedAndUpdatedCollectionItems());
-                        imageComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(selectedImage.getItem().getLocale());
+                        final RESTLocaleV1 locale = selectedImage.getItem().getLocale();
+                        imageComponent.getDisplay().getAddLocaleDialog().getLocales().addItem(locale.getValue(), locale.getId().toString());
 
                         // Rebind the upload buttons
                         bindImageUploadButtons();
@@ -719,13 +723,15 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
                 final String selectedLocale = imageComponent.getDisplay().getAddLocaleDialog().getLocales().getItemText(
                         imageComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
+                final Integer selectedLocaleId = Integer.parseInt(imageComponent.getDisplay().getAddLocaleDialog().getLocales().getValue(
+                        imageComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex()));
 
                 /* Don't add locales twice */
                 RESTLanguageImageCollectionItemV1 existingLanguageImageItem = null;
                 if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
                     for (@NotNull final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
-                        if (langImage.getItem().getLocale().equals(selectedLocale)) {
+                        if (langImage.getItem().getLocale().getId().equals(selectedLocaleId)) {
                             if (existingLanguageImageItem.returnIsRemoveItem()) {
                                 // The language item exists but isn't displayed because it was set for removal
                                 existingLanguageImageItem = langImage;
@@ -744,8 +750,12 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                     languageImageItem = new RESTLanguageImageCollectionItemV1();
                     languageImageItem.setState(RESTBaseEntityCollectionItemV1.ADD_STATE);
 
+                    final RESTLocaleV1 tempLocale = new RESTLocaleV1();
+                    tempLocale.setId(selectedLocaleId);
+                    tempLocale.setValue(selectedLocale);
+
                     final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                    languageImage.explicitSetLocale(selectedLocale);
+                    languageImage.explicitSetLocale(tempLocale);
                     languageImageItem.setItem(languageImage);
                     imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM().addNewItem(
                             languageImage);
@@ -908,8 +918,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 if (isOKToProceed()) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                            final String defaultLocale = serverSettings.getDefaultLocale();
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                            final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
 
                             // Create the image wrapper
                             final RESTImageCollectionItemV1 imageCollectionItem = new RESTImageCollectionItemV1();
@@ -963,8 +973,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
-                            final String defaultLocale = serverSettings.getDefaultLocale();
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                            final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
                             createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
                                     display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
                         }
@@ -984,7 +994,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
      * @param files       The collection of file selected on the disk
      * @param ids         A list of the newly created image ids
      */
-    private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index,
+    private void createNewImage(@NotNull final String description, @NotNull final RESTLocaleV1 locale, final int index,
             @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiles) {
         if (index >= files.getLength()) {
             final StringBuilder idsQuery = new StringBuilder();
@@ -1086,7 +1096,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
 
         if (viewIsInFilter(filter, imageComponent.getDisplay())) {
             imageComponent.getDisplay().displayExtended(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false,
-                    getUnassignedLocales().toArray(new String[0]));
+                    getUnassignedLocales().toArray(new RESTLocaleV1[0]));
 
             // select the docbook template text so the users can just CTRL-C to copy it out
             Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {

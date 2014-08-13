@@ -19,13 +19,14 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.locale;
 
-import com.google.gwt.user.client.ui.TriStateSelectionState;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gwt.user.client.ui.TriStateSelectionState;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a collection of locales that can be searched for,
@@ -36,7 +37,7 @@ public class SearchUILocales {
     /**
      * @param localeNames The list of locale names to be used for searching.
      */
-    public SearchUILocales(@NotNull final List<String> localeNames) {
+    public SearchUILocales(@NotNull final List<RESTLocaleV1> localeNames) {
         initialize(localeNames);
     }
 
@@ -52,10 +53,10 @@ public class SearchUILocales {
      *
      * @param localeNames The list of locales to include in the UI
      */
-    public void initialize(@NotNull final List<String> localeNames) {
+    public void initialize(@NotNull final List<RESTLocaleV1> localeNames) {
         locales.clear();
-        for (@NotNull final String locale : localeNames) {
-            locales.add(new SearchUILocale(locale));
+        for (@NotNull final RESTLocaleV1 locale : localeNames) {
+            locales.add(new SearchUILocale(locale.getValue()));
         }
     }
 

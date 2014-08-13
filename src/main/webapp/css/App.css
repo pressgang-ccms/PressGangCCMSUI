@@ -1570,33 +1570,29 @@ table.ProcessWaitingTable {
 }
 
 .SettingsZanataTable input,
-.SettingsUndefinedTable input {
+.SettingsUndefinedTable input,
+.SettingsLocaleTable input {
     display: inline-block;
-    width: 100%;
+    width: 95%;
     min-width: 20px;
     margin-right: 5px;
 }
 
-.SettingsZanataTable tfoot th {
-    padding-right: 0px;
-}
-
-.SettingsZanataNameFooter input,
-.SettingsZanataProjectVersionFooter input {
+.SettingsZanataTable td:nth-child(2) div,
+.SettingsZanataTable td:nth-child(5) div {
     width: 100px;
 }
 
-.SettingsZanataIDFooter input {
-    width: 80px;
-}
-
-.SettingsZanataProjectFooter input {
+.SettingsZanataTable td:nth-child(4) div {
     width: 120px;
 }
 
-.SettingsZanataURLFooter {
-    padding-right: 15px !important;
-    width: 100%
+.SettingsZanataTable td:first-child div {
+    width: 80px;
+}
+
+.SettingsZanataTable td:nth-child(3) {
+    width: 100%;
 }
 
 .SettingsKeyFooter {
@@ -1663,4 +1659,9 @@ table.ProcessWaitingTable {
     border-top: none;
     padding-left: 3px;
     padding-top: 3px;
+}
+
+.SettingsLocaleTable td:first-child,
+.SettingsLocaleTable td:last-child {
+    width: 5px
 }

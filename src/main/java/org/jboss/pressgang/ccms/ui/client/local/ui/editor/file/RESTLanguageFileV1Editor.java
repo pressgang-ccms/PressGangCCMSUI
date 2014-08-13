@@ -130,7 +130,7 @@ public final class RESTLanguageFileV1Editor extends FlexTable implements ValueAw
         this.self = value;
 
         if (value.getItem().getLocale() != null) {
-            this.parentPanel.setTabText(this.parentIndex, value.getItem().getLocale());
+            this.parentPanel.setTabText(this.parentIndex, value.getItem().getLocale().getValue());
         }
 
         if (value.getItem().getFilename() != null) {

@@ -393,6 +393,25 @@ final public class GWTUtilities {
     }
 
     /**
+     * Compares two Objects for equality.
+     *
+     * @param a The first object
+     * @param b The second object
+     * @return true if both object are either null or if both objects are equal
+     */
+    public static boolean objectEquals(@Nullable final Object a, @Nullable final Object b) {
+        if (a == null && b == null) {
+            return true;
+        }
+
+        if (a != null) {
+            return a.equals(b);
+        }
+
+        return b.equals(a);
+    }
+
+    /**
      * Compares two lists for equality, considering null and empty lists to be equal.
      *
      * @param a The first list

@@ -151,7 +151,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         id.setValue(value.getId());
         topicId.setValue(value.getTopicId());
         topicRevision.setValue(value.getTopicRevision());
-        locale.setText(value.getLocale());
+        locale.setText(value.getLocale().getValue());
         xmlDoctype.setText(value.getXmlFormat().getCommonName());
     }
 

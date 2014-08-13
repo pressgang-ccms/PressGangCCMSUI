@@ -35,6 +35,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.impl.DOMParseException;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.enums.RESTXMLFormat;
@@ -107,7 +108,7 @@ public class TranslatedTopicRenderedPresenter extends BaseTopicRenderedPresenter
     public void displayTopicRendered(final RESTTranslatedTopicV1 translatedTopic, final boolean readOnly, final boolean showImages) {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
                 try {
                     String xml = cleanXMLAndAddAdditionalContent(translatedTopic.getXmlFormat(), translatedTopic.getXml(), showImages);
 

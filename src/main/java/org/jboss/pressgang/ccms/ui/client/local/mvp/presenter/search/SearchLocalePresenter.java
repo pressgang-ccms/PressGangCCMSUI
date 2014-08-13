@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
@@ -77,7 +78,8 @@ public class SearchLocalePresenter extends BaseTemplatePresenter implements Base
 
     }
 
-    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<List<String>, SearchUILocales, SearchUILocaleEditor> {
+    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<List<RESTLocaleV1>, SearchUILocales,
+            SearchUILocaleEditor> {
         SearchUILocales getSearchUILocales();
     }
 }

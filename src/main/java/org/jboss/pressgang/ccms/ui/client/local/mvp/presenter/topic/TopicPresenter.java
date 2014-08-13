@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
@@ -43,7 +44,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     }
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
-        void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<String> locales);
+        void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<RESTLocaleV1> locales);
         RESTTopicV1BasicDetailsEditor getEditor();
     }
 
