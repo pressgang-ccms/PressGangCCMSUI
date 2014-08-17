@@ -71,7 +71,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollec
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseAuditedEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
@@ -1485,7 +1485,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * The interface that defines the top level topic list and edit view
      */
     public interface Display<
-            T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>,
+            T extends RESTBaseAuditedEntityV1<T, U, V>, U extends RESTBaseEntityCollectionV1<T, U, V>,
             V extends RESTBaseEntityCollectionItemV1<T, U, V>> extends BaseSearchAndEditViewInterface<T, U, V> {
 
 

@@ -33,7 +33,6 @@ import com.google.gwt.user.client.ui.ClosablePopup;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
@@ -110,7 +109,7 @@ public class FreezePresenter extends BaseActionPresenter<RESTTextContentSpecV1> 
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     // Create the snapshot
                     getFailOverRESTCall().performRESTCall(
                             FailOverRESTCallDatabase.freezeContentSpec(contentSpec.getId(), message.toString(), useLatestRevisions,

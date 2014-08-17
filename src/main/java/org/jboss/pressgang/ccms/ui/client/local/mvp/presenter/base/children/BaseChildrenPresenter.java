@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkState;
 import com.google.gwt.cell.client.FieldUpdater;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseAuditedEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -35,9 +35,9 @@ import org.jetbrains.annotations.Nullable;
  * @see BaseChildrenPresenterInterface
  */
 public abstract class BaseChildrenPresenter<
-        T extends RESTBaseEntityV1<?, ?, ?>,
+        T extends RESTBaseAuditedEntityV1<?, ?, ?>,
         C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
-        D extends RESTBaseEntityV1<D, E, F>,
+        D extends RESTBaseAuditedEntityV1<D, E, F>,
         E extends RESTBaseEntityCollectionV1<D, E, F>,
         F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseTemplatePresenter implements BaseChildrenPresenterInterface<T, C, D, E, F> {

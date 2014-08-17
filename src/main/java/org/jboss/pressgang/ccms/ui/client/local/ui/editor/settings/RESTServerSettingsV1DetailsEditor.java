@@ -41,7 +41,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.WholeNumbersV
 import org.jetbrains.annotations.NotNull;
 
 public final class RESTServerSettingsV1DetailsEditor extends FlexTable implements Editor<RESTServerSettingsV1> {
-    private final DisclosurePanel zanataDetailsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.ZanataServers());
+    private final DisclosurePanel zanataDetailsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.TranslationServers());
     private final DisclosurePanel localeDetailsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.Locales());
     private final FlexTable localeDetailsTable = new FlexTable();
     private final DisclosurePanel customSettingsPanel = new DisclosurePanel(PressGangCCMSUI.INSTANCE.CustomSettings());
@@ -70,7 +70,7 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
         public void render(RESTLocaleV1 object, Appendable appendable) throws IOException {
         }
     });
-    private final RESTZanataServerSettingsCollectionV1Editor zanataServersEditor;
+    private final RESTTranslationServerExtendedCollectionV1Editor translationServersEditor;
     private final RESTServerUndefinedSettingsCollectionV1Editor customSettingsEditor;
     private final RESTLocaleCollectionV1Editor localesEditor;
     private final OtherSettingsEditor seoCategoryIds = new OtherSettingsEditor(PressGangCCMSUI.INSTANCE.SEOCategoryIDs());
@@ -102,8 +102,8 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
     }
 
     @NotNull
-    public RESTZanataServerSettingsCollectionV1Editor zanataSettingsEditor() {
-        return zanataServersEditor;
+    public RESTTranslationServerExtendedCollectionV1Editor translationServersEditor() {
+        return translationServersEditor;
     }
 
     @NotNull
@@ -121,13 +121,13 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
         return seoCategoryIds;
     }
 
-    @Ignore
-    public RESTLocaleCollectionV1Editor getLocalesEditor() {
+    @NotNull
+    public RESTLocaleCollectionV1Editor localesEditor() {
         return localesEditor;
     }
 
     public RESTServerSettingsV1DetailsEditor(final boolean readOnly) {
-        zanataServersEditor = new RESTZanataServerSettingsCollectionV1Editor(readOnly);
+        translationServersEditor = new RESTTranslationServerExtendedCollectionV1Editor(readOnly);
         customSettingsEditor = new RESTServerUndefinedSettingsCollectionV1Editor(readOnly);
         localesEditor = new RESTLocaleCollectionV1Editor(readOnly);
 
@@ -189,7 +189,7 @@ public final class RESTServerSettingsV1DetailsEditor extends FlexTable implement
 
         zanataDetailsPanel.setAnimationEnabled(true);
         zanataDetailsPanel.setOpen(true);
-        zanataDetailsPanel.add(zanataServersEditor);
+        zanataDetailsPanel.add(translationServersEditor);
 
         customSettingsPanel.setAnimationEnabled(true);
         customSettingsPanel.setOpen(false);

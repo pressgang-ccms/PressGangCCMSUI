@@ -48,6 +48,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     private final PushButton save = UIUtilities.createTopPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
+    private final PushButton translationDetails = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TranslationProperties());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
     private final PushButton history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
@@ -63,6 +64,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
+    private final Label translationDetailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TranslationProperties());
     private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecText());
     private final Label historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
     private final Label tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
@@ -95,6 +97,11 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         return details;
     }
 
+    @Override
+    public PushButton getTranslationDetails() {
+        return translationDetails;
+    }
+
     @NotNull
     @Override
     public PushButton getSave() {
@@ -117,6 +124,11 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
     @Override
     public Label getDetailsDown() {
         return detailsDown;
+    }
+
+    @Override
+    public Label getTranslationDetailsDown() {
+        return translationDetailsDown;
     }
 
     @NotNull
@@ -211,6 +223,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends BaseSearchAndEditV
         addActionButton(getText());
         addActionButton(getErrors());
         addActionButton(getDetails());
+        addActionButton(getTranslationDetails());
         addActionButton(getExtendedProperties());
         addActionButton(getContentSpecTags());
         addActionButton(getHistory());

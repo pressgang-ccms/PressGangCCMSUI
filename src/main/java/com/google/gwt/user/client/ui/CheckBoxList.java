@@ -28,6 +28,7 @@ public class CheckBoxList extends Composite {
     private final ScrollPanel scroller = new ScrollPanel();
     private final VerticalPanel panel = new VerticalPanel();
     private final List<Widget> checkBoxes = new ArrayList<Widget>();
+    private boolean enabled = true;
 
     public CheckBoxList() {
         initWidget(scroller);
@@ -54,19 +55,14 @@ public class CheckBoxList extends Composite {
     }
 
     public void addItem(final String label, final String value, final boolean checked) {
-        addItem(label, value, checked, true);
-    }
-
-    public void addItem(final String label, final String value, final boolean checked, boolean enabled) {
         final CheckBox checkBox = new CheckBox(label);
         checkBox.setFormValue(value);
         checkBox.setValue(checked);
-        checkBox.setEnabled(enabled);
-        panel.add(checkBox);
-        checkBoxes.add(checkBox);addItem(checkBox);
+        addItem(checkBox);
     }
 
     public void addItem(final CheckBox checkBox) {
+        checkBox.setEnabled(enabled);
         panel.add(checkBox);
         checkBoxes.add(checkBox);
     }
@@ -235,6 +231,17 @@ public class CheckBoxList extends Composite {
     private void checkIndex(int index) {
         if (index < 0 || index >= getItemCount()) {
             throw new IndexOutOfBoundsException();
+        }
+    }
+
+    public void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+        for (final Widget checkBox : checkBoxes) {
+            if (checkBox instanceof CheckBox) {
+                ((CheckBox) checkBox).setEnabled(enabled);
+            } else if (checkBox instanceof CheckBoxListGroup) {
+                ((CheckBoxListGroup) checkBox).setEnabled(enabled);
+            }
         }
     }
 }

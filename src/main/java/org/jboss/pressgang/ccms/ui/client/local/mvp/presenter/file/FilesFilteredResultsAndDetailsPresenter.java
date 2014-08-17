@@ -48,7 +48,6 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFileCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageFileCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFileCollectionItemV1;
@@ -373,8 +372,8 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
     private void populateLocales() {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
-                FilesFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                FilesFilteredResultsAndDetailsPresenter.this.locales = serverSettings.getLocales().returnItems();
                 Collections.sort(FilesFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 finishLoading();
             }
@@ -831,7 +830,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 if (isOKToProceed()) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
 
                             // Create the file wrapper
@@ -885,7 +884,7 @@ public class FilesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditPr
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
                             createNewFile(display.getBulkUploadDialog().getDescription().getText(), defaultLocale,
                                     display.getBulkUploadDialog().getFilePath().getText(), 0,

@@ -42,7 +42,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201408141713";
+    public static final String BUILD = "201408192346";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1575,6 +1575,9 @@ public final class Constants {
      * This is the value for the category logic option "or", as passed by the query strings.
      */
     public static final String OR_LOGIC_QUERY_STRING_VALUE = "Or";
+
+    public static final String TRANSLATION_SERVER_PROJECT = "skynet-topics";
+    public static final String TRANSLATION_SERVER_PROJECT_VERSION = "1";
 
     /*
         Navigation Button ID's

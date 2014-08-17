@@ -37,7 +37,6 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
@@ -110,10 +109,10 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                 final Map<PushButton, Label> tabButtonsAndLabels = new HashMap<PushButton, Label>();
                 // Get the common query and locales that will make up the grouped results
-                final List<RESTLocaleV1> localesList = locales.returnItems();
+                final List<RESTLocaleV1> localesList = serverSettings.getLocales().returnItems();
                 Collections.sort(localesList, new RESTLocaleV1Sort());
                 final Map<String, String> localeQueries = breakDownQuery(localesList);
 

@@ -27,7 +27,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -94,9 +93,8 @@ public abstract class BaseSearchTagsFieldsAndFiltersPresenter extends BaseTempla
             public void readonlyCallback(final boolean readOnly) {
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                            final RESTLocaleCollectionV1 locales) {
-                        final List<RESTLocaleV1> localesList = locales.returnItems();
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                        final List<RESTLocaleV1> localesList = serverSettings.getLocales().returnItems();
                         Collections.sort(localesList, new RESTLocaleV1Sort());
                         localePresenter.getDisplay().display(localesList, readOnly);
                     }

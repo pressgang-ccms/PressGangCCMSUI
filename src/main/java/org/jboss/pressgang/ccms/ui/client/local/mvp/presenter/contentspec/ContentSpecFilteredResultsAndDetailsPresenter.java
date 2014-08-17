@@ -60,7 +60,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTTextContentSpecCollectionV1;
@@ -75,7 +74,10 @@ import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLocaleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslationServerExtendedV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslationServerV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSTranslationDetailV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ReadOnlyCallback;
@@ -172,6 +174,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
      * A list of locales retrieved from the server
      */
     private List<RESTLocaleV1> locales;
+    private List<RESTTranslationServerV1> translationServers;
 
     /**
      * true after the default locale has been loaded
@@ -201,6 +204,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private ContentSpecPresenter contentSpecPresenter;
     @Inject
     private ContentSpecDetailsPresenter contentSpecDetailsPresenter;
+    @Inject
+    private ContentSpecTranslationDetailsPresenter contentSpecTranslationDetailsPresenter;
     @Inject
     private ContentSpecFilteredResultsPresenter filteredResultsPresenter;
     /**
@@ -348,7 +353,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 // Set the href for the docbuilder url
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                    public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
                         String docBuilderUrl = serverSettings.getDocBuilderUrl();
                         docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
                         if (!docBuilderUrl.endsWith("/")) {
@@ -391,6 +396,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                 public void readonlyCallback(final boolean readOnly) {
                     if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
                         contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, readOnly, locales);
+                    }
+
+                    if (viewIsInFilter(filter, contentSpecTranslationDetailsPresenter.getDisplay())) {
+                        contentSpecTranslationDetailsPresenter.getDisplay().displayContentSpecTranslationDetails(displayedItem, readOnly,
+                                locales, translationServers);
                     }
 
                     if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
@@ -483,6 +493,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             }
         });
 
+        display.getTranslationDetails().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                switchView(contentSpecTranslationDetailsPresenter.getDisplay());
+            }
+        });
+
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -508,6 +525,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                     final String rhs = contentSpecRevisionsPresenter.getDisplay().getMergely().getRhs();
                     filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().setText(rhs);
                     initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{contentSpecPresenter.getDisplay(),
+                            contentSpecTranslationDetailsPresenter.getDisplay(),
                             contentSpecRevisionsPresenter.getDisplay()}));
                 }
                 contentSpecRevisionsPresenter.getDisplay().displayRevisions();
@@ -614,6 +632,63 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                         updatedSpec.getTags().setItems(displayedEntity.getTags().getItems());
                     }
 
+                    if (displayedEntity.getTranslationDetails() != null) {
+                        final RESTCSTranslationDetailV1 displayedDetails = displayedEntity.getTranslationDetails();
+                        final RESTCSTranslationDetailV1 currentDetails = selectedEntity.getTranslationDetails();
+
+                        final RESTCSTranslationDetailV1 translationDetail = new RESTCSTranslationDetailV1();
+                        translationDetail.setId(displayedDetails.getId());
+
+                        if (currentDetails != null) {
+                            // Updated translation details
+                            if (!GWTUtilities.booleanEquals(displayedDetails.isEnabled(), currentDetails.isEnabled())) {
+                                translationDetail.explicitSetEnabled(displayedDetails.isEnabled());
+                            }
+
+                            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedDetails.getProject(),
+                                    currentDetails.getProject())) {
+                                translationDetail.explicitSetProject(displayedDetails.getProject());
+                            }
+
+                            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedDetails.getProjectVersion(),
+                                    currentDetails.getProjectVersion())) {
+                                translationDetail.explicitSetProjectVersion(displayedDetails.getProjectVersion());
+                            }
+
+                            if (!GWTUtilities.objectEquals(displayedDetails.getTranslationServer(),
+                                    currentDetails.getTranslationServer())) {
+                                translationDetail.explictSetTranslationServer(displayedDetails.getTranslationServer());
+                            }
+
+                            if (displayedDetails.getLocales() != null && displayedDetails.getLocales()
+                                    .returnDeletedAddedAndUpdatedCollectionItems().size() > 0) {
+                                translationDetail.explicitSetLocales(displayedDetails.getLocales());
+                            }
+                        } else {
+                            // New translation details
+                            if (displayedDetails.isEnabled()) {
+                                translationDetail.explicitSetEnabled(displayedDetails.isEnabled());
+                            }
+                            if (!Constants.TRANSLATION_SERVER_PROJECT.equalsIgnoreCase(displayedDetails.getProject())) {
+                                translationDetail.explicitSetProject(displayedDetails.getProject());
+                            }
+                            if (!Constants.TRANSLATION_SERVER_PROJECT_VERSION.equalsIgnoreCase(displayedDetails.getProjectVersion())) {
+                                translationDetail.explicitSetProjectVersion(displayedDetails.getProjectVersion());
+                            }
+                            if (displayedDetails.getTranslationServer() != null) {
+                                translationDetail.explictSetTranslationServer(displayedDetails.getTranslationServer());
+                            }
+                            if (displayedDetails.getLocales() != null && displayedDetails.getLocales().getItems().size() > 0) {
+                                translationDetail.explicitSetLocales(displayedDetails.getLocales());
+                            }
+                        }
+
+                        if (translationDetail.getConfiguredParameters() != null
+                                && !translationDetail.getConfiguredParameters().isEmpty()) {
+                            updatedSpec.explicitSetTranslationDetails(translationDetail);
+                        }
+                    }
+
                     if (filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem()) {
 
                         final RESTCallBack<RESTTextContentSpecV1> addCallback = new RESTCallBack<RESTTextContentSpecV1>() {
@@ -672,9 +747,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                         updateDisplayWithNewEntityData(true);
                                     }
 
-                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                                        add(contentSpecPresenter.getDisplay());
-                                    }});
+                                    initializeViews(Arrays.<BaseTemplateViewInterface>asList(contentSpecPresenter.getDisplay(),
+                                            contentSpecTranslationDetailsPresenter.getDisplay()));
 
                                     if (!isStringNullOrEmpty(retValue.getFailedContentSpec())) {
                                         AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId() + "" +
@@ -698,8 +772,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                    RESTLocaleCollectionV1 locales) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(
                                         FailOverRESTCallDatabase.createTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
@@ -775,9 +848,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                                 ComponentContentSpecV1.fixDisplayedText(
                                         filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
-                                initializeViews(new ArrayList<BaseTemplateViewInterface>() {{
-                                    add(contentSpecPresenter.getDisplay());
-                                }});
+                                initializeViews(Arrays.<BaseTemplateViewInterface>asList(contentSpecPresenter.getDisplay(),
+                                        contentSpecTranslationDetailsPresenter.getDisplay()));
                                 updateDisplayWithNewEntityData(false);
 
                                 if (overwroteChanges) {
@@ -799,8 +871,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                    RESTLocaleCollectionV1 locales) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(
                                         FailOverRESTCallDatabase.updateTextContentSpec(updatedSpec, message.toString(), flag,
                                                 serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
@@ -851,10 +922,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             public void execute() {
                 if (hasUnsavedChanges()) {
                     AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+                } else if (getDisplayedContentSpec().getTranslationDetails() == null
+                        || getDisplayedContentSpec().getTranslationDetails().getTranslationServer() == null) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithoutTranslationDetails());
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final ActionCompletedCallback<RESTTextContentSpecV1> callback = new
                                     ActionCompletedCallback<RESTTextContentSpecV1>() {
                                 @Override
@@ -887,8 +961,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         final Command syncTranslationCommand = new Command() {
             @Override
             public void execute() {
-                translationSyncPresenter.display(getDisplayedContentSpec(), display);
-                translationSyncPresenter.addActionCompletedHandler(completedProcessCallback);
+                if (hasUnsavedChanges()) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithUnsavedChanges());
+                } else if (getDisplayedContentSpec().getTranslationDetails() == null
+                        || getDisplayedContentSpec().getTranslationDetails().getTranslationServer() == null) {
+                    AlertBox.setMessageAndDisplay(PressGangCCMSUI.INSTANCE.CanNotProceedWithoutTranslationDetails());
+                } else {
+                    translationSyncPresenter.display(getDisplayedContentSpec(), display);
+                    translationSyncPresenter.addActionCompletedHandler(completedProcessCallback);
+                }
             }
         };
 
@@ -1026,7 +1107,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     getFailOverRESTCall().performRESTCall(
                             FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getContentSpecTemplateId()),
                             callback, display);
@@ -1072,6 +1153,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         };
 
         contentSpecDetailsPresenter.bindExtended();
+        contentSpecTranslationDetailsPresenter.bindExtended();
         contentSpecPresenter.bindExtended();
         contentSpecErrorsPresenter.bindExtended();
         filteredResultsPresenter.bindExtendedFilteredResults(queryString);
@@ -1108,10 +1190,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
-                ContentSpecFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
-                Collections.sort(ContentSpecFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales().returnItems();
+                Collections.sort(locales, new RESTLocaleV1Sort());
                 defaultLocale = serverSettings.getDefaultLocale();
+
+                // Copy the translation servers
+                translationServers = new ArrayList<RESTTranslationServerV1>();
+                for (final RESTTranslationServerExtendedV1 item : serverSettings.getTranslationServers().returnItems()) {
+                    final RESTTranslationServerV1 translationServer = new RESTTranslationServerV1();
+                    item.cloneInto(translationServer, true);
+                    translationServers.add(translationServer);
+                }
+
                 displayNewContentSpec();
                 displayInitialContentSpec(getNewEntityCallback);
             }
@@ -1789,6 +1880,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         commonExtendedPropertiesPresenter.close();
         contentSpecTagsPresenter.close();
         contentSpecDetailsPresenter.close();
+        contentSpecTranslationDetailsPresenter.close();
         contentSpecProcessPresenter.close();
         translationSyncPresenter.close();
         translationPushPresenter.close();
@@ -1896,6 +1988,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         display.replaceTopActionButton(this.display.getTextDown(), this.display.getText());
         display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+        display.replaceTopActionButton(this.display.getTranslationDetailsDown(), this.display.getTranslationDetails());
         display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
         display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
         display.replaceTopActionButton(this.display.getContentSpecTagsDown(), this.display.getContentSpecTags());
@@ -1904,6 +1997,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         if (displayedView == this.contentSpecDetailsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
+        } else if (displayedView == this.contentSpecTranslationDetailsPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getTranslationDetails(), this.display.getTranslationDetailsDown());
         } else if (displayedView == this.contentSpecPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getText(), this.display.getTextDown());
         } else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
@@ -2030,6 +2125,38 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
             if (displayedEntity.getProperties() != null && !displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems()
                     .isEmpty()) {
                 return true;
+            }
+
+            if (displayedEntity.getTranslationDetails() != null) {
+                final RESTCSTranslationDetailV1 displayedDetails = displayedEntity.getTranslationDetails();
+                final RESTCSTranslationDetailV1 currentDetails = selectedEntityCollectionItem.getItem().getTranslationDetails() == null ?
+                        new RESTCSTranslationDetailV1() : selectedEntityCollectionItem.getItem().getTranslationDetails();
+
+                // Check for changed boolean values
+                if (!GWTUtilities.booleanEquals(displayedDetails.isEnabled(), currentDetails.isEnabled())) {
+                    return true;
+                }
+
+                // Check for changed server
+                if (!GWTUtilities.objectEquals(displayedDetails.getTranslationServer(), currentDetails.getTranslationServer())) {
+                    return true;
+                }
+
+                // Check for changed locales
+                if (displayedDetails.getLocales() != null && !displayedDetails.getLocales().returnDeletedAddedAndUpdatedCollectionItems()
+                        .isEmpty()) {
+                    return true;
+                }
+
+                // TODO Enable this when we can set the project/project version
+//                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedDetails.getProject(),
+//                        displayedDetails.getProject())) {
+//                    return true;
+//                }
+//                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(displayedDetails.getProjectVersion(),
+//                        displayedDetails.getProjectVersion())) {
+//                    return true;
+//                }
             }
 
             if (!displayedEntityCollectionItem.returnIsAddItem()) {
@@ -2434,6 +2561,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
         PushButton getDetails();
 
+        PushButton getTranslationDetails();
+
         PushButton getSave();
 
         PushButton getHistory();
@@ -2457,6 +2586,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
         Label getErrorsDown();
 
         Label getDetailsDown();
+
+        Label getTranslationDetailsDown();
 
         Label getExtendedPropertiesDown();
 

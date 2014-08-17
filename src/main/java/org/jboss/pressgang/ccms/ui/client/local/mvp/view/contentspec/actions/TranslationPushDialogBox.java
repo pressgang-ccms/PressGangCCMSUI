@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
@@ -46,7 +45,7 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
     private final PasswordTextBox apiKey = new PasswordTextBox();
     private final CheckBox contentSpecOnly = new CheckBox(PressGangCCMSUI.INSTANCE.TranslationContentSpecOnly());
     private final CheckBox disableCopyTrans = new CheckBox(PressGangCCMSUI.INSTANCE.TranslationDisableCopyTrans());
-    private final ListBox servers = new ListBox();
+    private final Label serversValueLabel = new Label();
 
     private final PushButton start = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Start());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -63,7 +62,7 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
         layout.setWidget(0, 0, nameLabel);
         layout.setWidget(0, 1, name);
         layout.setWidget(1, 0, serversLabel);
-        layout.setWidget(1, 1, servers);
+        layout.setWidget(1, 1, serversValueLabel);
         layout.setWidget(2, 0, usernameLabel);
         layout.setWidget(2, 1, username);
         layout.setWidget(3, 0, apiKeyLabel);
@@ -75,7 +74,6 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
         layout.getFlexCellFormatter().setColSpan(4, 0, 2);
         layout.getFlexCellFormatter().setColSpan(5, 0, 2);
         layout.getFlexCellFormatter().setColSpan(6, 0, 2);
-        servers.setWidth("100%");
 
         name.getElement().setPropertyString("placeholder", PressGangCCMSUI.INSTANCE.EnterOptionalName());
 
@@ -108,8 +106,8 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
     }
 
     @Override
-    public ListBox getServers() {
-        return servers;
+    public Label getServer() {
+        return serversValueLabel;
     }
 
     @Override
@@ -132,7 +130,7 @@ public class TranslationPushDialogBox extends DialogBox implements TranslationPu
         name.setText("");
         username.setText("");
         apiKey.setText("");
-        servers.clear();
+        serversValueLabel.setText("");
         contentSpecOnly.setValue(false);
         disableCopyTrans.setValue(false);
     }

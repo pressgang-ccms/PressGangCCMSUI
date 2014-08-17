@@ -48,6 +48,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSNodeV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTCSTranslationDetailV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
@@ -203,18 +204,31 @@ public final class FailOverRESTCallDatabase {
      * Content specifications need the extended properties expanded
      */
     private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TRANSLATION_DETAILS_NAME + "\"},\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.LOCALES_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.TRANSLATION_SERVER_NAME + "\"}}" +
+            "]}";
 
     /**
      * The required expansion details for a content spec. This is used when loading a content spec revision for the first time
      */
     private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS = "{\"branches\":[" +
             "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}" +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TRANSLATION_DETAILS_NAME + "\"},\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.LOCALES_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.TRANSLATION_SERVER_NAME + "\"}}" +
+            "]}" +
             "]}";
 
     private static final String LOCALES_EXPAND = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.LOCALES_EXPANSION_NAME +
             "\"}}]}";
+
+    private static final String SERVER_SETTINGS_EXPAND = "{\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTServerSettingsV1.LOCALES_NAME +"\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTServerSettingsV1.TRANSLATION_SERVERS_NAME +"\"}}" +
+            "]}";
 
     public static RESTCall createTextContentSpec(@NotNull final RESTTextContentSpecV1 contentSpec, @NotNull final String message,
             @NotNull final Integer flag, @NotNull final String userId) {
@@ -405,11 +419,15 @@ public final class FailOverRESTCallDatabase {
                         "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\":" + start + ", " +
                         "\"end\":" + end + "}," +
                         "\"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
-                        "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
-                        "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
+                            "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+                            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TEXT_NAME + "\"}}," +
+                            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
+                            "{\"trunk\":{\"name\": \"" + RESTTextContentSpecV1.TRANSLATION_DETAILS_NAME + "\"},\"branches\":[" +
+                                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.LOCALES_NAME + "\"}}," +
+                                "{\"trunk\":{\"name\": \"" + RESTCSTranslationDetailV1.TRANSLATION_SERVER_NAME + "\"}}" +
+                            "]}" +
                         "]}" +
-                        "]}";
+                    "]}";
                 restService.getJSONTextContentSpec(id, revisionExpand);
             }
 
@@ -2201,7 +2219,7 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.getJSONServerSettings();
+                restService.getJSONServerSettings(SERVER_SETTINGS_EXPAND);
             }
 
             @Override
@@ -2243,7 +2261,7 @@ public final class FailOverRESTCallDatabase {
                 failOverRESTCall.performRESTCall(getLocales(), new RESTCallBack<RESTLocaleCollectionV1>() {
                     @Override
                     public void success(@NotNull final RESTLocaleCollectionV1 locales) {
-                        serverSettingsCallback.serverSettingsLoaded(value, locales);
+                        serverSettingsCallback.serverSettingsLoaded(value);
                     }
                 });
             }
@@ -2385,12 +2403,12 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
-    public static RESTCall startTranslationPush(@NotNull final Integer contentSpecId, final String serverId, final String processName,
+    public static RESTCall startTranslationPush(@NotNull final Integer contentSpecId, final String processName,
             final boolean contentSpecOnly, final boolean disableCopyTrans, final String username, final String apiKey) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.pushContentSpecForTranslation(contentSpecId, serverId, "", processName, contentSpecOnly, disableCopyTrans,
+                restService.pushContentSpecForTranslation(contentSpecId, "", processName, contentSpecOnly, disableCopyTrans,
                         false, username, apiKey);
             }
 
@@ -2401,12 +2419,12 @@ public final class FailOverRESTCallDatabase {
         };
     }
 
-    public static RESTCall startTranslationSync(@NotNull final Integer contentSpecId, final String serverId, final String processName,
-            final List<String> locales, final String username, final String apiKey) {
+    public static RESTCall startTranslationSync(@NotNull final Integer contentSpecId, final String processName, final List<String> locales,
+            final String username, final String apiKey) {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.syncContentSpecTranslations(contentSpecId, serverId, "", processName, Joiner.on(",").join(locales), username,
+                restService.syncContentSpecTranslations(contentSpecId, "", processName, Joiner.on(",").join(locales), username,
                         apiKey);
             }
 
@@ -2468,7 +2486,7 @@ public final class FailOverRESTCallDatabase {
         return new RESTCall() {
             @Override
             public void call(@NotNull final RESTInterfaceV1 restService) {
-                restService.updateJSONServerSettings(entity);
+                restService.updateJSONServerSettings(SERVER_SETTINGS_EXPAND, entity);
             }
 
             @Override

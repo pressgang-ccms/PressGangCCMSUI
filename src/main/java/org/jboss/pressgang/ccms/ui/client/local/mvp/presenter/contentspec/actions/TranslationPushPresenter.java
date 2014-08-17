@@ -19,8 +19,6 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.actions;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +30,13 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTZanataServerSettingsCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTZanataServerSettingsCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTProcessInformationV1;
-import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
-import org.jboss.pressgang.ccms.rest.v1.elements.RESTZanataServerSettingsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslationServerV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTTextContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.callbacks.ActionCompletedCallback;
-import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.common.AlertBox;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -68,7 +61,6 @@ public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInf
             final String username = display.getUsername().getText().trim();
             final String apikey = display.getApiKey().getText().trim();
             final String processName = display.getProcessName().getText().trim();
-            final String serverId = display.getServers().getValue(display.getServers().getSelectedIndex());
 
             if (username.isEmpty() || apikey.isEmpty()) {
                 display.getDialogBox().hide();
@@ -97,7 +89,6 @@ public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInf
 
             // Save the username
             Preferences.INSTANCE.saveSetting(Preferences.TRANSLATION_USERNAME, username);
-            Preferences.INSTANCE.saveSetting(Preferences.TRANSLATION_SERVER, serverId);
 
             // Create the callback
             final RESTCallBack<RESTProcessInformationV1> callback = new RESTCallBack<RESTProcessInformationV1>() {
@@ -124,7 +115,7 @@ public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInf
             };
 
             // Start the push
-            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.startTranslationPush(contentSpec.getId(), serverId, processName,
+            getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.startTranslationPush(contentSpec.getId(), processName,
                     display.getContentSpecOnly().getValue(), display.getDisableCopyTrans().getValue(), username, apikey), callback,
                     parentDisplay);
 
@@ -136,28 +127,18 @@ public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInf
         this.parentDisplay = parentDisplay;
         bindButtons();
         display.getUsername().setText(Preferences.INSTANCE.getString(Preferences.TRANSLATION_USERNAME, ""));
-        getServerSettings(new ServerSettingsCallback() {
-            @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
-                // Build up the server list
-                initServers(serverSettings.getZanataSettings());
-                display.getDialogBox().center();
-            }
-        });
+
+        // Set the server label
+        initServer();
+        display.getDialogBox().center();
     }
 
-    protected void initServers(final RESTZanataServerSettingsCollectionV1 zanataSettings) {
-        display.getServers().clear();
-        final String savedServer = Preferences.INSTANCE.getString(Preferences.TRANSLATION_SERVER, null);
-        for (final RESTZanataServerSettingsCollectionItemV1 zanataServerItem : zanataSettings.getItems()) {
-            checkState(zanataServerItem.getItem() != null, "The zanata settings collection item should reference a valid entity.");
-
-            final RESTZanataServerSettingsV1 zanataServer = zanataServerItem.getItem();
-            display.getServers().addItem("Zanata - " + zanataServer.getName(), zanataServer.getId());
-
-            if (zanataServer.getId().equals(savedServer)) {
-                display.getServers().setSelectedIndex(display.getServers().getItemCount() - 1);
-            }
+    protected void initServer() {
+        if (contentSpec.getTranslationDetails() != null && contentSpec.getTranslationDetails().getTranslationServer() != null) {
+            final RESTTranslationServerV1 translationServer = contentSpec.getTranslationDetails().getTranslationServer();
+            display.getServer().setText(translationServer.getName());
+        } else {
+            display.getServer().setText("");
         }
     }
 
@@ -199,7 +180,7 @@ public class TranslationPushPresenter extends BaseActionPresenter<RESTProcessInf
 
         CheckBox getDisableCopyTrans();
 
-        ListBox getServers();
+        Label getServer();
 
         PushButton getStart();
 

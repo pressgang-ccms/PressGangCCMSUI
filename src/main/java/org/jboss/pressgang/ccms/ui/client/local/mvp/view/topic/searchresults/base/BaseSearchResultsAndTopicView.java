@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseAuditedEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public abstract class BaseSearchResultsAndTopicView<
-        T extends RESTBaseEntityV1<T, U, V>,
+        T extends RESTBaseAuditedEntityV1<T, U, V>,
         U extends RESTBaseEntityCollectionV1<T, U, V>,
         V extends RESTBaseEntityCollectionItemV1<T, U, V>> extends
         BaseSearchAndEditView<T, U, V> implements BaseTopicFilteredResultsAndDetailsPresenter.Display<T, U, V> {

@@ -531,6 +531,7 @@ public interface CSSConstants {
         String ACTIONS_MENU = "ContentSpecActionsMenu";
         String ACTIONS_MENU_ITEM = "ContentSpecActionsMenuItem";
         String ACTIONS_SUB_MENU = "ContentSpecActionsSubMenu";
+        String TRANSLATION_LOCALE_LIST_BOX = "ContentSpecTranslationLocaleListBox";
     }
 
     interface TopicRevisionView {
@@ -1041,12 +1042,12 @@ public interface CSSConstants {
         String SETTINGS_TABLE = "SettingsTable";
         String SETTINGS_LABEL = "SettingsLabel";
         String SETTINGS_FIELD = "SettingsField";
-        String ZANATA_TABLE = "SettingsZanataTable";
-        String ZANATA_ID_FOOTER = "SettingsZanataIDFooter";
-        String ZANATA_NAME_FOOTER = "SettingsZanataNameFooter";
-        String ZANATA_URL_FOOTER = "SettingsZanataURLFooter";
-        String ZANATA_PROJECT_FOOTER = "SettingsZanataProjectFooter";
-        String ZANATA_PROJECT_VERSION_FOOTER = "SettingsZanataProjectVersionFooter";
+        String TRANSLATION_SERVER_TABLE = "SettingsTranslationServerTable";
+        String ZANATA_ID_FOOTER = "SettingsTranslationServerIDFooter";
+        String TRANSLATION_SERVER_NAME_FOOTER = "SettingsTranslationServerNameFooter";
+        String TRANSLATION_SERVER_URL_FOOTER = "SettingsTranslationServerURLFooter";
+        String TRANSLATION_SERVER_USERNAME_FOOTER = "SettingsTranslationServerUsernameFooter";
+        String TRANSLATION_SERVER_KEY_FOOTER = "SettingsTranslationServerKeyFooter";
         String UNDEFINED_TABLE = "SettingsUndefinedTable";
         String KEY_FOOTER = "SettingsKeyFooter";
         String VALUE_FOOTER = "SettingsValueFooter";

@@ -21,7 +21,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchil
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseAuditedEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -40,10 +40,10 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public interface BaseDetailedChildrenPresenterInterface<
-        T extends RESTBaseEntityV1<?, ?, ?>,
-        W extends RESTBaseEntityV1<?, ?, ?>,
+        T extends RESTBaseAuditedEntityV1<?, ?, ?>,
+        W extends RESTBaseAuditedEntityV1<?, ?, ?>,
         C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
-        D extends RESTBaseEntityV1<D, E, F>,
+        D extends RESTBaseAuditedEntityV1<D, E, F>,
         E extends RESTBaseEntityCollectionV1<D, E, F>,
         F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseChildrenPresenterInterface<T, C, D, E, F>, EditableView {

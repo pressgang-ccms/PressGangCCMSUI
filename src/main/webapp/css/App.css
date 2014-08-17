@@ -1447,6 +1447,7 @@ a.AnchorPushButton, a.AnchorMenuItem {
 
 .ProcessSyncLocaleListBox {
     max-height: 125px;
+    min-height: 50px;
     width: 100%;
 }
 
@@ -1553,7 +1554,7 @@ table.ProcessWaitingTable {
 }*/
 
 .SettingsTable {
-    max-width: 1000px;
+    width: 1000px;
 }
 
 .SettingsLabel {
@@ -1569,7 +1570,7 @@ table.ProcessWaitingTable {
     width: 98%
 }
 
-.SettingsZanataTable input,
+.SettingsTranslationServerTable input,
 .SettingsUndefinedTable input,
 .SettingsLocaleTable input {
     display: inline-block;
@@ -1578,20 +1579,17 @@ table.ProcessWaitingTable {
     margin-right: 5px;
 }
 
-.SettingsZanataTable td:nth-child(2) div,
-.SettingsZanataTable td:nth-child(5) div {
+.SettingsTranslationServerTable td:nth-child(2) div,
+.SettingsTranslationServerTable td:nth-child(4) div {
     width: 100px;
 }
 
-.SettingsZanataTable td:nth-child(4) div {
+.SettingsTranslationServerTable td:nth-child(5) div {
     width: 120px;
 }
 
-.SettingsZanataTable td:first-child div {
-    width: 80px;
-}
 
-.SettingsZanataTable td:nth-child(3) {
+.SettingsTranslationServerTable td:nth-child(3) {
     width: 100%;
 }
 
@@ -1664,4 +1662,11 @@ table.ProcessWaitingTable {
 .SettingsLocaleTable td:first-child,
 .SettingsLocaleTable td:last-child {
     width: 5px
+}
+
+.ContentSpecTranslationLocaleListBox {
+    max-height: 250px;
+    min-height: 50px;
+    min-width: 200px;
+    max-width: 500px;
 }

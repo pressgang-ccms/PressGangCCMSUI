@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.json.client.JSONNumber;
 import edu.ycp.cs.dh.acegwt.client.tagdb.XMLElementDB;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
@@ -73,7 +72,7 @@ public class XMLElementDBLoader {
 
                     FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             loadPropertyTagDB(serverSettings);
                         }
                     }, null, failOverRESTCall);

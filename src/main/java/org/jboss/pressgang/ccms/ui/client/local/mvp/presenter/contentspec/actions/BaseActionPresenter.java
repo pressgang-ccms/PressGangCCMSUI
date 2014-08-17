@@ -43,22 +43,20 @@ public abstract class BaseActionPresenter<T> {
     private FailOverRESTCall failOverRESTCall;
 
     private RESTServerSettingsV1 serverSettings;
-    private RESTLocaleCollectionV1 locales;
 
     private List<ActionCompletedCallback<T>> callbacks = new ArrayList<ActionCompletedCallback<T>>();
 
     protected void getServerSettings(@NotNull final ServerSettingsCallback settingsCallback) {
-        if (serverSettings == null || locales == null) {
+        if (serverSettings == null) {
             FailOverRESTCallDatabase.getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value, @NotNull RESTLocaleCollectionV1 localesValue) {
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 value) {
                     serverSettings = value;
-                    locales = localesValue;
-                    settingsCallback.serverSettingsLoaded(serverSettings, localesValue);
+                    settingsCallback.serverSettingsLoaded(serverSettings);
                 }
             }, null, failOverRESTCall);
         } else {
-            settingsCallback.serverSettingsLoaded(serverSettings, locales);
+            settingsCallback.serverSettingsLoaded(serverSettings);
         }
     }
 

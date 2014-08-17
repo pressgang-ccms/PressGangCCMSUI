@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerEntitiesV1;
 import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -34,7 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTLocaleCollectionV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTServerEntitiesV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.settings.RESTServerSettingsV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
@@ -60,8 +58,6 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
             ServerSettingsPresenter.ServerSettingsPresenterDriver.class);
     private final ServerSettingsPresenter.ServerEntitiesPresenterDriver entitiesDriver = GWT.create(
             ServerSettingsPresenter.ServerEntitiesPresenterDriver.class);
-    private final ServerSettingsPresenter.LocalesPresenterDriver localesDriver = GWT.create(
-            ServerSettingsPresenter.LocalesPresenterDriver.class);
 
     private boolean readOnly = false;
 
@@ -113,7 +109,7 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
     }
 
     @Override
-    public void display(@NotNull final RESTServerSettingsV1 entity, RESTLocaleCollectionV1 locales, final boolean readOnly) {
+    public void display(@NotNull final RESTServerSettingsV1 entity, final boolean readOnly) {
         this.readOnly = readOnly;
 
         settingsEditor = new RESTServerSettingsV1DetailsEditor(readOnly);
@@ -129,11 +125,6 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
         // Copy the data in the object into the UI
         entitiesDriver.edit(entity.getEntities());
         serverEntitiesPanel.setWidget(entitiesEditor);
-
-        // Initialize the driver with the top-level editor
-        localesDriver.initialize(settingsEditor.getLocalesEditor());
-        // Copy the data in the object into the UI
-        localesDriver.edit(locales);
     }
 
     @Override
@@ -165,15 +156,5 @@ public class ServerSettingsView extends BaseTemplateView implements ServerSettin
     @Override
     public RESTServerEntitiesV1DetailsEditor getEntitiesEditor() {
         return entitiesEditor;
-    }
-
-    @Override
-    public SimpleBeanEditorDriver<RESTLocaleCollectionV1, RESTLocaleCollectionV1Editor> getLocalesDriver() {
-        return localesDriver;
-    }
-
-    @Override
-    public RESTLocaleCollectionV1Editor getLocalesEditor() {
-        return settingsEditor.getLocalesEditor();
     }
 }

@@ -199,18 +199,27 @@ public final class RESTLocaleCollectionV1Editor extends Composite implements Edi
         valueColumn.setFieldUpdater(new FieldUpdater<RESTLocaleCollectionItemV1, String>() {
             @Override
             public void update(int index, final RESTLocaleCollectionItemV1 object, String value) {
+                if (object.getState() != RESTLocaleCollectionItemV1.ADD_STATE) {
+                    object.setState(RESTLocaleCollectionItemV1.UPDATE_STATE);
+                }
                 object.getItem().explicitSetValue(value);
             }
         });
         translationValueColumn.setFieldUpdater(new FieldUpdater<RESTLocaleCollectionItemV1, String>() {
             @Override
             public void update(int index, final RESTLocaleCollectionItemV1 object, String value) {
+                if (object.getState() != RESTLocaleCollectionItemV1.ADD_STATE) {
+                    object.setState(RESTLocaleCollectionItemV1.UPDATE_STATE);
+                }
                 object.getItem().explicitSetTranslationValue(value);
             }
         });
         buildValueColumn.setFieldUpdater(new FieldUpdater<RESTLocaleCollectionItemV1, String>() {
             @Override
             public void update(int index, final RESTLocaleCollectionItemV1 object, String value) {
+                if (object.getState() != RESTLocaleCollectionItemV1.ADD_STATE) {
+                    object.setState(RESTLocaleCollectionItemV1.UPDATE_STATE);
+                }
                 object.getItem().explicitSetBuildValue(value);
             }
         });

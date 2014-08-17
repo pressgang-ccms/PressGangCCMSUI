@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
@@ -46,7 +45,7 @@ public class TranslationSyncDialogBox extends DialogBox implements TranslationSy
     private final TextBox username = new TextBox();
     private final PasswordTextBox apiKey = new PasswordTextBox();
     private final CheckBoxList locales = new CheckBoxList();
-    private final ListBox servers = new ListBox();
+    private final Label serversValueLabel = new Label();
 
     private final PushButton start = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Start());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -60,21 +59,31 @@ public class TranslationSyncDialogBox extends DialogBox implements TranslationSy
         buttonPanel.add(start);
         buttonPanel.add(cancel);
 
-        layout.setWidget(0, 0, nameLabel);
-        layout.setWidget(0, 1, name);
-        layout.setWidget(1, 0, serversLabel);
-        layout.setWidget(1, 1, servers);
-        layout.setWidget(2, 0, usernameLabel);
-        layout.setWidget(2, 1, username);
-        layout.setWidget(3, 0, apiKeyLabel);
-        layout.setWidget(3, 1, apiKey);
-        layout.setWidget(4, 0, localesLabel);
-        layout.setWidget(4, 1, locales);
-        layout.setWidget(5, 0, buttonPanel);
+        int row = 0;
+        layout.setWidget(row, 0, nameLabel);
+        layout.setWidget(row, 1, name);
 
-        layout.getFlexCellFormatter().setColSpan(5, 0, 2);
+        row++;
+        layout.setWidget(row, 0, serversLabel);
+        layout.setWidget(row, 1, serversValueLabel);
+
+        row++;
+        layout.setWidget(row, 0, usernameLabel);
+        layout.setWidget(row, 1, username);
+
+        row++;
+        layout.setWidget(row, 0, apiKeyLabel);
+        layout.setWidget(row, 1, apiKey);
+
+        row++;
+        layout.setWidget(row, 0, localesLabel);
+        layout.setWidget(row, 1, locales);
+
+        row++;
+        layout.setWidget(row, 0, buttonPanel);
+
+        layout.getFlexCellFormatter().setColSpan(row, 0, 2);
         locales.addStyleName(CSSConstants.ContentSpecActionsView.SYNC_LOCALE_LIST_BOX);
-        servers.setWidth("100%");
 
         name.getElement().setPropertyString("placeholder", PressGangCCMSUI.INSTANCE.EnterOptionalName());
 
@@ -102,8 +111,8 @@ public class TranslationSyncDialogBox extends DialogBox implements TranslationSy
     }
 
     @Override
-    public ListBox getServers() {
-        return servers;
+    public Label getServer() {
+        return serversValueLabel;
     }
 
     @Override
@@ -125,7 +134,7 @@ public class TranslationSyncDialogBox extends DialogBox implements TranslationSy
     public void reset() {
         name.setText("");
         locales.clear();
-        servers.clear();
+        serversValueLabel.setText("");
         username.setText("");
         apiKey.setText("");
     }

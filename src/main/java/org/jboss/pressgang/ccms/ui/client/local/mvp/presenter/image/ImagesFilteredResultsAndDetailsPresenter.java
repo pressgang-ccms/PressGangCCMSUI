@@ -48,7 +48,6 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
@@ -456,8 +455,8 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
     private void populateLocales() {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, final RESTLocaleCollectionV1 locales) {
-                ImagesFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                ImagesFilteredResultsAndDetailsPresenter.this.locales = serverSettings.getLocales().returnItems();
                 Collections.sort(ImagesFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
                 finishLoading();
             }
@@ -918,7 +917,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 if (isOKToProceed()) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
 
                             // Create the image wrapper
@@ -973,7 +972,7 @@ public class ImagesFilteredResultsAndDetailsPresenter extends BaseSearchAndEditP
                 } else {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final RESTLocaleV1 defaultLocale = serverSettings.getDefaultLocale();
                             createNewImage(display.getBulkUploadDialog().getDescription().getText(), defaultLocale, 0,
                                     display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());

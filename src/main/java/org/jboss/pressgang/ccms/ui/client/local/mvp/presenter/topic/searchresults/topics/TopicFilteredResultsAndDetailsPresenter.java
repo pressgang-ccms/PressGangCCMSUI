@@ -82,7 +82,6 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLocaleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -485,8 +484,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                final RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                             final String user = getDisplay().getMessageLogDialog().getUsername().getText().trim();
                             final StringBuilder message = new StringBuilder();
                             if (!user.isEmpty()) {
@@ -605,8 +603,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                    RESTLocaleCollectionV1 locales) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.createTopic(newTopic, message.toString(), flag,
                                         serverSettings.getEntities().getUnknownUserId().toString()), addCallback, display);
                             }
@@ -630,8 +627,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         getServerSettings(new ServerSettingsCallback() {
                             @Override
-                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                    RESTLocaleCollectionV1 locales) {
+                            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                 getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.saveTopic(newTopic, message.toString(), flag,
                                         serverSettings.getEntities().getUnknownUserId().toString()), updateCallback, display);
                             }
@@ -666,7 +662,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 getServerSettings(new ServerSettingsCallback() {
                     @Override
-                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                    public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                         getFailOverRESTCall().performRESTCall(
                                 FailOverRESTCallDatabase.saveTopic(
                                         reviewUpdateTopic,
@@ -918,9 +914,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
-                TopicFilteredResultsAndDetailsPresenter.this.locales = locales.returnItems();
-                Collections.sort(TopicFilteredResultsAndDetailsPresenter.this.locales, new RESTLocaleV1Sort());
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
+                locales = serverSettings.getLocales().returnItems();
+                Collections.sort(locales, new RESTLocaleV1Sort());
                 defaultLocale = serverSettings.getDefaultLocale();
                 displayNewTopic();
                 displayInitialTopic(getNewEntityCallback);
@@ -1128,8 +1124,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                     getServerSettings(new ServerSettingsCallback() {
                                         @Override
-                                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                                                RESTLocaleCollectionV1 locales) {
+                                        public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                                             boolean found = false;
                                             for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                                 if (prop.getItem().getId() == serverSettings.getEntities().getFixedUrlPropertyTagId()) {
@@ -1461,7 +1456,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (getDisplayedTopic().getId() != null) {
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
                     final Integer contentSpecTagId = serverSettings.getEntities().getContentSpecTagId();
                     if (contentSpecTagId != null) {
                         final String query = "query;tag" + contentSpecTagId + "=1;topicIds=" + getDisplayedTopic().getId();
@@ -2137,7 +2132,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
                 getFailOverRESTCall().performRESTCall(
                         FailOverRESTCallDatabase.getCategory(serverSettings.getEntities().getTypeCategoryId()), callback, display);
             }
@@ -2154,7 +2149,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                 final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
                 // If the tags have not been loaded, the tags collection will be null.
@@ -2192,7 +2187,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                 final RESTTopicV1 displayedTopic = getSearchResultPresenter().getProviderData().getDisplayedItem().getItem();
 
                 reviewUpdateTopic = new RESTTopicV1();
@@ -2328,7 +2323,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
                     getServerSettings(new ServerSettingsCallback() {
                         @Override
-                        public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                        public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
                             try {
                                 final String result = reader.getStringResult();
 
@@ -3479,8 +3474,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings,
-                        final RESTLocaleCollectionV1 locales) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     final Integer stringConstantId;
                     if (type != null) {
                         if (serverSettings.getEntities().getAuthorGroupTagId().equals(type.getId())) {
@@ -3567,7 +3561,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             getServerSettings(new ServerSettingsCallback() {
                 @Override
-                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+                public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                     getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getStringConstant(serverSettings.getEntities().getDocBookElementsStringConstantId()), callback,
                             display);
                 }
@@ -3586,7 +3580,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
         getServerSettings(new ServerSettingsCallback() {
             @Override
-            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings, RESTLocaleCollectionV1 locales) {
+            public void serverSettingsLoaded(@NotNull final RESTServerSettingsV1 serverSettings) {
                 // Get the list of template string constant ids from the StringConstant
                 final List<Integer> xmlTemplateIds = serverSettings.getDocBookTemplateIds();
                 final Map<String, String> data = new TreeMap<String, String>();

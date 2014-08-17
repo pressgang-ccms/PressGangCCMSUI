@@ -32,6 +32,7 @@ public class CheckBoxListGroup extends Composite {
     private final VerticalPanel panel = new VerticalPanel();
     private final String name;
     private final List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+    private boolean enabled = true;
 
     public CheckBoxListGroup(final String name) {
         this.name = name;
@@ -59,18 +60,14 @@ public class CheckBoxListGroup extends Composite {
     }
 
     public void addItem(final String label, final String value, final boolean checked) {
-        addItem(label, value, checked, true);
-    }
-
-    public void addItem(final String label, final String value, final boolean checked, boolean enabled) {
         final CheckBox checkBox = new CheckBox(label);
         checkBox.setFormValue(value);
         checkBox.setValue(checked);
-        checkBox.setEnabled(enabled);
         addItem(checkBox);
     }
 
     public void addItem(final CheckBox checkBox) {
+        checkBox.setEnabled(enabled);
         panel.add(checkBox);
         checkBoxes.add(checkBox);
     }
@@ -193,5 +190,11 @@ public class CheckBoxListGroup extends Composite {
     public void clear() {
         checkBoxes.clear();
         panel.clear();
+    }
+
+    public void setEnabled(final boolean enabled) {
+        for (final CheckBox checkBox : checkBoxes) {
+            checkBox.setEnabled(enabled);
+        }
     }
 }

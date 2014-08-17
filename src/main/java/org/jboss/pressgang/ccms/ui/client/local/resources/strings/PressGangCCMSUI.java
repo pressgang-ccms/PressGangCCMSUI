@@ -1414,6 +1414,9 @@ public interface PressGangCCMSUI extends Constants {
     String Server();
 
     @NotNull
+    String TranslationServer();
+
+    @NotNull
     String Preview();
 
     @NotNull
@@ -1468,16 +1471,16 @@ public interface PressGangCCMSUI extends Constants {
     String SettingsCustomEntities();
 
     @NotNull
-    String ZanataServerID();
+    String TranslationServerID();
 
     @NotNull
-    String ZanataServerName();
+    String TranslationServerName();
 
     @NotNull
-    String ZanataServerProject();
+    String TranslationServerUsername();
 
     @NotNull
-    String ZanataServerProjectVersion();
+    String TranslationServerApiKey();
 
     @NotNull
     String SettingsKey();
@@ -1489,7 +1492,7 @@ public interface PressGangCCMSUI extends Constants {
     String MandatoryValuesMissing();
 
     @NotNull
-    String ZanataServerAlreadyExists();
+    String TranslationServerAlreadyExists();
 
     @NotNull
     String UndefinedSettingAlreadyExists();
@@ -1498,7 +1501,7 @@ public interface PressGangCCMSUI extends Constants {
     String MaxTopicRevision();
 
     @NotNull
-    String ZanataServers();
+    String TranslationServers();
 
     @NotNull
     String CustomSettings();
@@ -1556,4 +1559,19 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String LocaleAlreadyExists();
+
+    @NotNull
+    String TranslationProperties();
+
+    @NotNull
+    String EnableTranslations();
+
+    @NotNull
+    String TranslationProject();
+
+    @NotNull
+    String TranslationProjectVersion();
+
+    @NotNull
+    String CanNotProceedWithoutTranslationDetails();
 }

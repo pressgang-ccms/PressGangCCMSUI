@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseEntityCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseAuditedEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
@@ -39,9 +39,9 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 abstract public class BaseExtendedChildrenView<
-        T extends RESTBaseEntityV1<?, ?, ?>,
+        T extends RESTBaseAuditedEntityV1<?, ?, ?>,
         C extends RESTBaseEntityCollectionItemV1<?, ?, ?>,
-        D extends RESTBaseEntityV1<D, E, F>,
+        D extends RESTBaseAuditedEntityV1<D, E, F>,
         E extends RESTBaseEntityCollectionV1<D, E, F>,
         F extends RESTBaseEntityCollectionItemV1<D, E, F>>
         extends BaseChildrenView<T, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, C, D, E, F> {
