@@ -28,6 +28,8 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTCSNodeCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTCSNodeCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.elements.RESTServerSettingsV1;
+import org.jboss.pressgang.ccms.ui.client.local.callbacks.ServerSettingsCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -45,7 +47,7 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     public static final String HISTORY_TOKEN = "DocBuilderView";
 
     public interface Display extends BaseTemplateViewInterface {
-        void display(@Nullable final Integer id);
+        void display(String url, @Nullable final Integer id);
     }
 
     @Inject
@@ -72,9 +74,14 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
 
     @Override
     public void bindExtended() {
-        display.display(id);
+        getServerSettings(new ServerSettingsCallback() {
+            @Override
+            public void serverSettingsLoaded(@NotNull RESTServerSettingsV1 serverSettings) {
+                display.display(serverSettings.getDocBuilderUrl(), id);
 
-        loadAdditionalDisplayedItemData(id);
+                loadAdditionalDisplayedItemData(id);
+            }
+        });
     }
 
     @Override

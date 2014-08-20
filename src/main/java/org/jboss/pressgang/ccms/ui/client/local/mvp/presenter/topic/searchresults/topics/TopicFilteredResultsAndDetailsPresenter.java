@@ -1128,9 +1128,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             boolean found = false;
                                             for (final RESTAssignedPropertyTagCollectionItemV1 prop : retValue.getProperties().getItems()) {
                                                 if (prop.getItem().getId() == serverSettings.getEntities().getFixedUrlPropertyTagId()) {
-                                                    Window.open(
-                                                            Constants.DOCBUILDER_SERVER + "/" + object.getItem().getId() + "#" + prop
-                                                                    .getItem().getValue(),
+                                                    String docBuilderUrl = serverSettings.getDocBuilderUrl();
+                                                    docBuilderUrl = docBuilderUrl == null ? Constants.DOCBUILDER_SERVER : docBuilderUrl;
+                                                    if (!docBuilderUrl.endsWith("/")) {
+                                                        docBuilderUrl += "/";
+                                                    }
+
+                                                    Window.open(docBuilderUrl + object.getItem().getId() + "#" + prop.getItem().getValue(),
                                                             "", "");
                                                     found = true;
                                                     break;
