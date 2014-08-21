@@ -669,17 +669,17 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
                             if (displayedDetails.isEnabled()) {
                                 translationDetail.explicitSetEnabled(displayedDetails.isEnabled());
                             }
-                            if (!Constants.TRANSLATION_SERVER_PROJECT.equalsIgnoreCase(displayedDetails.getProject())) {
-                                translationDetail.explicitSetProject(displayedDetails.getProject());
-                            }
-                            if (!Constants.TRANSLATION_SERVER_PROJECT_VERSION.equalsIgnoreCase(displayedDetails.getProjectVersion())) {
-                                translationDetail.explicitSetProjectVersion(displayedDetails.getProjectVersion());
-                            }
                             if (displayedDetails.getTranslationServer() != null) {
                                 translationDetail.explictSetTranslationServer(displayedDetails.getTranslationServer());
                             }
                             if (displayedDetails.getLocales() != null && displayedDetails.getLocales().getItems().size() > 0) {
                                 translationDetail.explicitSetLocales(displayedDetails.getLocales());
+                            }
+
+                            if (translationDetail.getConfiguredParameters() != null
+                                    && !translationDetail.getConfiguredParameters().isEmpty()) {
+                                translationDetail.explicitSetProject(displayedDetails.getProject());
+                                translationDetail.explicitSetProjectVersion(displayedDetails.getProjectVersion());
                             }
                         }
 

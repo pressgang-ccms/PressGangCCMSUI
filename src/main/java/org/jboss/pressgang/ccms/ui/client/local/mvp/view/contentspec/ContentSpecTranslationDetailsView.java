@@ -19,6 +19,7 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.contentspec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -63,7 +64,11 @@ public class ContentSpecTranslationDetailsView extends BaseTemplateView implemen
             contentSpec.setTranslationDetails(new RESTCSTranslationDetailV1());
         }
 
-        final RESTCSTranslationDetailV1Editor editor = new RESTCSTranslationDetailV1Editor(readOnly, locales, translationServers);
+        // Clone the locales and remove the content spec locale
+        final List<RESTLocaleV1> fixedLocales = new ArrayList<RESTLocaleV1>(locales);
+        fixedLocales.remove(contentSpec.getLocale());
+
+        final RESTCSTranslationDetailV1Editor editor = new RESTCSTranslationDetailV1Editor(readOnly, fixedLocales, translationServers);
         // Initialize the driver with the top-level editor
         driver.initialize(editor);
         // Copy the data in the object into the UI
