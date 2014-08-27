@@ -151,7 +151,7 @@ define(
                 "metadata": [
                     {
                         token: "keyword.metadata",
-                        regex: "^(CHECKSUM|ID|Title|Subtitle|Edition|Book Version|Pubsnumber|Product|Description|Copyright Holder|Copyright Year|Version|Bug Links|BZProduct|BZComponent|BZVersion|BZKeywords|BZServer|BZURL|Type|Brand Logo|Brand|publican.cfg|Inline Injection|Format|BZ Assignee|GroupId|ArtifactId|Additional Files|Files|JIRAProject|JIRAComponent|JIRAVersion|JIRALabels|JIRAServer|BZPRODUCT|BZCOMPONENT|BZVERSION|Output Style|spaces|Debug|Entities|[-\\w\\d]+-publican.cfg|Default publican.cfg|Index|POM Version|Locale|Default Preface)",
+                        regex: "^(CHECKSUM|ID|Title|Subtitle|Edition|Book Version|Pubsnumber|Product|Description|Copyright Holder|Copyright Year|Version|Bug Links|BZProduct|BZComponent|BZVersion|BZKeywords|BZServer|BZURL|Type|Brand Logo|Brand|publican.cfg|Inline Injection|Format|BZ Assignee|GroupId|ArtifactId|Additional Files|Files|JIRAProject|JIRAComponent|JIRAVersion|JIRALabels|JIRAServer|BZPRODUCT|BZCOMPONENT|BZVERSION|Output Style|spaces|Debug|Entities|[-\\w\\d]+-publican.cfg|Default publican.cfg|Index|POM Version|Locale|Default Preface)(?=\\s*=)",
                         next: [
                             {
                                 include: "space"
@@ -173,7 +173,7 @@ define(
                     },
                     {
                         token: "keyword.metadata",
-                        regex: "^(Abstract|Revision History|Feedback|Legal Notice|Author Group)",
+                        regex: "^(Abstract|Revision History|Feedback|Legal Notice|Author Group)(?=\\s*=)",
                         next: [
                             {
                                 include: "space"
