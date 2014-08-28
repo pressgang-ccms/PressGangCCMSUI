@@ -92,7 +92,7 @@ public abstract class BaseTopicRenderedPresenter<T extends RESTBaseTopicV1<T, ?,
         /*
             Don't display the conditions when this view is used stand alone.
          */
-        getDisplay().getTopActionGrandParentPanel().removeFromParent();
+        getDisplay().getThirdLevelLayoutPanel().setWidgetHidden(getDisplay().getTopActionGrandParentPanel(), true);
         standalone = true;
     }
 

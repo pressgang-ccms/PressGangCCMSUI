@@ -151,7 +151,7 @@ public class TopicRevisionsPresenter extends BaseRenderedDiffPresenter {
         display.getHTMLDone().setVisible(false);
         display.getHtmlOpenDiff().setVisible(false);
         display.showWaitingFromRenderedDiff();
-        display.getTopActionGrandParentPanel().removeFromParent();
+        display.getThirdLevelLayoutPanel().setWidgetHidden(getDisplay().getTopActionGrandParentPanel(), true);
 
         if (topicID != null) {
             loadTopics(topicID, firstRevision, secondRevision, new RenderedDiffCallback() {
