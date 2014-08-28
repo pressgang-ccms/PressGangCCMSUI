@@ -42,7 +42,7 @@ public final class Constants {
     /**
      * The UI Build - yyyymmddhhmm.
      */
-    public static final String BUILD = "201408281055";
+    public static final String BUILD = "201408281636";
 
     public static final String DUMMY_CS_ENTITIES = "<!ENTITY PRODUCT \"Product\">\n" +
             "<!ENTITY BOOKID \"BOOKID\">\n" +
@@ -1538,7 +1538,7 @@ public final class Constants {
     /**
      * The height of the bulk topic dialog box.
      */
-    public static final String BULK_OVERWRITE_DIALOG_HEIGHT = "120px";
+    public static final String BULK_OVERWRITE_DIALOG_HEIGHT = "150px";
     /**
      * A line break escaped.
      */

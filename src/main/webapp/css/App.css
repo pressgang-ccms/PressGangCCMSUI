@@ -379,10 +379,17 @@ td {
     width: 100%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+    height: 4em;
 }
 
 .ImportDialogMessagePanel {
     width: 100%;
+}
+
+.ImportDialogBoxOKCancelPanel {
+    margin-left: auto;
+    border-spacing: 4px;
+    padding-left: 20px;
 }
 
 .BulkImageUploadDescriptionField {

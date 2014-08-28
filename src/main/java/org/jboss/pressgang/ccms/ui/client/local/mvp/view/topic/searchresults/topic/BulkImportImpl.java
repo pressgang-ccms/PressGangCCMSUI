@@ -19,8 +19,20 @@
 
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -29,12 +41,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.vectomatic.file.FileUploadExt;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The bulk topic import dialog.
@@ -124,9 +130,11 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             this.setText(PressGangCCMSUI.INSTANCE.BulkTopicUpload());
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.ImportDialogs.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
+            final SimplePanel buttonWrapperPanel = new SimplePanel();
+            buttonWrapperPanel.setWidget(buttonPanel);
 
             final HorizontalPanel logMessagePanel = new HorizontalPanel();
             logMessagePanel.add(new Label(PressGangCCMSUI.INSTANCE.Message()));
@@ -136,7 +144,7 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             commitMessage.addStyleName(CSSConstants.ImportDialogs.IMPORT_DIALOG_MESSAGE);
 
             this.layout.addNorth(fileUploadExt, 3);
-            this.layout.addSouth(buttonPanel, 3);
+            this.layout.addSouth(buttonWrapperPanel, 3);
             this.layout.addSouth(logMessagePanel, 5);
             this.layout.add(tagsView.getPanel());
 

@@ -229,6 +229,7 @@ public interface CSSConstants {
     }
 
     interface ImportDialogs {
+        String DIALOG_BOX_OK_CANCEL_PANEL = "ImportDialogBoxOKCancelPanel";
         String IMPORT_DIALOG_MESSAGE = "ImportDialogMessage";
         String IMPORT_DIALOG_MESSAGE_PANEL = "ImportDialogMessagePanel";
     }
