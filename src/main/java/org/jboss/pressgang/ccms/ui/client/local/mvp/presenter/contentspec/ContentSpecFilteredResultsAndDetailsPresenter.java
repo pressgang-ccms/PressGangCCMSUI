@@ -634,7 +634,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
                     if (displayedEntity.getTranslationDetails() != null) {
                         final RESTCSTranslationDetailV1 displayedDetails = displayedEntity.getTranslationDetails();
-                        final RESTCSTranslationDetailV1 currentDetails = selectedEntity.getTranslationDetails();
+                        final RESTCSTranslationDetailV1 currentDetails = selectedEntity == null ? null : selectedEntity.getTranslationDetails();
 
                         final RESTCSTranslationDetailV1 translationDetail = new RESTCSTranslationDetailV1();
                         translationDetail.setId(displayedDetails.getId());
@@ -2129,7 +2129,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter extends BaseSearchAnd
 
             if (displayedEntity.getTranslationDetails() != null) {
                 final RESTCSTranslationDetailV1 displayedDetails = displayedEntity.getTranslationDetails();
-                final RESTCSTranslationDetailV1 currentDetails = selectedEntityCollectionItem.getItem().getTranslationDetails() == null ?
+                final RESTCSTranslationDetailV1 currentDetails = selectedEntityCollectionItem == null
+                        || selectedEntityCollectionItem.getItem().getTranslationDetails() == null ?
                         new RESTCSTranslationDetailV1() : selectedEntityCollectionItem.getItem().getTranslationDetails();
 
                 // Check for changed boolean values
