@@ -65,9 +65,17 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
 
             if (tokens.length > 0) {
 
-                // Set the condition override if it is present.
+                // Set the revision/condition override if it is present.
+                Integer revision = null;
                 if (tokens.length > 1) {
-                    conditionOverride = URL.decode(tokens[1]);
+                    if (tokens.length >= 2 && tokens[1].matches("^\\d+$")) {
+                        revision = Integer.parseInt(tokens[1]);
+                        if (tokens.length >= 3) {
+                            conditionOverride = URL.decode(tokens[2]);
+                        }
+                    } else {
+                        conditionOverride = URL.decode(tokens[1]);
+                    }
                 }
 
                 final Integer topicId = Integer.parseInt(tokens[0]);
@@ -79,7 +87,11 @@ public class TopicRenderedPresenter extends BaseTopicRenderedPresenter<RESTTopic
                     }
                 };
 
-                getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+                if (revision == null) {
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopic(topicId), callback, display);
+                } else {
+                    getFailOverRESTCall().performRESTCall(FailOverRESTCallDatabase.getTopicRevision(topicId, revision), callback, display);
+                }
             }
 
         } catch (@NotNull final NumberFormatException ex) {
