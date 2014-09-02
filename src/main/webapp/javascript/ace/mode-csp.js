@@ -125,7 +125,7 @@ define(
                 "id" : [
                     {
                         token: "constant.numeric",
-                        regex: "\\bN\\b|\\b(N|X|C|T)\\d+\\b|\\b\\d+\\b|\\bT-\\w+\\b|Common\\s+Content"
+                        regex: "\\bN\\b|\\b(N|X|C|T)\\d+\\b|\\b\\d+\\b|\\bT-[\\w-]+\\b|Common\\s+Content"
                     }
                 ],
 
