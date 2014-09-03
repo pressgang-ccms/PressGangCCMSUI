@@ -2258,12 +2258,7 @@ public final class FailOverRESTCallDatabase {
         failOverRESTCall.performRESTCall(getServerSettings(), new RESTCallBack<RESTServerSettingsV1>() {
             @Override
             public void success(@NotNull final RESTServerSettingsV1 value) {
-                failOverRESTCall.performRESTCall(getLocales(), new RESTCallBack<RESTLocaleCollectionV1>() {
-                    @Override
-                    public void success(@NotNull final RESTLocaleCollectionV1 locales) {
-                        serverSettingsCallback.serverSettingsLoaded(value);
-                    }
-                });
+                serverSettingsCallback.serverSettingsLoaded(value);
             }
         }, display);
 
