@@ -1713,8 +1713,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         // Add the node and it's content spec to the map
                         final RESTContentSpecV1 contentSpec = csNode.getContentSpec();
-                        final String prodVersion = buildContentSpecProdVersionName(contentSpec);
 
+                        // BZ#1140904 - Ignore nodes without a content spec
+                        if (contentSpec == null) continue;
+
+                        final String prodVersion = buildContentSpecProdVersionName(contentSpec);
                         if (!contentSpecIdToNodes.containsKey(contentSpec)) {
                             contentSpecIdToNodes.put(contentSpec, new ArrayList<RESTCSNodeV1>());
                         }

@@ -583,8 +583,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             // Get the csnodes that have conditions or custom entities
             for (final RESTCSNodeCollectionItemV1 node : retValue.getItems()) {
-                checkState(node.getItem().getContentSpec() != null,
-                        "The content spec node should have an expanded content spec property");
+                // BZ#1140904 - Ignore nodes without a content spec
+                if (node.getItem().getContentSpec() == null) continue;
 
                 // Check its a topic node or an info topic node
                 if (!(Constants.TOPIC_CS_NODE_TYPES.contains(node.getItem().getNodeType()) || node.getItem().getInfoTopicNode() != null)) {
